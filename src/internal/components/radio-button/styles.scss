@@ -8,6 +8,8 @@
 @use '../../styles/foundation' as foundation;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable custom-property-pattern */
+
 $radio-size: awsui.$size-control;
 
 .radio-control {
@@ -27,18 +29,18 @@ $radio-size: awsui.$size-control;
 }
 
 .styled-circle-border {
-  stroke: awsui.$color-border-control-default;
-  fill: awsui.$color-background-control-default;
+  stroke: var(--awsui-style-color-border-control-default, #{awsui.$color-border-control-default});
+  fill: var(--awsui-style-color-background-control-default, #{awsui.$color-background-control-default});
   &.styled-circle-disabled,
   &.styled-circle-readonly {
-    fill: awsui.$color-background-control-disabled;
-    stroke: awsui.$color-background-control-disabled;
+    fill: var(--awsui-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
+    stroke: var(--awsui-style-color-border-control-disabled, #{awsui.$color-background-control-disabled});
   }
 }
 
 .styled-circle-fill {
-  stroke: awsui.$color-background-control-checked;
-  fill: awsui.$color-foreground-control-default;
+  stroke: var(--awsui-style-color-background-control-checked, #{awsui.$color-background-control-checked});
+  fill: var(--awsui-style-color-foreground-control-default, #{awsui.$color-foreground-control-default});
   opacity: 0;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
@@ -47,11 +49,11 @@ $radio-size: awsui.$size-control;
     opacity: 1;
   }
   &.styled-circle-disabled {
-    fill: awsui.$color-foreground-control-disabled;
-    stroke: awsui.$color-background-control-disabled;
+    fill: var(--awsui-style-color-foreground-control-disabled, #{awsui.$color-foreground-control-disabled});
+    stroke: var(--awsui-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
   }
   &.styled-circle-readonly {
-    fill: awsui.$color-foreground-control-read-only;
-    stroke: awsui.$color-background-control-disabled;
+    fill: var(--awsui-style-color-foreground-control-readonly, #{awsui.$color-foreground-control-read-only});
+    stroke: var(--awsui-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
   }
 }

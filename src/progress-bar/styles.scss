@@ -8,16 +8,18 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './motion';
 
-$progress-height: var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size);
-$progress-border-radius: var(#{custom-props.$progressBarBorderRadius}, 10px);
+$progress-height: var(--awsui-style-progress-bar-height, var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size));
+$progress-border-radius: var(--awsui-style-progress-bar-border-radius, var(#{custom-props.$progressBarBorderRadius}, 10px));
 $progress-background-color: var(
+  --awsui-style-progress-bar-track-color, var(
   #{custom-props.$progressBarBackgroundColor},
   awsui.$color-background-progress-bar-default
-);
+));
 $progress-value-background-color: var(
+  --awsui-style-progress-bar-value-color, var(
   #{custom-props.$progressValueBackgroundColor},
   awsui.$color-background-progress-bar-value-default
-);
+));
 
 .root {
   @include styles.styles-reset;

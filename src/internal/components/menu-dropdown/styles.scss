@@ -7,6 +7,8 @@
 @use '../../styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
 .button {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -25,21 +27,22 @@
   border-block: transparent;
   border-inline: transparent;
   background: transparent;
-  color: awsui.$color-text-interactive-default;
+  color: var(--awsui-style-menu-trigger-color, #{awsui.$color-text-interactive-default});
 
   &:hover {
-    color: awsui.$color-text-interactive-hover;
+    color: var(--awsui-style-menu-trigger-color-hover, #{awsui.$color-text-interactive-hover});
+    background: var(--awsui-style-menu-trigger-background-hover, transparent);
     text-decoration: none;
   }
 
   &:active,
   &.expanded {
-    background: transparent;
-    color: awsui.$color-text-interactive-active;
+    background: var(--awsui-style-menu-trigger-background-active, transparent);
+    color: var(--awsui-style-menu-trigger-color-active, #{awsui.$color-text-interactive-active});
   }
 
   &.expanded {
-    color: awsui.$color-text-accent;
+    color: var(--awsui-style-menu-trigger-color-active, #{awsui.$color-text-accent});
   }
 
   &:focus {

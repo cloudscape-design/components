@@ -11,6 +11,8 @@
 @use '../utils' as utils;
 @use './constants' as constants;
 
+/* stylelint-disable custom-property-pattern */
+
 @mixin link-focus(
   $border-color: awsui.$color-border-item-focused,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
@@ -120,14 +122,15 @@
 @mixin form-focus-element(
   $border-radius: constants.$control-border-radius,
   $border-color: awsui.$color-border-input-focused,
-  $box-shadow: foundation.$box-shadow-focused-light
+  $box-shadow: foundation.$box-shadow-focused-light,
+  $border-width: awsui.$border-width-field
 ) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
+  border-block: $border-width solid $border-color;
+  border-inline: $border-width solid $border-color;
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
@@ -240,35 +243,38 @@
 }
 
 @mixin container-style {
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+  border-start-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+  border-end-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+  border-end-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
   box-sizing: border-box;
 
   &.refresh {
-    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
-    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid awsui.$border-divider-section-width
+      var(--awsui-style-container-divider-color, #{awsui.$color-border-divider-default});
+    border-inline: solid awsui.$border-divider-section-width
+      var(--awsui-style-container-divider-color, #{awsui.$color-border-divider-default});
   }
 
   &:not(.refresh)::before {
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-block-start: var(--awsui-style-container-top-border-width, #{awsui.$border-container-top-width}) solid
+      var(--awsui-style-container-top-border-color, #{awsui.$color-border-container-top});
+    border-start-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-start-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-end-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-end-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
     z-index: 1;
   }
 
   &:not(.refresh)::after {
     @include utils.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-start-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-end-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+    border-end-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
     box-shadow: awsui.$shadow-container;
   }
 }

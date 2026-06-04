@@ -24,6 +24,8 @@ export namespace FlashbarProps {
     onDismiss?: ButtonProps['onClick'];
     analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
     persistenceConfig?: FlashbarProps.PersistenceConfig;
+    className?: string;
+    dismissButtonClassName?: string;
   }
 
   export interface ItemAnalyticsMetadata {

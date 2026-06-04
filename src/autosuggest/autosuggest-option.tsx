@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
@@ -178,7 +179,7 @@ const AutosuggestOption = (
     <SelectableItem
       {...baseProps}
       disableContentStyling={!!renderResult}
-      className={styles.option}
+      className={clsx(styles.option, (option.option as OptionDefinition)?.className)}
       ariaSelected={current}
       highlighted={highlighted}
       disabled={option.disabled}

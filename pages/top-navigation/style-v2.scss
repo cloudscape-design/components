@@ -1,0 +1,53 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+// Subtle, themed hover for items on the pink bar. A soft pink tint in light
+// mode, a dark pink in dark mode — different from the white/dark default text
+// while keeping sufficient contrast against the bar in both modes.
+$util-hover: light-dark(hsl(330, 100%, 90%), hsl(330, 70%, 20%));
+
+// The utilities dropdown menu renders on a dark surface in both color modes,
+// so menu items use fixed light colors for contrast.
+$menu-item: hsl(330, 85%, 82%);
+$menu-item-highlight-bg: hsl(330, 65%, 48%);
+
+.styled-nav {
+  --awsui-style-top-navigation-background: #{palette.$accent};
+  // CloudApp identity title.
+  --awsui-style-top-navigation-title-color: #{palette.$text-on-accent};
+  --awsui-style-top-navigation-title-color-hover: #{$util-hover};
+}
+
+// Search input — themed focus that stays visible against the pink bar.
+.search-input {
+  --awsui-style-input-border-color-focus: #{palette.$accent};
+  --awsui-style-input-focus-ring-shadow: 0 0 0 2px #{palette.$text-on-accent};
+  --awsui-style-button-color-default: #{palette.$accent};
+  --awsui-style-button-color-hover: #{palette.$accent-active};
+}
+
+.utility-notification {
+  // A button utility without `primary-button` variant renders as a link.
+  --awsui-style-link-color-default: #{palette.$text-on-accent};
+  --awsui-style-link-color-hover: #{$util-hover};
+}
+
+.utility-settings {
+  --awsui-style-link-color-default: #{palette.$text-on-accent};
+  --awsui-style-link-color-hover: #{$util-hover};
+}
+
+.utility-profile {
+  // Jane Doe trigger — subtle text-color hover/open, no inverse pill.
+  --awsui-style-menu-trigger-color: #{palette.$text-on-accent};
+  --awsui-style-menu-trigger-color-hover: #{$util-hover};
+  --awsui-style-menu-trigger-color-active: #{$util-hover};
+  // Menu items on the dark dropdown surface.
+  --awsui-style-dropdown-item-color: #{$menu-item};
+  --awsui-style-dropdown-item-color-highlighted: #{hsl(0, 0%, 100%)};
+  --awsui-style-dropdown-item-background-hover: #{$menu-item-highlight-bg};
+}

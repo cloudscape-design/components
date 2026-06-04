@@ -1,0 +1,26 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.styled-text-filter {
+  --awsui-style-input-background: #{palette.$surface-alt};
+  --awsui-style-input-background-focus: #{palette.$surface};
+  --awsui-style-input-border-color: #{palette.$accent};
+  --awsui-style-input-border-color-focus: #{palette.$accent-hover};
+  --awsui-style-input-color: #{palette.$text};
+  --awsui-style-input-placeholder-color: #{palette.$accent};
+  --awsui-style-input-border-radius: 16px;
+  --awsui-style-input-border-width: 3px;
+  --awsui-style-transition-duration: #{palette.$transition-duration};
+
+  // Clear (X) icon button
+  --awsui-style-button-color-default: #{palette.$accent};
+  --awsui-style-button-color-hover: #{palette.$error};
+
+  &:hover {
+    --awsui-style-input-border-color: #{palette.$accent-hover};
+  }
+}

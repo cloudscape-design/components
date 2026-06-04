@@ -23,6 +23,7 @@ export interface SelectionControlProps extends ItemSelectionProps {
   rowIndex?: number;
   itemKey?: string;
   verticalAlign?: 'middle' | 'top';
+  selectionClassName?: string;
 }
 
 export function SelectionControl({
@@ -38,6 +39,7 @@ export function SelectionControl({
   rowIndex,
   itemKey,
   verticalAlign = 'middle',
+  selectionClassName,
   onChange,
   ...sharedProps
 }: SelectionControlProps) {
@@ -123,7 +125,7 @@ export function SelectionControl({
         onMouseUp={setShiftState}
         onClick={handleClick}
         htmlFor={controlId}
-        className={clsx(styles.label, styles.root, verticalAlign === 'top' && styles['label-top'])}
+        className={clsx(styles.label, styles.root, verticalAlign === 'top' && styles['label-top'], selectionClassName)}
         aria-label={ariaLabel}
         title={ariaLabel}
         {...(rowIndex !== undefined && !sharedProps.disabled

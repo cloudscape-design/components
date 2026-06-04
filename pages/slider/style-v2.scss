@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+// $hover-color defaults to the base color, so hover matches the styled base
+// color unless a variant explicitly overrides it.
+@mixin slider-theme($color, $hover-color: $color) {
+  --awsui-style-slider-track-background-color-jsjyte: #{palette.$border};
+  --awsui-style-slider-track-border-radius-jsjyte: 999px;
+  --awsui-style-slider-range-background-default-jsjyte: #{$color};
+  --awsui-style-slider-range-background-active-jsjyte: #{$hover-color};
+  --awsui-style-slider-handle-background-default-jsjyte: #{$color};
+  --awsui-style-slider-handle-background-hover-jsjyte: #{$hover-color};
+  --awsui-style-slider-handle-background-active-jsjyte: #{$hover-color};
+  --awsui-style-slider-handle-border-radius-jsjyte: 999px;
+
+  &:hover {
+    --awsui-style-slider-range-background-default-jsjyte: #{$hover-color};
+    --awsui-style-slider-handle-background-default-jsjyte: #{$hover-color};
+  }
+}
+
+// Each variant overrides hover with a darker shade of its own hue.
+.slider-success {
+  @include slider-theme($color: palette.$success, $hover-color: hsl(145, 60%, 30%));
+}
+
+.slider-accent {
+  @include slider-theme($color: palette.$accent, $hover-color: palette.$accent-hover);
+}
+
+.slider-danger {
+  @include slider-theme($color: palette.$error, $hover-color: hsl(0, 65%, 40%));
+}

@@ -116,7 +116,6 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
   ) {
     return (
       <Flash
-        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
         ref={el => {
           flashRefs.current[key] = el;
@@ -132,6 +131,11 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
         style={style}
         onDismissed={handleFlashDismissed}
         {...item}
+        className={clsx(
+          animateFlash && styles['flash-with-motion'],
+          isVisualRefresh && styles['flash-refresh'],
+          item.className
+        )}
       />
     );
   }

@@ -6,6 +6,8 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   position: absolute;
   inline-size: 100%;
@@ -14,35 +16,69 @@
   inset-inline-start: 0;
 
   > .styled-box {
-    fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
-    stroke-width: awsui.$border-width-field;
+    fill: var(
+      --awsui-style-color-background-control-default,
+      var(--awsui-style-color-background-control, #{awsui.$color-background-control-default})
+    );
+    stroke: var(
+      --awsui-style-color-border-control-default,
+      var(--awsui-style-color-border-control, #{awsui.$color-border-control-default})
+    );
+    stroke-width: var(--awsui-style-border-width-field, #{awsui.$border-width-field});
+
     @include styles.with-motion {
       transition:
-        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
-        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+        fill var(--awsui-style-transition-duration, #{awsui.$motion-duration-transition-quick})
+          var(--awsui-style-transition-easing, #{awsui.$motion-easing-transition-quick}),
+        stroke var(--awsui-style-transition-duration, #{awsui.$motion-duration-transition-quick})
+          var(--awsui-style-transition-easing, #{awsui.$motion-easing-transition-quick});
     }
+
     &-checked,
     &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
+      fill: var(
+        --awsui-style-color-background-control-checked,
+        var(--awsui-style-color-background-control, #{awsui.$color-background-control-checked})
+      );
+      stroke: var(
+        --awsui-style-color-border-control-checked,
+        var(--awsui-style-color-border-control, #{awsui.$color-border-control-checked})
+      );
     }
+
     &-disabled,
     &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
+      fill: var(
+        --awsui-style-color-background-control-disabled,
+        var(--awsui-style-color-background-control, #{awsui.$color-background-control-disabled})
+      );
+      stroke: var(
+        --awsui-style-color-border-control-disabled,
+        var(--awsui-style-color-border-control, #{awsui.$color-border-control-disabled})
+      );
     }
   }
 
   > .styled-line {
-    stroke: awsui.$color-foreground-control-default;
-    stroke-width: 2;
+    stroke: var(
+      --awsui-style-color-foreground-control-default,
+      var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-default})
+    );
+    stroke-width: var(--awsui-style-stroke-width-control, 2);
     fill: none;
+
     &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+      stroke: var(
+        --awsui-style-color-foreground-control-disabled,
+        var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-disabled})
+      );
     }
+
     &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+      stroke: var(
+        --awsui-style-color-foreground-control-readonly,
+        var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-read-only})
+      );
     }
   }
 }

@@ -11,6 +11,8 @@
 
 @use './calendar' as calendar;
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   /* used in test-utils */
 }
@@ -106,11 +108,13 @@
         &:hover {
           @include item-border-radius;
           color: awsui.$color-text-calendar-date-hover;
-          background-color: calendar.$grid-hover-background-color;
+          background-color: var(--awsui-style-calendar-hover-background, #{calendar.$grid-hover-background-color});
           &:not(.calendar-date-selected) {
             &::after {
-              border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
-              border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+              border-block: awsui.$border-item-width solid
+                var(--awsui-style-calendar-hover-border-color, #{calendar.$grid-hover-border-color});
+              border-inline: awsui.$border-item-width solid
+                var(--awsui-style-calendar-hover-border-color, #{calendar.$grid-hover-border-color});
             }
           }
         }
@@ -119,7 +123,7 @@
 
     &-current {
       @include item-border-radius;
-      background-color: calendar.$grid-current-date-background-color;
+      background-color: var(--awsui-style-calendar-current-background, #{calendar.$grid-current-date-background-color});
       font-weight: styles.$font-weight-bold;
     }
 
@@ -182,13 +186,15 @@
       }
       &::after {
         @include item-border-radius;
-        background-color: calendar.$grid-selected-background-color;
-        border-block: awsui.$border-item-width solid calendar.$grid-selected-border-color;
-        border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+        background-color: var(--awsui-style-calendar-selected-background, #{calendar.$grid-selected-background-color});
+        border-block: awsui.$border-item-width solid
+          var(--awsui-style-calendar-selected-background, #{calendar.$grid-selected-border-color});
+        border-inline: awsui.$border-item-width solid
+          var(--awsui-style-calendar-selected-background, #{calendar.$grid-selected-border-color});
       }
       > .date-inner {
         z-index: 2;
-        color: calendar.$grid-selected-text-color;
+        color: var(--awsui-style-calendar-selected-color, #{calendar.$grid-selected-text-color});
         position: relative;
       }
     }

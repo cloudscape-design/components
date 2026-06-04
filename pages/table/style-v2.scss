@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.styled-table {
+  --awsui-style-table-header-background: #{palette.$accent};
+  --awsui-style-table-header-color: #{palette.$text-on-accent};
+  --awsui-style-table-sorting-icon-color: #{palette.$text-on-accent};
+  --awsui-style-table-border-color: #{palette.$border-accent};
+  --awsui-style-table-selected-background: #{palette.$info-surface};
+  --awsui-style-table-selected-border-color: #{palette.$accent};
+}
+
+.selection-base {
+  --awsui-style-color-background-control: #{palette.$control-bg};
+  --awsui-style-color-background-control-checked: #{palette.$accent};
+  --awsui-style-color-border-control: #{palette.$control-border};
+  --awsui-style-color-foreground-control: #{palette.$control-foreground};
+  --awsui-style-border-width-field: 2px;
+  --awsui-style-transition-duration: 150ms;
+  --awsui-style-transition-easing: ease-in-out;
+}
+
+.selection-header {
+  --awsui-style-color-background-control: #{palette.$surface};
+  --awsui-style-color-background-control-checked: #{palette.$text-on-accent};
+  --awsui-style-color-border-control: #{palette.$text-on-accent};
+  --awsui-style-color-foreground-control: #{palette.$accent};
+}
+
+.selection-green {
+  --awsui-style-color-background-control-checked: #{palette.$success};
+  --awsui-style-color-border-control: #{palette.$success};
+}
+
+.selection-blue {
+  --awsui-style-color-background-control-checked: #{palette.$info};
+  --awsui-style-color-border-control: #{palette.$info};
+}
+
+.styled-filter {
+  --awsui-style-border-color-default-jsjyte: #{palette.$border-accent};
+  --awsui-style-border-color-hover-jsjyte: #{palette.$accent-hover};
+  --awsui-style-border-color-focus-jsjyte: #{palette.$accent};
+  --awsui-style-background-default-jsjyte: #{palette.$surface};
+}

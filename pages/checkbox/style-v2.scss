@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@mixin checkbox-theme($accent, $accent-hover, $background) {
+  --awsui-style-color-background-control: #{$background};
+  --awsui-style-color-background-control-checked: #{$accent};
+  --awsui-style-color-border-control: #{$accent};
+  --awsui-style-color-text-label: #{$accent};
+
+  &:hover,
+  &[data-highlighted] {
+    --awsui-style-color-border-control: #{$accent-hover};
+    --awsui-style-color-background-control-checked: #{$accent-hover};
+    --awsui-style-color-text-label: #{$accent-hover};
+  }
+}
+
+.styled-checkbox {
+  @include checkbox-theme($accent: #ff5544, $accent-hover: #cc2200, $background: #ffee88);
+  --awsui-style-color-background-control-disabled: #cccccc;
+  --awsui-style-color-border-control-disabled: #cccccc;
+  --awsui-style-border-width-field: 2px;
+  --awsui-style-color-foreground-control: #ffffff;
+  --awsui-style-color-foreground-control-disabled: #999999;
+  --awsui-style-color-foreground-control-readonly: #777799;
+  --awsui-style-stroke-width-control: 2;
+  --awsui-style-color-text-label-disabled: #999999;
+  --awsui-style-color-text-label-readonly: #777799;
+  --awsui-style-space-control-label: 12px;
+  --awsui-style-focus-ring-border-color: #ff5544;
+  --awsui-style-focus-ring-border-radius: 4px;
+  --awsui-style-focus-ring-border-width: 3px;
+  --awsui-style-transition-duration: 200ms;
+  --awsui-style-transition-easing: ease-in-out;
+}
+
+.styled-checkbox-one {
+  @include checkbox-theme($accent: #33aa55, $accent-hover: #227733, $background: #ccffdd);
+}
+
+.styled-checkbox-two {
+  @include checkbox-theme($accent: #4477dd, $accent-hover: #2255aa, $background: #ccdeff);
+}
+
+.styled-checkbox-three {
+  @include checkbox-theme($accent: #9944cc, $accent-hover: #6b2299, $background: #eeccff);
+}

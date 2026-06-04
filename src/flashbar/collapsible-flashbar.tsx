@@ -292,10 +292,6 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
               >
                 {showInnerContent(item) && (
                   <Flash
-                    className={clsx(
-                      animateFlash && styles['flash-with-motion'],
-                      isVisualRefresh && styles['flash-refresh']
-                    )}
                     key={getItemId(item)}
                     ref={(el: HTMLDivElement | null) => {
                       // Store the Flash element reference for focus management
@@ -314,6 +310,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                     style={style}
                     onDismissed={handleFlashDismissed}
                     {...item}
+                    className={clsx(
+                      animateFlash && styles['flash-with-motion'],
+                      isVisualRefresh && styles['flash-refresh'],
+                      item.className
+                    )}
                   />
                 )}
               </li>

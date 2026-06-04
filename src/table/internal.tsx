@@ -113,6 +113,7 @@ const InternalTable = React.forwardRef(
       selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
+      selectionClassName,
       ariaLabels,
       onSelectionChange,
       onSortingChange,
@@ -393,6 +394,8 @@ const InternalTable = React.forwardRef(
     const theadProps: TheadProps = {
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
+      selectionClassName:
+        typeof selectionClassName === 'function' ? selectionClassName({ item: undefined }) : selectionClassName,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       tableVariant: computedVariant,
@@ -647,6 +650,10 @@ const InternalTable = React.forwardRef(
                                       onFocusUp: moveFocusUp,
                                       rowIndex,
                                       itemKey: rowId,
+                                      selectionClassName:
+                                        typeof selectionClassName === 'function'
+                                          ? selectionClassName({ item: row.item })
+                                          : selectionClassName,
                                     }}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
@@ -744,7 +751,17 @@ const InternalTable = React.forwardRef(
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
-                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
+                                    selectionControlProps={
+                                      selectionType === 'group' && loaderSelectionProps
+                                        ? {
+                                            ...loaderSelectionProps,
+                                            selectionClassName:
+                                              typeof selectionClassName === 'function'
+                                                ? selectionClassName({ item: row.item ?? undefined })
+                                                : selectionClassName,
+                                          }
+                                        : undefined
+                                    }
                                     isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                   />
                                 ) : null}

@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+/* stylelint-disable custom-property-pattern */
+
+.styled-segmented-control {
+  --awsui-style-background-default-jsjyte: #{palette.$surface};
+  --awsui-style-color-default-jsjyte: #{palette.$text-muted};
+  --awsui-style-background-active-jsjyte: #{palette.$accent};
+  --awsui-style-color-active-jsjyte: #{palette.$text-on-accent};
+  --awsui-style-background-hover-jsjyte: #{palette.$surface-alt};
+  --awsui-style-color-hover-jsjyte: #{palette.$accent};
+  --awsui-style-border-color-default-jsjyte: #{palette.$border};
+  --awsui-style-segmented-control-border-radius: 999px;
+  --awsui-style-transition-duration: 200ms;
+
+  &:hover {
+    --awsui-style-border-color-default-jsjyte: #{palette.$accent};
+  }
+}
+
+.square-segmented-control {
+  --awsui-style-background-default-jsjyte: #{palette.$surface};
+  --awsui-style-color-default-jsjyte: #{palette.$text-muted};
+  --awsui-style-background-active-jsjyte: #{palette.$success};
+  --awsui-style-color-active-jsjyte: #{palette.$text-on-accent};
+  --awsui-style-background-hover-jsjyte: #{palette.$success-surface};
+  --awsui-style-color-hover-jsjyte: #{palette.$success};
+  --awsui-style-border-color-default-jsjyte: #{palette.$border};
+  --awsui-style-segmented-control-border-radius: 0;
+  --awsui-style-transition-duration: 150ms;
+
+  &:hover {
+    --awsui-style-border-color-default-jsjyte: #{palette.$success};
+  }
+}

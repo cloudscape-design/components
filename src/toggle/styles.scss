@@ -9,6 +9,8 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
 $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
 $handle-size: 1.2 * styles.$base-size;
@@ -37,22 +39,22 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   // background colors in high-contrast/forced-color mode
   forced-color-adjust: none;
   @include styles.make-control-size($toggle-height, $toggle-width);
-  background: awsui.$color-background-toggle-default;
-  border-start-start-radius: 0.8 * styles.$base-size;
-  border-start-end-radius: 0.8 * styles.$base-size;
-  border-end-start-radius: 0.8 * styles.$base-size;
-  border-end-end-radius: 0.8 * styles.$base-size;
+  background: var(--awsui-style-toggle-background-default, #{awsui.$color-background-toggle-default});
+  border-start-start-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
+  border-start-end-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
+  border-end-start-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
+  border-end-end-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
   &-checked {
-    background: awsui.$color-background-control-checked;
+    background: var(--awsui-style-toggle-background-checked, #{awsui.$color-background-control-checked});
   }
   &-disabled {
-    background: awsui.$color-background-control-disabled;
+    background: var(--awsui-style-toggle-background-disabled, #{awsui.$color-background-control-disabled});
     &.toggle-control-checked {
-      background: awsui.$color-background-toggle-checked-disabled;
+      background: var(--awsui-style-toggle-background-disabled, #{awsui.$color-background-toggle-checked-disabled});
     }
   }
   &-readonly {
-    background: awsui.$color-background-control-disabled;
+    background: var(--awsui-style-toggle-background-disabled, #{awsui.$color-background-control-disabled});
   }
 }
 
@@ -63,7 +65,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   border-start-end-radius: 0.6 * styles.$base-size;
   border-end-start-radius: 0.6 * styles.$base-size;
   border-end-end-radius: 0.6 * styles.$base-size;
-  background: awsui.$color-foreground-control-default;
+  background: var(--awsui-style-toggle-handle-default, #{awsui.$color-foreground-control-default});
   box-shadow: 1px 1px $shadow-color;
   inline-size: $handle-size;
   block-size: $handle-size;
@@ -81,6 +83,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 
   &-checked {
     transform: translateX(0.8 * styles.$base-size);
+    background: var(--awsui-style-toggle-handle-checked, #{awsui.$color-foreground-control-default});
 
     @include styles.with-direction('rtl') {
       transform: translateX(-0.8 * styles.$base-size);
@@ -88,7 +91,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   }
 
   &-disabled {
-    background: awsui.$color-foreground-control-disabled;
+    background: var(--awsui-style-toggle-handle-disabled, #{awsui.$color-foreground-control-disabled});
     box-shadow: none;
   }
 
