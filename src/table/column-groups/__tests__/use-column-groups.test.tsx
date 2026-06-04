@@ -5,6 +5,14 @@ import { TableProps } from '../../interfaces';
 import { useColumnGroups } from '../use-column-groups';
 import { COLUMN_DEFS, FLAT_DISPLAY, GROUP_DEFS, NESTED_DISPLAY, NESTED_GROUPS } from './fixtures';
 
+const warnOnceMock = jest.fn();
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: (...args: unknown[]) => warnOnceMock(...args),
+}));
+
+afterEach(() => warnOnceMock.mockReset());
+
 describe('useColumnGroups', () => {
   describe('no grouping', () => {
     test('returns a single flat row when no groups are defined', () => {
@@ -75,18 +83,12 @@ describe('useColumnGroups', () => {
     });
 
     test('warns in dev when a group referenced in columnDisplay is not in groupDefinitions', () => {
-      const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'development';
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
       const display: TableProps.ColumnDisplayProperties[] = [
         { type: 'group', id: 'ghost-group', visible: true, children: [{ id: 'cpu', visible: true }] },
       ];
       renderHook(() => useColumnGroups(COLUMN_DEFS, [], undefined, display));
 
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('ghost-group'));
-      warnSpy.mockRestore();
-      process.env.NODE_ENV = originalEnv;
+      expect(warnOnceMock).toHaveBeenCalledWith('[Table]', expect.stringContaining('ghost-group'));
     });
   });
 });
