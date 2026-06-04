@@ -49,12 +49,12 @@ export function getStepStatus(
     return StepStatusValues.Visited;
   }
   if (allowSkipTo && index > activeStepIndex) {
-    // Can we skip to this step? (all steps between current and this one are optional)
+    // All steps between current and target are optional — can skip over them
     if (canSkip(activeStepIndex + 1, index, steps)) {
       return StepStatusValues.Next;
     }
-    // Immediate next step is also navigable if it's optional
-    if (index === activeStepIndex + 1 && steps[index]?.isOptional) {
+    // If either the current step or the next step is optional, we can navigate to it
+    if (index === activeStepIndex + 1 && (steps[index]?.isOptional || steps[activeStepIndex]?.isOptional)) {
       return StepStatusValues.Next;
     }
   }
