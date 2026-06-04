@@ -971,11 +971,15 @@ describe('Column grouping group resize callbacks', () => {
     // Split group should have resizers
     expect(groupCells.length).toBe(3);
     const splitGroupCell = groupCells[0];
-    const resizerBtn = splitGroupCell.find('button');
-    if (resizerBtn) {
-      resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-    }
+    const resizerBtn = splitGroupCell.find('button')!;
+    expect(resizerBtn).not.toBeNull();
+
+    resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
+    document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
+
+    // Table structure remains intact after split resize
+    expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(3);
+    expect(thead.findAll('th[scope="col"]')).toHaveLength(6);
   });
 
   test('split group resize works with stickyColumns.last', () => {
@@ -985,11 +989,15 @@ describe('Column grouping group resize callbacks', () => {
 
     expect(groupCells.length).toBe(3);
     const lastSplitCell = groupCells[groupCells.length - 1];
-    const resizerBtn = lastSplitCell.find('button');
-    if (resizerBtn) {
-      resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-    }
+    const resizerBtn = lastSplitCell.find('button')!;
+    expect(resizerBtn).not.toBeNull();
+
+    resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
+    document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
+
+    // Table structure remains intact after split resize
+    expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(3);
+    expect(thead.findAll('th[scope="col"]')).toHaveLength(6);
   });
 
   test('column resize completes pointer lifecycle in grouped table', () => {
