@@ -4,7 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors/index';
-import { isReact18 } from './utils.js';
+import { isReact18 } from './utils';
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
 const contentEditableSelector = promptInputWrapper.findContentEditableElement()!.toSelector();
