@@ -28,7 +28,7 @@ describe('Table - Grouped column resizing', () => {
   );
 
   test(
-    'leaf column resizer works within grouped table',
+    'column resizer works within grouped table',
     setupTest(async page => {
       const resizerSelector = tableWrapper.findColumnResizer(3, { grouped: true }).toSelector();
       await expect(page.isExisting(resizerSelector)).resolves.toBe(true);

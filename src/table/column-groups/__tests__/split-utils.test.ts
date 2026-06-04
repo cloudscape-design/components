@@ -48,7 +48,7 @@ function buildStructure() {
 }
 
 describe('getGroupColumnIds', () => {
-  test('returns leaf column IDs for a group', () => {
+  test('returns column IDs for a group', () => {
     const structure = buildStructure();
     expect(getGroupColumnIds(structure, 'config')).toEqual(['type', 'az']);
     expect(getGroupColumnIds(structure, 'perf')).toEqual(['cpu', 'memory']);
@@ -64,7 +64,7 @@ describe('getGroupSplit', () => {
   test('no split when group is fully within sticky-first boundary', () => {
     const structure = buildStructure();
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    const split = getGroupSplit({ col: configGroup, stickyCount: 4, side: 'first', totalLeafColumns: 6 });
+    const split = getGroupSplit({ col: configGroup, stickyCount: 4, side: 'first', totalColumns: 6 });
     expect(split.stickyColspan).toBe(0);
     expect(split.staticColspan).toBe(0);
   });
@@ -72,7 +72,7 @@ describe('getGroupSplit', () => {
   test('no split when group is fully outside sticky boundary', () => {
     const structure = buildStructure();
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    const split = getGroupSplit({ col: configGroup, stickyCount: 1, side: 'first', totalLeafColumns: 6 });
+    const split = getGroupSplit({ col: configGroup, stickyCount: 1, side: 'first', totalColumns: 6 });
     expect(split.stickyColspan).toBe(0);
     expect(split.staticColspan).toBe(0);
   });
@@ -80,28 +80,28 @@ describe('getGroupSplit', () => {
   test('detects split by sticky-first boundary', () => {
     const structure = buildStructure();
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    const split = getGroupSplit({ col: configGroup, stickyCount: 3, side: 'first', totalLeafColumns: 6 });
+    const split = getGroupSplit({ col: configGroup, stickyCount: 3, side: 'first', totalColumns: 6 });
     expect(split).toEqual({ stickyColspan: 1, staticColspan: 1 });
   });
 
   test('detects split by sticky-last boundary', () => {
     const structure = buildStructure();
     const perfGroup = structure.rows[0].columns.find(c => c.id === 'perf')!;
-    const split = getGroupSplit({ col: perfGroup, stickyCount: 1, side: 'last', totalLeafColumns: 6 });
+    const split = getGroupSplit({ col: perfGroup, stickyCount: 1, side: 'last', totalColumns: 6 });
     expect(split).toEqual({ stickyColspan: 1, staticColspan: 1 });
   });
 
   test('non-group cells return no split', () => {
     const structure = buildStructure();
-    const leafCol = structure.rows[1].columns[0];
-    const split = getGroupSplit({ col: leafCol, stickyCount: 3, side: 'first', totalLeafColumns: 6 });
+    const col = structure.rows[1].columns[0];
+    const split = getGroupSplit({ col: col, stickyCount: 3, side: 'first', totalColumns: 6 });
     expect(split.stickyColspan).toBe(0);
   });
 
   test('no split when stickyCount is 0', () => {
     const structure = buildStructure();
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    const split = getGroupSplit({ col: configGroup, stickyCount: 0, side: 'first', totalLeafColumns: 6 });
+    const split = getGroupSplit({ col: configGroup, stickyCount: 0, side: 'first', totalColumns: 6 });
     expect(split.stickyColspan).toBe(0);
     expect(split.staticColspan).toBe(0);
   });

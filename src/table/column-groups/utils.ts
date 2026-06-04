@@ -39,7 +39,7 @@ export interface TableHeaderNodeProps<T> {
 
 /**
  * A node in the table header tree.
- * - Leaf nodes map to column definitions.
+ * - Column nodes map to column definitions.
  * - Internal nodes map to group definitions.
  * - The root is a virtual container (never rendered).
  */
@@ -73,7 +73,7 @@ export class TableHeaderNode<T> {
     return !!this.groupDefinition;
   }
 
-  get isLeaf(): boolean {
+  get isColumn(): boolean {
     return !this.isRoot && this.children.length === 0;
   }
 
@@ -140,7 +140,7 @@ function buildTreeFromVisibleColumns<T>(
 }
 
 function computeSubTreeHeights<T>(node: TableHeaderNode<T>): number {
-  if (node.isLeaf || node.children.length === 0) {
+  if (node.isColumn || node.children.length === 0) {
     node.subTreeHeight = 1;
     return 1;
   }
@@ -165,7 +165,7 @@ function computeRowSpansAndIndices<T>(node: TableHeaderNode<T>, treeHeight: numb
 function computeColSpansAndIndices<T>(node: TableHeaderNode<T>, startCol: number = 0): number {
   node.colIndex = startCol;
 
-  if (node.isLeaf) {
+  if (node.isColumn) {
     node.colSpan = 1;
     return startCol + 1;
   }
@@ -264,7 +264,7 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): ColumnGroup
     }
     rowsMap.get(node.rowIndex)!.push(entry);
 
-    if (node.isLeaf && node.columnDefinition && parentChain.length > 0) {
+    if (node.isColumn && node.columnDefinition && parentChain.length > 0) {
       columnToParentIds.set(node.id, parentChain);
     }
 

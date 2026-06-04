@@ -304,7 +304,7 @@ const InternalTable = React.forwardRef(
 
     const visibleColumnIds = visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx).toString());
 
-    const { groupLeafMap, ...columnGroupsLayout } = useColumnGroups(
+    const { groupColumnMap, ...columnGroupsLayout } = useColumnGroups(
       columnDefinitions,
       visibleColumnIds,
       groupDefinitions,
@@ -476,7 +476,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
-            groupLeafMap={groupLeafMap}
+            groupColumnMap={groupColumnMap}
           >
             <InternalContainer
               {...baseProps}

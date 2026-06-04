@@ -74,7 +74,7 @@ export function TableGroupHeaderCell({
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
-  // Subscribe to the boundary leaf's sticky state to inherit shadow/clip-path classes.
+  // Subscribe to the boundary column's sticky state to inherit shadow/clip-path classes.
   // The offset/position comes from stickyColumnId (first child); this only adds boundary classes.
   const boundaryStyles = useStickyCellStyles({
     stickyColumns: stickyState,
@@ -84,7 +84,6 @@ export function TableGroupHeaderCell({
 
   // boundaryStyles.className is populated by scroll/intersection observers in the browser.
   // In JSDOM these observers don't fire, so this branch is only exercised in integration tests.
-  /* istanbul ignore next */
   const boundaryClassName = stickyBoundaryColumnId && boundaryStyles.className ? boundaryStyles.className : undefined;
 
   return (

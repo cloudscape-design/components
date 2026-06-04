@@ -74,7 +74,7 @@ function StickyHeader(
     setFocus: setFocusedComponent,
   }));
 
-  // For grouped columns, the secondary table needs a <colgroup> to define leaf column
+  // For grouped columns, the secondary table needs a <colgroup> to define column
   // widths. Without it, table-layout:fixed uses the first row (which has colspan group
   // headers) to determine widths — giving wrong results.
 
