@@ -5182,7 +5182,7 @@ describe('token mode misc', () => {
   });
 
   test('unmounting cleans up ResizeObserver and clears portal containers', () => {
-    const originalResizeObserver = (window as any).ResizeObserver;
+    const originalResizeObserver = window.ResizeObserver;
     const disconnectSpy = jest.fn();
     const observeSpy = jest.fn();
     const MockResizeObserver = jest.fn(() => ({
@@ -5190,7 +5190,7 @@ describe('token mode misc', () => {
       unobserve: jest.fn(),
       disconnect: disconnectSpy,
     }));
-    (window as any).ResizeObserver = MockResizeObserver;
+    window.ResizeObserver = MockResizeObserver;
 
     const { wrapper, container } = renderTokenMode({
       props: { tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }] },
@@ -5202,11 +5202,11 @@ describe('token mode misc', () => {
     const { unmount } = render(<div />, { container });
     unmount();
     expect(disconnectSpy).toHaveBeenCalled();
-    (window as any).ResizeObserver = originalResizeObserver;
+    window.ResizeObserver = originalResizeObserver;
   });
 
   test('ResizeObserver triggers height adjustment without error', () => {
-    const originalResizeObserver = (window as any).ResizeObserver;
+    const originalResizeObserver = window.ResizeObserver;
     let resizeCallback: () => void = () => {};
     const MockResizeObserver = jest.fn(cb => ({
       observe: () => {
@@ -5215,7 +5215,7 @@ describe('token mode misc', () => {
       unobserve: jest.fn(),
       disconnect: jest.fn(),
     }));
-    (window as any).ResizeObserver = MockResizeObserver;
+    window.ResizeObserver = MockResizeObserver;
 
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] }, ref });
@@ -5227,7 +5227,7 @@ describe('token mode misc', () => {
     });
     // The component should still render correctly and preserve content after resize
     expect(getValue(wrapper)).toBe('hello');
-    (window as any).ResizeObserver = originalResizeObserver;
+    window.ResizeObserver = originalResizeObserver;
   });
 
   test('Enter key fires onAction through the keyboard handler config', () => {
