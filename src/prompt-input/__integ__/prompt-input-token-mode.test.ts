@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import createWrapper from '../../../lib/components/test-utils/selectors/index';
 import { isReact18 } from './utils.js';
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
