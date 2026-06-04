@@ -68,6 +68,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthIconMedium: '2px',
   borderWidthIconNormal: '2px',
   borderWidthIconSmall: '2px',
+  borderWidthIconXSmall: '1.5px',
   borderWidthItemCard: '{borderWidthCard}',
   borderWidthItemCardHighlighted: '{borderWidthCardSelected}',
   borderWidthItemSelected: '2px',
