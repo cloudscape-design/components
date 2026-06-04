@@ -4,6 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { isReact18 } from './utils.js';
 
 const wrapper = createWrapper();
 const promptInputSelector = wrapper.findPromptInput('[data-testid="prompt-input"]').toSelector();
@@ -19,7 +20,7 @@ class ContainerResizePage extends BasePageObject {
   }
 }
 
-describe.each(['token', 'plain'])('Prompt Input - Container Resize (mode=%s)', mode => {
+describe.each(isReact18 ? ['token', 'plain'] : ['plain'])('Prompt Input - Container Resize (mode=%s)', mode => {
   test(
     'adjusts height when container width changes',
     useBrowser(async browser => {

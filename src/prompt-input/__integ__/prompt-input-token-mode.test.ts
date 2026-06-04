@@ -4,12 +4,12 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { isReact18 } from './utils.js';
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
 const contentEditableSelector = promptInputWrapper.findContentEditableElement()!.toSelector();
 const textareaSelector = promptInputWrapper.findNativeTextarea()!.toSelector();
 const menuSelector = promptInputWrapper.findOpenMenu()!.toSelector();
-const isReact18 = process.env.REACT_VERSION === '18';
 
 class PromptInputTokenModePage extends BasePageObject {
   async focusInput() {
