@@ -26,7 +26,7 @@ class WizardPageObject extends BasePageObject {
 
 function setupTest(testFn: (page: WizardPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('/#/light/wizard/simple?visualRefresh=false');
+    await browser.url('/#/light/wizard/simple');
     const page = new WizardPageObject(browser);
     await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
     await testFn(page);
@@ -99,11 +99,9 @@ describe('Wizard keyboard navigation', () => {
 describe('Wizard narrow viewport navigation', () => {
   test(
     'shows expandable step navigation at narrow viewport',
-    useBrowser(async browser => {
-      const page = new WizardPageObject(browser);
+    setupTest(async page => {
       // Set narrow viewport first using page object with object syntax
       await page.setWindowSize({ width: 320, height: 600 });
-      await browser.url('/#/light/wizard/simple?visualRefresh=true');
       await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
 
       // Collapsed steps container should be displayed at narrow viewport

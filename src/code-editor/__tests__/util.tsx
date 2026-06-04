@@ -74,6 +74,7 @@ export const defaultProps: CodeEditorProps = {
   value: 'const pi = 3.14;',
   language: 'javascript',
   onChange: jest.fn(),
+  onDelayedChange: jest.fn(),
   onValidate: jest.fn(),
   onPreferencesChange: jest.fn(),
   onRecoveryClick: jest.fn(),

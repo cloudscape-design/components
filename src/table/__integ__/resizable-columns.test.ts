@@ -139,7 +139,6 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConf
   return useBrowser({ ...defaultScreen }, async browser => {
     const page = new TablePage(browser);
     const params = new URLSearchParams({
-      visualRefresh: 'false',
       stickyHeader: config?.stickyHeader !== undefined ? String(config.stickyHeader) : 'false',
       withColumnIds: config?.withColumnIds !== undefined ? String(config.withColumnIds) : 'true',
       withSelection: config?.withSelection !== undefined ? String(config.withSelection) : 'false',
@@ -218,7 +217,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     'should set explicit width for the last column when table width exceeds container width',
     useBrowser({ width: 620, height: 1000 }, async browser => {
       const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns?visualRefresh=true');
+      await browser.url('#/light/table/resizable-columns');
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
 
       await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
@@ -229,7 +228,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     'should set explicit width for the last column when full-page table width exceeds container width',
     useBrowser({ width: 600, height: 1000 }, async browser => {
       const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns?visualRefresh=true&fullPage=true');
+      await browser.url('#/light/table/resizable-columns?fullPage=true');
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
 
       await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
@@ -380,7 +379,7 @@ test.each([false, true])(
 test.each([false, true])('should not be horizontally scrollable upon rendering, isFullPage=%s', isFullPage =>
   useBrowser({ width: 1200, height: 1000 }, async browser => {
     const page = new TablePage(browser);
-    await browser.url(`#/light/table/resizable-columns?visualRefresh=true&fullPage=${String(isFullPage)}`);
+    await browser.url(`#/light/table/resizable-columns?fullPage=${String(isFullPage)}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
 
     const tableClientWidth = await page.getTableClientWidth();

@@ -9,7 +9,7 @@ import { getUrlParams } from './utils';
 
 const iframeId = '#inner-iframe';
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   describe.each([[true], [false]])('iframe=%s', iframe => {
     describe('MultiAppLayout simple', () => {
       const mainLayout = createWrapper().find('[data-testid="main-layout"]').findAppLayout();

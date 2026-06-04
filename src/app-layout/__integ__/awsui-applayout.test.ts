@@ -28,7 +28,7 @@ class AppLayoutPage extends BasePageObject {
   }
 }
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
     { viewport = viewports.desktop, pageName = 'default', extraParams = {} },
     testFn: (page: AppLayoutPage) => Promise<void>
@@ -199,7 +199,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  (theme !== 'classic' ? test : test.skip)(
+  test(
     'element should not be hidden under the sticky header when focused',
     setupTest({ pageName: 'global-scroll-padding' }, async page => {
       // Getting the header offset depending on the theme

@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { Theme } from '../../__integ__/utils';
 import { viewports } from './constants';
-import { getUrlParams, testIf } from './utils';
+import { getUrlParams } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -44,7 +44,7 @@ class AppLayoutStickyPage extends BasePageObject {
     }
   }
 }
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest({ viewport = viewports.desktop, url = '' }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new AppLayoutStickyPage(browser);
@@ -100,19 +100,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       const { top: newTop } = await page.getBoundingBox(stickyHeaderSelector);
       expect(newTop).toEqual(oldTop);
     })
-  );
-
-  testIf(theme === 'classic')(
-    'sets sticky notifications offset to zero when notifications are not sticky',
-    setupTest(
-      { viewport: { width: 1200, height: 300 }, url: '#/light/app-layout/with-table?visualRefresh=false' },
-      async page => {
-        await page.windowScrollTo({ top: 200 });
-        const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
-        const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-        expect(tableHeaderTop).toEqual(pageHeaderBottom);
-      }
-    )
   );
 
   test(

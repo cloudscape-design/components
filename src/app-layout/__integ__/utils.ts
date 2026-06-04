@@ -18,7 +18,6 @@ interface SetupTestOptions {
 
 export function getUrlParams(theme: Theme, other?: Record<string, string>) {
   const params = new URLSearchParams({
-    visualRefresh: `${theme !== 'classic'}`,
     appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
     ...other,
   });
@@ -73,7 +72,6 @@ export const setupTest = (
     const wrapper = createWrapper().findAppLayout();
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
-      visualRefresh: `${theme !== 'classic'}`,
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       ...(splitPanelPosition ? { splitPanelPosition } : {}),
     }).toString();
@@ -142,10 +140,6 @@ export class AppLayoutSplitViewPage extends BasePageObject {
   getContentOffsetBottom(theme: string) {
     const contentSelector = wrapper.findContentRegion().toSelector();
     switch (theme) {
-      case 'classic':
-        return this.browser.execute(contentSelector => {
-          return getComputedStyle(document.querySelector(contentSelector)!.parentElement!.parentElement!).marginBottom;
-        }, contentSelector);
       case 'refresh':
         return this.browser.execute(contentSelector => {
           return getComputedStyle(document.querySelector(contentSelector)!).paddingBottom;
