@@ -64,7 +64,7 @@ function PageButton({
         )}
         type="button"
         aria-label={ariaLabel}
-        aria-disabled={disabled}
+        aria-disabled={disabled ? true : undefined}
         tabIndex={disabled ? -1 : 0}
         onClick={handleClick}
         aria-current={isCurrent}
