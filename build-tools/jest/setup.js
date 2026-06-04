@@ -11,7 +11,7 @@ if (typeof window !== 'undefined') {
 
 // jsdom doesn't implement ResizeObserver. Provide a no-op mock so components
 // that use it (e.g. PromptInput) can render without errors in unit tests.
-if (!window.ResizeObserver) {
+if (window && !window.ResizeObserver) {
   window.ResizeObserver = class ResizeObserver {
     observe() {}
     unobserve() {}
