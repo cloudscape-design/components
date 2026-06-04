@@ -43,6 +43,7 @@ export type ReferenceTokenName =
   | 'colorError700'
   | 'colorError800'
   | 'colorError900'
+  | 'colorError950'
   | 'colorError1000'
   | 'colorInfo50'
   | 'colorInfo100'
@@ -54,6 +55,7 @@ export type ReferenceTokenName =
   | 'colorInfo700'
   | 'colorInfo800'
   | 'colorInfo900'
+  | 'colorInfo950'
   | 'colorInfo1000'
   | 'colorSuccess50'
   | 'colorSuccess100'
@@ -65,6 +67,7 @@ export type ReferenceTokenName =
   | 'colorSuccess700'
   | 'colorSuccess800'
   | 'colorSuccess900'
+  | 'colorSuccess950'
   | 'colorSuccess1000'
   | 'colorWarning50'
   | 'colorWarning100'
@@ -76,6 +79,7 @@ export type ReferenceTokenName =
   | 'colorWarning700'
   | 'colorWarning800'
   | 'colorWarning900'
+  | 'colorWarning950'
   | 'colorWarning1000';
 
 export type ColorPaletteTokenName =
@@ -122,6 +126,7 @@ export type ColorPaletteTokenName =
   | 'colorNeutralGrey400'
   | 'colorNeutralGrey450'
   | 'colorNeutralGrey500'
+  | 'colorNeutralGrey550'
   | 'colorNeutralGrey600'
   | 'colorNeutralGrey650'
   | 'colorNeutralGrey700'
