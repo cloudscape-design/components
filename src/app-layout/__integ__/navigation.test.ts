@@ -22,7 +22,7 @@ function setupTest(testFn: (page: BasePageObject) => Promise<void>, theme: Theme
 
 describe('Navigation slot', () => {
   describe('has expected inline size when a scrollbar is present', () => {
-    test.each(['classic', 'refresh-toolbar'] as const)('%s', theme =>
+    test.each(['refresh-toolbar'] as const)('%s', theme =>
       setupTest(async page => {
         const { width } = await page.getBoundingBox(wrapper.toSelector());
         expect(width).toBe(280);

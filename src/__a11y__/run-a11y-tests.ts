@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { findAllPages } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
-type Theme = 'default' | 'visual-refresh';
+type Theme = 'visual-refresh';
 type Mode = 'light' | 'dark';
 
 function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>) {
@@ -18,11 +18,9 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
   });
 }
 
-function urlFormatter(inputUrl: string, theme: Theme, mode: Mode) {
-  return `#/${mode}/${inputUrl}?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`;
+function urlFormatter(inputUrl: string, mode: Mode) {
+  return `#/${mode}/${inputUrl}`;
 }
-
-const vrOnlyComponents = ['app-layout-toolbar', 'list', 'feature-notifications'];
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
@@ -37,12 +35,8 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         // nested app layouts aren't accessible, as every page should contain a level-one heading
         'app-layout-toolbar/without-toolbar-nested',
       ];
-      const testFunction =
-        skipPages.includes(inputUrl) ||
-        (theme !== 'visual-refresh' && vrOnlyComponents.some(vrOnlyComponent => inputUrl.startsWith(vrOnlyComponent)))
-          ? test.skip
-          : test;
-      const url = urlFormatter(inputUrl, theme, mode);
+      const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
+      const url = urlFormatter(inputUrl, mode);
       testFunction(
         url,
         setupTest(url, page => page.assertNoAxeViolations())

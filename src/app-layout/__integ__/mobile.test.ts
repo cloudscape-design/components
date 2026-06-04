@@ -9,11 +9,10 @@ import { testIf } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
   class MobileTestingPage extends BasePageObject {
     async visit(pageName: string) {
       const params = new URLSearchParams({
-        visualRefresh: `${theme.startsWith('visual-refresh')}`,
         appLayoutToolbar: `${theme === 'visual-refresh-toolbar'}`,
       });
       await this.browser.url(`#/light/app-layout/${pageName}?${params.toString()}`);

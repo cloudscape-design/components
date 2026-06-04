@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as glob from 'glob';
 
-export type Theme = 'classic' | 'refresh' | 'refresh-toolbar';
+export type Theme = 'refresh' | 'refresh-toolbar';
 export type Size = 'desktop' | 'mobile';
 
 export function findAllPages(): string[] {

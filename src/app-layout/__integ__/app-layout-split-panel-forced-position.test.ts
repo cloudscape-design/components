@@ -19,7 +19,6 @@ const setupTest = (
 ) =>
   useBrowser(async browser => {
     const params = new URLSearchParams({
-      visualRefresh: `${theme.startsWith('refresh')}`,
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       scrollbarDisplayCondition,
     });
@@ -36,10 +35,9 @@ const setupTest = (
   });
 
 describe('Split panel forced position', () => {
-  describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
+  describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
     // Viewport width which makes the split panel switch to the bottom
     const splitPanelBreakpoints = {
-      classic: 979,
       refresh: 1030,
       'refresh-toolbar': 907,
     };
