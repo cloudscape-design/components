@@ -107,10 +107,8 @@ function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayPr
   const ids: string[] = [];
   for (const item of items) {
     if (item.type === 'group') {
-      // ColumnDisplayGroup — recurse into children
       ids.push(...flattenVisibleColumnIds(item.children));
     } else if (item.visible) {
-      // ColumnDisplayItem — include if visible
       ids.push(item.id);
     }
   }
