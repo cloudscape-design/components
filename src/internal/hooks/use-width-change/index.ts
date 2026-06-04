@@ -10,7 +10,7 @@ import { useEffect, useRef } from 'react';
  * @param elementRef - A ref object pointing to the element to observe.
  * @param onWidthChange - Callback fired when the element's width changes.
  */
-export function useWidthChange(elementRef: React.RefObject<HTMLElement | null>, onWidthChange: () => void): void {
+export function useWidthChange(elementRef: React.RefObject<HTMLElement>, onWidthChange: () => void): void {
   const lastWidthRef = useRef(-1);
 
   useEffect(() => {
