@@ -244,6 +244,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthBadge: {
+    description: 'The border width of badges.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

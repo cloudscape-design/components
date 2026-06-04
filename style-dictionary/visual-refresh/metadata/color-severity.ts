@@ -61,6 +61,56 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderBadgeSeverityCritical: {
+    description: 'The border color of badges representing a critical severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderBadgeSeverityHigh: {
+    description: 'The border color of badges representing a high severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderBadgeSeverityMedium: {
+    description: 'The border color of badges representing a medium severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderBadgeSeverityLow: {
+    description: 'The border color of badges representing a low severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderBadgeSeverityNeutral: {
+    description: 'The border color of badges representing a neutral severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBadgeSeverityCritical: {
+    description: 'The text color of badges representing a critical severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBadgeSeverityHigh: {
+    description: 'The text color of badges representing a high severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBadgeSeverityMedium: {
+    description: 'The text color of badges representing a medium severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBadgeSeverityLow: {
+    description: 'The text color of badges representing a low severity level.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBadgeSeverityNeutral: {
+    description: 'The text color of badges representing a neutral severity level.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
