@@ -117,6 +117,18 @@ const Thead = React.forwardRef(
       wrapLines,
     };
 
+    const sharedTrProps = {
+      onFocus: (event: React.FocusEvent) => {
+        const focusControlElement = findUpUntil(
+          event.target as HTMLElement,
+          element => !!element.getAttribute('data-focus-id')
+        );
+        const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
+        onFocusedComponentChange?.(focusId);
+      },
+      onBlur: () => onFocusedComponentChange?.(null),
+    };
+
     // No grouping - render single row
     if (!columnGroupsLayout || columnGroupsLayout.rows.length <= 1) {
       return (
@@ -126,12 +138,7 @@ const Thead = React.forwardRef(
             ref={outerRef}
             aria-rowindex={1}
             {...getTableHeaderRowRoleProps({ tableRole })}
-            onFocus={event => {
-              const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
-              const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
-              onFocusedComponentChange?.(focusId);
-            }}
-            onBlur={() => onFocusedComponentChange?.(null)}
+            {...sharedTrProps}
           >
             {selectionType ? (
               <TableHeaderSelectionCell
@@ -195,12 +202,7 @@ const Thead = React.forwardRef(
             ref={rowIndex === 0 ? outerRef : undefined}
             aria-rowindex={rowIndex + 1}
             {...getTableHeaderRowRoleProps({ tableRole, rowIndex })}
-            onFocus={event => {
-              const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
-              const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
-              onFocusedComponentChange?.(focusId);
-            }}
-            onBlur={() => onFocusedComponentChange?.(null)}
+            {...sharedTrProps}
           >
             {/* Selection column — render once in the first row with rowSpan covering all header rows */}
             {selectionType && rowIndex === 0 ? (
@@ -246,6 +248,17 @@ const Thead = React.forwardRef(
                 // Group header cell
                 const groupDefinition = col.groupDefinition!;
                 const childIds = getGroupColumnIds(columnGroupsLayout!, col.id);
+                const sharedGroupCellProps = {
+                  ...commonCellProps,
+                  tabIndex: sticky ? -1 : 0,
+                  focusedComponent,
+                  group: groupDefinition,
+                  rowspan: col.rowSpan,
+                  resizableColumns,
+                  onResizeFinish: () => onResizeFinish(columnWidths),
+                  columnGroupId:
+                    col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined,
+                };
                 const splitFirst = getGroupSplit({
                   col,
                   stickyCount: stickyColumnsFirst,
@@ -270,30 +283,23 @@ const Thead = React.forwardRef(
                   const leftColspan = isSplitFirst ? split.stickyColspan : split.staticColspan;
                   const leftColIndex = col.colIndex;
                   const leftGroupId = isSplitFirst ? col.id : `${col.id}__split`;
-                  // Left half's child IDs for resize
-                  const leftChildIds = childIds.filter((_, i) => col.colIndex + i < leftColIndex + leftColspan);
+                  const leftChildIds = childIds.slice(0, leftColspan);
 
                   // Right half is non-sticky for 'first', sticky for 'last'
                   const rightColspan = isSplitFirst ? split.staticColspan : split.stickyColspan;
                   const rightColIndex = col.colIndex + leftColspan;
                   const rightGroupId = isSplitFirst ? `${col.id}__split` : col.id;
-                  const rightChildIds = childIds.filter((_, i) => col.colIndex + i >= rightColIndex);
+                  const rightChildIds = childIds.slice(leftColspan);
 
                   return (
                     <React.Fragment key={col.id}>
                       {/* Left half */}
                       <TableGroupHeaderCell
-                        {...commonCellProps}
-                        tabIndex={sticky ? -1 : 0}
-                        focusedComponent={focusedComponent}
-                        group={groupDefinition}
+                        {...sharedGroupCellProps}
                         colspan={leftColspan}
-                        rowspan={col.rowSpan}
                         colIndex={selectionType ? leftColIndex + 1 : leftColIndex}
                         groupId={leftGroupId}
-                        resizableColumns={resizableColumns}
                         resizableStyle={undefined}
-                        onResizeFinish={() => onResizeFinish(columnWidths)}
                         updateGroupWidth={(_, newWidth) => {
                           handleSplitGroupResize(leftChildIds, newWidth);
                         }}
@@ -304,24 +310,15 @@ const Thead = React.forwardRef(
                         isLast={false}
                         stickyColumnId={isSplitFirst ? childIds[0] : undefined}
                         stickyBoundaryColumnId={isSplitFirst ? leftChildIds[leftChildIds.length - 1] : undefined}
-                        columnGroupId={
-                          col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
-                        }
                       />
 
                       {/* Right half */}
                       <TableGroupHeaderCell
-                        {...commonCellProps}
-                        tabIndex={sticky ? -1 : 0}
-                        focusedComponent={focusedComponent}
-                        group={groupDefinition}
+                        {...sharedGroupCellProps}
                         colspan={rightColspan}
-                        rowspan={col.rowSpan}
                         colIndex={selectionType ? rightColIndex + 1 : rightColIndex}
                         groupId={rightGroupId}
-                        resizableColumns={resizableColumns}
                         resizableStyle={getColumnStyles(sticky, col.id)}
-                        onResizeFinish={() => onResizeFinish(columnWidths)}
                         updateGroupWidth={(_, newWidth) => {
                           handleSplitGroupResize(rightChildIds, newWidth);
                         }}
@@ -331,11 +328,8 @@ const Thead = React.forwardRef(
                         cellRef={!isSplitFirst ? node => setCell(sticky, col.id, node) : () => {}}
                         resizerRoleDescription={resizerRoleDescription}
                         resizerTooltipText={resizerTooltipText}
-                        isLast={rightColIndex + rightColspan === totalLeafColumns}
+                        isLast={rightColIndex + rightColspan === totalColumns}
                         stickyColumnId={!isSplitFirst ? childIds[childIds.length - 1] : undefined}
-                        columnGroupId={
-                          col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
-                        }
                       />
                     </React.Fragment>
                   );
@@ -366,18 +360,12 @@ const Thead = React.forwardRef(
 
                 return (
                   <TableGroupHeaderCell
-                    {...commonCellProps}
+                    {...sharedGroupCellProps}
                     key={col.id}
-                    tabIndex={sticky ? -1 : 0}
-                    focusedComponent={focusedComponent}
-                    group={groupDefinition}
                     colspan={col.colSpan}
-                    rowspan={col.rowSpan}
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
-                    resizableColumns={resizableColumns}
                     resizableStyle={getColumnStyles(sticky, col.id)}
-                    onResizeFinish={() => onResizeFinish(columnWidths)}
                     updateGroupWidth={(groupId, newWidth) => {
                       updateGroup(groupId, newWidth);
                     }}
@@ -390,9 +378,6 @@ const Thead = React.forwardRef(
                     isLast={col.colIndex + col.colSpan === totalColumns}
                     stickyColumnId={fullyStickyColumnId}
                     stickyBoundaryColumnId={fullyStickyBoundaryColumnId}
-                    columnGroupId={
-                      col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
-                    }
                   />
                 );
               } else {
