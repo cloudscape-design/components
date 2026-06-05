@@ -24,6 +24,7 @@ permissions:
   id-token: write
   contents: read
   actions: read
+  deployments: write
 
 jobs:
   # Build the baseline (main branch) pages once and share them across all browser jobs.
@@ -178,9 +179,19 @@ jobs:
       - name: Generate Allure HTML report
         run: allure generate allure-results --clean -o allure-report
 
-      - name: Upload Allure report
+      - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
           retention-days: 14
+
+  deploy-report:
+    name: Deploy Allure Report
+    if: always()
+    needs: [report]
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: allure-report
+      deployment-path: allure-report
