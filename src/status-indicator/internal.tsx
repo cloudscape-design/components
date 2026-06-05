@@ -53,7 +53,6 @@ const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JS
 interface InternalStatusIconProps extends Pick<InternalStatusIndicatorProps, 'type' | 'iconAriaLabel'> {
   animate?: InternalStatusIndicatorProps['__animate'];
   size?: InternalStatusIndicatorProps['__size'];
-  display?: InternalStatusIndicatorProps['__display'];
 }
 
 export function InternalStatusIcon({
@@ -113,17 +112,12 @@ export default function StatusIndicator({
         className={clsx(
           styles.container,
           styles[`display-${__display}`],
+          isThemeActive(Theme.OneTheme) && styles['one-theme'],
           wrapText === false && styles['overflow-ellipsis'],
           __animate && styles['container-fade-in']
         )}
       >
-        <InternalStatusIcon
-          type={type}
-          iconAriaLabel={iconAriaLabel}
-          animate={__animate}
-          display={__display}
-          size={__size}
-        />
+        <InternalStatusIcon type={type} iconAriaLabel={iconAriaLabel} animate={__animate} size={__size} />
         <span>{children}</span>
       </span>
     </WithNativeAttributes>
