@@ -124,6 +124,9 @@ jobs:
 
       # ── Run tests ─────────────────────────────────────────────────────────
 
+      - name: Generate visual test files
+        run: node build-tools/visual/generate-tests.js
+
       - name: Start test server (port 8080)
         run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
 
