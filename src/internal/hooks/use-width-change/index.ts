@@ -18,7 +18,7 @@ export function useWidthChange(elementRef: React.RefObject<HTMLElement>, onWidth
 
   useEffect(() => {
     const node = elementRef.current;
-    if (!node) {
+    if (!node || typeof ResizeObserver === 'undefined') {
       return;
     }
     const observer = new ResizeObserver(() => {
