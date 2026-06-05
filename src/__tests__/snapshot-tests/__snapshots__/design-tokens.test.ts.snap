@@ -766,36 +766,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -4150,36 +4150,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -7534,36 +7534,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -10918,36 +10918,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -14302,36 +14302,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-badge-severity-critical": {
@@ -17686,36 +17686,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -21070,36 +21070,36 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-border-badge": {
       "$description": "The default border color of badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#fafafa",
+        "light": "#fafafa",
       },
     },
     "color-border-badge-blue": {
       "$description": "The border color of blue badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#fafafa",
+        "light": "#fafafa",
       },
     },
     "color-border-badge-green": {
       "$description": "The border color of green badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#fafafa",
+        "light": "#fafafa",
       },
     },
     "color-border-badge-grey": {
       "$description": "The border color of grey badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#fafafa",
+        "light": "#fafafa",
       },
     },
     "color-border-badge-red": {
       "$description": "The border color of red badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#fafafa",
+        "light": "#fafafa",
       },
     },
     "color-border-badge-severity-critical": {
@@ -24459,36 +24459,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -27843,36 +27843,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -31227,36 +31227,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -34611,36 +34611,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -37995,36 +37995,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -41379,36 +41379,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-badge-severity-critical": {
@@ -44763,36 +44763,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -48147,36 +48147,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-badge": {
           "$description": "The default border color of badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-blue": {
           "$description": "The border color of blue badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-green": {
           "$description": "The border color of green badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-grey": {
           "$description": "The border color of grey badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-red": {
           "$description": "The border color of red badges.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-badge-severity-critical": {
@@ -51531,36 +51531,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-border-badge": {
       "$description": "The default border color of badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-border-badge-blue": {
       "$description": "The border color of blue badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-border-badge-green": {
       "$description": "The border color of green badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-border-badge-grey": {
       "$description": "The border color of grey badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-border-badge-red": {
       "$description": "The border color of red badges.",
       "$value": {
-        "dark": "transparent",
-        "light": "transparent",
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-border-badge-severity-critical": {
