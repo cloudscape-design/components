@@ -7,6 +7,8 @@ lib
 # generated sources
 src/index.ts
 test/visual
+allure-results
+allure-report
 src/test-utils/dom/index.ts
 src/test-utils/selectors
 src/icon/generated
