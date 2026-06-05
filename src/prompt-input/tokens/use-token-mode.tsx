@@ -998,15 +998,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const ownerWindow = (editableElementRef.current?.ownerDocument ?? document).defaultView ?? window;
-    const handleResize = () => adjustInputHeight();
-    ownerWindow.addEventListener('resize', handleResize);
-    return () => {
-      ownerWindow.removeEventListener('resize', handleResize);
-    };
-  }, [adjustInputHeight, editableElementRef]);
-
   const menuLoadMoreResult = useMenuLoadMore({
     menu: activeMenu ?? { id: '', trigger: '', options: [] },
     statusType: activeMenu?.statusType ?? 'finished',

@@ -3,7 +3,12 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode, useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useDensityMode,
+  useMergeRefs,
+  useStableCallback,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -14,6 +19,7 @@ import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '
 import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useWidthChange } from '../internal/hooks/use-width-change';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
@@ -189,6 +195,13 @@ const InternalPromptInput = React.forwardRef(
         adjustInputHeight();
       }
     }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder]);
+
+    // Observe width changes on the component's root element to handle container resizes.
+    // We need a separate RefObject because __internalRootRef may be a callback ref,
+    // and useWidthChange needs a RefObject with .current to read the DOM node.
+    const rootElementRef = useRef<HTMLDivElement>(null);
+    const mergedRootRef = useMergeRefs(__internalRootRef, rootElementRef);
+    useWidthChange(rootElementRef, adjustInputHeight);
 
     const plainTextValue = isTokenMode
       ? tokensToText
@@ -390,7 +403,7 @@ const InternalPromptInput = React.forwardRef(
           [styles['textarea-warning']]: warning && !invalid,
           [styles.disabled]: disabled,
         })}
-        ref={__internalRootRef}
+        ref={mergedRootRef}
         role="region"
         style={getPromptInputStyles(style)}
       >
