@@ -201,6 +201,7 @@ const Thead = React.forwardRef(
             {...(rowIndex === 0 ? focusMarkers.all : {})}
             ref={rowIndex === 0 ? outerRef : undefined}
             aria-rowindex={rowIndex + 1}
+            {...(rowIndex < columnGroupsLayout.rows.length - 1 ? { 'data-group-level': rowIndex } : {})}
             {...getTableHeaderRowRoleProps({ tableRole, rowIndex })}
             {...sharedTrProps}
           >
