@@ -539,7 +539,7 @@ describe('Column grouping sorting', () => {
       />
     );
     const tableWrapper = createWrapper(container).findTable()!;
-    const sortArea = tableWrapper.find('thead th[data-focus-id="header-type"] [role="button"]');
+    const sortArea = tableWrapper.findColumnSortingArea(3);
     expect(sortArea).not.toBeNull();
   });
 
@@ -755,7 +755,7 @@ describe('Column grouping with non-resizable columns', () => {
       />
     );
     const wrapper = createWrapper(container).findTable()!;
-    const sortArea = wrapper.find('thead th[data-focus-id="header-type"] [role="button"]');
+    const sortArea = wrapper.findColumnSortingArea(3);
     sortArea!.click();
     expect(onSortingChange).toHaveBeenCalledWith(
       expect.objectContaining({ sortingColumn: expect.objectContaining({ id: 'type' }) })

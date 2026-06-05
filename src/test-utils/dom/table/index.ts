@@ -74,7 +74,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
+    return this.findActiveTHead().find(
+      `th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}, tr:not([data-group-level]) > th:nth-child(${columnIndex}) .${resizerStyles.resizer}`
+    );
   }
 
   /**
@@ -129,7 +131,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param colIndex 1-based index of the column.
    */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`tr:not([data-group-level]) > *:nth-child(${colIndex}) [role=button]`);
+    return this.findActiveTHead().find(
+      `th[data-column-index="${colIndex}"] [role=button], tr:not([data-group-level]) > *:nth-child(${colIndex}) [role=button]`
+    );
   }
 
   /**
