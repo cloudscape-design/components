@@ -73,11 +73,8 @@ export default class TableWrapper extends ComponentWrapper {
    *
    * @param columnIndex 1-based index of the column containing the resizer.
    */
-  findColumnResizer(columnIndex: number, options?: { grouped?: boolean }): ElementWrapper | null {
-    if (options?.grouped) {
-      return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
-    }
-    return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
+  findColumnResizer(columnIndex: number): ElementWrapper | null {
+    return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
   }
 
   /**
@@ -131,11 +128,8 @@ export default class TableWrapper extends ComponentWrapper {
    *
    * @param colIndex 1-based index of the column.
    */
-  findColumnSortingArea(colIndex: number, options?: { grouped?: boolean }): ElementWrapper | null {
-    if (options?.grouped) {
-      return this.findActiveTHead().find(`th[data-column-index="${colIndex}"] [role=button]`);
-    }
-    return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
+  findColumnSortingArea(colIndex: number): ElementWrapper | null {
+    return this.findActiveTHead().find(`tr:not([data-group-level]) > *:nth-child(${colIndex}) [role=button]`);
   }
 
   /**
