@@ -170,11 +170,13 @@ jobs:
           path: allure-results
           merge-multiple: true
 
+      - name: Install Allure CLI
+        run: |
+          curl -sL https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz | tar -xz
+          echo "$PWD/allure-2.32.0/bin" >> $GITHUB_PATH
+
       - name: Generate Allure HTML report
-        uses: simple-elf/allure-report-action@v1.12
-        with:
-          allure_results: allure-results
-          allure_report: allure-report
+        run: allure generate allure-results --clean -o allure-report
 
       - name: Upload Allure report
         uses: actions/upload-artifact@v4
