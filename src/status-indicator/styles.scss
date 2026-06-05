@@ -82,6 +82,11 @@ $_status-backgrounds: (
 
     > .icon {
       padding-inline-end: awsui.$space-xxs;
+
+      &.one-theme {
+        display: inline-flex;
+        align-items: center;
+      }
     }
   }
 }
