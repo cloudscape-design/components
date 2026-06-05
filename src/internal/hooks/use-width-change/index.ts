@@ -7,6 +7,9 @@ import { useEffect, useRef } from 'react';
  * when the width changes. Height-only changes are ignored to prevent infinite
  * loops when the callback adjusts the element's height.
  *
+ * Unlike useResizeObserver from the component-toolkit package, it does not cause
+ * re-renders when the width changes.
+ *
  * @param elementRef - A ref object pointing to the element to observe.
  * @param onWidthChange - Callback fired when the element's width changes.
  */
