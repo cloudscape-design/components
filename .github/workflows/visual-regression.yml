@@ -164,6 +164,11 @@ jobs:
     needs: [visual]
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Download all Allure results
         uses: actions/download-artifact@v4
         with:
@@ -171,13 +176,8 @@ jobs:
           path: allure-results
           merge-multiple: true
 
-      - name: Install Allure CLI
-        run: |
-          curl -sL https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz | tar -xz
-          echo "$PWD/allure-2.32.0/bin" >> $GITHUB_PATH
-
       - name: Generate Allure HTML report
-        run: allure generate allure-results --clean -o allure-report
+        run: npx --yes allure generate allure-results -o allure-report
 
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
