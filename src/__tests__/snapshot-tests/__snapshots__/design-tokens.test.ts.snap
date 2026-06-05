@@ -232,7 +232,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
@@ -3623,7 +3623,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
@@ -7014,7 +7014,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
@@ -10405,7 +10405,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
@@ -13796,7 +13796,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
@@ -17187,7 +17187,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#ff5d64",
@@ -20578,7 +20578,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-background-badge-icon": {
-      "$description": "The background color of the badge indicator on icons and icon buttons.",
+      "$description": "The background color of the badge indicator on navigation and panel buttons.",
       "$value": {
         "dark": "#ff5d64",
         "light": "#d13212",
@@ -23974,7 +23974,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
@@ -27365,7 +27365,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
@@ -30756,7 +30756,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
@@ -34147,7 +34147,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
@@ -37538,7 +37538,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
@@ -40929,7 +40929,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
@@ -44320,7 +44320,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
@@ -47711,7 +47711,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-badge-icon": {
-          "$description": "The background color of the badge indicator on icons and icon buttons.",
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
@@ -51102,7 +51102,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-background-badge-icon": {
-      "$description": "The background color of the badge indicator on icons and icon buttons.",
+      "$description": "The background color of the badge indicator on navigation and panel buttons.",
       "$value": {
         "dark": "#ff7a7a",
         "light": "#db0000",
