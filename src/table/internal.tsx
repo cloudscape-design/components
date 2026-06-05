@@ -37,6 +37,7 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
+import { TableColGroup } from './column-groups/col-group';
 import { useColumnGroups } from './column-groups/use-column-groups';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
@@ -62,7 +63,7 @@ import {
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH, TableColGroup } from './use-column-widths';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';

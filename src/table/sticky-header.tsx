@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { TableColGroup } from './column-groups/col-group';
 import { TableProps } from './interfaces';
 import { getTableRoleProps, TableRole } from './table-role';
 import Thead, { TheadProps } from './thead';
-import { TableColGroup } from './use-column-widths';
 import { useStickyHeader } from './use-sticky-header';
 
 import styles from './styles.css.js';
