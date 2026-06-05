@@ -14,7 +14,16 @@ module.exports = {
       },
     ],
   },
-  reporters: ['default', 'github-actions'],
+  reporters: [
+    'default',
+    'github-actions',
+    [
+      'jest-allure2-reporter',
+      {
+        resultsDir: 'allure-results',
+      },
+    ],
+  ],
   testTimeout: 240_000, // 4min — pages can be tall and slow to capture
   maxWorkers: os.cpus().length * (process.env.GITHUB_ACTION ? 3 : 1),
   globalSetup: '<rootDir>/build-tools/visual/global-setup.js',
