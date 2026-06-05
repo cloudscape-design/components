@@ -3,9 +3,13 @@
 
 import { TestSuite } from '../types';
 
-function responsiveTests(width: number): TestSuite {
+/**
+ * Shared responsive test scenarios for app-layout. Each width gets its own
+ * definition file and test runner so that Jest sharding can parallelize them.
+ */
+export function responsiveTests(width: number): TestSuite {
   return {
-    description: `width ${width}px`,
+    description: `AppLayout responsive width ${width}px`,
     componentName: 'app-layout',
     tests: [
       {
@@ -153,17 +157,3 @@ function responsiveTests(width: number): TestSuite {
     ],
   };
 }
-
-const suite: TestSuite = {
-  description: 'AppLayout responsive',
-  componentName: 'app-layout',
-  tests: [
-    responsiveTests(600),
-    responsiveTests(1280),
-    responsiveTests(1400),
-    responsiveTests(1920),
-    responsiveTests(2540),
-  ],
-};
-
-export default suite;
