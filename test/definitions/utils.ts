@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as crypto from 'crypto';
-import * as fs from 'fs';
-import * as path from 'path';
+import { attachment, ContentType } from 'allure-js-commons';
 
 import { cropAndCompare } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -16,8 +14,6 @@ const defaultWindowSize = { width: 1600, height: 800 };
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
 
-const allureResultsDir = path.resolve(process.cwd(), 'allure-results');
-
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams(queryParams);
   const qs = params.toString();
@@ -29,52 +25,18 @@ function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinit
 }
 
 /**
- * Writes a PNG buffer to the allure-results directory and returns the filename.
- * Allure picks up files in this directory and attaches them to the report.
+ * Attaches visual diff images (new, baseline, diff) to the Allure report
+ * via the allure-js-commons runtime API.
  */
-function writeAllureAttachment(buffer: Buffer): string {
-  if (!fs.existsSync(allureResultsDir)) {
-    fs.mkdirSync(allureResultsDir, { recursive: true });
-  }
-  const uuid = crypto.randomUUID();
-  const filename = `${uuid}-attachment.png`;
-  fs.writeFileSync(path.join(allureResultsDir, filename), buffer);
-  return filename;
-}
-
-/**
- * Attaches visual diff images (new, baseline, diff) to the Allure results
- * for the current test by writing an attachment JSON file.
- */
-function attachDiffImages(
+async function attachDiffImages(
   result: { firstImage: Buffer; secondImage: Buffer; diffImage: Buffer | null },
   testName: string
-): void {
-  const newFile = writeAllureAttachment(result.firstImage);
-  const baselineFile = writeAllureAttachment(result.secondImage);
-
-  const attachments: Array<{ name: string; source: string; type: string }> = [
-    { name: `${testName} — new (PR)`, source: newFile, type: 'image/png' },
-    { name: `${testName} — baseline (main)`, source: baselineFile, type: 'image/png' },
-  ];
-
+): Promise<void> {
+  await attachment(`${testName} — new (PR)`, result.firstImage, ContentType.PNG);
+  await attachment(`${testName} — baseline (main)`, result.secondImage, ContentType.PNG);
   if (result.diffImage) {
-    const diffFile = writeAllureAttachment(result.diffImage);
-    attachments.push({ name: `${testName} — diff`, source: diffFile, type: 'image/png' });
+    await attachment(`${testName} — diff`, result.diffImage, ContentType.PNG);
   }
-
-  // Write a container JSON that Allure merges into the test result.
-  // jest-allure2-reporter reads attachment files from allure-results/.
-  const containerUuid = crypto.randomUUID();
-  const containerFile = path.join(allureResultsDir, `${containerUuid}-container.json`);
-  fs.writeFileSync(
-    containerFile,
-    JSON.stringify({
-      uuid: containerUuid,
-      name: testName,
-      attachments,
-    })
-  );
 }
 
 /**
@@ -181,7 +143,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       for (let i = 0; i < newPermutations.length; i++) {
         const permResult = await cropAndCompare(newPermutations[i], oldPermutations[i]);
         if (permResult.diffPixels !== 0) {
-          attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`);
+          await attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`);
         }
         expect(permResult.diffPixels).toBe(0);
       }
@@ -189,7 +151,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     }
 
     // Attach diff images to Allure report for visual inspection.
-    attachDiffImages(result, testDef.description);
+    await attachDiffImages(result, testDef.description);
 
     // For screenshotArea and viewport types, the diff is a real failure.
     expect(result.diffPixels).toBe(0);
