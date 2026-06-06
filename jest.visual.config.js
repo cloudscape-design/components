@@ -5,7 +5,10 @@ const os = require('os');
 
 module.exports = {
   verbose: true,
-  testEnvironment: 'node',
+  testEnvironment: 'allure-jest/node',
+  testEnvironmentOptions: {
+    resultsDir: 'allure-results',
+  },
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
@@ -14,16 +17,7 @@ module.exports = {
       },
     ],
   },
-  reporters: [
-    'default',
-    'github-actions',
-    [
-      'jest-allure2-reporter',
-      {
-        resultsDir: 'allure-results',
-      },
-    ],
-  ],
+  reporters: ['default', 'github-actions'],
   testTimeout: 240_000, // 4min — pages can be tall and slow to capture
   maxWorkers: os.cpus().length * (process.env.GITHUB_ACTION ? 3 : 1),
   globalSetup: '<rootDir>/build-tools/visual/global-setup.js',
