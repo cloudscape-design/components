@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment, ContentType } from 'allure-js-commons';
 
-import { cropAndCompare } from '@cloudscape-design/browser-test-tools/image-utils';
+import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import { TestDefinition, TestSuite } from './types';
@@ -13,6 +13,13 @@ const defaultWindowSize = { width: 1600, height: 800 };
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
+
+interface RawCapture {
+  /** The raw base64-encoded PNG string from WebDriver (before decoding). */
+  rawBase64: string;
+  /** The fully parsed screenshot with offset metadata (lazily resolved). */
+  screenshot: () => Promise<ScreenshotWithOffset>;
+}
 
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams(queryParams);
@@ -74,15 +81,16 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 }
 
 /**
- * Captures a screenshot based on the test's screenshotType.
+ * Captures a screenshot and returns both the raw PNG base64 and the parsed result.
+ * Having the raw base64 allows a fast byte-equality check before expensive pixel decoding.
  */
-async function capture(
+async function captureRaw(
   browser: WebdriverIO.Browser,
   page: ScreenshotPageObject,
   url: string,
   testDef: TestDefinition,
   windowSize: { width: number; height: number } | undefined
-): Promise<ScreenshotWithOffset> {
+): Promise<RawCapture> {
   if (windowSize) {
     await browser.setWindowSize(windowSize.width, windowSize.height);
   }
@@ -91,10 +99,29 @@ async function capture(
   if (testDef.setup) {
     await testDef.setup(page);
   }
+
   if (testDef.screenshotType === 'viewport') {
-    return page.captureViewport();
+    const { height, width } = await page.getViewportSize();
+    const rawBase64 = await browser.takeScreenshot();
+    return {
+      rawBase64,
+      screenshot: async () => {
+        const image = await parsePng(rawBase64);
+        return { image, offset: { top: 0, left: 0 }, height, width };
+      },
+    };
   }
-  return page.captureBySelector(screenshotAreaSelector, { viewportOnly: true });
+
+  // screenshotArea / permutations — capture by selector with viewportOnly
+  const box = await page.getBoundingBox(screenshotAreaSelector);
+  const rawBase64 = await browser.takeScreenshot();
+  return {
+    rawBase64,
+    screenshot: async () => {
+      const image = await parsePng(rawBase64);
+      return { image, offset: { top: box.top, left: box.left }, height: box.height, width: box.width };
+    },
+  };
 }
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
@@ -106,9 +133,19 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    const newScreenshot = await capture(browser, page, newUrl, testDef, windowSize);
-    const oldScreenshot = await capture(browser, page, oldUrl, testDef, windowSize);
-    const result = await cropAndCompare(newScreenshot, oldScreenshot);
+    const newCapture = await captureRaw(browser, page, newUrl, testDef, windowSize);
+    const oldCapture = await captureRaw(browser, page, oldUrl, testDef, windowSize);
+
+    // Fast path: if the raw PNG bytes are identical, the images are guaranteed
+    // to be the same. This skips the expensive crop + pixelmatch decode path
+    // for the common case (no visual difference).
+    if (newCapture.rawBase64 === oldCapture.rawBase64) {
+      return;
+    }
+
+    // Raw bytes differ — could be a real diff or just offset/crop differences.
+    // Fall through to full pixel comparison.
+    const result = await cropAndCompare(await newCapture.screenshot(), await oldCapture.screenshot());
 
     if (result.diffPixels === 0) {
       return;
