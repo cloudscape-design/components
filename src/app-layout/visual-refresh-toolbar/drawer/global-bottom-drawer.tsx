@@ -79,6 +79,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
     reportBottomDrawerSize,
     verticalOffsets,
     placement,
+    drawerAnimationDisabled,
   } = widgetizedState;
   const drawerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLHeadingElement>(null);
@@ -113,7 +114,9 @@ function AppLayoutGlobalBottomDrawerImplementation({
   const isExpanded = activeDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
-    (activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id)) || (wasExpanded && !isExpanded);
+    drawerAnimationDisabled ||
+    (activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id)) ||
+    (wasExpanded && !isExpanded);
 
   // Prevent main content scroll when bottom drawer opens with animations
   useEffect(() => {

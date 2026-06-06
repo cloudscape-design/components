@@ -344,8 +344,7 @@ test(
     await page.resizeColumn(2, 100);
     const oldWidth = await page.getColumnWidth(2);
     await page.click('#reset-state');
-    const newWidth = await page.getColumnWidth(2);
-    expect(oldWidth).toEqual(newWidth);
+    await page.assertColumnWidth(2, oldWidth);
   })
 );
 

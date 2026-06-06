@@ -231,6 +231,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -3613,6 +3620,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
           },
         },
         "color-background-button-link-active": {
@@ -6999,6 +7013,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -10381,6 +10402,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
           },
         },
         "color-background-button-link-active": {
@@ -13767,6 +13795,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -17151,6 +17186,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -20533,6 +20575,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+      },
+    },
+    "color-background-badge-icon": {
+      "$description": "The background color of the badge indicator on navigation and panel buttons.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
       },
     },
     "color-background-button-link-active": {
@@ -23924,6 +23973,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -27306,6 +27362,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
           },
         },
         "color-background-button-link-active": {
@@ -30692,6 +30755,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -34074,6 +34144,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
           },
         },
         "color-background-button-link-active": {
@@ -37460,6 +37537,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -40842,6 +40926,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
           },
         },
         "color-background-button-link-active": {
@@ -44228,6 +44319,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -47612,6 +47710,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
         "color-background-button-link-active": {
           "$description": "The background color of link buttons in active state.",
           "$value": {
@@ -50994,6 +51099,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+      },
+    },
+    "color-background-badge-icon": {
+      "$description": "The background color of the badge indicator on navigation and panel buttons.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
       },
     },
     "color-background-button-link-active": {

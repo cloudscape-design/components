@@ -42,6 +42,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -239,6 +240,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -393,6 +395,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -584,6 +587,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -738,6 +742,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -896,6 +901,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1093,6 +1099,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1247,6 +1254,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1437,6 +1445,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1591,6 +1600,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
