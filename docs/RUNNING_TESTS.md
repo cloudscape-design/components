@@ -104,13 +104,13 @@ const suite: TestSuite = {
 export default suite;
 ```
 
-Then import and add it to `test/definitions/visual/index.ts`:
+Then run the generation script to pick it up automatically:
 
-```ts
-import myComponent from './my-component';
-
-export const allSuites: TestSuite[] = [..., myComponent];
+```bash
+node build-tools/visual/generate-tests.js
 ```
+
+This generates both the test runner (`test/visual/my-component.test.ts`) and updates `test/definitions/index.ts`. No manual imports needed.
 
 ### Reviewing failures
 
