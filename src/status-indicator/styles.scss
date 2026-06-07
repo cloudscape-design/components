@@ -86,8 +86,6 @@ $_background-overrides: (
     > .icon {
       white-space: nowrap;
       &.one-theme {
-        display: inline-flex;
-        align-items: center;
         vertical-align: middle;
       }
     }
@@ -120,4 +118,14 @@ $_background-overrides: (
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: text-bottom;
+
+  &.one-theme {
+    text-overflow: unset;
+
+    > span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
