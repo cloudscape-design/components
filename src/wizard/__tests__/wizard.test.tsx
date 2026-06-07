@@ -364,6 +364,15 @@ describe('Navigation', () => {
       expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'step' } })
     );
   });
+
+  test('enables adjacent required step in navigation when current step is optional', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 1, onNavigate, allowSkipTo: true });
+    wrapper.findMenuNavigationLink(3)!.click();
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
+    );
+  });
 });
 
 describe('Form', () => {

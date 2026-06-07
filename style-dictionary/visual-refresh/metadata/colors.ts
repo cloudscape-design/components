@@ -320,6 +320,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundBadgeIcon: {
+    description: 'The background color of the badge indicator on navigation and panel buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundToggleCheckedDisabled: {
     description: 'The background color of checked toggles in disabled state.',
     themeable: true,

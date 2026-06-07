@@ -47,6 +47,7 @@ function AppLayoutGlobalDrawerImplementation({
     expandedDrawerId,
     setExpandedDrawerId,
     activeAiDrawer,
+    drawerAnimationDisabled,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -75,6 +76,7 @@ function AppLayoutGlobalDrawerImplementation({
   const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
   const wasExpanded = usePrevious(isExpanded);
   const animationDisabled =
+    drawerAnimationDisabled ||
     (activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id)) ||
     (wasExpanded && !isExpanded);
   let drawerActions: ReadonlyArray<InternalItemOrGroup> = [
