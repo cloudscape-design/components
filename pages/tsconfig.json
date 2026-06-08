@@ -17,7 +17,9 @@
       "~components/*": ["../lib/components/*"],
       "~design-tokens": ["../lib/design-tokens"],
       "@cloudscape-design/components": ["../lib/components"],
-      "@cloudscape-design/components/*": ["../lib/components/*"]
+      "@cloudscape-design/components/*": ["../lib/components/*"],
+      "@cloudscape-design/code-view": ["../node_modules/@cloudscape-design/code-view/index"],
+      "@cloudscape-design/code-view/*": ["../node_modules/@cloudscape-design/code-view/code-view/*"]
     },
     "types": ["node", "webpack-env"]
   },

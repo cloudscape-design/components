@@ -78,6 +78,8 @@ module.exports = ({
                 '~design-tokens': [designTokensPath],
                 '@cloudscape-design/components': [componentsPath],
                 '@cloudscape-design/components/*': [`${componentsPath}/*`],
+                '@cloudscape-design/code-view': ['../node_modules/@cloudscape-design/code-view/index'],
+                '@cloudscape-design/code-view/*': ['../node_modules/@cloudscape-design/code-view/code-view/*'],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
