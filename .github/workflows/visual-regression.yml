@@ -83,7 +83,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        shard: [1]
     steps:
       - uses: actions/checkout@v4
 
@@ -93,7 +93,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Setup Chrome and ChromeDriver
+      - name: Set up Chrome and ChromeDriver
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
@@ -138,7 +138,7 @@ jobs:
         run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/10
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/1
         env:
           TZ: UTC
 
