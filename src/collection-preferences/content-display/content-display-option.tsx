@@ -22,7 +22,7 @@ const ContentDisplayOption = forwardRef(
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
-      <div ref={ref} className={getClassName('content')}>
+      <div ref={ref} className={getClassName('content')} data-item-type="column">
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}
         </label>
