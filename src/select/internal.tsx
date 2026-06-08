@@ -71,6 +71,7 @@ const InternalSelect = React.forwardRef(
       __inFilteringToken,
       __internalRootRef,
       renderOption,
+      renderCustomTrigger,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -173,6 +174,7 @@ const InternalSelect = React.forwardRef(
     const trigger = (
       <Trigger
         renderOption={renderOption}
+        renderCustomTrigger={renderCustomTrigger}
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
@@ -186,6 +188,7 @@ const InternalSelect = React.forwardRef(
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
+        ariaRequired={ariaRequired}
       />
     );
 
