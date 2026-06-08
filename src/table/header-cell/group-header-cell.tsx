@@ -138,7 +138,7 @@ export function TableGroupHeaderCell({
           dividerPosition={columnGroupId ? 'full' : 'bottom'}
         />
       ) : (
-        <Divider position={columnGroupId ? 'full' : 'bottom'} variant="interactive" />
+        <Divider position={columnGroupId ? 'full' : 'bottom'} />
       )}
     </TableThElement>
   );
