@@ -13,7 +13,7 @@ import { getHeaderCounterText, getTextFilterCounterText, renderAriaLive } from '
 import INSTANCES from '../../resources/ec2-instances';
 import { FullPageHeader } from '../commons';
 import {
-  CustomAppLayout,
+  AppLayoutWithSplitPanel,
   ec2NavItems,
   Navigation,
   Notifications,
@@ -49,7 +49,7 @@ export const App = () => {
   const appLayout = useRef<AppLayoutProps.Ref>(null);
 
   return (
-    <CustomAppLayout
+    <AppLayoutWithSplitPanel
       ref={appLayout}
       contentType="table"
       navigation={<Navigation items={ec2NavItems} activeHref="#/instances" />}

@@ -16,8 +16,11 @@ import { isVisualRefresh } from '../../common/apply-mode';
 // backward compatibility
 export * from './index';
 export { DemoTopNavigation } from './top-navigation';
-export { GlobalSplitPanelContent } from './split-panel-content';
+// Split panel removed — not needed for exploration in the components dev server
 export { useGlobalSplitPanel } from './use-global-split-panel';
+export function GlobalSplitPanelContent() {
+  return null;
+}
 
 export const ec2NavItems = [
   { type: 'link', text: 'Instances', href: '#/instances' },
@@ -70,10 +73,32 @@ export const TableEmptyState = ({ resourceName }: { resourceName: string }) => (
   </Box>
 );
 
-export const CustomAppLayout = forwardRef<AppLayoutProps.Ref, AppLayoutProps>(function CustomAppLayout(props, ref) {
+export const CustomAppLayout = forwardRef<AppLayoutProps.Ref, AppLayoutProps>(function CustomAppLayout(
+  {
+    splitPanel: _splitPanel,
+    splitPanelOpen: _splitPanelOpen,
+    onSplitPanelToggle: _onSplitPanelToggle,
+    splitPanelSize: _splitPanelSize,
+    onSplitPanelResize: _onSplitPanelResize,
+    splitPanelPreferences: _splitPanelPreferences,
+    ...props
+  },
+  ref
+) {
   return (
     <I18nProvider locale="en" messages={[enMessages]}>
       {isVisualRefresh ? <AppLayoutToolbar ref={ref} {...props} /> : <AppLayout ref={ref} {...props} />}
     </I18nProvider>
   );
 });
+
+// Passthrough version that preserves split panel props — for demos that explicitly need a split panel
+export const AppLayoutWithSplitPanel = forwardRef<AppLayoutProps.Ref, AppLayoutProps>(
+  function AppLayoutWithSplitPanel(props, ref) {
+    return (
+      <I18nProvider locale="en" messages={[enMessages]}>
+        {isVisualRefresh ? <AppLayoutToolbar ref={ref} {...props} /> : <AppLayout ref={ref} {...props} />}
+      </I18nProvider>
+    );
+  }
+);

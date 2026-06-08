@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BreadcrumbGroup, Header, SpaceBetween, SplitPanel } from '@cloudscape-design/components';
+import { BreadcrumbGroup, Header, SpaceBetween } from '@cloudscape-design/components';
 
 import { Notifications } from './pages/commons';
-import { CustomAppLayout, GlobalSplitPanelContent, useGlobalSplitPanel } from './pages/commons/common-components';
+import { CustomAppLayout } from './pages/commons/common-components';
 import ButtonsInputsDropdowns from './pages/components-overview/buttons-inputs-dropdowns';
 import Charts from './pages/components-overview/charts';
 import Chat from './pages/components-overview/chat';
@@ -21,9 +21,6 @@ import Typography from './pages/components-overview/typography';
 import './styles/base.scss';
 
 export default function Page() {
-  const { splitPanelOpen, onSplitPanelToggle, splitPanelSize, onSplitPanelResize, splitPanelPreferences } =
-    useGlobalSplitPanel();
-
   return (
     <CustomAppLayout
       toolsHide={true}
@@ -39,16 +36,6 @@ export default function Page() {
         />
       }
       notifications={<Notifications />}
-      splitPanelOpen={splitPanelOpen}
-      onSplitPanelToggle={onSplitPanelToggle}
-      splitPanelSize={splitPanelSize}
-      onSplitPanelResize={onSplitPanelResize}
-      splitPanelPreferences={splitPanelPreferences}
-      splitPanel={
-        <SplitPanel header="Design exploration">
-          <GlobalSplitPanelContent />
-        </SplitPanel>
-      }
       content={
         <SpaceBetween direction="vertical" size="xl">
           <Header
