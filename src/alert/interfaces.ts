@@ -157,6 +157,8 @@ export interface AlertProps extends BaseComponentProps {
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
   /**
+   * An object containing CSS properties to customize the alert's visual appearance.
+   * Refer to the [style](/components/alert/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AlertProps.Style;

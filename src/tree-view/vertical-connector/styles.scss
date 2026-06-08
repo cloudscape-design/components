@@ -18,13 +18,13 @@ $connector-line-width: awsui.$border-divider-list-width;
     grid-column: 1;
     block-size: 100%;
     position: relative;
-    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2);
+    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2 - 2px);
   }
 
   &.absolute {
     position: absolute;
     inset: 0;
     inset-block-end: awsui.$space-scaled-xs;
-    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2);
+    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2 - 2px);
   }
 }

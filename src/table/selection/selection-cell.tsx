@@ -8,7 +8,7 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
 import { Divider } from '../resizer';
-import { SelectionProps } from './interfaces';
+import { ItemSelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 
 import styles from '../styles.css.js';
@@ -16,7 +16,7 @@ import styles from '../styles.css.js';
 interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'children' | 'colIndex'> {
   focusedComponent?: null | string;
   singleSelectionHeaderAriaLabel?: string;
-  getSelectAllProps?: () => SelectionProps;
+  getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
 }
 
@@ -56,7 +56,10 @@ export function TableHeaderSelectionCell({
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
       )}
-      <Divider className={styles['resize-divider']} />
+      <Divider
+        className={styles['resize-divider']}
+        variant={props.rowSpan && props.rowSpan > 1 ? 'interactive' : 'default'}
+      />
     </TableThElement>
   );
 }

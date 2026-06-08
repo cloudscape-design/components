@@ -11,16 +11,23 @@ import { InternalErrorBoundary } from './internal';
 
 export { ErrorBoundaryProps };
 
-function ErrorBoundary({ suppressNested = false, ...props }: ErrorBoundaryProps) {
+function ErrorBoundary({ suppressNested = false, suppressible = false, ...props }: ErrorBoundaryProps) {
   const baseComponentProps = useBaseComponent('ErrorBoundary', {
-    props: { suppressNested },
+    props: { suppressNested, suppressible },
     metadata: {
       hasBoundaryId: !!props.errorBoundaryId,
       hasFeedbackAction: !!props.i18nStrings?.components?.Feedback,
       hasRenderFallback: !!props.renderFallback,
     },
   });
-  return <InternalErrorBoundary {...baseComponentProps} {...props} suppressNested={suppressNested} />;
+  return (
+    <InternalErrorBoundary
+      {...baseComponentProps}
+      {...props}
+      suppressNested={suppressNested}
+      suppressible={suppressible}
+    />
+  );
 }
 
 applyDisplayName(ErrorBoundary, 'ErrorBoundary');

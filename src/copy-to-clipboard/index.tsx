@@ -14,6 +14,7 @@ export { CopyToClipboardProps };
 export default function CopyToClipboard({
   variant = 'button',
   popoverRenderWithPortal = false,
+  wrapText = true,
   ...restProps
 }: CopyToClipboardProps) {
   const baseProps = useBaseComponent('CopyToClipboard', {
@@ -25,6 +26,7 @@ export default function CopyToClipboard({
     <InternalCopyToClipboard
       variant={variant}
       popoverRenderWithPortal={popoverRenderWithPortal}
+      wrapText={wrapText}
       {...baseProps}
       {...filteredProps}
     />

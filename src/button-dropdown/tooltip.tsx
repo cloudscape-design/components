@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEventHandler, useRef, useState } from 'react';
+import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 
 import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
@@ -59,16 +59,30 @@ export default function Tooltip({ children, content, position = 'right', classNa
 }
 
 function useTooltipOpen(timeout: number) {
-  const handle = useRef<number>();
   const [isOpen, setIsOpen] = useState(false);
 
+  // The delayed effect is aborted in case the component unmounts. We cannot use the conventional clearTimeout()
+  // as it causes cleanup of a legitimate state update when used with React 18+ strict mode.
+  const timeoutRef = useRef<number>();
+  const timeoutAbortRef = useRef(false);
+  useEffect(() => {
+    timeoutAbortRef.current = false;
+    return () => {
+      timeoutAbortRef.current = true;
+    };
+  }, []);
+
   const close = () => {
-    clearTimeout(handle.current);
+    clearTimeout(timeoutRef.current);
     setIsOpen(false);
   };
-  const open = () => setIsOpen(true);
+  const open = () => {
+    if (!timeoutAbortRef.current) {
+      setIsOpen(true);
+    }
+  };
   const openDelayed = () => {
-    handle.current = setTimeout(open, timeout);
+    timeoutRef.current = setTimeout(open, timeout);
   };
   const onKeyDown: KeyboardEventHandler = e => {
     if (isOpen && isEscape(e.key)) {

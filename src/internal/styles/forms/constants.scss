@@ -9,7 +9,8 @@
 $control-border-radius: awsui.$border-radius-input;
 
 // Use for options in dropdowns
-$option-padding-vertical: awsui.$space-xxs;
+$option-padding-vertical: awsui.$space-option-padding-vertical;
+$option-padding-horizontal: awsui.$space-option-padding-horizontal;
 $option-padding-with-border-placeholder-vertical: calc(
   #{$option-padding-vertical} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
@@ -19,7 +20,7 @@ $group-option-padding-with-border-placeholder-vertical: calc(
   #{$group-option-padding-vertical} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
 
-$control-padding-vertical: awsui.$space-scaled-xxs;
+$control-padding-vertical: awsui.$space-field-vertical;
 $control-padding-horizontal: awsui.$space-field-horizontal;
 $control-padding: $control-padding-vertical $control-padding-horizontal;
 

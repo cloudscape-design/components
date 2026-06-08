@@ -30,6 +30,12 @@ const items: TilesProps['items'] = [
   { value: 'third', label: 'Third choice' },
 ];
 
+const metadataOptions = items.map(item => ({
+  label: item.label,
+  value: item.value,
+  description: item.description,
+})) as any;
+
 const componentLabel = 'radio group example';
 
 function renderTiles(props: TilesProps) {
@@ -42,7 +48,8 @@ const getMetadata = (
   position: string,
   value: string,
   disabled: boolean = false,
-  currentValue: string | null
+  currentValue: string | null,
+  currentValueLabel: string = ''
 ) => {
   const eventMetadata = {
     action: 'select',
@@ -62,6 +69,8 @@ const getMetadata = (
           label: componentLabel,
           properties: {
             value: `${currentValue}`,
+            valueLabel: `${currentValueLabel}`,
+            options: metadataOptions,
           },
         },
       },
@@ -83,18 +92,18 @@ describe('Tiles renders correct analytics metadata', () => {
     // in the whole tile
     validateComponentNameAndLabels(wrapper.findItemByValue('second')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, 'second')
+      getMetadata('Second choice', '2', 'second', false, 'second', 'Second choice')
     );
     // in the radio within the tile
     validateComponentNameAndLabels(wrapper.findInputByValue('first')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toEqual(
-      getMetadata('First choice', '2', 'first', true, 'second')
+      getMetadata('First choice', '2', 'first', true, 'second', 'Second choice')
     );
   });
   test('with null value', () => {
     const wrapper = renderTiles({ value: null });
     expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, null)
+      getMetadata('Second choice', '2', 'second', false, null, '')
     );
   });
   test('readonly', () => {
@@ -102,7 +111,7 @@ describe('Tiles renders correct analytics metadata', () => {
 
     validateComponentNameAndLabels(wrapper.findInputByValue('second')!.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', true, 'second')
+      getMetadata('Second choice', '2', 'second', true, 'second', 'Second choice')
     );
   });
   describe('when rendered in a form field', () => {
@@ -122,6 +131,8 @@ describe('Tiles renders correct analytics metadata', () => {
               label: 'form field label',
               properties: {
                 value: '2',
+                valueLabel: '',
+                options: metadataOptions,
               },
             },
           },
@@ -151,6 +162,8 @@ describe('Tiles renders correct analytics metadata', () => {
               label: 'aria label',
               properties: {
                 value: '2',
+                valueLabel: '',
+                options: metadataOptions,
               },
             },
           },

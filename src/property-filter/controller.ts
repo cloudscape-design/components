@@ -21,6 +21,7 @@ import {
   TokenGroup,
 } from './interfaces';
 import {
+  isInternalToken,
   matchFilteringProperty,
   matchOperator,
   matchOperatorPrefix,
@@ -46,7 +47,7 @@ export const getQueryActions = ({
 }) => {
   const setQuery = (query: InternalQuery) => {
     function transformToken(token: InternalToken | InternalTokenGroup): Token | TokenGroup {
-      if ('operator' in token) {
+      if (isInternalToken(token)) {
         return matchTokenValue(token, filteringOptions);
       }
       return { ...token, tokens: token.tokens.map(transformToken) };
@@ -93,10 +94,16 @@ export const getQueryActions = ({
   return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
 };
 
+const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
+
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
-  const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
   const operatorSet = new Set([defaultOperator, ...operators]);
+  return operatorOrder.filter(op => operatorSet.has(op));
+};
+
+export const getAllowedFreeTextOperators = (freeText: InternalFreeTextFiltering): ComparisonOperator[] => {
+  const operatorSet = new Set(freeText.operators);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
 
@@ -115,10 +122,8 @@ export const parseText = (
   if (!property) {
     if (!freeTextFiltering.disabled) {
       // For free text filtering, we allow ! as a shortcut for !:
-      const freeTextOperators =
-        freeTextFiltering.operators.indexOf('!:') >= 0
-          ? ['!', ...freeTextFiltering.operators]
-          : freeTextFiltering.operators;
+      let freeTextOperators = getAllowedFreeTextOperators(freeTextFiltering);
+      freeTextOperators = freeTextOperators.indexOf('!:') >= 0 ? ['!', ...freeTextOperators] : freeTextOperators;
       const operator = matchOperator(freeTextOperators, filteringText);
       if (operator) {
         return {

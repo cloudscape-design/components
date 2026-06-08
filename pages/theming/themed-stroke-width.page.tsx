@@ -17,6 +17,8 @@ import {
   SelectProps,
   SpaceBetween,
   StatusIndicator,
+  Tabs,
+  TabsProps,
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
@@ -43,6 +45,34 @@ const createStrokeHandler = (setter: (value: string) => void) => {
     }
   };
 };
+
+function TabsExample() {
+  const tabs: TabsProps.Tab[] = [
+    {
+      id: 'first',
+      label: 'First tab',
+      content: 'First tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss first tab',
+    },
+    {
+      id: 'second',
+      label: 'Second tab',
+      content: 'Second tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss second tab',
+    },
+    { id: 'third', label: 'Third tab', content: 'Third tab content area' },
+    { id: 'fourth', label: 'Fourth tab', disabled: true, content: 'Fourth tab content area' },
+  ];
+
+  return (
+    <SpaceBetween size="l">
+      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} variant="container" />
+    </SpaceBetween>
+  );
+}
 
 export default function ThemedStrokeWidthPage() {
   const [themed, setThemed] = useState<boolean>(false);
@@ -72,6 +102,12 @@ export default function ThemedStrokeWidthPage() {
           borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
           borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
           borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
+          borderRadiusButton: '8px',
+          fontSizeTabs: '14px',
+          lineHeightTabs: '16px',
+          fontWeightTabs: '700',
+          fontWeightTabsDisabled: '700',
+          spaceTabsVertical: { comfortable: '2px', compact: '0px' },
         },
       };
 
@@ -218,6 +254,12 @@ export default function ThemedStrokeWidthPage() {
               <Button iconName="call" variant="primary">
                 Button
               </Button>
+              <Button iconName="call" variant="link">
+                Button
+              </Button>
+              <Button iconName="call" variant="normal">
+                Button
+              </Button>
             </div>
 
             <div>
@@ -254,6 +296,10 @@ export default function ThemedStrokeWidthPage() {
               <StatusIndicator type="warning">Warning</StatusIndicator>
               <StatusIndicator type="info">Info</StatusIndicator>
             </SpaceBetween>
+
+            <div>
+              <TabsExample />
+            </div>
             <IconProvider
               icons={{
                 'status-positive': (

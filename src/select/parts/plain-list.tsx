@@ -8,6 +8,8 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import { SelectProps } from '../interfaces';
 import { renderOptions } from '../utils/render-options';
 import scrollToIndex from '../utils/scroll-to-index';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
@@ -27,6 +29,8 @@ export interface SelectListProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
+  isMultiSelect?: boolean;
+  renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export namespace SelectListProps {
@@ -46,6 +50,8 @@ const PlainList = (
     useInteractiveGroups,
     screenReaderContent,
     firstOptionSticky,
+    isMultiSelect,
+    renderOption,
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
@@ -83,8 +89,14 @@ const PlainList = (
   const withScrollbar = !!width && width.inner < width.outer;
 
   return (
-    <OptionsList {...menuProps} ref={mergedRef} stickyItemBlockSize={stickyOptionBlockSize}>
+    <OptionsList
+      {...menuProps}
+      ref={mergedRef}
+      stickyItemBlockSize={stickyOptionBlockSize}
+      isMultiSelect={isMultiSelect}
+    >
       {renderOptions({
+        renderOption,
         options: filteredOptions,
         getOptionProps,
         filteringValue,

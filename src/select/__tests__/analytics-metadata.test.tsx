@@ -35,7 +35,8 @@ function renderSelect(props: Partial<SelectProps>) {
 const getMetadataContexts = (
   label = 'select with metadata',
   disabled: boolean = false,
-  selectedOptionValue = 'null'
+  selectedOptionValue = 'null',
+  selectedOption = 'null'
 ) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
@@ -47,6 +48,7 @@ const getMetadataContexts = (
           properties: {
             disabled: disabled ? 'true' : 'false',
             selectedOptionValue,
+            selectedOption,
           },
         },
       },
@@ -140,13 +142,13 @@ describe('Select renders correct analytics metadata', () => {
     test('and defined value', () => {
       const wrapper = renderSelect({ selectedOption: { value: 'value1' } });
       expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-        ...getMetadataContexts(undefined, undefined, 'value1'),
+        ...getMetadataContexts(undefined, undefined, 'value1', 'value1'),
       });
     });
     test('and undefined value', () => {
       const wrapper = renderSelect({ selectedOption: { label: 'label1' } });
       expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-        ...getMetadataContexts(),
+        ...getMetadataContexts(undefined, undefined, 'null', 'label1'),
       });
     });
   });

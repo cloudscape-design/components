@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 import clsx from 'clsx';
 
 import { GridProps } from '../grid/interfaces';
 import InternalGrid from '../grid/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { flattenChildren } from '../internal/utils/flatten-children';
 import { InternalColumnLayoutProps } from './interfaces';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
 import { repeat } from './util';
@@ -42,7 +42,7 @@ export default function GridColumnLayout({
   const shouldHaveVerticalBorders = !isTextGridVariant && (borders === 'vertical' || borders === 'all');
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
-  const flattenedChildren = flattenChildren(children);
+  const flattenedChildren = flattenChildren(children, 'ColumnLayout');
 
   const [breakpoint, ref] = useContainerBreakpoints(COLUMN_TRIGGERS);
 

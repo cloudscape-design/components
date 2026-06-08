@@ -28,7 +28,6 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   inlineTokens?: boolean;
   ariaHasPopup?: 'true' | 'listbox' | 'dialog';
   ariaControls?: string;
-  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>;
@@ -37,6 +36,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onClick?: CancelableEventHandler;
   onFocus?: CancelableEventHandler;
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
+  hasCustomContent?: boolean;
   autoFocus?: boolean;
 }
 
@@ -52,7 +52,6 @@ const ButtonTrigger = (
     inlineTokens,
     inFilteringToken,
     ariaHasPopup,
-    ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
     ariaControls,
@@ -62,6 +61,7 @@ const ButtonTrigger = (
     onClick,
     onFocus,
     onBlur,
+    hasCustomContent = false,
     autoFocus,
     ...restProps
   }: ButtonTriggerProps,
@@ -83,11 +83,11 @@ const ButtonTrigger = (
       readOnly && styles.readonly,
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
-      inlineTokens && styles['inline-tokens']
+      inlineTokens && styles['inline-tokens'],
+      !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
     'aria-expanded': pressed,
-    'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',

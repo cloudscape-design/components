@@ -21,7 +21,7 @@ function renderButton(props: ButtonProps = {}) {
   return createWrapper(renderResult.container).findButton()!;
 }
 
-const getMetadata = (label: string, variant: string, disabled?: boolean) => {
+const getMetadata = (label: string, variant: string, disabled?: boolean, description?: string) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
     contexts: [
       {
@@ -29,6 +29,7 @@ const getMetadata = (label: string, variant: string, disabled?: boolean) => {
         detail: {
           name: 'awsui.Button',
           label,
+          ...(description ? { description } : {}),
           properties: {
             variant,
             disabled: disabled ? 'true' : 'false',
@@ -62,7 +63,7 @@ describe('Button renders correct analytics metadata', () => {
     const wrapper = renderButton({ children: 'inline button text', disabled: true, disabledReason: 'reason' });
     validateComponentNameAndLabels(wrapper.getElement(), labels);
     expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(
-      getMetadata('inline button text', 'normal', true)
+      getMetadata('inline button text', 'normal', true, 'reason')
     );
   });
   test('when it has text content and aria label', () => {

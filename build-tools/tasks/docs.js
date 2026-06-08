@@ -11,6 +11,7 @@ module.exports = function docs() {
     publicFilesGlob: 'src/*/index.tsx',
     extraExports: {
       FileDropzone: ['useFilesDragging'],
+      IconProvider: ['defineIcons', 'IconRegistry', 'IconMap'],
       TagEditor: ['getTagsDiff'],
     },
   });

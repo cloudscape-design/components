@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BaseComponentProps } from '../internal/base-component';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface CopyToClipboardProps extends BaseComponentProps {
   /** Determines the general styling of the copy button as follows:
@@ -31,9 +32,15 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
-   * The text content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
    */
-  textToDisplay?: string;
+  textToDisplay?: React.ReactNode;
+
+  /**
+   * Specifies if the `textToDisplay` content should wrap. If you set it to false, it prevents the text
+   * from wrapping and truncates it with an ellipsis. Only applies to `variant="inline"`.
+   */
+  wrapText?: boolean;
 
   /**
    * The message shown when the text is copied successfully.
@@ -58,14 +65,37 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Renders the copy to clipboard button as disabled and prevents clicks.
    */
   disabled?: boolean;
+
   /**
    * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
    * If provided, the copy to clipboard button becomes focusable.
    * Applicable for all variants except inline.
    */
   disabledReason?: string;
+
+  /**
+   * Called when the text is successfully copied to the clipboard.
+   * The event `detail` contains the text that was copied.
+   */
+  onCopySuccess?: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail>;
+
+  /**
+   * Called when the copy operation fails.
+   * The event `detail` contains the text that failed to copy.
+   */
+  onCopyFailure?: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail>;
 }
 
 export namespace CopyToClipboardProps {
   export type Variant = 'button' | 'icon' | 'inline';
+
+  export interface CopySuccessDetail {
+    /** The text that was copied to the clipboard */
+    text: string;
+  }
+
+  export interface CopyFailureDetail {
+    /** The text that failed to copy to the clipboard */
+    text: string;
+  }
 }

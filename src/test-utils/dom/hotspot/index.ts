@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import createWrapper from '../index';
-import { AnnotationWrapper } from '../index.js';
+import AnnotationWrapper from '../annotation';
 
 import annotationStyles from '../../../annotation-context/annotation/styles.selectors.js';
 import hotspotStyles from '../../../hotspot/styles.selectors.js';

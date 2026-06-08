@@ -5,8 +5,8 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
@@ -175,13 +175,13 @@ export function useSelect({
   });
 
   const getDropdownProps: () => Pick<
-    DropdownProps,
-    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
+    InternalDropdownProps,
+    'onFocus' | 'onBlur' | 'dropdownContentId' | 'ariaRole'
   > = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
-    dropdownContentRole: hasFilter ? 'dialog' : undefined,
+    ariaRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {

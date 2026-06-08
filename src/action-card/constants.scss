@@ -1,0 +1,43 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+// State configuration for the action card root element.
+// Each state maps to background, box-shadow, border-color, border-width, text-color, and icon-color.
+$states: (
+  'default': (
+    'background': awsui.$color-background-action-card-default,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-default,
+    'border-width': awsui.$border-width-action-card-default,
+    'text-color': inherit,
+    'icon-color': awsui.$color-icon-action-card-default,
+  ),
+  'hover': (
+    'background': awsui.$color-background-action-card-hover,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-hover,
+    'border-width': awsui.$border-width-action-card-hover,
+    'text-color': inherit,
+    'icon-color': awsui.$color-icon-action-card-hover,
+  ),
+  'active': (
+    'background': awsui.$color-background-action-card-active,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-active,
+    'border-width': awsui.$border-width-action-card-active,
+    'text-color': inherit,
+    'icon-color': awsui.$color-icon-action-card-active,
+  ),
+  'disabled': (
+    'background': awsui.$color-background-action-card-disabled,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-disabled,
+    'border-width': awsui.$border-width-action-card-disabled,
+    'text-color': awsui.$color-text-action-card-disabled,
+    'icon-color': awsui.$color-icon-action-card-disabled,
+  ),
+);

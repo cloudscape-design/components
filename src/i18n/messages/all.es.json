@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferencias de columnas",
     "contentDisplayPreference.description": "Personalice la visibilidad y el orden de las columnas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Arrastrar controlador",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape. Es posible que necesite cambiar el modo de navegación en el lector de pantalla.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenación cancelada",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrar columnas",
@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
@@ -180,10 +184,18 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
     "i18nStrings.refreshActionText": "Actualizar página"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lanzamientos de características",
+    "i18nStrings.viewAll": "Ver todos los lanzamientos de características",
+    "ariaLabels.closeButton": "Cerrar notificaciones",
+    "ariaLabels.content": "Notificaciones de características",
+    "ariaLabels.triggerButton": "Mostrar notificaciones de características",
+    "ariaLabels.resizeHandle": "Redimensionar notificaciones de características"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar más",
-    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.warningIconAriaLabel": "Aviso"
   },
@@ -240,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Página siguiente",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
-    "ariaLabels.previousPageLabel": "Página anterior"
+    "ariaLabels.previousPageLabel": "Página anterior",
+    "ariaLabels.jumpToPageButtonLabel": "Ir a la página",
+    "i18nStrings.jumpToPageInputLabel": "Página",
+    "i18nStrings.jumpToPageError": "Página fuera de rango. Se muestra la última página disponible.",
+    "i18nStrings.jumpToPageLoadingText": "Cargando"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",
@@ -254,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Cerrar ventana emergente"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Enviar petición",
+    "i18nStrings.menuErrorIconAriaLabel": "Error",
+    "i18nStrings.menuRecoveryText": "Reintentar",
+    "i18nStrings.menuLoadingText": "Cargar elementos",
+    "i18nStrings.menuFinishedText": "Fin de los resultados",
+    "i18nStrings.menuErrorText": "Error al obtener los elementos",
+    "i18nStrings.selectedMenuItemAriaLabel": "Seleccionado",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} insertado",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} fijado",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} eliminado"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Todas las propiedades",

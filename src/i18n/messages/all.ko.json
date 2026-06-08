@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "열 기본 설정",
     "contentDisplayPreference.description": "열 표시 여부 및 순서를 사용자 지정합니다.",
     "contentDisplayPreference.dragHandleAriaLabel": "핸들 끌기",
-    "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하거나 이동을 취소하려면 Escape를 사용합니다.",
+    "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하고 이동을 취소하려면 Escape를 사용합니다. 스크린 리더에서 탐색 모드를 토글해야 할 수 있습니다.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total}개 위치에서 선택한 항목",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "재정렬 취소됨",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "열 필터링",
@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "마지막 월",
     "i18nStrings.endDateLabel": "종료 날짜",
     "i18nStrings.endTimeLabel": "종료 시간",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
     "i18nStrings.dateConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다.",
     "i18nStrings.slashedDateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
@@ -180,10 +184,18 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {새로 고침하여 다시 시도하세요. 현재 이 문제를 추적하고 있지만 <Feedback>여기에서 더 자세한 정보를</Feedback> 공유할 수 있습니다.} other {새로 고침하여 다시 시도하세요.}}",
     "i18nStrings.refreshActionText": "페이지 새로고침"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "최신 기능 릴리스",
+    "i18nStrings.viewAll": "모든 기능 릴리스 보기",
+    "ariaLabels.closeButton": "알림 닫기",
+    "ariaLabels.content": "기능 알림",
+    "ariaLabels.triggerButton": "기능 알림 보기",
+    "ariaLabels.resizeHandle": "크기 조정 기능 알림"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "간단히 표시",
     "i18nStrings.limitShowMore": "자세히 표시",
-    "i18nStrings.removeFileAriaLabel": "파일 {fileIndex} 제거",
+    "i18nStrings.removeFileAriaLabel": "{fileIndex}, {fileName} 파일 제거",
     "i18nStrings.errorIconAriaLabel": "오류",
     "i18nStrings.warningIconAriaLabel": "경고"
   },
@@ -240,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "다음 페이지",
     "ariaLabels.pageLabel": "전체 페이지 중 {pageNumber}페이지",
-    "ariaLabels.previousPageLabel": "이전 페이지"
+    "ariaLabels.previousPageLabel": "이전 페이지",
+    "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
+    "i18nStrings.jumpToPageInputLabel": "페이지",
+    "i18nStrings.jumpToPageError": "페이지가 범위를 벗어났습니다. 마지막으로 사용 가능한 페이지를 표시합니다.",
+    "i18nStrings.jumpToPageLoadingText": "로드 중"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",
@@ -254,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "팝오버 닫기"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "프롬프트 제출",
+    "i18nStrings.menuErrorIconAriaLabel": "오류",
+    "i18nStrings.menuRecoveryText": "재시도",
+    "i18nStrings.menuLoadingText": "항목 로드 중",
+    "i18nStrings.menuFinishedText": "결과 종료",
+    "i18nStrings.menuErrorText": "항목을 가져오는 중 오류가 발생했습니다.",
+    "i18nStrings.selectedMenuItemAriaLabel": "선택함",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 삽입됨",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} 고정됨",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} 제거됨"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "모든 속성",

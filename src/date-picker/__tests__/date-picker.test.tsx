@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
@@ -486,5 +486,43 @@ describe('i18n', () => {
       'aria-label',
       'Custom label, selected Friday, April 11, 2003'
     );
+  });
+});
+
+describe('disabled reason behavior', () => {
+  test('clicking on disabled reason does not close the calendar', () => {
+    const { wrapper } = renderDatePicker({
+      ...defaultProps,
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findOpenCalendarButton().click();
+    expect(wrapper.findCalendar()).not.toBe(null);
+
+    wrapper.findCalendar()!.findDateAt(1, 1).focus();
+    expect(wrapper.findCalendar()!.findDateAt(1, 1).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    wrapper.findCalendar()!.findDateAt(1, 1).findDisabledReason()!.click();
+    expect(wrapper.findCalendar()!.findDateAt(1, 1).findDisabledReason()).not.toBe(null);
+    expect(wrapper.findCalendar()).not.toBe(null);
+  });
+
+  test('disabled reason tooltip can be closed with Escape', () => {
+    const { wrapper } = renderDatePicker({
+      ...defaultProps,
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findOpenCalendarButton().click();
+    expect(wrapper.findCalendar()).not.toBe(null);
+
+    wrapper.findCalendar()!.findDateAt(1, 1).focus();
+    expect(wrapper.findCalendar()!.findDateAt(1, 1).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    fireEvent.keyDown(wrapper.findCalendar()!.findDateAt(1, 1).getElement(), { key: 'Escape', code: 'Escape' });
+    expect(wrapper.findCalendar()).not.toBe(null);
+    expect(wrapper.findCalendar()!.findDateAt(1, 1).findDisabledReason()).toBe(null);
   });
 });

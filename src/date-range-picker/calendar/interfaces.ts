@@ -28,6 +28,9 @@ export type RangeCalendarI18nStrings = Pick<
   | 'isoMonthConstraintText'
   | 'slashedMonthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
+  | 'isoDatePlaceholder'
+  | 'slashedDatePlaceholder'
+  | 'timePlaceholder'
 >;
 
 export interface DateRangePickerCalendarProps
@@ -52,6 +55,8 @@ export interface DateRangePickerCalendarProps
   value: DateRangePickerProps.PendingAbsoluteValue;
   setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
   i18nStrings?: RangeCalendarI18nStrings;
+  referrerId?: string;
+  multiGridStartPeriod: DateRangePickerProps.StartPeriod;
 }
 
 export interface RangeInputsProps

@@ -32,7 +32,9 @@ const options: MultiselectProps.Options = [
   { value: 'more4', label: 'More options with very long texts 4' },
 ];
 
+// eslint-disable-next-line no-restricted-syntax -- Page demo: option/group discrimination
 const _getGroupOptions = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options : [option]);
+// eslint-disable-next-line no-restricted-syntax -- Page demo: option/group discrimination
 const _getFirstChild = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options[0] : option);
 
 const permutations = createPermutations<MultiselectProps & { inlineTokens?: boolean }>([

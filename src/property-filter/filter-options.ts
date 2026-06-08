@@ -27,7 +27,8 @@ export function filterOptions(
 }
 
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
-  return 'options' in optionOrGroup;
+  const key: keyof AutosuggestProps.OptionGroup = 'options';
+  return key in optionOrGroup;
 }
 
 function matchSingleOption(option: OptionDefinition, searchText: string): boolean {

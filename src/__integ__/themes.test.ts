@@ -37,7 +37,7 @@ class CustomPropertyPageObject extends BasePageObject {
 
 describe('CSS Custom Properties', () => {
   test.each<[string, string, string?]>([
-    ['light', `#light/?visualRefresh=false`],
+    ['light', '#light/?visualRefresh=false'],
     ['dark', '#dark/?visualRefresh=false'],
     ['compact', '#light/?visualRefresh=false&density=compact'],
     // use motionDisabled to force design tokens into expected values

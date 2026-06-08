@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import {
@@ -17,7 +18,7 @@ import { isWidgetReady } from '../state/invariants';
 import sharedStyles from '../../resize/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
-export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
+export const AfterMainSlotImplementationInternal = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
   if (!isWidgetReady(appLayoutState)) {
     return null;
   }
@@ -63,23 +64,25 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           </AppLayoutSplitPanelSide>
         </div>
       )}
-      <div
-        className={clsx(
-          styles.tools,
-          !toolsOpen && styles['panel-hidden'],
-          sharedStyles['with-motion-horizontal'],
-          navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-          toolsOpen && styles['tools-open'],
-          drawerExpandedMode && styles.hidden
-        )}
-      >
-        {drawers && drawers.length > 0 && (
-          <AppLayoutDrawer
-            appLayoutInternals={appLayoutState.appLayoutInternals}
-            bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
-          />
-        )}
-      </div>
+      <AppLayoutBuiltInErrorBoundary>
+        <div
+          className={clsx(
+            styles.tools,
+            !toolsOpen && styles['panel-hidden'],
+            sharedStyles['with-motion-horizontal'],
+            navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
+            toolsOpen && styles['tools-open'],
+            drawerExpandedMode && styles.hidden
+          )}
+        >
+          {drawers && drawers.length > 0 && (
+            <AppLayoutDrawer
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
+            />
+          )}
+        </div>
+      </AppLayoutBuiltInErrorBoundary>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>
           <AppLayoutGlobalDrawers appLayoutInternals={appLayoutState.appLayoutInternals} />
@@ -88,5 +91,11 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
     </>
   );
 };
+
+export const AfterMainSlotImplementation = (props: SkeletonPartProps) => (
+  <AppLayoutBuiltInErrorBoundary>
+    <AfterMainSlotImplementationInternal {...props} />
+  </AppLayoutBuiltInErrorBoundary>
+);
 
 export const createWidgetizedAppLayoutAfterMainSlot = createWidgetizedComponent(AfterMainSlotImplementation);

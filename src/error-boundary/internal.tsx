@@ -8,7 +8,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
 import { ErrorBoundaryFallback } from './fallback';
-import { ErrorBoundaryProps } from './interfaces';
+import { AppLayoutBuiltInErrorBoundaryProps, BuiltInErrorBoundaryProps, ErrorBoundaryProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -31,17 +31,18 @@ const ErrorBoundariesContext = createContext<
 });
 
 interface InternalErrorBoundaryProps
-  extends SomeRequired<ErrorBoundaryProps, 'suppressNested'>,
+  extends SomeRequired<ErrorBoundaryProps, 'suppressNested' | 'suppressible'>,
     InternalBaseComponentProps {}
 
 export function InternalErrorBoundary({
   children,
   suppressNested,
+  suppressible,
   __internalRootRef,
   ...props
 }: InternalErrorBoundaryProps) {
   const context = useContext(ErrorBoundariesContext);
-  const thisSuppressed = context.suppressed === true;
+  const thisSuppressed = context.suppressed === true && suppressible;
   const nextSuppressed = suppressNested || thisSuppressed;
 
   const [forcedError, setForcedError] = useState(false);
@@ -71,12 +72,6 @@ export function InternalErrorBoundary({
   );
 }
 
-interface BuiltInErrorBoundaryProps {
-  children: React.ReactNode;
-  wrapper?: (content: React.ReactNode) => React.ReactNode;
-  suppressNested?: boolean;
-}
-
 export function BuiltInErrorBoundary({ wrapper, suppressNested = false, children }: BuiltInErrorBoundaryProps) {
   const context = useContext(ErrorBoundariesContext);
   const thisSuppressed = context.suppressed === true || context.suppressed === RootSuppressed;
@@ -89,6 +84,33 @@ export function BuiltInErrorBoundary({ wrapper, suppressNested = false, children
     </ErrorBoundaryImpl>
   ) : (
     <>{children}</>
+  );
+}
+
+export function AppLayoutBuiltInErrorBoundary({
+  wrapper,
+  suppressNested = false,
+  children,
+  renderFallback = () => <></>,
+}: AppLayoutBuiltInErrorBoundaryProps) {
+  const context = useContext(ErrorBoundariesContext);
+  const thisSuppressed = context.suppressed === true || context.suppressed === RootSuppressed;
+  const nextSuppressed = suppressNested || thisSuppressed;
+  return (
+    <ErrorBoundaryImpl
+      {...context}
+      wrapper={wrapper}
+      renderFallback={renderFallback}
+      className={styles['app-layout-part-fallback']}
+      onError={error => {
+        context?.onError?.(error);
+        // TODO Implement cloudscape error reporting
+      }}
+    >
+      <ErrorBoundariesContext.Provider value={{ ...context, suppressed: nextSuppressed, renderFallback }}>
+        {children}
+      </ErrorBoundariesContext.Provider>
+    </ErrorBoundaryImpl>
   );
 }
 

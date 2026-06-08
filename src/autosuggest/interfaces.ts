@@ -1,14 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
+import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import {
-  BaseDropdownHostProps,
-  OptionsFilteringType,
-  OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
@@ -23,6 +19,7 @@ export interface AutosuggestProps
     InputClearLabel,
     FormFieldValidationControlProps,
     DropdownStatusProps {
+  onLoadItems?: NonCancelableEventHandler<AutosuggestProps.LoadItemsDetail>;
   /**
    * Specifies an array of options that are displayed to the user as a dropdown list.
    * The options can be grouped using `OptionGroup` objects.
@@ -56,6 +53,42 @@ export interface AutosuggestProps
    * on your own.
    **/
   options?: AutosuggestProps.Options;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### item
+   *
+   * - `type` ('item') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (Option) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `selected` (boolean) - Whether the item is selected.
+   * - `parent` (OptionGroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (OptionGroup) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   *
+   * ### entered-text
+   *
+   * - `type` ('entered-text') - The item type.
+   * - `option` (Option) - The entered-text option configuration.
+   *
+   * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default rendering will be applied for that item.
+   */
+  renderOption?: AutosuggestProps.ItemRenderer;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -127,6 +160,8 @@ export interface AutosuggestProps
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
 
   /**
+   * An object containing CSS properties to customize the autosuggest's visual appearance.
+   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
@@ -143,7 +178,10 @@ export namespace AutosuggestProps {
     label?: string;
     options: ReadonlyArray<Option>;
   }
-  export type LoadItemsDetail = OptionsLoadItemsDetail;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;
@@ -153,6 +191,29 @@ export namespace AutosuggestProps {
   export interface ContainingOptionAndGroupString {
     (option: Option, group?: OptionGroup): string;
   }
+
+  export interface OptionRenderItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+    parent: OptionGroupRenderItem | null;
+  }
+  export interface OptionGroupRenderItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    disabled: boolean;
+  }
+  export interface EnteredTextRenderItem {
+    type: 'entered-text';
+    option: Option;
+    highlighted: boolean;
+  }
+  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | EnteredTextRenderItem;
+  export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;
 
   export interface Ref {
     /**
@@ -216,4 +277,5 @@ export namespace AutosuggestProps {
 export type AutosuggestItem = (AutosuggestProps.Option | AutosuggestProps.OptionGroup) & {
   type?: 'parent' | 'child' | 'use-entered';
   option: OptionDefinition | OptionGroup;
+  parent?: OptionGroup;
 };

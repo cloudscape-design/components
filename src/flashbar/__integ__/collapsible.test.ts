@@ -135,8 +135,8 @@ describe('Collapsible Flashbar', () => {
         await page.setWindowSize(windowDimensions);
         await page.toggleCollapsedState();
         expect(await page.getNotificationBarBottom()).toBeGreaterThan(windowDimensions.height);
-        await page.windowScrollTo({ top: 1200 });
         await page.waitForAssertion(async () => {
+          await page.windowScrollTo({ top: 1200 });
           await expect(page.getNotificationBarBottom()).resolves.toBeLessThan(windowDimensions.height);
         });
       })

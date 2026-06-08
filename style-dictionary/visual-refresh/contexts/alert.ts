@@ -47,7 +47,7 @@ const colorTokens: StyleDictionary.ColorsDictionary = {
 };
 
 const alertExpandableSectionFontTokens: StyleDictionary.TypographyDictionary = {
-  fontExpandableHeadingSize: '14px',
+  fontSizeExpandableHeading: '14px',
 };
 
 const alertExpandableSectionBorderTokens: StyleDictionary.BordersDictionary = {

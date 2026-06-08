@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SkeletonPartProps } from '../skeleton/interfaces';
 import { AppLayoutSplitPanelDrawerBottomImplementation as AppLayoutSplitPanelBottom } from '../split-panel';
@@ -11,7 +12,7 @@ import { isWidgetReady } from '../state/invariants';
 import sharedStyles from '../../resize/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
-export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
+export const BottomContentSlotImplementationInternal = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
   if (!isWidgetReady(appLayoutState)) {
     return null;
   }
@@ -36,6 +37,14 @@ export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps
         </div>
       )}
     </>
+  );
+};
+
+export const BottomContentSlotImplementation = (props: SkeletonPartProps) => {
+  return (
+    <AppLayoutBuiltInErrorBoundary>
+      <BottomContentSlotImplementationInternal {...props} />
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 

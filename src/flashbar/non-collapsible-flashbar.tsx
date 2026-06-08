@@ -13,6 +13,7 @@ import { useFlashbar, useFlashbarVisibility } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { isRefObject } from './utils';
 
 import styles from './styles.css.js';
 
@@ -60,6 +61,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
         {visibleItems.map((item, index) => (
           <Transition
             transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
+            exitTimeout={TIMEOUT_FOR_ENTERING_ANIMATION}
             key={item.id ?? index}
             in={true}
           >
@@ -121,11 +123,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
           // If there's a transition root element ref, update it too
           if (transitionRootElement && typeof transitionRootElement === 'function') {
             transitionRootElement(el);
-          } else if (
-            transitionRootElement &&
-            typeof transitionRootElement === 'object' &&
-            'current' in transitionRootElement
-          ) {
+          } else if (transitionRootElement && isRefObject(transitionRootElement)) {
             (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
           }
         }}

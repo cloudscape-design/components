@@ -5,7 +5,6 @@ import React from 'react';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -18,6 +17,7 @@ import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { AppLayoutInternal } from './internal';
 import { useAppLayoutPlacement } from './utils/use-app-layout-placement';
+import { useAriaLabels } from './utils/use-aria-labels';
 
 export { AppLayoutProps };
 
@@ -72,19 +72,7 @@ const AppLayout = React.forwardRef(
     const isRefresh = useVisualRefresh();
     const isMobile = useMobile();
 
-    const i18n = useInternalI18n('app-layout');
-    const ariaLabels = {
-      navigation: i18n('ariaLabels.navigation', rest.ariaLabels?.navigation),
-      navigationClose: i18n('ariaLabels.navigationClose', rest.ariaLabels?.navigationClose),
-      navigationToggle: i18n('ariaLabels.navigationToggle', rest.ariaLabels?.navigationToggle),
-      notifications: i18n('ariaLabels.notifications', rest.ariaLabels?.notifications),
-      tools: i18n('ariaLabels.tools', rest.ariaLabels?.tools),
-      toolsClose: i18n('ariaLabels.toolsClose', rest.ariaLabels?.toolsClose),
-      toolsToggle: i18n('ariaLabels.toolsToggle', rest.ariaLabels?.toolsToggle),
-      drawers: i18n('ariaLabels.drawers', rest.ariaLabels?.drawers),
-      drawersOverflow: i18n('ariaLabels.drawersOverflow', rest.ariaLabels?.drawersOverflow),
-      drawersOverflowWithBadge: i18n('ariaLabels.drawersOverflowWithBadge', rest.ariaLabels?.drawersOverflowWithBadge),
-    };
+    const ariaLabels = useAriaLabels(rest.ariaLabels);
     const { navigationOpen: defaultNavigationOpen, ...restDefaults } = applyDefaults(
       contentType,
       { maxContentWidth, minContentWidth },

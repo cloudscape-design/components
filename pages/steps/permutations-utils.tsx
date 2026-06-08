@@ -303,8 +303,6 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
-const emptySteps: ReadonlyArray<StepsProps.Step> = [];
-
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
@@ -754,7 +752,6 @@ export const stepsPermutations = createPermutations<StepsProps>([
       successfulSteps,
       blockedSteps,
       failedSteps,
-      emptySteps,
       allStatusesSteps,
       initialStepsInteractive,
       loadingStepsInteractive,

@@ -164,7 +164,15 @@ describe.each([true, false])('with visualrefresh=%s', isVR => {
       });
 
       const thirdLink = wrapper.findMenuNavigationLink(3)!.getElement();
-      expect(getGeneratedAnalyticsMetadata(thirdLink)).toEqual(getMetadata(1));
+      expect(getGeneratedAnalyticsMetadata(thirdLink)).toEqual({
+        action: 'navigate',
+        detail: {
+          label: 'Step 3',
+          reason: 'step',
+          targetStepIndex: '2',
+        },
+        ...getMetadata(1),
+      });
     });
     test('with analyticsMetadata', () => {
       const analyticsMetadata: WizardProps['analyticsMetadata'] = {

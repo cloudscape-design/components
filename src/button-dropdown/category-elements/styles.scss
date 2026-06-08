@@ -15,7 +15,7 @@
   border-inline: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
   border-inline-width: 0;
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,6 +28,13 @@
   &.disabled {
     color: awsui.$color-text-dropdown-item-disabled;
     cursor: default;
+  }
+
+  &.no-content-styling {
+    padding-block: calc((#{awsui.$border-item-width} - #{awsui.$border-divider-list-width}));
+    padding-inline: awsui.$border-item-width;
+    font-weight: styles.$font-weight-normal;
+    color: inherit;
   }
 
   &.expandable-header {
@@ -58,6 +65,12 @@
       border-end-end-radius: awsui.$border-radius-item;
       z-index: 2;
 
+      &.no-content-styling {
+        padding-block: 0;
+        padding-inline: 0;
+        color: inherit;
+      }
+
       &.disabled {
         background-color: awsui.$color-background-dropdown-item-dimmed;
         border-color: awsui.$color-border-dropdown-item-dimmed-hover;
@@ -78,6 +91,7 @@
   margin-block-start: calc(-1 * #{awsui.$border-divider-list-width});
   padding-block: 0;
   padding-inline: 0;
+
   &:first-child {
     margin-block-start: 0;
   }

@@ -3,7 +3,6 @@
 import { DateRangePickerProps } from '../interfaces';
 
 export const i18nStrings: DateRangePickerProps.I18nStrings = {
-  ariaLabel: 'date range picker',
   todayAriaLabel: 'TEST TODAY',
   currentMonthAriaLabel: 'TEST THIS MONTH',
   nextMonthAriaLabel: 'TEST NEXT MONTH',

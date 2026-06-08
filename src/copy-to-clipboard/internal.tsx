@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -23,9 +24,12 @@ export default function InternalCopyToClipboard({
   copyErrorText,
   textToCopy,
   textToDisplay,
+  wrapText = true,
   popoverRenderWithPortal,
   disabled,
   disabledReason,
+  onCopySuccess,
+  onCopyFailure,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -54,6 +58,7 @@ export default function InternalCopyToClipboard({
       // The clipboard API is not available in insecure contexts.
       setStatus('error');
       setStatusText(copyErrorText);
+      fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       return;
     }
 
@@ -62,10 +67,12 @@ export default function InternalCopyToClipboard({
       .then(() => {
         setStatus('success');
         setStatusText(copySuccessText);
+        fireNonCancelableEvent(onCopySuccess, { text: textToCopy });
       })
       .catch(() => {
         setStatus('error');
         setStatusText(copyErrorText);
+        fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       });
   };
 
@@ -113,10 +120,10 @@ export default function InternalCopyToClipboard({
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       {isInline ? (
-        <span className={styles['inline-container']}>
+        <span className={clsx(styles['inline-container'], !wrapText && styles['inline-container-no-wrap'])}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'])}>
-            {textToDisplay ?? textToCopy}
+          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'], styles['text-to-display'])}>
+            {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
         </span>
       ) : (

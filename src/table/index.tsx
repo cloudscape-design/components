@@ -11,6 +11,7 @@ import { CollectionPreferencesMetadata } from '../internal/context/collection-pr
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
+import { getColumnGroupsDepth } from './column-groups/utils';
 import { getSortingColumnId } from './header-cell/utils';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalTable, { InternalTableAsSubstep } from './internal';
@@ -32,7 +33,7 @@ const Table = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const hasHiddenColumns =
       (props.visibleColumns && props.visibleColumns.length < props.columnDefinitions.length) ||
-      props.columnDisplay?.some(col => !col.visible);
+      props.columnDisplay?.some(col => col.type !== 'group' && !col.visible);
     const hasStickyColumns = !!props.stickyColumns?.first || !!props.stickyColumns?.last;
     const baseComponentProps = useBaseComponent(
       'Table',
@@ -53,6 +54,11 @@ const Table = React.forwardRef(
         metadata: {
           expandableRows: !!props.expandableRows,
           progressiveLoading: !!props.getLoadingStatus,
+          groupSelection: !!props.expandableRows?.groupSelection,
+          columnGroups: !!props.groupDefinitions?.length,
+          columnGroupsDepth: getColumnGroupsDepth(props.columnDisplay),
+          cellCounters: props.columnDefinitions.filter(dev => !!dev.counter).length,
+          loaderCounters: !!props.renderLoaderCounter,
           inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
           disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
           hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),

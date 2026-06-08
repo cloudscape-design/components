@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferências de coluna",
     "contentDisplayPreference.description": "Personalize a visibilidade e a ordem das colunas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Ícone de arrastar",
-    "contentDisplayPreference.dragHandleAriaDescription": "Use Space ou Enter para ativar a função de arrastar para um item e, em seguida, use as teclas de setas para movimentar o posicionamento do item. Para completar o movimento de posicionamento, use Space ou Enter, ou para descartar o movimento, use Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Use a barra de espaço ou a tecla Enter para ativar o arrastar de um item e, em seguida, use as setas do teclado para ajustar a posição do item. Para confirmar o ajuste de posição, use a barra de espaço ou a tecla Enter; para cancelar o ajuste, use a tecla Escape. Talvez seja necessário alternar o modo de navegação no seu leitor de tela.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Item selecionado na posição {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenação cancelada",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrar colunas",
@@ -158,14 +158,18 @@
     "i18nStrings.endMonthLabel": "Mês de término",
     "i18nStrings.endDateLabel": "Data de término",
     "i18nStrings.endTimeLabel": "Horário de término",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para data, use AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
-    "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
+    "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA-MM-DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.slashedDateConstraintText": "Para data, use AAAA/MM/DD.",
-    "i18nStrings.isoDateConstraintText": "Para data, use AAAA/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "Para data, use AAAA-MM-DD.",
     "i18nStrings.slashedMonthConstraintText": "Para mês, use AAAA/MM.",
-    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA/MM.",
+    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA-MM.",
     "i18nStrings.monthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erro",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervalo selecionado de {startDate} a {endDate}",
@@ -180,10 +184,18 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.} other {Atualize para tentar novamente.}}",
     "i18nStrings.refreshActionText": "Atualizar página"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lançamentos de atributos",
+    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos",
+    "ariaLabels.closeButton": "Fechar notificações",
+    "ariaLabels.content": "Notificações de recursos",
+    "ariaLabels.triggerButton": "Mostrar notificações de recursos",
+    "ariaLabels.resizeHandle": "Redimensionar notificações de recursos"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar mais",
-    "i18nStrings.removeFileAriaLabel": "Remover o arquivo {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Remover arquivo {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Erro",
     "i18nStrings.warningIconAriaLabel": "Aviso"
   },
@@ -240,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Próxima página",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas as páginas",
-    "ariaLabels.previousPageLabel": "Página anterior"
+    "ariaLabels.previousPageLabel": "Página anterior",
+    "ariaLabels.jumpToPageButtonLabel": "Ir para a página",
+    "i18nStrings.jumpToPageInputLabel": "Página",
+    "i18nStrings.jumpToPageError": "Página fora do alcance. Mostrando a última página disponível.",
+    "i18nStrings.jumpToPageLoadingText": "Carregando"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Alça de redimensionamento do painel",
@@ -254,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Fechar pop-over"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Enviar prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Erro",
+    "i18nStrings.menuRecoveryText": "Tentar novamente",
+    "i18nStrings.menuLoadingText": "Carregando itens",
+    "i18nStrings.menuFinishedText": "Fim de resultados",
+    "i18nStrings.menuErrorText": "Erro ao buscar itens",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selecionado",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserido",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} fixado",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} removido"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Todas as propriedades",

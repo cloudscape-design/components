@@ -10,7 +10,7 @@ import { BreadcrumbItem } from '../../../lib/components/breadcrumb-group/item/it
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
 
 import breadcrumbItemStyles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
-import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const { container } = render(<BreadcrumbGroup {...props} />);

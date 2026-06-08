@@ -72,11 +72,13 @@ const InternalDateInput = React.forwardRef(
       const isoValue = displayToIso(value);
       const formatProps = { hideTimeOffset: true, isDateOnly: true, isMonthOnly: granularity === 'month', locale };
       const normalizedValue = normalizeIsoDateString(isoValue, granularity);
-      return usesLongLocalizedValue && normalizedValue
-        ? formatDateLocalized({ date: normalizedValue, ...formatProps })
-        : isIso
-          ? formatDateIso({ date: isoValue, ...formatProps })
-          : isoToDisplay(isoValue);
+      if (usesLongLocalizedValue && normalizedValue) {
+        return formatDateLocalized({ date: normalizedValue, ...formatProps });
+      }
+      if (isIso) {
+        return normalizedValue === isoValue ? formatDateIso({ date: normalizedValue, ...formatProps }) : isoValue;
+      }
+      return isoToDisplay(isoValue);
     }, [value, isIso, granularity, locale, usesLongLocalizedValue]);
 
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataDateInputComponent = {

@@ -23,6 +23,12 @@ interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegion
   delay?: number;
 
   /**
+   * By default, the live region will announce the message immediately on mount.
+   * This attribute prevents that.
+   */
+  preventInitialAnnouncement?: boolean;
+
+  /**
    * Use a list of strings and/or refs to existing elements for building the
    * announcement text. If this property is set, `children` and `message` will
    * be ignored.
@@ -49,6 +55,7 @@ export default React.forwardRef(function InternalLiveRegion(
     tagName: TagName = 'div',
     delay,
     sources,
+    preventInitialAnnouncement,
     children,
     __internalRootRef,
     className,
@@ -76,13 +83,13 @@ export default React.forwardRef(function InternalLiveRegion(
   // server.
   const liveRegionControllerRef = useRef<LiveRegionController | undefined>();
   useEffect(() => {
-    const liveRegionController = new LiveRegionController(assertive ? 'assertive' : 'polite');
+    const liveRegionController = new LiveRegionController(assertive ? 'assertive' : 'polite', delay);
     liveRegionControllerRef.current = liveRegionController;
     return () => {
       liveRegionController.destroy();
       liveRegionControllerRef.current = undefined;
     };
-  }, [assertive]);
+  }, [assertive, delay]);
 
   const getContent = () => {
     if (sources) {
@@ -93,15 +100,24 @@ export default React.forwardRef(function InternalLiveRegion(
     }
   };
 
+  const initialAnnouncementContent = useRef<string | undefined>();
+
   // Call the controller on every render. The controller will deduplicate the
   // message against the previous announcement internally.
   useEffect(() => {
-    liveRegionControllerRef.current?.announce({ message: getContent(), delay });
+    const message = getContent();
+    if (initialAnnouncementContent.current === undefined) {
+      initialAnnouncementContent.current = message;
+    }
+    if (preventInitialAnnouncement && initialAnnouncementContent.current === message) {
+      return;
+    }
+    liveRegionControllerRef.current?.announce({ message });
   });
 
   useImperativeHandle(ref, () => ({
     reannounce() {
-      liveRegionControllerRef.current?.announce({ message: getContent(), delay, forceReannounce: true });
+      liveRegionControllerRef.current?.announce({ message: getContent(), forceReannounce: true });
     },
   }));
 

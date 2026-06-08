@@ -52,6 +52,8 @@ export interface InternalInputProps
   __inheritFormFieldProps?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
+  __inlineLabelText?: string;
+  __fullWidth?: boolean;
 }
 
 function InternalInput(
@@ -93,6 +95,8 @@ function InternalInput(
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
+    __inlineLabelText,
+    __fullWidth,
     style,
     ...rest
   }: InternalInputProps,
@@ -196,6 +200,18 @@ function InternalInput(
     },
   };
 
+  const mainInput = (
+    <WithNativeAttributes
+      {...attributes}
+      tag="input"
+      componentName="Input"
+      nativeAttributes={nativeInputAttributes}
+      skipWarnings={__skipNativeAttributesWarnings}
+      ref={mergedRef}
+      style={getInputStyles(style)}
+    />
+  );
+
   return (
     <div
       {...baseProps}
@@ -211,15 +227,23 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <WithNativeAttributes
-        {...attributes}
-        tag="input"
-        componentName="Input"
-        nativeAttributes={nativeInputAttributes}
-        skipWarnings={__skipNativeAttributesWarnings}
-        ref={mergedRef}
-        style={getInputStyles(style)}
-      />
+      {__inlineLabelText ? (
+        <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
+          <label htmlFor={controlId} className={styles['inline-label']}>
+            {__inlineLabelText}
+          </label>
+          <div
+            className={clsx(
+              styles['inline-label-trigger-wrapper'],
+              __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+            )}
+          >
+            {mainInput}
+          </div>
+        </div>
+      ) : (
+        mainInput
+      )}
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}

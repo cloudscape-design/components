@@ -26,3 +26,4 @@ export const AppLayoutBottomContentSlot = createWidgetizedAppLayoutBottomContent
 export const AppLayoutWidgetizedState = createWidgetizedAppLayoutState(
   createLoadableComponent(AppLayoutStateImplementation)
 );
+export const loadFormatter = () => Promise.resolve(null);

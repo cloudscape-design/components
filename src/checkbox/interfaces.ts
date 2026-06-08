@@ -34,6 +34,8 @@ export interface CheckboxProps extends BaseCheckboxProps {
   ariaRequired?: boolean;
 
   /**
+   * An object containing CSS properties to customize the checkbox's visual appearance.
+   * Refer to the [style](/components/checkbox/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: CheckboxProps.Style;

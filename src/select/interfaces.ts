@@ -1,13 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
+import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import {
-  BaseDropdownHostProps,
-  OptionsFilteringType,
-  OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
@@ -53,6 +49,7 @@ export interface BaseSelectProps
    * on your own.
    **/
   options?: SelectProps.Options;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -160,6 +157,7 @@ export interface SelectProps extends BaseSelectProps {
    * For use with collection select filters only.
    */
   inlineLabelText?: string;
+  onLoadItems?: NonCancelableEventHandler<SelectProps.LoadItemsDetail>;
   /**
    * Adds `aria-labelledby` to the component. If you're using this component within a form field,
    * don't set this property because the form field component automatically sets it.
@@ -189,6 +187,10 @@ export interface SelectProps extends BaseSelectProps {
    * Automatically focuses the trigger when component is mounted.
    */
   autoFocus?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu or trigger.
+   */
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 }
 
 export namespace SelectProps {
@@ -199,7 +201,32 @@ export namespace SelectProps {
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
 
-  export type LoadItemsDetail = OptionsLoadItemsDetail;
+  export interface SelectOptionItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    highlighted: boolean;
+    selected: boolean;
+    disabled: boolean;
+    parent: SelectOptionGroupItem | null;
+  }
+  export interface SelectOptionGroupItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    disabled: boolean;
+  }
+  export interface SelectTriggerOptionItem {
+    type: 'trigger';
+    option: Option;
+  }
+  export type SelectItem = SelectOptionItem | SelectOptionGroupItem | SelectTriggerOptionItem;
+  export type SelectOptionItemRenderer = (props: { item: SelectItem; filterText?: string }) => ReactNode | null;
+
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
 
   export interface ChangeDetail {
     selectedOption: Option;

@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
@@ -8,6 +9,7 @@ import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@clouds
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import DragHandleWrapper from '../../internal/components/drag-handle-wrapper';
+import { useThrottleCallback } from '../../internal/hooks/use-throttle-callback';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
@@ -28,14 +30,36 @@ interface ResizerProps {
   roleDescription?: string;
   tooltipText?: string;
   isBorderless: boolean;
+  isLast?: boolean;
+  dividerPosition?: DividerPosition;
 }
 
+const RESIZE_THROTTLE = 25;
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Divider({ className }: { className?: string }) {
-  return <span className={clsx(styles.divider, styles['divider-disabled'], className)} />;
+export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
+
+export function Divider({
+  className,
+  position,
+  variant,
+}: {
+  className?: string;
+  position?: DividerPosition;
+  variant?: 'default' | 'interactive';
+}) {
+  return (
+    <span
+      className={clsx(
+        styles.divider,
+        variant === 'default' && styles['divider-disabled'],
+        position && position !== 'default' && styles[`divider-position-${position}`],
+        className
+      )}
+    />
+  );
 }
 
 export function Resizer({
@@ -49,6 +73,8 @@ export function Resizer({
   roleDescription,
   tooltipText,
   isBorderless,
+  isLast,
+  dividerPosition,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -168,7 +194,7 @@ export function Resizer({
     [minWidth, onWidthUpdate, updateTrackerPosition]
   );
 
-  const resizeColumn = useCallback(
+  const resizeColumn = useThrottleCallback(
     (offset: number) => {
       const elements = getResizerElements(resizerToggleRef.current);
       if (!elements) {
@@ -183,6 +209,7 @@ export function Resizer({
         updateColumnWidth(newWidth);
       }
     },
+    RESIZE_THROTTLE,
     [updateColumnWidth]
   );
 
@@ -326,7 +353,8 @@ export function Resizer({
       className={clsx(
         styles['resizer-wrapper'],
         isVisualRefresh && styles['visual-refresh'],
-        (!isVisualRefresh || isBorderless) && styles['is-borderless']
+        (!isVisualRefresh || isBorderless) && styles['is-borderless'],
+        isLast && styles['is-last']
       )}
       ref={positioningWrapperRef}
     >
@@ -407,7 +435,11 @@ export function Resizer({
           data-focus-id={focusId}
         />
         <span
-          className={clsx(styles['divider-interactive'], (isPointerDown || isDragging) && styles['divider-active'])}
+          className={clsx(
+            styles['divider-interactive'],
+            (isPointerDown || isDragging) && styles['divider-active'],
+            dividerPosition && dividerPosition !== 'default' && styles[`divider-position-${dividerPosition}`]
+          )}
           data-awsui-table-suppress-navigation={true}
           ref={resizerSeparatorRef}
           id={separatorId}

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { includeIgnoreFile } from '@eslint/compat';
 import eslint from '@eslint/js';
-import headerPlugin from 'eslint-plugin-header';
+import headerPlugin from '@tony.ganchev/eslint-plugin-header';
 import jestPlugin from 'eslint-plugin-jest';
 import noUnsanitizedPlugin from 'eslint-plugin-no-unsanitized';
 import eslintPrettier from 'eslint-plugin-prettier/recommended';
@@ -17,9 +17,6 @@ import tsEslint from 'typescript-eslint';
 import cloudscapeCommonRules from '@cloudscape-design/build-tools/eslint/index.js';
 
 import cloudscapeComponentsRules from './build-tools/eslint/index.js';
-
-// https://github.com/Stuk/eslint-plugin-header/issues/57
-headerPlugin.rules.header.meta.schema = false;
 
 export default tsEslint.config(
   includeIgnoreFile(path.resolve('.gitignore')),
@@ -65,7 +62,7 @@ export default tsEslint.config(
       'react/prop-types': 'off',
       'react/jsx-boolean-value': ['error', 'always'],
       '@cloudscape-design/build-tools/react-server-components-directive': 'error',
-      '@cloudscape-design/components/ban-files': [
+      '@cloudscape-design/build-tools/ban-files': [
         'error',
         [
           {
@@ -112,8 +109,30 @@ export default tsEslint.config(
       'require-await': 'error',
       'header/header': [
         'error',
-        'line',
-        [' Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.', ' SPDX-License-Identifier: Apache-2.0'],
+        {
+          header: {
+            commentType: 'line',
+            lines: [
+              ' Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.',
+              ' SPDX-License-Identifier: Apache-2.0',
+            ],
+          },
+          leadingComments: {
+            comments: [
+              {
+                commentType: 'block',
+                lines: ['*', ' * @jest-environment node', ' '],
+              },
+            ],
+          },
+        },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'BinaryExpression[operator="in"][left.type="Literal"]',
+          message: 'Prefer a type guard function with `keyof` instead of raw `in` checks.',
+        },
       ],
       'no-warning-comments': 'warn',
       'simple-import-sort/imports': [
@@ -188,6 +207,21 @@ export default tsEslint.config(
       'jest/no-conditional-expect': 'off',
       'jest/no-standalone-expect': 'off',
       'jest/expect-expect': 'off',
+    },
+  },
+  {
+    files: ['src/test-utils/dom/**/*.ts'],
+    rules: {
+      '@cloudscape-design/build-tools/ban-files': [
+        'error',
+        [
+          {
+            pattern: './src/test-utils/dom/index.ts',
+            message:
+              "Do not import from the augmented ElementWrapper barrel '{{ path }}'. Use @cloudscape-design/test-utils-core/dom instead.",
+          },
+        ],
+      ],
     },
   },
   {

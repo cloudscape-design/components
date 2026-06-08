@@ -69,6 +69,13 @@ export interface FormFieldProps extends BaseComponentProps {
   constraintText?: React.ReactNode;
 
   /**
+   * Character count constraint displayed adjacent to the constraintText. Use
+   * this to provide an updated character count on each keypress that is debounced
+   * for screen reader users.
+   */
+  characterCountText?: string;
+
+  /**
    * Text that displays as a validation error message. If this is set to a
    * non-empty string, it will render the form field as invalid.
    */

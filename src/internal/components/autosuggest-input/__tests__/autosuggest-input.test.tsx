@@ -5,10 +5,10 @@ import { act, fireEvent, render as renderJsx } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
+import Dropdown from '../../../../../lib/components/dropdown/internal';
 import AutosuggestInput, {
   AutosuggestInputRef,
 } from '../../../../../lib/components/internal/components/autosuggest-input';
-import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
 
 function render(jsx: React.ReactElement) {
@@ -299,9 +299,12 @@ describe('blur handling', () => {
           onChange={() => undefined}
           onCloseDropdown={onClose}
           dropdownContent={
-            <Dropdown trigger={<button />} open={true} expandToViewport={true}>
-              <button data-testid="target">target</button>
-            </Dropdown>
+            <Dropdown
+              trigger={<button />}
+              open={true}
+              expandToViewport={true}
+              content={<button data-testid="target">target</button>}
+            />
           }
         />
       </div>

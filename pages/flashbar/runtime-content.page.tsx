@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ReactNode, useContext, useState } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
+import React, { isValidElement, ReactNode, useContext, useState } from 'react';
 
 import {
   Box,
@@ -26,9 +25,9 @@ type PageContext = React.Context<
 >;
 
 const nodeAsString = (node: ReactNode) =>
-  flattenChildren(node)
-    .map(node => (typeof node === 'object' ? node.props.children : node))
-    .filter(node => typeof node === 'string')
+  React.Children.toArray(node)
+    .map((childNode: ReactNode) => (isValidElement(childNode) ? childNode.props.children : childNode))
+    .filter((childNode: ReactNode) => typeof childNode === 'string')
     .join('');
 
 awsuiPlugins.flashContent.registerContentReplacer({
@@ -76,24 +75,22 @@ awsuiPlugins.flashContent.registerContentReplacer({
 
 const messageTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
 
-const content = (
-  <>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-    <p>There was an error: Access denied because of XYZ</p>
-  </>
-);
+const content = [
+  <p key="0">There was an error: Access denied because of XYZ</p>,
+  <p key="1">There was an error: Access denied because of XYZ</p>,
+  <p key="2">There was an error: Access denied because of XYZ</p>,
+  <p key="3">There was an error: Access denied because of XYZ</p>,
+  <p key="4">There was an error: Access denied because of XYZ</p>,
+  <p key="5">There was an error: Access denied because of XYZ</p>,
+  <p key="6">There was an error: Access denied because of XYZ</p>,
+  <p key="7">There was an error: Access denied because of XYZ</p>,
+  <p key="8">There was an error: Access denied because of XYZ</p>,
+  <p key="9">There was an error: Access denied because of XYZ</p>,
+  <p key="10">There was an error: Access denied because of XYZ</p>,
+  <p key="11">There was an error: Access denied because of XYZ</p>,
+  <p key="12">There was an error: Access denied because of XYZ</p>,
+  <p key="13">There was an error: Access denied because of XYZ</p>,
+];
 
 export default function () {
   const {

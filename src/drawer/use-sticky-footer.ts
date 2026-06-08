@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { RefObject, useCallback, useState } from 'react';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { throttle } from '../internal/utils/throttle';
 
@@ -11,9 +13,11 @@ export const MINIMUM_SCROLLABLE_SPACE = 148;
 const STICKY_STATE_CHECK_THROTTLE_DELAY = 100; // every tenth of a second
 
 export function useStickyFooter({
+  rootRef,
   drawerRef,
   footerRef,
 }: {
+  rootRef: RefObject<HTMLElement>;
   drawerRef: RefObject<HTMLElement>;
   footerRef: RefObject<HTMLElement>;
 }) {
@@ -21,11 +25,11 @@ export function useStickyFooter({
 
   const checkStickyState = throttle(
     useCallback(() => {
-      if (!drawerRef.current || !footerRef.current) {
+      if (!drawerRef?.current || !footerRef?.current) {
         return;
       }
 
-      const parentElement = drawerRef.current.parentElement;
+      const parentElement = rootRef?.current?.parentElement;
       const parentElementHeight = parentElement?.getBoundingClientRect().height;
       const drawerHeight = drawerRef.current.getBoundingClientRect().height;
       const effectiveHeight = Math.min(parentElementHeight ?? drawerHeight, drawerHeight);
@@ -37,19 +41,11 @@ export function useStickyFooter({
       const hasEnoughSpace = scrollableHeight >= MINIMUM_SCROLLABLE_SPACE;
 
       setIsSticky(hasEnoughSpace);
-    }, [footerRef, drawerRef]),
+    }, [rootRef, footerRef, drawerRef]),
     STICKY_STATE_CHECK_THROTTLE_DELAY
   );
 
-  useLayoutEffect(() => {
-    window.addEventListener('resize', checkStickyState);
-    checkStickyState();
-
-    return () => {
-      window.removeEventListener('resize', checkStickyState);
-      checkStickyState.cancel();
-    };
-  }, [checkStickyState]);
+  useResizeObserver(() => rootRef?.current?.parentElement ?? null, checkStickyState);
 
   return { isSticky };
 }

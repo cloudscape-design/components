@@ -4,10 +4,10 @@ import * as React from 'react';
 import { act, render, within } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
-import { KeyCode } from '../../../lib/components/internal/keycode';
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
+import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/prompt-input/styles.selectors.js';
 
@@ -236,7 +236,7 @@ describe('prompt input in form', () => {
 
   test('enter key submits form', () => {
     const [wrapper, submitSpy] = renderPromptInputInForm({ value: '' });
-    wrapper.findNativeTextarea().keydown(KeyCode.enter);
+    wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter });
     expect(submitSpy).toHaveBeenCalled();
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(
@@ -259,7 +259,7 @@ describe('prompt input in form', () => {
       value: '',
       onKeyDown: event => event.preventDefault(),
     });
-    wrapper.findNativeTextarea().keydown(KeyCode.enter);
+    wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter });
     expect(submitSpy).not.toHaveBeenCalled();
   });
 });
@@ -297,7 +297,7 @@ describe('events', () => {
       onAction: event => onAction(event.detail),
     });
 
-    wrapper.findNativeTextarea().keydown(KeyCode.enter);
+    wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter });
     expect(onAction).toHaveBeenCalled();
   });
 
@@ -322,7 +322,7 @@ describe('events', () => {
     });
 
     act(() => {
-      wrapper.findNativeTextarea().keydown(KeyCode.enter);
+      wrapper.findNativeTextarea().keydown({ keyCode: KeyCode.enter });
     });
 
     expect(onKeyDown).toHaveBeenCalled();

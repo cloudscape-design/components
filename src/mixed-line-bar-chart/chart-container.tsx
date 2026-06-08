@@ -478,7 +478,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter, detailPopoverSeriesContent]);
 
   const detailPopoverFooterContent = useMemo(
-    () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX) : null),
+    () => (detailPopoverFooter && highlightedX !== null ? detailPopoverFooter(highlightedX) : null),
     [detailPopoverFooter, highlightedX]
   );
 

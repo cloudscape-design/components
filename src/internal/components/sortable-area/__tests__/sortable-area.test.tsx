@@ -40,6 +40,7 @@ test('renders all items with correct attributes', () => {
         isDragGhost: false,
         isSortingActive: false,
         dragHandleProps: {
+          active: false,
           ariaLabel: `Drag handle ${items[i].label}`,
           ariaDescribedby: expect.any(String),
           disabled: false,

@@ -299,4 +299,17 @@ describe('Expandable rows', () => {
     });
     expect(table.findEditCellButton(1, 1)).not.toBe(null);
   });
+
+  test('tolerates infinitely expandable items', () => {
+    const { table } = renderTable({
+      items: simpleItems,
+      expandableRows: {
+        isItemExpandable: () => true,
+        expandedItems: [],
+        getItemChildren: () => [{ name: Math.random().toString() }],
+        onExpandableItemToggle: () => {},
+      },
+    });
+    expect(table).not.toBe(null);
+  });
 });

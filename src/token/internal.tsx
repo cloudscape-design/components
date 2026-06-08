@@ -8,11 +8,13 @@ import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
-import Tooltip from '../internal/components/tooltip';
+import { TokenInlineContext } from '../internal/context/token-inline-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../live-region/internal';
+import Tooltip from '../tooltip/internal.js';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
+import { getTokenRootStyles } from './styles';
 
 import legacyTestingStyles from '../token-group/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -49,6 +51,7 @@ function InternalToken({
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
+  const tokenRootStyleProps = getTokenRootStyles(restProps.style);
   const labelContainerRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -97,80 +100,85 @@ function InternalToken({
     }
   };
 
+  // Use span for inline tokens (e.g. inside contentEditable) to avoid block-level elements breaking text flow.
+  const SpanOrDivTag = isInline ? 'span' : 'div';
+
   return (
-    <div
-      {...baseProps}
-      ref={__internalRootRef}
-      className={clsx(
-        styles.root,
-        legacyTestingStyles.token,
-        testUtilStyles.root,
-        !isInline ? styles['token-normal'] : styles['token-inline'],
-        analyticsSelectors.token,
-        baseProps.className
-      )}
-      aria-label={ariaLabel}
-      aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
-      aria-disabled={!!disabled}
-      role={role ?? 'group'}
-      onFocus={() => {
-        setShowTooltip(true);
-      }}
-      onBlur={() => {
-        setShowTooltip(false);
-      }}
-      onMouseEnter={() => {
-        setShowTooltip(true);
-      }}
-      onMouseLeave={() => {
-        setShowTooltip(false);
-      }}
-      tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
-    >
-      <div
+    <TokenInlineContext.Provider value={{ isInlineToken: isInline }}>
+      <SpanOrDivTag
+        {...baseProps}
+        ref={__internalRootRef}
         className={clsx(
-          !isInline ? styles['token-box'] : styles['token-box-inline'],
-          disabled && styles['token-box-disabled'],
-          readOnly && styles['token-box-readonly'],
-          !isInline && !onDismiss && styles['token-box-without-dismiss'],
-          disableInnerPadding && styles['disable-padding']
+          styles.root,
+          legacyTestingStyles.token,
+          testUtilStyles.root,
+          !isInline ? styles['token-normal'] : styles['token-inline'],
+          analyticsSelectors.token,
+          baseProps.className
         )}
+        aria-label={ariaLabel}
+        aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
+        aria-disabled={!!disabled}
+        role={role ?? 'group'}
+        onFocus={() => {
+          setShowTooltip(true);
+        }}
+        onBlur={() => {
+          setShowTooltip(false);
+        }}
+        onMouseEnter={() => {
+          setShowTooltip(true);
+        }}
+        onMouseLeave={() => {
+          setShowTooltip(false);
+        }}
+        tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       >
-        <Option
-          className={clsx(isInline && styles['token-option-inline'])}
-          triggerVariant={isInline}
-          option={buildOptionDefinition()}
-          disableTitleTooltip={!!tooltipContent}
-          labelContainerRef={labelContainerRef}
-          labelRef={labelRef}
-          labelId={ariaLabelledbyId}
-        />
-        {onDismiss && (
-          <DismissButton
-            disabled={disabled}
-            dismissLabel={dismissLabel}
-            onDismiss={onDismiss}
-            readOnly={readOnly}
-            inline={isInline}
+        <SpanOrDivTag
+          className={clsx(
+            !isInline ? styles['token-box'] : styles['token-box-inline'],
+            disabled && styles['token-box-disabled'],
+            readOnly && styles['token-box-readonly'],
+            !isInline && !onDismiss && styles['token-box-without-dismiss'],
+            disableInnerPadding && styles['disable-padding']
+          )}
+          style={tokenRootStyleProps}
+        >
+          <Option
+            className={clsx(isInline && styles['token-option-inline'])}
+            triggerVariant={isInline}
+            option={buildOptionDefinition()}
+            disableTitleTooltip={!!tooltipContent}
+            labelContainerRef={labelContainerRef}
+            labelRef={labelRef}
+            labelId={ariaLabelledbyId}
+          />
+          {onDismiss && (
+            <DismissButton
+              disabled={disabled}
+              dismissLabel={dismissLabel}
+              onDismiss={onDismiss}
+              readOnly={readOnly}
+              inline={isInline}
+            />
+          )}
+        </SpanOrDivTag>
+        {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
+          <Tooltip
+            data-testid="token-tooltip"
+            getTrack={() => labelContainerRef.current}
+            content={
+              <LiveRegion>
+                <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
+              </LiveRegion>
+            }
+            onEscape={() => {
+              setShowTooltip(false);
+            }}
           />
         )}
-      </div>
-      {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
-        <Tooltip
-          data-testid="token-tooltip"
-          trackRef={labelContainerRef}
-          value={
-            <LiveRegion>
-              <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
-            </LiveRegion>
-          }
-          size="medium"
-          onDismiss={() => {
-            setShowTooltip(false);
-          }}
-        />
-      )}
-    </div>
+      </SpanOrDivTag>
+    </TokenInlineContext.Provider>
   );
 }
 

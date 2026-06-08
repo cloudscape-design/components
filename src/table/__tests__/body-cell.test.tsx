@@ -121,6 +121,11 @@ describe('TableBodyCell', () => {
     expect(container.querySelector('td')).toBeInTheDocument();
   });
 
+  it('should render counter', () => {
+    const { container } = render(<TestComponent counter=" test counter" />);
+    expect(container.querySelector('td')).toHaveTextContent('testData test counter');
+  });
+
   it('should call onEditStart', () => {
     render(<TestComponent />);
     fireEvent.click(screen.getByRole('button', { name: 'Edit testData test' }));

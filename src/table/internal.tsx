@@ -37,6 +37,8 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
+import { TableColGroup } from './column-groups/col-group';
+import { useColumnGroups } from './column-groups/use-column-groups';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
@@ -47,6 +49,7 @@ import { useProgressiveLoadingProps } from './progressive-loading/progressive-lo
 import { ResizeTracker } from './resizer';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
+import { useGroupSelection } from './selection/use-group-selection';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -106,10 +109,11 @@ const InternalTable = React.forwardRef(
       preferences,
       items,
       columnDefinitions,
+      groupDefinitions,
       trackBy,
       loading,
       loadingText,
-      selectionType,
+      selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
       ariaLabels,
@@ -138,12 +142,13 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       enableKeyboardNavigation,
-      expandableRows,
+      expandableRows: externalExpandableRows,
       getLoadingStatus,
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
       renderLoaderEmpty,
+      renderLoaderCounter,
       cellVerticalAlign,
       __funnelSubStepProps,
       ...rest
@@ -151,7 +156,7 @@ const InternalTable = React.forwardRef(
     ref: React.Ref<TableProps.Ref>
   ) => {
     // Keyboard navigation defaults to `true` for tables with expandable rows.
-    if (expandableRows && enableKeyboardNavigation === undefined) {
+    if (externalExpandableRows && enableKeyboardNavigation === undefined) {
       enableKeyboardNavigation = true;
     }
 
@@ -167,17 +172,15 @@ const InternalTable = React.forwardRef(
 
     const isMobile = useMobile();
 
-    const { isExpandable, allItems, getExpandableItemProps } = useExpandableTableProps({
+    const expandableRows = useExpandableTableProps({
       items,
-      expandableRows,
+      expandableRows: externalExpandableRows,
       trackBy,
       ariaLabels,
     });
-    const { allRows } = useProgressiveLoadingProps({
-      items: allItems,
-      getLoadingStatus,
-      getExpandableItemProps,
-    });
+    const { allItems, isExpandable } = expandableRows;
+    const { allRows } = useProgressiveLoadingProps({ getLoadingStatus, expandableRows });
+    const selectionType = expandableRows.hasGroupSelection ? ('group' as const) : externalSelectionType;
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
@@ -300,10 +303,21 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const { isItemSelected, getSelectAllProps, getItemSelectionProps } = useSelection({
+    const visibleColumnIds = visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx).toString());
+
+    const { groupColumnMap, ...columnGroupsLayout } = useColumnGroups(
+      columnDefinitions,
+      visibleColumnIds,
+      groupDefinitions,
+      columnDisplay
+    );
+
+    const selectionProps = {
       items: allItems,
+      rootItems: items,
       trackBy,
       selectedItems,
+      totalItemsCount,
       selectionType,
       isItemDisabled,
       onSelectionChange,
@@ -313,9 +327,23 @@ const InternalTable = React.forwardRef(
         selectionGroupLabel: undefined,
       },
       loading,
+      expandableRows,
+      getLoadingStatus,
       setLastUserAction,
-    });
-    const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
+    };
+    const normalSelection = useSelection(selectionProps);
+    const groupSelection = useGroupSelection(selectionProps);
+    const selection = selectionType === 'group' ? groupSelection : normalSelection;
+    const isRowSelected = (row: TableRow<T>) => {
+      if (row.type === 'data') {
+        return selection.isItemSelected(row.item);
+      }
+      if (selectionType !== 'group') {
+        return false;
+      }
+      // Group loader is selected when its parent is selected.
+      return !row.item ? expandableRows.groupSelection.inverted : selection.isItemSelected(row.item);
+    };
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -376,8 +404,10 @@ const InternalTable = React.forwardRef(
 
     const theadProps: TheadProps = {
       selectionType,
-      getSelectAllProps,
+      getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
+      groupDefinitions,
+      columnGroupsLayout,
       variant: computedVariant,
       tableVariant: computedVariant,
       wrapLines,
@@ -402,6 +432,8 @@ const InternalTable = React.forwardRef(
       resizerTooltipText: ariaLabels?.resizerTooltipText,
       stripedRows,
       stickyState,
+      stickyColumnsFirst: stickyColumns?.first ?? 0,
+      stickyColumnsLast: stickyColumns?.last ?? 0,
       selectionColumnId,
       tableRole,
       isExpandable,
@@ -436,6 +468,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -444,6 +477,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
+            groupColumnMap={groupColumnMap}
           >
             <InternalContainer
               {...baseProps}
@@ -485,6 +519,9 @@ const InternalTable = React.forwardRef(
                       tableHasHeader={hasHeader}
                       contentDensity={contentDensity}
                       tableRole={tableRole}
+                      hasGroupedColumns={!!columnGroupsLayout && columnGroupsLayout.rows.length > 1}
+                      columnDefinitions={visibleColumnDefinitions}
+                      hasSelection={hasSelection}
                     />
                   )}
                 </>
@@ -544,16 +581,21 @@ const InternalTable = React.forwardRef(
                     className={clsx(
                       styles.table,
                       resizableColumns && styles['table-layout-fixed'],
+                      columnGroupsLayout && columnGroupsLayout.rows.length > 1 && styles['has-grouped-header'],
                       contentDensity === 'compact' && getVisualContextClassname('compact-table')
                     )}
                     {...getTableRoleProps({
                       tableRole,
                       totalItemsCount,
                       totalColumnsCount: totalColumnsCount,
+                      headerRowCount,
                       ariaLabel: ariaLabels?.tableLabel,
                       ariaLabelledby,
                     })}
                   >
+                    {resizableColumns && columnGroupsLayout && columnGroupsLayout.rows.length > 1 && (
+                      <TableColGroup visibleColumnDefinitions={visibleColumnDefinitions} hasSelection={hasSelection} />
+                    )}
                     <Thead
                       ref={theadRef}
                       hidden={stickyHeader}
@@ -577,13 +619,15 @@ const InternalTable = React.forwardRef(
                         allRows.map((row, rowIndex) => {
                           const isFirstRow = rowIndex === 0;
                           const isLastRow = rowIndex === allRows.length - 1;
-                          const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
+                          const rowExpandableProps =
+                            row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
                           const rowRoleProps = getTableRowRoleProps({
                             tableRole,
                             firstIndex,
                             rowIndex,
+                            headerRowCount,
                             level: row.type === 'loader' ? row.level : undefined,
-                            ...expandableProps,
+                            ...rowExpandableProps,
                           });
                           const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                           const sharedCellProps = {
@@ -607,7 +651,7 @@ const InternalTable = React.forwardRef(
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
-                                  // However, that behaviour is unwanted when the focus is received as result of a click
+                                  // However, that behavior is unwanted when the focus is received as result of a click
                                   // as it causes the click to never reach the target element.
                                   if (!currentTarget.contains(getMouseDownTarget())) {
                                     stickyHeaderRef.current?.scrollToRow(currentTarget);
@@ -620,12 +664,12 @@ const InternalTable = React.forwardRef(
                                 }
                                 {...rowRoleProps}
                               >
-                                {getItemSelectionProps && (
+                                {selection.getItemSelectionProps && (
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     selectionControlProps={{
-                                      ...getItemSelectionProps(row.item),
+                                      ...selection.getItemSelectionProps(row.item),
                                       onFocusDown: moveFocusDown,
                                       onFocusUp: moveFocusUp,
                                       rowIndex,
@@ -643,7 +687,12 @@ const InternalTable = React.forwardRef(
                                   const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
                                   const isEditable = !!column.editConfig && !cellEditing.isLoading;
                                   const cellExpandableProps =
-                                    isExpandable && colIndex === 0 ? expandableProps : undefined;
+                                    isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
+                                  const counter = column.counter?.({
+                                    item: row.item,
+                                    itemsCount: rowExpandableProps?.itemsCount,
+                                    selectedItemsCount: rowExpandableProps?.selectedItemsCount,
+                                  });
 
                                   const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
                                     component: {
@@ -684,6 +733,7 @@ const InternalTable = React.forwardRef(
                                       colIndex={colIndex + colIndexOffset}
                                       verticalAlign={column.verticalAlign ?? cellVerticalAlign}
                                       tableVariant={computedVariant}
+                                      counter={counter}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
@@ -692,7 +742,9 @@ const InternalTable = React.forwardRef(
                               </tr>
                             );
                           }
-
+                          const loaderSelectionProps =
+                            selection.getLoaderSelectionProps && selection.getLoaderSelectionProps(row.item);
+                          const rowSelection = selectionType === 'group' ? loaderSelectionProps : undefined;
                           const loaderContent = getLoaderContent({
                             item: row.item,
                             loadingStatus: row.status,
@@ -701,6 +753,11 @@ const InternalTable = React.forwardRef(
                             renderLoaderError,
                             renderLoaderEmpty,
                           });
+                          const loaderCounter = renderLoaderCounter?.({
+                            item: row.item,
+                            loadingStatus: row.status,
+                            selected: !!rowSelection?.checked,
+                          });
                           return (
                             loaderContent && (
                               <tr
@@ -708,14 +765,16 @@ const InternalTable = React.forwardRef(
                                 className={styles.row}
                                 {...rowRoleProps}
                               >
-                                {getItemSelectionProps && (
+                                {selectionType ? (
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
+                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
+                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                   />
-                                )}
+                                ) : null}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
                                   <TableLoaderCell
                                     key={getColumnKey(column, colIndex)}
@@ -723,10 +782,12 @@ const InternalTable = React.forwardRef(
                                     wrapLines={false}
                                     columnId={column.id ?? colIndex}
                                     colIndex={colIndex + colIndexOffset}
+                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                     isRowHeader={colIndex === 0}
                                     level={row.level}
                                     item={row.item}
                                     trackBy={trackBy}
+                                    counter={loaderCounter}
                                   >
                                     {loaderContent}
                                   </TableLoaderCell>

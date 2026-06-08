@@ -87,10 +87,12 @@ function mapRuntimeHeaderActionsToHeaderActions(
   return runtimeHeaderActions.map(runtimeHeaderAction => {
     return {
       ...runtimeHeaderAction,
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
       ...('iconSvg' in runtimeHeaderAction &&
         runtimeHeaderAction.iconSvg && {
           iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.iconSvg),
         }),
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
       ...('pressedIconSvg' in runtimeHeaderAction &&
         runtimeHeaderAction.pressedIconSvg && {
           iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),

@@ -4,7 +4,10 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
+import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
 
 const defaultProps = {
   copyTarget: 'Test content',
@@ -75,6 +78,37 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders JSX in textToDisplay when variant="inline"', () => {
+    const { container } = render(
+      <CopyToClipboard
+        {...defaultProps}
+        variant="inline"
+        textToDisplay={
+          <>
+            styled <strong>content</strong>
+          </>
+        }
+      />
+    );
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+    const displayedEl = wrapper.findDisplayedText()!.getElement();
+    expect(displayedEl.innerHTML).toBe('styled <strong>content</strong>');
+  });
+
+  test('renders textToCopy for variant="inline" when textToDisplay is explicitly undefined', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={undefined} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders null for variant="inline" when textToDisplay is explicitly null', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={null} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('');
   });
 
   test('renders an inline button with custom text to display and separate text to copy', () => {
@@ -282,5 +316,211 @@ describe('CopyToClipboard', () => {
       wrapper.findCopyButton().click();
       await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
     });
+  });
+
+  describe('onCopySuccess callback', () => {
+    test.each(['simple text', 'special chars: @#$%^&*()', 'unicode: 你好世界 🎉', 'multiline\ntext\nhere'])(
+      'passes correct text to callback for various string types - %s',
+      async textToCopy => {
+        Object.assign(global.navigator, {
+          clipboard: { writeText: jest.fn().mockResolvedValue(undefined) },
+        });
+
+        const onCopySuccess = jest.fn();
+        const { container } = render(
+          <CopyToClipboard {...defaultProps} textToCopy={textToCopy} onCopySuccess={onCopySuccess} />
+        );
+        const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+        wrapper.findCopyButton().click();
+        await waitFor(() => {
+          expect(onCopySuccess).toHaveBeenCalledWith(expect.objectContaining({ detail: { text: textToCopy } }));
+        });
+      }
+    );
+
+    test('invokes callback on successful copy', async () => {
+      const onCopySuccess = jest.fn();
+      const { container } = render(<CopyToClipboard {...defaultProps} onCopySuccess={onCopySuccess} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => {
+        expect(onCopySuccess).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test('callback receives correct text in detail object', async () => {
+      const onCopySuccess = jest.fn();
+      const { container } = render(<CopyToClipboard {...defaultProps} onCopySuccess={onCopySuccess} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => {
+        expect(onCopySuccess).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { text: 'Text to copy' },
+          })
+        );
+      });
+    });
+
+    test('does not invoke callback on copy failure', async () => {
+      const onCopySuccess = jest.fn();
+      const { container } = render(
+        <CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" onCopySuccess={onCopySuccess} />
+      );
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+      );
+      expect(onCopySuccess).not.toHaveBeenCalled();
+    });
+
+    test('does not invoke callback when prop is undefined', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      // Should not throw when callback is undefined
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
+    });
+
+    test('does not invoke callback when component is disabled', async () => {
+      const onCopySuccess = jest.fn();
+      const { container } = render(<CopyToClipboard {...defaultProps} disabled={true} onCopySuccess={onCopySuccess} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      // Wait a bit to ensure no async callback is triggered
+      await new Promise(resolve => setTimeout(resolve, 100));
+      expect(onCopySuccess).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onCopyFailure callback', () => {
+    test.each(['simple text', 'special chars: @#$%^&*()', 'unicode: 你好世界 🎉', 'multiline\ntext\nhere'])(
+      'passes correct text to callback for various string types - %s',
+      async textToCopy => {
+        Object.assign(global.navigator, {
+          clipboard: { writeText: jest.fn().mockRejectedValue(new Error('Copy failed')) },
+        });
+
+        const onCopyFailure = jest.fn();
+        const { container } = render(
+          <CopyToClipboard {...defaultProps} textToCopy={textToCopy} onCopyFailure={onCopyFailure} />
+        );
+        const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+        wrapper.findCopyButton().click();
+        await waitFor(() => {
+          expect(onCopyFailure).toHaveBeenCalledWith(expect.objectContaining({ detail: { text: textToCopy } }));
+        });
+      }
+    );
+
+    test('invokes callback on copy failure', async () => {
+      const onCopyFailure = jest.fn();
+      const { container } = render(
+        <CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" onCopyFailure={onCopyFailure} />
+      );
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => {
+        expect(onCopyFailure).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test('invokes callback when Clipboard API is unavailable', async () => {
+      Object.assign(global.navigator, { clipboard: undefined });
+
+      const onCopyFailure = jest.fn();
+      const { container } = render(<CopyToClipboard {...defaultProps} onCopyFailure={onCopyFailure} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => {
+        expect(onCopyFailure).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test('callback receives correct text in detail object', async () => {
+      const onCopyFailure = jest.fn();
+      const { container } = render(
+        <CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" onCopyFailure={onCopyFailure} />
+      );
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => {
+        expect(onCopyFailure).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { text: 'Text to copy with error' },
+          })
+        );
+      });
+    });
+
+    test('does not invoke callback on successful copy', async () => {
+      const onCopyFailure = jest.fn();
+      const { container } = render(<CopyToClipboard {...defaultProps} onCopyFailure={onCopyFailure} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
+      expect(onCopyFailure).not.toHaveBeenCalled();
+    });
+
+    test('does not invoke callback when prop is undefined', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      // Should not throw when callback is undefined
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+      );
+    });
+
+    test('does not invoke callback when component is disabled', async () => {
+      const onCopyFailure = jest.fn();
+      const { container } = render(
+        <CopyToClipboard
+          {...defaultProps}
+          textToCopy="Text to copy with error"
+          disabled={true}
+          onCopyFailure={onCopyFailure}
+        />
+      );
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      // Wait a bit to ensure no async callback is triggered
+      await new Promise(resolve => setTimeout(resolve, 100));
+      expect(onCopyFailure).not.toHaveBeenCalled();
+    });
+  });
+
+  test('wraps text by default for variant="inline"', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('InternalCopyToClipboard wraps text by default for variant="inline"', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('does not wrap text when wrapText=false', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
+  });
+
+  test('InternalCopyToClipboard does not wrap text when wrapText=false', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
   });
 });

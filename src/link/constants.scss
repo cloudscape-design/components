@@ -10,47 +10,59 @@
 $link-font-sizes: (
   'body-s': (
     'text-underline-offset': 0.3em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'body-m': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-xs': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-s': (
     'text-underline-offset': 0.3em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-m': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-l': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-xl': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'display-l': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 2px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link-display-l,
   ),
   'inherit': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
 );
 
+// $link-variants.recovery is needed for the undo button in Tag Editor,
+// which is underlined only in Classic
 $link-variants: (
-  'secondary': (
+  'recovery': (
     'text-color-default': awsui.$color-text-link-default,
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
+    'font-weight': awsui.$font-link-button-weight,
+    'decoration-line': underline,
+    'decoration-color': awsui.$color-text-link-button-underline,
+    'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
+    'letter-spacing': awsui.$font-link-button-letter-spacing,
+  ),
+  'secondary': (
+    'text-color-default': awsui.$color-text-link-secondary-default,
+    'text-color-hover': awsui.$color-text-link-secondary-hover,
+    'text-color-active': awsui.$color-text-link-secondary-hover,
     'font-weight': inherit,
     'decoration-line': none,
     'decoration-color': transparent,
@@ -63,14 +75,14 @@ $link-variants: (
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': inherit,
     'decoration-line': underline,
-    'decoration-color': currentColor,
-    'decoration-color-hover': currentColor,
+    'decoration-color': awsui.$color-text-link-decoration-default,
+    'decoration-color-hover': awsui.$color-text-link-decoration-hover,
     'letter-spacing': normal,
   ),
   'info': (
-    'text-color-default': awsui.$color-text-link-default,
-    'text-color-hover': awsui.$color-text-link-hover,
-    'text-color-active': awsui.$color-text-link-hover,
+    'text-color-default': awsui.$color-text-link-info-default,
+    'text-color-hover': awsui.$color-text-link-info-hover,
+    'text-color-active': awsui.$color-text-link-info-hover,
     'font-weight': styles.$font-weight-bold,
     'decoration-line': none,
     'decoration-color': transparent,
@@ -81,7 +93,7 @@ $link-variants: (
     'text-color-default': awsui.$color-text-link-default,
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
-    'font-weight': awsui.$font-box-value-large-weight,
+    'font-weight': awsui.$font-weight-display-l,
     'decoration-line': underline,
     'decoration-color': currentColor,
     'decoration-color-hover': currentColor,
@@ -96,30 +108,19 @@ $link-variants: (
     'decoration-color-hover': transparent,
     'letter-spacing': styles.$letter-spacing-bold-link,
   ),
-  // Need separate variant used for backwards compatible styles in classic
-  // (vr - button style, classic - underlined link style),
-  'recovery': (
-      'text-color-default': awsui.$color-text-link-default,
-      'text-color-hover': awsui.$color-text-link-hover,
-      'text-color-active': awsui.$color-text-link-hover,
-      'font-weight': awsui.$font-link-button-weight,
-      'decoration-line': underline,
-      'decoration-color': awsui.$color-text-link-button-underline,
-      'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
-      'letter-spacing': awsui.$font-link-button-letter-spacing,
-    ),
 );
 
+// $link-styles.button corresponds to a button link
+// (link without an href to be styled like a button)
 $link-styles: (
-  // A link without an href to be styled like a button
   'button': (
-      'text-color-default': awsui.$color-text-link-button-normal-default,
-      'text-color-hover': awsui.$color-text-link-button-normal-hover,
-      'text-color-active': awsui.$color-text-link-button-normal-active,
-      'font-weight': styles.$font-weight-bold,
-      'decoration-line': none,
-      'decoration-color': transparent,
-      'decoration-color-hover': transparent,
-      'letter-spacing': awsui.$font-button-letter-spacing,
-    )
+    'text-color-default': awsui.$color-text-link-button-normal-default,
+    'text-color-hover': awsui.$color-text-link-button-normal-hover,
+    'text-color-active': awsui.$color-text-link-button-normal-active,
+    'font-weight': styles.$font-weight-bold,
+    'decoration-line': none,
+    'decoration-color': transparent,
+    'decoration-color-hover': transparent,
+    'letter-spacing': awsui.$font-button-letter-spacing,
+  ),
 );

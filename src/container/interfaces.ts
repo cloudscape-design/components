@@ -69,7 +69,6 @@ export interface ContainerProps extends BaseComponentProps {
 
   /**
    * Determines whether the container footer has padding. If `true`, removes the default padding from the footer.
-   * @awsuiSystem core
    */
   disableFooterPaddings?: boolean;
 
@@ -83,6 +82,8 @@ export interface ContainerProps extends BaseComponentProps {
   variant?: 'default' | 'stacked';
 
   /**
+   * An object containing CSS properties to customize the container's visual appearance.
+   * Refer to the [style](/components/container/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;
@@ -129,6 +130,7 @@ export namespace ContainerProps {
       borderRadius?: string;
       borderWidth?: string;
       boxShadow?: string;
+      color?: string;
     };
     content?: {
       paddingBlock?: string;

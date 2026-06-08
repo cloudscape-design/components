@@ -120,6 +120,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   const wizardCount = useRef<number>(0);
   const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
   const formSubmitStartTime = useRef<number>(0);
+  const activeValidationTimerId = useRef<ReturnType<typeof setTimeout>>();
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
   // about the funnel, and receives a unique interaction id.
@@ -189,6 +190,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     // A funnel counts as "successful" if it is unmounted after being "complete".
     /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
+      clearTimeout(activeValidationTimerId.current);
       clearTimeout(handle);
 
       // There is no need in cleanup if the funnel was not started.
@@ -224,6 +226,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const funnelSubmit = () => {
+    clearTimeout(activeValidationTimerId.current);
     funnelState.current = 'validating';
     formSubmitStartTime.current = performance.now();
     /*
@@ -244,7 +247,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
       }
 
       if (loadingButtonCount.current > 0) {
-        setTimeout(checkForCompleteness, LOADING_WAIT_DELAY);
+        activeValidationTimerId.current = setTimeout(checkForCompleteness, LOADING_WAIT_DELAY);
         return;
       }
 
@@ -265,7 +268,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         funnelState.current = 'default';
       }
     };
-    setTimeout(checkForCompleteness, VALIDATION_WAIT_DELAY);
+    activeValidationTimerId.current = setTimeout(checkForCompleteness, VALIDATION_WAIT_DELAY);
   };
 
   const funnelNextOrSubmitAttempt = () => setSubmissionAttempt(i => i + 1);

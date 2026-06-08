@@ -65,6 +65,10 @@
       @include styles.link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
     }
   }
+
+  &.in-inline-token {
+    text-underline-offset: 0.15em;
+  }
 }
 
 .icon-wrapper {

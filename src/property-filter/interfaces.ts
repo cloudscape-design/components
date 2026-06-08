@@ -4,7 +4,6 @@
 import React from 'react';
 
 import {
-  PropertyFilterFreeTextFiltering,
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
@@ -20,8 +19,8 @@ import {
 } from '@cloudscape-design/collection-hooks';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -237,6 +236,17 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   tokenLimitShowMoreAriaLabel?: string;
 }
 
+// TODO: replace with PropertyFilterTextOperatorExtended from collection-hooks once it is released
+export interface PropertyFilterTextOperatorExtended {
+  operator: PropertyFilterOperator;
+  match?: (item: unknown, text: string) => boolean;
+}
+// TODO: replace with PropertyFilterFreeTextFiltering from collection-hooks once it is released
+export interface PropertyFilterFreeTextFiltering {
+  operators?: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
+  defaultOperator?: PropertyFilterOperator;
+}
+
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type TokenGroup = PropertyFilterTokenGroup;
@@ -394,7 +404,7 @@ export interface InternalFilteringOption {
 
 export interface InternalFreeTextFiltering {
   disabled: boolean;
-  operators: readonly PropertyFilterOperator[];
+  operators: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
   defaultOperator: PropertyFilterOperator;
 }
 

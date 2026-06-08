@@ -63,6 +63,7 @@ export function useVirtual<Item extends object>({
     () =>
       rowVirtualizer.virtualItems.map(virtualItem => ({
         ...virtualItem,
+        start: virtualItem.start,
         measureRef: (node: null | HTMLElement) => {
           const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
           if (mountedCount < MAX_ITEM_MOUNTS) {
@@ -74,9 +75,13 @@ export function useVirtual<Item extends object>({
     [items, rowVirtualizer.virtualItems]
   );
 
+  // If first item is sticky, substract that item's size from the total size
+  const firstItemSize = virtualItems[0]?.size ?? 0;
+  const adjustedTotalSize = firstItemSticky ? rowVirtualizer.totalSize - firstItemSize : rowVirtualizer.totalSize;
+
   return {
     virtualItems,
-    totalSize: rowVirtualizer.totalSize,
+    totalSize: adjustedTotalSize,
     scrollToIndex: rowVirtualizer.scrollToIndex,
   };
 }

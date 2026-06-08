@@ -8,8 +8,17 @@ import selectPartsStyles from '../../../select/parts/styles.selectors.js';
 export default class OptionWrapper extends ComponentWrapper {
   static rootSelector: string = styles.option;
 
+  /**
+   * Finds the label wrapper of this option.
+   * @returns {ElementWrapper} the ElementWrapper for the label.
+   */
   findLabel(): ElementWrapper {
-    return this.findByClassName(styles.label)!;
+    const labelElementWrapper = this.findByClassName(styles.label);
+    if (!labelElementWrapper) {
+      // Fallback, if label is null due to custom content.
+      return this.findByClassName(styles['custom-content'])!;
+    }
+    return labelElementWrapper;
   }
 
   findDescription(): ElementWrapper | null {

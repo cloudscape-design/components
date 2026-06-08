@@ -11,6 +11,8 @@ import { GeneratedAnalyticsMetadataTilesComponent } from './analytics-metadata/i
 import { TilesProps } from './interfaces';
 import InternalTiles from './internal';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+
 export { TilesProps };
 
 const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref>) => {
@@ -22,6 +24,7 @@ const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref
     label: { root: 'self' },
     properties: {
       value: `${props.value}`,
+      valueLabel: `.${analyticsSelectors.selected}`,
     },
   };
   return (

@@ -4,14 +4,14 @@ import { KeyboardEvent } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { TableProps } from '../interfaces';
+import { InternalSelectionType } from '../interfaces';
 import { SELECTION_ITEM } from './utils';
 
 import selectionStyles from './styles.css.js';
 
 // The hooks moves focus between multi-selection checkboxes.
 // Not eligible for tables with grid navigation.
-export function useSelectionFocusMove(selectionType: TableProps['selectionType'], totalItems: number) {
+export function useSelectionFocusMove(selectionType: undefined | InternalSelectionType, totalItems: number) {
   if (selectionType !== 'multi') {
     return {};
   }

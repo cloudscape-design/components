@@ -190,6 +190,22 @@ describe('Token', () => {
     });
   });
 
+  describe('Inline element tags', () => {
+    test('normal variant renders div elements', () => {
+      const wrapper = renderToken({ label: 'Test token' });
+      const root = wrapper.getElement();
+      expect(root.tagName).toBe('DIV');
+      expect(root.querySelector(`.${styles['token-box']}`)!.tagName).toBe('DIV');
+    });
+
+    test('inline variant renders span elements', () => {
+      const wrapper = renderToken({ label: 'Test token', variant: 'inline' });
+      const root = wrapper.getElement();
+      expect(root.tagName).toBe('SPAN');
+      expect(root.querySelector(`.${styles['token-box-inline']}`)!.tagName).toBe('SPAN');
+    });
+  });
+
   describe('Accessibility', () => {
     test('applies default group role and aria attributes', () => {
       const wrapper = renderToken({ label: 'Test token' });

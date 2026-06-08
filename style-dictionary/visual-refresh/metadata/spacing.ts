@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  spaceAlertVertical: {
+    description: 'The vertical padding inside alert components.',
+    public: true,
+    themeable: true,
+  },
   spaceScaled2xL: { sassName: '$space-scaled-2x-l' },
   spaceScaled2xM: { sassName: '$space-scaled-2x-m' },
   spaceScaled2xNone: { sassName: '$space-scaled-2x-none' },
@@ -109,6 +114,46 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceCardHorizontalDefault: {
+    description: 'The default horizontal padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside embedded a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalDefault: {
+    description: 'The default vertical padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalEmbedded: {
+    description: 'The vertical padding inside embedded a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalDefault: {
+    description: 'The default horizontal padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalDefault: {
+    description: 'The default vertical padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalEmbedded: {
+    description: 'The vertical padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
   spaceContainerHorizontal: {
     description: 'The horizontal padding inside a container.',
     public: true,
@@ -119,10 +164,51 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceTabsVertical: {
+    description: 'The vertical padding inside tabs.',
+    public: true,
+    themeable: true,
+  },
   spaceTreeViewIndentation: {
     description: 'The indentation of tree view items.',
     public: true,
     themeable: false,
+  },
+  spaceButtonHorizontal: {
+    description: 'The horizontal padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceButtonVertical: {
+    description: 'The vertical padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceTokenVertical: {
+    description: 'The vertical padding inside tokens.',
+    public: true,
+    themeable: true,
+  },
+  spaceFieldVertical: {
+    description: 'The vertical padding inside control components.',
+    public: true,
+    themeable: true,
+  },
+  spaceOptionPaddingVertical: {
+    description: 'The vertical padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceOptionPaddingHorizontal: {
+    description: 'The horizontal padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceStatusIndicatorPaddingHorizontal: {
+    description:
+      'The inline padding inside the status indicator container. Applied when the status indicator background is themed.',
+    public: false,
+    themeable: true,
   },
 };
 

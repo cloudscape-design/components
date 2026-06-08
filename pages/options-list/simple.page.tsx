@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 
 import Button from '~components/button';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown';
 import OptionsList from '~components/internal/components/options-list';
 
 interface ExtendedWindow extends Window {
@@ -35,14 +35,15 @@ export default function OptionsListScenario() {
             Dropdown trigger
           </Button>
         }
-        onDropdownClose={toggleDropdown}
-      >
-        <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
-          {[...Array(50)].map((_, index) => (
-            <li key={index}>{`Option ${index}`}</li>
-          ))}
-        </OptionsList>
-      </Dropdown>
+        onOutsideClick={toggleDropdown}
+        content={
+          <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
+            {[...Array(50)].map((_, index) => (
+              <li key={index}>{`Option ${index}`}</li>
+            ))}
+          </OptionsList>
+        }
+      />
     </article>
   );
 }

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Metrics } from '@cloudscape-design/component-toolkit/internal';
+
+import { Metrics } from '@cloudscape-design/component-toolkit/internal/metrics';
 
 import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from './environment';
 

@@ -1,5 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
+
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
@@ -10,6 +13,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * Provide an empty array to clear the selection.
    */
   selectedOptions: ReadonlyArray<MultiselectProps.Option>;
+
   /**
    * Specifies an inline label that appears next to the multiselect trigger.
    */
@@ -46,6 +50,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * @i18n
    */
   i18nStrings?: MultiselectProps.I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<MultiselectProps.LoadItemsDetail>;
   /**
    * Called when the user selects or deselects an option.
    * The event `detail` contains the current `selectedOptions`.
@@ -71,12 +76,51 @@ export interface MultiselectProps extends BaseSelectProps {
    * Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.
    */
   enableSelectAll?: boolean;
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   */
+  renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
+  export interface MultiselectOptionItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+    parent: MultiselectOptionGroupItem | null;
+  }
+  export interface MultiselectOptionGroupItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    indeterminate: boolean;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export interface MultiselectSelectAllItem {
+    type: 'select-all';
+    option: Option;
+    indeterminate: boolean;
+    highlighted: boolean;
+    selected: boolean;
+  }
+  export type MultiselectItem = MultiselectOptionItem | MultiselectOptionGroupItem | MultiselectSelectAllItem;
+  export type MultiselectOptionItemRenderer = (props: {
+    item: MultiselectItem;
+    filterText?: string;
+  }) => ReactNode | null;
+
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';
 

@@ -28,6 +28,7 @@ const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
   i18nStrings,
   value: null,
+  ariaLabel: 'Date range picker',
   onChange: () => {},
   relativeOptions: [
     { key: 'previous-5-minutes', amount: 5, unit: 'minute', type: 'relative' },

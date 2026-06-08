@@ -190,10 +190,14 @@ describe('tutorial detail view', () => {
   test('completed screen should have role status', () => {
     const tutorials = getTutorials();
     const context = getContext({ currentTutorial: tutorials[1] });
-    const { container } = renderTutorialPanelWithContext({ tutorials }, context);
-    const completedScreen = createWrapper(container).findTutorialPanel()!.find('[role="status"]')!.getElement();
-    expect(completedScreen).toHaveTextContent('COMPLETION_SCREEN_TITLE');
-    expect(completedScreen).toHaveTextContent('COMPLETED_SCREEN_DESCRIPTION_TEST');
+    // Fake timers to bypass the live region delay.
+    jest.useFakeTimers();
+    renderTutorialPanelWithContext({ tutorials }, context);
+    const liveRegion = document.querySelector('[aria-live=polite]')!;
+    jest.runAllTimers();
+    jest.useRealTimers();
+    expect(liveRegion).toHaveTextContent('COMPLETION_SCREEN_TITLE');
+    expect(liveRegion).toHaveTextContent('COMPLETED_SCREEN_DESCRIPTION_TEST');
   });
 });
 
@@ -292,6 +296,42 @@ describe('URL sanitization', () => {
         'aria-label',
         'LEARN_MORE_ABOUT_TUTORIA'
       );
+    });
+
+    test('focus returns to panel when exiting tutorial', () => {
+      const mockFocus = jest.fn();
+      const tutorials = getTutorials();
+      const originalFocus = HTMLElement.prototype.focus;
+      HTMLElement.prototype.focus = mockFocus;
+
+      const { container, context, rerender } = renderTutorialPanelWithContext(
+        {},
+        {
+          currentTutorial: tutorials[0],
+        }
+      );
+
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      wrapper.findDismissButton()!.click();
+      expect(context.onExitTutorial).toHaveBeenCalledTimes(1);
+      rerender(
+        <HotspotContext.Provider value={{ ...context, currentTutorial: null }}>
+          <TutorialPanel
+            i18nStrings={i18nStrings}
+            downloadUrl="DOWNLOAD_URL"
+            onFeedbackClick={() => {}}
+            tutorials={tutorials}
+          />
+        </HotspotContext.Provider>
+      );
+
+      const wrapperAfterExit = createWrapper(container).findTutorialPanel()!;
+      const panelElement = wrapperAfterExit.getElement();
+
+      expect(mockFocus).toHaveBeenCalledTimes(1);
+      expect(mockFocus.mock.instances[0]).toBe(panelElement);
+
+      HTMLElement.prototype.focus = originalFocus;
     });
   });
 });

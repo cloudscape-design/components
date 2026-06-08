@@ -17,6 +17,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontFamilyDisplay: {
+    description: 'The font family for display text. Defaults to the base font family.',
+    themeable: true,
+    public: true,
+  },
+  fontFamilyHeading: {
+    description: 'The font family for headings and component headers. Defaults to the base font family.',
+    themeable: true,
+    public: true,
+  },
   fontFamilyMonospace: {
     description: 'The monospace font family that will be applied globally to the product interface.',
     themeable: true,
@@ -64,8 +74,38 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightNormal: {
+    description: 'The default normal font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightBold: {
+    description: 'The default bold font weight for body text. For example, <strong> and <b> tags in text content.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightLighter: {
+    description: 'The default lighter font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightHeavy: {
+    description: 'The default heavy font weight.',
+    themeable: true,
+    public: true,
+  },
   fontWeightButton: {
     description: 'The default font weight for button text.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightAlertHeader: {
+    description: 'The default font weight for alert header text.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightFlashbarHeader: {
+    description: 'The default font weight for flashbar header text.',
     themeable: true,
     public: true,
   },
@@ -94,23 +134,58 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightDisplayL: {
+    description: 'The default font weight for large display text.',
+    themeable: true,
+    public: true,
+  },
+  fontSizeTabs: {
+    description: 'The default font size for tabs.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightTabs: {
+    description: 'The default font weight for tabs.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightTabsDisabled: {
+    description: 'The default font weight for disabled tabs.',
+    themeable: true,
+    public: true,
+  },
   letterSpacingBodyS: {
     description: 'The default letter spacing for small body text.',
   },
   letterSpacingDisplayL: {
     description: 'The default letter spacing for large display text.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingXl: {
     description: 'The default letter spacing for h1s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingL: {
     description: 'The default letter spacing for h2s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingM: {
     description: 'The default letter spacing for h3s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingS: {
     description: 'The default letter spacing for h4s.',
+    themeable: true,
+    public: true,
+  },
+  letterSpacingHeadingXs: {
+    description: 'The default letter spacing for h5s.',
+    themeable: true,
+    public: true,
   },
   lineHeightBodyM: {
     description: 'The default line height for regular body text.',
@@ -151,6 +226,66 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The default line height for h5s.',
     themeable: true,
     public: true,
+  },
+  lineHeightTabs: {
+    description: 'The default line height for tabs.',
+    themeable: true,
+    public: true,
+  },
+  fontDecorationThicknessLink: {
+    description: 'The text decoration thickness of links.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationThicknessLinkDisplayL: {
+    description: 'The text decoration thickness of links at display-l size.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationStyleLink: {
+    description: 'The text decoration style of links. For example: underline, dashed, dotted.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightBreadcrumbCurrent: {
+    description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
+    themeable: true,
+    public: false,
+  },
+  fontSizeExpandableHeading: {
+    description: 'The font size for expandable section headings.',
+    themeable: true,
+    public: false,
+  },
+  fontSizeFormLabel: {
+    description: 'The font size for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightFormLabel: {
+    description: 'The line height for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightFormLabel: {
+    description: 'The font weight for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontSizeKeyValuePairsLabel: {
+    description: 'The font size for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightKeyValuePairsLabel: {
+    description: 'The line height for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightKeyValuePairsLabel: {
+    description: 'The font weight for key-value pairs labels.',
+    themeable: true,
+    public: false,
   },
 };
 
