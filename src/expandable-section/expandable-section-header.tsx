@@ -3,7 +3,7 @@
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
@@ -108,7 +108,15 @@ const ExpandableDeprecatedHeader = ({
       aria-expanded={expanded}
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
-      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
+      <div
+        className={clsx(
+          styles['icon-container'],
+          styles[`icon-container-${variant}`],
+          isThemeActive(Theme.OneTheme) && styles['one-theme']
+        )}
+      >
+        {icon}
+      </div>
       {children}
     </div>
   );
@@ -201,7 +209,15 @@ const ExpandableHeaderTextWrapper = ({
       {...headerButtonListeners}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
-      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
+      <span
+        className={clsx(
+          styles['icon-container'],
+          styles[`icon-container-${variant}`],
+          isThemeActive(Theme.OneTheme) && styles['one-theme']
+        )}
+      >
+        {icon}
+      </span>
       <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
         {children}
       </span>
@@ -267,9 +283,9 @@ export const ExpandableSectionHeader = ({
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
     <InternalIcon
-      size={variant === 'container' ? 'medium' : 'normal'}
+      size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
       className={clsx(styles.icon, expanded && styles.expanded)}
-      name="caret-down-filled"
+      name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
     />
   );
   const defaultHeaderProps = {

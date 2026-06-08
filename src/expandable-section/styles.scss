@@ -14,6 +14,7 @@ $icon-width-medium: awsui.$size-icon-medium;
 $icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 $icon-margin-right-medium: awsui.$space-xs;
+$icon-offset: awsui.$space-xxxs;
 
 // Total space occupied by the expand icon on the left and its margins.
 // Useful to keep elements correctly aligned.
@@ -52,6 +53,18 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   // For vertical alignment of text in side navigation items
   &-container {
     margin-inline-end: $icon-margin-right-medium;
+    &.one-theme {
+      > .icon {
+        inset-block-start: calc(#{$icon-offset} * 3);
+      }
+    }
+  }
+  &.one-theme {
+    display: inline-flex;
+    align-items: flex-start;
+    > .icon {
+      inset-block-start: $icon-offset;
+    }
   }
 }
 
