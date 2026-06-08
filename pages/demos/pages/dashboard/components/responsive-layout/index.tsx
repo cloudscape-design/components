@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 interface ResponsiveLayoutProps {
   filters: React.ReactNode;

@@ -5,7 +5,7 @@ import React from 'react';
 import Box from '@cloudscape-design/components/box';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 interface EmptyStateProps {
   icon?: React.ReactNode;

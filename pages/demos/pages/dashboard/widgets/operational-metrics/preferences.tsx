@@ -10,7 +10,7 @@ import Modal from '@cloudscape-design/components/modal';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Toggle from '@cloudscape-design/components/toggle';
 
-import styles from './preferences.module.scss';
+import * as styles from './preferences.module.scss';
 
 export const allContent = ['status', 'running', 'monitoring', 'issues', 'breakdown'] as const;
 
