@@ -82,10 +82,10 @@ test('should apply filtering and display no-match state', () => {
 test('should navigate through pagination', () => {
   const { tableWrapper, paginationWrapper } = renderDemo(<Demo />);
   expect(tableWrapper.findBodyCell(1, 1)!.getElement().textContent).toEqual('1');
-  expect(paginationWrapper.findPreviousPageButton().getElement()).toBeDisabled();
+  expect(paginationWrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
   paginationWrapper.findNextPageButton().click();
   expect(tableWrapper.findBodyCell(1, 1)!.getElement().textContent).toEqual('11');
-  expect(paginationWrapper.findPreviousPageButton().getElement()).toBeEnabled();
+  expect(paginationWrapper.findPreviousPageButton().getElement()).not.toHaveAttribute('aria-disabled');
   paginationWrapper.findPageNumberByIndex(4)!.click();
   expect(tableWrapper.findBodyCell(1, 1)!.getElement().textContent).toEqual('31');
 });
@@ -95,7 +95,7 @@ test('pagination should work when filtering is applied', () => {
   expect(tableWrapper.findBodyCell(1, 1)!.getElement().textContent).toEqual('1');
   expect(paginationWrapper.findPageNumbers()).toHaveLength(2);
   paginationWrapper.findNextPageButton().click();
-  expect(paginationWrapper.findNextPageButton().getElement()).toBeDisabled();
+  expect(paginationWrapper.findNextPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
   expect(tableWrapper.findBodyCell(1, 1)!.getElement().textContent).toEqual('19');
 });
 
