@@ -22,6 +22,7 @@ export function getTableRoleProps(options: {
   ariaLabelledby?: string;
   totalItemsCount?: number;
   totalColumnsCount?: number;
+  headerRowCount?: number;
 }): React.TableHTMLAttributes<HTMLTableElement> {
   const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
 
@@ -33,8 +34,9 @@ export function getTableRoleProps(options: {
   nativeProps['aria-labelledby'] = options.ariaLabelledby;
 
   // Incrementing the total count by one to account for the header row.
+  const headerRows = options.headerRowCount ?? 1;
   if (typeof options.totalItemsCount === 'number' && options.totalItemsCount > 0) {
-    nativeProps['aria-rowcount'] = options.totalItemsCount + 1;
+    nativeProps['aria-rowcount'] = options.totalItemsCount + headerRows;
   }
 
   if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
@@ -68,12 +70,12 @@ export function getTableWrapperRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
+export function getTableHeaderRowRoleProps(options: { tableRole: TableRole; rowIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids headers are treated similar to data rows and are indexed accordingly.
   if (options.tableRole === 'grid' || options.tableRole === 'grid-default' || options.tableRole === 'treegrid') {
-    nativeProps['aria-rowindex'] = 1;
+    nativeProps['aria-rowindex'] = (options.rowIndex ?? 0) + 1;
   }
 
   return nativeProps;
@@ -83,6 +85,7 @@ export function getTableRowRoleProps(options: {
   tableRole: TableRole;
   rowIndex: number;
   firstIndex?: number;
+  headerRowCount?: number;
   level?: number;
   setSize?: number;
   posInSet?: number;
@@ -90,12 +93,13 @@ export function getTableRowRoleProps(options: {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // The data cell indices are incremented by 1 to account for the header cells.
+  const headerRows = options.headerRowCount ?? 1;
   if (options.tableRole === 'grid' || options.tableRole === 'treegrid') {
-    nativeProps['aria-rowindex'] = (options.firstIndex || 1) + options.rowIndex + 1;
+    nativeProps['aria-rowindex'] = (options.firstIndex || 1) + options.rowIndex + headerRows;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
   else if (options.firstIndex !== undefined) {
-    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
+    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + headerRows;
   }
   if (options.tableRole === 'treegrid' && options.level && options.level !== 0) {
     nativeProps['aria-level'] = options.level;

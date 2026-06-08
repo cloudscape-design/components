@@ -24,7 +24,9 @@ export const useStickyHeader = (
       secondaryTableRef.current &&
       tableWrapperRef.current
     ) {
-      tableWrapperRef.current.style.marginBlockStart = `-${theadRef.current.getBoundingClientRect().height}px`;
+      // Use the full thead height to account for multi-row headers (grouped columns).
+      const thead = theadRef.current.closest('thead') ?? theadRef.current;
+      tableWrapperRef.current.style.marginBlockStart = `-${thead.getBoundingClientRect().height}px`;
     }
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {
