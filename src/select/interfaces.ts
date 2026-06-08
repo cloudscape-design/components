@@ -97,6 +97,7 @@ export interface BaseSelectProps
   name?: string;
   /**
    * Specifies the hint text that's displayed in the field when no option has been selected.
+   * When `renderCustomTrigger` is provided, this property is not used; the consumer is responsible for rendering their own empty state.
    */
   placeholder?: string;
   /**
@@ -191,6 +192,16 @@ export interface SelectProps extends BaseSelectProps {
    * Specifies a render function to render custom options in the dropdown menu or trigger.
    */
   renderOption?: SelectProps.SelectOptionItemRenderer;
+  /**
+   * Render function that fully replaces Select's default trigger element.
+   * The returned element must wire the provided props to its outermost focusable
+   * element to preserve dropdown behavior, focus return, and ARIA wiring. The consumer
+   * must also render `aria-haspopup="listbox"` on the focusable element themselves.
+   *
+   * When this prop is provided, the `placeholder` prop is not consumed by Select;
+   * the consumer is responsible for rendering their own empty state for an unselected option.
+   */
+  renderCustomTrigger?: (props: SelectProps.CustomTriggerProps) => React.ReactNode;
 }
 
 export namespace SelectProps {
@@ -241,5 +252,22 @@ export namespace SelectProps {
      * Sets focus on the element without opening the dropdown or showing a visual focus indicator.
      */
     focus(): void;
+  }
+
+  export interface CustomTriggerProps {
+    /** Attach to the focusable element so Select can return focus on close. */
+    triggerRef: React.Ref<HTMLElement>;
+    /** Whether the dropdown is currently open. */
+    isOpen: boolean;
+    /** Toggles the dropdown open/closed. */
+    onClick: () => void;
+    /** ARIA props the consumer must spread on its focusable element. The consumer must also apply `aria-haspopup="listbox"` themselves. */
+    ariaProps: {
+      'aria-expanded': boolean;
+      'aria-labelledby': string | undefined;
+      'aria-describedby': string | undefined;
+      'aria-required'?: boolean;
+      id: string;
+    };
   }
 }

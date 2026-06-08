@@ -30,6 +30,8 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   inFilteringToken?: 'root' | 'nested';
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
+  renderCustomTrigger?: SelectProps['renderCustomTrigger'];
+  ariaRequired?: boolean;
 }
 
 const Trigger = React.forwardRef(
@@ -51,6 +53,8 @@ const Trigger = React.forwardRef(
       disabled,
       readOnly,
       renderOption,
+      renderCustomTrigger,
+      ariaRequired,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -58,6 +62,28 @@ const Trigger = React.forwardRef(
     const generatedId = useUniqueId();
     const id = controlId ?? generatedId;
     const triggerContentId = useUniqueId('trigger-content-');
+
+    const mergedRef = useMergeRefs(triggerProps.ref, ref);
+
+    if (renderCustomTrigger) {
+      const onClick = () => triggerProps.onMouseDown?.({ preventDefault: () => void 0 } as unknown as CustomEvent);
+      return (
+        <div className={styles['custom-trigger']}>
+          {renderCustomTrigger({
+            triggerRef: mergedRef as React.Ref<HTMLElement>,
+            isOpen: !!isOpen,
+            onClick,
+            ariaProps: {
+              id,
+              'aria-expanded': !!isOpen,
+              'aria-labelledby': ariaLabelledby,
+              'aria-describedby': ariaDescribedby,
+              ...(ariaRequired !== undefined ? { 'aria-required': ariaRequired } : {}),
+            },
+          })}
+        </div>
+      );
+    }
 
     let ariaLabelledbyIds = joinStrings(ariaLabelledby, triggerContentId);
 
@@ -129,7 +155,6 @@ const Trigger = React.forwardRef(
       );
     }
 
-    const mergedRef = useMergeRefs(triggerProps.ref, ref);
     const triggerButton = (
       <ButtonTrigger
         {...triggerProps}

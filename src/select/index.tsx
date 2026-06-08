@@ -24,6 +24,7 @@ const Select = React.forwardRef(
       statusType = 'finished',
       triggerVariant = 'label',
       renderOption,
+      renderCustomTrigger,
       ...restProps
     }: SelectProps,
     ref: React.Ref<SelectProps.Ref>
@@ -58,6 +59,7 @@ const Select = React.forwardRef(
     return (
       <InternalSelect
         renderOption={renderOption}
+        renderCustomTrigger={renderCustomTrigger}
         options={options}
         filteringType={filteringType}
         statusType={statusType}

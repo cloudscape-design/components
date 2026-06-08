@@ -48,8 +48,26 @@ export default class SelectWrapper extends DropdownHostComponentWrapper {
     return this.findByClassName(selectPartsStyles.placeholder);
   }
 
+  /**
+   * Returns the default Select trigger button. When the Select uses `renderCustomTrigger`,
+   * this returns null — use `findCustomTrigger()` instead.
+   */
   findTrigger(): ElementWrapper {
     return this.findByClassName(buttonTriggerStyles['button-trigger'])!;
+  }
+
+  /**
+   * Returns the wrapper around the custom trigger when `renderCustomTrigger` is provided
+   * on the Select component. Returns null for default Select.
+   *
+   * The consumer's focusable element is a child of this wrapper. Chain into it
+   * (e.g. `findCustomTrigger().find('button')`) to reach the focusable element.
+   *
+   * Use `findTrigger()` for default Select; use `findCustomTrigger()` when the
+   * Select uses the `renderCustomTrigger` prop.
+   */
+  findCustomTrigger(): ElementWrapper | null {
+    return this.findByClassName(selectPartsStyles['custom-trigger']);
   }
 
   @usesDom
