@@ -1,0 +1,23 @@
+[
+  { "value": "bucket00", "label": "EXAMPLE-BUCKET0.s3.amazon.com" },
+  { "value": "bucket01", "label": "EXAMPLE-NO-ACCESS-BUCKET1.s3.amazon.com" },
+  { "value": "bucket02", "label": "EXAMPLE-BUCKET2.s3.amazon.com" },
+  { "value": "bucket03", "label": "EXAMPLE-NO-ACCESS-BUCKET3.s3.amazon.com" },
+  { "value": "bucket04", "label": "EXAMPLE-NO-ACCESS-BUCKET4.s3.amazon.com" },
+  { "value": "bucket05", "label": "EXAMPLE-BUCKET5.s3.amazon.com" },
+  { "value": "bucket06", "label": "EXAMPLE-BUCKET6.s3.amazon.com" },
+  { "value": "bucket07", "label": "EXAMPLE-NO-ACCESS-BUCKET7.s3.amazon.com" },
+  { "value": "bucket08", "label": "EXAMPLE-BUCKET8.s3.amazon.com" },
+  { "value": "bucket09", "label": "EXAMPLE-NO-ACCESS-BUCKET9.s3.amazon.com" },
+  { "value": "bucket10", "label": "EXAMPLE-NO-ACCESS-BUCKET10.s3.amazon.com" },
+  { "value": "bucket11", "label": "EXAMPLE-BUCKET11.s3.amazon.com" },
+  { "value": "bucket12", "label": "EXAMPLE-BUCKET12.s3.amazon.com" },
+  { "value": "bucket13", "label": "EXAMPLE-NO-ACCESS-BUCKET13.s3.amazon.com" },
+  { "value": "bucket14", "label": "EXAMPLE-NO-ACCESS-BUCKET14.s3.amazon.com" },
+  { "value": "bucket15", "label": "EXAMPLE-NO-ACCESS-BUCKET15.s3.amazon.com" },
+  { "value": "bucket16", "label": "EXAMPLE-NO-ACCESS-BUCKET16.s3.amazon.com" },
+  { "value": "bucket17", "label": "EXAMPLE-BUCKET17.s3.amazon.com" },
+  { "value": "bucket18", "label": "EXAMPLE-BUCKET18.s3.amazon.com" },
+  { "value": "bucket19", "label": "EXAMPLE-BUCKET19.s3.amazon.com" },
+  { "value": "bucket20", "label": "EXAMPLE-BUCKET20.s3.amazon.com" }
+]

@@ -1,0 +1,125 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+@use '~@cloudscape-design/design-tokens' as cs;
+@use './base';
+
+$viewport-breakpoint-s: 912px;
+
+body {
+  // Note: This token will be themed (see the product page index.tsx)
+  background: cs.$color-background-layout-main;
+}
+
+.product-page-content-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 0 auto 0;
+  margin-block-start: cs.$space-static-xxl;
+}
+
+.on-this-page--mobile {
+  grid-row: 1;
+  grid-column: 1 / 3;
+  display: none;
+  margin-block-end: cs.$space-static-xxl;
+}
+
+.product-page-aside {
+  grid-row: 2;
+  grid-column: 2 / 3;
+  padding-inline-start: calc(#{cs.$space-scaled-xxxl} / 2);
+}
+.product-page-content {
+  grid-row: 2;
+  grid-column: 1 / 2;
+  padding-inline-end: calc(#{cs.$space-scaled-xxxl} / 2);
+}
+
+.product-page-mobile {
+  grid-row: 3;
+  grid-column: 1 / 3;
+  display: none;
+}
+
+.product-page-aside-sticky {
+  position: sticky;
+  inset-block-start: 40px;
+}
+
+@media only screen and (max-width: $viewport-breakpoint-s) {
+  .product-page-content-grid {
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto auto;
+  }
+  .on-this-page--mobile {
+    display: block;
+  }
+  .product-page-mobile {
+    display: block;
+  }
+  .product-page-aside {
+    display: none;
+  }
+}
+
+/* Simple separator */
+hr {
+  inline-size: 100%;
+  block-size: 0;
+  border: none;
+  border-block-start: 1px solid cs.$color-border-divider-default;
+}
+
+/* High-level sections of the main content area */
+.page-section {
+  padding-block-end: cs.$space-static-xxxl;
+  margin-block-end: cs.$space-static-xxl;
+  border-bottom: 1px solid cs.$color-border-divider-default;
+
+  &:last-child {
+    border: none;
+    margin-block-end: 0;
+  }
+}
+
+/* Product details list containing keys and values */
+.product-details {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  margin: 0;
+  padding: 0;
+
+  dt {
+    color: cs.$color-text-body-secondary;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+    padding: 0;
+    padding-block: cs.$space-scaled-xs;
+    border-block-end: 1px solid cs.$color-border-divider-default;
+  }
+}
+
+/* List of product cards */
+.product-cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: cs.$space-scaled-l;
+  row-gap: cs.$space-scaled-l;
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product-cards-list-item {
+  flex: 1;
+  flex-basis: 250px;
+  max-inline-size: 312px;
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

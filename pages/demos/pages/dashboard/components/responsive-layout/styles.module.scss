@@ -1,0 +1,56 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+@use '~@cloudscape-design/design-tokens' as cs;
+
+.root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .filters {
+    padding-bottom: cs.$space-scaled-s;
+    // https://github.com/cloudscape-design/components/blob/7433543fcd2796d6398b67867d25b637c1a2b6de/src/mixed-line-bar-chart/styles.scss#L23
+    max-width: 280px;
+  }
+  .columns {
+    flex: 1;
+  }
+}
+
+.columns {
+  display: flex;
+  // gutter from each side and border width
+  gap: calc((2 * #{cs.$space-scaled-l}) + 1px);
+  &.multi {
+    flex-direction: row;
+    & > * {
+      flex: 1;
+      min-height: 100%;
+    }
+    & > :last-child:not(:first-child)::after {
+      content: ' ';
+      position: absolute;
+      left: calc(-1 * #{cs.$space-scaled-l});
+      height: 100%;
+      border-left: 1px solid cs.$color-border-divider-default;
+    }
+  }
+  &.single {
+    flex-direction: column;
+    & > :nth-child(2) {
+      flex: 1;
+    }
+  }
+}
+
+.column-item {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  gap: cs.$space-scaled-s;
+  &-footer {
+    padding-top: cs.$space-scaled-s;
+    border-top: 1px solid cs.$color-border-divider-default;
+    text-align: center;
+  }
+}

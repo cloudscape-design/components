@@ -1,0 +1,54 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+@use '~@cloudscape-design/design-tokens' as cs;
+@use './base';
+
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  order: 0;
+  flex-grow: 10;
+  margin-inline-end: 0;
+  margin-block-end: calc(-1 * #{cs.$space-scaled-m});
+
+  > *:not(:empty) {
+    margin-inline-end: cs.$space-scaled-m;
+    margin-block-end: cs.$space-scaled-s;
+  }
+}
+
+.input-filter {
+  order: 0;
+  flex-grow: 6;
+  inline-size: auto;
+  max-inline-size: 728px;
+}
+
+.select-filter {
+  max-inline-size: 130px;
+  flex-grow: 2;
+  inline-size: auto;
+}
+
+.filtering-results {
+  display: block;
+  padding-block-end: calc(1px + #{cs.$space-scaled-xxs});
+  color: cs.$color-text-form-default;
+  align-self: center;
+}
+
+@media (max-width: 1152px) {
+  .input-container {
+    margin-inline-end: calc(-1 * #{cs.$space-scaled-m});
+  }
+
+  .select-filter {
+    max-inline-size: none;
+  }
+
+  .input-filter {
+    inline-size: 100%;
+    max-inline-size: none;
+  }
+}

@@ -1,0 +1,17 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+@use '~@cloudscape-design/design-tokens' as cs;
+@use './base';
+
+.date-form,
+.date-time-form {
+  display: grid;
+  grid-template-columns: auto;
+  gap: cs.$space-scaled-s;
+}
+
+@media (min-width: 688px) {
+  .date-time-form {
+    grid-template-columns: repeat(2, minmax(100px, max-content));
+  }
+}

@@ -1,0 +1,205 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+@use '~@cloudscape-design/design-tokens' as cs;
+
+:root {
+  --font-noto-sans: 'Noto Sans Web', 'Noto Sans', sans-serif;
+  --font-amazon-ember: 'Amazon Ember Web', 'Amazon Ember', sans-serif;
+}
+
+body {
+  background: cs.$color-background-layout-main;
+  position: relative;
+}
+
+//////////////////////////////////////////////////
+/// Custom CSS only for Option Core new theme
+//////////////////////////////////////////////////
+// body.custom-css-enabled {
+//   --border-item-width-miijiw: 1px !important;
+//   --font-box-value-large-weight-wr00sw: 600 !important;
+//   --color-text-button-inline-icon-default-sm4ql6: #1b232d;
+//   --space-button-icon-only-horizontal-i85hxi: 7px !important;
+
+//   // Min height of inputs
+//   --size-vertical-input-p1d7xx: 30px !important;
+
+//   // Segmented control
+//   .awsui_segment_8cbea_14tk5_161:not(#\9) {
+//     border-radius: 6px !important;
+//     padding-inline: 8px;
+//     padding-block: 3px;
+//   }
+
+//   // Tertiary button background
+//   .awsui_button_vjswe_19xwk_157.awsui_variant-link_vjswe_19xwk_264:not(.awsui_disabled_vjswe_19xwk_227) {
+//     background: #f6f6f9 !important;
+//     border-color: #f6f6f9 !important;
+//     &:hover {
+//       background: #ebebf0 !important;
+//       border-color: #ebebf0 !important;
+//     }
+//   }
+
+//   // Button space adjustment
+//   .awsui_button_vjswe_19xwk_157:not(#\9):not(
+//       .awsui_button_vjswe_19xwk_157.awsui_button-no-text_vjswe_19xwk_601:not(#\9)
+//     ) {
+//     padding-inline: 12px;
+//   }
+
+//   .awsui_button_vjswe_19xwk_157.awsui_button-no-text_vjswe_19xwk_601:not(#\9):not(
+//       .awsui_button_vjswe_19xwk_157.awsui_variant-inline-icon_vjswe_19xwk_322:not(#\9)
+//     ) {
+//     padding-block: 4px !important;
+//     padding-inline: 6px;
+//   }
+
+//   .awsui_button_vjswe_19xwk_157
+//     > .awsui_icon-left_vjswe_19xwk_630:not(#\9):not(
+//       .awsui_button_vjswe_19xwk_157.awsui_button-no-text_vjswe_19xwk_601 > .awsui_icon_vjswe_19xwk_630
+//     ) {
+//     inset-inline-start: -2px;
+//   }
+
+//   .awsui_button_vjswe_19xwk_157 > .awsui_icon-right_vjswe_19xwk_635:not(#\9) {
+//     inset-inline-end: 0px;
+//   }
+
+//   // Token vertical padding
+//   .awsui_token-box_1i2wg_18qq8_288:not(#\9) {
+//     padding-block: 1px;
+//   }
+
+//   // Toggle background color
+//   .unckecked-toggle {
+//     .awsui_toggle-control_4yi2u_1lxzi_201:not(#\9):not(.awsui_toggle-handle-checked_4yi2u_1lxzi_252) {
+//       background: #72747e;
+//     }
+//   }
+
+//   .awsui_alert_mx3cw_1l75r_193:not(#\9),
+//   .awsui_type-info_mx3cw_1l75r_429:not(#\9) {
+//     border-inline-start-width: 2px !important;
+//     padding-block: 4px !important;
+//     padding-inline: 12px !important;
+//   }
+//   .awsui_header_mx3cw_1l75r_316:not(#\9),
+//   .awsui_flash-header_1q84n_283yi_171:not(#\9) {
+//     font-weight: 600;
+//   }
+
+//   // Tabs typography
+//   .awsui_tabs-tab-label_14rmt_nlsa1_226:not(#\9) {
+//     font-size: 14px !important;
+//     font-weight: 600;
+//   }
+
+//   // Tile selected border width
+//   .awsui_tile-container_vj6p7_1p9yl_394.awsui_refresh_vj6p7_1p9yl_419.awsui_selected_vj6p7_1p9yl_423:not(#\9):not(
+//       .awsui_disabled_vj6p7_1p9yl_423
+//     ):not(.awsui_readonly_vj6p7_1p9yl_423) {
+//     box-shadow: none;
+//   }
+
+//   // Toolbar
+//   .awsui_trigger_lpshu_10v1l_145.awsui_circle_lpshu_10v1l_167:not(#\9) {
+//     border-radius: 8px !important;
+//   }
+
+//   .landing .awsui_main_7nfqu_cwk25_356:not(#\9) {
+//     margin-block-start: 0 !important;
+//   }
+
+//   // Space betwee page title and filter [Just update component globally]
+//   .awsui_tools_wih1l_zysm5_164:not(#\9) {
+//     padding-block-start: 12px !important;
+//   }
+//   .awsui_main_2qdw9_m18q1_243.awsui_refresh_2qdw9_m18q1_221:not(#\9) {
+//     row-gap: 8px !important;
+//   }
+
+//   // Side nav "New" dashed underline
+//   .awsui_trigger-type-text_xjuzf_15ier_592:not(#\9) {
+//     color: #1b232d;
+//   }
+
+//   // Breadcrumb font weight for current page
+//   .awsui_breadcrumb_1kosq_cued1_149.awsui_last_1kosq_cued1_225 > .awsui_anchor_1kosq_cued1_159:not(#\9),
+//   .awsui_ghost-breadcrumb_1kosq_cued1_150.awsui_last_1kosq_cued1_225 > .awsui_anchor_1kosq_cued1_159:not(#\9) {
+//     font-weight: 600 !important;
+//   }
+
+//   // Tabs
+//   .awsui_tabs-tab-label_14rmt_nlsa1_226:not(#\9) {
+//     padding-inline: 4px;
+//     padding-block: 0px;
+//   }
+
+//   // Table column resizer
+//   .awsui_divider-interactive_x7peu_an1qk_158:not(#\9),
+//   th:not(#\9):not(:last-child) > .awsui_divider_x7peu_an1qk_158 {
+//     border-width: 2px !important;
+//   }
+// }
+
+// body.custom-css-enabled {
+//   &.awsui-dark-mode {
+//     --color-text-button-inline-icon-default-sm4ql6: #f9f9fb;
+//     // Tertiary button background
+//     .awsui_button_vjswe_19xwk_157.awsui_variant-link_vjswe_19xwk_264:not(.awsui_disabled_vjswe_19xwk_227) {
+//       background: #232b37 !important;
+//       border-color: #232b37 !important;
+//       &:hover {
+//         background: #424650 !important;
+//         border-color: #424650 !important;
+//       }
+//     }
+//     .awsui_trigger-type-text_xjuzf_15ier_592:not(#\9) {
+//       color: #c6c6cd;
+//     }
+//     // Toggle background color
+//     .unckecked-toggle {
+//       .awsui_toggle-control_4yi2u_1lxzi_201:not(#\9):not(.awsui_toggle-handle-checked_4yi2u_1lxzi_252) {
+//         //background: #72747e;
+//       }
+//     }
+//   }
+// }
+
+//////////////////////////////////////////////////
+/// Custom CSS for blue-secondary link color
+//////////////////////////////////////////////////
+// body.blue-secondary-link {
+//   .secondary-link {
+//     color: #295eff !important;
+//   }
+//   &.awsui-dark-mode {
+//     .secondary-link {
+//       color: #7598ff !important;
+//     }
+//   }
+// }
+
+//////////////////////////////////////////////////
+/// Custom CSS for font-smooth on/off
+//////////////////////////////////////////////////
+body.font-smooth-auto {
+  --font-smoothing-moz-osx-hbm0aq: auto !important;
+  --font-smoothing-webkit-oemolo: auto !important;
+}
+
+//////////////////////////////////////////////////
+/// General styles that should not be changed or removed
+//////////////////////////////////////////////////
+.custom-main-header {
+  display: block;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin: 0;
+  background-color: #0f1b2a;
+  font-family: cs.$font-family-base;
+}

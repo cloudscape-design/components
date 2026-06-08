@@ -15,7 +15,9 @@
     "paths": {
       "~components": ["../lib/components"],
       "~components/*": ["../lib/components/*"],
-      "~design-tokens": ["../lib/design-tokens"]
+      "~design-tokens": ["../lib/design-tokens"],
+      "@cloudscape-design/components": ["../lib/components"],
+      "@cloudscape-design/components/*": ["../lib/components/*"]
     },
     "types": ["node", "webpack-env"]
   },

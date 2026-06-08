@@ -30,6 +30,10 @@ module.exports = ({
     context: path.resolve(__dirname),
     entry: './app/index.tsx',
     mode,
+    ignoreWarnings: [
+      // CSS modules with default export pattern — classes are accessible at runtime via styles.className
+      /export .* was not found in '.*\.module\.scss'/,
+    ],
     output: {
       path: path.resolve(outputPath),
       publicPath: './',
@@ -42,6 +46,7 @@ module.exports = ({
         // The NormalModuleReplacementPlugin does not work there
         // https://github.com/webpack-contrib/sass-loader/issues/489
         '~design-tokens': designTokensPath,
+        '~@cloudscape-design/design-tokens': designTokensPath,
         ...(react18
           ? {
               '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
@@ -66,10 +71,13 @@ module.exports = ({
           options: {
             compilerOptions: {
               baseUrl: '.',
+              resolveJsonModule: true,
               paths: {
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
+                '@cloudscape-design/components': [componentsPath],
+                '@cloudscape-design/components/*': [`${componentsPath}/*`],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
@@ -88,7 +96,25 @@ module.exports = ({
         },
         { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
         {
+          test: /\.module\.scss$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  exportLocalsConvention: 'camelCaseOnly',
+                  namedExport: false,
+                },
+                esModule: false,
+              },
+            },
+            'sass-loader',
+          ],
+        },
+        {
           test: /\.scss$/,
+          exclude: /\.module\.scss$/,
           use: [
             MiniCssExtractPlugin.loader,
             {
@@ -99,7 +125,7 @@ module.exports = ({
           ],
         },
         {
-          test: /\.(png|svg)$/i,
+          test: /\.(png|jpg|svg)$/i,
           type: 'asset/resource',
           include: path.resolve(__dirname),
         },
@@ -146,12 +172,18 @@ module.exports = ({
             to: path.resolve(outputPath, 'ace'),
             context: path.dirname(require.resolve('ace-builds/src-min-noconflict/ace')),
           },
+          {
+            from: '*.json',
+            to: path.resolve(outputPath, 'resources'),
+            context: path.resolve(__dirname, 'demos/resources'),
+          },
         ],
       }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
       }),
       replaceModule(/~components/, componentsPath),
+      replaceModule(/@cloudscape-design\/components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)

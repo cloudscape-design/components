@@ -1,0 +1,9 @@
+[
+  {
+    "precedence": "0",
+    "pathPattern": "Default (*)",
+    "origin": "S3-aws-phoenix.example.com",
+    "viewerProtocolPolicy": "HTTP, HTTPS",
+    "forwardedQueryStrings": "No"
+  }
+]

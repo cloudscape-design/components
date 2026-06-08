@@ -210,7 +210,24 @@ export default tsEslint.config(
     },
   },
   {
-    files: ['src/test-utils/dom/**/*.ts'],
+    // Demo pages are sourced from an external repo and follow different lint standards.
+    // Relax rules that conflict with that codebase.
+    files: ['pages/demos/**'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'react/no-unescaped-entities': 'off',
+      'no-constant-binary-expression': 'off',
+      'no-warning-comments': 'off',
+      'header/header': 'off',
+      'unicorn/filename-case': 'off',
+      '@cloudscape-design/build-tools/react-server-components-directive': 'off',
+      'simple-import-sort/imports': 'off',
+    },
+  },
+  {
+    files: [
+      'src/test-utils/dom/**/*.ts',
+    ],
     rules: {
       '@cloudscape-design/build-tools/ban-files': [
         'error',
