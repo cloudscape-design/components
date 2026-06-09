@@ -588,7 +588,7 @@ const InternalTable = React.forwardRef(
                     )}
                     {...getTableRoleProps({
                       tableRole,
-                      totalItemsCount,
+                      totalItemsCount: loading ? -1 : allItems.length === 0 ? 1 : totalItemsCount,
                       totalColumnsCount: totalColumnsCount,
                       headerRowCount,
                       ariaLabel: ariaLabels?.tableLabel,
