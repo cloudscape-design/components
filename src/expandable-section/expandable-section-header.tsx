@@ -136,7 +136,11 @@ const ExpandableNavigationHeader = ({
   return (
     <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
       <button
-        className={clsx(styles['icon-container'], styles['expand-button'])}
+        className={clsx(
+          styles['icon-container'],
+          styles['expand-button'],
+          isThemeActive(Theme.OneTheme) && styles['one-theme']
+        )}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-controls={ariaControls}

@@ -14,7 +14,8 @@ $icon-width-medium: awsui.$size-icon-medium;
 $icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 $icon-margin-right-medium: awsui.$space-xs;
-$icon-offset: awsui.$space-xxxs;
+$icon-offset-inline: awsui.$space-xxs;
+$icon-offset-block: awsui.$space-xxxs;
 
 // Total space occupied by the expand icon on the left and its margins.
 // Useful to keep elements correctly aligned.
@@ -54,16 +55,19 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-container {
     margin-inline-end: $icon-margin-right-medium;
     &.one-theme {
+      margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
+      inset-block-start: $icon-offset-block;
       > .icon {
-        inset-block-start: calc(#{$icon-offset} * 3);
+        inset-block-start: calc(#{$icon-offset-block} * 3); // Double-check
       }
     }
   }
   &.one-theme {
     display: inline-flex;
     align-items: flex-start;
+    margin-inline-end: calc(#{$icon-margin-right-normal} + #{$icon-offset-inline});
     > .icon {
-      inset-block-start: $icon-offset;
+      inset-block-start: $icon-offset-block;
     }
   }
 }
