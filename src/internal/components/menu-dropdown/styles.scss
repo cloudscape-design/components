@@ -27,22 +27,22 @@
   border-block: transparent;
   border-inline: transparent;
   background: transparent;
-  color: var(--awsui-style-menu-trigger-color, #{awsui.$color-text-interactive-default});
+  color: var(--awsui-internal-style-menu-trigger-color, #{awsui.$color-text-interactive-default});
 
   &:hover {
-    color: var(--awsui-style-menu-trigger-color-hover, #{awsui.$color-text-interactive-hover});
-    background: var(--awsui-style-menu-trigger-background-hover, transparent);
+    color: var(--awsui-internal-style-menu-trigger-color-hover, #{awsui.$color-text-interactive-hover});
+    background: var(--awsui-internal-style-menu-trigger-background-hover, transparent);
     text-decoration: none;
   }
 
   &:active,
   &.expanded {
-    background: var(--awsui-style-menu-trigger-background-active, transparent);
-    color: var(--awsui-style-menu-trigger-color-active, #{awsui.$color-text-interactive-active});
+    background: var(--awsui-internal-style-menu-trigger-background-active, transparent);
+    color: var(--awsui-internal-style-menu-trigger-color-active, #{awsui.$color-text-interactive-active});
   }
 
   &.expanded {
-    color: var(--awsui-style-menu-trigger-color-active, #{awsui.$color-text-accent});
+    color: var(--awsui-internal-style-menu-trigger-color-active, #{awsui.$color-text-accent});
   }
 
   &:focus {

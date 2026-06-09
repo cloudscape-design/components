@@ -5,9 +5,16 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './tab-header-bar';
+
+/* stylelint-disable custom-property-pattern */
+
+// Tabs' public Style API tokens.
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .root {
   /* used in test-utils or tests */

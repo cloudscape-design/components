@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/style-api' as style-api;
+
+$component: 'tabs';
+$props: style-api.uniform(
+  (
+    active-indicator-color,
+    active-indicator-width,
+    active-indicator-border-radius,
+    background-default,
+    background-hover,
+    background-active,
+    background-disabled,
+    border-color-default,
+    border-color-hover,
+    border-color-active,
+    border-color-disabled,
+    color-default,
+    color-hover,
+    color-active,
+    color-disabled,
+    separator-color,
+    separator-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/style-api' as style-api;
+
+// action-card's public Style API tokens (base + per-state: hover, active, disabled). Read in
+// styles.scss and the state mixins in mixins.scss.
+$component: 'action-card';
+$props: style-api.uniform(
+  (
+    background,
+    background-hover,
+    background-active,
+    background-disabled,
+    border-color,
+    border-color-hover,
+    border-color-active,
+    border-color-disabled,
+    border-radius,
+    icon-color,
+    icon-color-hover,
+    icon-color-active,
+    icon-color-disabled
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

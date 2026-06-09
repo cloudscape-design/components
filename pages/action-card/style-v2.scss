@@ -12,7 +12,6 @@
   --awsui-style-action-card-border-color-hover: #{$border-hover};
   --awsui-style-action-card-border-radius: 12px;
   --awsui-style-action-card-icon-color-disabled: #{palette.$text-disabled};
-  --awsui-style-transition-duration: 200ms;
 
   @if $icon-color {
     --awsui-style-action-card-icon-color: #{$icon-color};

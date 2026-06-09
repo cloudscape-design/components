@@ -16,7 +16,7 @@
   list-style: none;
   padding-block: 0;
   padding-inline: 0;
-  color: var(--awsui-style-dropdown-item-color, #{awsui.$color-text-dropdown-item-default});
+  color: var(--awsui-internal-style-menu-item-color, #{awsui.$color-text-dropdown-item-default});
   margin-block-start: calc(-1 * #{awsui.$border-width-dropdown});
   cursor: pointer;
 
@@ -37,10 +37,13 @@
     border-block-end: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
-    color: var(--awsui-style-dropdown-item-color-highlighted, #{awsui.$color-text-dropdown-item-highlighted});
+    color: var(--awsui-internal-style-menu-item-color-highlighted, #{awsui.$color-text-dropdown-item-highlighted});
     z-index: 2;
 
-    background-color: var(--awsui-style-dropdown-item-background-hover, #{awsui.$color-background-dropdown-item-hover});
+    background-color: var(
+      --awsui-internal-style-menu-item-background-hover,
+      #{awsui.$color-background-dropdown-item-hover}
+    );
     border-color: awsui.$color-border-dropdown-item-hover;
     border-start-start-radius: awsui.$border-radius-item;
     border-start-end-radius: awsui.$border-radius-item;

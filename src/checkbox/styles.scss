@@ -6,14 +6,59 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/components/abstract-switch/mixins' as abstract-switch;
+@use '../internal/components/checkbox-icon/mixins' as checkbox-icon;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $checkbox-size: awsui.$size-control;
 
+/* stylelint-disable custom-property-pattern */
+
+// Checkbox owns all of its style tokens, including the parts rendered by the internal
+// abstract-switch and checkbox-icon (impl details). Control tokens inherit so a value set on the
+// checkbox root reaches those internal elements; the host mixins below map them into the internal
+// propagation vars. The focus ring is on checkbox's own `.outline`, so it reads checkbox tokens
+// directly.
+$component: 'checkbox';
+$props: style-api.uniform(
+  (
+    background,
+    background-default,
+    background-checked,
+    background-disabled,
+    border-color,
+    border-color-default,
+    border-color-checked,
+    border-color-disabled,
+    foreground,
+    foreground-default,
+    foreground-disabled,
+    foreground-readonly,
+    border-width,
+    stroke-width,
+    label-color,
+    label-color-disabled,
+    label-color-readonly,
+    label-spacing,
+    transition-duration,
+    transition-easing,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
+
 // double selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
 .root.root {
   @include styles.styles-reset;
+  @include abstract-switch.host($tokens);
+  @include checkbox-icon.host($tokens);
   display: flex;
 }
 
@@ -21,23 +66,21 @@ $checkbox-size: awsui.$size-control;
   @include styles.make-control-size($checkbox-size);
 }
 
-/* stylelint-disable custom-property-pattern */
-
 .outline {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-focus-ring-border-width,
+      #{style-api.name($tokens, focus-ring-border-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, #{foundation.$box-shadow-focused-width})
     )
     var(
-      --awsui-style-focus-ring-border-color,
+      #{style-api.name($tokens, focus-ring-color)},
       var(#{custom-props.$styleFocusRingBorderColor}, #{awsui.$color-border-item-focused})
     );
 
   @include styles.focus-highlight(
     $gutter: 2px,
     $border-radius: var(
-        --awsui-style-focus-ring-border-radius,
+        #{style-api.name($tokens, focus-ring-border-radius)},
         var(#{custom-props.$styleFocusRingBorderRadius}, #{awsui.$border-radius-control-default-focus-ring})
       ),
     $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})

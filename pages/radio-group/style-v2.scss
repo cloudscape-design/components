@@ -6,18 +6,17 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 @mixin radio-theme($accent, $accent-hover) {
-  --awsui-style-color-background-control-checked: #{$accent};
-  --awsui-style-color-border-control-default: #{$accent};
-  --awsui-style-color-border-control-checked: #{$accent};
-  --awsui-style-color-foreground-control-default: #{palette.$control-foreground};
-  --awsui-style-color-text-label: #{palette.$text};
-  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
-  --awsui-style-color-border-control-disabled: #{palette.$border-disabled};
-  --awsui-style-color-background-control-disabled: #{palette.$control-bg-disabled};
-  --awsui-style-transition-duration: #{palette.$transition-duration};
+  --awsui-style-radio-background-checked: #{$accent};
+  --awsui-style-radio-border-color-default: #{$accent};
+  --awsui-style-radio-foreground-default: #{palette.$control-foreground};
+  --awsui-style-radio-label-color: #{palette.$text};
+  --awsui-style-radio-label-color-disabled: #{palette.$text-disabled};
+  --awsui-style-radio-border-color-disabled: #{palette.$border-disabled};
+  --awsui-style-radio-background-disabled: #{palette.$control-bg-disabled};
+  --awsui-style-radio-transition-duration: #{palette.$transition-duration};
 
   &:hover {
-    --awsui-style-color-border-control-default: #{$accent-hover};
+    --awsui-style-radio-border-color-default: #{$accent-hover};
   }
 }
 

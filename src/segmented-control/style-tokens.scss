@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/style-api' as style-api;
+
+$component: 'segmented-control';
+$props: style-api.uniform(
+  (
+    background-active,
+    background-default,
+    background-disabled,
+    background-hover,
+    border-radius,
+    color-active,
+    color-default,
+    color-disabled,
+    color-hover,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width,
+    segment-border-radius,
+    segment-font-size,
+    segment-padding-block,
+    segment-padding-inline
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

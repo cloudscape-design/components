@@ -10,8 +10,13 @@
 @use './constants' as constants;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 
 /* stylelint-disable custom-property-pattern */
+
+// Register link's public Style API tokens (declared in ./style-tokens; read in the shared links mixin).
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .link {
   @include styles.styles-reset;

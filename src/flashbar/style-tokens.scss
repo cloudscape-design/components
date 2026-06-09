@@ -1,0 +1,35 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/style-api' as style-api;
+
+$component: 'flashbar';
+$props: style-api.uniform(
+  (
+    background,
+    border-color,
+    border-radius,
+    border-width,
+    color,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width,
+    notification-bar-background-default,
+    notification-bar-background-hover,
+    notification-bar-background-active,
+    notification-bar-border-color-default,
+    notification-bar-border-color-hover,
+    notification-bar-border-color-active,
+    notification-bar-border-radius,
+    notification-bar-border-width,
+    notification-bar-color-default,
+    notification-bar-color-hover,
+    notification-bar-color-active,
+    notification-bar-focus-ring-color,
+    notification-bar-focus-ring-border-radius,
+    notification-bar-focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

@@ -1,0 +1,25 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/style-api' as style-api;
+
+// Link's public Style API tokens. The link visual styling lives in the shared
+// internal/styles/links.scss mixin (used for standalone links and links embedded in other
+// components), which reads these via style-api.name($tokens, ...).
+$component: 'link';
+$props: style-api.uniform(
+  (
+    color-default,
+    color-hover,
+    color-active,
+    font-weight,
+    text-decoration,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

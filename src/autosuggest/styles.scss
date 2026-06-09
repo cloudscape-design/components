@@ -3,8 +3,43 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles/style-api' as style-api;
+@use '../dropdown/mixins' as dropdown;
+@use '../internal/components/selectable-item/mixins' as selectable-item;
+
+/* stylelint-disable custom-property-pattern */
+
+// Autosuggest owns its dropdown container and option tokens (the dropdown and options are rendered
+// by shared internal components, an impl detail). The embedded Input is themed via Input's own
+// `--awsui-style-input-*` tokens through classNames.root.
+$component: 'autosuggest';
+$props: style-api.uniform(
+  (
+    dropdown-background,
+    dropdown-border-color,
+    dropdown-border-width,
+    dropdown-border-radius,
+    option-color,
+    option-background-hover,
+    option-background-selected,
+    option-color-highlighted
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
+
 .root {
   inline-size: 100%;
+  // Drive the (non-portal) dropdown container chrome from autosuggest's own tokens.
+  @include dropdown.host($tokens);
+}
+
+// Bridge class applied by autosuggest to every option element, mapping autosuggest's per-option
+// tokens to the selectable-item internal vars so per-option overrides (classNames.options) resolve.
+.option {
+  @include selectable-item.host($tokens);
 }
 
 .layout-strut {

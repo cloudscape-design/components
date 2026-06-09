@@ -5,6 +5,8 @@
 
 @use 'sass:map';
 @use './tokens' as awsui;
+@use './style-api' as style-api;
+@use '../../link/style-tokens' as link-tokens;
 @use './motion' as styles;
 @use './typography/' as typography;
 @use './forms/' as mixins;
@@ -16,12 +18,15 @@
 
 @mixin link-variant-style($variant) {
   color: var(
-    --awsui-style-link-color-default,
+    #{style-api.name(link-tokens.$tokens, color-default)},
     var(#{custom-props.$styleColorDefault}, #{map.get($variant, 'text-color-default')})
   );
-  font-weight: var(--awsui-style-link-font-weight, #{map.get($variant, 'font-weight')});
+  font-weight: var(#{style-api.name(link-tokens.$tokens, font-weight)}, #{map.get($variant, 'font-weight')});
   letter-spacing: map.get($variant, 'letter-spacing');
-  text-decoration-line: var(--awsui-style-link-text-decoration, #{map.get($variant, 'decoration-line')});
+  text-decoration-line: var(
+    #{style-api.name(link-tokens.$tokens, text-decoration)},
+    #{map.get($variant, 'decoration-line')}
+  );
   text-decoration-color: map.get($variant, 'decoration-color');
 
   @include styles.with-motion {
@@ -32,7 +37,7 @@
   &:hover {
     cursor: pointer;
     color: var(
-      --awsui-style-link-color-hover,
+      #{style-api.name(link-tokens.$tokens, color-hover)},
       var(#{custom-props.$styleColorHover}, #{map.get($variant, 'text-color-hover')})
     );
   }
@@ -43,7 +48,7 @@
 
   &:active {
     color: var(
-      --awsui-style-link-color-active,
+      #{style-api.name(link-tokens.$tokens, color-active)},
       var(#{custom-props.$styleColorActive}, #{map.get($variant, 'text-color-active')})
     );
   }

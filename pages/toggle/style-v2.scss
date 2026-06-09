@@ -12,10 +12,10 @@
   --awsui-style-toggle-handle-default: #{palette.$control-bg};
   --awsui-style-toggle-handle-checked: #{palette.$control-bg};
   --awsui-style-toggle-handle-disabled: #{palette.$control-foreground-disabled};
-  --awsui-style-color-text-label: #{palette.$text};
-  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
+  --awsui-style-toggle-label-color: #{palette.$text};
+  --awsui-style-toggle-label-color-disabled: #{palette.$text-disabled};
   --awsui-style-toggle-border-radius: 4px;
-  --awsui-style-transition-duration: 200ms;
+  --awsui-style-toggle-transition-duration: 200ms;
 
   &:hover {
     --awsui-style-toggle-background-default: #{$hover-bg};

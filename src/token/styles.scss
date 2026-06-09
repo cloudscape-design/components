@@ -7,10 +7,15 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
+
+// Register token's public Style API tokens as inheriting @property custom properties.
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .root {
   @include styles.styles-reset;
@@ -25,7 +30,7 @@
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
   color: var(
-    --awsui-style-token-dismiss-color-default,
+    #{style-api.name(style-tokens.$tokens, dismiss-color-default)},
     var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default)
   );
   background-color: transparent;
@@ -50,7 +55,7 @@
 
   &:hover {
     color: var(
-      --awsui-style-token-dismiss-color-hover,
+      #{style-api.name(style-tokens.$tokens, dismiss-color-hover)},
       var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover)
     );
   }
@@ -124,17 +129,17 @@
 
 .token-box-readonly {
   border-color: var(
-    --awsui-style-token-border-color-readonly,
+    #{style-api.name(style-tokens.$tokens, border-color-readonly)},
     var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled)
   );
   background: var(
-    --awsui-style-token-background-readonly,
+    #{style-api.name(style-tokens.$tokens, background-readonly)},
     var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content)
   );
 
   > .dismiss-button {
     color: var(
-      --awsui-style-token-dismiss-color-readonly,
+      #{style-api.name(style-tokens.$tokens, dismiss-color-readonly)},
       var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled)
     );
   }
@@ -143,11 +148,11 @@
 .token-box-disabled {
   pointer-events: none;
   border-color: var(
-    --awsui-style-token-border-color-disabled,
+    #{style-api.name(style-tokens.$tokens, border-color-disabled)},
     var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled)
   );
   background: var(
-    --awsui-style-token-background-disabled,
+    #{style-api.name(style-tokens.$tokens, background-disabled)},
     var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content)
   );
   color: awsui.$color-text-disabled;
@@ -155,7 +160,7 @@
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
     color: var(
-      --awsui-style-token-dismiss-color-disabled,
+      #{style-api.name(style-tokens.$tokens, dismiss-color-disabled)},
       var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled)
     );
   }

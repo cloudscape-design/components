@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/style-api' as style-api;
+
+// Included by a dropdown host (e.g. autosuggest) on EACH option element it renders, to drive the
+// shared selectable-item option styling from the host's own `--awsui-style-{host}-option-*` tokens.
+// Applied per option (not on the host root) so per-option overrides via classNames.options resolve
+// on the same element.
+@mixin host($tokens) {
+  @include style-api.propagate(
+    $tokens,
+    (
+      selectable-item-color: option-color,
+      selectable-item-background-hover: option-background-hover,
+      selectable-item-background-selected: option-background-selected,
+      selectable-item-color-highlighted: option-color-highlighted,
+    )
+  );
+}

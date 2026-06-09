@@ -8,17 +8,17 @@
 // Base theme on the flashbar wrapper. Cascades to all items and to the
 // peeking "stacked" cards (which are rendered without the per-item class).
 .styled-flashbar {
-  --awsui-style-flash-background: #{palette.$surface-alt};
-  --awsui-style-flash-color: #{palette.$text};
-  --awsui-style-flash-border-radius: 12px;
+  --awsui-style-flashbar-background: #{palette.$surface-alt};
+  --awsui-style-flashbar-color: #{palette.$text};
+  --awsui-style-flashbar-border-radius: 12px;
 }
 
 // Per-type item overrides for the flat / expanded view.
 // Text always uses $text for guaranteed contrast in light and dark modes.
 @mixin flash-theme($bg) {
-  --awsui-style-flash-background: #{$bg};
-  --awsui-style-flash-color: #{palette.$text};
-  --awsui-style-flash-border-radius: 12px;
+  --awsui-style-flashbar-background: #{$bg};
+  --awsui-style-flashbar-color: #{palette.$text};
+  --awsui-style-flashbar-border-radius: 12px;
 }
 
 .flash-success {
@@ -42,5 +42,4 @@
 .dismiss {
   --awsui-style-button-color-default: #{palette.$text};
   --awsui-style-button-color-hover: #{palette.$error};
-  --awsui-style-transition-duration: 200ms;
 }

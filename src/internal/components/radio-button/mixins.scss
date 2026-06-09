@@ -1,0 +1,28 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/style-api' as style-api;
+
+// Included by the radio-group host on its root, to drive radio-button styling (control colors and
+// focus ring) from the host's own `--awsui-style-radio-*` tokens. Only declared props are
+// propagated, so omitted ones keep radio-button's design-token fallbacks.
+@mixin host($tokens) {
+  @include style-api.propagate(
+    $tokens,
+    (
+      radio-background-default: background-default,
+      radio-background-checked: background-checked,
+      radio-background-disabled: background-disabled,
+      radio-border-color-default: border-color-default,
+      radio-border-color-disabled: border-color-disabled,
+      radio-foreground-default: foreground-default,
+      radio-foreground-disabled: foreground-disabled,
+      radio-foreground-readonly: foreground-readonly,
+      radio-focus-ring-color: focus-ring-color,
+      radio-focus-ring-border-radius: focus-ring-border-radius,
+      radio-focus-ring-border-width: focus-ring-border-width,
+    )
+  );
+}

@@ -1,0 +1,25 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/style-api' as style-api;
+
+$component: 'token';
+$props: style-api.uniform(
+  (
+    background-default,
+    background-disabled,
+    background-readonly,
+    border-color-default,
+    border-color-disabled,
+    border-color-readonly,
+    border-radius,
+    color-default,
+    dismiss-color-default,
+    dismiss-color-disabled,
+    dismiss-color-hover,
+    dismiss-color-readonly
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);

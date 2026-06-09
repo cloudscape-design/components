@@ -15,10 +15,14 @@
 
 /* stylelint-disable custom-property-pattern */
 
+// Label/description styling is driven by the host component (checkbox, radio, toggle, tiles) through
+// internal propagation vars set on the host root. Hosts own the public `--awsui-style-{host}-*`
+// tokens; abstract-switch only reads the resolved internal vars, falling back to design tokens.
 .label {
-  color: var(--awsui-style-color-text-label, #{awsui.$color-text-form-default});
+  color: var(--awsui-internal-style-abstract-switch-label-color, #{awsui.$color-text-form-default});
   @include styles.with-motion {
-    transition: color var(--awsui-style-transition-duration, 0s) var(--awsui-style-transition-easing, ease);
+    transition: color var(--awsui-internal-style-abstract-switch-transition-duration, 0s)
+      var(--awsui-internal-style-abstract-switch-transition-easing, ease);
   }
 }
 
@@ -64,12 +68,12 @@
 
 .label,
 .description {
-  padding-inline-start: var(--awsui-style-space-control-label, #{awsui.$space-xs});
+  padding-inline-start: var(--awsui-internal-style-abstract-switch-label-spacing, #{awsui.$space-xs});
   &-disabled {
-    color: var(--awsui-style-color-text-label-disabled, #{awsui.$color-text-control-disabled});
+    color: var(--awsui-internal-style-abstract-switch-label-color-disabled, #{awsui.$color-text-control-disabled});
   }
   &-readonly {
-    color: var(--awsui-style-color-text-label-readonly, #{awsui.$color-text-form-default});
+    color: var(--awsui-internal-style-abstract-switch-label-color-readonly, #{awsui.$color-text-form-default});
   }
 }
 

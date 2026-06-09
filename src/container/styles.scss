@@ -5,15 +5,48 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
 @use './shared' as shared;
 
 /* stylelint-disable custom-property-pattern */
 
+// The container's public Style API tokens, declared without the component prefix. Non-inheriting so
+// a value set on one container does not cascade into nested containers; `carriers` (on .root) mirror
+// them into internal carriers so the scoped values still reach this container's descendants and
+// pseudo-elements. Read sites resolve names via `style-api.name($tokens, <prop>)`.
+$component: 'container';
+$props: style-api.uniform(
+  (
+    color,
+    background,
+    border-radius,
+    border-width,
+    divider-color,
+    top-border-width,
+    top-border-color,
+    box-shadow,
+    header-background,
+    header-padding-block,
+    header-padding-inline,
+    content-padding-block,
+    content-padding-inline,
+    footer-padding-block,
+    footer-padding-inline,
+    footer-divider-border-width,
+    footer-divider-border-color
+  ),
+  $inherits: false
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
+
 .root {
   @include styles.styles-reset;
+  @include style-api.carriers($component, $props);
   word-wrap: break-word;
   position: relative;
-  color: var(--awsui-style-container-color, inherit);
+  color: var(#{style-api.name($tokens, color)}, inherit);
 
   &.fit-height {
     display: flex;
@@ -27,9 +60,9 @@
   &.variant {
     &-default,
     &-stacked {
-      background-color: var(--awsui-style-container-background, #{awsui.$color-background-container-content});
+      background-color: var(#{style-api.name($tokens, background)}, #{awsui.$color-background-container-content});
       // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      @include styles.container-style($tokens);
     }
 
     // Meld container bottom corners into next adjoining container
@@ -128,9 +161,9 @@
 }
 
 .header {
-  background-color: var(--awsui-style-container-header-background, #{awsui.$color-background-container-header});
-  border-start-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
-  border-start-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+  background-color: var(#{style-api.name($tokens, header-background)}, #{awsui.$color-background-container-header});
+  border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
+  border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
   &.header-full-page {
     background-color: awsui.$color-background-layout-main;
   }
@@ -186,13 +219,13 @@
   }
 
   &.with-paddings {
-    padding-block-start: var(--awsui-style-container-header-padding-block, #{awsui.$space-container-header-top});
-    padding-block-end: var(--awsui-style-container-header-padding-block, #{awsui.$space-container-header-bottom});
-    padding-inline: var(--awsui-style-container-header-padding-inline, #{awsui.$space-container-horizontal});
+    padding-block-start: var(#{style-api.name($tokens, header-padding-block)}, #{awsui.$space-container-header-top});
+    padding-block-end: var(#{style-api.name($tokens, header-padding-block)}, #{awsui.$space-container-header-bottom});
+    padding-inline: var(#{style-api.name($tokens, header-padding-inline)}, #{awsui.$space-container-horizontal});
 
     &.header-variant-cards {
-      padding-block: var(--awsui-style-container-header-padding-block, #{awsui.$space-container-header-top});
-      padding-inline: var(--awsui-style-container-header-padding-inline, #{awsui.$space-container-horizontal});
+      padding-block: var(#{style-api.name($tokens, header-padding-block)}, #{awsui.$space-container-header-top});
+      padding-inline: var(#{style-api.name($tokens, header-padding-inline)}, #{awsui.$space-container-horizontal});
     }
   }
 
@@ -203,7 +236,7 @@
 
   &-variant-cards {
     // Border and shadows are applied with ::before and ::after elements (respectively)
-    @include styles.container-style;
+    @include styles.container-style($tokens);
     &:not(.header-sticky-enabled) {
       position: relative;
     }
@@ -267,8 +300,8 @@
   flex: 1;
 
   &.with-paddings {
-    padding-block: var(--awsui-style-container-content-padding-block, #{awsui.$space-scaled-l});
-    padding-inline: var(--awsui-style-container-content-padding-inline, #{awsui.$space-container-horizontal});
+    padding-block: var(#{style-api.name($tokens, content-padding-block)}, #{awsui.$space-scaled-l});
+    padding-inline: var(#{style-api.name($tokens, content-padding-inline)}, #{awsui.$space-container-horizontal});
 
     &.with-header {
       padding-block-start: awsui.$space-container-content-top;
@@ -278,12 +311,15 @@
 
 .footer {
   &.with-paddings {
-    padding-block: var(--awsui-style-container-footer-padding-block, #{awsui.$space-scaled-s});
-    padding-inline: var(--awsui-style-container-footer-padding-inline, #{awsui.$space-container-horizontal});
+    padding-block: var(#{style-api.name($tokens, footer-padding-block)}, #{awsui.$space-scaled-s});
+    padding-inline: var(#{style-api.name($tokens, footer-padding-inline)}, #{awsui.$space-container-horizontal});
   }
 
   &.with-divider {
-    border-block-start: var(--awsui-style-container-footer-divider-border-width, #{awsui.$border-divider-section-width})
-      solid var(--awsui-style-container-footer-divider-border-color, #{awsui.$color-border-divider-default});
+    border-block-start: var(
+        #{style-api.name($tokens, footer-divider-border-width)},
+        #{awsui.$border-divider-section-width}
+      )
+      solid var(#{style-api.name($tokens, footer-divider-border-color)}, #{awsui.$color-border-divider-default});
   }
 }

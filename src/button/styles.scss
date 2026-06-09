@@ -5,6 +5,7 @@
 
 @use 'sass:map';
 @use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
@@ -13,22 +14,62 @@
 
 /* stylelint-disable custom-property-pattern */
 
+// The button's public Style API tokens, declared without the component prefix. Inheriting (the
+// common case): button does not nest within itself, so cascading is harmless and no carrier is
+// needed. Read sites resolve names via `style-api.name($tokens, <prop>)`, so they stay agnostic to
+// the public-vs-carrier distinction even though all button tokens currently resolve to the public
+// token.
+$component: 'button';
+$props: style-api.uniform(
+  (
+    background-default,
+    background-hover,
+    background-active,
+    background-disabled,
+    border-color-default,
+    border-color-hover,
+    border-color-active,
+    border-color-disabled,
+    box-shadow-default,
+    box-shadow-hover,
+    box-shadow-active,
+    box-shadow-disabled,
+    color-default,
+    color-hover,
+    color-active,
+    color-disabled,
+    border-radius,
+    border-width,
+    padding-block,
+    padding-inline,
+    font-family,
+    icon-padding,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
+
 @mixin adjust-for-variant($variant) {
   background: var(
-    --awsui-style-button-background-default,
+    #{style-api.name($tokens, background-default)},
     var(#{custom-props.$styleBackgroundDefault}, #{map.get($variant, 'default-background')})
   );
   color: var(
-    --awsui-style-button-color-default,
+    #{style-api.name($tokens, color-default)},
     var(#{custom-props.$styleColorDefault}, #{map.get($variant, 'default-color')})
   );
   border-color: var(
-    --awsui-style-button-border-color-default,
+    #{style-api.name($tokens, border-color-default)},
     var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
   );
-  box-shadow: var(--awsui-style-button-box-shadow-default, var(#{custom-props.$styleBoxShadowDefault}));
-  border-block-width: var(--awsui-style-button-border-width, #{map.get($variant, 'border-width')});
-  border-inline-width: var(--awsui-style-button-border-width, #{map.get($variant, 'border-width')});
+  box-shadow: var(#{style-api.name($tokens, box-shadow-default)}, var(#{custom-props.$styleBoxShadowDefault}));
+  border-block-width: var(#{style-api.name($tokens, border-width)}, #{map.get($variant, 'border-width')});
+  border-inline-width: var(#{style-api.name($tokens, border-width)}, #{map.get($variant, 'border-width')});
   position: relative;
   text-decoration: none;
   padding-block: map.get($variant, 'padding');
@@ -37,51 +78,51 @@
 
   &:hover {
     background: var(
-      --awsui-style-button-background-hover,
+      #{style-api.name($tokens, background-hover)},
       var(#{custom-props.$styleBackgroundHover}, #{map.get($variant, 'hover-background')})
     );
     border-color: var(
-      --awsui-style-button-border-color-hover,
+      #{style-api.name($tokens, border-color-hover)},
       var(#{custom-props.$styleBorderColorHover}, #{map.get($variant, 'hover-border-color')})
     );
     color: var(
-      --awsui-style-button-color-hover,
+      #{style-api.name($tokens, color-hover)},
       var(#{custom-props.$styleColorHover}, #{map.get($variant, 'hover-color')})
     );
-    box-shadow: var(--awsui-style-button-box-shadow-hover, var(#{custom-props.$styleBoxShadowHover}));
+    box-shadow: var(#{style-api.name($tokens, box-shadow-hover)}, var(#{custom-props.$styleBoxShadowHover}));
     text-decoration: none;
   }
 
   &:active {
     background: var(
-      --awsui-style-button-background-active,
+      #{style-api.name($tokens, background-active)},
       var(#{custom-props.$styleBackgroundActive}, #{map.get($variant, 'active-background')})
     );
     border-color: var(
-      --awsui-style-button-border-color-active,
+      #{style-api.name($tokens, border-color-active)},
       var(#{custom-props.$styleBorderColorActive}, #{map.get($variant, 'active-border-color')})
     );
     color: var(
-      --awsui-style-button-color-active,
+      #{style-api.name($tokens, color-active)},
       var(#{custom-props.$styleColorActive}, #{map.get($variant, 'active-color')})
     );
-    box-shadow: var(--awsui-style-button-box-shadow-active, var(#{custom-props.$styleBoxShadowActive}));
+    box-shadow: var(#{style-api.name($tokens, box-shadow-active)}, var(#{custom-props.$styleBoxShadowActive}));
   }
 
   &.disabled {
     background: var(
-      --awsui-style-button-background-disabled,
+      #{style-api.name($tokens, background-disabled)},
       var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'))
     );
     border-color: var(
-      --awsui-style-button-border-color-disabled,
+      #{style-api.name($tokens, border-color-disabled)},
       var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
     );
     color: var(
-      --awsui-style-button-color-disabled,
+      #{style-api.name($tokens, color-disabled)},
       var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
     );
-    box-shadow: var(--awsui-style-button-box-shadow-disabled, var(#{custom-props.$styleBoxShadowDisabled}));
+    box-shadow: var(#{style-api.name($tokens, box-shadow-disabled)}, var(#{custom-props.$styleBoxShadowDisabled}));
     text-decoration: none;
     cursor: auto;
   }
@@ -95,26 +136,26 @@
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
-  font-family: var(--awsui-style-button-font-family, #{awsui.$font-family-base});
+  font-family: var(#{style-api.name($tokens, font-family)}, #{awsui.$font-family-base});
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: var(--awsui-style-button-border-radius, #{awsui.$border-radius-button});
-  border-start-end-radius: var(--awsui-style-button-border-radius, #{awsui.$border-radius-button});
-  border-end-start-radius: var(--awsui-style-button-border-radius, #{awsui.$border-radius-button});
-  border-end-end-radius: var(--awsui-style-button-border-radius, #{awsui.$border-radius-button});
+  border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-button});
+  border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-button});
+  border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-button});
+  border-end-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-button});
   border-block: awsui.$border-width-button solid;
   border-inline: awsui.$border-width-button solid;
-  padding-block: var(--awsui-style-button-padding-block, #{awsui.$space-button-vertical});
-  padding-inline: var(--awsui-style-button-padding-inline, #{awsui.$space-button-horizontal});
+  padding-block: var(#{style-api.name($tokens, padding-block)}, #{awsui.$space-button-vertical});
+  padding-inline: var(#{style-api.name($tokens, padding-inline)}, #{awsui.$space-button-horizontal});
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-button-focus-ring-border-width,
+      #{style-api.name($tokens, focus-ring-border-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-style-button-focus-ring-color,
+      #{style-api.name($tokens, focus-ring-color)},
       var(#{custom-props.$styleFocusRingBorderColor}, #{awsui.$color-border-item-focused})
     );
 
@@ -133,7 +174,7 @@
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
       $border-radius: var(
-          --awsui-style-button-focus-ring-border-radius,
+          #{style-api.name($tokens, focus-ring-border-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -148,7 +189,7 @@
           'horizontal': awsui.$space-button-focus-outline-gutter,
         ),
         $border-radius: var(
-            --awsui-style-button-focus-ring-border-radius,
+            #{style-api.name($tokens, focus-ring-border-radius)},
             var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
           ),
         $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -162,8 +203,8 @@
   }
 
   &.button-no-text {
-    padding-inline-start: var(--awsui-style-button-icon-padding, #{awsui.$space-button-icon-only-horizontal});
-    padding-inline-end: var(--awsui-style-button-icon-padding, #{awsui.$space-button-icon-only-horizontal});
+    padding-inline-start: var(#{style-api.name($tokens, icon-padding)}, #{awsui.$space-button-icon-only-horizontal});
+    padding-inline-end: var(#{style-api.name($tokens, icon-padding)}, #{awsui.$space-button-icon-only-horizontal});
   }
 
   &.button-no-wrap {
@@ -181,7 +222,7 @@
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-inline: var(--awsui-style-button-icon-padding, #{awsui.$space-xxs});
+    padding-inline: var(#{style-api.name($tokens, icon-padding)}, #{awsui.$space-xxs});
   }
 
   &.variant-modal-dismiss {

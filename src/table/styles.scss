@@ -5,10 +5,15 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 
 /* stylelint-disable custom-property-pattern */
+
+// Register table's public Style API tokens as inheriting @property custom properties.
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .root {
   @include styles.default-text-style;
@@ -155,7 +160,7 @@ filter search icon.
   border-start-end-radius: 0;
   border-end-start-radius: 0;
   border-end-end-radius: 0;
-  background: var(--awsui-style-table-header-background, #{awsui.$color-background-table-header});
+  background: var(#{style-api.name(style-tokens.$tokens, header-background)}, #{awsui.$color-background-table-header});
   &.variant-full-page {
     background: awsui.$color-background-layout-main;
   }

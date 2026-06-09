@@ -7,12 +7,17 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use './mixins' as mixins;
 @use './motion';
 
 /* stylelint-disable custom-property-pattern */
+
+// action-card's public Style API tokens (base + per-state: hover, active, disabled).
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .header {
   &-inner {
@@ -53,7 +58,10 @@
 .icon {
   flex-shrink: 0;
   display: flex;
-  color: var(--awsui-style-action-card-icon-color, #{map.get(constants.$states, 'default', 'icon-color')});
+  color: var(
+    #{style-api.name(style-tokens.$tokens, icon-color)},
+    #{map.get(constants.$states, 'default', 'icon-color')}
+  );
   pointer-events: none;
 }
 
@@ -110,7 +118,7 @@
   text-align: start;
   display: flex;
   $default-state: map.get(constants.$states, 'default');
-  background: var(--awsui-style-action-card-background, #{map.get($default-state, 'background')});
+  background: var(#{style-api.name(style-tokens.$tokens, background)}, #{map.get($default-state, 'background')});
   box-shadow: map.get($default-state, 'box-shadow');
   color: map.get($default-state, 'text-color');
   padding-inline: 0;
@@ -123,9 +131,9 @@
 
     box-shadow: none;
     border-block: solid map.get($default-state, 'border-width')
-      var(--awsui-style-action-card-border-color, #{map.get($default-state, 'border-color')});
+      var(#{style-api.name(style-tokens.$tokens, border-color)}, #{map.get($default-state, 'border-color')});
     border-inline: solid map.get($default-state, 'border-width')
-      var(--awsui-style-action-card-border-color, #{map.get($default-state, 'border-color')});
+      var(#{style-api.name(style-tokens.$tokens, border-color)}, #{map.get($default-state, 'border-color')});
   }
 
   &.variant-default,

@@ -10,46 +10,48 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 
 /* stylelint-disable custom-property-pattern */
 
 $default-background: var(
-  --awsui-style-segmented-control-background-default,
+  #{style-api.name(style-tokens.$tokens, background-default)},
   var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default)
 );
 $default-color: var(
-  --awsui-style-segmented-control-color-default,
+  #{style-api.name(style-tokens.$tokens, color-default)},
   var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default)
 );
 $hover-background: var(
-  --awsui-style-segmented-control-background-hover,
+  #{style-api.name(style-tokens.$tokens, background-hover)},
   var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover)
 );
 $hover-color: var(
-  --awsui-style-segmented-control-color-hover,
+  #{style-api.name(style-tokens.$tokens, color-hover)},
   var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover)
 );
 $disabled-background: var(
-  --awsui-style-segmented-control-background-disabled,
+  #{style-api.name(style-tokens.$tokens, background-disabled)},
   var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled)
 );
 $disabled-color: var(
-  --awsui-style-segmented-control-color-disabled,
+  #{style-api.name(style-tokens.$tokens, color-disabled)},
   var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled)
 );
 $selected-background: var(
-  --awsui-style-segmented-control-background-active,
+  #{style-api.name(style-tokens.$tokens, background-active)},
   var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active)
 );
 $selected-color: var(
-  --awsui-style-segmented-control-color-active,
+  #{style-api.name(style-tokens.$tokens, color-active)},
   var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active)
 );
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
 $segment-radius: var(
-  --awsui-style-segmented-control-segment-border-radius,
-  calc(var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button}) - 3px)
+  #{style-api.name(style-tokens.$tokens, segment-border-radius)},
+  calc(var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-button}) - 3px)
 );
 
 .segment {
@@ -57,13 +59,13 @@ $segment-radius: var(
   @include styles.text-flex-wrapping;
   @include styles.font-button;
   letter-spacing: 0.25px;
-  font-size: var(--awsui-style-segmented-control-segment-font-size, inherit);
+  font-size: var(#{style-api.name(style-tokens.$tokens, segment-font-size)}, inherit);
   padding-block: var(
-    --awsui-style-segmented-control-segment-padding-block,
+    #{style-api.name(style-tokens.$tokens, segment-padding-block)},
     calc(awsui.$space-field-vertical - awsui.$border-width-field)
   );
   padding-inline: var(
-    --awsui-style-segmented-control-segment-padding-inline,
+    #{style-api.name(style-tokens.$tokens, segment-padding-inline)},
     calc(awsui.$space-button-horizontal - $segment-gap)
   );
 
@@ -99,11 +101,11 @@ $segment-radius: var(
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-segmented-control-focus-ring-border-width,
+      #{style-api.name(style-tokens.$tokens, focus-ring-border-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-style-segmented-control-focus-ring-border-color,
+      #{style-api.name(style-tokens.$tokens, focus-ring-color)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 
@@ -111,7 +113,7 @@ $segment-radius: var(
     @include styles.focus-highlight(
       $gutter: awsui.$space-segmented-control-focus-outline-gutter,
       $border-radius: var(
-          --awsui-style-segmented-control-focus-ring-border-radius,
+          #{style-api.name(style-tokens.$tokens, focus-ring-border-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),

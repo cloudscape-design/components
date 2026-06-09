@@ -16,12 +16,11 @@
   --awsui-style-input-placeholder-color: #{palette.$text-muted};
   --awsui-style-input-border-radius: 12px;
   --awsui-style-input-border-width: 2px;
-  --awsui-style-transition-duration: 200ms;
-  --awsui-style-dropdown-border-color: #{palette.$accent};
-  --awsui-style-dropdown-border-radius: 12px;
-  --awsui-style-dropdown-border-width: 2px;
-  --awsui-style-dropdown-item-background-hover: #{palette.$surface-alt};
-  --awsui-style-dropdown-item-background-selected: #{palette.$surface-alt};
+  --awsui-style-autosuggest-dropdown-border-color: #{palette.$accent};
+  --awsui-style-autosuggest-dropdown-border-radius: 12px;
+  --awsui-style-autosuggest-dropdown-border-width: 2px;
+  --awsui-style-autosuggest-option-background-hover: #{palette.$surface-alt};
+  --awsui-style-autosuggest-option-background-selected: #{palette.$surface-alt};
 
   &:hover {
     --awsui-style-input-border-color: #{palette.$accent-hover};
@@ -35,28 +34,28 @@
   --awsui-style-input-color: #{palette.$text};
   --awsui-style-input-border-radius: 12px;
   --awsui-style-input-border-width: 2px;
-  --awsui-style-dropdown-border-color: #{palette.$error};
-  --awsui-style-dropdown-border-radius: 12px;
-  --awsui-style-dropdown-item-background-hover: #{palette.$error-surface};
-  --awsui-style-dropdown-item-background-selected: #{palette.$error-surface};
+  --awsui-style-autosuggest-dropdown-border-color: #{palette.$error};
+  --awsui-style-autosuggest-dropdown-border-radius: 12px;
+  --awsui-style-autosuggest-option-background-hover: #{palette.$error-surface};
+  --awsui-style-autosuggest-option-background-selected: #{palette.$error-surface};
 }
 
 .option-compute {
-  --awsui-style-option-color: #{palette.$accent};
+  --awsui-style-autosuggest-option-color: #{palette.$accent};
 
   &[data-highlighted] {
-    --awsui-style-dropdown-item-background-hover: #{palette.$accent};
-    --awsui-style-dropdown-item-color-highlighted: #{palette.$text-on-accent};
-    --awsui-style-option-color: #{palette.$text-on-accent};
+    --awsui-style-autosuggest-option-background-hover: #{palette.$accent};
+    --awsui-style-autosuggest-option-color-highlighted: #{palette.$text-on-accent};
+    --awsui-style-autosuggest-option-color: #{palette.$text-on-accent};
   }
 }
 
 .option-storage {
-  --awsui-style-option-color: #{palette.$success};
+  --awsui-style-autosuggest-option-color: #{palette.$success};
 
   &[data-highlighted] {
-    --awsui-style-dropdown-item-background-hover: #{palette.$success};
-    --awsui-style-dropdown-item-color-highlighted: #{palette.$text-on-accent};
-    --awsui-style-option-color: #{palette.$text-on-accent};
+    --awsui-style-autosuggest-option-background-hover: #{palette.$success};
+    --awsui-style-autosuggest-option-color-highlighted: #{palette.$text-on-accent};
+    --awsui-style-autosuggest-option-color: #{palette.$text-on-accent};
   }
 }

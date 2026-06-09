@@ -7,8 +7,27 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './mixins.scss' as mixins;
+@use '../internal/styles/style-api' as style-api;
 
 /* stylelint-disable custom-property-pattern */
+
+// Register public Style API tokens as @property.
+$component: 'slider';
+$props: style-api.uniform(
+  (
+    handle-background-active,
+    handle-background-default,
+    handle-background-hover,
+    handle-border-radius,
+    range-background-active,
+    range-background-default,
+    track-background-color
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 .root {
   @include styles.styles-reset;
@@ -37,7 +56,7 @@
 
   &-track {
     background-color: var(
-      --awsui-style-slider-track-background-color,
+      #{style-api.name($tokens, track-background-color)},
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-track-default)
     );
     inline-size: calc(100% + mixins.$thumb-size);
@@ -47,7 +66,7 @@
     &.disabled {
       cursor: default;
       background-color: var(
-        --awsui-style-slider-track-background-color,
+        #{style-api.name($tokens, track-background-color)},
         var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
       );
     }
@@ -55,7 +74,7 @@
     &.readonly:not(&.disabled) {
       cursor: default;
       background-color: var(
-        --awsui-style-slider-track-background-color,
+        #{style-api.name($tokens, track-background-color)},
         var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
       );
     }
@@ -63,7 +82,7 @@
 
   &-range {
     background-color: var(
-      --awsui-style-slider-range-background-default,
+      #{style-api.name($tokens, range-background-default)},
       var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-default)
     );
     block-size: 4px;
@@ -71,42 +90,42 @@
 
     &.error {
       background-color: var(
-        --awsui-style-slider-range-background-default,
+        #{style-api.name($tokens, range-background-default)},
         var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-error-default)
       );
     }
 
     &.warning {
       background-color: var(
-        --awsui-style-slider-range-background-default,
+        #{style-api.name($tokens, range-background-default)},
         var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-warning-default)
       );
     }
 
     &.active {
       background-color: var(
-        --awsui-style-slider-range-background-active,
+        #{style-api.name($tokens, range-background-active)},
         var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-active)
       );
     }
 
     &.error-active {
       background-color: var(
-        --awsui-style-slider-range-background-active,
+        #{style-api.name($tokens, range-background-active)},
         var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-error-active)
       );
     }
 
     &.warning-active {
       background-color: var(
-        --awsui-style-slider-range-background-active,
+        #{style-api.name($tokens, range-background-active)},
         var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-warning-active)
       );
     }
 
     &.disabled {
       background-color: var(
-        --awsui-style-slider-range-background-default,
+        #{style-api.name($tokens, range-background-default)},
         var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-control-disabled)
       );
     }
@@ -114,7 +133,7 @@
     &.readonly:not(&.disabled) {
       inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-readonly-size);
       background-color: var(
-        --awsui-style-slider-range-background-default,
+        #{style-api.name($tokens, range-background-default)},
         var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-foreground-control-read-only)
       );
     }
@@ -205,7 +224,7 @@
   padding-inline: 0;
   padding-block: 0;
   background: var(
-    --awsui-style-slider-track-background-color,
+    #{style-api.name($tokens, track-background-color)},
     var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-track-default)
   );
   inset-block-start: -4px;
@@ -219,13 +238,13 @@
 
   &.filled {
     background: var(
-      --awsui-style-slider-range-background-default,
+      #{style-api.name($tokens, range-background-default)},
       var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-default)
     );
 
     &.readonly:not(.disabled) {
       background: var(
-        --awsui-style-slider-track-background-color,
+        #{style-api.name($tokens, track-background-color)},
         var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-foreground-control-read-only)
       );
     }
@@ -233,49 +252,49 @@
 
   &.active {
     background: var(
-      --awsui-style-slider-range-background-active,
+      #{style-api.name($tokens, range-background-active)},
       var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-active)
     );
   }
 
   &.error {
     background: var(
-      --awsui-style-slider-track-background-color,
+      #{style-api.name($tokens, track-background-color)},
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-error-default)
     );
   }
 
   &.warning {
     background: var(
-      --awsui-style-slider-track-background-color,
+      #{style-api.name($tokens, track-background-color)},
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-warning-default)
     );
   }
 
   &.error-active {
     background-color: var(
-      --awsui-style-slider-range-background-active,
+      #{style-api.name($tokens, range-background-active)},
       var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-error-active)
     );
   }
 
   &.warning-active {
     background-color: var(
-      --awsui-style-slider-range-background-active,
+      #{style-api.name($tokens, range-background-active)},
       var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-warning-active)
     );
   }
 
   &.disabled {
     background: var(
-      --awsui-style-slider-track-background-color,
+      #{style-api.name($tokens, track-background-color)},
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
     );
   }
 
   &.readonly {
     background: var(
-      --awsui-style-slider-track-background-color,
+      #{style-api.name($tokens, track-background-color)},
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
     );
   }
@@ -369,22 +388,22 @@
 .error {
   &::-webkit-slider-thumb {
     background-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
     );
     border-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
     );
   }
 
   &::-moz-range-thumb {
     background-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
     );
     border-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
     );
   }
@@ -410,22 +429,22 @@
 .warning {
   &::-webkit-slider-thumb {
     background-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
     );
     border-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
     );
   }
 
   &::-moz-range-thumb {
     background-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
     );
     border-color: var(
-      --awsui-style-slider-handle-background-default,
+      #{style-api.name($tokens, handle-background-default)},
       var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
     );
   }

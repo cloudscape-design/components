@@ -10,6 +10,13 @@
 @use '../internal/styles/foundation' as foundation;
 @use './motion';
 @use './collapsible';
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
+
+/* stylelint-disable custom-property-pattern */
+
+// Flashbar's public Style API tokens: the flash items and the collapsed notification bar.
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 .flashbar {
   position: relative;
@@ -25,7 +32,6 @@
   @include styles.styles-reset;
 }
 
-/* stylelint-disable custom-property-pattern */
 .flash {
   position: relative;
   display: flex;
@@ -33,24 +39,35 @@
   align-items: flex-start;
   padding-block: awsui.$space-flashbar-vertical;
   padding-inline: awsui.$space-flashbar-horizontal;
-  border-start-start-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
-  border-start-end-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
-  border-end-start-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
-  border-end-end-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
-  border-block: var(--awsui-style-flash-border-width, 0) solid var(--awsui-style-flash-border-color, transparent);
-  border-inline: var(--awsui-style-flash-border-width, 0) solid var(--awsui-style-flash-border-color, transparent);
-  color: var(--awsui-style-flash-color, #{awsui.$color-text-notification-default});
+  border-start-start-radius: var(
+    #{style-api.name(style-tokens.$tokens, border-radius)},
+    #{awsui.$border-radius-flashbar}
+  );
+  border-start-end-radius: var(
+    #{style-api.name(style-tokens.$tokens, border-radius)},
+    #{awsui.$border-radius-flashbar}
+  );
+  border-end-start-radius: var(
+    #{style-api.name(style-tokens.$tokens, border-radius)},
+    #{awsui.$border-radius-flashbar}
+  );
+  border-end-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-flashbar});
+  border-block: var(#{style-api.name(style-tokens.$tokens, border-width)}, 0) solid
+    var(#{style-api.name(style-tokens.$tokens, border-color)}, transparent);
+  border-inline: var(#{style-api.name(style-tokens.$tokens, border-width)}, 0) solid
+    var(#{style-api.name(style-tokens.$tokens, border-color)}, transparent);
+  color: var(#{style-api.name(style-tokens.$tokens, color)}, #{awsui.$color-text-notification-default});
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-flash-focus-ring-border-width,
+      #{style-api.name(style-tokens.$tokens, focus-ring-border-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-style-flash-focus-ring-border-color,
+      #{style-api.name(style-tokens.$tokens, focus-ring-color)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 }
@@ -94,7 +111,7 @@
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
       $border-radius: var(
-          --awsui-style-flash-focus-ring-border-radius,
+          #{style-api.name(style-tokens.$tokens, focus-ring-border-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -158,20 +175,32 @@
 }
 
 .flash-type-success {
-  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-green});
+  background-color: var(
+    #{style-api.name(style-tokens.$tokens, background)},
+    #{awsui.$color-background-notification-green}
+  );
 }
 
 .flash-type-error {
-  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-red});
+  background-color: var(
+    #{style-api.name(style-tokens.$tokens, background)},
+    #{awsui.$color-background-notification-red}
+  );
 }
 
 .flash-type-info,
 .flash-type-in-progress {
-  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-blue});
+  background-color: var(
+    #{style-api.name(style-tokens.$tokens, background)},
+    #{awsui.$color-background-notification-blue}
+  );
 }
 
 .flash-type-warning {
-  color: var(--awsui-style-flash-color, #{awsui.$color-text-notification-yellow});
-  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-yellow});
+  color: var(#{style-api.name(style-tokens.$tokens, color)}, #{awsui.$color-text-notification-yellow});
+  background-color: var(
+    #{style-api.name(style-tokens.$tokens, background)},
+    #{awsui.$color-background-notification-yellow}
+  );
 }
 /* stylelint-enable custom-property-pattern */

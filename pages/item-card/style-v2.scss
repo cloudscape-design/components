@@ -20,7 +20,6 @@
   --awsui-style-item-card-border-color-default: #{$border};
   --awsui-style-item-card-border-radius: 12px;
   --awsui-style-item-card-border-width-default: 2px;
-  --awsui-style-transition-duration: 200ms;
 
   &:hover {
     --awsui-style-item-card-border-color-default: #{$border-hover};

@@ -70,11 +70,15 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkOptionValueField('Autosuggest', 'options', options);
 
   const resolvedOptions = useMemo(() => {
-    if (!classNames?.options) {
-      return options || [];
-    }
+    // Map options to attach the autosuggest option bridge class (styles.option), which maps
+    // autosuggest's per-option tokens to the selectable-item internal vars. Compose any
+    // consumer-provided classNames.options on top so per-option overrides resolve on the same element.
     const resolve = (option: AutosuggestProps.Option): string | undefined =>
-      typeof classNames.options === 'function' ? classNames.options({ option }) : classNames.options;
+      classNames?.options
+        ? typeof classNames.options === 'function'
+          ? classNames.options({ option })
+          : classNames.options
+        : undefined;
     const key: keyof AutosuggestProps.OptionGroup = 'options';
     return (options || []).map(entry =>
       key in entry
@@ -82,10 +86,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             ...entry,
             options: (entry as AutosuggestProps.OptionGroup).options.map(opt => ({
               ...opt,
-              className: resolve(opt) ?? opt.className,
+              className: clsx(styles.option, opt.className, resolve(opt)) || undefined,
             })),
           }
-        : { ...entry, className: resolve(entry) ?? entry.className }
+        : { ...entry, className: clsx(styles.option, entry.className, resolve(entry)) || undefined }
     );
   }, [options, classNames]);
 

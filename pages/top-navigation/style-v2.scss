@@ -43,11 +43,11 @@ $menu-item-highlight-bg: hsl(330, 65%, 48%);
 
 .utility-profile {
   // Jane Doe trigger — subtle text-color hover/open, no inverse pill.
-  --awsui-style-menu-trigger-color: #{palette.$text-on-accent};
-  --awsui-style-menu-trigger-color-hover: #{$util-hover};
-  --awsui-style-menu-trigger-color-active: #{$util-hover};
+  --awsui-style-top-navigation-menu-trigger-color: #{palette.$text-on-accent};
+  --awsui-style-top-navigation-menu-trigger-color-hover: #{$util-hover};
+  --awsui-style-top-navigation-menu-trigger-color-active: #{$util-hover};
   // Menu items on the dark dropdown surface.
-  --awsui-style-dropdown-item-color: #{$menu-item};
-  --awsui-style-dropdown-item-color-highlighted: #{hsl(0, 0%, 100%)};
-  --awsui-style-dropdown-item-background-hover: #{$menu-item-highlight-bg};
+  --awsui-style-top-navigation-menu-item-color: #{$menu-item};
+  --awsui-style-top-navigation-menu-item-color-highlighted: #{hsl(0, 0%, 100%)};
+  --awsui-style-top-navigation-menu-item-background-hover: #{$menu-item-highlight-bg};
 }

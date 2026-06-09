@@ -7,8 +7,13 @@
 @use 'segment' as seg;
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 
 /* stylelint-disable custom-property-pattern */
+
+// Register public Style API tokens as @property.
+@include style-api.register(style-tokens.$component, style-tokens.$props);
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -28,10 +33,13 @@
   display: inline-grid;
   border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
   border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
-  border-start-start-radius: var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button});
-  border-start-end-radius: var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button});
-  border-end-start-radius: var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button});
-  border-end-end-radius: var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button});
+  border-start-start-radius: var(
+    #{style-api.name(style-tokens.$tokens, border-radius)},
+    #{awsui.$border-radius-button}
+  );
+  border-start-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-button});
+  border-end-start-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-button});
+  border-end-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-button});
   background-color: awsui.$color-background-segment-wrapper;
   align-items: center;
   min-block-size: calc(awsui.$line-height-body-m + awsui.$space-static-xxs);

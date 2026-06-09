@@ -6,10 +6,42 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/components/abstract-switch/mixins' as abstract-switch;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 /* stylelint-disable custom-property-pattern */
+
+// Toggle owns its tokens, including the label rendered by the internal abstract-switch (impl detail)
+// and the focus ring on its own `.outline`.
+$component: 'toggle';
+$props: style-api.uniform(
+  (
+    background-default,
+    background-checked,
+    background-disabled,
+    background-readonly,
+    handle-default,
+    handle-checked,
+    handle-disabled,
+    handle-readonly,
+    border-radius,
+    label-color,
+    label-color-disabled,
+    label-color-readonly,
+    label-spacing,
+    transition-duration,
+    transition-easing,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
@@ -19,24 +51,25 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 
 .root {
   @include styles.styles-reset;
+  @include abstract-switch.host($tokens);
   display: flex;
 }
 
 .outline {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-focus-ring-border-width,
+      #{style-api.name($tokens, focus-ring-border-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-style-focus-ring-border-color,
+      #{style-api.name($tokens, focus-ring-color)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 
   @include styles.focus-highlight(
     $gutter: 2px,
     $border-radius: var(
-        --awsui-style-focus-ring-border-radius,
+        #{style-api.name($tokens, focus-ring-border-radius)},
         var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
       ),
     $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -48,22 +81,25 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   // background colors in high-contrast/forced-color mode
   forced-color-adjust: none;
   @include styles.make-control-size($toggle-height, $toggle-width);
-  background: var(--awsui-style-toggle-background-default, #{awsui.$color-background-toggle-default});
-  border-start-start-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
-  border-start-end-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
-  border-end-start-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
-  border-end-end-radius: var(--awsui-style-toggle-border-radius, #{0.8 * styles.$base-size});
+  background: var(#{style-api.name($tokens, background-default)}, #{awsui.$color-background-toggle-default});
+  border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
+  border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
+  border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
+  border-end-end-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
   &-checked {
-    background: var(--awsui-style-toggle-background-checked, #{awsui.$color-background-control-checked});
+    background: var(#{style-api.name($tokens, background-checked)}, #{awsui.$color-background-control-checked});
   }
   &-disabled {
-    background: var(--awsui-style-toggle-background-disabled, #{awsui.$color-background-control-disabled});
+    background: var(#{style-api.name($tokens, background-disabled)}, #{awsui.$color-background-control-disabled});
     &.toggle-control-checked {
-      background: var(--awsui-style-toggle-background-disabled, #{awsui.$color-background-toggle-checked-disabled});
+      background: var(
+        #{style-api.name($tokens, background-disabled)},
+        #{awsui.$color-background-toggle-checked-disabled}
+      );
     }
   }
   &-readonly {
-    background: var(--awsui-style-toggle-background-readonly, #{awsui.$color-background-control-disabled});
+    background: var(#{style-api.name($tokens, background-readonly)}, #{awsui.$color-background-control-disabled});
   }
 }
 
@@ -74,7 +110,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   border-start-end-radius: 0.6 * styles.$base-size;
   border-end-start-radius: 0.6 * styles.$base-size;
   border-end-end-radius: 0.6 * styles.$base-size;
-  background: var(--awsui-style-toggle-handle-default, #{awsui.$color-foreground-control-default});
+  background: var(#{style-api.name($tokens, handle-default)}, #{awsui.$color-foreground-control-default});
   box-shadow: 1px 1px $shadow-color;
   inline-size: $handle-size;
   block-size: $handle-size;
@@ -92,7 +128,7 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 
   &-checked {
     transform: translateX(0.8 * styles.$base-size);
-    background: var(--awsui-style-toggle-handle-checked, #{awsui.$color-foreground-control-default});
+    background: var(#{style-api.name($tokens, handle-checked)}, #{awsui.$color-foreground-control-default});
 
     @include styles.with-direction('rtl') {
       transform: translateX(-0.8 * styles.$base-size);
@@ -100,14 +136,14 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   }
 
   &-disabled {
-    background: var(--awsui-style-toggle-handle-disabled, #{awsui.$color-foreground-control-disabled});
+    background: var(#{style-api.name($tokens, handle-disabled)}, #{awsui.$color-foreground-control-disabled});
     box-shadow: none;
   }
 
   &-readonly:not(&-disabled) {
     box-shadow: none;
     &.toggle-handle-checked {
-      background: var(--awsui-style-toggle-handle-readonly, #{awsui.$color-foreground-control-read-only});
+      background: var(#{style-api.name($tokens, handle-readonly)}, #{awsui.$color-foreground-control-read-only});
     }
   }
 }

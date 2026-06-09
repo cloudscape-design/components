@@ -11,6 +11,27 @@
 @use '../internal/styles/foundation' as foundation;
 
 @use './motion';
+@use '../internal/styles/style-api' as style-api;
+
+// Alert's public Style API tokens.
+$component: 'alert';
+$props: style-api.uniform(
+  (
+    background,
+    border-color,
+    border-radius,
+    border-width,
+    color,
+    icon-color,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 /* stylelint-disable custom-property-pattern */
 
@@ -31,24 +52,24 @@
   flex-direction: row;
   border-block-start: awsui.$border-width-alert-block-start solid;
   border-block-end: awsui.$border-width-alert-block-end solid;
-  border-inline-start: var(--awsui-style-alert-border-width, #{awsui.$border-width-alert-inline-start}) solid;
+  border-inline-start: var(#{style-api.name($tokens, border-width)}, #{awsui.$border-width-alert-inline-start}) solid;
   border-inline-end: awsui.$border-width-alert-inline-end solid;
-  border-start-start-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
-  border-start-end-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
-  border-end-start-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
-  border-end-end-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
+  border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-end-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-alert});
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-  color: var(--awsui-style-alert-color, inherit);
+  color: var(#{style-api.name($tokens, color)}, inherit);
 
   #{custom-props.$alertFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-alert-focus-ring-border-width,
+      #{style-api.name($tokens, focus-ring-border-width)},
       var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-style-alert-focus-ring-border-color,
+      #{style-api.name($tokens, focus-ring-color)},
       var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 }
@@ -97,7 +118,7 @@
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
       $border-radius: var(
-          --awsui-style-alert-focus-ring-border-radius,
+          #{style-api.name($tokens, focus-ring-border-radius)},
           var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$alertFocusRingBoxShadow})
@@ -171,11 +192,11 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: var(--awsui-style-alert-border-color, #{map.get($_border-colors, $type)});
-    background-color: var(--awsui-style-alert-background, #{map.get($_background-colors, $type)});
+    border-color: var(#{style-api.name($tokens, border-color)}, #{map.get($_border-colors, $type)});
+    background-color: var(#{style-api.name($tokens, background)}, #{map.get($_background-colors, $type)});
     > .alert-wrapper > .alert-focus-wrapper > .icon {
       color: var(
-        --awsui-style-alert-icon-color,
+        #{style-api.name($tokens, icon-color)},
         var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
       );
     }

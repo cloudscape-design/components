@@ -5,9 +5,46 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/components/abstract-switch/mixins' as abstract-switch;
+@use '../internal/components/radio-button/mixins' as radio-button;
+
+/* stylelint-disable custom-property-pattern */
+
+// Radio owns its tokens, including the circle + focus ring rendered by the internal radio-button
+// and the label rendered by abstract-switch (both impl details). Set on the group root, the tokens
+// inherit to every radio button.
+$component: 'radio';
+$props: style-api.uniform(
+  (
+    background-default,
+    background-checked,
+    background-disabled,
+    border-color-default,
+    border-color-disabled,
+    foreground-default,
+    foreground-disabled,
+    foreground-readonly,
+    focus-ring-color,
+    focus-ring-border-radius,
+    focus-ring-border-width,
+    label-color,
+    label-color-disabled,
+    label-color-readonly,
+    label-spacing,
+    transition-duration,
+    transition-easing
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 .radio-group {
   @include styles.styles-reset;
+  @include abstract-switch.host($tokens);
+  @include radio-button.host($tokens);
 
   &:not(.horizontal-group) {
     display: block;

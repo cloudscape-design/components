@@ -15,8 +15,3 @@
 .container-inner {
   --awsui-style-container-header-background: #{palette.$success-surface};
 }
-
-.container-inner-reset {
-  --awsui-style-container-border-radius: initial;
-  --awsui-style-container-header-background: initial;
-}

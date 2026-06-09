@@ -7,22 +7,33 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
 @use './motion';
 
+// Register public Style API tokens as @property.
+$component: 'progress-bar';
+$props: style-api.uniform(
+  (border-radius, height, percentage-color, percentage-font-size, percentage-font-weight, track-color, value-color),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
+
 $progress-height: var(
-  --awsui-style-progress-bar-height,
+  #{style-api.name($tokens, height)},
   var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
 );
 $progress-border-radius: var(
-  --awsui-style-progress-bar-border-radius,
+  #{style-api.name($tokens, border-radius)},
   var(#{custom-props.$progressBarBorderRadius}, 10px)
 );
 $progress-background-color: var(
-  --awsui-style-progress-bar-track-color,
+  #{style-api.name($tokens, track-color)},
   var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
 );
 $progress-value-background-color: var(
-  --awsui-style-progress-bar-value-color,
+  #{style-api.name($tokens, value-color)},
   var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
 );
 
@@ -87,9 +98,9 @@ $progress-value-background-color: var(
 
 .percentage {
   /* used in test-utils */
-  color: var(--awsui-style-progress-bar-percentage-color, inherit);
-  font-size: var(--awsui-style-progress-bar-percentage-font-size, inherit);
-  font-weight: var(--awsui-style-progress-bar-percentage-font-weight, inherit);
+  color: var(#{style-api.name($tokens, percentage-color)}, inherit);
+  font-size: var(#{style-api.name($tokens, percentage-font-size)}, inherit);
+  font-weight: var(#{style-api.name($tokens, percentage-font-weight)}, inherit);
 }
 
 @mixin general-progress-background-style {

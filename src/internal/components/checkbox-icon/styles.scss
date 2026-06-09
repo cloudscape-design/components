@@ -8,6 +8,9 @@
 
 /* stylelint-disable custom-property-pattern */
 
+// Driven by the host (checkbox, or an embedded checkbox in multiselect/table selection) through
+// internal propagation vars set on the host root. Each state reads its own internal var, then a
+// stateless base internal var, then the design-token default.
 .root {
   position: absolute;
   inline-size: 100%;
@@ -17,67 +20,67 @@
 
   > .styled-box {
     fill: var(
-      --awsui-style-color-background-control-default,
-      var(--awsui-style-color-background-control, #{awsui.$color-background-control-default})
+      --awsui-internal-style-checkbox-icon-background-default,
+      var(--awsui-internal-style-checkbox-icon-background, #{awsui.$color-background-control-default})
     );
     stroke: var(
-      --awsui-style-color-border-control-default,
-      var(--awsui-style-color-border-control, #{awsui.$color-border-control-default})
+      --awsui-internal-style-checkbox-icon-border-default,
+      var(--awsui-internal-style-checkbox-icon-border, #{awsui.$color-border-control-default})
     );
-    stroke-width: var(--awsui-style-border-width-field, #{awsui.$border-width-field});
+    stroke-width: var(--awsui-internal-style-checkbox-icon-border-width, #{awsui.$border-width-field});
 
     @include styles.with-motion {
       transition:
-        fill var(--awsui-style-transition-duration, #{awsui.$motion-duration-transition-quick})
-          var(--awsui-style-transition-easing, #{awsui.$motion-easing-transition-quick}),
-        stroke var(--awsui-style-transition-duration, #{awsui.$motion-duration-transition-quick})
-          var(--awsui-style-transition-easing, #{awsui.$motion-easing-transition-quick});
+        fill var(--awsui-internal-style-checkbox-icon-transition-duration, #{awsui.$motion-duration-transition-quick})
+          var(--awsui-internal-style-checkbox-icon-transition-easing, #{awsui.$motion-easing-transition-quick}),
+        stroke var(--awsui-internal-style-checkbox-icon-transition-duration, #{awsui.$motion-duration-transition-quick})
+          var(--awsui-internal-style-checkbox-icon-transition-easing, #{awsui.$motion-easing-transition-quick});
     }
 
     &-checked,
     &-indeterminate {
       fill: var(
-        --awsui-style-color-background-control-checked,
-        var(--awsui-style-color-background-control, #{awsui.$color-background-control-checked})
+        --awsui-internal-style-checkbox-icon-background-checked,
+        var(--awsui-internal-style-checkbox-icon-background, #{awsui.$color-background-control-checked})
       );
       stroke: var(
-        --awsui-style-color-border-control-checked,
-        var(--awsui-style-color-border-control, #{awsui.$color-border-control-checked})
+        --awsui-internal-style-checkbox-icon-border-checked,
+        var(--awsui-internal-style-checkbox-icon-border, #{awsui.$color-border-control-checked})
       );
     }
 
     &-disabled,
     &-readonly {
       fill: var(
-        --awsui-style-color-background-control-disabled,
-        var(--awsui-style-color-background-control, #{awsui.$color-background-control-disabled})
+        --awsui-internal-style-checkbox-icon-background-disabled,
+        var(--awsui-internal-style-checkbox-icon-background, #{awsui.$color-background-control-disabled})
       );
       stroke: var(
-        --awsui-style-color-border-control-disabled,
-        var(--awsui-style-color-border-control, #{awsui.$color-border-control-disabled})
+        --awsui-internal-style-checkbox-icon-border-disabled,
+        var(--awsui-internal-style-checkbox-icon-border, #{awsui.$color-border-control-disabled})
       );
     }
   }
 
   > .styled-line {
     stroke: var(
-      --awsui-style-color-foreground-control-default,
-      var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-default})
+      --awsui-internal-style-checkbox-icon-foreground-default,
+      var(--awsui-internal-style-checkbox-icon-foreground, #{awsui.$color-foreground-control-default})
     );
-    stroke-width: var(--awsui-style-stroke-width-control, 2);
+    stroke-width: var(--awsui-internal-style-checkbox-icon-stroke-width, 2);
     fill: none;
 
     &-disabled {
       stroke: var(
-        --awsui-style-color-foreground-control-disabled,
-        var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-disabled})
+        --awsui-internal-style-checkbox-icon-foreground-disabled,
+        var(--awsui-internal-style-checkbox-icon-foreground, #{awsui.$color-foreground-control-disabled})
       );
     }
 
     &-readonly {
       stroke: var(
-        --awsui-style-color-foreground-control-readonly,
-        var(--awsui-style-color-foreground-control, #{awsui.$color-foreground-control-read-only})
+        --awsui-internal-style-checkbox-icon-foreground-readonly,
+        var(--awsui-internal-style-checkbox-icon-foreground, #{awsui.$color-foreground-control-read-only})
       );
     }
   }

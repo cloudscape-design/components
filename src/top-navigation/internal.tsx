@@ -50,10 +50,14 @@ export default function InternalTopNavigation({
 
   const resolvedUtilities = utilities.map(utility => ({
     ...utility,
+    // Attach the menu bridge class (styles['utility-style']) so the utility's menu trigger/items are
+    // driven by top-navigation's tokens; compose any consumer classNames.utility on top.
     className:
-      typeof classNames?.utility === 'function'
-        ? classNames.utility({ utility })
-        : (classNames?.utility ?? utility.className),
+      clsx(
+        styles['utility-style'],
+        utility.className,
+        typeof classNames?.utility === 'function' ? classNames.utility({ utility }) : classNames?.utility
+      ) || undefined,
   }));
 
   const toggleOverflowMenu = () => {

@@ -7,8 +7,19 @@
 @use '../internal/styles' as styles;
 @use '../app-layout/constants.scss' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
 
 /* stylelint-disable custom-property-pattern */
+
+// Register public Style API tokens as @property.
+$component: 'drawer';
+$props: style-api.uniform(
+  (backdrop-background, background, border-color, footer-background, header-background),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -23,7 +34,7 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
-  background-color: var(--awsui-style-drawer-background, #{awsui.$color-background-drawer});
+  background-color: var(#{style-api.name($tokens, background)}, #{awsui.$color-background-drawer});
 
   &.has-close-action {
     position: relative;
@@ -34,19 +45,19 @@
   &.position-fixed {
     &.placement-end {
       border-inline-start: awsui.$border-divider-section-width solid
-        var(--awsui-style-drawer-border-color, #{awsui.$color-border-panel-header});
+        var(#{style-api.name($tokens, border-color)}, #{awsui.$color-border-panel-header});
     }
     &.placement-start {
       border-inline-end: awsui.$border-divider-section-width solid
-        var(--awsui-style-drawer-border-color, #{awsui.$color-border-panel-header});
+        var(#{style-api.name($tokens, border-color)}, #{awsui.$color-border-panel-header});
     }
     &.placement-top {
       border-block-end: awsui.$border-divider-section-width solid
-        var(--awsui-style-drawer-border-color, #{awsui.$color-border-panel-header});
+        var(#{style-api.name($tokens, border-color)}, #{awsui.$color-border-panel-header});
     }
     &.placement-bottom {
       border-block-start: awsui.$border-divider-section-width solid
-        var(--awsui-style-drawer-border-color, #{awsui.$color-border-panel-header});
+        var(#{style-api.name($tokens, border-color)}, #{awsui.$color-border-panel-header});
     }
   }
 
@@ -76,7 +87,7 @@
   display: flex;
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
-  background-color: var(--awsui-style-drawer-header-background, transparent);
+  background-color: var(#{style-api.name($tokens, header-background)}, transparent);
   padding-block: awsui.$space-panel-header-vertical;
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
@@ -140,7 +151,7 @@
 }
 
 .footer {
-  background-color: var(--awsui-style-drawer-footer-background, #{awsui.$color-background-container-content});
+  background-color: var(#{style-api.name($tokens, footer-background)}, #{awsui.$color-background-container-content});
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
   padding-block: awsui.$space-panel-content-top;
   padding-inline: awsui.$space-panel-side-left awsui.$space-panel-side-right;
@@ -168,7 +179,7 @@
 
 .backdrop {
   inset: 0;
-  background-color: var(--awsui-style-drawer-backdrop-background, #{awsui.$color-background-drawer-backdrop});
+  background-color: var(#{style-api.name($tokens, backdrop-background)}, #{awsui.$color-background-drawer-backdrop});
 
   &.backdrop-fixed {
     position: fixed;

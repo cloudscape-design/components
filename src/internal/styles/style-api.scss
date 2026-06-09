@@ -1,0 +1,95 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:string';
+
+/* stylelint-disable custom-property-pattern */
+
+// Utilities for declaring and reading a component's public Style API custom properties.
+//
+// A component declares its tokens once as `(<prop>: <inherits-bool>)`, where <prop> is the property
+// name WITHOUT the component prefix (e.g. `color`, `border-radius`, `header-background`). It then:
+//   * `register($component, $props)` — registers each public token `--awsui-style-<component>-<prop>`
+//     via @property (top level only).
+//   * `carriers($component, $props)` — for non-inheriting tokens, mirrors the public token into an
+//     inherited internal carrier `--awsui-internal-style-<component>-<prop>` (include on the root).
+//   * `$tokens: resolve($component, $props)` + `name($tokens, <prop>)` — read sites reference a token
+//     by its logical <prop>; `name` returns the carrier when the token is non-inheriting, otherwise
+//     the public token. Read sites never hardcode the `--awsui-style-`/`--awsui-internal-style-`
+//     distinction, and flipping a token's inheritance updates every read automatically.
+//
+// Inheritance: `true` lets the token cascade (the common case; no carrier). `false` keeps a value
+// scoped to a single component instance (no leak into nested instances) and requires `carriers`.
+//
+// `syntax: '*'` is required: it keeps the property's initial value as the guaranteed-invalid value,
+// so an unset token falls through to each read site's own `var(..., <default>)` fallback.
+
+// Convenience: build a `(<prop>: <inherits>)` map from a list of props that all share inheritance.
+@function uniform($props, $inherits) {
+  $result: ();
+  @each $prop in $props {
+    $result: map.set($result, $prop, $inherits);
+  }
+  @return $result;
+}
+
+// Build `(<prop>: <custom-property-name>)`, resolving to the internal carrier for non-inheriting
+// tokens and the public token otherwise.
+@function resolve($component, $props) {
+  $tokens: ();
+  @each $prop, $inherits in $props {
+    $public: string.unquote('--awsui-style-#{$component}-#{$prop}');
+    $carrier: string.unquote('--awsui-internal-style-#{$component}-#{$prop}');
+    $tokens: map.set($tokens, $prop, if($inherits, $public, $carrier));
+  }
+  @return $tokens;
+}
+
+// The custom-property name to read for `$prop` (carrier or public, as resolved). Use as
+// `var(#{style-api.name($tokens, <prop>)}, <fallback>)`. Errors at compile time on an unknown prop
+// (typo or a read of an undeclared token), so it can never silently emit an invalid `var(, …)`.
+@function name($tokens, $prop) {
+  @if not map.has-key($tokens, $prop) {
+    @error 'Unknown style token "#{$prop}". Declared tokens: #{map.keys($tokens)}.';
+  }
+  @return map.get($tokens, $prop);
+}
+
+// Whether a component declares `$prop`. Use to optionally propagate a token into an internal
+// component (a host that doesn't expose a given token leaves the internal's design-token fallback).
+@function has($tokens, $prop) {
+  @return map.has-key($tokens, $prop);
+}
+
+@mixin register($component, $props) {
+  @each $prop, $inherits in $props {
+    @property --awsui-style-#{$component}-#{$prop} {
+      syntax: '*';
+      inherits: $inherits;
+    }
+  }
+}
+
+@mixin carriers($component, $props) {
+  @each $prop, $inherits in $props {
+    @if not $inherits {
+      --awsui-internal-style-#{$component}-#{$prop}: var(--awsui-style-#{$component}-#{$prop});
+    }
+  }
+}
+
+// Propagate a host's tokens into the internal vars an internal component reads. `$map` is
+// `(<internal-var-suffix>: <host-prop>)`; only props the host declares are emitted, so any the host
+// omits keep the internal component's own design-token fallback. Include on the host root (the
+// internal vars inherit to the internal component's elements). Used by internal components' `host()`
+// mixins so each var->prop mapping lives in exactly one place.
+@mixin propagate($tokens, $map) {
+  @each $internal, $prop in $map {
+    @if map.has-key($tokens, $prop) {
+      --awsui-internal-style-#{$internal}: var(#{map.get($tokens, $prop)});
+    }
+  }
+}

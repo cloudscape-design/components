@@ -15,7 +15,6 @@
   --awsui-style-segmented-control-background-hover: #{palette.$surface-alt};
   --awsui-style-segmented-control-color-hover: #{palette.$accent};
   --awsui-style-segmented-control-border-radius: 999px;
-  --awsui-style-transition-duration: 200ms;
 }
 
 .square-segmented-control {
@@ -26,5 +25,4 @@
   --awsui-style-segmented-control-background-hover: #{palette.$success-surface};
   --awsui-style-segmented-control-color-hover: #{palette.$success};
   --awsui-style-segmented-control-border-radius: 0;
-  --awsui-style-transition-duration: 150ms;
 }

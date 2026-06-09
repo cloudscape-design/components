@@ -12,6 +12,26 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './motion';
+@use '../internal/styles/style-api' as style-api;
+
+// Register public Style API tokens as @property.
+$component: 'item-card';
+$props: style-api.uniform(
+  (
+    background-default,
+    border-color-default,
+    border-radius,
+    border-width-default,
+    box-shadow-default,
+    footer-divider-border-color,
+    footer-divider-border-width,
+    footer-divider-style
+  ),
+  $inherits: true
+);
+$tokens: style-api.resolve($component, $props);
+
+@include style-api.register($component, $props);
 
 // Variant configuration maps — adjust values here for easy customization
 $variant-border-radius: (
@@ -35,19 +55,19 @@ $action-padding-horizontal: awsui.$space-xxs;
 @mixin apply-border-radius($variant: 'default') {
   $radius: map.get($variant-border-radius, $variant);
   border-start-start-radius: var(
-    --awsui-style-item-card-border-radius,
+    #{style-api.name($tokens, border-radius)},
     var(#{custom-props.$styleItemCardBorderRadius}, $radius)
   );
   border-start-end-radius: var(
-    --awsui-style-item-card-border-radius,
+    #{style-api.name($tokens, border-radius)},
     var(#{custom-props.$styleItemCardBorderRadius}, $radius)
   );
   border-end-start-radius: var(
-    --awsui-style-item-card-border-radius,
+    #{style-api.name($tokens, border-radius)},
     var(#{custom-props.$styleItemCardBorderRadius}, $radius)
   );
   border-end-end-radius: var(
-    --awsui-style-item-card-border-radius,
+    #{style-api.name($tokens, border-radius)},
     var(#{custom-props.$styleItemCardBorderRadius}, $radius)
   );
 }
@@ -66,9 +86,9 @@ $action-padding-horizontal: awsui.$space-xxs;
 }
 
 .footer {
-  border-block-start-style: var(--awsui-style-item-card-footer-divider-style, none);
-  border-block-start-color: var(--awsui-style-item-card-footer-divider-border-color, transparent);
-  border-block-start-width: var(--awsui-style-item-card-footer-divider-border-width, 0);
+  border-block-start-style: var(#{style-api.name($tokens, footer-divider-style)}, none);
+  border-block-start-color: var(#{style-api.name($tokens, footer-divider-border-color)}, transparent);
+  border-block-start-width: var(#{style-api.name($tokens, footer-divider-border-width)}, 0);
 
   &:first-child {
     margin-block-start: auto;
@@ -80,12 +100,12 @@ $action-padding-horizontal: awsui.$space-xxs;
   box-sizing: border-box;
   position: relative;
   background: var(
-    --awsui-style-item-card-background-default,
+    #{style-api.name($tokens, background-default)},
     var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card)
   );
   min-inline-size: 0;
   box-shadow: var(
-    --awsui-style-item-card-box-shadow-default,
+    #{style-api.name($tokens, box-shadow-default)},
     var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-item-card)
   );
 
@@ -95,20 +115,20 @@ $action-padding-horizontal: awsui.$space-xxs;
     border-color: transparent;
     border-block: solid
       var(
-        --awsui-style-item-card-border-width-default,
+        #{style-api.name($tokens, border-width-default)},
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
       )
       var(
-        --awsui-style-item-card-border-color-default,
+        #{style-api.name($tokens, border-color-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card)
       );
     border-inline: solid
       var(
-        --awsui-style-item-card-border-width-default,
+        #{style-api.name($tokens, border-width-default)},
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
       )
       var(
-        --awsui-style-item-card-border-color-default,
+        #{style-api.name($tokens, border-color-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card)
       );
   }
@@ -120,11 +140,11 @@ $action-padding-horizontal: awsui.$space-xxs;
   &:not(.refresh)::before {
     border-block-start: solid
       var(
-        --awsui-style-item-card-border-width-default,
+        #{style-api.name($tokens, border-width-default)},
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-container-top-width)
       )
       var(
-        --awsui-style-item-card-border-color-default,
+        #{style-api.name($tokens, border-color-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-container-top)
       );
   }
