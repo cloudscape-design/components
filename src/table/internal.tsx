@@ -50,6 +50,7 @@ import { ResizeTracker } from './resizer';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
+import { SkeletonRows } from './skeleton-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -113,6 +114,7 @@ const InternalTable = React.forwardRef(
       trackBy,
       loading,
       loadingText,
+      skeleton,
       selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
@@ -603,7 +605,25 @@ const InternalTable = React.forwardRef(
                       {...theadProps}
                     />
                     <tbody>
-                      {loading || allItems.length === 0 ? (
+                      {skeleton && allItems.length === 0 && loading ? (
+                        <SkeletonRows
+                          count={skeleton.totalRows}
+                          hasDataRows={false}
+                          totalColumnsCount={totalColumnsCount}
+                          loadingText={loadingText}
+                          hasSelection={hasSelection}
+                          hasFooter={hasFooter}
+                          stickyState={stickyState}
+                          tableRole={tableRole}
+                          ariaLabels={ariaLabels}
+                          cellVerticalAlign={cellVerticalAlign}
+                          computedVariant={computedVariant}
+                          visibleColumnDefinitions={visibleColumnDefinitions}
+                          wrapLines={wrapLines}
+                          resizableColumns={resizableColumns}
+                          colIndexOffset={colIndexOffset}
+                        />
+                      ) : !skeleton && (loading || allItems.length === 0) ? (
                         <tr>
                           <NoDataCell
                             totalColumnsCount={totalColumnsCount}
@@ -618,7 +638,10 @@ const InternalTable = React.forwardRef(
                       ) : (
                         allRows.map((row, rowIndex) => {
                           const isFirstRow = rowIndex === 0;
-                          const isLastRow = rowIndex === allRows.length - 1;
+                          const hasSkeletonBelow =
+                            loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
+                          const isLastDataRow = rowIndex === allRows.length - 1;
+                          const isLastRow = isLastDataRow && !hasSkeletonBelow;
                           const rowExpandableProps =
                             row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
                           const rowRoleProps = getTableRowRoleProps({
@@ -635,7 +658,7 @@ const InternalTable = React.forwardRef(
                             isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
                             isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
-                            isNextSelected: hasSelection && !isLastRow && isRowSelected(allRows[rowIndex + 1]),
+                            isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
                             isEvenRow: rowIndex % 2 === 0,
                             stripedRows,
                             hasSelection,
@@ -796,6 +819,25 @@ const InternalTable = React.forwardRef(
                             )
                           );
                         })
+                      )}
+                      {loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0 && (
+                        <SkeletonRows
+                          count={skeleton.totalRows - allItems.length}
+                          hasDataRows={true}
+                          totalColumnsCount={totalColumnsCount}
+                          loadingText={loadingText}
+                          hasSelection={hasSelection}
+                          hasFooter={hasFooter}
+                          stickyState={stickyState}
+                          tableRole={tableRole}
+                          ariaLabels={ariaLabels}
+                          cellVerticalAlign={cellVerticalAlign}
+                          computedVariant={computedVariant}
+                          visibleColumnDefinitions={visibleColumnDefinitions}
+                          wrapLines={wrapLines}
+                          resizableColumns={resizableColumns}
+                          colIndexOffset={colIndexOffset}
+                        />
                       )}
                     </tbody>
                   </table>
