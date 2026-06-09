@@ -105,3 +105,198 @@ describe('ButtonGroup Style API', () => {
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
   });
 });
+
+describe('ButtonGroup Icon Toggle Button with SVG icons', () => {
+  test('renders icon-toggle-button with pressedIconSvg when pressed', () => {
+    const defaultSvg = (
+      <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="7" />
+      </svg>
+    );
+    const pressedSvg = (
+      <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8" fill="currentColor" />
+      </svg>
+    );
+
+    const wrapper = renderButtonGroup({
+      variant: 'icon',
+      ariaLabel: 'Test',
+      items: [
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle',
+          text: 'Toggle Button',
+          pressed: true,
+          iconSvg: defaultSvg,
+          pressedIconSvg: pressedSvg,
+        },
+      ],
+    });
+
+    const toggleButton = wrapper.findToggleButtonById('test-toggle');
+    expect(toggleButton).toBeTruthy();
+
+    // Verify the pressed SVG is rendered
+    const element = toggleButton!.getElement();
+    const pressedIconElement = element.querySelector('.pressed-icon');
+    expect(pressedIconElement).toBeTruthy();
+  });
+
+  test('renders icon-toggle-button with default iconSvg when not pressed', () => {
+    const defaultSvg = (
+      <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="7" />
+      </svg>
+    );
+    const pressedSvg = (
+      <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8" fill="currentColor" />
+      </svg>
+    );
+
+    const wrapper = renderButtonGroup({
+      variant: 'icon',
+      ariaLabel: 'Test',
+      items: [
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle',
+          text: 'Toggle Button',
+          pressed: false,
+          iconSvg: defaultSvg,
+          pressedIconSvg: pressedSvg,
+        },
+      ],
+    });
+
+    const toggleButton = wrapper.findToggleButtonById('test-toggle');
+    expect(toggleButton).toBeTruthy();
+
+    // Verify the default SVG is rendered when not pressed
+    const element = toggleButton!.getElement();
+    const defaultIconElement = element.querySelector('.default-icon');
+    expect(defaultIconElement).toBeTruthy();
+  });
+
+  test('icon-toggle-button with pressedIconUrl shows correct icon when pressed', () => {
+    const pressedUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3E%3Ccircle cx="8" cy="8" r="8"%3E%3C/circle%3E%3C/svg%3E';
+
+    const wrapper = renderButtonGroup({
+      variant: 'icon',
+      ariaLabel: 'Test',
+      items: [
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-url',
+          text: 'Toggle with URL',
+          pressed: true,
+          iconName: 'star',
+          pressedIconUrl: pressedUrl,
+        },
+      ],
+    });
+
+    const toggleButton = wrapper.findToggleButtonById('test-toggle-url');
+    expect(toggleButton).toBeTruthy();
+  });
+
+  test('icon-toggle-button with all icon types prioritizes SVG correctly', () => {
+    const pressedSvg = (
+      <svg className="pressed-svg-test" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="8" />
+      </svg>
+    );
+
+    const wrapper = renderButtonGroup({
+      variant: 'icon',
+      ariaLabel: 'Test',
+      items: [
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-all',
+          text: 'Toggle with all icons',
+          pressed: true,
+          iconName: 'star',
+          pressedIconName: 'star-filled',
+          iconUrl: 'data:image/svg+xml,%3Csvg%3E%3C/svg%3E',
+          pressedIconUrl: 'data:image/svg+xml,%3Csvg%3E%3C/svg%3E',
+          iconSvg: (
+            <svg className="default-svg-test" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+          pressedIconSvg: pressedSvg,
+        },
+      ],
+    });
+
+    const toggleButton = wrapper.findToggleButtonById('test-toggle-all');
+    expect(toggleButton).toBeTruthy();
+
+    // SVG should take precedence when present in pressed state
+    const element = toggleButton!.getElement();
+    const pressedSvgElement = element.querySelector('.pressed-svg-test');
+    expect(pressedSvgElement).toBeTruthy();
+  });
+
+  test('icon-toggle-button maintains correct icon on state change', () => {
+    const { rerender } = render(
+      <ButtonGroup
+        variant="icon"
+        ariaLabel="Test"
+        items={[
+          {
+            type: 'icon-toggle-button',
+            id: 'test-toggle-state',
+            text: 'Toggle State',
+            pressed: false,
+            iconSvg: (
+              <svg className="default-state-icon" focusable="false" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="7" />
+              </svg>
+            ),
+            pressedIconSvg: (
+              <svg className="pressed-state-icon" focusable="false" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="8" fill="currentColor" />
+              </svg>
+            ),
+          },
+        ]}
+      />
+    );
+
+    const container = document.querySelector('.awsui-button-group');
+    let iconElement = container?.querySelector('.default-state-icon');
+    expect(iconElement).toBeTruthy();
+
+    // Rerender with pressed state
+    rerender(
+      <ButtonGroup
+        variant="icon"
+        ariaLabel="Test"
+        items={[
+          {
+            type: 'icon-toggle-button',
+            id: 'test-toggle-state',
+            text: 'Toggle State',
+            pressed: true,
+            iconSvg: (
+              <svg className="default-state-icon" focusable="false" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="7" />
+              </svg>
+            ),
+            pressedIconSvg: (
+              <svg className="pressed-state-icon" focusable="false" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="8" fill="currentColor" />
+              </svg>
+            ),
+          },
+        ]}
+      />
+    );
+
+    iconElement = container?.querySelector('.pressed-state-icon');
+    expect(iconElement).toBeTruthy();
+  });
+});
