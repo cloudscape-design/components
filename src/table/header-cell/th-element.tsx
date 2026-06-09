@@ -38,6 +38,15 @@ export interface TableThElementProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   ariaLabel?: string;
+  colSpan?: number;
+  rowSpan?: number;
+  scope?: 'col' | 'colgroup';
+  columnGroupId?: string;
+  isLast?: boolean;
+  /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
+  className?: string;
+  /** Additional ref for boundary sticky subscription (imperatively updates shadow classes). */
+  boundaryRef?: React.RefCallback<HTMLElement>;
 }
 
 export function TableThElement({
@@ -60,6 +69,13 @@ export function TableThElement({
   variant,
   ariaLabel,
   tableVariant,
+  colSpan,
+  rowSpan,
+  scope,
+  columnGroupId,
+  isLast,
+  className,
+  boundaryRef,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -71,7 +87,7 @@ export function TableThElement({
   });
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, boundaryRef);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
   return (
@@ -87,6 +103,7 @@ export function TableThElement({
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         tableVariant && styles[`table-variant-${tableVariant}`],
+        scope === 'colgroup' && styles['header-cell-group'],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,
@@ -95,15 +112,24 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
+          [styles['header-cell-grouped']]: !!columnGroupId,
         },
-        stickyStyles.className
+        stickyStyles.className,
+        className
       )}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      scope={scope ?? 'col'}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+      {...(isLast ? { 'data-rightmost': true } : {})}
+      {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
+      {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
     >
       {children}
     </th>

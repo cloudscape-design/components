@@ -47,24 +47,24 @@ test('should re-render component correctly after current page state change', () 
 
 test('should have both arrows disabled when there is only one page', () => {
   const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={1} />);
-  expect(wrapper.findPreviousPageButton().getElement()).toBeDisabled();
-  expect(wrapper.findNextPageButton().getElement()).toBeDisabled();
+  expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
+  expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
   expect(wrapper.findPageNumberByIndex(1)!.getElement()).toHaveTextContent('1');
   expect(getItemsContent(wrapper)).toEqual(['1']);
 });
 
 test('should have both arrows disabled when there are no pages', () => {
   const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={0} />);
-  expect(wrapper.findPreviousPageButton().getElement()).toBeDisabled();
-  expect(wrapper.findNextPageButton().getElement()).toBeDisabled();
+  expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
+  expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
   expect(wrapper.findPageNumberByIndex(1)!.getElement()).toHaveTextContent('1');
   expect(getItemsContent(wrapper)).toEqual(['1']);
 });
 
 test('should show all buttons when middle page selected', () => {
   const { wrapper } = renderPagination(<Pagination currentPageIndex={5} pagesCount={9} />);
-  expect(wrapper.findPreviousPageButton().getElement()).toBeEnabled();
-  expect(wrapper.findNextPageButton().getElement()).toBeEnabled();
+  expect(wrapper.findPreviousPageButton().getElement()).not.toHaveAttribute('aria-disabled');
+  expect(wrapper.findNextPageButton().getElement()).not.toHaveAttribute('aria-disabled');
   expect(wrapper.findCurrentPage().getElement()).toHaveTextContent('5');
   expect(getItemsContent(wrapper)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
 });
@@ -86,8 +86,8 @@ test('should not fire nextPageClick event when clicking next page with the last 
     test('should disable `previous` button when first page selected', () => {
       const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} openEnd={openEnd} />);
 
-      expect(wrapper.findPreviousPageButton().getElement()).toBeDisabled();
-      expect(wrapper.findNextPageButton().getElement()).toBeEnabled();
+      expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(wrapper.findNextPageButton().getElement()).not.toHaveAttribute('aria-disabled');
       expect(wrapper.findCurrentPage().getElement()).toHaveTextContent('1');
     });
 
@@ -189,8 +189,8 @@ test('should not fire nextPageClick event when clicking next page with the last 
       );
 
       expect(wrapper.isDisabled()).toBe(true);
-      expect(wrapper.findPreviousPageButton().getElement()).toBeDisabled();
-      expect(wrapper.findNextPageButton().getElement()).toBeDisabled();
+      expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
 
       wrapper.findPreviousPageButton().click();
       expect(onChange).not.toHaveBeenCalled();

@@ -8916,6 +8916,9 @@ It contains the following:
 - \`title\` (string) - Specifies the text displayed at the top of the preference.
 - \`description\` (string) - Specifies the description displayed below the title.
 - \`options\` - Specifies an array of options for reordering and visible content selection.
+- \`groups\` - (Optional) Specifies an array of column group definitions for multi-level content display. Each group contains:
+  - \`id\` (string) - A unique identifier for the group.
+  - \`label\` (string) - The text displayed as the group label.
 - \`enableColumnFiltering\` (boolean) - Adds a columns filter.
 - \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
 - \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
@@ -8923,13 +8926,24 @@ It contains the following:
 - \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
 - \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.
+- \`liveAnnouncementDndGroupLabel\` ((label: string, count: number) => string) - (Optional) Adds a label for a group item to be announced by screen readers during drag and drop operations.
 
 Each option contains the following:
 - \`id\` (string) - Corresponds to a table column \`id\`.
 - \`label\` (string) - Specifies a short description of the content.
 - \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
 
-You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.",
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
+Each content display item is one of the following:
+- \`ContentDisplayColumn\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`ContentDisplayGroup\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ContentDisplayItem>) - The columns or nested groups within this group.",
       "i18nTag": true,
       "inlineType": {
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
@@ -8953,6 +8967,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "enableColumnFiltering",
             "optional": true,
             "type": "boolean",
+          },
+          {
+            "name": "groups",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
           },
           {
             "inlineType": {
@@ -9005,6 +9024,26 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(label: string, count: number) => string",
+              "parameters": [
+                {
+                  "name": "label",
+                  "type": "string",
+                },
+                {
+                  "name": "count",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementDndGroupLabel",
+            "optional": true,
+            "type": "((label: string, count: number) => string)",
           },
           {
             "inlineType": {
@@ -27809,7 +27848,18 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
 
 If not set, all columns are displayed and the order is dictated by the \`columnDefinitions\` property.
 
-Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.",
+Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+
+Each entry is one of the following:
+- \`ColumnDisplay\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier. Must match a column \`id\` from \`columnDefinitions\`.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`GroupDisplay\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier. Must match a group \`id\` from \`groupDefinitions\`.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ColumnDisplayProperties>) - The columns or nested groups within this group.",
       "name": "columnDisplay",
       "optional": true,
       "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
@@ -28030,6 +28080,20 @@ table with \`item=null\` and then for each expanded item. The function result is
       "name": "getLoadingStatus",
       "optional": true,
       "type": "TableProps.GetLoadingStatus<T>",
+    },
+    {
+      "description": "Defines the column groups. Each group has an \`id\` and \`header\` used to label the group header cell.
+
+When using grouped columns, you must also provide the \`columnDisplay\` property with \`{ type: 'group', id, children }\` entries
+to assign columns to their respective groups and define the display hierarchy.
+
+Each group definition contains the following:
+- \`id\` (string) - A unique identifier for the group.
+- \`header\` (ReactNode) - The content displayed in the group header cell.
+- \`ariaLabel\` ((LabelData) => string) - (Optional) A function that provides an \`aria-label\` for the group header.",
+      "name": "groupDefinitions",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -38035,9 +38099,23 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -38077,6 +38155,33 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -38105,7 +38210,8 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -43148,8 +43254,22 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -43184,9 +43304,11 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -48970,9 +49092,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -49007,6 +49143,33 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -49025,7 +49188,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -52495,8 +52659,22 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -52526,9 +52704,11 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
