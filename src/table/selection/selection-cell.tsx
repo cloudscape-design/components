@@ -56,10 +56,7 @@ export function TableHeaderSelectionCell({
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
       )}
-      <Divider
-        className={styles['resize-divider']}
-        variant={props.rowSpan && props.rowSpan > 1 ? 'interactive' : 'default'}
-      />
+      <Divider className={styles['resize-divider']} />
     </TableThElement>
   );
 }

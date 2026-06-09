@@ -213,11 +213,7 @@ export function TableHeaderCell<ItemType>({
           dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
-        <Divider
-          className={styles['resize-divider']}
-          position={isLastChildOfGroup ? 'top' : undefined}
-          variant={columnGroupId || (rowSpan && rowSpan > 1) ? 'interactive' : 'default'}
-        />
+        <Divider className={styles['resize-divider']} position={isLastChildOfGroup ? 'top' : undefined} />
       )}
     </TableThElement>
   );
