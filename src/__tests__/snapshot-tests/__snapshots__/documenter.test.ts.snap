@@ -26344,6 +26344,19 @@ property explicitly set to \`false\`.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "If true, the navigation is rendered in a compact, icon-only state:
+- Item text labels and the header title are hidden.
+- Section, \`Section group\`, \`Link group\`, and \`Expandable link group\`
+  children are not rendered.
+- \`Items control\` is not rendered.
+- Items without an \`icon\` are not rendered. Provide an icon for any
+  item that should remain visible while collapsed.",
+      "name": "collapsed",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Controls the header that appears at the top of the navigation component.
 
 It contains the following:
@@ -26369,8 +26382,13 @@ It contains the following:
                 },
                 {
                   "name": "src",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
+                },
+                {
+                  "name": "svg",
+                  "optional": true,
+                  "type": "React.ReactNode",
                 },
               ],
               "type": "object",
@@ -26422,6 +26440,7 @@ Links are rendered as \`<a>\` tags.
 - \`externalIconAriaLabel\` (string) - Adds an aria-label to the external icon.
 - \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
     our UX guidelines allow only to add a Badge and/or a "New" label.
+- \`icon\` (ReactNode) - Optional content rendered before the link text. Accepts any React node (for example, an \`<Icon />\` component or a custom \`<svg>\`).
 
 #### Divider
 Object that represents a horizontal divider between navigation content.
@@ -26435,6 +26454,7 @@ Object that represents a section within the navigation.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the section title. Accepts any React node.
 
 #### Section Group
 Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
@@ -26442,6 +26462,7 @@ You can nest sections, links, link groups and expandable link groups within a se
 - \`type\`: \`'section-group'\`.
 - \`title\` (string) - Specifies the text to display as a title of the section group.
 - \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
+- \`icon\` (ReactNode) - Optional content rendered before the section group title. Accepts any React node.
 
 #### LinkGroup
 Object that represents a group of links.
@@ -26453,6 +26474,7 @@ Object that represents a group of links.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the link group text. Accepts any React node.
 
 #### ExpandableLinkGroup
 
@@ -26464,7 +26486,8 @@ Object that represents an expandable group of links.
    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
-    our UX recommendation is to use only one level.",
+    our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the expandable link group text. Accepts any React node.",
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<SideNavigationProps.Item>",
