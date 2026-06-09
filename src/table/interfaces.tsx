@@ -58,8 +58,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Specifies the text that's displayed when the table is in a loading state.
+   * In skeleton-loading mode this will be used as a label for screenreaders.
    */
   loadingText?: string;
+
+  /**
+   * Renders skeleton placeholder rows to fill the table while data is loading. Accepts:
+   * - `totalRows` (number) - The total number of rows that should be rendered. If `items`
+   *    are also provided, those items will be rendered first, and `totalRows - items.length`
+   *    additional skeleton rows rendered after.
+   */
+  skeleton?: TableProps.SkeletonConfig;
 
   /**
    * Specifies a property that uniquely identifies an individual item.
@@ -695,6 +704,10 @@ export namespace TableProps {
 
   export interface RenderLoaderEmptyDetail<T> {
     item: T;
+  }
+
+  export interface SkeletonConfig {
+    totalRows: number;
   }
 }
 
