@@ -36,7 +36,6 @@ const Option = ({
   labelRef,
   labelId,
   customContent,
-  additionalContent,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -96,9 +95,7 @@ const Option = ({
       <SpanOrDivTag className={styles.content}>
         <SpanOrDivTag className={styles['label-content']}>
           {option.labelContent ? (
-            <SpanOrDivTag className={clsx(styles.label, styles['label-block'], analyticsSelectors.label)}>
-              {option.labelContent}
-            </SpanOrDivTag>
+            <SpanOrDivTag className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</SpanOrDivTag>
           ) : (
             <Label
               labelContainerRef={labelContainerRef}
@@ -133,7 +130,6 @@ const Option = ({
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
-        {additionalContent && <div className={styles['additional-content']}>{additionalContent}</div>}
       </SpanOrDivTag>
     </SpanOrDivTag>
   );

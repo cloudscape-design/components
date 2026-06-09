@@ -55,6 +55,4 @@ export interface OptionProps extends BaseComponentProps {
   labelRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
   customContent?: ReactNode;
-  /** Extra content rendered inside the option's content column after description, tags, and filtering tags. */
-  additionalContent?: ReactNode;
 }

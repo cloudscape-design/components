@@ -34,10 +34,6 @@ type InternalTokenProps = TokenProps &
     disableInnerPadding?: boolean;
     /** Additional class applied to the token-box element, for consumer-specific state styling. */
     tokenBoxClassName?: string;
-    /** Extra content rendered inside the option's content column, after description/tags. */
-    additionalContent?: React.ReactNode;
-    /** Extra content rendered inside the token-box but outside the option (e.g. absolute overlays). */
-    tokenBoxContent?: React.ReactNode;
   };
 
 function InternalToken({
@@ -59,8 +55,6 @@ function InternalToken({
   role,
   disableInnerPadding,
   tokenBoxClassName,
-  additionalContent,
-  tokenBoxContent,
 
   // Base
   __internalRootRef,
@@ -147,10 +141,26 @@ function InternalToken({
         aria-labelledby={isPresentation || ariaLabel ? undefined : ariaLabelledbyId}
         aria-disabled={isPresentation ? undefined : !!disabled}
         role={role ?? 'group'}
-        onFocus={isPresentation ? undefined : () => setShowTooltip(true)}
-        onBlur={isPresentation ? undefined : () => setShowTooltip(false)}
-        onMouseEnter={isPresentation ? undefined : () => setShowTooltip(true)}
-        onMouseLeave={isPresentation ? undefined : () => setShowTooltip(false)}
+        onFocus={() => {
+          if (!isPresentation) {
+            setShowTooltip(true);
+          }
+        }}
+        onBlur={() => {
+          if (!isPresentation) {
+            setShowTooltip(false);
+          }
+        }}
+        onMouseEnter={() => {
+          if (!isPresentation) {
+            setShowTooltip(true);
+          }
+        }}
+        onMouseLeave={() => {
+          if (!isPresentation) {
+            setShowTooltip(false);
+          }
+        }}
         tabIndex={!isPresentation && !!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       >
         <SpanOrDivTag
@@ -164,7 +174,6 @@ function InternalToken({
           )}
           style={tokenRootStyleProps}
         >
-          {tokenBoxContent}
           <Option
             className={clsx(isInline && styles['token-option-inline'])}
             triggerVariant={isInline}
@@ -173,7 +182,6 @@ function InternalToken({
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
             labelId={ariaLabelledbyId}
-            additionalContent={additionalContent}
           />
           {onDismiss && (
             <DismissButton

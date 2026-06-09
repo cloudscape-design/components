@@ -49,17 +49,6 @@
   @include styles.text-wrapping;
 }
 
-.label-block {
-  // Let ReactNode labelContent fill the available column width instead of shrink-wrapping.
-  flex: 1;
-  min-inline-size: 0;
-}
-
-.additional-content {
-  // Matches the vertical rhythm of SpaceBetween size="xxxs" between the label and extra rows.
-  margin-block-start: awsui.$space-scaled-xxxs;
-}
-
 .label,
 .tag {
   flex-wrap: wrap;
