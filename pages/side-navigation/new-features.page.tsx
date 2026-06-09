@@ -421,6 +421,90 @@ export const bedrockItems: SideNavigationProps.Item[] = [
   },
 ];
 
+export const juiceItems: SideNavigationProps.Item[] = [
+  {
+    type: 'link',
+    text: 'Home',
+    href: '#/home',
+    icon: (
+      <Icon
+        svg={
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path
+              d="M2 7L8 2L14 7V13C14 13.5523 13.5523 14 13 14H3C2.44772 14 2 13.5523 2 13V7Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+            <path
+              d="M6 14V9H10V14"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+        }
+      />
+    ),
+  },
+  { type: 'link', text: 'Projects', href: '#/projects', icon: <Icon name="folder" /> },
+  { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="group" /> },
+  {
+    type: 'link',
+    text: 'Billing',
+    href: '#/billing',
+    icon: (
+      <Icon
+        svg={
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        }
+      />
+    ),
+  },
+  {
+    type: 'link',
+    text: 'Agents',
+    href: '#/agents',
+    icon: (
+      <Icon
+        svg={
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15.536 11.293a1 1 0 0 0 0 1.414l2.376 2.377a1 1 0 0 0 1.414 0l2.377-2.377a1 1 0 0 0 0-1.414l-2.377-2.377a1 1 0 0 0-1.414 0z" />
+            <path d="M2.297 11.293a1 1 0 0 0 0 1.414l2.377 2.377a1 1 0 0 0 1.414 0l2.377-2.377a1 1 0 0 0 0-1.414L6.088 8.916a1 1 0 0 0-1.414 0z" />
+            <path d="M8.916 17.912a1 1 0 0 0 0 1.415l2.377 2.376a1 1 0 0 0 1.414 0l2.377-2.376a1 1 0 0 0 0-1.415l-2.377-2.376a1 1 0 0 0-1.414 0z" />
+            <path d="M8.916 4.674a1 1 0 0 0 0 1.414l2.377 2.376a1 1 0 0 0 1.414 0l2.377-2.376a1 1 0 0 0 0-1.414l-2.377-2.377a1 1 0 0 0-1.414 0z" />
+          </svg>
+        }
+      />
+    ),
+  },
+];
+
 const ITEMS: SideNavigationProps.Item[] = [
   { type: 'link', icon: <Icon name="folder" />, text: 'Dashboard', href: '#/dashboard' },
   { type: 'link', icon: <Icon name="grid-view" />, text: 'Resources', href: '#/resources' },

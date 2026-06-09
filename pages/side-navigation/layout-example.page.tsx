@@ -11,6 +11,7 @@ import {
   Drawer,
   FormField,
   Icon,
+  Input,
   RadioGroup,
   Slider,
   SpaceBetween,
@@ -24,11 +25,14 @@ import {
   colorBackgroundLayoutMain,
   colorBorderDividerDefault,
   colorTextBodySecondary,
+  colorTextInteractiveDefault,
+  colorTextInteractiveInvertedDefault,
+  colorTextInteractiveInvertedHover,
   motionDurationComplex,
   motionEasingResponsive,
 } from '~design-tokens';
 
-import { bedrockItems, courtyardItems, omegaItems } from './new-features.page';
+import { bedrockItems, courtyardItems, juiceItems, omegaItems } from './new-features.page';
 import { generateThemeConfigOneTheme } from './one-theme-config';
 
 // =============================================================================
@@ -39,31 +43,45 @@ const EXPANDED_SIZE = 225;
 const MAX_SIZE = 400;
 const COLLAPSE_THRESHOLD = 185;
 const SNAP_BUFFER = 30;
+const Q_EXPANDED = 300;
 
 const DEFAULTS = {
   itemHeight: '28',
   itemGap: '4',
-  alignment: 'center',
+  alignment: 'top',
   layout: 'top-full',
   theme: 'true',
-  resizable: 'true',
+  resizable: 'false',
   dark: 'false',
   compact: 'false',
   topNavBg: 'container',
-  sideNavBg: 'container',
+  sideNavBg: 'layout',
   topNavBorder: 'true',
-  sideNavBorder: 'true',
+  sideNavBorder: 'false',
   toggleIcon: 'panel',
-  togglePosition: 'above-list',
+  togglePosition: 'below-list',
   toggleAlign: 'start',
-  qPosition: 'right',
+  qPosition: 'left',
   qOpen: 'false',
-  qSize: '0',
+  qIconPosition: 'right',
   itemSet: 'omega',
+  breadcrumbLocation: 'top-nav',
+  breadcrumbType: 'dynamic',
 } as const;
 
 const PRESETS: Record<string, Record<string, string>> = {
-  Omega: { resizable: 'false', sideNavBg: 'layout', sideNavBorder: 'false', qPosition: 'left', itemSet: 'omega' },
+  Omega: {
+    resizable: 'false',
+    sideNavBg: 'layout',
+    sideNavBorder: 'false',
+    qPosition: 'left',
+    qIconPosition: 'right',
+    itemSet: 'omega',
+    breadcrumbLocation: 'top-nav',
+    breadcrumbType: 'dynamic',
+    alignment: 'top',
+    togglePosition: 'below-list',
+  },
   Juice: {
     layout: 'top-full',
     resizable: 'false',
@@ -74,15 +92,22 @@ const PRESETS: Record<string, Record<string, string>> = {
     itemHeight: '32',
     itemSet: 'juice',
     toggleAlign: 'start',
+    breadcrumbLocation: 'top-nav',
+    breadcrumbType: 'static',
   },
   'AWS Settings': {
     layout: 'side-only',
-    resizable: 'true',
+    resizable: 'false',
     sideNavBg: 'container',
+    sideNavBorder: 'true',
     toggleAlign: 'end',
+    togglePosition: 'above-list',
     alignment: 'top',
     itemHeight: '32',
     itemSet: 'courtyard',
+    breadcrumbLocation: 'main',
+    breadcrumbType: 'static',
+    qPosition: 'left',
   },
   Bedrock: {
     layout: 'top-full',
@@ -92,6 +117,11 @@ const PRESETS: Record<string, Record<string, string>> = {
     alignment: 'top',
     itemSet: 'bedrock',
     toggleIcon: 'arrows',
+    togglePosition: 'above-list',
+    breadcrumbLocation: 'main',
+    breadcrumbType: 'dynamic',
+    qPosition: 'left',
+    qIconPosition: 'left',
   },
 };
 
@@ -154,6 +184,126 @@ function LayoutSvg({ type }: { type: string }) {
   );
 }
 
+const awsLogoCollapsed = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 17" focusable="false" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M8.38 6.17a2.6 2.6 0 00.11.83c.08.232.18.456.3.67a.4.4 0 01.07.21.36.36 0 01-.18.28l-.59.39a.43.43 0 01-.24.08.38.38 0 01-.28-.13 2.38 2.38 0 01-.34-.43c-.09-.16-.18-.34-.28-.55a3.44 3.44 0 01-2.74 1.29 2.54 2.54 0 01-1.86-.67 2.36 2.36 0 01-.68-1.79 2.43 2.43 0 01.84-1.92 3.43 3.43 0 012.29-.72 6.75 6.75 0 011 .07c.35.05.7.12 1.07.2V3.3a2.06 2.06 0 00-.44-1.49 2.12 2.12 0 00-1.52-.43 4.4 4.4 0 00-1 .12 6.85 6.85 0 00-1 .32l-.33.12h-.14c-.14 0-.2-.1-.2-.29v-.46A.62.62 0 012.3.87a.78.78 0 01.27-.2A6 6 0 013.74.25 5.7 5.7 0 015.19.07a3.37 3.37 0 012.44.76 3 3 0 01.77 2.29l-.02 3.05zM4.6 7.59a3 3 0 001-.17 2 2 0 00.88-.6 1.36 1.36 0 00.32-.59 3.18 3.18 0 00.09-.81V5A7.52 7.52 0 006 4.87h-.88a2.13 2.13 0 00-1.38.37 1.3 1.3 0 00-.46 1.08 1.3 1.3 0 00.34 1c.278.216.63.313.98.27zm7.49 1a.56.56 0 01-.36-.09.73.73 0 01-.2-.37L9.35.93a1.39 1.39 0 01-.08-.38c0-.15.07-.23.22-.23h.92a.56.56 0 01.36.09.74.74 0 01.19.37L12.53 7 14 .79a.61.61 0 01.18-.37.59.59 0 01.37-.09h.75a.62.62 0 01.38.09.74.74 0 01.18.37L17.31 7 18.92.76a.74.74 0 01.19-.37.56.56 0 01.36-.09h.87a.21.21 0 01.23.23 1 1 0 010 .15s0 .13-.06.23l-2.26 7.2a.74.74 0 01-.19.37.6.6 0 01-.36.09h-.8a.53.53 0 01-.37-.1.64.64 0 01-.18-.37l-1.45-6-1.44 6a.64.64 0 01-.18.37.55.55 0 01-.37.1l-.82.02zm12 .24a6.29 6.29 0 01-1.44-.16 4.21 4.21 0 01-1.07-.37.69.69 0 01-.29-.26.66.66 0 01-.06-.27V7.3c0-.19.07-.29.21-.29a.57.57 0 01.18 0l.23.1c.32.143.656.25 1 .32.365.08.737.12 1.11.12a2.47 2.47 0 001.36-.31 1 1 0 00.48-.88.88.88 0 00-.25-.65 2.29 2.29 0 00-.94-.49l-1.35-.43a2.83 2.83 0 01-1.49-.94 2.24 2.24 0 01-.47-1.36 2 2 0 01.25-1c.167-.3.395-.563.67-.77a3 3 0 011-.48A4.1 4.1 0 0124.4.08a4.4 4.4 0 01.62 0l.61.1.53.15.39.16c.105.062.2.14.28.23a.57.57 0 01.08.31v.44c0 .2-.07.3-.21.3a.92.92 0 01-.36-.12 4.35 4.35 0 00-1.8-.36 2.51 2.51 0 00-1.24.26.92.92 0 00-.44.84c0 .249.1.488.28.66.295.236.635.41 1 .51l1.32.42a2.88 2.88 0 011.44.9 2.1 2.1 0 01.43 1.31 2.38 2.38 0 01-.24 1.08 2.34 2.34 0 01-.68.82 3 3 0 01-1 .53 4.59 4.59 0 01-1.35.22l.03-.01z"
+    />
+    <path
+      fill="currentColor"
+      d="M25.82 13.43a20.07 20.07 0 01-11.35 3.47A20.54 20.54 0 01.61 11.62c-.29-.26 0-.62.32-.42a27.81 27.81 0 0013.86 3.68 27.54 27.54 0 0010.58-2.16c.52-.22.96.34.45.71z"
+    />
+    <path
+      fill="currentColor"
+      d="M27.1 12c-.4-.51-2.6-.24-3.59-.12-.3 0-.34-.23-.07-.42 1.75-1.23 4.63-.88 5-.46.37.42-.09 3.3-1.74 4.68-.25.21-.49.09-.38-.18.34-.95 1.17-3.02.78-3.5z"
+    />
+  </svg>
+);
+
+const AWSlogo = (
+  <Box padding={{ top: 'xs' }}>
+    <span style={{ inlineSize: '33px', display: 'inline-block' }}>{awsLogoCollapsed}</span>
+  </Box>
+);
+
+// =============================================================================
+// Q Button
+// =============================================================================
+function QButton({ onClick, active, background }: { onClick: () => void; active?: boolean; background?: boolean }) {
+  const [hovered, setHovered] = React.useState(false);
+  const showBg = background || hovered || active;
+  return (
+    <>
+      <style>{`@keyframes q-spin { from { transform: rotate(0deg); } to { transform: rotate(720deg); } }`}</style>
+      <button
+        aria-label="Amazon Q"
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          border: 'none',
+          background: 'none',
+          cursor: 'pointer',
+          padding: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          borderRadius: '6px',
+          outlineOffset: '2px',
+        }}
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ overflow: 'visible' }}
+        >
+          <rect
+            width="24"
+            height="24"
+            rx="5"
+            fill="url(#q-gradient)"
+            style={{
+              opacity: showBg ? 1 : 0,
+              transform: showBg ? 'scale(1.15)' : 'scale(1)',
+              transformOrigin: 'center',
+              transition: showBg
+                ? 'opacity 300ms ease, transform 400ms cubic-bezier(0.2, 1, 0.3, 1)'
+                : 'opacity 300ms ease',
+            }}
+          />
+          <path
+            d="M18.22 7.41L12.87 4.32C12.63 4.18 12.32 4.11 12 4.11C11.68 4.11 11.37 4.18 11.13 4.32L5.78 7.41C5.3 7.68 4.91 8.36 4.91 8.91V15.09C4.91 15.64 5.3 16.31 5.78 16.59L11.14 19.68C11.38 19.82 11.69 19.89 12.01 19.89C12.33 19.89 12.64 19.82 12.88 19.68L18.24 16.59C18.72 16.31 19.11 15.64 19.11 15.09V8.91C19.11 8.36 18.72 7.68 18.24 7.41H18.22ZM12 17.88L6.91 14.94V9.06L12 6.12L17.09 9.06V13.78L14 12V11.26C14 11 13.86 10.77 13.64 10.64L12.36 9.9C12.25 9.84 12.12 9.8 12 9.8C11.88 9.8 11.75 9.83 11.64 9.9L10.36 10.64C10.14 10.77 10 11.01 10 11.26V12.74C10 13 10.14 13.23 10.36 13.36L11.64 14.1C11.75 14.16 11.88 14.2 12 14.2C12.12 14.2 12.25 14.17 12.36 14.1L13 13.73L16.09 15.51L12 17.87V17.88Z"
+            fill={
+              showBg && hovered
+                ? colorTextInteractiveInvertedHover
+                : showBg
+                  ? colorTextInteractiveInvertedDefault
+                  : colorTextInteractiveDefault
+            }
+            style={{
+              transformOrigin: 'center',
+              animation: hovered && !background ? 'q-spin 800ms cubic-bezier(0.2, 1, 0.3, 1)' : 'none',
+              transition: 'fill 200ms ease',
+            }}
+          />
+          <defs>
+            <radialGradient
+              id="q-gradient"
+              cx="0"
+              cy="0"
+              r="1"
+              gradientUnits="userSpaceOnUse"
+              gradientTransform="translate(26.14 -2.14) rotate(135) scale(40 51.18)"
+            >
+              <stop stopColor="light-dark(#72c5fc, #0099FF)" />
+              <stop offset="0.3" stopColor="light-dark( #4d7bbbff, #003B8F)" />
+              <stop offset="0.45" stopColor="light-dark( #4f72dcff, #0033CC)" />
+              <stop offset="0.6" stopColor="light-dark( #855ce3ff, #4200DB )" />
+              <stop offset="0.8" stopColor="light-dark( #70469aff, #45008A)" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </button>
+    </>
+  );
+}
+
+const allServicesIcon = (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect y="6" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect y="12" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="6" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="6" y="6" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="6" y="12" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="12" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="12" y="6" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+    <rect x="12" y="12" width="4" height="4" rx="1" fill="currentColor" className="filled no-stroke"></rect>
+  </svg>
+);
 // =============================================================================
 // Top Navigation
 // =============================================================================
@@ -163,12 +313,22 @@ function TopNav({
   onQClick,
   bg,
   border,
+  breadcrumbs,
+  title,
+  qIconPosition = 'left',
+  qActive = false,
+  qBackground = false,
 }: {
   drawerOpen: boolean;
   onSettingsClick: () => void;
   onQClick: () => void;
   bg: 'container' | 'layout';
   border: boolean;
+  breadcrumbs?: React.ReactNode;
+  title?: string;
+  qIconPosition?: 'left' | 'right';
+  qActive?: boolean;
+  qBackground?: boolean;
 }) {
   return (
     <div
@@ -184,103 +344,67 @@ function TopNav({
         flexShrink: 0,
       }}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="33"
-        height="19"
-        focusable="false"
-        aria-hidden="true"
-        viewBox="0 0 29 17"
-        style={{ color: 'inherit' }}
-      >
-        <path
-          fill="currentColor"
-          d="M8.38 6.17a2.6 2.6 0 00.11.83c.08.232.18.456.3.67a.4.4 0 01.07.21.36.36 0 01-.18.28l-.59.39a.43.43 0 01-.24.08.38.38 0 01-.28-.13 2.38 2.38 0 01-.34-.43c-.09-.16-.18-.34-.28-.55a3.44 3.44 0 01-2.74 1.29 2.54 2.54 0 01-1.86-.67 2.36 2.36 0 01-.68-1.79 2.43 2.43 0 01.84-1.92 3.43 3.43 0 012.29-.72 6.75 6.75 0 011 .07c.35.05.7.12 1.07.2V3.3a2.06 2.06 0 00-.44-1.49 2.12 2.12 0 00-1.52-.43 4.4 4.4 0 00-1 .12 6.85 6.85 0 00-1 .32l-.33.12h-.14c-.14 0-.2-.1-.2-.29v-.46A.62.62 0 012.3.87a.78.78 0 01.27-.2A6 6 0 013.74.25 5.7 5.7 0 015.19.07a3.37 3.37 0 012.44.76 3 3 0 01.77 2.29l-.02 3.05zM4.6 7.59a3 3 0 001-.17 2 2 0 00.88-.6 1.36 1.36 0 00.32-.59 3.18 3.18 0 00.09-.81V5A7.52 7.52 0 006 4.87h-.88a2.13 2.13 0 00-1.38.37 1.3 1.3 0 00-.46 1.08 1.3 1.3 0 00.34 1c.278.216.63.313.98.27zm7.49 1a.56.56 0 01-.36-.09.73.73 0 01-.2-.37L9.35.93a1.39 1.39 0 01-.08-.38c0-.15.07-.23.22-.23h.92a.56.56 0 01.36.09.74.74 0 01.19.37L12.53 7 14 .79a.61.61 0 01.18-.37.59.59 0 01.37-.09h.75a.62.62 0 01.38.09.74.74 0 01.18.37L17.31 7 18.92.76a.74.74 0 01.19-.37.56.56 0 01.36-.09h.87a.21.21 0 01.23.23 1 1 0 010 .15s0 .13-.06.23l-2.26 7.2a.74.74 0 01-.19.37.6.6 0 01-.36.09h-.8a.53.53 0 01-.37-.1.64.64 0 01-.18-.37l-1.45-6-1.44 6a.64.64 0 01-.18.37.55.55 0 01-.37.1l-.82.02zm12 .24a6.29 6.29 0 01-1.44-.16 4.21 4.21 0 01-1.07-.37.69.69 0 01-.29-.26.66.66 0 01-.06-.27V7.3c0-.19.07-.29.21-.29a.57.57 0 01.18 0l.23.1c.32.143.656.25 1 .32.365.08.737.12 1.11.12a2.47 2.47 0 001.36-.31 1 1 0 00.48-.88.88.88 0 00-.25-.65 2.29 2.29 0 00-.94-.49l-1.35-.43a2.83 2.83 0 01-1.49-.94 2.24 2.24 0 01-.47-1.36 2 2 0 01.25-1c.167-.3.395-.563.67-.77a3 3 0 011-.48A4.1 4.1 0 0124.4.08a4.4 4.4 0 01.62 0l.61.1.53.15.39.16c.105.062.2.14.28.23a.57.57 0 01.08.31v.44c0 .2-.07.3-.21.3a.92.92 0 01-.36-.12 4.35 4.35 0 00-1.8-.36 2.51 2.51 0 00-1.24.26.92.92 0 00-.44.84c0 .249.1.488.28.66.295.236.635.41 1 .51l1.32.42a2.88 2.88 0 011.44.9 2.1 2.1 0 01.43 1.31 2.38 2.38 0 01-.24 1.08 2.34 2.34 0 01-.68.82 3 3 0 01-1 .53 4.59 4.59 0 01-1.35.22l.03-.01z"
-        />
-        <path
-          fill="currentColor"
-          d="M25.82 13.43a20.07 20.07 0 01-11.35 3.47A20.54 20.54 0 01.61 11.62c-.29-.26 0-.62.32-.42a27.81 27.81 0 0013.86 3.68 27.54 27.54 0 0010.58-2.16c.52-.22.96.34.45.71z"
-        />
-        <path
-          fill="currentColor"
-          d="M27.1 12c-.4-.51-2.6-.24-3.59-.12-.3 0-.34-.23-.07-.42 1.75-1.23 4.63-.88 5-.46.37.42-.09 3.3-1.74 4.68-.25.21-.49.09-.38-.18.34-.95 1.17-3.02.78-3.5z"
-        />
-      </svg>
-      <span style={{ blockSize: '55%' }}>
-        <Divider orientation="vertical" />
-      </span>
-      <button
-        aria-label="Amazon Q"
-        onClick={onQClick}
-        style={{
-          border: 'none',
-          background: 'none',
-          cursor: 'pointer',
-          padding: '0',
-          display: 'flex',
-          alignItems: 'center',
-          borderRadius: '4px',
-        }}
-      >
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="26" height="26" rx="6" />
-          <path
-            d="M18.22 7.41L12.87 4.32C12.63 4.18 12.32 4.11 12 4.11C11.68 4.11 11.37 4.18 11.13 4.32L5.78 7.41C5.3 7.68 4.91 8.36 4.91 8.91V15.09C4.91 15.64 5.3 16.31 5.78 16.59L11.14 19.68C11.38 19.82 11.69 19.89 12.01 19.89C12.33 19.89 12.64 19.82 12.88 19.68L18.24 16.59C18.72 16.31 19.11 15.64 19.11 15.09V8.91C19.11 8.36 18.72 7.68 18.24 7.41H18.22ZM12 17.88L6.91 14.94V9.06L12 6.12L17.09 9.06V13.78L14 12V11.26C14 11 13.86 10.77 13.64 10.64L12.36 9.9C12.25 9.84 12.12 9.8 12 9.8C11.88 9.8 11.75 9.83 11.64 9.9L10.36 10.64C10.14 10.77 10 11.01 10 11.26V12.74C10 13 10.14 13.23 10.36 13.36L11.64 14.1C11.75 14.16 11.88 14.2 12 14.2C12.12 14.2 12.25 14.17 12.36 14.1L13 13.73L16.09 15.51L12 17.87V17.88Z"
-            fill="url(#q-gradient)"
-          />
-          <defs>
-            <radialGradient
-              id="q-gradient"
-              cx="0"
-              cy="0"
-              r="1"
-              gradientUnits="userSpaceOnUse"
-              gradientTransform="translate(26.14 -2.14) rotate(135) scale(40 51.18)"
-            >
-              <stop stopColor="#0099FF" />
-              <stop offset="0.3" stopColor="#003B8F" />
-              <stop offset="0.45" stopColor="#0033CC" />
-              <stop offset="0.6" stopColor="#4200DB" />
-              <stop offset="0.8" stopColor="#45008A" />
-            </radialGradient>
-          </defs>
-        </svg>
-      </button>
-      {/* <span style={{ blockSize: '55%' }}>
-        <Divider orientation="vertical" />
-      </span> */}
-      <nav
-        aria-label="Breadcrumbs"
-        style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}
-      >
-        <Box color="text-status-inactive">[Omega/Harbor] Projects</Box>
-        <Box color="text-status-inactive">/</Box>
-        <Box color="text-status-inactive">
-          <SpaceBetween direction="horizontal" size="xs">
-            CycleSafe <Icon name="angle-down" />
-          </SpaceBetween>
-        </Box>
-        <Box color="text-status-inactive">/</Box>
-        <Box color="text-status-inactive">Deployments</Box>
-        <Box color="text-status-inactive">/</Box>
-        <Box>
-          <SpaceBetween direction="horizontal" size="xs">
-            dep-34u92 <Icon name="angle-down" />
-          </SpaceBetween>
-        </Box>
-      </nav>
-
+      <SpaceBetween size="s" direction="horizontal" alignItems="center">
+        {AWSlogo}
+        {title && (
+          <Box variant="h4" padding="n">
+            {title}
+          </Box>
+        )}
+      </SpaceBetween>
+      {qIconPosition === 'left' && (
+        <>
+          <span style={{ blockSize: '55%' }}>
+            <Divider orientation="vertical" />
+          </span>
+          <QButton onClick={onQClick} active={qActive} background={true} />
+          <span style={{ blockSize: '55%' }}>
+            <Divider orientation="vertical" />
+          </span>
+          {allServicesIcon}
+          <span style={{ blockSize: '55%' }}>
+            <Divider orientation="vertical" />
+          </span>
+          <span style={{ minInlineSize: '350px' }}>
+            <Input value={''} type="search" />
+          </span>
+        </>
+      )}
+      {breadcrumbs ? (
+        <>
+          <span style={{ blockSize: '55%' }}>
+            <Divider orientation="vertical" />
+          </span>
+          <nav
+            aria-label="Breadcrumbs"
+            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '12px' }}
+          >
+            {breadcrumbs}
+          </nav>
+        </>
+      ) : (
+        <div style={{ flex: 1 }} />
+      )}
+      {qIconPosition === 'right' && (
+        <>
+          <QButton onClick={onQClick} active={qActive} background={qBackground} />
+          <span style={{ blockSize: '55%' }}>
+            <Divider orientation="vertical" />
+          </span>
+          <Button iconSvg={allServicesIcon} variant="icon" ariaLabel="All services" />
+        </>
+      )}
       <Button iconName="notification" variant="icon" ariaLabel="Notifications" />
       <Button iconName="support" variant="icon" ariaLabel="User" />
       <Button
         iconName="settings"
         variant="icon"
         onClick={onSettingsClick}
-        ariaLabel={drawerOpen ? 'Close settings' : 'Open settings'}
+        ariaLabel={drawerOpen ? 'Close config drawer' : 'Open config drawer'}
       />
       <SpaceBetween direction="vertical" size="xxxs" alignItems="end">
         <Box variant="small" fontWeight="bold">
-          My project name
+          My project name <Icon size="inherit" name="caret-down-filled" />
         </Box>
         <Box variant="small">Jessica Kuelz</Box>
       </SpaceBetween>
@@ -324,6 +448,12 @@ function ConfigDrawer({
   setTogglePosition,
   toggleAlign,
   setToggleAlign,
+  breadcrumbLocation,
+  setBreadcrumbLocation,
+  breadcrumbType,
+  setBreadcrumbType,
+  qIconPosition,
+  setQIconPosition,
 }: {
   itemHeight: number;
   setItemHeight: (v: number) => void;
@@ -357,6 +487,12 @@ function ConfigDrawer({
   setTogglePosition: (v: 'top' | 'above-list' | 'below-list' | 'bottom') => void;
   toggleAlign: 'start' | 'center' | 'end';
   setToggleAlign: (v: 'start' | 'center' | 'end') => void;
+  breadcrumbLocation: string;
+  setBreadcrumbLocation: (v: string) => void;
+  breadcrumbType: string;
+  setBreadcrumbType: (v: string) => void;
+  qIconPosition: string;
+  setQIconPosition: (v: string) => void;
 }) {
   return (
     <div style={{ padding: '16px' }}>
@@ -386,7 +522,9 @@ function ConfigDrawer({
             Reset to defaults
           </Button>
 
-          <Box variant="h4">Page Layout</Box>
+          <Box variant="h3" padding={{ bottom: 'n' }}>
+            Page Layout
+          </Box>
           <FormField label="Orientation">
             <Tiles
               value={layout}
@@ -399,6 +537,9 @@ function ConfigDrawer({
               ]}
             />
           </FormField>
+          <Box variant="h4" padding={{ bottom: 'n' }}>
+            Visual style
+          </Box>
           <FormField label="Top nav background color">
             <RadioGroup
               value={topNavBg}
@@ -425,6 +566,39 @@ function ConfigDrawer({
           <Toggle checked={sideNavBorder} onChange={({ detail }) => setSideNavBorder(detail.checked)}>
             Side nav border
           </Toggle>
+          <Box variant="h4" padding={{ bottom: 'n' }}>
+            Breadcrumbs
+          </Box>
+          <FormField label="Breadcrumbs location">
+            <RadioGroup
+              value={breadcrumbLocation}
+              onChange={({ detail }) => setBreadcrumbLocation(detail.value)}
+              items={[
+                { value: 'top-nav', label: 'Top nav' },
+                { value: 'main', label: 'Main content' },
+              ]}
+            />
+          </FormField>
+          <FormField label="Breadcrumbs type">
+            <RadioGroup
+              value={breadcrumbType}
+              onChange={({ detail }) => setBreadcrumbType(detail.value)}
+              items={[
+                { value: 'dynamic', label: 'Dynamic', description: 'Project-based breadcrumbs with dropdowns.' },
+                { value: 'static', label: 'Static', description: 'IA-based breadcrumbs with normal links.' },
+              ]}
+            />
+          </FormField>
+          <FormField label="Q icon position">
+            <RadioGroup
+              value={qIconPosition}
+              onChange={({ detail }) => setQIconPosition(detail.value)}
+              items={[
+                { value: 'left', label: 'Left' },
+                { value: 'right', label: 'Right' },
+              ]}
+            />
+          </FormField>
         </SpaceBetween>
 
         <SpaceBetween size="s">
@@ -544,10 +718,13 @@ function ToggleWrapper({
   const isAbsolute = position === 'top' || position === 'bottom';
   const showHeader = !collapsed && align !== 'center' && headerText;
   const headerElement = showHeader && (
-    <div style={{ flex: 1, paddingBlockStart: '2px' }}>
-      <Box variant="h4" padding={{ bottom: 'n' }}>
-        {headerText}
-      </Box>
+    <div style={{ flex: 1, paddingBlockStart: headerText !== 'Settings' ? '2px' : undefined }}>
+      <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+        {headerText === 'Settings' && AWSlogo}
+        <Box variant="h4" padding="n">
+          {headerText}
+        </Box>
+      </SpaceBetween>
       {headerText === 'Amazon Bedrock' && <Box color="text-body-secondary">Bedrock Mantle</Box>}
     </div>
   );
@@ -560,7 +737,7 @@ function ToggleWrapper({
           zIndex: 1,
           ...(position === 'top' ? { insetBlockStart: 0 } : { insetBlockEnd: 0 }),
         }),
-        paddingBlockStart: '12px',
+        paddingBlockStart: '16px',
         paddingInline: `${collapsed ? '0px' : '20px 16px'}`,
         display: 'flex',
         alignItems: 'flex-start',
@@ -595,8 +772,11 @@ export default function SideNavigationLayoutPage() {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [qOpen, setQOpen] = useState(p('qOpen') === 'true');
   const [qPosition, setQPosition] = useState<'left' | 'right'>(p('qPosition') as any);
-  const [qSize, setQSize] = useState(p('qOpen') === 'true' ? Number(p('qSize')) || 300 : Number(p('qSize')));
+  const [qSize, setQSize] = useState(p('qOpen') === 'true' ? Q_EXPANDED : 0);
   const [itemSet, setItemSet] = useState(p('itemSet'));
+  const [breadcrumbLocation, setBreadcrumbLocation] = useState(p('breadcrumbLocation'));
+  const [breadcrumbType, setBreadcrumbType] = useState(p('breadcrumbType'));
+  const [qIconPosition, setQIconPosition] = useState(p('qIconPosition'));
   const [darkMode, setDarkMode] = useState(p('dark') === 'true');
   const [compact, setCompact] = useState(p('compact') === 'true');
   const [topNavBg, setTopNavBg] = useState<'container' | 'layout'>(p('topNavBg') as any);
@@ -631,6 +811,9 @@ export default function SideNavigationLayoutPage() {
         qOpen: String(qOpen),
         qPosition,
         itemSet,
+        breadcrumbLocation,
+        breadcrumbType,
+        qIconPosition,
       };
       return Object.keys(merged).every(k => !current[k] || current[k] === merged[k]);
     })?.[0] ?? null;
@@ -656,6 +839,9 @@ export default function SideNavigationLayoutPage() {
       qOpen: String(qOpen),
       qPosition,
       itemSet,
+      breadcrumbLocation,
+      breadcrumbType,
+      qIconPosition,
     };
     const q = new URLSearchParams();
     for (const [key, value] of Object.entries(current)) {
@@ -685,6 +871,9 @@ export default function SideNavigationLayoutPage() {
     qOpen,
     qPosition,
     itemSet,
+    breadcrumbLocation,
+    breadcrumbType,
+    qIconPosition,
   ]);
   const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + 16 : COLLAPSED_SIZE;
   const collapsed = panelSize < COLLAPSE_THRESHOLD && panelSize <= effectiveCollapsedSize + SNAP_BUFFER;
@@ -784,17 +973,60 @@ export default function SideNavigationLayoutPage() {
     </svg>
   );
 
-  const toggleButton = (
-    <Button
-      iconName={toggleIcon === 'arrows' ? (collapsed ? 'angle-right' : 'angle-left') : undefined}
-      iconSvg={toggleIcon === 'panel' ? panelIconSvg : undefined}
-      variant="icon"
-      onClick={toggleCollapse}
-      ariaLabel={collapsed ? 'Expand navigation' : 'Collapse navigation'}
-    />
-  );
+  const toggleButton =
+    itemSet === 'courtyard' && collapsed ? (
+      <button
+        onClick={toggleCollapse}
+        aria-label="Expand navigation"
+        style={{
+          border: 'none',
+          background: 'none',
+          cursor: 'pointer',
+          padding: '0px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          inlineSize: '32px',
+          blockSize: '32px',
+        }}
+      >
+        <span style={{ display: 'block', inlineSize: '28px' }}>{awsLogoCollapsed}</span>
+      </button>
+    ) : (
+      <Button
+        iconName={toggleIcon === 'arrows' ? (collapsed ? 'angle-right' : 'angle-left') : undefined}
+        iconSvg={toggleIcon === 'panel' ? panelIconSvg : undefined}
+        variant="icon"
+        onClick={toggleCollapse}
+        ariaLabel={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+      />
+    );
 
   const headerText = itemSet === 'bedrock' ? 'Amazon Bedrock' : itemSet === 'courtyard' ? 'Settings' : undefined;
+
+  const dynamicBreadcrumbs = (
+    <>
+      <Box color="text-status-inactive">Projects</Box>
+      <Box color="text-status-inactive">/</Box>
+      <Box color="text-status-inactive">
+        <SpaceBetween direction="horizontal" size="xs">
+          CycleSafe <Icon name="angle-down" />
+        </SpaceBetween>
+      </Box>
+      <Box color="text-status-inactive">/</Box>
+      <Box>Deployments</Box>
+    </>
+  );
+
+  const staticBreadcrumbs = (
+    <>
+      <Box color="text-status-inactive">Home</Box>
+      <Box color="text-status-inactive">/</Box>
+      <Box>Projects</Box>
+    </>
+  );
+
+  const breadcrumbContent = breadcrumbType === 'dynamic' ? dynamicBreadcrumbs : staticBreadcrumbs;
 
   const sideNavPanel = (
     <div
@@ -831,7 +1063,15 @@ export default function SideNavigationLayoutPage() {
         )}
         <SideNavigation
           activeHref={activeHref}
-          items={itemSet === 'omega' ? omegaItems : itemSet === 'bedrock' ? bedrockItems : courtyardItems}
+          items={
+            itemSet === 'omega'
+              ? omegaItems
+              : itemSet === 'bedrock'
+                ? bedrockItems
+                : itemSet === 'juice'
+                  ? juiceItems
+                  : courtyardItems
+          }
           expandIconPosition={expandIconPosition}
           collapsed={collapsed}
           variant="highlighted"
@@ -926,14 +1166,16 @@ export default function SideNavigationLayoutPage() {
               onSettingsClick={() => setDrawerOpen(prev => !prev)}
               onQClick={() => {
                 setQOpen(prev => {
-                  if (!prev && qSize === 0) {
-                    setQSize(300);
-                  }
+                  setQSize(!prev ? Q_EXPANDED : 0);
                   return !prev;
                 });
               }}
               bg={topNavBg}
               border={topNavBorder}
+              breadcrumbs={breadcrumbLocation === 'top-nav' ? breadcrumbContent : undefined}
+              title={itemSet === 'omega' ? 'Omega' : undefined}
+              qIconPosition={qIconPosition as 'left' | 'right'}
+              qActive={qOpen}
             />
           </div>
         )}
@@ -1038,7 +1280,14 @@ export default function SideNavigationLayoutPage() {
         )}
 
         {/* Main content */}
-        <div style={{ gridArea: 'content', overflow: 'auto', padding: '24px' }}>{mainContent}</div>
+        <div style={{ gridArea: 'content', overflow: 'auto', padding: '20px 24px' }}>
+          {breadcrumbLocation === 'main' && (
+            <nav aria-label="Breadcrumbs" style={{ display: 'flex', gap: '12px', marginBlockEnd: '16px' }}>
+              {breadcrumbContent}
+            </nav>
+          )}
+          {mainContent}
+        </div>
       </div>
 
       {/* Config drawer */}
@@ -1072,39 +1321,46 @@ export default function SideNavigationLayoutPage() {
               borderBlockEnd: `1px solid ${colorBorderDividerDefault}`,
             }}
           >
-            <RadioGroup
-              value={activePreset}
-              onChange={({ detail }) => {
-                setIsResizing(true);
-                requestAnimationFrame(() => requestAnimationFrame(() => setIsResizing(false)));
-                const merged: Record<string, string> = { ...DEFAULTS, ...PRESETS[detail.value] };
-                setItemHeight(Number(merged.itemHeight));
-                setItemGap(Number(merged.itemGap));
-                setAlignment(merged.alignment);
-                setLayout(merged.layout);
-                setThemeEnabled(merged.theme === 'true');
-                setResizable(merged.resizable === 'true');
-                setDarkMode(merged.dark === 'true');
-                setCompact(merged.compact === 'true');
-                setTopNavBg(merged.topNavBg as any);
-                setSideNavBg(merged.sideNavBg as any);
-                setTopNavBorder(merged.topNavBorder === 'true');
-                setSideNavBorder(merged.sideNavBorder === 'true');
-                setToggleIcon(merged.toggleIcon as any);
-                setTogglePosition(merged.togglePosition as any);
-                setToggleAlign(merged.toggleAlign as any);
-                setQOpen(merged.qOpen === 'true');
-                setQPosition(merged.qPosition as any);
-                setItemSet(merged.itemSet);
-                const hrefs: Record<string, string> = {
-                  omega: '#/overview',
-                  courtyard: '#/workspaces',
-                  bedrock: '#/home',
-                };
-                setActiveHref(hrefs[merged.itemSet] ?? '#/overview');
-              }}
-              items={Object.keys(PRESETS).map(name => ({ value: name, label: name }))}
-            />
+            <FormField label="Product presets">
+              <RadioGroup
+                value={activePreset}
+                onChange={({ detail }) => {
+                  setIsResizing(true);
+                  requestAnimationFrame(() => requestAnimationFrame(() => setIsResizing(false)));
+                  const merged: Record<string, string> = { ...DEFAULTS, ...PRESETS[detail.value] };
+                  setItemHeight(Number(merged.itemHeight));
+                  setItemGap(Number(merged.itemGap));
+                  setAlignment(merged.alignment);
+                  setLayout(merged.layout);
+                  setThemeEnabled(merged.theme === 'true');
+                  setResizable(merged.resizable === 'true');
+                  setDarkMode(merged.dark === 'true');
+                  setCompact(merged.compact === 'true');
+                  setTopNavBg(merged.topNavBg as any);
+                  setSideNavBg(merged.sideNavBg as any);
+                  setTopNavBorder(merged.topNavBorder === 'true');
+                  setSideNavBorder(merged.sideNavBorder === 'true');
+                  setToggleIcon(merged.toggleIcon as any);
+                  setTogglePosition(merged.togglePosition as any);
+                  setToggleAlign(merged.toggleAlign as any);
+                  setQOpen(merged.qOpen === 'true');
+                  setQSize(merged.qOpen === 'true' ? Q_EXPANDED : 0);
+                  setQPosition(merged.qPosition as any);
+                  setItemSet(merged.itemSet);
+                  setBreadcrumbLocation(merged.breadcrumbLocation);
+                  setBreadcrumbType(merged.breadcrumbType);
+                  setQIconPosition(merged.qIconPosition);
+                  const hrefs: Record<string, string> = {
+                    omega: '#/overview',
+                    juice: '#/home',
+                    courtyard: '#/workspaces',
+                    bedrock: '#/home',
+                  };
+                  setActiveHref(hrefs[merged.itemSet] ?? '#/overview');
+                }}
+                items={Object.keys(PRESETS).map(name => ({ value: name, label: name }))}
+              />
+            </FormField>
           </div>
           <ConfigDrawer
             itemHeight={itemHeight}
@@ -1139,6 +1395,12 @@ export default function SideNavigationLayoutPage() {
             setTogglePosition={setTogglePosition}
             toggleAlign={toggleAlign}
             setToggleAlign={setToggleAlign}
+            breadcrumbLocation={breadcrumbLocation}
+            setBreadcrumbLocation={setBreadcrumbLocation}
+            breadcrumbType={breadcrumbType}
+            setBreadcrumbType={setBreadcrumbType}
+            qIconPosition={qIconPosition}
+            setQIconPosition={setQIconPosition}
           />
         </div>
       )}
