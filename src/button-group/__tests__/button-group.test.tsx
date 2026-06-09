@@ -107,7 +107,7 @@ describe('ButtonGroup Style API', () => {
 });
 
 test('icon-toggle-button maintains correct icon on state change', () => {
-  const { rerender } = render(
+  const { rerender, container } = render(
     <ButtonGroup
       variant="icon"
       ariaLabel="Test"
@@ -131,6 +131,7 @@ test('icon-toggle-button maintains correct icon on state change', () => {
       ]}
     />
   );
+  const wrapper = createWrapper(container).findButtonGroup()!;
 
   expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.default-icon')).toBeTruthy();
   expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.pressed-icon')).toBeFalsy();
