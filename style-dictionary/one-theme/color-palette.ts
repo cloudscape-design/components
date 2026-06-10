@@ -21,7 +21,7 @@ import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '..
  *
  * Reference tokens provide better semantic meaning and consistency across themes.
  */
-const tokens: StyleDictionary.ColorPaletteDictionary = {
+const paletteTokens: StyleDictionary.ColorPaletteDictionary = {
   ...pick(brand, [
     'colorNeutralGrey50',
     'colorNeutralGrey100',
@@ -143,6 +143,7 @@ const referenceTokens: ReferenceTokens = {
       500: brand.colorIndigo500,
       600: brand.colorIndigo600,
       700: brand.colorIndigo700,
+      800: brand.colorIndigo800,
       950: brand.colorIndigo950,
       1000: brand.colorIndigo1000,
     },
@@ -157,5 +158,5 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
 const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(merge({}, vrReferenceTokens, referenceTokens));
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
-export { expandedTokens as tokens };
 export { expandedReferenceTokens as referenceTokens };
+export const tokens: StyleDictionary.ExpandedColorScopeDictionary = { ...expandedTokens, ...primaryOverrides };
