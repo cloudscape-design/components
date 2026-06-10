@@ -6,6 +6,7 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import {
   Box,
+  CollectionPreferences,
   FormField,
   Header,
   Input,
@@ -215,7 +216,7 @@ type DemoContext = React.Context<
     lastSticky: number;
     wrapLines: boolean;
     stripedRows: boolean;
-    contentDensity: string;
+    contentDensity: 'comfortable' | 'compact' | undefined;
     enableKeyboardNavigation: boolean;
     loading: boolean;
     empty: boolean;
@@ -413,7 +414,7 @@ export default function ColumnGroupsPage() {
         enableKeyboardNavigation={enableKeyboardNavigation}
         wrapLines={wrapLines}
         stripedRows={stripedRows}
-        contentDensity={contentDensity as 'comfortable' | 'compact'}
+        contentDensity={contentDensity}
         cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
         sortingDisabled={sortingDisabled}
         loading={loading}
@@ -433,6 +434,47 @@ export default function ColumnGroupsPage() {
           />
         }
         pagination={<Pagination {...paginationProps} />}
+        preferences={
+          <CollectionPreferences
+            preferences={{ contentDisplay: columnDisplay, wrapLines, stripedRows, contentDensity }}
+            onConfirm={({ detail }) => {
+              if (detail.contentDisplay) {
+                setColumnDisplay([...detail.contentDisplay]);
+              }
+              setUrlParams({
+                wrapLines: detail.wrapLines ?? false,
+                stripedRows: detail.stripedRows ?? false,
+                contentDensity: detail.contentDensity ?? 'comfortable',
+              });
+            }}
+            wrapLinesPreference={{}}
+            stripedRowsPreference={{}}
+            contentDensityPreference={{}}
+            contentDisplayPreference={{
+              options: [
+                { id: 'id', label: 'Instance ID', alwaysVisible: true },
+                { id: 'name', label: 'Name' },
+                { id: 'type', label: 'Type' },
+                { id: 'az', label: 'AZ' },
+                { id: 'state', label: 'State' },
+                { id: 'cpu', label: 'CPU (%)' },
+                { id: 'memory', label: 'Memory (%)' },
+                { id: 'netIn', label: 'Network in' },
+                { id: 'netOut', label: 'Network out' },
+                { id: 'cost', label: 'Cost ($)' },
+              ],
+              groups:
+                groupingPreset === 'flat'
+                  ? undefined
+                  : [
+                      { id: 'config', label: 'Configuration' },
+                      { id: 'performance', label: 'Performance' },
+                      { id: 'network', label: 'Network' },
+                      { id: 'metrics', label: 'Metrics' },
+                    ],
+            }}
+          />
+        }
         empty={<Box textAlign="center">No instances</Box>}
       />
     </SimplePage>
