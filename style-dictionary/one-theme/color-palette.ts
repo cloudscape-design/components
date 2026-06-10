@@ -101,6 +101,7 @@ const referenceTokens: ReferenceTokens = {
       1000: brand.colorIndigo1000,
     },
     neutral: {
+      seed: '#000000',
       50: brand.colorNeutralGrey50,
       100: brand.colorNeutralGrey100,
       150: brand.colorNeutralGrey150,

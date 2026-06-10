@@ -32,9 +32,9 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
   await import('./typography.js'),
   await import('./borders.js'),
   await import('../visual-refresh/motion.js'),
+  await import('./shadows.js'),
   await import('./sizes.js'),
   await import('./spacing.js'),
-  await import('../visual-refresh/shadows.js'),
 ];
 
 const builder = new ThemeBuilder('one-theme', '.awsui-one-theme', modes);
