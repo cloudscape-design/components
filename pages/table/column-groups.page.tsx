@@ -200,7 +200,6 @@ type DemoContext = React.Context<
     lastSticky: number;
     wrapLines: boolean;
     stripedRows: boolean;
-    contentDensity: 'comfortable' | 'compact' | undefined;
     enableKeyboardNavigation: boolean;
     loading: boolean;
     empty: boolean;
@@ -222,7 +221,6 @@ export default function ColumnGroupsPage() {
       lastSticky = 0,
       wrapLines = false,
       stripedRows = false,
-      contentDensity = 'comfortable',
       enableKeyboardNavigation = true,
       loading = false,
       empty = false,
@@ -350,18 +348,6 @@ export default function ColumnGroupsPage() {
             <Toggle checked={stickyHeader} onChange={({ detail }) => setUrlParams({ stickyHeader: detail.checked })}>
               Sticky header
             </Toggle>
-            <Toggle checked={wrapLines} onChange={({ detail }) => setUrlParams({ wrapLines: detail.checked })}>
-              Wrap lines
-            </Toggle>
-            <Toggle checked={stripedRows} onChange={({ detail }) => setUrlParams({ stripedRows: detail.checked })}>
-              Striped rows
-            </Toggle>
-            <Toggle
-              checked={contentDensity === 'compact'}
-              onChange={({ detail }) => setUrlParams({ contentDensity: detail.checked ? 'compact' : 'comfortable' })}
-            >
-              Compact mode
-            </Toggle>
             <Toggle
               checked={enableKeyboardNavigation}
               onChange={({ detail }) => setUrlParams({ enableKeyboardNavigation: detail.checked })}
@@ -400,7 +386,6 @@ export default function ColumnGroupsPage() {
         enableKeyboardNavigation={enableKeyboardNavigation}
         wrapLines={wrapLines}
         stripedRows={stripedRows}
-        contentDensity={contentDensity}
         cellVerticalAlign={cellVerticalAlign}
         sortingDisabled={sortingDisabled}
         loading={loading}
@@ -422,7 +407,7 @@ export default function ColumnGroupsPage() {
         pagination={<Pagination {...paginationProps} />}
         preferences={
           <CollectionPreferences
-            preferences={{ contentDisplay: columnDisplay, wrapLines, stripedRows, contentDensity }}
+            preferences={{ contentDisplay: columnDisplay, wrapLines, stripedRows }}
             onConfirm={({ detail }) => {
               if (detail.contentDisplay) {
                 setColumnDisplay([...detail.contentDisplay]);
@@ -430,12 +415,10 @@ export default function ColumnGroupsPage() {
               setUrlParams({
                 wrapLines: detail.wrapLines ?? false,
                 stripedRows: detail.stripedRows ?? false,
-                contentDensity: detail.contentDensity ?? 'comfortable',
               });
             }}
             wrapLinesPreference={{}}
             stripedRowsPreference={{}}
-            contentDensityPreference={{}}
             contentDisplayPreference={{
               options: [
                 { id: 'id', label: 'Instance ID', alwaysVisible: true },
