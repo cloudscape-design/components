@@ -7,6 +7,7 @@ import Box from '~components/box';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
+import * as tokens from '~design-tokens';
 
 import { Actions } from '../common';
 
@@ -195,7 +196,9 @@ export const statusIndicatorItems: Item[] = [
     content: (
       <div style={{ display: 'flex' }}>
         <StatusIndicator type="warning">Checked 5 nodes</StatusIndicator>
-        <div style={{ borderLeft: '1px solid grey', marginLeft: '8px', marginRight: '8px' }} />
+        <div
+          style={{ borderLeft: `1px solid ${tokens.colorBorderDividerDefault}`, marginLeft: '8px', marginRight: '8px' }}
+        />
         <SpaceBetween direction="horizontal" size="s">
           <StatusIndicator type="success">1</StatusIndicator>
           <StatusIndicator type="in-progress">1</StatusIndicator>
@@ -252,7 +255,9 @@ export const statusIndicatorItems: Item[] = [
     content: (
       <div style={{ display: 'flex' }}>
         <StatusIndicator type="in-progress">Running automation</StatusIndicator>
-        <div style={{ borderLeft: '1px solid grey', marginLeft: '8px', marginRight: '8px' }} />
+        <div
+          style={{ borderLeft: `1px solid ${tokens.colorBorderDividerDefault}`, marginLeft: '8px', marginRight: '8px' }}
+        />
         <SpaceBetween direction="horizontal" size="s">
           <StatusIndicator type="error">1</StatusIndicator>
           <StatusIndicator type="in-progress">1</StatusIndicator>

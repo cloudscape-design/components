@@ -41,6 +41,14 @@ $_status-backgrounds: (
   'not-started': awsui.$color-background-status-indicator-neutral,
 );
 
+$_background-overrides: (
+  'red': awsui.$color-background-status-indicator-error,
+  'grey': awsui.$color-background-status-indicator-neutral,
+  'blue': awsui.$color-background-status-indicator-info,
+  'green': awsui.$color-background-status-indicator-success,
+  'yellow': awsui.$color-background-status-indicator-warning,
+);
+
 .root {
   @include styles.default-text-style;
   @each $status in map.keys($_status-colors) {
@@ -58,6 +66,11 @@ $_status-backgrounds: (
       background: #{map.get($_status-backgrounds, $status)};
     }
   }
+  @each $color in map.keys($_background-overrides) {
+    &.color-override-#{$color} > .container {
+      background: #{map.get($_background-overrides, $color)};
+    }
+  }
 }
 
 .container {
@@ -72,6 +85,9 @@ $_status-backgrounds: (
 
     > .icon {
       white-space: nowrap;
+      &.one-theme {
+        vertical-align: middle;
+      }
     }
   }
 
@@ -79,9 +95,19 @@ $_status-backgrounds: (
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
+    &.one-theme {
+      display: inline-flex;
+      align-items: flex-start;
+    }
 
     > .icon {
       padding-inline-end: awsui.$space-xxs;
+
+      &.one-theme {
+        display: inline-flex;
+        align-items: center;
+        margin-block-start: awsui.$space-xxxs;
+      }
     }
   }
 }
@@ -92,4 +118,14 @@ $_status-backgrounds: (
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: text-bottom;
+
+  &.one-theme {
+    text-overflow: unset;
+
+    > span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }

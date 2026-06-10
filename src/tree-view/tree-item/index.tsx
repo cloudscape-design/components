@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../../i18n/context';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
@@ -86,7 +88,7 @@ const InternalTreeItem = <T,>({
       data-testid={`awsui-treeitem-${id}`}
       data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
-      <div className={styles['treeitem-content-wrapper']}>
+      <div className={clsx(styles['treeitem-content-wrapper'], isThemeActive(Theme.OneTheme) && styles['one-theme'])}>
         <div className={styles['expand-toggle-wrapper']}>
           <div className={styles.toggle}>
             {isExpandable ? (
