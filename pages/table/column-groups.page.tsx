@@ -23,10 +23,6 @@ import {
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-// ============================================================================
-// Data
-// ============================================================================
-
 interface Instance {
   id: string;
   name: string;
@@ -57,10 +53,6 @@ const allInstances: Instance[] = Array.from({ length: 35 }, (_, i) => ({
   cost: +(Math.random() * 500).toFixed(2),
 }));
 
-// ============================================================================
-// Column & group definitions
-// ============================================================================
-
 const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
   {
     id: 'id',
@@ -86,10 +78,6 @@ const groupDefinitions: TableProps.GroupDefinition[] = [
   { id: 'network', header: 'Network' },
   { id: 'metrics', header: 'Metrics' },
 ];
-
-// ============================================================================
-// Column display presets
-// ============================================================================
 
 type GroupingPreset = 'flat' | 'single-level' | 'nested' | 'single-child-groups';
 
@@ -199,10 +187,6 @@ const presetOptions = [
   { value: 'single-child-groups', label: 'Single-child groups' },
   { value: 'flat', label: 'Without grouping' },
 ];
-
-// ============================================================================
-// Page component
-// ============================================================================
 
 type DemoContext = React.Context<
   AppContextType<{
