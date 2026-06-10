@@ -165,6 +165,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundLayoutPanel: {
+    description:
+      'The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',

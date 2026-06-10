@@ -6,18 +6,22 @@ import { StyleDictionary } from '../utils/interfaces.js';
 // One Theme color overrides on top of the visual-refresh baseline.
 // Tokens not listed here fall back to the visual-refresh value via ThemeBuilder.addTokens in ./index.ts.
 const tokens: StyleDictionary.ColorsDictionary = {
+  // ── Opaque ─────────────────────────────────────────────────────────────
+  colorGreyOpaque70: { light: 'rgba(0, 0, 0, 0.7)', dark: 'rgba(0, 0, 0, 0.7)' },
+
   // ── Body text ─────────────────────────────────────────────────────────────
   colorTextBodyDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
-  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey950}' },
+  colorBackgroundLayoutMain: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey1000}' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '#000000' },
+  colorBackgroundModalOverlay: '{colorGreyOpaque70}',
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
@@ -132,6 +136,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
+
+  // ── Tile ─────────────────────────────────────────────────────────────────
+  colorBackgroundTilesDisabled: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
