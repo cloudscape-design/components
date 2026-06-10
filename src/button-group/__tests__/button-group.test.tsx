@@ -105,3 +105,63 @@ describe('ButtonGroup Style API', () => {
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
   });
 });
+
+test('icon-toggle-button maintains correct icon on state change', () => {
+  const { rerender, container } = render(
+    <ButtonGroup
+      variant="icon"
+      ariaLabel="Test"
+      items={[
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-state',
+          text: 'Toggle State',
+          pressed: false,
+          iconSvg: (
+            <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+          pressedIconSvg: (
+            <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="currentColor" />
+            </svg>
+          ),
+        },
+      ]}
+    />
+  );
+  const wrapper = createWrapper(container).findButtonGroup()!;
+
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.default-icon')).toBeTruthy();
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.pressed-icon')).toBeFalsy();
+
+  // Rerender with pressed state
+  rerender(
+    <ButtonGroup
+      variant="icon"
+      ariaLabel="Test"
+      items={[
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-state',
+          text: 'Toggle State',
+          pressed: true,
+          iconSvg: (
+            <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+          pressedIconSvg: (
+            <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="currentColor" />
+            </svg>
+          ),
+        },
+      ]}
+    />
+  );
+
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.default-icon')).toBeFalsy();
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.pressed-icon')).toBeTruthy();
+});
