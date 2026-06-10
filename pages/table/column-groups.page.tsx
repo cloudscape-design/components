@@ -220,7 +220,7 @@ type DemoContext = React.Context<
     enableKeyboardNavigation: boolean;
     loading: boolean;
     empty: boolean;
-    cellVerticalAlign: string;
+    cellVerticalAlign?: TableProps.VerticalAlign;
     sortingDisabled: boolean;
   }>
 >;
@@ -321,7 +321,9 @@ export default function ColumnGroupsPage() {
                   { value: 'middle', label: 'middle' },
                   { value: 'top', label: 'top' },
                 ]}
-                onChange={({ detail }) => setUrlParams({ cellVerticalAlign: detail.selectedOption.value! })}
+                onChange={({ detail }) =>
+                  setUrlParams({ cellVerticalAlign: detail.selectedOption.value as TableProps.VerticalAlign })
+                }
                 ariaLabel="Cell vertical align"
               />
             </FormField>
@@ -415,7 +417,7 @@ export default function ColumnGroupsPage() {
         wrapLines={wrapLines}
         stripedRows={stripedRows}
         contentDensity={contentDensity}
-        cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
+        cellVerticalAlign={cellVerticalAlign}
         sortingDisabled={sortingDisabled}
         loading={loading}
         loadingText="Loading..."
