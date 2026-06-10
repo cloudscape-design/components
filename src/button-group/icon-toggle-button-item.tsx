@@ -55,7 +55,7 @@ const IconToggleButtonItem = forwardRef(
           iconSvg={item.iconSvg}
           pressedIconName={hasIcon ? item.pressedIconName : 'close'}
           pressedIconUrl={item.pressedIconUrl}
-          pressedIconSvg={item.pressedIconUrl}
+          pressedIconSvg={item.pressedIconSvg}
           ariaLabel={item.text}
           onChange={event => fireCancelableEvent(onItemClick, { id: item.id, pressed: event.detail.pressed })}
           ref={ref}
