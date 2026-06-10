@@ -82,7 +82,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   ]),
 };
 
-// Reference tokens for visual-refresh theme
+// Reference tokens for one-theme theme
 const referenceTokens: ReferenceTokens = {
   color: {
     primary: {
@@ -100,26 +100,6 @@ const referenceTokens: ReferenceTokens = {
     },
     neutral: {
       seed: '#000000',
-      50: brand.colorNeutralGrey50,
-      100: brand.colorNeutralGrey100,
-      150: brand.colorNeutralGrey150,
-      200: brand.colorNeutralGrey200,
-      250: brand.colorNeutralGrey250,
-      300: brand.colorNeutralGrey300,
-      350: brand.colorNeutralGrey350,
-      400: brand.colorNeutralGrey400,
-      450: brand.colorNeutralGrey450,
-      500: brand.colorNeutralGrey500,
-      550: brand.colorNeutralGrey550,
-      600: brand.colorNeutralGrey600,
-      650: brand.colorNeutralGrey650,
-      700: brand.colorNeutralGrey700,
-      750: brand.colorNeutralGrey750,
-      800: brand.colorNeutralGrey800,
-      850: brand.colorNeutralGrey850,
-      900: brand.colorNeutralGrey900,
-      950: brand.colorNeutralGrey950,
-      1000: brand.colorNeutralGrey1000,
     },
     error: {
       50: brand.colorRed50,
