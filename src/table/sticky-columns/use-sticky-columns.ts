@@ -139,6 +139,12 @@ interface UseStickyCellStylesProps {
   stickyColumns: StickyColumnsModel;
   columnId: PropertyKey;
   getClassName: (styles: null | StickyColumnsCellState) => Record<string, boolean>;
+  // Optional column to inherit the boundary shadow flags from. Used by group header cells
+  // that span multiple leaves: the cell's offset is owned by `columnId` (one of its child
+  // leaves), but the boundary shadow lives on a different leaf (the group's boundary child).
+  // The hook keeps a single subscription/writer and merges the boundary leaf's
+  // `lastInsetInlineStart` / `lastInsetInlineEnd` into the cell state passed to getClassName.
+  boundaryColumnId?: PropertyKey;
 }
 
 interface StickyCellStyles {
@@ -147,10 +153,33 @@ interface StickyCellStyles {
   style?: React.CSSProperties;
 }
 
+// Merges the boundary leaf's shadow flags into the position leaf's cell state.
+// Returns the position state untouched when there is no boundary column or no boundary state.
+function mergeBoundaryShadow(
+  positionState: null | StickyColumnsCellState,
+  boundaryState: null | StickyColumnsCellState
+): null | StickyColumnsCellState {
+  if (!positionState || !boundaryState) {
+    return positionState;
+  }
+  if (
+    positionState.lastInsetInlineStart === boundaryState.lastInsetInlineStart &&
+    positionState.lastInsetInlineEnd === boundaryState.lastInsetInlineEnd
+  ) {
+    return positionState;
+  }
+  return {
+    ...positionState,
+    lastInsetInlineStart: positionState.lastInsetInlineStart || boundaryState.lastInsetInlineStart,
+    lastInsetInlineEnd: positionState.lastInsetInlineEnd || boundaryState.lastInsetInlineEnd,
+  };
+}
+
 export function useStickyCellStyles({
   stickyColumns,
   columnId,
   getClassName,
+  boundaryColumnId,
 }: UseStickyCellStylesProps): StickyCellStyles {
   const setCell = stickyColumns.refs.cell;
 
@@ -169,7 +198,11 @@ export function useStickyCellStyles({
       setCell(columnId, cellElement);
 
       // Update cell styles imperatively to avoid unnecessary re-renders.
-      const selector = (state: StickyColumnsState) => state.cellState.get(columnId) ?? null;
+      const selector = (state: StickyColumnsState) => {
+        const positionState = state.cellState.get(columnId) ?? null;
+        const boundaryState = boundaryColumnId !== undefined ? (state.cellState.get(boundaryColumnId) ?? null) : null;
+        return mergeBoundaryShadow(positionState, boundaryState);
+      };
 
       const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
         if (isCellStatesEqual(state, prev)) {
@@ -203,15 +236,18 @@ export function useStickyCellStyles({
 
     // getClassName is expected to be pure
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnId, setCell, stickyColumns.store]
+    [columnId, boundaryColumnId, setCell, stickyColumns.store]
   );
 
   // Provide cell styles as props so that a re-render won't cause invalidation.
-  const cellStyles = stickyColumns.store.get().cellState.get(columnId);
+  const storeState = stickyColumns.store.get();
+  const positionStyles = storeState.cellState.get(columnId) ?? null;
+  const boundaryStyles = boundaryColumnId !== undefined ? (storeState.cellState.get(boundaryColumnId) ?? null) : null;
+  const mergedStyles = mergeBoundaryShadow(positionStyles, boundaryStyles);
   return {
     ref: refCallback,
-    className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
-    style: cellStyles?.offset ?? undefined,
+    className: mergedStyles ? clsx(getClassName(mergedStyles)) : undefined,
+    style: positionStyles?.offset ?? undefined,
   };
 }
 
