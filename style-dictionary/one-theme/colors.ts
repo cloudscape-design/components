@@ -14,7 +14,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
-  colorBackgroundLayoutMain: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
+  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+  colorBackgroundLayoutPanelContent: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
