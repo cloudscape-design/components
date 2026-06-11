@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { attachment, ContentType } from 'allure-js-commons';
+import { attachment } from 'allure-js-commons';
 
 import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -32,18 +32,24 @@ function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinit
 }
 
 /**
- * Attaches visual diff images (new, baseline, diff) to the Allure report
- * via the allure-js-commons runtime API.
+ * Attaches a visual comparison to the Allure report using the built-in image diff viewer.
+ * Uses the `application/vnd.allure.image.diff` content type which Allure renders
+ * as a side-by-side/overlay comparison widget.
  */
 async function attachDiffImages(
   result: { firstImage: Buffer; secondImage: Buffer; diffImage: Buffer | null },
   testName: string
 ): Promise<void> {
-  await attachment(`${testName} — new (PR)`, result.firstImage, ContentType.PNG);
-  await attachment(`${testName} — baseline (main)`, result.secondImage, ContentType.PNG);
-  if (result.diffImage) {
-    await attachment(`${testName} — diff`, result.diffImage, ContentType.PNG);
-  }
+  const diffPayload = JSON.stringify({
+    expected: `data:image/png;base64,${result.secondImage.toString('base64')}`,
+    actual: `data:image/png;base64,${result.firstImage.toString('base64')}`,
+    diff: result.diffImage ? `data:image/png;base64,${result.diffImage.toString('base64')}` : undefined,
+  });
+
+  await attachment(testName, diffPayload, {
+    contentType: 'application/vnd.allure.image.diff',
+    fileExtension: 'imagediff',
+  } as any);
 }
 
 /**
