@@ -6,8 +6,6 @@ coverage
 lib
 # generated sources
 src/index.ts
-test/visual
-test/definitions/index.ts
 allure-results
 allure-report
 src/test-utils/dom/index.ts
