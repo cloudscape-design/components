@@ -6,6 +6,7 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import {
   Box,
+  CollectionPreferences,
   FormField,
   Header,
   Input,
@@ -21,10 +22,6 @@ import {
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
-
-// ============================================================================
-// Data
-// ============================================================================
 
 interface Instance {
   id: string;
@@ -56,10 +53,6 @@ const allInstances: Instance[] = Array.from({ length: 35 }, (_, i) => ({
   cost: +(Math.random() * 500).toFixed(2),
 }));
 
-// ============================================================================
-// Column & group definitions
-// ============================================================================
-
 const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
   {
     id: 'id',
@@ -85,10 +78,6 @@ const groupDefinitions: TableProps.GroupDefinition[] = [
   { id: 'network', header: 'Network' },
   { id: 'metrics', header: 'Metrics' },
 ];
-
-// ============================================================================
-// Column display presets
-// ============================================================================
 
 type GroupingPreset = 'flat' | 'single-level' | 'nested' | 'single-child-groups';
 
@@ -199,10 +188,6 @@ const presetOptions = [
   { value: 'flat', label: 'Without grouping' },
 ];
 
-// ============================================================================
-// Page component
-// ============================================================================
-
 type DemoContext = React.Context<
   AppContextType<{
     groupingPreset: GroupingPreset;
@@ -215,11 +200,10 @@ type DemoContext = React.Context<
     lastSticky: number;
     wrapLines: boolean;
     stripedRows: boolean;
-    contentDensity: string;
     enableKeyboardNavigation: boolean;
     loading: boolean;
     empty: boolean;
-    cellVerticalAlign: string;
+    cellVerticalAlign?: TableProps.VerticalAlign;
     sortingDisabled: boolean;
   }>
 >;
@@ -237,7 +221,6 @@ export default function ColumnGroupsPage() {
       lastSticky = 0,
       wrapLines = false,
       stripedRows = false,
-      contentDensity = 'comfortable',
       enableKeyboardNavigation = true,
       loading = false,
       empty = false,
@@ -320,7 +303,9 @@ export default function ColumnGroupsPage() {
                   { value: 'middle', label: 'middle' },
                   { value: 'top', label: 'top' },
                 ]}
-                onChange={({ detail }) => setUrlParams({ cellVerticalAlign: detail.selectedOption.value! })}
+                onChange={({ detail }) =>
+                  setUrlParams({ cellVerticalAlign: detail.selectedOption.value as TableProps.VerticalAlign })
+                }
                 ariaLabel="Cell vertical align"
               />
             </FormField>
@@ -363,18 +348,6 @@ export default function ColumnGroupsPage() {
             <Toggle checked={stickyHeader} onChange={({ detail }) => setUrlParams({ stickyHeader: detail.checked })}>
               Sticky header
             </Toggle>
-            <Toggle checked={wrapLines} onChange={({ detail }) => setUrlParams({ wrapLines: detail.checked })}>
-              Wrap lines
-            </Toggle>
-            <Toggle checked={stripedRows} onChange={({ detail }) => setUrlParams({ stripedRows: detail.checked })}>
-              Striped rows
-            </Toggle>
-            <Toggle
-              checked={contentDensity === 'compact'}
-              onChange={({ detail }) => setUrlParams({ contentDensity: detail.checked ? 'compact' : 'comfortable' })}
-            >
-              Compact mode
-            </Toggle>
             <Toggle
               checked={enableKeyboardNavigation}
               onChange={({ detail }) => setUrlParams({ enableKeyboardNavigation: detail.checked })}
@@ -413,8 +386,7 @@ export default function ColumnGroupsPage() {
         enableKeyboardNavigation={enableKeyboardNavigation}
         wrapLines={wrapLines}
         stripedRows={stripedRows}
-        contentDensity={contentDensity as 'comfortable' | 'compact'}
-        cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
+        cellVerticalAlign={cellVerticalAlign}
         sortingDisabled={sortingDisabled}
         loading={loading}
         loadingText="Loading..."
@@ -433,6 +405,45 @@ export default function ColumnGroupsPage() {
           />
         }
         pagination={<Pagination {...paginationProps} />}
+        preferences={
+          <CollectionPreferences
+            preferences={{ contentDisplay: columnDisplay, wrapLines, stripedRows }}
+            onConfirm={({ detail }) => {
+              if (detail.contentDisplay) {
+                setColumnDisplay([...detail.contentDisplay]);
+              }
+              setUrlParams({
+                wrapLines: detail.wrapLines ?? false,
+                stripedRows: detail.stripedRows ?? false,
+              });
+            }}
+            wrapLinesPreference={{}}
+            stripedRowsPreference={{}}
+            contentDisplayPreference={{
+              options: [
+                { id: 'id', label: 'Instance ID', alwaysVisible: true },
+                { id: 'name', label: 'Name' },
+                { id: 'type', label: 'Type' },
+                { id: 'az', label: 'AZ' },
+                { id: 'state', label: 'State' },
+                { id: 'cpu', label: 'CPU (%)' },
+                { id: 'memory', label: 'Memory (%)' },
+                { id: 'netIn', label: 'Network in' },
+                { id: 'netOut', label: 'Network out' },
+                { id: 'cost', label: 'Cost ($)' },
+              ],
+              groups:
+                groupingPreset === 'flat'
+                  ? undefined
+                  : [
+                      { id: 'config', label: 'Configuration' },
+                      { id: 'performance', label: 'Performance' },
+                      { id: 'network', label: 'Network' },
+                      { id: 'metrics', label: 'Metrics' },
+                    ],
+            }}
+          />
+        }
         empty={<Box textAlign="center">No instances</Box>}
       />
     </SimplePage>
