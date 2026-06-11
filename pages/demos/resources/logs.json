@@ -1,0 +1,122 @@
+[
+  {
+    "name": "trace/ORCL_mmon_1185.trm",
+    "lastWritten": "Tue Feb 27 15:45:49 GMT-800 2018",
+    "size": "116.9 kB"
+  },
+  {
+    "name": "audit/ORCL_j000_9748_20180227220003670535143795.aud",
+    "lastWritten": "Tue Feb 27 14:00:24 GMT-800 2018",
+    "size": "2.2 MB"
+  },
+  {
+    "name": "audit/ORCL_j000_12784_20180225140934404883143795.aud",
+    "lastWritten": "Sun Feb 25 06:09:38 GMT-800 2018",
+    "size": "417.5 kB"
+  },
+  {
+    "name": "audit/ORCL_j000_32052_20180224140833623442143795.aud",
+    "lastWritten": "Sat Feb 24 06:08:39 GMT-800 2018",
+    "size": "863.9 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-02-01",
+    "lastWritten": "Thu Feb 01 15:55:20 GMT-800 2018",
+    "size": "80.7 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_17218_20180301180000121984143795.aud",
+    "lastWritten": "Thu Mar 01 10:00:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/ORCL_m002_27079.trm",
+    "lastWritten": "Sun Feb 25 16:19:56 GMT-800 2018",
+    "size": "1.9 kB"
+  },
+  {
+    "name": "audit/ORCL_j000_15956_20180302220007526211143795.aud",
+    "lastWritten": "Fri Mar 02 14:00:26 GMT-800 2018",
+    "size": "2.2 MB"
+  },
+  {
+    "name": "trace/ORCL_dbrm_1161.trm",
+    "lastWritten": "Wed Mar 07 18:00:00 GMT-800 2018",
+    "size": "509.3 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_14424_20180308130000145043143795.aud",
+    "lastWritten": "Thu Mar 08 05:00:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/ORCL_dbrm_1161.trc",
+    "lastWritten": "Wed Mar 07 18:00:00 GMT-800 2018",
+    "size": "7.6 MB"
+  },
+  {
+    "name": "audit/ORCL_ora_13511_20180304014500107042143795.aud",
+    "lastWritten": "Sat Mar 03 17:45:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-02-18",
+    "lastWritten": "Sun Feb 18 15:54:43 GMT-800 2018",
+    "size": "90.4 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-02-22",
+    "lastWritten": "Thu Feb 22 15:58:39 GMT-800 2018",
+    "size": "81 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_13811_20180301171500122862143795.aud",
+    "lastWritten": "Thu Mar 01 09:15:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-03-01",
+    "lastWritten": "Thu Mar 01 15:57:09 GMT-800 2018",
+    "size": "80.7 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_5574_20180302194500108555143795.aud",
+    "lastWritten": "Fri Mar 02 11:45:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-02-11",
+    "lastWritten": "Mon Feb 12 15:55:15 GMT-800 2018",
+    "size": "81 kB"
+  },
+  {
+    "name": "trace/alert_ORCL.log.2018-02-15",
+    "lastWritten": "Thu Feb 15 15:55:26 GMT-800 2018",
+    "size": "80.7 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_20606_20180301184500112864143795.aud",
+    "lastWritten": "Thu Mar 01 10:45:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_27755_20180308074435851511143795.aud",
+    "lastWritten": "Wed Mar 07 23:44:35 GMT-800 2018",
+    "size": "2.2 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_28635_20180308074923275146143795.aud",
+    "lastWritten": "Wed Mar 07 23:49:23 GMT-800 2018",
+    "size": "1.7 kB"
+  },
+  {
+    "name": "audit/ORCL_ora_12243_20180303041500110744143795.aud",
+    "lastWritten": "Fri Mar 02 20:15:00 GMT-800 2018",
+    "size": "1.5 kB"
+  },
+  {
+    "name": "trace/ORCL_dbrm_1161.trc",
+    "lastWritten": "Wed Mar 07 18:00:00 GMT-800 2018",
+    "size": "7.6 MB"
+  }
+]

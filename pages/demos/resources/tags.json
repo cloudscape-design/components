@@ -1,0 +1,27 @@
+{
+  "resourceTags": [
+    {
+      "key": "aws:cloudformation:stackid",
+      "value": "CfBundlePackage_01"
+    },
+    {
+      "key": "owner",
+      "value": "user@amazon.com"
+    },
+    {
+      "key": "project",
+      "value": "mobile"
+    },
+    {
+      "key": "role",
+      "value": ""
+    }
+  ],
+  "valueMap": {
+    "owner": ["user@amazon.com", "user-1@amazon.com", "user-2@amazon.com", "user-3@amazon.com", "user-4@amazon.com"],
+    "project": ["mobile", "desktop", "tablet"],
+    "role": ["admin"],
+    "performance": [],
+    "profile": []
+  }
+}

@@ -6,19 +6,25 @@ import { StyleDictionary } from '../utils/interfaces.js';
 // One Theme color overrides on top of the visual-refresh baseline.
 // Tokens not listed here fall back to the visual-refresh value via ThemeBuilder.addTokens in ./index.ts.
 const tokens: StyleDictionary.ColorsDictionary = {
+  // ── Opaque ─────────────────────────────────────────────────────────────
+  colorGreyOpaque70: { light: 'rgba(0, 0, 0, 0.7)', dark: 'rgba(0, 0, 0, 0.7)' },
+
   // ── Body text ─────────────────────────────────────────────────────────────
   colorTextBodyDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
-  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey950}' },
+  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+  colorBackgroundLayoutPanelContent: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey1000}' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '#000000' },
+  colorBackgroundModalOverlay: '{colorGreyOpaque70}',
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
@@ -56,7 +62,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
-  colorBorderToggleButtonNormalPressed: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextToggleButtonNormalPressed: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
 
   // ── Input / form ──────────────────────────────────────────────────────────
@@ -77,28 +83,28 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
   colorTextLinkHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey200}' },
   colorTextLinkSecondaryDefault: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
-  colorTextLinkInfoDefault: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
-  colorTextLinkInfoHover: { light: '{colorIndigo800}', dark: '{colorIndigo300}' },
-  colorTextAccent: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
+  colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
 
   // ── Selection / focus ─────────────────────────────────────────────────────
-  colorBorderItemFocused: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBorderItemSelected: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundItemSelected: { light: '{colorNeutralGrey150}', dark: '{colorNeutralGrey1000}' },
-  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorIndigo100}', dark: '#5c7fff20' },
-  colorBackgroundLayoutToggleSelectedHover: { light: '{colorIndigo200}', dark: '#5c7fff40' },
-  colorBackgroundLayoutToggleSelectedActive: { light: '{colorIndigo100}', dark: '{colorIndigo1000}' },
-  colorTextLayoutToggleSelected: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
+  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorPrimary100}', dark: '#5c7fff20' },
+  colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
+  colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary100}', dark: '{colorPrimary1000}' },
+  colorTextLayoutToggleSelected: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
   colorBackgroundSegmentActive: { light: '{colorNeutralGrey800}', dark: '{colorNeutralGrey300}' },
   colorBackgroundSegmentDefault: { light: 'transparent', dark: 'transparent' },
 
   // ── Slider / progress ─────────────────────────────────────────────────────
-  colorBackgroundSliderRangeDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundSliderHandleDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundProgressBarValueDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBackgroundSliderRangeDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundSliderHandleDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
 
   // ── Notifications ─────────────────────────────────────────────────────────
   colorBackgroundNotificationGreen: { light: '{colorSuccess600}', dark: '{colorSuccess950}' },
@@ -108,20 +114,20 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextNotificationDefault: { light: '{colorWhite}', dark: '{colorWhite}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
-  colorTextStatusInfo: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
+  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning800}', dark: '{colorWarning300}' },
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
   // ── Dropdown ─────────────────────────────────────────────────
-  colorTextDropdownItemFilterMatch: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorTextDropdownItemFilterMatch: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey1000}' },
   colorBackgroundDropdownItemDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey800}' },
   colorBackgroundDropdownItemHover: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey900}' },
 
   // ── Status indicator backgrounds (alpha values — no palette token available) ──
-  colorBackgroundStatusIndicatorInfo: { light: '{colorIndigo50}', dark: '#5c7fff20' },
+  colorBackgroundStatusIndicatorInfo: { light: '{colorInfo50}', dark: '#5c7fff20' },
   colorBackgroundStatusIndicatorWarning: { light: '{colorWarning50}', dark: '#fbd33220' },
   colorBackgroundStatusIndicatorSuccess: { light: '{colorSuccess50}', dark: '#2bb53420' },
   colorBackgroundStatusIndicatorError: { light: '{colorError50}', dark: '#ff7a7a20' },
@@ -133,6 +139,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
+
+  // ── Tile ─────────────────────────────────────────────────────────────────
+  colorBackgroundTilesDisabled: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

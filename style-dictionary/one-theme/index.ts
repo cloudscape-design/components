@@ -26,6 +26,7 @@ const overrides = [
   await import('./colors.js'),
   await import('./typography.js'),
   await import('./borders.js'),
+  await import('./shadows.js'),
   await import('./spacing.js'),
   await import('./sizes.js'),
 ] as Array<StyleDictionary.CategoryModule>;

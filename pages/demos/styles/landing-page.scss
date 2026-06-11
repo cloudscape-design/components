@@ -1,0 +1,64 @@
+@use '~@cloudscape-design/design-tokens' as awsui;
+@use './base';
+
+$grid-breakpoint-s: 912px;
+// Make horizontal grid gutters static so that the grid breakpoint is the same in compact and comfortable mode
+$half-gutter-horizontal: 10px;
+// 10px in comfortable mode, 8px in compact mode
+$half-gutter-vertical: calc(8px + awsui.$space-scaled-xxxs);
+
+.custom-home__header {
+  background-color: awsui.$color-background-home-header;
+}
+
+.custom-home__header-title {
+  color: awsui.$color-text-home-header-default;
+}
+
+.custom-home__category,
+.custom-home__header-sub-title {
+  color: awsui.$color-text-home-header-secondary;
+}
+
+.custom-home__grid-container {
+  container-type: inline-size;
+  margin-block: calc(-1 *#{$half-gutter-vertical});
+  margin-inline: -#{$half-gutter-horizontal};
+}
+
+.custom-home__category,
+.custom-home__header-title,
+.custom-home__main-content,
+.custom-home__header-cta,
+.custom-home__sidebar {
+  margin-block: $half-gutter-vertical;
+  margin-inline: $half-gutter-horizontal;
+}
+
+@container (width <= #{$grid-breakpoint-s}) {
+  // Keeps 32px distance between body cards and sidebar cards when collapsed in one single column
+  .custom-home__main-content {
+    margin-block-end: 0;
+  }
+  .custom-home__sidebar {
+    margin-block-start: awsui.$space-scaled-xxl;
+  }
+}
+
+@container (width > #{$grid-breakpoint-s}) {
+  .custom-home__header-cta {
+    // Keeps 32px distance between CTA and sidebar cards
+    margin-block-end: calc(38px + #{$half-gutter-vertical});
+  }
+  .custom-home__sidebar {
+    // Aligns baseline of text with dark header bottom border
+    margin-block-start: calc(
+      #{$half-gutter-vertical} - #{awsui.$space-scaled-xxxl} - #{awsui.$space-scaled-l} - #{awsui.$space-scaled-xxxs} -
+        #{awsui.$line-height-heading-l}
+    );
+  }
+}
+
+.custom-home__header-title > * {
+  max-inline-size: 700px;
+}
