@@ -20,6 +20,9 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+    &.one-theme {
+      background-color: awsui.$color-background-layout-panel-content;
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -64,6 +67,9 @@
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+    &.one-theme {
+      background-color: awsui.$color-background-layout-panel-content;
+    }
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
@@ -124,6 +130,10 @@
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+
+  &.one-theme {
+    background-color: awsui.$color-background-layout-panel-content;
+  }
 
   > .drawer-content-container {
     grid-column: 1 / span 2;

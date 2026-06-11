@@ -25,7 +25,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '#000000' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
   colorBackgroundModalOverlay: '{colorGreyOpaque70}',
 
   // ── Normal button ─────────────────────────────────────────────────────────
