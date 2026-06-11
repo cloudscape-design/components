@@ -41,20 +41,11 @@ const AUTO_GROW_INCREMENT = 5;
 
 export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
 
-export function Divider({
-  className,
-  position,
-  variant,
-}: {
-  className?: string;
-  position?: DividerPosition;
-  variant?: 'default' | 'interactive';
-}) {
+export function Divider({ className, position }: { className?: string; position?: DividerPosition }) {
   return (
     <span
       className={clsx(
         styles.divider,
-        variant === 'default' && styles['divider-disabled'],
         position && position !== 'default' && styles[`divider-position-${position}`],
         className
       )}

@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -63,7 +65,11 @@ export function InternalStatusIcon({
 }: InternalStatusIconProps) {
   return (
     <span
-      className={clsx(styles.icon, animate && styles['icon-shake'])}
+      className={clsx(
+        styles.icon,
+        animate && styles['icon-shake'],
+        isThemeActive(Theme.OneTheme) && styles['one-theme']
+      )}
       aria-label={iconAriaLabel}
       role={iconAriaLabel ? 'img' : undefined}
     >
@@ -82,7 +88,7 @@ export default function StatusIndicator({
   nativeAttributes,
   __animate = false,
   __internalRootRef,
-  __size = 'normal',
+  __size = isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
   __display = 'inline-block',
   ...rest
 }: InternalStatusIndicatorProps) {
@@ -107,6 +113,7 @@ export default function StatusIndicator({
         className={clsx(
           styles.container,
           styles[`display-${__display}`],
+          isThemeActive(Theme.OneTheme) && styles['one-theme'],
           wrapText === false && styles['overflow-ellipsis'],
           __animate && styles['container-fade-in']
         )}

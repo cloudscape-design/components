@@ -28136,7 +28136,8 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "type": "boolean",
     },
     {
-      "description": "Specifies the text that's displayed when the table is in a loading state.",
+      "description": "Specifies the text that's displayed when the table is in a loading state.
+In skeleton-loading mode this will be used as a label for screenreaders.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
@@ -28279,6 +28280,26 @@ the table items array is empty.",
       "name": "selectionType",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Renders skeleton placeholder rows to fill the table while data is loading. Accepts:
+- \`totalRows\` (number) - The total number of rows that should be rendered. If \`items\`
+   are also provided, those items will be rendered first, and \`totalRows - items.length\`
+   additional skeleton rows rendered after.",
+      "inlineType": {
+        "name": "TableProps.SkeletonConfig",
+        "properties": [
+          {
+            "name": "totalRows",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "skeleton",
+      "optional": true,
+      "type": "TableProps.SkeletonConfig",
     },
     {
       "description": "Specifies the definition object of the currently sorted column. Make sure you pass an object that's

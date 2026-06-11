@@ -69,10 +69,6 @@ th:not([data-rightmost]) > .divider,
   }
 }
 
-th:not([data-rightmost]) > .divider-disabled {
-  border-inline-start-color: awsui.$color-border-divider-default;
-}
-
 .divider-interactive {
   inset-inline-end: calc(#{$handle-width} / 2);
 }
