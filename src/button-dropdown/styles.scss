@@ -50,8 +50,10 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .trigger-button {
-  display: flex;
-  align-items: center;
+  &.one-theme {
+    display: flex;
+    align-items: center;
+  }
   &.full-width {
     display: grid;
     grid-template-columns: 1fr auto;
