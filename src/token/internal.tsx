@@ -28,12 +28,25 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTokenProps = TokenProps &
+type InternalTokenProps = Omit<TokenProps, 'label'> &
   InternalBaseComponentProps & {
+    /** Token label. Required unless `__customContent` replaces the option layout entirely. */
+    label?: React.ReactNode;
+    /**
+     * Overrides the default `role="group"` on the token root. Set to `"presentation"` when a
+     * parent element provides grouping semantics; this also strips ARIA attributes
+     * (aria-label, aria-labelledby, aria-disabled), focus/mouse handlers, and the tab stop so the
+     * token doesn't expose a redundant nested group to assistive tech.
+     */
     role?: string;
     disableInnerPadding?: boolean;
-    /** Additional class applied to the token-box element, for consumer-specific state styling. */
-    tokenBoxClassName?: string;
+    /** Extra class on the token-box element */
+    __tokenBoxClassName?: string;
+    /**
+     * Renders content inside the token-box, replacing the standard option layout
+     * (label, labelTag, description, tags). The dismiss button is still rendered as a sibling.
+     */
+    __customContent?: React.ReactNode;
   };
 
 function InternalToken({
@@ -54,7 +67,8 @@ function InternalToken({
   // Internal
   role,
   disableInnerPadding,
-  tokenBoxClassName,
+  __tokenBoxClassName,
+  __customContent,
 
   // Base
   __internalRootRef,
@@ -170,7 +184,7 @@ function InternalToken({
             readOnly && styles['token-box-readonly'],
             !isInline && !onDismiss && styles['token-box-without-dismiss'],
             disableInnerPadding && styles['disable-padding'],
-            tokenBoxClassName
+            __tokenBoxClassName
           )}
           style={tokenRootStyleProps}
         >
@@ -182,6 +196,7 @@ function InternalToken({
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
             labelId={ariaLabelledbyId}
+            customContent={__customContent}
           />
           {onDismiss && (
             <DismissButton

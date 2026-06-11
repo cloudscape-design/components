@@ -97,9 +97,9 @@ function InternalFileToken({
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
 
-  // The original file-token rendered all of this directly inside the token-box. We now pass it
-  // as InternalToken's label so InternalToken owns the token-box, dismiss button, and focus
-  // behavior. Keeping the inner DOM structure unchanged preserves the existing layout.
+  // The full body of the token. Rendered through InternalToken's customContent slot so this
+  // component owns the inner layout (thumbnail + metadata column + loading overlay), while
+  // InternalToken handles the token-box and the dismiss button.
   const fileContent = (
     <>
       {loading && (
@@ -181,12 +181,13 @@ function InternalFileToken({
       data-index={index}
     >
       <InternalToken
-        // The wrapping div above already provides role="group" + aria-label.
+        // The outer wrapper above is the accessibility group (role="group" + aria-label). The
+        // token itself is presentation-only so screen readers don't see two nested groups.
         role="presentation"
-        label={fileContent}
+        __customContent={fileContent}
         onDismiss={readOnly ? undefined : onDismiss}
         dismissLabel={getDismissLabel(index)}
-        tokenBoxClassName={clsx(styles['token-box'], {
+        __tokenBoxClassName={clsx(styles['token-box'], {
           [styles.loading]: loading,
           [styles.error]: errorText,
           [styles.warning]: showWarning,
