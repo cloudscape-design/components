@@ -177,6 +177,7 @@ function DraggableItem<Item>({
         isDragGhost: false,
         dragHandleProps: {
           ...dragHandleListeners,
+          active: isDragging,
           ariaLabel: joinStrings(dragHandleAriaLabel, itemDefinition.label(item)) ?? '',
           ariaDescribedby: attributes['aria-describedby'],
           disabled: attributes['aria-disabled'],

@@ -14,8 +14,8 @@
     var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
   border-inline: awsui.$border-width-token solid
     var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
-  padding-block-start: styles.$control-padding-vertical;
-  padding-block-end: styles.$control-padding-vertical;
+  padding-block-start: awsui.$space-token-vertical;
+  padding-block-end: awsui.$space-token-vertical;
   padding-inline-start: styles.$control-padding-horizontal;
   padding-inline-end: awsui.$space-xxs;
   display: flex;

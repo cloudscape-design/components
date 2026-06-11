@@ -31,7 +31,7 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
    */
   expandAriaLabel?: string;
   /**
-   * Called when the user clicks on a breadcrumb item.
+   * Called when the user clicks on a breadcrumb item. Do not use this handler for navigation, use the `onFollow` event instead.
    */
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
   /**

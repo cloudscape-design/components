@@ -11,7 +11,6 @@ import OptionsListWrapper from '../internal/options-list';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
-import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
@@ -19,7 +18,7 @@ import selectableStyles from '../../../internal/components/selectable-item/style
 
 export class AutosuggestDropdownWrapper extends ComponentWrapper {
   findOptions(): Array<OptionWrapper> {
-    return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index]`).map(
+    return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index] .${OptionWrapper.rootSelector}`).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
     );
   }
@@ -31,7 +30,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
    */
   findOption(optionIndex: number): OptionWrapper | null {
     return this.findComponent(
-      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"]`,
+      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"] .${OptionWrapper.rootSelector}`,
       OptionWrapper
     );
   }
@@ -43,7 +42,10 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
    */
   findOptionByValue(value: string): OptionWrapper | null {
     const toReplace = escapeSelector(value);
-    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']} .${OptionWrapper.rootSelector}[data-value="${toReplace}"]`,
+      OptionWrapper
+    );
   }
 
   /**
@@ -54,7 +56,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
    */
   findOptionInGroup(groupIndex: number, optionIndex: number): OptionWrapper | null {
     return this.findComponent(
-      `.${selectableStyles['selectable-item']}[data-group-index="${groupIndex}"][data-in-group-index="${optionIndex}"]`,
+      `.${selectableStyles['selectable-item']}[data-group-index="${groupIndex}"][data-in-group-index="${optionIndex}"] .${OptionWrapper.rootSelector}`,
       OptionWrapper
     );
   }
@@ -103,7 +105,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
 
 class PortalAutosuggestDropdownWrapper extends AutosuggestDropdownWrapper {
   findOpenDropdown(): ElementWrapper | null {
-    return createWrapper().find(`:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`);
+    return createWrapper().find(`.${dropdownStyles.dropdown}[data-open=true]`);
   }
 }
 
@@ -116,10 +118,7 @@ export default class AutosuggestWrapper extends InputWrapper {
    */
   findDropdown(options = { expandToViewport: false }): AutosuggestDropdownWrapper {
     return options.expandToViewport
-      ? createWrapper().findComponent(
-          `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
-          PortalAutosuggestDropdownWrapper
-        )!
+      ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalAutosuggestDropdownWrapper)!
       : new AutosuggestDropdownWrapper(this.getElement());
   }
 

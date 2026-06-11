@@ -639,6 +639,21 @@ test('findOptionInGroup', () => {
   expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
 });
 
+test('findOptionInGroup returns consistent element with findOption', () => {
+  const { container } = render(
+    <Autosuggest value="" onChange={() => {}} enteredTextLabel={() => 'Use value'} options={groupOptions} />
+  );
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  wrapper.findNativeInput().focus();
+  const optionByIndex = wrapper.findDropdown().findOption(1);
+  const optionInGroup = wrapper.findDropdown().findOptionInGroup(1, 1);
+  expect(optionByIndex).toBeTruthy();
+  expect(optionInGroup).toBeTruthy();
+  // Both should return the inner option element with data-value
+  expect(optionByIndex!.getElement().getAttribute('data-value')).toBe('1');
+  expect(optionInGroup!.getElement().getAttribute('data-value')).toBe('1');
+});
+
 describe('native attributes', () => {
   it('adds native attributes', () => {
     const { wrapper } = renderAutosuggest(

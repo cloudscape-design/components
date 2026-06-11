@@ -27,7 +27,7 @@ $variant-padding-inline: (
   'default': awsui.$space-item-card-horizontal-default,
 );
 
-$action-padding-vertical: styles.$control-padding-vertical;
+$action-padding-vertical: awsui.$space-scaled-xxs;
 $action-padding-horizontal: awsui.$space-xxs;
 
 @mixin apply-border-radius($variant: 'default') {
@@ -88,8 +88,8 @@ $action-padding-horizontal: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
 
     &:before {
-      border-block: solid awsui.$border-width-item-card-highlighted awsui.$color-border-item-card-highlighted;
-      border-inline: solid awsui.$border-width-item-card-highlighted awsui.$color-border-item-card-highlighted;
+      border-block: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
+      border-inline: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
     }
   }
 

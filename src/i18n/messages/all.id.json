@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferensi kolom",
     "contentDisplayPreference.description": "Sesuaikan visibilitas dan urutan kolom.",
     "contentDisplayPreference.dragHandleAriaLabel": "Tuas seret",
-    "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membatalkan perpindahan, gunakan Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret untuk item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membuang perpindahan, gunakan Escape. Anda mungkin perlu beralih mode penelusuran di pembaca layar Anda.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Mengambil item pada posisi {position} dari {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Pengurutan ulang dibatalkan",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter kolom",

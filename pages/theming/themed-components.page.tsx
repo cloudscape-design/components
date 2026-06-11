@@ -5,21 +5,37 @@ import React, { useLayoutEffect, useState } from 'react';
 import {
   AppLayoutToolbar,
   Autosuggest,
+  Badge,
+  Box,
   Button,
+  ButtonDropdown,
   ButtonGroup,
+  Cards,
   Container,
+  CopyToClipboard,
   DatePicker,
+  ExpandableSection,
+  FileTokenGroup,
   Grid,
   Header,
+  Icon,
   Input,
+  KeyValuePairs,
+  Link,
   Multiselect,
+  ProgressBar,
+  PromptInput,
   SegmentedControl,
   Select,
   SelectProps,
   SideNavigation,
   SpaceBetween,
   StatusIndicator,
+  Table,
+  Tiles,
   ToggleButton,
+  Token,
+  TokenGroup,
 } from '~components';
 import { MultiselectProps } from '~components/multiselect';
 import { applyTheme, Theme } from '~components/theming';
@@ -28,6 +44,27 @@ import { Breadcrumbs, Tools } from '../app-layout/utils/content-blocks';
 import { drawerItems, drawerLabels } from '../app-layout/utils/drawers';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
+
+function Typography() {
+  return (
+    <SpaceBetween size="s">
+      <Box variant="h1">Heading XL (h1)</Box>
+      <Box variant="h2">Heading L (h2)</Box>
+      <Box variant="h3">Heading M (h3)</Box>
+      <Box variant="h4">Heading S (h4)</Box>
+      <Box variant="h5">Heading XS (h5)</Box>
+      <Link variant="awsui-value-large" href="#" ariaLabel="Running instances (14)">
+        14
+      </Link>
+      <Box variant="awsui-value-large">Display L bold</Box>
+      <Box variant="awsui-value-large" fontWeight="light">
+        Display L light
+      </Box>
+      <Box variant="p">Body M — Regular paragraph text used for descriptions and content blocks.</Box>
+      <Box variant="small">Body S — Small text used for secondary information.</Box>
+    </SpaceBetween>
+  );
+}
 
 function Buttons() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
@@ -43,6 +80,24 @@ function Buttons() {
       <SpaceBetween direction="horizontal" size="m" alignItems="center">
         <Button variant="primary">Primary button</Button>
         <Button variant="normal">Secondary button</Button>
+        <ButtonDropdown
+          items={[
+            { text: 'Delete', id: 'rm', disabled: false },
+            { text: 'Move', id: 'mv', disabled: false },
+          ]}
+        >
+          Short
+        </ButtonDropdown>
+        <ButtonDropdown
+          items={[
+            {
+              text: 'Launch instance from template',
+              id: 'launch-instance-from-template',
+            },
+          ]}
+          mainAction={{ text: 'Launch instance' }}
+          variant="primary"
+        />
         <Button iconName="refresh" ariaLabel="Icon in normal button" />
         <Button variant="link">Tertiary button</Button>
       </SpaceBetween>
@@ -185,6 +240,14 @@ function Inputs() {
   const multiSelectOptions = generateDropdownOptions() as MultiselectProps.Options;
   const [inputValue, setInputValue] = useState('Sample text');
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>(selectOptions[1] as SelectProps.Option);
+  const [selectedOptionVariant, setSelectedOptionVariant] = useState<SelectProps.Option | null>({
+    label: 'Option 1',
+    value: '1',
+    iconName: 'settings',
+    description: 'sub value',
+    tags: ['CPU-v2', '2Gb RAM'],
+    labelTag: '128Gb',
+  });
   const [selectedItems, setSelectedItems] = useState([
     multiSelectOptions[1],
     multiSelectOptions[3],
@@ -200,6 +263,9 @@ function Inputs() {
         <Input value={inputValue} readOnly={true} placeholder="Read-only input" />
       </SpaceBetween>
       <SpaceBetween size="s" direction="horizontal">
+        <Input value="" />
+      </SpaceBetween>
+      <SpaceBetween size="s" direction="horizontal">
         <Select
           options={selectOptions}
           selectedOption={selectedOption}
@@ -212,6 +278,55 @@ function Inputs() {
           selectedOption={selectedOption}
           readOnly={true}
           placeholder="Read-only select"
+        />
+      </SpaceBetween>
+      <SpaceBetween size="s" direction="horizontal">
+        <Select
+          selectedOption={selectedOptionVariant}
+          onChange={({ detail }) => setSelectedOptionVariant(detail.selectedOption)}
+          options={[
+            {
+              label: 'Option 1',
+              value: '1',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+            {
+              label: 'Option 2',
+              value: '2',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+          ]}
+          triggerVariant="option"
+        />
+        <Select
+          invalid={true}
+          selectedOption={selectedOptionVariant}
+          onChange={({ detail }) => setSelectedOptionVariant(detail.selectedOption)}
+          options={[
+            {
+              label: 'Option 1',
+              value: '1',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+            {
+              label: 'Option 2',
+              value: '2',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+          ]}
+          triggerVariant="option"
         />
       </SpaceBetween>
       <SpaceBetween size="s" direction="horizontal">
@@ -292,8 +407,98 @@ const generateDropdownOptions = (count = 25): SelectProps.Options | MultiselectP
   });
 };
 
+interface ItemType {
+  name: string;
+  type: string;
+  size: string;
+  status: string;
+  statusType: 'success' | 'error' | 'warning';
+}
+
+function TableCardsAndTiles() {
+  const [selectedItems, setSelectedItems] = useState<ItemType[]>([
+    { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' },
+  ]);
+  const [selectedTile, setSelectedTile] = useState<string | null>('tile-1');
+
+  return (
+    <SpaceBetween size="l">
+      <Table
+        selectionType="multi"
+        selectedItems={selectedItems}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+        trackBy="name"
+        ariaLabels={{
+          selectionGroupLabel: 'Items selection',
+          allItemsSelectionLabel: () => 'select all',
+          itemSelectionLabel: (_selection, item) => item.name,
+        }}
+        columnDefinitions={[
+          { id: 'name', header: 'Name', cell: item => item.name },
+          { id: 'type', header: 'Type', cell: item => item.type },
+          { id: 'size', header: 'Size', cell: item => item.size },
+          {
+            id: 'status',
+            header: 'Status',
+            cell: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
+          },
+        ]}
+        items={[
+          { name: 'Item 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
+          { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
+          { name: 'Item 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
+        ]}
+        header={<Box variant="h3">Table</Box>}
+        sortingDisabled={true}
+      />
+
+      <Cards
+        selectionType="multi"
+        selectedItems={selectedItems}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+        trackBy="name"
+        ariaLabels={{
+          selectionGroupLabel: 'Items selection',
+          itemSelectionLabel: (_selection, item) => item.name,
+        }}
+        cardDefinition={{
+          header: item => item.name,
+          sections: [
+            { id: 'type', header: 'Type', content: item => item.type },
+            { id: 'size', header: 'Size', content: item => item.size },
+            {
+              id: 'status',
+              header: 'Status',
+              content: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
+            },
+          ],
+        }}
+        items={[
+          { name: 'Card 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
+          { name: 'Card 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
+          { name: 'Card 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
+        ]}
+        header={<Box variant="h3">Cards</Box>}
+        cardsPerRow={[{ cards: 3 }]}
+      />
+
+      <Tiles
+        value={selectedTile}
+        onChange={({ detail }) => setSelectedTile(detail.value)}
+        items={[
+          { value: 'tile-1', label: 'Option A', description: 'Description for option A' },
+          { value: 'tile-2', label: 'Option B', description: 'Description for option B' },
+          { value: 'tile-3', label: 'Option C', description: 'Description for option C' },
+        ]}
+        columns={3}
+      />
+    </SpaceBetween>
+  );
+}
+
 function AppLayoutToolbarWithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const [activeHref, setActiveHref] = React.useState('#/page1');
 
   return (
     <AppLayoutToolbar
@@ -301,11 +506,27 @@ function AppLayoutToolbarWithDrawers() {
       breadcrumbs={<Breadcrumbs />}
       navigation={
         <SideNavigation
-          header={{
-            href: '#',
-            text: 'Service name',
+          activeHref={activeHref}
+          header={{ href: '#/', text: 'Service name' }}
+          onFollow={event => {
+            if (!event.detail.external) {
+              event.preventDefault();
+              setActiveHref(event.detail.href);
+            }
           }}
-          items={[0, 1, 2].map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
+          items={[
+            { type: 'link', text: 'Page 1', href: '#/page1' },
+            { type: 'link', text: 'Page 2', href: '#/page2' },
+            { type: 'link', text: 'Page 3', href: '#/page3' },
+            { type: 'link', text: 'Page 4', href: '#/page4' },
+            { type: 'divider' },
+            {
+              type: 'link',
+              text: 'Documentation',
+              href: 'https://example.com',
+              external: true,
+            },
+          ]}
         />
       }
       tools={<Tools>{toolsContent.long}</Tools>}
@@ -319,6 +540,23 @@ function AppLayoutToolbarWithDrawers() {
 
 export default function ThemedComponentsPage() {
   const [themed, setThemed] = useState<boolean>(false);
+  const [items, setItems] = React.useState([
+    { label: 'Item 1', dismissLabel: 'Remove item 1' },
+    { label: 'Item 2', dismissLabel: 'Remove item 2' },
+    { label: 'Item 3', dismissLabel: 'Remove item 3' },
+  ]);
+
+  const [promptValue, setPromptValue] = React.useState('');
+  const [files, setFiles] = React.useState([
+    new File([new Blob(['Test content'])], 'file-1.pdf', {
+      type: 'application/pdf',
+      lastModified: 1590962400000,
+    }),
+    new File([new Blob(['Test content'])], 'file-2.pdf', {
+      type: 'application/pdf',
+      lastModified: 1590962400000,
+    }),
+  ]);
 
   useLayoutEffect(() => {
     let reset: () => void = () => {};
@@ -326,10 +564,52 @@ export default function ThemedComponentsPage() {
       const theme: Theme = {
         tokens: {
           spaceButtonHorizontal: '12px',
-          spaceButtonVertical: '4px',
+          spaceButtonVertical: { comfortable: '4px', compact: '3px' },
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
           borderWidthToken: '1px',
+          borderWidthItemSelected: '1px',
+          borderWidthCardSelected: '1px',
+          colorTextAccent: { light: '#1b232d', dark: '#F9F9FB' },
+          spaceTokenVertical: '2px',
+          fontWeightDisplayL: '900',
+          spaceFieldVertical: { comfortable: '4px', compact: '2px' },
+          sizeVerticalInput: { comfortable: '30px', compact: '28px' },
+          fontSizeExpandableHeading: '12px',
+          fontWeightBreadcrumbCurrent: '400',
+          colorTextKeyValuePairsValue: { light: '#bb00ae', dark: '#ee7ee8' },
+          colorBorderExpandableSectionDefault: { light: '#00bb5d', dark: '#caee7e' },
+          colorBorderBadgeGrey: { light: '#656871', dark: '#a4a4ad' },
+          colorBorderBadgeGreen: { light: '#008a00', dark: '#2bb534' },
+          colorBorderBadgeBlue: { light: '#006ce0', dark: '#42b4ff' },
+          colorBorderBadgeRed: { light: '#db0000', dark: '#ff7a7a' },
+          colorBorderBadgeSeverityCritical: { light: '#c20000', dark: '#ff3d3d' },
+          colorBorderBadgeSeverityHigh: { light: '#db3300', dark: '#ff6a3d' },
+          colorBorderBadgeSeverityMedium: { light: '#9e3700', dark: '#ffbb45' },
+          colorBorderBadgeSeverityLow: { light: '#007070', dark: '#3defff' },
+          colorBorderBadgeSeverityNeutral: { light: '#656871', dark: '#a4a4ad' },
+          borderWidthBadge: '1px',
+          borderRadiusBadge: '16px',
+
+          colorTextBadgeGrey: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeGreen: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeBlue: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeRed: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityCritical: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityHigh: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityMedium: { light: '#131920', dark: '#f9f9fa' },
+          colorTextBadgeSeverityLow: { light: '#131920', dark: '#f9f9fa' },
+          colorTextBadgeSeverityNeutral: { light: '#1b232d', dark: '#f9f9fa' },
+
+          colorBackgroundNotificationGrey: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationGreen: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationBlue: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationRed: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityCritical: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityHigh: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityMedium: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityLow: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityNeutral: { light: '#transparent', dark: '#transparent' },
         },
       };
 
@@ -359,6 +639,8 @@ export default function ThemedComponentsPage() {
           </label>
         </SpaceBetween>
 
+        <Typography />
+
         <SpaceBetween size="l">
           <Grid gridDefinition={[{ colspan: { default: 12, xxs: 6 } }, { colspan: { default: 12, xxs: 6 } }]}>
             <Buttons />
@@ -371,6 +653,165 @@ export default function ThemedComponentsPage() {
           <StatusIndicator type="success">Success</StatusIndicator>
           <StatusIndicator type="warning">Warning</StatusIndicator>
           <StatusIndicator type="info">Info</StatusIndicator>
+        </SpaceBetween>
+
+        <SpaceBetween size="xs">
+          <TokenGroup
+            onDismiss={({ detail: { itemIndex } }) => {
+              setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+            }}
+            items={items}
+          />
+          <Token onDismiss={() => {}} dismissLabel="Dismiss token" variant="inline" label="Inline token" />
+          <Token
+            onDismiss={() => {}}
+            description="This is a description for a token with features"
+            dismissLabel="Dismiss token"
+            labelTag="Label tag"
+            tags={['A tag', 'Another tag']}
+            icon={<Icon name="share" />}
+            label="Token with features"
+          />
+          <PromptInput
+            onChange={({ detail }) => setPromptValue(detail.value)}
+            value={promptValue}
+            actionButtonAriaLabel="Send message"
+            actionButtonIconName="send"
+            disableSecondaryActionsPaddings={true}
+            placeholder="Ask a question"
+            ariaLabel="Prompt input with files"
+            secondaryActions={
+              <Box padding={{ left: 'xxs', top: 'xs' }}>
+                <ButtonGroup
+                  ariaLabel="Chat actions"
+                  items={[
+                    {
+                      type: 'icon-button',
+                      id: 'copy',
+                      iconName: 'upload',
+                      text: 'Upload files',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'expand',
+                      iconName: 'expand',
+                      text: 'Go full page',
+                    },
+                  ]}
+                  variant="icon"
+                />
+              </Box>
+            }
+            secondaryContent={
+              <FileTokenGroup
+                items={files.map(file => ({ file }))}
+                onDismiss={({ detail }) => setFiles(files => files.filter((_, index) => index !== detail.fileIndex))}
+                alignment="horizontal"
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={{
+                  removeFileAriaLabel: () => 'Remove file',
+                  limitShowFewer: 'Show fewer files',
+                  limitShowMore: 'Show more files',
+                  errorIconAriaLabel: 'Error',
+                  warningIconAriaLabel: 'Warning',
+                }}
+              />
+            }
+          />
+        </SpaceBetween>
+
+        <TableCardsAndTiles />
+
+        <SpaceBetween size="l">
+          <Box variant="h2">New themeable tokens</Box>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">colorBorderBadge — Badge</Box>
+            <SpaceBetween direction="horizontal" size="xs">
+              <Badge>Grey</Badge>
+              <Badge color="green">Green</Badge>
+              <Badge color="blue">Blue</Badge>
+              <Badge color="red">Red</Badge>
+              <Badge color="severity-critical">Critical</Badge>
+              <Badge color="severity-high">High</Badge>
+              <Badge color="severity-medium">Medium</Badge>
+              <Badge color="severity-low">Low</Badge>
+              <Badge color="severity-neutral">Neutral</Badge>
+            </SpaceBetween>
+          </SpaceBetween>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">fontSizeExpandableHeading — ExpandableSection</Box>
+            <ExpandableSection headerText="Default variant" defaultExpanded={true}>
+              Content inside the expandable section.
+            </ExpandableSection>
+            <ExpandableSection headerText="Navigation variant" variant="navigation" defaultExpanded={true}>
+              Navigation expandable section content.
+            </ExpandableSection>
+            <ExpandableSection headerText="Footer variant" variant="footer" defaultExpanded={true}>
+              Footer expandable section content.
+            </ExpandableSection>
+          </SpaceBetween>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">colorTextKeyValuePairsValue — KeyValuePairs</Box>
+            <KeyValuePairs
+              columns={3}
+              items={[
+                {
+                  label: 'Distribution ID',
+                  value: 'E1WG1ZNPRXT0D4',
+                  info: (
+                    <Link variant="info" href="#">
+                      Info
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'ARN',
+                  value: (
+                    <CopyToClipboard
+                      copyButtonAriaLabel="Copy ARN"
+                      copyErrorText="ARN failed to copy"
+                      copySuccessText="ARN copied"
+                      textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                      variant="inline"
+                    />
+                  ),
+                },
+                {
+                  label: 'Status',
+                  value: <StatusIndicator>Available</StatusIndicator>,
+                },
+                {
+                  label: 'SSL Certificate',
+                  id: 'ssl-certificate-id',
+                  value: (
+                    <ProgressBar
+                      value={30}
+                      additionalInfo="Additional information"
+                      description="Progress bar description"
+                      ariaLabelledby="ssl-certificate-id"
+                    />
+                  ),
+                },
+                {
+                  label: 'Price class',
+                  value: 'Use only US, Canada, Europe',
+                },
+                {
+                  label: 'CNAMEs',
+                  value: (
+                    <Link external={true} href="#">
+                      abc.service23G24.xyz
+                    </Link>
+                  ),
+                },
+              ]}
+            />
+          </SpaceBetween>
         </SpaceBetween>
 
         <AppLayoutToolbarWithDrawers />

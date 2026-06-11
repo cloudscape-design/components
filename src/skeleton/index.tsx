@@ -1,0 +1,43 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+'use client';
+import React from 'react';
+
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { SkeletonProps } from './interfaces';
+import InternalSkeleton from './internal';
+
+export { SkeletonProps };
+
+export default function Skeleton({
+  variant = 'dynamic',
+  display = 'block',
+  tagOverride = 'div',
+  height,
+  width,
+  ...restProps
+}: SkeletonProps) {
+  const baseComponentProps = useBaseComponent('Skeleton', {
+    props: {
+      variant,
+      display,
+      height,
+      width,
+      tagOverride,
+    },
+  });
+  return (
+    <InternalSkeleton
+      variant={variant}
+      display={display}
+      height={height}
+      width={width}
+      tagOverride={tagOverride}
+      {...restProps}
+      {...baseComponentProps}
+    />
+  );
+}
+
+applyDisplayName(Skeleton, 'Skeleton');

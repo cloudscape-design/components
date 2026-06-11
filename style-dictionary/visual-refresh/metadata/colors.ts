@@ -48,6 +48,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundToggleButtonNormalDefault: {
+    description: 'The default background color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
@@ -129,6 +134,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundDropdownItemSelected: {
     description:
       'The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.',
+    public: true,
+    themeable: true,
   },
   colorBackgroundHomeHeader: {
     description: "The background color of the home header, displayed on the Service's home page.",
@@ -161,6 +168,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+  },
+  colorBackgroundLayoutToolbar: {
+    description:
+      "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
+    public: true,
+    themeable: true,
   },
   colorBackgroundLayoutToggleActive: {
     description: "The background color of the app layout toggle button when it's active.",
@@ -254,7 +267,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundSegmentWrapper: {
     description: 'The background color of segmented control wrapper.',
-    public: false,
+    public: true,
     themeable: true,
   },
   colorBackgroundSliderHandleDefault: {
@@ -307,8 +320,18 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundBadgeIcon: {
+    description: 'The background color of the badge indicator on navigation and panel buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundToggleCheckedDisabled: {
     description: 'The background color of checked toggles in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleDefault: {
+    description: 'The default background color of the toggle track in its unchecked state.',
     themeable: true,
     public: true,
   },
@@ -388,8 +411,23 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBorderButtonPrimaryActive: {
+    description: 'The border color of primary buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryDefault: {
+    description: 'The border color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonPrimaryDisabled: {
     description: 'The border color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryHover: {
+    description: 'The border color of primary buttons in hover state.',
     themeable: true,
     public: true,
   },
@@ -528,6 +566,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderLayout: {
+    description: 'The border color of layout elements. For example: toolbar, panel dividers.',
+    public: false,
+    themeable: true,
+  },
   colorBorderTutorial: { description: 'The border color of tutorials in the tutorials list in the tutorial panel.' },
   colorForegroundControlDefault: {
     description:
@@ -572,6 +615,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextBreadcrumbIcon: {
     description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
+  },
+  colorTextCalendarDateSelected: {
+    description: 'The text color of selected dates in the calendar.',
     themeable: true,
     public: true,
   },
@@ -700,6 +748,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextDropdownItemSecondary: {
     description:
       'The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.',
+    public: true,
+    themeable: true,
   },
   colorTextEmpty: {
     description:
@@ -713,7 +763,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextFormLabel: { description: 'Component specific: Special because control group is different.' },
+  colorTextFormLabel: {
+    description: 'The color of form field labels.',
+    public: false,
+    themeable: true,
+  },
   colorTextFormSecondary: {
     description:
       'The color of secondary text in form fields and controls. For example: the description and constraint text in form fields, the descriptions in checkboxes, radio buttons, toggles, and any additional info in an attribute editor.',
@@ -829,6 +883,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextKeyValuePairsValue: {
+    description: 'The text color of the value in key-value pairs.',
+    public: false,
+    themeable: true,
+  },
   colorTextLinkDefault: {
     description:
       'The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',
@@ -839,6 +898,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',
     public: true,
+    themeable: true,
+  },
+  colorTextLinkDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of links. Defaults to the link text color.',
+    public: false,
+    themeable: true,
+  },
+  colorTextLinkDecorationHover: {
+    description: 'The hover color of the text decoration (underline) of links. Defaults to the link hover text color.',
+    public: false,
     themeable: true,
   },
   colorTextLinkSecondaryDefault: {
@@ -966,6 +1035,132 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorDropzoneBorderHover: {
     description: 'The color of file upload dropzone border in hovered state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardDefault: {
+    description: 'The default background color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardHover: {
+    description: 'The background color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardActive: {
+    description: 'The background color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardDisabled: {
+    description: 'The background color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDefault: {
+    description: 'The default border color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardHover: {
+    description: 'The border color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardActive: {
+    description: 'The border color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDisabled: {
+    description: 'The border color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardDisabled: {
+    description: 'The text color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextIconSubtle: {
+    description: 'The color of subtle icons. For example: secondary icons with lower visual emphasis.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorError: {
+    description: 'The background color of the status indicator in error state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorWarning: {
+    description: 'The background color of the status indicator in warning state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorSuccess: {
+    description: 'The background color of the status indicator in success state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorInfo: {
+    description: 'The background color of the status indicator in info state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorNeutral: {
+    description:
+      'The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.',
+    public: false,
+    themeable: true,
+  },
+  colorBorderExpandableSectionDefault: {
+    description: 'The border color of the expandable section divider shown when the section is expanded.',
+    themeable: true,
+    public: false,
+  },
+  colorBorderBadge: {
+    description: 'The default border color of badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGrey: {
+    description: 'The border color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGreen: {
+    description: 'The border color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeBlue: {
+    description: 'The border color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeRed: {
+    description: 'The border color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGrey: {
+    description: 'The text color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGreen: {
+    description: 'The text color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeBlue: {
+    description: 'The text color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeRed: {
+    description: 'The text color of red badges.',
     themeable: true,
     public: true,
   },

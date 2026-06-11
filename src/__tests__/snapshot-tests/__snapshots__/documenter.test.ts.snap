@@ -1,5 +1,156 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Components definition for action-card matches the snapshot: action-card 1`] = `
+{
+  "dashCaseName": "action-card",
+  "events": [
+    {
+      "cancelable": true,
+      "description": "Called when the user clicks on the action card.",
+      "name": "onClick",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets focus on the action card.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "ActionCard",
+  "properties": [
+    {
+      "description": "Adds an aria-describedby reference for the action card.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the action card.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines whether the action card is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the header area.",
+      "name": "disableHeaderPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Specifies the vertical alignment of the icon.",
+      "inlineType": {
+        "name": "ActionCardProps.IconVerticalAlignment",
+        "type": "union",
+        "values": [
+          "center",
+          "top",
+        ],
+      },
+      "name": "iconVerticalAlignment",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native button element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual variant of the card, which controls the border radius and padding.
+
+- \`default\` - Uses container-level border radius and padding (larger).
+- \`embedded\` - Uses compact border radius and padding (smaller).",
+      "inlineType": {
+        "name": "ActionCardProps.Variant",
+        "type": "union",
+        "values": [
+          "default",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The main content of the action card.",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "The description content displayed below the header.",
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "description": "The header content displayed at the top of the action card.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Displays an icon next to the content. You can use the \`iconVerticalAlignment\` property to control vertical alignment.",
+      "isDefault": false,
+      "name": "icon",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
   "dashCaseName": "alert",
@@ -2926,7 +3077,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "AutosuggestProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -2946,7 +3097,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "AutosuggestProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
     {
@@ -3022,6 +3173,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "ellipsis",
                       "zoom-in",
                       "zoom-out",
+                      "dot",
                       "security",
                       "download",
                       "edit",
@@ -3033,6 +3185,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "angle-right",
                       "angle-up",
                       "angle-down",
+                      "announcement",
                       "arrow-left",
                       "arrow-right",
                       "arrow-up",
@@ -3608,9 +3761,6 @@ When returning \`null\`, the default rendering will be applied for that item.",
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "AutosuggestProps.ItemRenderer",
     },
     {
@@ -4881,7 +5031,7 @@ exports[`Components definition for breadcrumb-group matches the snapshot: breadc
   "events": [
     {
       "cancelable": true,
-      "description": "Called when the user clicks on a breadcrumb item.",
+      "description": "Called when the user clicks on a breadcrumb item. Do not use this handler for navigation, use the \`onFollow\` event instead.",
       "detailInlineType": {
         "name": "BreadcrumbGroupProps.ClickDetail<T>",
         "properties": [
@@ -5323,6 +5473,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "ellipsis",
           "zoom-in",
           "zoom-out",
+          "dot",
           "security",
           "download",
           "edit",
@@ -5334,6 +5485,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "angle-right",
           "angle-up",
           "angle-down",
+          "announcement",
           "arrow-left",
           "arrow-right",
           "arrow-up",
@@ -6120,6 +6272,7 @@ The main action also supports the following properties of the [button](/componen
                 "ellipsis",
                 "zoom-in",
                 "zoom-out",
+                "dot",
                 "security",
                 "download",
                 "edit",
@@ -6131,6 +6284,7 @@ The main action also supports the following properties of the [button](/componen
                 "angle-right",
                 "angle-up",
                 "angle-down",
+                "announcement",
                 "arrow-left",
                 "arrow-right",
                 "arrow-up",
@@ -6437,9 +6591,6 @@ When returning \`null\`, the default styling will be applied.",
       },
       "name": "renderItem",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "ButtonDropdownProps.ItemRenderer",
     },
     {
@@ -8765,6 +8916,9 @@ It contains the following:
 - \`title\` (string) - Specifies the text displayed at the top of the preference.
 - \`description\` (string) - Specifies the description displayed below the title.
 - \`options\` - Specifies an array of options for reordering and visible content selection.
+- \`groups\` - (Optional) Specifies an array of column group definitions for multi-level content display. Each group contains:
+  - \`id\` (string) - A unique identifier for the group.
+  - \`label\` (string) - The text displayed as the group label.
 - \`enableColumnFiltering\` (boolean) - Adds a columns filter.
 - \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
 - \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
@@ -8772,13 +8926,24 @@ It contains the following:
 - \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
 - \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.
+- \`liveAnnouncementDndGroupLabel\` ((label: string, count: number) => string) - (Optional) Adds a label for a group item to be announced by screen readers during drag and drop operations.
 
 Each option contains the following:
 - \`id\` (string) - Corresponds to a table column \`id\`.
 - \`label\` (string) - Specifies a short description of the content.
 - \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
 
-You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.",
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
+Each content display item is one of the following:
+- \`ContentDisplayColumn\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`ContentDisplayGroup\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ContentDisplayItem>) - The columns or nested groups within this group.",
       "i18nTag": true,
       "inlineType": {
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
@@ -8802,6 +8967,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "enableColumnFiltering",
             "optional": true,
             "type": "boolean",
+          },
+          {
+            "name": "groups",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
           },
           {
             "inlineType": {
@@ -8854,6 +9024,26 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(label: string, count: number) => string",
+              "parameters": [
+                {
+                  "name": "label",
+                  "type": "string",
+                },
+                {
+                  "name": "count",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementDndGroupLabel",
+            "optional": true,
+            "type": "((label: string, count: number) => string)",
           },
           {
             "inlineType": {
@@ -9489,9 +9679,6 @@ exports[`Components definition for container matches the snapshot: container 1`]
       "description": "Determines whether the container footer has padding. If \`true\`, removes the default padding from the footer.",
       "name": "disableFooterPaddings",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "boolean",
     },
     {
@@ -10051,6 +10238,14 @@ Defaults to \`button\`.",
       "name": "variant",
       "optional": true,
       "type": "string",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Specifies if the \`textToDisplay\` content should wrap. If you set it to false, it prevents the text
+from wrapping and truncates it with an ellipsis. Only applies to \`variant="inline"\`.",
+      "name": "wrapText",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": [
@@ -11446,6 +11641,24 @@ When provided, all default relative range functionality is replaced.",
       "type": "DateRangePickerProps.RelativeRangeControl",
     },
     {
+      "description": "Specifies custom content to fully override the trigger content.
+When provided, the default content of the trigger is replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RenderTriggerContent",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ formattedDate: JSX.Element; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderTriggerContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RenderTriggerContent",
+    },
+    {
       "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
@@ -11527,12 +11740,12 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
-exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
+exports[`Components definition for divider matches the snapshot: divider 1`] = `
 {
-  "dashCaseName": "drawer",
+  "dashCaseName": "divider",
   "events": [],
   "functions": [],
-  "name": "Drawer",
+  "name": "Divider",
   "properties": [
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -11540,30 +11753,6 @@ exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
       "name": "className",
       "optional": true,
       "type": "string",
-    },
-    {
-      "description": "Determines whether the drawer content has padding. If \`true\`, removes the default padding from the content area.",
-      "name": "disableContentPaddings",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
-      "inlineType": {
-        "name": "I18nStrings",
-        "properties": [
-          {
-            "name": "loadingText",
-            "optional": true,
-            "type": "string",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "i18nStrings",
-      "optional": true,
-      "type": "I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -11575,10 +11764,602 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Renders the drawer in a loading state. We recommend that you also set a \`loadingText\`.",
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "defaultValue": "'horizontal'",
+      "description": "Orientation of the divider line.
+
+- \`"horizontal"\` (default) — renders a full-width horizontal line. Use inside block-level
+  containers to separate stacked content sections.
+- \`"vertical"\` — renders a full-height vertical line. Use inside flex or inline containers
+  to separate side-by-side elements.",
+      "inlineType": {
+        "name": "DividerProps.Orientation",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "orientation",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Text label rendered at the center of a horizontal divider line.
+Use for labels or short section titles.
+
+Only supported by horizontal dividers.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
+{
+  "dashCaseName": "drawer",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user performs a close action. The \`event.detail.method\` indicates the trigger:
+* \`'close-action'\` - The close button was clicked.
+* \`'backdrop-click'\` - The backdrop was clicked (only when \`backdrop=true\`).
+* \`'escape'\` - The Escape key was pressed (only when \`backdrop=true\`).
+
+Do not use this property when using drawers inside app layout.",
+      "detailInlineType": {
+        "name": "DrawerProps.CloseDetail",
+        "properties": [
+          {
+            "inlineType": {
+              "name": ""escape" | "close-action" | "backdrop-click"",
+              "type": "union",
+              "values": [
+                "escape",
+                "close-action",
+                "backdrop-click",
+              ],
+            },
+            "name": "method",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "DrawerProps.CloseDetail",
+      "name": "onClose",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Moves focus to the drawer element. Use when \`focusBehavior.autoFocus\`
+is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
+with \`open=true\`. The drawer with \`role="presentation"\` cannot be focused.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "Drawer",
+  "properties": [
+    {
+      "description": "Sets the \`aria-label\` on the drawer body.
+By default the body is labelled by the drawer's \`header\` content. Use this when you need a different
+or more specific label (e.g. to include additional context or exclude parts of the header).
+Does not apply when \`role="presentation"\`. Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` on the drawer body.
+By default the body is labelled by the drawer's \`header\` content. Use this when you need a different
+or more specific label (e.g. to include additional context or exclude parts of the header).
+Does not apply when \`role="presentation"\`. Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Shows a semi-transparent backdrop behind the drawer when open. Used with \`absolute\`
+and \`fixed\` positions.
+
+When a backdrop is set, the keyboard focus is trapped inside the drawer by default
+to prevent it from moving to elements covered by the backdrop. This can be overridden
+with \`focusBehavior.trapFocus\`.
+
+Do not use this property when using drawers inside app layout.",
+      "name": "backdrop",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "When defined, renders a close button in the header with the provided configuration.
+The close button fires the \`onClose\` event with method \`'close-action'\` when
+clicked.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.CloseActionProps",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "disabled",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "IconProps.Name",
+              "type": "union",
+              "values": [
+                "search",
+                "map",
+                "filter",
+                "key",
+                "file",
+                "pause",
+                "play",
+                "microphone",
+                "remove",
+                "copy",
+                "menu",
+                "script",
+                "close",
+                "status-pending",
+                "refresh",
+                "external",
+                "history",
+                "group",
+                "calendar",
+                "ellipsis",
+                "zoom-in",
+                "zoom-out",
+                "dot",
+                "security",
+                "download",
+                "edit",
+                "add-plus",
+                "anchor-link",
+                "angle-left-double",
+                "angle-left",
+                "angle-right-double",
+                "angle-right",
+                "angle-up",
+                "angle-down",
+                "announcement",
+                "arrow-left",
+                "arrow-right",
+                "arrow-up",
+                "arrow-down",
+                "at-symbol",
+                "audio-full",
+                "audio-half",
+                "audio-off",
+                "backward-10-seconds",
+                "bug",
+                "call",
+                "caret-down-filled",
+                "caret-down",
+                "caret-left-filled",
+                "caret-right-filled",
+                "caret-up-filled",
+                "caret-up",
+                "check",
+                "contact",
+                "closed-caption",
+                "closed-caption-unavailable",
+                "command-prompt",
+                "delete-marker",
+                "drag-indicator",
+                "edit-gen-ai",
+                "envelope",
+                "exit-full-screen",
+                "expand",
+                "face-happy",
+                "face-happy-filled",
+                "face-neutral",
+                "face-neutral-filled",
+                "face-sad",
+                "face-sad-filled",
+                "file-open",
+                "flag",
+                "folder-open",
+                "folder",
+                "forward-10-seconds",
+                "full-screen",
+                "gen-ai",
+                "globe",
+                "grid-view",
+                "group-active",
+                "heart",
+                "heart-filled",
+                "insert-row",
+                "keyboard",
+                "light-dark",
+                "list-view",
+                "location-pin",
+                "lock-private",
+                "microphone-off",
+                "mini-player",
+                "multiscreen",
+                "notification",
+                "redo",
+                "resize-area",
+                "search-gen-ai",
+                "settings",
+                "send",
+                "share",
+                "shrink",
+                "slash",
+                "star-filled",
+                "star-half",
+                "star",
+                "status-in-progress",
+                "status-info",
+                "status-negative",
+                "status-not-started",
+                "status-positive",
+                "status-stopped",
+                "status-warning",
+                "stop-circle",
+                "subtract-minus",
+                "suggestions",
+                "suggestions-gen-ai",
+                "support",
+                "thumbs-down-filled",
+                "thumbs-down",
+                "thumbs-up-filled",
+                "thumbs-up",
+                "ticket",
+                "transcript",
+                "treeview-collapse",
+                "treeview-expand",
+                "undo",
+                "unlocked",
+                "upload-download",
+                "upload",
+                "user-profile-active",
+                "user-profile",
+                "video-off",
+                "video-on",
+                "video-unavailable",
+                "video-camera-off",
+                "video-camera-on",
+                "video-camera-unavailable",
+                "view-full",
+                "view-horizontal",
+                "view-vertical",
+                "zoom-to-fit",
+              ],
+            },
+            "name": "iconName",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "iconSvg",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "iconUrl",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "closeAction",
+      "optional": true,
+      "type": "DrawerProps.CloseActionProps",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines whether the drawer content has padding. If \`true\`, removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Customizes focus-related behavior:
+
+- \`autoFocus\` - Whether focus moves into the drawer when \`open\` changes from \`false\` to \`true\`,
+and captures the previously focused element for default return-focus on close.
+Defaults to \`true\`. Set to \`false\` to manage focus-in manually via \`ref.current.focus()\`.
+
+- \`trapFocus\` - Whether keyboard focus is constrained to elements inside the drawer.
+Defaults to \`true\` when \`backdrop\` is set, \`false\` otherwise.
+
+- \`returnFocus\` - Called instead of the default return-focus behavior when the drawer closes.
+Use this to override where focus lands on close (e.g. a specific trigger element).
+If omitted, focus returns to the element that was focused when the drawer opened.
+If that element is no longer in the DOM, the behavior silently no-ops.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.FocusBehavior",
+        "properties": [
+          {
+            "name": "autoFocus",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "inlineType": {
+              "name": "() => void",
+              "parameters": [],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "returnFocus",
+            "optional": true,
+            "type": "(() => void)",
+          },
+          {
+            "name": "trapFocus",
+            "optional": true,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "focusBehavior",
+      "optional": true,
+      "type": "DrawerProps.FocusBehavior",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Hides the close action slot next to the header actions, which is present even
+when close action is not set. Use it when a close action is not needed, or a
+custom close action implementation is used.
+
+Do not use this property when using drawers inside app layout.",
+      "name": "hideCloseAction",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.
+- \`loadingText\` - The text that's displayed when the drawer is in a loading state.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "DrawerProps.I18nStrings",
+        "properties": [
+          {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DrawerProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Renders the drawer in a loading state. We recommend that you also set a \`i18nStrings.loadingText\`.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the distance in pixels between the drawer and the edges of its container.
+Applicable when using \`position="absolute"\` or \`position="fixed"\`.
+Supported properties:
+* \`start\` - Distance from the inline-start edge. Not applicable when \`placement\` is \`"end"\`.
+* \`end\` - Distance from the inline-end edge. Not applicable when \`placement\` is \`"start"\`.
+* \`top\` - Distance from the top edge. Not applicable when \`placement\` is \`"bottom"\`.
+* \`bottom\` - Distance from the bottom edge. Not applicable when \`placement\` is \`"top"\`.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.Offset",
+        "properties": [
+          {
+            "name": "bottom",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "end",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "start",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "top",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "offset",
+      "optional": true,
+      "type": "DrawerProps.Offset",
+    },
+    {
+      "description": "Drawer open state. Set to \`true\` to show the drawer, \`false\` to hide it.
+Handle the \`onClose\` event to update this value when the user requests to close the drawer.
+
+When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
+
+Do not use this property when using drawers inside app layout.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'end'",
+      "description": "Specifies which edge of its container the drawer is anchored to, and supports these options:
+* \`start\` - Anchored to the inline-start edge.
+* \`end\` - (default) Anchored to the inline-end edge.
+* \`top\` - Anchored to the top edge.
+* \`bottom\` - Anchored to the bottom edge.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.Placement",
+        "type": "union",
+        "values": [
+          "end",
+          "start",
+          "top",
+          "bottom",
+        ],
+      },
+      "name": "placement",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'static'",
+      "description": "Specifies the CSS positioning mode of the drawer, and supports the following options:
+* \`static\` (default) - The drawer is positioned in the normal document flow.
+* \`sticky\` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with \`placement="top"\` or \`placement="bottom"\`.
+Using \`sticky\` with \`placement="start"\` or \`placement="end"\` falls back to \`static\`.
+* \`absolute\` - The drawer is positioned relative to its nearest positioned ancestor.
+* \`fixed\` - The drawer is positioned relative to the viewport.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.Position",
+        "type": "union",
+        "values": [
+          "fixed",
+          "absolute",
+          "static",
+          "sticky",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the ARIA role of the drawer.
+- \`"region"\` (default for non-\`static\` positions) — exposes the drawer as a
+landmark region. The drawer receives focus when opened.
+- \`"presentation"\` (default for \`position="static"\`) — removes landmark semantics
+from the drawer body. Use this when the containing element already provides the
+appropriate semantic role (e.g. a wrapping \`<nav>\` or \`<aside>\`). The drawer does not
+receive focus when opened.",
+      "inlineType": {
+        "name": ""region" | "presentation"",
+        "type": "union",
+        "values": [
+          "region",
+          "presentation",
+        ],
+      },
+      "name": "role",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the distance in pixels from the top or bottom edge of the scrolling container
+at which the drawer sticks. Applicable only when using \`position="sticky"\` with \`placement="top"\` or \`placement="bottom"\`.
+* Supported properties:
+* \`top\` - Distance from the top of the scrolling container.
+* \`bottom\` - Distance from the bottom of the scrolling container.
+
+Do not use this property when using drawers inside app layout.",
+      "inlineType": {
+        "name": "DrawerProps.StickyOffset",
+        "properties": [
+          {
+            "name": "bottom",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "top",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyOffset",
+      "optional": true,
+      "type": "DrawerProps.StickyOffset",
+    },
+    {
+      "defaultValue": "DEFAULT_Z_INDEX",
+      "description": "Sets the CSS \`z-index\` of the drawer. Use this to control stacking order when the drawer
+overlaps other positioned elements on the page.
+
+Applicable when using \`position="sticky"\`, \`position="absolute"\`, or \`position="fixed"\`. Defaults to 830.
+
+Do not use this property when using drawers inside app layout.",
+      "name": "zIndex",
+      "optional": true,
+      "type": "number",
     },
   ],
   "regions": [
@@ -11842,9 +12623,6 @@ scrolling dropdown content.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -14394,6 +15172,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "ellipsis",
           "zoom-in",
           "zoom-out",
+          "dot",
           "security",
           "download",
           "edit",
@@ -14405,6 +15184,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "angle-right",
           "angle-up",
           "angle-down",
+          "announcement",
           "arrow-left",
           "arrow-right",
           "arrow-up",
@@ -14553,6 +15333,7 @@ The icon will be vertically centered based on the height.",
           "medium",
           "inherit",
           "large",
+          "x-small",
         ],
       },
       "name": "size",
@@ -14690,6 +15471,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "announcement",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "arrow-down",
             "optional": true,
             "type": "React.ReactNode",
@@ -14816,6 +15602,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "delete-marker",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "dot",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -15353,9 +16144,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -17158,9 +17946,9 @@ The default is \`secondary\`, except inside the following components where it de
         "name": "LinkProps.Variant",
         "type": "union",
         "values": [
+          "secondary",
           "info",
           "primary",
-          "secondary",
           "awsui-value-large",
         ],
       },
@@ -18250,7 +19038,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "MultiselectProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -18270,7 +19058,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "MultiselectProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
   ],
@@ -18668,9 +19456,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "MultiselectProps.MultiselectOptionItemRenderer",
     },
     {
@@ -18858,9 +19643,6 @@ need to be direct children of the group:
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -18935,7 +19717,19 @@ exports[`Components definition for pagination matches the snapshot: pagination 1
       "name": "onPreviousPageClick",
     },
   ],
-  "functions": [],
+  "functions": [
+    {
+      "description": "Set error state for jump to page. Component will auto-clear when user types or navigates.",
+      "name": "setError",
+      "parameters": [
+        {
+          "name": "hasError",
+          "type": "boolean",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
   "name": "Pagination",
   "properties": [
     {
@@ -18959,6 +19753,11 @@ Example:
       "inlineType": {
         "name": "PaginationProps.Labels",
         "properties": [
+          {
+            "name": "jumpToPageButton",
+            "optional": true,
+            "type": "string",
+          },
           {
             "name": "nextPageLabel",
             "optional": true,
@@ -19009,6 +19808,50 @@ from changing page before items are loaded.",
       "name": "disabled",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "i18nTag": true,
+      "inlineType": {
+        "name": "PaginationProps.I18nStrings",
+        "properties": [
+          {
+            "name": "jumpToPageError",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "jumpToPageInputLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "jumpToPageLoadingText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "PaginationProps.I18nStrings",
+    },
+    {
+      "description": "Jump to page configuration",
+      "inlineType": {
+        "name": "PaginationProps.JumpToPageProps",
+        "properties": [
+          {
+            "name": "loading",
+            "optional": true,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "jumpToPage",
+      "optional": true,
+      "type": "PaginationProps.JumpToPageProps",
     },
     {
       "description": "Sets the pagination variant. It can be either default (when setting it to \`false\`) or open ended (when setting it
@@ -20373,6 +21216,7 @@ Requires React 18.",
                       "ellipsis",
                       "zoom-in",
                       "zoom-out",
+                      "dot",
                       "security",
                       "download",
                       "edit",
@@ -20384,6 +21228,7 @@ Requires React 18.",
                       "angle-right",
                       "angle-up",
                       "angle-down",
+                      "announcement",
                       "arrow-left",
                       "arrow-right",
                       "arrow-up",
@@ -20736,6 +21581,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "ellipsis",
           "zoom-in",
           "zoom-out",
+          "dot",
           "security",
           "download",
           "edit",
@@ -20747,6 +21593,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "angle-right",
           "angle-up",
           "angle-down",
+          "announcement",
           "arrow-left",
           "arrow-right",
           "arrow-up",
@@ -21550,9 +22397,6 @@ If this is provided then any other \`actionButton*\` properties will be ignored.
 Note that you should still provide an \`onAction\` function in order to handle keyboard submission.",
       "isDefault": false,
       "name": "customPrimaryAction",
-      "systemTags": [
-        "core",
-      ],
     },
     {
       "description": "Use this slot to add secondary actions to the prompt input.",
@@ -21921,7 +22765,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
           {
             "name": "operators",
             "optional": true,
-            "type": "ReadonlyArray<string>",
+            "type": "ReadonlyArray<string | PropertyFilterTextOperatorExtended>",
           },
         ],
         "type": "object",
@@ -22731,9 +23575,6 @@ For more details, see the [MDN documentation](https://developer.mozilla.org/en-U
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -23644,6 +24485,11 @@ The function will be called when a user clicks on the trigger button.",
               "name": "PaginationProps.Labels",
               "properties": [
                 {
+                  "name": "jumpToPageButton",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
                   "name": "nextPageLabel",
                   "optional": true,
                   "type": "string",
@@ -24310,6 +25156,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "ellipsis",
                       "zoom-in",
                       "zoom-out",
+                      "dot",
                       "security",
                       "download",
                       "edit",
@@ -24321,6 +25168,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "angle-right",
                       "angle-up",
                       "angle-down",
+                      "announcement",
                       "arrow-left",
                       "arrow-right",
                       "arrow-up",
@@ -24503,7 +25351,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "SelectProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -24523,7 +25371,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "SelectProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
   ],
@@ -24844,9 +25692,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "SelectProps.SelectOptionItemRenderer",
     },
     {
@@ -24926,6 +25771,7 @@ If you want to clear the selection, use \`null\`.",
                 "ellipsis",
                 "zoom-in",
                 "zoom-out",
+                "dot",
                 "security",
                 "download",
                 "edit",
@@ -24937,6 +25783,7 @@ If you want to clear the selection, use \`null\`.",
                 "angle-right",
                 "angle-up",
                 "angle-down",
+                "announcement",
                 "arrow-left",
                 "arrow-right",
                 "arrow-up",
@@ -25438,6 +26285,102 @@ Object that represents an expandable group of links.
       "name": "itemsControl",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for skeleton matches the snapshot: skeleton 1`] = `
+{
+  "dashCaseName": "skeleton",
+  "events": [],
+  "functions": [],
+  "name": "Skeleton",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'block'",
+      "description": "Specifies the CSS \`display\` of the skeleton.",
+      "inlineType": {
+        "name": ""inline" | "block" | "inline-block"",
+        "type": "union",
+        "values": [
+          "inline",
+          "block",
+          "inline-block",
+        ],
+      },
+      "name": "display",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the height of the skeleton. Accepts any valid CSS value (for example, \`"100px"\`, \`"3em"\`).
+By default the height is determined by the \`variant\`.",
+      "name": "height",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'div'",
+      "description": "Overrides the default HTML tag used by the component.",
+      "name": "tagOverride",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'dynamic'",
+      "description": "Specifies the variant of the skeleton to match Box fontSize options.
+The default value, \`dynamic\`, matches skeleton height to the surrounding font size.
+* \`text-body-s\` - Skeleton with height matching body-s line-height.
+* \`text-body-m\` - Skeleton with height matching body-m line-height.
+* \`text-heading-xs\` - Skeleton with height matching heading-xs line-height.
+* \`text-heading-s\` - Skeleton with height matching heading-s line-height.
+* \`text-heading-m\` - Skeleton with height matching heading-m line-height.
+* \`text-heading-l\` - Skeleton with height matching heading-l line-height.
+* \`text-heading-xl\` - Skeleton with height matching heading-xl line-height.
+* \`text-display-l\` - Skeleton with height matching display-l line-height.",
+      "inlineType": {
+        "name": "SkeletonProps.Variant",
+        "type": "union",
+        "values": [
+          "dynamic",
+          "text-body-s",
+          "text-body-m",
+          "text-heading-xs",
+          "text-heading-s",
+          "text-heading-m",
+          "text-heading-l",
+          "text-heading-xl",
+          "text-display-l",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the width of the skeleton. Accepts any valid CSS value (for example, \`"200px"\`, \`"100%"\`).",
+      "name": "width",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
   "releaseStatus": "stable",
 }
 `;
@@ -26331,9 +27274,6 @@ The function is called for each step and should return an object with the follow
       },
       "name": "renderStep",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "((step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; icon?: React.ReactNode; })",
     },
     {
@@ -26908,7 +27848,18 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
 
 If not set, all columns are displayed and the order is dictated by the \`columnDefinitions\` property.
 
-Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.",
+Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+
+Each entry is one of the following:
+- \`ColumnDisplay\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier. Must match a column \`id\` from \`columnDefinitions\`.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`GroupDisplay\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier. Must match a group \`id\` from \`groupDefinitions\`.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ColumnDisplayProperties>) - The columns or nested groups within this group.",
       "name": "columnDisplay",
       "optional": true,
       "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
@@ -27131,6 +28082,20 @@ table with \`item=null\` and then for each expanded item. The function result is
       "type": "TableProps.GetLoadingStatus<T>",
     },
     {
+      "description": "Defines the column groups. Each group has an \`id\` and \`header\` used to label the group header cell.
+
+When using grouped columns, you must also provide the \`columnDisplay\` property with \`{ type: 'group', id, children }\` entries
+to assign columns to their respective groups and define the display hierarchy.
+
+Each group definition contains the following:
+- \`id\` (string) - A unique identifier for the group.
+- \`header\` (ReactNode) - The content displayed in the group header cell.
+- \`ariaLabel\` ((LabelData) => string) - (Optional) A function that provides an \`aria-label\` for the group header.",
+      "name": "groupDefinitions",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -27171,7 +28136,8 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "type": "boolean",
     },
     {
-      "description": "Specifies the text that's displayed when the table is in a loading state.",
+      "description": "Specifies the text that's displayed when the table is in a loading state.
+In skeleton-loading mode this will be used as a label for screenreaders.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
@@ -27314,6 +28280,26 @@ the table items array is empty.",
       "name": "selectionType",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Renders skeleton placeholder rows to fill the table while data is loading. Accepts:
+- \`totalRows\` (number) - The total number of rows that should be rendered. If \`items\`
+   are also provided, those items will be rendered first, and \`totalRows - items.length\`
+   additional skeleton rows rendered after.",
+      "inlineType": {
+        "name": "TableProps.SkeletonConfig",
+        "properties": [
+          {
+            "name": "totalRows",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "skeleton",
+      "optional": true,
+      "type": "TableProps.SkeletonConfig",
     },
     {
       "description": "Specifies the definition object of the currently sorted column. Make sure you pass an object that's
@@ -30430,6 +31416,7 @@ If an href is provided, it opens the link in a new tab.",
           "ellipsis",
           "zoom-in",
           "zoom-out",
+          "dot",
           "security",
           "download",
           "edit",
@@ -30441,6 +31428,7 @@ If an href is provided, it opens the link in a new tab.",
           "angle-right",
           "angle-up",
           "angle-down",
+          "announcement",
           "arrow-left",
           "arrow-right",
           "arrow-up",
@@ -30638,6 +31626,7 @@ We do not support using this attribute to apply custom styling.",
           "ellipsis",
           "zoom-in",
           "zoom-out",
+          "dot",
           "security",
           "download",
           "edit",
@@ -30649,6 +31638,7 @@ We do not support using this attribute to apply custom styling.",
           "angle-right",
           "angle-up",
           "angle-down",
+          "announcement",
           "arrow-left",
           "arrow-right",
           "arrow-up",
@@ -31333,9 +32323,6 @@ Can return null if the element is not yet mounted or available.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -31761,6 +32748,51 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for truncated-text matches the snapshot: truncated-text 1`] = `
+{
+  "dashCaseName": "truncated-text",
+  "events": [],
+  "functions": [],
+  "name": "TruncatedText",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The content of the tooltip shown when the text is truncated. By default, the
+tooltip content is the same as the \`children\` slot. Use only if the \`children\`
+slot may contain interactive elements.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The inline text to display. If there isn't enough space to render the text
+in a single line, it is truncated with an ellipsis and the full content is
+shown on pointer hover or keyboard focus.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -32462,9 +33494,6 @@ Use this if you need to wait for a response from the server before the user can 
       "description": "Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).",
       "isDefault": false,
       "name": "customPrimaryActions",
-      "systemTags": [
-        "core",
-      ],
     },
     {
       "description": "Specifies left-aligned secondary actions for the wizard. Use a button dropdown if multiple actions are required.",
@@ -32479,6 +33508,86 @@ Use this if you need to wait for a response from the server before the user can 
 exports[`Test-utils dom definitions match the snapshot 1`] = `
 {
   "classes": [
+    {
+      "methods": [
+        {
+          "description": "Performs a click by triggering a mouse event on the internal button.
+Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
+          "name": "click",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the icon slot of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns whether the action card is disabled.",
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
     {
       "methods": [
         {
@@ -36262,6 +37371,33 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the jump to page submit button.",
+          "name": "findJumpToPageButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Returns the jump to page input field.",
+          "name": "findJumpToPageInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Returns the error popover for jump to page.",
+          "name": "findJumpToPagePopover",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "PopoverWrapper",
+          },
+        },
+        {
           "name": "findNextPageButton",
           "parameters": [],
           "returnType": {
@@ -36333,6 +37469,88 @@ Returns the current value of the input.",
         },
       ],
       "name": "PaginationWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [
+            {
+              "defaultValue": "{ renderWithPortal: false }",
+              "description": "* renderWithPortal (boolean) - Flag to find the content when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findDismissButton",
+          "parameters": [
+            {
+              "defaultValue": "{ renderWithPortal: false }",
+              "description": "* renderWithPortal (boolean) - Flag to find the dismiss button when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [
+            {
+              "defaultValue": "{ renderWithPortal: false }",
+              "description": "* renderWithPortal (boolean) - Flag to find the header when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "PopoverWrapper",
     },
     {
       "methods": [
@@ -36902,9 +38120,23 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -36944,6 +38176,33 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -36972,7 +38231,8 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -37098,7 +38358,7 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
+          "description": "Sets the value of the component and calls the \`onDelayedChange\` handler",
           "name": "setValue",
           "parameters": [
             {
@@ -38251,6 +39511,51 @@ wrapper.selectOptionByValue('option_1');
     },
     {
       "methods": [
+        {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DividerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findBackdrop",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
         {
           "name": "findContent",
           "parameters": [],
@@ -40772,88 +42077,6 @@ Returns null if the panel layout is not resizable.",
     {
       "methods": [
         {
-          "name": "findContent",
-          "parameters": [
-            {
-              "defaultValue": "{ renderWithPortal: false }",
-              "description": "* renderWithPortal (boolean) - Flag to find the content when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "name": "findDismissButton",
-          "parameters": [
-            {
-              "defaultValue": "{ renderWithPortal: false }",
-              "description": "* renderWithPortal (boolean) - Flag to find the dismiss button when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ButtonWrapper",
-          },
-        },
-        {
-          "name": "findHeader",
-          "parameters": [
-            {
-              "defaultValue": "{ renderWithPortal: false }",
-              "description": "* renderWithPortal (boolean) - Flag to find the header when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "name": "findTrigger",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "PopoverWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findAdditionalInfo",
           "parameters": [],
           "returnType": {
@@ -42052,8 +43275,22 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -42088,9 +43325,11 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -42675,6 +43914,10 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
       ],
       "name": "SideNavigationItemWrapper",
+    },
+    {
+      "methods": [],
+      "name": "SkeletonWrapper",
     },
     {
       "methods": [
@@ -44153,6 +45396,19 @@ Supported options:
     {
       "methods": [
         {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "TooltipWrapper",
+          },
+        },
+      ],
+      "name": "TruncatedTextWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findCompletionScreenDescription",
           "parameters": [],
           "returnType": {
@@ -44537,6 +45793,47 @@ Supported options:
 exports[`Test-utils selectors definitions match the snapshot 1`] = `
 {
   "classes": [
+    {
+      "methods": [
+        {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the icon slot of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
     {
       "methods": [
         {
@@ -47220,6 +48517,33 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Returns the jump to page submit button.",
+          "name": "findJumpToPageButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Returns the jump to page input field.",
+          "name": "findJumpToPageInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Returns the error popover for jump to page.",
+          "name": "findJumpToPagePopover",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "PopoverWrapper",
+          },
+        },
+        {
           "name": "findNextPageButton",
           "parameters": [],
           "returnType": {
@@ -47268,6 +48592,79 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
         },
       ],
       "name": "PaginationWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [
+            {
+              "defaultValue": "{
+    renderWithPortal: false
+  }",
+              "description": "* renderWithPortal (boolean) - Flag to find the content when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findDismissButton",
+          "parameters": [
+            {
+              "defaultValue": "{
+    renderWithPortal: false
+  }",
+              "description": "* renderWithPortal (boolean) - Flag to find the dismiss button when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [
+            {
+              "defaultValue": "{
+    renderWithPortal: false
+  }",
+              "description": "* renderWithPortal (boolean) - Flag to find the header when the popover is rendered with a portal",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ renderWithPortal: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "PopoverWrapper",
     },
     {
       "methods": [
@@ -47716,9 +49113,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -47753,6 +49164,33 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -47771,7 +49209,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -48571,6 +50010,36 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     },
     {
       "methods": [
+        {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DividerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findBackdrop",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findContent",
           "parameters": [],
@@ -50393,79 +51862,6 @@ Returns null if the panel layout is not resizable.",
     {
       "methods": [
         {
-          "name": "findContent",
-          "parameters": [
-            {
-              "defaultValue": "{
-    renderWithPortal: false
-  }",
-              "description": "* renderWithPortal (boolean) - Flag to find the content when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "name": "findDismissButton",
-          "parameters": [
-            {
-              "defaultValue": "{
-    renderWithPortal: false
-  }",
-              "description": "* renderWithPortal (boolean) - Flag to find the dismiss button when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ButtonWrapper",
-          },
-        },
-        {
-          "name": "findHeader",
-          "parameters": [
-            {
-              "defaultValue": "{
-    renderWithPortal: false
-  }",
-              "description": "* renderWithPortal (boolean) - Flag to find the header when the popover is rendered with a portal",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ renderWithPortal: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "name": "findTrigger",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-      ],
-      "name": "PopoverWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findAdditionalInfo",
           "parameters": [],
           "returnType": {
@@ -51284,8 +52680,22 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -51315,9 +52725,11 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -51739,6 +53151,10 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
       ],
       "name": "SideNavigationItemWrapper",
+    },
+    {
+      "methods": [],
+      "name": "SkeletonWrapper",
     },
     {
       "methods": [
@@ -52800,6 +54216,19 @@ Supported options:
         },
       ],
       "name": "TreeViewItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "TooltipWrapper",
+          },
+        },
+      ],
+      "name": "TruncatedTextWrapper",
     },
     {
       "methods": [

@@ -127,6 +127,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
 .label-text {
   @include styles.form-placeholder;
+  // Placeholder text is purely decorative and not intended to be interacted
+  // with. Disable selection so that it doesn't become selectable inside the
+  // read-only trigger (which enables text selection).
+  user-select: none;
 }
 
 .label-token-nowrap {

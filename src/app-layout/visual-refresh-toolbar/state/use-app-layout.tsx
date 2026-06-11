@@ -71,6 +71,7 @@ export const useAppLayout = (
   const [notificationsHeight, setNotificationsHeight] = useState(0);
   const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
   const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
+  const [drawerAnimationDisabled, setDrawerAnimationDisabled] = useState(true);
   const [isNested, setIsNested] = useState(false);
   const [expandedDrawerId, setInternalExpandedDrawerId] = useState<string | null>(null);
   const rootRefInternal = useRef<HTMLDivElement>(null);
@@ -79,6 +80,7 @@ export const useAppLayout = (
   const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
+  const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -86,6 +88,7 @@ export const useAppLayout = (
     changeHandler: 'onToolsChange',
   });
   const onToolsToggle = (open: boolean) => {
+    setDrawerAnimationDisabled(false);
     setToolsOpen(open);
     drawersFocusControl.setFocus();
     fireNonCancelableEvent(onToolsChange, { open });
@@ -239,7 +242,7 @@ export const useAppLayout = (
     }
   };
 
-  useWidgetMessages(hasToolbar, message => {
+  useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;
@@ -288,6 +291,9 @@ export const useAppLayout = (
     drawerId: string | null,
     params: OnChangeParams = { initiatedByUserAction: true }
   ) => {
+    if (params.initiatedByUserAction) {
+      setDrawerAnimationDisabled(false);
+    }
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
     if (featureNotificationsProps?.drawer?.id && featureNotificationsProps?.drawer?.id === drawerId) {
@@ -455,7 +461,12 @@ export const useAppLayout = (
     activeGlobalDrawers,
     activeGlobalDrawersIds,
     activeGlobalDrawersSizes,
-    onActiveGlobalDrawersChange,
+    onActiveGlobalDrawersChange: (drawerId: string, params: OnChangeParams) => {
+      if (params.initiatedByUserAction) {
+        setDrawerAnimationDisabled(false);
+      }
+      onActiveGlobalDrawersChange(drawerId, params);
+    },
     drawersFocusControl,
     globalDrawersFocusControl,
     splitPanelPosition,
@@ -475,6 +486,7 @@ export const useAppLayout = (
     onActiveDrawerChange: onActiveDrawerChangeHandler,
     onActiveDrawerResize,
     splitPanelAnimationDisabled,
+    drawerAnimationDisabled,
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawer,

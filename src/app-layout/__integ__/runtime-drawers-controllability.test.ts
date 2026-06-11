@@ -7,7 +7,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
     describe(`page=${pageName}`, () => {
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
@@ -18,7 +18,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
             `#/light/app-layout/${pageName}?${new URLSearchParams({
               hasDrawers: 'false',
               hasTools: 'true',
-              visualRefresh: `${theme !== 'classic'}`,
               appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
             }).toString()}`
           );

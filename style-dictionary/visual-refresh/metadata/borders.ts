@@ -12,6 +12,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
+  borderWidthItemSelected: {
+    description: 'The border width of selected items, like table rows.',
+    public: true,
+    themeable: true,
+  },
   borderRadiusAlert: {
     description: 'The border radius of alerts.',
     public: true,
@@ -20,6 +25,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusBadge: {
     description: 'The border radius of badges.',
     public: true,
+    themeable: true,
+  },
+  borderRadiusStatusIndicator: {
+    description: 'The border radius of status indicators.',
+    public: false,
     themeable: true,
   },
   borderRadiusButton: {
@@ -139,6 +149,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthCardSelected: {
+    description: 'The border width of a selected card.',
+    public: true,
+    themeable: true,
+  },
   borderWidthButton: {
     description: 'The border width of buttons.',
     public: true,
@@ -161,6 +176,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthToken: {
     description: 'The border width of tokens.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthIconXSmall: {
+    description: 'The visual stroke width of extra small icons.',
     public: true,
     themeable: true,
   },
@@ -196,6 +216,41 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderRadiusCardEmbedded: {
     description: 'The border radius of embedded cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusActionCardDefault: {
+    description: 'The border radius of default action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusActionCardEmbedded: {
+    description: 'The border radius of embedded action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardDefault: {
+    description: 'The border width of action cards in default state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardHover: {
+    description: 'The border width of action cards in hover state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardActive: {
+    description: 'The border width of action cards in active state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardDisabled: {
+    description: 'The border width of action cards in disabled state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthBadge: {
+    description: 'The border width of badges.',
     public: true,
     themeable: true,
   },

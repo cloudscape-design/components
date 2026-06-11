@@ -13,7 +13,7 @@ import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.
 
 export class PromptInputMenuWrapper extends ComponentWrapper {
   findOptions(): Array<OptionWrapper> {
-    return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index]`).map(
+    return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index] .${OptionWrapper.rootSelector}`).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
     );
   }
@@ -25,7 +25,7 @@ export class PromptInputMenuWrapper extends ComponentWrapper {
    */
   findOption(optionIndex: number): OptionWrapper | null {
     return this.findComponent(
-      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"]`,
+      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"] .${OptionWrapper.rootSelector}`,
       OptionWrapper
     );
   }
@@ -37,7 +37,10 @@ export class PromptInputMenuWrapper extends ComponentWrapper {
    */
   findOptionByValue(value: string): OptionWrapper | null {
     const toReplace = escapeSelector(value);
-    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']} .${OptionWrapper.rootSelector}[data-value="${toReplace}"]`,
+      OptionWrapper
+    );
   }
 }
 
@@ -58,7 +61,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
    * Finds the contentEditable element used when `menus` or `tokens` is defined.
    */
   findContentEditableElement(): ElementWrapper<HTMLDivElement> | null {
-    return this.find('[contenteditable="true"]');
+    return this.findByClassName<HTMLDivElement>(testutilStyles['content-editable']);
   }
 
   /**

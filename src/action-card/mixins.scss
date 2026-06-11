@@ -1,0 +1,69 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles/tokens' as awsui;
+@use './constants' as constants;
+
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-action-card-embedded,
+  'default': awsui.$border-radius-action-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-action-card-vertical-embedded,
+  'default': awsui.$space-action-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-action-card-horizontal-embedded,
+  'default': awsui.$space-action-card-horizontal-default,
+);
+
+@mixin border-radius-all($value) {
+  border-start-start-radius: $value;
+  border-start-end-radius: $value;
+  border-end-start-radius: $value;
+  border-end-end-radius: $value;
+}
+
+@mixin state-border-radius($variant: 'default', $state: 'default') {
+  $token: map.get($variant-border-radius, $variant);
+  @include border-radius-all($token);
+}
+
+@mixin state-border-radius-all-variants($state: 'default') {
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:after {
+        @include state-border-radius($variant, $state);
+      }
+    }
+  }
+}
+
+@mixin apply-state-styles($state) {
+  $s: map.get(constants.$states, $state);
+
+  background-color: map.get($s, 'background');
+  box-shadow: map.get($s, 'box-shadow');
+  color: map.get($s, 'text-color');
+
+  @if $state != 'default' {
+    @include state-border-radius-all-variants($state);
+  }
+
+  &:after {
+    border-color: map.get($s, 'border-color');
+    border-block-width: map.get($s, 'border-width');
+    border-inline-width: map.get($s, 'border-width');
+  }
+
+  > .icon,
+  > .inner-card > .header-row > .icon {
+    color: map.get($s, 'icon-color');
+  }
+}

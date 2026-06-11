@@ -66,12 +66,17 @@ describe('selection control labels', () => {
     itemSelectionLabel: ({ selectedItems }, item) =>
       `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
   };
-  const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
+  const getRowLabel = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
+  const getRowInput = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.find('input')!.getElement();
 
   test('adds allItemsSelectionLabel to select-all checkbox', () => {
     const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels });
     expect(getSelectionA11yHeader(wrapper)).toBe(null);
     expect(wrapper.findSelectAllTrigger()!.getElement()).toHaveAttribute('aria-label', '1(1) of 3 selected');
+    expect(wrapper.findSelectAllTrigger()!.find('input')!.getElement()).toHaveAttribute(
+      'aria-label',
+      '1(1) of 3 selected'
+    );
   });
 
   test('adds selectionGroupLabel to single selection column header', () => {
@@ -87,16 +92,22 @@ describe('selection control labels', () => {
       } else {
         expect(wrapper.findSelectAllTrigger()!.getElement()).not.toHaveAttribute('aria-label');
       }
-      expect(getRowSelector(wrapper, 1)).not.toHaveAttribute('aria-label');
-      expect(getRowSelector(wrapper, 2)).not.toHaveAttribute('aria-label');
-      expect(getRowSelector(wrapper, 3)).not.toHaveAttribute('aria-label');
+      expect(getRowLabel(wrapper, 1)).not.toHaveAttribute('aria-label');
+      expect(getRowLabel(wrapper, 2)).not.toHaveAttribute('aria-label');
+      expect(getRowLabel(wrapper, 3)).not.toHaveAttribute('aria-label');
+      expect(getRowInput(wrapper, 1)).not.toHaveAttribute('aria-label');
+      expect(getRowInput(wrapper, 2)).not.toHaveAttribute('aria-label');
+      expect(getRowInput(wrapper, 3)).not.toHaveAttribute('aria-label');
     });
 
     test('adds selectionGroupLabel and itemSelectionLabel to row selection control', () => {
       const { wrapper } = renderTable({ selectionType, selectedItems: [items[1]], ariaLabels });
-      expect(getRowSelector(wrapper, 1)).toHaveAttribute('aria-label', 'Apples is not selected');
-      expect(getRowSelector(wrapper, 2)).toHaveAttribute('aria-label', 'Oranges is selected');
-      expect(getRowSelector(wrapper, 3)).toHaveAttribute('aria-label', 'Bananas is not selected');
+      expect(getRowLabel(wrapper, 1)).toHaveAttribute('aria-label', 'Apples is not selected');
+      expect(getRowLabel(wrapper, 2)).toHaveAttribute('aria-label', 'Oranges is selected');
+      expect(getRowLabel(wrapper, 3)).toHaveAttribute('aria-label', 'Bananas is not selected');
+      expect(getRowInput(wrapper, 1)).toHaveAttribute('aria-label', 'Apples is not selected');
+      expect(getRowInput(wrapper, 2)).toHaveAttribute('aria-label', 'Oranges is selected');
+      expect(getRowInput(wrapper, 3)).toHaveAttribute('aria-label', 'Bananas is not selected');
     });
   });
 });

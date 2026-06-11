@@ -74,6 +74,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightNormal: {
+    description: 'The default normal font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightBold: {
+    description: 'The default bold font weight for body text. For example, <strong> and <b> tags in text content.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightLighter: {
+    description: 'The default lighter font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightHeavy: {
+    description: 'The default heavy font weight.',
+    themeable: true,
+    public: true,
+  },
   fontWeightButton: {
     description: 'The default font weight for button text.',
     themeable: true,
@@ -111,6 +131,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   fontWeightHeadingXs: {
     description: 'The default font weight for h5s.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightDisplayL: {
+    description: 'The default font weight for large display text.',
     themeable: true,
     public: true,
   },
@@ -206,6 +231,61 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The default line height for tabs.',
     themeable: true,
     public: true,
+  },
+  fontDecorationThicknessLink: {
+    description: 'The text decoration thickness of links.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationThicknessLinkDisplayL: {
+    description: 'The text decoration thickness of links at display-l size.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationStyleLink: {
+    description: 'The text decoration style of links. For example: underline, dashed, dotted.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightBreadcrumbCurrent: {
+    description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
+    themeable: true,
+    public: false,
+  },
+  fontSizeExpandableHeading: {
+    description: 'The font size for expandable section headings.',
+    themeable: true,
+    public: false,
+  },
+  fontSizeFormLabel: {
+    description: 'The font size for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightFormLabel: {
+    description: 'The line height for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightFormLabel: {
+    description: 'The font weight for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontSizeKeyValuePairsLabel: {
+    description: 'The font size for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightKeyValuePairsLabel: {
+    description: 'The line height for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightKeyValuePairsLabel: {
+    description: 'The font weight for key-value pairs labels.',
+    themeable: true,
+    public: false,
   },
 };
 

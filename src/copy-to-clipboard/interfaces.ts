@@ -37,6 +37,12 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToDisplay?: React.ReactNode;
 
   /**
+   * Specifies if the `textToDisplay` content should wrap. If you set it to false, it prevents the text
+   * from wrapping and truncates it with an ellipsis. Only applies to `variant="inline"`.
+   */
+  wrapText?: boolean;
+
+  /**
    * The message shown when the text is copied successfully.
    */
   copySuccessText: string;

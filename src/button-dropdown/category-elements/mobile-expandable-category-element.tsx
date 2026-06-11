@@ -107,7 +107,7 @@ const MobileExpandableCategoryElement = ({
               <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
             </span>
           )}
-          {item.text}
+          <span>{item.text}</span>
           <span
             className={clsx(styles['expand-icon'], {
               [styles['expand-icon-up']]: expanded,

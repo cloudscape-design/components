@@ -2,6 +2,13 @@
 
 exports[`test-utils selectors 1`] = `
 {
+  "action-card": [
+    "awsui_body_1qivf",
+    "awsui_description_1qivf",
+    "awsui_header_1qivf",
+    "awsui_icon_1qivf",
+    "awsui_root_16248",
+  ],
   "alert": [
     "awsui_action-button_mx3cw",
     "awsui_action-slot_mx3cw",
@@ -148,6 +155,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_content-before_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
+    "awsui_content-display-group-children_tc96w",
+    "awsui_content-display-group-header_tc96w",
     "awsui_content-display-no-match_tc96w",
     "awsui_content-display-option-content_tc96w",
     "awsui_content-display-option-label_tc96w",
@@ -244,11 +253,17 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "divider": [
+    "awsui_divider-label_1noo2",
+    "awsui_divider_1noo2",
+  ],
   "drawer": [
-    "awsui_drawer_1sxt8",
+    "awsui_backdrop_1sr4m",
+    "awsui_close-action_1sr4m",
     "awsui_footer_1sxt8",
     "awsui_header-actions_1sxt8",
     "awsui_header_1sxt8",
+    "awsui_root_1sr4m",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
   "dropdown": [
@@ -386,7 +401,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_direction-button-inline-start_8k1rt",
     "awsui_direction-button-visible_8k1rt",
     "awsui_disabled_15o6u",
-    "awsui_dropdown_qwoo0",
     "awsui_expand-toggle_1xe88",
     "awsui_filter-container_z5mul",
     "awsui_filtering-match-highlight_1p2cx",
@@ -417,7 +431,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1om0h",
     "awsui_root_1qprf",
     "awsui_root_1t44z",
-    "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_screenreader-content_15o6u",
     "awsui_secondary_x6dl3",
@@ -482,6 +495,8 @@ exports[`test-utils selectors 1`] = `
   "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
+    "awsui_jump-to-page-input_fvjdu",
+    "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
   ],
@@ -518,6 +533,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "prompt-input": [
     "awsui_action-button_nr3gs",
+    "awsui_content-editable_nr3gs",
     "awsui_primary-action_nr3gs",
     "awsui_root_nr3gs",
     "awsui_secondary-actions_nr3gs",
@@ -591,6 +607,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_section-group-title_l0dv0",
     "awsui_section-group_l0dv0",
     "awsui_section_l0dv0",
+  ],
+  "skeleton": [
+    "awsui_root_1qq5l",
   ],
   "slider": [
     "awsui_root_pcgz5",
@@ -721,6 +740,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_expanded_1js4f",
     "awsui_root_1js4f",
     "awsui_treeitem_1js4f",
+  ],
+  "truncated-text": [
+    "awsui_root_lwmqr",
   ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",

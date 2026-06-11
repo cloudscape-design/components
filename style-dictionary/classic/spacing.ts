@@ -13,6 +13,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceAlertVertical: '{spaceScaledS}',
   spaceButtonFocusOutlineGutter: '3px',
   spaceButtonHorizontal: '{spaceL}',
+  spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceButtonIconFocusOutlineGutterVertical: '{spaceButtonFocusOutlineGutter}',
   spaceButtonIconOnlyHorizontal: '{spaceM}',
   spaceButtonInlineIconFocusOutlineGutter: '{spaceButtonFocusOutlineGutter}',
@@ -60,6 +61,13 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
   spaceTableHorizontal: '0px',
+  spaceTokenVertical: '{spaceScaledXxs}',
+  spaceActionCardHorizontalDefault: '{spaceCardHorizontalDefault}',
+  spaceActionCardHorizontalEmbedded: '{spaceCardHorizontalEmbedded}',
+  spaceActionCardVerticalDefault: '{spaceCardVerticalDefault}',
+  spaceActionCardVerticalEmbedded: '{spaceCardVerticalEmbedded}',
+  spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
+  spaceActionCardContentPaddingTop: '{spaceScaledS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

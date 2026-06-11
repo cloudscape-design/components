@@ -113,27 +113,6 @@ const AutosuggestOption = (
   const isChild = option?.type === 'child';
   const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
 
-  let optionContent;
-  if (useEntered) {
-    optionContent = option.label;
-    // we don't want fancy generated content for screenreader for the "Use..." option,
-    // just the visible text is fine
-    screenReaderContent = undefined;
-  } else if (isParent) {
-    optionContent = option.label;
-  } else {
-    const a11yProperties: AutosuggestOptionProps['nativeAttributes'] = {};
-    if (nativeAttributes['aria-label']) {
-      a11yProperties['aria-label'] = nativeAttributes['aria-label'];
-    }
-
-    optionContent = (
-      <div {...a11yProperties}>
-        <OptionComponent option={option} highlightedOption={highlighted} highlightText={highlightText} />
-      </div>
-    );
-  }
-
   const getAutosuggestItemProps = (option: AutosuggestItem) => {
     if (option.type === 'parent') {
       return toAutosuggestOptionGroupItem({
@@ -169,6 +148,32 @@ const AutosuggestOption = (
   };
   const renderResult = renderOptionWrapper(option);
 
+  let optionContent;
+  if (useEntered) {
+    optionContent = renderResult ?? option.label;
+    // we don't want fancy generated content for screenreader for the "Use..." option,
+    // just the visible text is fine
+    screenReaderContent = undefined;
+  } else if (isParent) {
+    optionContent = renderResult ?? option.label;
+  } else {
+    const a11yProperties: AutosuggestOptionProps['nativeAttributes'] = {};
+    if (nativeAttributes['aria-label']) {
+      a11yProperties['aria-label'] = nativeAttributes['aria-label'];
+    }
+
+    optionContent = (
+      <div {...a11yProperties}>
+        <OptionComponent
+          customContent={renderResult}
+          option={option}
+          highlightedOption={highlighted}
+          highlightText={highlightText}
+        />
+      </div>
+    );
+  }
+
   return (
     <SelectableItem
       {...baseProps}
@@ -192,7 +197,7 @@ const AutosuggestOption = (
       highlightType={highlightType.type}
       value={option.value}
     >
-      {!renderResult ? optionContent : renderResult}
+      {optionContent}
     </SelectableItem>
   );
 };

@@ -43,7 +43,7 @@
     }
     > .anchor {
       color: awsui.$color-text-breadcrumb-current;
-      font-weight: styles.$font-weight-bold;
+      font-weight: awsui.$font-weight-breadcrumb-current;
       text-decoration: none;
       cursor: default;
     }

@@ -7,6 +7,7 @@ import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
 import { fireNonCancelableEvent } from '../../../internal/events/index';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
+import InternalLiveRegion from '../../../live-region/internal';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { TutorialPanelProps } from '../../interfaces';
 import { CongratulationScreen } from './congratulation-screen';
@@ -60,13 +61,13 @@ export default function TutorialDetailView({
           </InternalBox>
         </div>
         <div>
-          <div role="status">
+          <InternalLiveRegion>
             {tutorial.completed && (
               <CongratulationScreen onFeedbackClick={onFeedbackClick} i18nStrings={i18nStrings}>
                 {tutorial.completedScreenDescription}
               </CongratulationScreen>
             )}
-          </div>
+          </InternalLiveRegion>
           {!tutorial.completed && (
             <TaskList
               tasks={tutorial.tasks}

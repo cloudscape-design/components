@@ -157,6 +157,7 @@ export interface SelectProps extends BaseSelectProps {
    * For use with collection select filters only.
    */
   inlineLabelText?: string;
+  onLoadItems?: NonCancelableEventHandler<SelectProps.LoadItemsDetail>;
   /**
    * Adds `aria-labelledby` to the component. If you're using this component within a form field,
    * don't set this property because the form field component automatically sets it.
@@ -188,8 +189,6 @@ export interface SelectProps extends BaseSelectProps {
   autoFocus?: boolean;
   /**
    * Specifies a render function to render custom options in the dropdown menu or trigger.
-   *
-   * @awsuiSystem core
    */
   renderOption?: SelectProps.SelectOptionItemRenderer;
 }
@@ -224,7 +223,10 @@ export namespace SelectProps {
   export type SelectItem = SelectOptionItem | SelectOptionGroupItem | SelectTriggerOptionItem;
   export type SelectOptionItemRenderer = (props: { item: SelectItem; filterText?: string }) => ReactNode | null;
 
-  export type LoadItemsDetail = OptionsLoadItemsDetail;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
 
   export interface ChangeDetail {
     selectedOption: Option;

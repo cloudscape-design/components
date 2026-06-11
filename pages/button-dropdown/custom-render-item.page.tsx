@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Toggle } from '~components';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
+import { spaceOptionPaddingHorizontal, spaceOptionPaddingVertical } from '~design-tokens';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -12,6 +13,12 @@ const itemsWithGroups: ButtonDropdownProps['items'] = [
   {
     id: 'item',
     text: 'Default Item',
+    secondaryText: 'Secondary Text',
+    labelTag: 'Label Tag',
+  },
+  {
+    id: 'item2',
+    text: 'Custom Item',
     secondaryText: 'Secondary Text',
     labelTag: 'Label Tag',
   },
@@ -73,6 +80,16 @@ export default function ButtonDropdownPage() {
   const expandableGroups = urlParams.expandableGroups ?? false;
 
   const renderItem: ButtonDropdownProps.ItemRenderer = ({ item }) => {
+    if (item.option.id === 'item') {
+      return null;
+    }
+    if (item.option.id === 'item2') {
+      return (
+        <div style={{ paddingBlock: spaceOptionPaddingVertical, paddingInline: spaceOptionPaddingHorizontal }}>
+          Padded item: {item.option.text}
+        </div>
+      );
+    }
     if (item.type === 'group') {
       return <div>Group: {item.option.text}</div>;
     } else if (item.type === 'checkbox') {

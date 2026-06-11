@@ -209,12 +209,8 @@ export const Flash = React.forwardRef(
     }
 
     return (
-      // We're not using "polite" or "assertive" here, just turning default behavior off.
-      // eslint-disable-next-line @cloudscape-design/components/prefer-live-region
       <div
         ref={mergedRef}
-        role={ariaRole}
-        aria-live={ariaRole ? 'off' : undefined}
         data-itemid={id}
         className={clsx(
           styles.flash,
@@ -232,6 +228,7 @@ export const Flash = React.forwardRef(
           initialHidden && styles['initial-hidden']
         )}
         style={getFlashStyles(style, effectiveType)}
+        {...(ariaRole ? { role: ariaRole, 'aria-live': 'off' } : {})}
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>

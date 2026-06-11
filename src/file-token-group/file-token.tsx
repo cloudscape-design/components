@@ -127,7 +127,7 @@ function InternalFileToken({
               [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
             })}
           >
-            <InternalSpinner variant="disabled" size="normal" />
+            <InternalSpinner variant="normal" size="normal" />
           </div>
         )}
         <InternalBox className={styles['file-option']}>

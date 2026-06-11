@@ -134,6 +134,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  spaceActionCardHorizontalDefault: {
+    description: 'The default horizontal padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalDefault: {
+    description: 'The default vertical padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalEmbedded: {
+    description: 'The vertical padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
   spaceContainerHorizontal: {
     description: 'The horizontal padding inside a container.',
     public: true,
@@ -162,6 +182,32 @@ const metadata: StyleDictionary.MetadataIndex = {
   spaceButtonVertical: {
     description: 'The vertical padding inside buttons.',
     public: true,
+    themeable: true,
+  },
+  spaceTokenVertical: {
+    description: 'The vertical padding inside tokens.',
+    public: true,
+    themeable: true,
+  },
+  spaceFieldVertical: {
+    description: 'The vertical padding inside control components.',
+    public: true,
+    themeable: true,
+  },
+  spaceOptionPaddingVertical: {
+    description: 'The vertical padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceOptionPaddingHorizontal: {
+    description: 'The horizontal padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceStatusIndicatorPaddingHorizontal: {
+    description:
+      'The inline padding inside the status indicator container. Applied when the status indicator background is themed.',
+    public: false,
     themeable: true,
   },
 };

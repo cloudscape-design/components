@@ -14,6 +14,8 @@ $icon-width-medium: awsui.$size-icon-medium;
 $icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 $icon-margin-right-medium: awsui.$space-xs;
+$icon-offset-inline: awsui.$space-xxs;
+$icon-offset-block: awsui.$space-xxxs;
 
 // Total space occupied by the expand icon on the left and its margins.
 // Useful to keep elements correctly aligned.
@@ -52,6 +54,21 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   // For vertical alignment of text in side navigation items
   &-container {
     margin-inline-end: $icon-margin-right-medium;
+    &.one-theme {
+      margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
+      inset-block-start: $icon-offset-block;
+      > .icon {
+        inset-block-start: calc(#{$icon-offset-block} * 3); // Double-check
+      }
+    }
+  }
+  &.one-theme {
+    display: inline-flex;
+    align-items: flex-start;
+    margin-inline-end: calc(#{$icon-margin-right-normal} + #{$icon-offset-inline});
+    > .icon {
+      inset-block-start: $icon-offset-block;
+    }
   }
 }
 
@@ -93,7 +110,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-inline,
   &-navigation,
   &-footer {
-    font-size: awsui.$font-expandable-heading-size;
+    font-size: awsui.$font-size-expandable-heading;
     letter-spacing: awsui.$letter-spacing-heading-s;
   }
 
@@ -111,7 +128,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     }
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
-      border-block-end-color: awsui.$color-border-divider-default;
+      border-block-end-color: awsui.$color-border-expandable-section-default;
     }
   }
 

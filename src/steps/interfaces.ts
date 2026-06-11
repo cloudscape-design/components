@@ -25,8 +25,6 @@ export interface StepsProps extends BaseComponentProps {
    * * `header` (React.ReactNode) - Summary corresponding to the step.
    * * `details` (React.ReactNode) - (Optional) Additional information corresponding to the step.
    * * `icon` (React.ReactNode) - (Optional) Replaces the standard step icon from the status indicator.
-   *
-   * @awsuiSystem core
    */
   renderStep?: (step: StepsProps.Step) => {
     header: React.ReactNode;

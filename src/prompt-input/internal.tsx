@@ -3,7 +3,12 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode, useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useDensityMode,
+  useMergeRefs,
+  useStableCallback,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -14,6 +19,7 @@ import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '
 import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useWidthChange } from '../internal/hooks/use-width-change';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
@@ -116,7 +122,9 @@ const InternalPromptInput = React.forwardRef(
       ),
     };
 
-    const isTokenMode = !!tokens && supportsTokenMode;
+    // Empty tokens array is valid token-mode state; only fall back to
+    // textarea mode when the prop is absent.
+    const isTokenMode = tokens !== undefined && supportsTokenMode;
 
     if (isDevelopment) {
       if ((menus || tokens) && !supportsTokenMode) {
@@ -158,7 +166,7 @@ const InternalPromptInput = React.forwardRef(
       // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
       element.style.height = 'auto';
 
-      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceScaledXxs} * 2)`;
+      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
       const scrollHeight = `calc(${element.scrollHeight}px)`;
 
       if (maxRows === -1) {
@@ -173,13 +181,27 @@ const InternalPromptInput = React.forwardRef(
       }
     });
 
+    // Height is adjusted per-mode. `value` must not be a dependency in token
+    // mode — it's unused there, and re-running the effect on `value` changes
+    // resets the contentEditable caret to offset 0.
     useEffect(() => {
       if (isTokenMode) {
         requestAnimationFrame(() => adjustInputHeight());
-      } else {
+      }
+    }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
+
+    useEffect(() => {
+      if (!isTokenMode) {
         adjustInputHeight();
       }
-    }, [isTokenMode, tokens, adjustInputHeight, value, isCompactMode]);
+    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder]);
+
+    // Observe width changes on the component's root element to handle container resizes.
+    // We need a separate RefObject because __internalRootRef may be a callback ref,
+    // and useWidthChange needs a RefObject with .current to read the DOM node.
+    const rootElementRef = useRef<HTMLDivElement>(null);
+    const mergedRootRef = useMergeRefs(__internalRootRef, rootElementRef);
+    useWidthChange(rootElementRef, adjustInputHeight);
 
     const plainTextValue = isTokenMode
       ? tokensToText
@@ -381,7 +403,7 @@ const InternalPromptInput = React.forwardRef(
           [styles['textarea-warning']]: warning && !invalid,
           [styles.disabled]: disabled,
         })}
-        ref={__internalRootRef}
+        ref={mergedRootRef}
         role="region"
         style={getPromptInputStyles(style)}
       >

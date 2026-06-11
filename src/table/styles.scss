@@ -140,7 +140,16 @@ filter search icon.
   &.selection-control-header {
     padding-block: awsui.$space-scaled-xs;
     padding-inline: awsui.$space-scaled-l;
-    border-inline-start: awsui.$border-item-width solid transparent;
+    border-inline-start: awsui.$border-width-item-selected solid transparent;
+  }
+
+  // When the selection cell spans multiple header rows, use flex to push the
+  // checkbox to the bottom of the cell, matching bottom-aligned column headers.
+  &-content-spans-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    block-size: 100%;
   }
 }
 
@@ -222,4 +231,10 @@ filter search icon.
 .row,
 .row-selected {
   /* used in test-utils */
+}
+
+.skeleton-loading-cell {
+  padding-block: 0;
+  padding-inline: 0;
+  border-block-end: none;
 }

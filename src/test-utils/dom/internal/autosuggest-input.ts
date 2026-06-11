@@ -8,7 +8,6 @@ import DropdownWrapper from './dropdown.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import styles from '../../../internal/components/autosuggest-input/styles.selectors.js';
-import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 
 export default class AutosuggestInputWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
@@ -18,6 +17,6 @@ export default class AutosuggestInputWrapper extends ComponentWrapper {
   }
 
   findDropdown(): DropdownWrapper {
-    return this.findComponent(`:is(.${dropdownStyles.root}, .${legacyDropdownStyles.root})`, DropdownWrapper)!;
+    return this.findComponent(`.${dropdownStyles.root}`, DropdownWrapper)!;
   }
 }

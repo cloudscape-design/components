@@ -11,9 +11,6 @@ import InternalTooltip from './internal';
 
 export { TooltipProps };
 
-/**
- * @awsuiSystem core
- */
 export default function Tooltip({ position = 'top', ...rest }: TooltipProps) {
   const baseComponentProps = useBaseComponent('Tooltip', {
     props: { position },

@@ -56,6 +56,9 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover footer */
   footer?: React.ReactNode;
+
+  /** Prevents dismiss button auto-focus */
+  disableDismissAutoFocus?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -67,6 +70,7 @@ function ChartPopover(
     fixedWidth = false,
     dismissButton = false,
     dismissAriaLabel,
+    disableDismissAutoFocus,
 
     children,
     footer,
@@ -157,6 +161,7 @@ function ChartPopover(
         <PopoverBody
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
+          disableDismissAutoFocus={disableDismissAutoFocus}
           header={<span className={testClasses.header}>{title}</span>}
           onDismiss={() => onDismiss()}
           overflowVisible="content"
