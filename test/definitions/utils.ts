@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment } from 'allure-js-commons';
 
-import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
+import { cropAndCompare } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
 
+import createWrapper from '../../lib/components/test-utils/selectors';
 import { TestDefinition, TestSuite } from './types';
 
 const screenshotAreaSelector = '.screenshot-area';
@@ -14,12 +15,7 @@ const defaultWindowSize = { width: 1600, height: 800 };
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
 
-interface RawCapture {
-  /** The raw base64-encoded PNG string from WebDriver (before decoding). */
-  rawBase64: string;
-  /** The fully parsed screenshot with offset metadata (lazily resolved). */
-  screenshot: () => Promise<ScreenshotWithOffset>;
-}
+const wrapper = createWrapper();
 
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams(queryParams);
@@ -33,8 +29,6 @@ function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinit
 
 /**
  * Attaches a visual comparison to the Allure report using the built-in image diff viewer.
- * Uses the `application/vnd.allure.image.diff` content type which Allure renders
- * as a side-by-side/overlay comparison widget.
  */
 async function attachDiffImages(
   result: { firstImage: Buffer; secondImage: Buffer; diffImage: Buffer | null },
@@ -50,15 +44,6 @@ async function attachDiffImages(
     contentType: 'application/vnd.allure.image.diff',
     fileExtension: 'imagediff',
   } as any);
-}
-
-/**
- * Attaches a single screenshot to the Allure report for passing tests
- * where both hosts produced identical images.
- */
-async function attachScreenshot(rawBase64: string, testName: string): Promise<void> {
-  const imageBuffer = Buffer.from(rawBase64, 'base64');
-  await attachment(testName, imageBuffer, 'image/png');
 }
 
 /**
@@ -96,47 +81,34 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 }
 
 /**
- * Captures a screenshot and returns both the raw PNG base64 and the parsed result.
- * Having the raw base64 allows a fast byte-equality check before expensive pixel decoding.
+ * Navigates to a URL, waits for the screenshot area, and runs any setup interactions.
  */
-async function captureRaw(
+async function preparePage(
   browser: WebdriverIO.Browser,
   page: ScreenshotPageObject,
   url: string,
   testDef: TestDefinition,
   windowSize: { width: number; height: number } | undefined
-): Promise<RawCapture> {
+): Promise<void> {
   if (windowSize) {
     await browser.setWindowSize(windowSize.width, windowSize.height);
   }
   await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
   if (testDef.setup) {
-    await testDef.setup(page);
+    await testDef.setup(page, wrapper);
   }
+}
 
+/**
+ * Captures a screenshot based on the test's screenshotType using the
+ * ScreenshotPageObject methods from browser-test-tools.
+ */
+function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<ScreenshotWithOffset> {
   if (testDef.screenshotType === 'viewport') {
-    const { height, width } = await page.getViewportSize();
-    const rawBase64 = await browser.takeScreenshot();
-    return {
-      rawBase64,
-      screenshot: async () => {
-        const image = await parsePng(rawBase64);
-        return { image, offset: { top: 0, left: 0 }, height, width };
-      },
-    };
+    return page.captureViewport();
   }
-
-  // screenshotArea / permutations — capture by selector with viewportOnly
-  const box = await page.getBoundingBox(screenshotAreaSelector);
-  const rawBase64 = await browser.takeScreenshot();
-  return {
-    rawBase64,
-    screenshot: async () => {
-      const image = await parsePng(rawBase64);
-      return { image, offset: { top: box.top, left: box.left }, height: box.height, width: box.width };
-    },
-  };
+  return page.captureBySelector(screenshotAreaSelector, { viewportOnly: true });
 }
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
@@ -148,65 +120,33 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    const newCapture = await captureRaw(browser, page, newUrl, testDef, windowSize);
-    const oldCapture = await captureRaw(browser, page, oldUrl, testDef, windowSize);
+    await preparePage(browser, page, newUrl, testDef, windowSize);
+    const newScreenshot = await capture(page, testDef);
 
-    // Fast path: if the raw PNG bytes are identical, the images are guaranteed
-    // to be the same. This skips the expensive crop + pixelmatch decode path
-    // for the common case (no visual difference).
-    if (newCapture.rawBase64 === oldCapture.rawBase64) {
-      await attachScreenshot(newCapture.rawBase64, testDef.description);
-      return;
-    }
+    await preparePage(browser, page, oldUrl, testDef, windowSize);
+    const oldScreenshot = await capture(page, testDef);
 
-    // Raw bytes differ — could be a real diff or just offset/crop differences.
-    // Fall through to full pixel comparison.
-    const result = await cropAndCompare(await newCapture.screenshot(), await oldCapture.screenshot());
-
-    // Always attach the comparison for visibility in the report.
-    await attachDiffImages(result, testDef.description);
-
-    if (result.diffPixels === 0) {
-      return;
-    }
-
-    // For permutations pages, a screenshot-area diff might be a false positive
-    // caused by content extending beyond the viewport. Re-capture using the
-    // full capturePermutations strategy which resizes the window to fit all
-    // content and returns individual permutation crops for precise comparison.
     if (testDef.screenshotType === 'permutations') {
-      if (windowSize) {
-        await browser.setWindowSize(windowSize.width, windowSize.height);
-      }
-      await browser.url(newUrl);
-      await page.waitForVisible(screenshotAreaSelector);
-      if (testDef.setup) {
-        await testDef.setup(page);
-      }
+      await preparePage(browser, page, newUrl, testDef, windowSize);
       const newPermutations = await page.capturePermutations();
 
-      if (windowSize) {
-        await browser.setWindowSize(windowSize.width, windowSize.height);
-      }
-      await browser.url(oldUrl);
-      await page.waitForVisible(screenshotAreaSelector);
-      if (testDef.setup) {
-        await testDef.setup(page);
-      }
+      await preparePage(browser, page, oldUrl, testDef, windowSize);
       const oldPermutations = await page.capturePermutations();
 
       expect(newPermutations.length).toBe(oldPermutations.length);
       for (let i = 0; i < newPermutations.length; i++) {
         const permResult = await cropAndCompare(newPermutations[i], oldPermutations[i]);
-        if (permResult.diffPixels !== 0) {
-          await attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`);
-        }
+        await attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`);
         expect(permResult.diffPixels).toBe(0);
       }
-      return;
-    }
+    } else {
+      const result = await cropAndCompare(newScreenshot, oldScreenshot);
 
-    // For screenshotArea and viewport types, the diff is a real failure.
-    expect(result.diffPixels).toBe(0);
+      // Attach comparison to Allure report for visibility (pass or fail).
+      await attachDiffImages(result, testDef.description);
+
+      // For screenshotArea and viewport types, the diff is a real failure.
+      expect(result.diffPixels).toBe(0);
+    }
   });
 }
