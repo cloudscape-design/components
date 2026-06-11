@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
+import type createWrapper from '../../lib/components/test-utils/selectors';
+
+export type Wrapper = ReturnType<typeof createWrapper>;
+
 export interface ScreenshotTestConfiguration {
   width?: number;
   height?: number;
@@ -17,7 +21,7 @@ export interface TestDefinition {
   screenshotType: ScreenshotType;
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
-  setup?: (page: ScreenshotPageObject) => Promise<void>;
+  setup?: (page: ScreenshotPageObject, wrapper: Wrapper) => Promise<void>;
 }
 
 export interface TestSuite {
