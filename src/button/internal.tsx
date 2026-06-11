@@ -11,6 +11,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
+import { IconProps } from '../icon/interfaces';
 import Icon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
@@ -51,6 +52,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   badge?: boolean;
   analyticsAction?: string;
   __iconClass?: string;
+  __iconSize?: IconProps.Size;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __title?: string;
@@ -64,6 +66,7 @@ export const InternalButton = React.forwardRef(
       children,
       iconName,
       __iconClass,
+      __iconSize,
       onClick,
       onFollow,
       iconAlign = 'left',
@@ -237,7 +240,7 @@ export const InternalButton = React.forwardRef(
       variant,
       badge,
       iconClass: __iconClass,
-      iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
+      iconSize: __iconSize ?? (variant === 'modal-dismiss' ? 'medium' : 'normal'),
     };
     const buttonContent = (
       <>
