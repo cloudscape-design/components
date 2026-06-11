@@ -47,6 +47,10 @@ const InternalButtonDropdown = React.forwardRef(
       customTriggerBuilder,
       expandToViewport,
       ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
       title,
       description,
       preferCenter,
@@ -75,9 +79,14 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', mainAction.href);
     }
 
+    const hasCustomTriggerIcon = !!(iconName || iconUrl || iconSvg);
+
     if (isDevelopment) {
       if (mainAction && variant !== 'primary' && variant !== 'normal') {
         warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
+      }
+      if (hasCustomTriggerIcon && variant !== 'icon' && variant !== 'inline-icon') {
+        warnOnce('ButtonDropdown', 'Custom icon is only supported for "icon" and "inline-icon" component variant.');
       }
     }
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
@@ -146,7 +155,10 @@ const InternalButtonDropdown = React.forwardRef(
     const iconProps: Partial<ButtonProps & { __iconClass?: string; __iconSize?: IconProps.Size }> =
       variant === 'icon' || variant === 'inline-icon'
         ? {
-            iconName: 'ellipsis',
+            iconName: hasCustomTriggerIcon ? iconName : 'ellipsis',
+            iconAlt,
+            iconUrl,
+            iconSvg,
           }
         : {
             iconName: isOneTheme ? 'angle-down' : 'caret-down-filled',

@@ -29,6 +29,10 @@ const ButtonDropdown = React.forwardRef(
       expandableGroups = false,
       expandToViewport = false,
       ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
       children,
       onItemClick,
       onItemFollow,
@@ -73,6 +77,10 @@ const ButtonDropdown = React.forwardRef(
         expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}
         ariaLabel={ariaLabel}
+        iconName={iconName}
+        iconAlt={iconAlt}
+        iconUrl={iconUrl}
+        iconSvg={iconSvg}
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         mainAction={mainAction}
