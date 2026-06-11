@@ -53,6 +53,15 @@ async function attachDiffImages(
 }
 
 /**
+ * Attaches a single screenshot to the Allure report for passing tests
+ * where both hosts produced identical images.
+ */
+async function attachScreenshot(rawBase64: string, testName: string): Promise<void> {
+  const imageBuffer = Buffer.from(rawBase64, 'base64');
+  await attachment(testName, imageBuffer, 'image/png');
+}
+
+/**
  * Registers all test suites with a single shared browser session per worker.
  * This avoids the per-test session creation overhead.
  */
@@ -146,12 +155,16 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     // to be the same. This skips the expensive crop + pixelmatch decode path
     // for the common case (no visual difference).
     if (newCapture.rawBase64 === oldCapture.rawBase64) {
+      await attachScreenshot(newCapture.rawBase64, testDef.description);
       return;
     }
 
     // Raw bytes differ — could be a real diff or just offset/crop differences.
     // Fall through to full pixel comparison.
     const result = await cropAndCompare(await newCapture.screenshot(), await oldCapture.screenshot());
+
+    // Always attach the comparison for visibility in the report.
+    await attachDiffImages(result, testDef.description);
 
     if (result.diffPixels === 0) {
       return;
@@ -192,9 +205,6 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       }
       return;
     }
-
-    // Attach diff images to Allure report for visual inspection.
-    await attachDiffImages(result, testDef.description);
 
     // For screenshotArea and viewport types, the diff is a real failure.
     expect(result.diffPixels).toBe(0);
