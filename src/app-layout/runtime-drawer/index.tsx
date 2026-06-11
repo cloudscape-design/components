@@ -95,7 +95,7 @@ function mapRuntimeHeaderActionsToHeaderActions(
       // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
       ...('pressedIconSvg' in runtimeHeaderAction &&
         runtimeHeaderAction.pressedIconSvg && {
-          iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),
+          pressedIconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),
         }),
     };
   });
