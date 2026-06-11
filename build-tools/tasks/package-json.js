@@ -103,6 +103,10 @@ const devPagesPackageJson = generatePackageJson(path.join(workspace.targetPath, 
 
 const testDefinitionsPackageJson = generatePackageJson(path.join(workspace.targetPath, 'test-definitions'), {
   name: '@cloudscape-design/test-definitions',
+  exports: {
+    '.': './index.js',
+    './types': './types.js',
+  },
 });
 
 module.exports = parallel([

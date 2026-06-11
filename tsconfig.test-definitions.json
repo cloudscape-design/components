@@ -16,5 +16,5 @@
     "skipLibCheck": true
   },
   "include": ["test/definitions", "test/types.ts"],
-  "exclude": []
+  "exclude": ["test/definitions/utils.ts"]
 }

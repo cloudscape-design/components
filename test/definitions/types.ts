@@ -9,7 +9,7 @@ export interface ScreenshotTestConfiguration {
 
 // 'screenshotArea' — captures the .screenshot-area element on the page.
 // 'permutations'  — captures the entire page and crops permutations out of it.
-export type ScreenshotType = 'screenshotArea' | 'permutations';
+export type ScreenshotType = 'screenshotArea' | 'permutations' | 'viewport';
 
 export interface TestDefinition {
   description: string;

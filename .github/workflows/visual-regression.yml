@@ -1,0 +1,194 @@
+name: Visual Regression Tests
+
+on:
+  workflow_call:
+    inputs:
+      pr-artifact-name:
+        description: 'Name of the artifact containing PR pages (built by the caller workflow).'
+        required: true
+        type: string
+      test-utils-artifact-name:
+        description: 'Name of the artifact containing test-utils selectors.'
+        required: true
+        type: string
+      caller-run-id:
+        description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
+        required: true
+        type: string
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  deployments: write
+
+jobs:
+  # Build the baseline (main branch) pages once and share them across all browser jobs.
+  build-baseline:
+    name: Build baseline pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i
+
+      # Use a git worktree so the baseline has its own directory and its own
+      # node_modules. This means a PR that changes package-lock.json will still
+      # produce a correct baseline: the baseline installs from main's lockfile
+      # and the PR build installs from the PR's lockfile, so both sides use the
+      # dependency versions that are correct for their respective source trees.
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm i
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+          retention-days: 1
+
+  visual:
+    name: Visual regression (shard ${{ matrix.shard }})
+    needs: [build-baseline]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Set up Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Download PR pages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.pr-artifact-name }}
+          path: pages/lib/static-default
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Download baseline artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+
+      - name: Download test utils artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.test-utils-artifact-name }}
+          path: lib/components
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      # ── Run tests ─────────────────────────────────────────────────────────
+
+      - name: Start test server (port 8080)
+        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
+
+      - name: Start baseline server (port 8081)
+        run: npx --yes serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
+
+      - name: Wait for servers to be ready
+        run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
+
+      - name: Run visual regression tests
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/1
+        env:
+          TZ: UTC
+
+      - name: Upload diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs-shard-${{ matrix.shard }}
+          path: visual-regression-output/
+          retention-days: 14
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-shard-${{ matrix.shard }}
+          path: allure-results/
+          retention-days: 3
+
+  report:
+    name: Generate Allure Report
+    if: always()
+    needs: [visual]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-shard-*
+          path: allure-results
+          merge-multiple: true
+
+      - name: Generate Allure HTML report
+        run: npx --yes allure generate allure-results -o allure-report
+
+      - name: Upload Allure report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 14
+
+  deploy-report:
+    name: Deploy Allure Report
+    if: always()
+    needs: [report]
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: allure-report
+      deployment-path: allure-report
