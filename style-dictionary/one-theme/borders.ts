@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces.js';
+import merge from 'lodash/merge.js';
 
-export const tokens: StyleDictionary.BordersDictionary = {
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/borders.js';
+
+const tokens: StyleDictionary.BordersDictionary = {
   // ── Border widths ─────────────────────────────────────────────────────────
   borderWidthButton: '1px',
   borderWidthToken: '1px',
@@ -35,3 +38,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusTutorialPanelItem: '4px',
   borderRadiusStatusIndicator: '2px',
 };
+
+const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+
+export { expandedTokens as tokens };
