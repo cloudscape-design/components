@@ -9,6 +9,7 @@ import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/but
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
+import { getIconHTML } from '../../icon/__tests__/utils';
 
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
@@ -537,5 +538,67 @@ describe('native attributes', () => {
       },
     });
     expect(wrapper.findMainAction()?.getElement()).toHaveAttribute('aria-describedby', 'my-custom-description');
+  });
+});
+
+describe('custom trigger icon', () => {
+  (['icon', 'inline-icon'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
+    describe(`"${variant}" variant`, () => {
+      test('renders ellipsis icon by default', () => {
+        const trigger = renderButtonDropdown({ items, variant, ariaLabel: 'Actions' }).findNativeButton();
+        const icon = trigger.findIcon()!.find('svg')!;
+
+        expect(icon.getElement()).toContainHTML(getIconHTML('ellipsis'));
+      });
+
+      test('renders custom icon with iconName', () => {
+        const trigger = renderButtonDropdown({
+          items,
+          variant,
+          ariaLabel: 'Actions',
+          iconName: 'settings',
+        }).findNativeButton();
+        const icon = trigger.findIcon()!.find('svg')!;
+
+        expect(icon.getElement()).toContainHTML(getIconHTML('settings'));
+      });
+
+      test('renders custom icon with iconUrl', () => {
+        const iconUrl = 'data:image/png;base64,aaaa';
+        const wrapper = renderButtonDropdown({ items, variant, ariaLabel: 'Actions', iconUrl, iconAlt: 'Custom icon' });
+
+        const icon = wrapper.findNativeButton().find('img')!.getElement();
+        expect(icon).toHaveAttribute('src', iconUrl);
+        expect(icon).toHaveAttribute('alt', 'Custom icon');
+      });
+
+      test('renders custom icon with iconSvg', () => {
+        const iconSvg = (
+          <svg className="custom-trigger-icon" focusable="false" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="7" />
+          </svg>
+        );
+        const wrapper = renderButtonDropdown({ items, variant, ariaLabel: 'Actions', iconSvg });
+
+        expect(wrapper.findNativeButton().find('.custom-trigger-icon')).toBeTruthy();
+      });
+
+      test('does not warn when custom icon is provided', () => {
+        renderButtonDropdown({ items, variant, ariaLabel: 'Actions', iconName: 'settings' });
+        expect(warnOnce).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  (['normal', 'primary'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
+    test(`warns and ignores custom icon for "${variant}" variant`, () => {
+      const wrapper = renderButtonDropdown({ items, variant, children: 'Actions', iconName: 'settings' });
+
+      expect(warnOnce).toHaveBeenCalledWith(
+        'ButtonDropdown',
+        'Custom icon is only supported for "icon" and "inline-icon" component variant.'
+      );
+      expect(wrapper.findNativeButton().getElement()).toHaveTextContent('Actions');
+    });
   });
 });

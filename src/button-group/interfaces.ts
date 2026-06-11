@@ -83,6 +83,10 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `disabledReason` (optional, boolean) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable.
    * * `loading` (optional, boolean) - The loading state indication for the menu button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
+   * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/). Defaults to `ellipsis`.
+   * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
+   * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
+   * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    *
    * ### group
@@ -125,12 +129,15 @@ export interface IconToggleButtonRuntime
   iconSvg?: string;
   pressedIconSvg?: string;
 }
+export interface MenuDropdownRuntime extends Omit<ButtonGroupProps.MenuDropdown, 'iconSvg'> {
+  iconSvg?: string;
+}
 export type ItemOrGroupRuntime = ItemRuntime | ButtonGroupProps.Group;
 export type ItemRuntime =
   | IconButtonRuntime
   | IconToggleButtonRuntime
   | ButtonGroupProps.IconFileInput
-  | ButtonGroupProps.MenuDropdown;
+  | MenuDropdownRuntime;
 
 export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
 export type InternalItem =
@@ -202,6 +209,10 @@ export namespace ButtonGroupProps {
     disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
+    iconName?: IconProps.Name;
+    iconAlt?: string;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
   }
 
