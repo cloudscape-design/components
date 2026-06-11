@@ -7,7 +7,7 @@ import { StyleDictionary } from '../utils/interfaces.js';
 // Tokens not listed here fall back to the visual-refresh value via ThemeBuilder.addTokens in ./index.ts.
 const tokens: StyleDictionary.ColorsDictionary = {
   // ── Body text ─────────────────────────────────────────────────────────────
-  colorTextBodyDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
+  colorTextBodyDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
