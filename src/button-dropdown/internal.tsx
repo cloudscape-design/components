@@ -157,6 +157,7 @@ const InternalButtonDropdown = React.forwardRef(
     const baseTriggerProps: InternalButtonProps = {
       className: clsx(
         styles['trigger-button'],
+        isThemeActive(Theme.OneTheme) && styles['one-theme'],
         styles['test-utils-button-trigger'],
         analyticsSelectors['trigger-label']
       ),
