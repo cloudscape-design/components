@@ -2,13 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
-// visual-refresh/color-palette and core/color-palette form an import cycle (core re-exports
-// visual-refresh's reference tokens, while visual-refresh consumes core's `brand` palette).
-// The cycle resolves correctly only when visual-refresh/color-palette is evaluated first.
-// one-theme/color-palette.ts imports both modules, and import sorting forces the core import
-// first, which would trigger a temporal-dead-zone error on `brand`. Evaluating
-// visual-refresh/color-palette here first guarantees the safe order (the same ordering the
-// previous buildVisualRefresh import used to provide).
+// visual-refresh/color-palette and core/color-palette form an import cycle; evaluating
+// visual-refresh first ensures core's `brand` is initialized before one-theme/color-palette.ts.
 import '../visual-refresh/color-palette.js';
 import {
   createAlertContext,

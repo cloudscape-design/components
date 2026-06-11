@@ -6,9 +6,7 @@ import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/colors.js';
 
-// One Theme color overrides. The full visual-refresh color set is merged in as the
-// base (parentTokens) and the entries below override it. This keeps One Theme a
-// standalone theme (no runtime buildVisualRefresh layering) — same pattern as classic.
+// One Theme color overrides; the full visual-refresh color set (parentTokens) is the base.
 const tokens: StyleDictionary.ColorsDictionary = {
   // ── Body text ─────────────────────────────────────────────────────────────
   colorTextBodyDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
