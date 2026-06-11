@@ -20,7 +20,10 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-    &.one-theme {
+  }
+
+  &.one-theme {
+    &.has-open-drawer {
       background-color: awsui.$color-background-layout-panel-content;
     }
   }
@@ -67,7 +70,10 @@
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-    &.one-theme {
+  }
+
+  &.one-theme {
+    &.has-multiple-triggers.has-open-drawer {
       background-color: awsui.$color-background-layout-panel-content;
     }
   }
