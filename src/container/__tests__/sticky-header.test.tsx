@@ -12,6 +12,7 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
 }));
 jest.mock('../../internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(true),
+  useOneTheme: jest.fn().mockReturnValue(false),
 }));
 
 jest.mock('@cloudscape-design/component-toolkit/dom', () => ({
