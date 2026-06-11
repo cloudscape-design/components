@@ -111,7 +111,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusInfo: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning800}', dark: '{colorWarning300}' },
-  colorTextStatusError: { light: '{colorError600}', dark: '{colorError300}' },
+  colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
   // ── Dropdown ─────────────────────────────────────────────────
