@@ -70,7 +70,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Controls ──────────────────────────────────────────────────────────────
   colorBackgroundControlChecked: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderControlDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
 
   // ── Links ─────────────────────────────────────────────────────────────────
