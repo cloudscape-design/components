@@ -296,6 +296,70 @@ test('prints a warning when resizable columns have non-numeric width', () => {
   );
 });
 
+describe('measurement on re-render', () => {
+  const stableColumns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'id', cell: item => item.id, width: 150 },
+    { id: 'text', header: 'text', cell: item => item.text, width: 200 },
+  ];
+
+  test('does not measure column widths when re-rendering with unchanged columns', () => {
+    const getBoundingClientRectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect');
+    const { rerender } = renderTable(
+      <Table
+        columnDefinitions={stableColumns}
+        items={defaultItems}
+        resizableColumns={true}
+        stickyColumns={{ first: 1 }}
+      />
+    );
+
+    // Ignore measurements from the initial render; only re-renders should be measurement-free.
+    getBoundingClientRectSpy.mockClear();
+
+    // Re-render with new items but the same column definitions (e.g. typing in the filter box).
+    rerender(
+      <Table
+        columnDefinitions={stableColumns}
+        items={[{ id: 1, text: 'updated' }]}
+        resizableColumns={true}
+        stickyColumns={{ first: 1 }}
+      />
+    );
+
+    expect(getBoundingClientRectSpy).not.toHaveBeenCalled();
+
+    getBoundingClientRectSpy.mockRestore();
+  });
+
+  test('does measure column widths when the columns change', () => {
+    const getBoundingClientRectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect');
+    const { rerender } = renderTable(
+      <Table
+        columnDefinitions={stableColumns}
+        items={defaultItems}
+        resizableColumns={true}
+        stickyColumns={{ first: 1 }}
+      />
+    );
+
+    getBoundingClientRectSpy.mockClear();
+
+    // Re-render with an added column: widths must be recomputed, so measurement is expected.
+    rerender(
+      <Table
+        columnDefinitions={[...stableColumns, { id: 'extra', header: 'extra', cell: () => '-' }]}
+        items={defaultItems}
+        resizableColumns={true}
+        stickyColumns={{ first: 1 }}
+      />
+    );
+
+    expect(getBoundingClientRectSpy).toHaveBeenCalled();
+
+    getBoundingClientRectSpy.mockRestore();
+  });
+});
+
 describe('with stickyHeader=true', () => {
   const originalFn = window.CSS.supports;
   beforeEach(() => {
