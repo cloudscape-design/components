@@ -3,7 +3,7 @@
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
@@ -108,15 +108,7 @@ const ExpandableDeprecatedHeader = ({
       aria-expanded={expanded}
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
-      <div
-        className={clsx(
-          styles['icon-container'],
-          styles[`icon-container-${variant}`],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
-      >
-        {icon}
-      </div>
+      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
     </div>
   );
@@ -136,11 +128,7 @@ const ExpandableNavigationHeader = ({
   return (
     <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
       <button
-        className={clsx(
-          styles['icon-container'],
-          styles['expand-button'],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
+        className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-controls={ariaControls}
@@ -213,15 +201,7 @@ const ExpandableHeaderTextWrapper = ({
       {...headerButtonListeners}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
-      <span
-        className={clsx(
-          styles['icon-container'],
-          styles[`icon-container-${variant}`],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
-      >
-        {icon}
-      </span>
+      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
       <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
         {children}
       </span>
@@ -287,9 +267,9 @@ export const ExpandableSectionHeader = ({
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
     <InternalIcon
-      size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
+      size={variant === 'container' ? 'medium' : 'normal'}
       className={clsx(styles.icon, expanded && styles.expanded)}
-      name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+      name="caret-down-filled"
     />
   );
   const defaultHeaderProps = {

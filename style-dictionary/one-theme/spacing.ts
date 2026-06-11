@@ -10,7 +10,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTabsVertical: '2px',
   spaceTokenVertical: '1px',
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
-  spaceStatusIndicatorPaddingHorizontal: '2px',
+  spaceStatusIndicatorPaddingHorizontal: '4px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(tokens);

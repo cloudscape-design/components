@@ -6,14 +6,11 @@ import Badge from '~components/badge';
 import Popover from '~components/popover';
 import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
-import * as tokens from '~design-tokens';
 
 const progressiveStepContent = (
   <div style={{ display: 'flex' }}>
     <StatusIndicator type="warning">Checked 5 nodes</StatusIndicator>
-    <div
-      style={{ borderLeft: `1px solid ${tokens.colorBorderDividerDefault}`, marginLeft: '8px', marginRight: '8px' }}
-    />
+    <div style={{ borderLeft: '1px solid grey', marginLeft: '8px', marginRight: '8px' }} />
     <SpaceBetween direction="horizontal" size="s">
       <Popover content="There is an item with warning status" dismissButton={false} position="top">
         <StatusIndicator type="warning">1</StatusIndicator>

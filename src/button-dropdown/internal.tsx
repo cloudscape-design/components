@@ -3,14 +3,13 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton, InternalButtonProps } from '../button/internal';
 import Dropdown from '../dropdown/internal';
-import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
 import OptionsList from '../internal/components/options-list';
@@ -142,14 +141,13 @@ const InternalButtonDropdown = React.forwardRef(
     const canBeFullWidth = !!fullWidth && (variant === 'primary' || variant === 'normal');
 
     const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
-    const iconProps: Partial<ButtonProps & { __iconClass?: string; __iconSize?: IconProps.Size }> =
+    const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon' || variant === 'inline-icon'
         ? {
             iconName: 'ellipsis',
           }
         : {
-            iconName: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
-            __iconSize: isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
+            iconName: 'caret-down-filled',
             iconAlign: 'right',
             __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
           };

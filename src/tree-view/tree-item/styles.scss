@@ -49,16 +49,6 @@ $item-toggle-column-width: 28px;
       }
     }
 
-    &.one-theme {
-      align-items: center;
-      > .expand-toggle-wrapper {
-        > .toggle {
-          inset-inline-start: 0px;
-          inset-block-start: 3px;
-        }
-      }
-    }
-
     > .structured-item-wrapper {
       grid-column: 2;
       grid-row: 1 / span 2;

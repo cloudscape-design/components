@@ -12,7 +12,6 @@
 
 $padding-inline-inner-filtering-token: styles.$control-padding-horizontal;
 $padding-block-inner-filtering-token: 0px;
-$icon-offset: awsui.$space-xxxs;
 
 .button-trigger {
   @include styles.styles-reset;
@@ -70,9 +69,6 @@ $icon-offset: awsui.$space-xxxs;
     inset-inline-end: styles.$control-icon-horizontal-offset;
     inset-block-start: styles.$control-icon-vertical-offset;
     color: awsui.$color-text-button-inline-icon-default;
-    &.one-theme {
-      inset-block-start: calc(styles.$control-icon-vertical-offset + $icon-offset);
-    }
   }
 
   &:hover {
@@ -84,9 +80,6 @@ $icon-offset: awsui.$space-xxxs;
   &.pressed {
     > .arrow {
       transform: rotate(-180deg);
-      &.one-theme {
-        inset-block-start: calc(styles.$control-icon-vertical-offset - $icon-offset);
-      }
     }
   }
 

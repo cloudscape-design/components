@@ -3,7 +3,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
@@ -130,12 +129,8 @@ const ButtonTrigger = (
     >
       {children}
       {!hideCaret && (
-        <span className={clsx(styles.arrow, isThemeActive(Theme.OneTheme) && styles['one-theme'])}>
-          <InternalIcon
-            name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-            size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
-            variant={disabled || readOnly ? 'disabled' : 'normal'}
-          />
+        <span className={styles.arrow}>
+          <InternalIcon name="caret-down-filled" variant={disabled || readOnly ? 'disabled' : 'normal'} />
         </span>
       )}
     </button>

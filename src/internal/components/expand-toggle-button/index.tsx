@@ -4,7 +4,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../../../icon/internal';
 
@@ -42,8 +42,8 @@ export function ExpandToggleButton({
     >
       {customIcon ?? (
         <InternalIcon
-          size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'small'}
-          name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+          size="small"
+          name="caret-down-filled"
           className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
         />
       )}
