@@ -53,7 +53,7 @@ const suite: TestSuite = {
         ({
           description: `with custom renderOption (virtualScroll=${virtualScroll})`,
           path: 'autosuggest/custom-render-option',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'screenshotArea',
           queryParams: { virtualScroll: String(virtualScroll) },
           setup: async ({ page, wrapper }) => {
             await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
