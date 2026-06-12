@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Shared "control" token group: the selection-control box/circle colors, widths, label and
+// transition shared by Checkbox, Radio and (label/transition + background) Toggle. State reads are
+// state -> stateless-base -> design-token, so a consumer can theme all states with the base token.
+$props: (
+  color-background-control,
+  color-background-control-default,
+  color-background-control-checked,
+  color-background-control-disabled,
+  color-border-control,
+  color-border-control-default,
+  color-border-control-checked,
+  color-border-control-disabled,
+  color-foreground-control,
+  color-foreground-control-default,
+  color-foreground-control-disabled,
+  color-foreground-control-readonly,
+  border-width-control,
+  stroke-width-control,
+  color-text-label,
+  color-text-label-disabled,
+  color-text-label-readonly,
+  space-label,
+  transition-duration,
+  transition-easing
+);

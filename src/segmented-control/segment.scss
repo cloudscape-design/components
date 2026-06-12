@@ -16,35 +16,35 @@
 /* stylelint-disable custom-property-pattern */
 
 $default-background: var(
-  #{style-api.name(style-tokens.$tokens, background-default)},
+  #{style-api.name(style-tokens.$tokens, color-background-default)},
   var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default)
 );
 $default-color: var(
-  #{style-api.name(style-tokens.$tokens, color-default)},
+  #{style-api.name(style-tokens.$tokens, color-text-default)},
   var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default)
 );
 $hover-background: var(
-  #{style-api.name(style-tokens.$tokens, background-hover)},
+  #{style-api.name(style-tokens.$tokens, color-background-hover)},
   var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover)
 );
 $hover-color: var(
-  #{style-api.name(style-tokens.$tokens, color-hover)},
+  #{style-api.name(style-tokens.$tokens, color-text-hover)},
   var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover)
 );
 $disabled-background: var(
-  #{style-api.name(style-tokens.$tokens, background-disabled)},
+  #{style-api.name(style-tokens.$tokens, color-background-disabled)},
   var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled)
 );
 $disabled-color: var(
-  #{style-api.name(style-tokens.$tokens, color-disabled)},
+  #{style-api.name(style-tokens.$tokens, color-text-disabled)},
   var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled)
 );
 $selected-background: var(
-  #{style-api.name(style-tokens.$tokens, background-active)},
+  #{style-api.name(style-tokens.$tokens, color-background-active)},
   var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active)
 );
 $selected-color: var(
-  #{style-api.name(style-tokens.$tokens, color-active)},
+  #{style-api.name(style-tokens.$tokens, color-text-active)},
   var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active)
 );
 $segment-gap: awsui.$space-static-xxs;
@@ -101,11 +101,11 @@ $segment-radius: var(
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      #{style-api.name(style-tokens.$tokens, focus-ring-border-width)},
+      #{style-api.name(style-tokens.$tokens, focus-outline-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      #{style-api.name(style-tokens.$tokens, focus-ring-color)},
+      #{style-api.name(style-tokens.$tokens, color-focus-outline)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 
@@ -113,7 +113,7 @@ $segment-radius: var(
     @include styles.focus-highlight(
       $gutter: awsui.$space-segmented-control-focus-outline-gutter,
       $border-radius: var(
-          #{style-api.name(style-tokens.$tokens, focus-ring-border-radius)},
+          #{style-api.name(style-tokens.$tokens, focus-outline-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),

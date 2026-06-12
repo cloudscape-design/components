@@ -205,6 +205,8 @@ export namespace InputProps {
 
   export interface ClassNames {
     root?: string;
+    /** Class name applied to the clear (X) button shown for `type="search"`. Theme via `--awsui-style-*` button tokens. */
+    clearButton?: string;
   }
 
   export type ChangeDetail = BaseChangeDetail;

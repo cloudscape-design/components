@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Shared "form-field" token group: the editable text surface shared by Input, Textarea and
+// Prompt-input. State suffixes are normalized to default/hover/focus/disabled/readonly so one
+// consumer style themes any of them identically. Value type leads (color-*, box-shadow-*, font-*).
+$props: (
+  color-background-default,
+  color-background-hover,
+  color-background-focus,
+  color-background-disabled,
+  color-background-readonly,
+  color-border-default,
+  color-border-hover,
+  color-border-focus,
+  color-border-disabled,
+  color-border-readonly,
+  color-text-default,
+  color-text-hover,
+  color-text-focus,
+  color-text-disabled,
+  color-text-readonly,
+  box-shadow-default,
+  box-shadow-hover,
+  box-shadow-focus,
+  box-shadow-disabled,
+  box-shadow-readonly,
+  border-radius,
+  border-width,
+  color-placeholder,
+  font-placeholder-size,
+  font-placeholder-style,
+  font-placeholder-weight,
+  font-size,
+  font-weight,
+  padding-block,
+  padding-inline,
+  focus-ring-shadow
+);

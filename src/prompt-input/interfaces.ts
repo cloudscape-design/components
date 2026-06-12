@@ -324,6 +324,8 @@ export interface PromptInputProps
 export namespace PromptInputProps {
   export interface ClassNames {
     root?: string;
+    /** Class name applied to the action (send) button. Theme it via `--awsui-style-*` button tokens. */
+    actionButton?: string;
   }
 
   export type KeyDetail = BaseKeyDetail;

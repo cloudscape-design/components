@@ -6,25 +6,25 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-modal {
-  --awsui-style-modal-header-background: #{palette.$info-surface};
-  --awsui-style-modal-border-radius: 20px;
-  --awsui-style-modal-overlay-background: hsl(220 120% 15% / 75%);
+  --awsui-style-color-background-header: #{palette.$info-surface};
+  --awsui-style-border-radius: 20px;
+  --awsui-style-color-background-overlay: hsl(220 120% 15% / 75%);
 }
 
 .styled-button-primary {
-  --awsui-style-button-background-default: #{palette.$accent};
-  --awsui-style-button-background-hover: #{palette.$accent-hover};
-  --awsui-style-button-background-active: #{palette.$accent-active};
-  --awsui-style-button-color-default: #{palette.$text-on-accent};
-  --awsui-style-button-color-hover: #{palette.$text-on-accent};
-  --awsui-style-button-color-active: #{palette.$text-on-accent};
-  --awsui-style-button-border-color-default: #{palette.$accent};
-  --awsui-style-button-border-color-hover: #{palette.$accent-hover};
-  --awsui-style-button-border-color-active: #{palette.$accent-active};
+  --awsui-style-color-background-default: #{palette.$accent};
+  --awsui-style-color-background-hover: #{palette.$accent-hover};
+  --awsui-style-color-background-active: #{palette.$accent-active};
+  --awsui-style-color-text-default: #{palette.$text-on-accent};
+  --awsui-style-color-text-hover: #{palette.$text-on-accent};
+  --awsui-style-color-text-active: #{palette.$text-on-accent};
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-color-border-hover: #{palette.$accent-hover};
+  --awsui-style-color-border-active: #{palette.$accent-active};
 }
 
 .styled-button-secondary {
-  --awsui-style-button-color-default: #{palette.$accent};
-  --awsui-style-button-color-hover: #{palette.$accent-hover};
-  --awsui-style-button-color-active: #{palette.$accent-active};
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-text-hover: #{palette.$accent-hover};
+  --awsui-style-color-text-active: #{palette.$accent-active};
 }

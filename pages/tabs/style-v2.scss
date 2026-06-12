@@ -6,11 +6,11 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-tabs {
-  --awsui-style-tabs-color-default: #{palette.$success};
-  --awsui-style-tabs-color-active: #{palette.$error};
-  --awsui-style-tabs-color-hover: #{palette.$warning};
-  --awsui-style-tabs-color-disabled: #{palette.$text-disabled};
-  --awsui-style-tabs-active-indicator-color: #{palette.$error};
+  --awsui-style-color-text-default: #{palette.$success};
+  --awsui-style-color-text-active: #{palette.$error};
+  --awsui-style-color-text-hover: #{palette.$warning};
+  --awsui-style-color-text-disabled: #{palette.$text-disabled};
+  --awsui-style-active-indicator-color: #{palette.$error};
   // Header background for the "container" variant.
-  --awsui-style-container-header-background: #{palette.$success-surface};
+  --awsui-style-color-background-header: #{palette.$success-surface};
 }

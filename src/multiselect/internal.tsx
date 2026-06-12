@@ -74,15 +74,24 @@ const InternalMultiselect = React.forwardRef(
     const i18n = useInternalI18n('multiselect');
 
     const resolvedOptions = useMemo(() => {
-      if (!classNames?.options) {
-        return options;
-      }
+      // Attach the option bridge class (styles.option) so option tokens re-anchor on each option;
+      // compose any consumer classNames.options on top for per-option overrides.
       const resolve = (option: MultiselectProps.Option): string | undefined =>
-        typeof classNames.options === 'function' ? classNames.options({ option }) : classNames.options;
+        classNames?.options
+          ? typeof classNames.options === 'function'
+            ? classNames.options({ option })
+            : classNames.options
+          : undefined;
       return options.map(entry =>
         isGroup(entry)
-          ? { ...entry, options: entry.options.map(opt => ({ ...opt, className: resolve(opt) ?? opt.className })) }
-          : { ...entry, className: resolve(entry) ?? entry.className }
+          ? {
+              ...entry,
+              options: entry.options.map(opt => ({
+                ...opt,
+                className: clsx(styles.option, opt.className, resolve(opt)) || undefined,
+              })),
+            }
+          : { ...entry, className: clsx(styles.option, entry.className, resolve(entry)) || undefined }
       );
     }, [options, classNames]);
 

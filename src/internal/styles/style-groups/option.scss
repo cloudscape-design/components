@@ -1,0 +1,14 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Shared "option" token group: the dropdown option styling read by the internal selectable-item,
+// reused by Select-like components (autosuggest, multiselect). Re-anchored per option element via
+// a host bridge class so per-option overrides (classNames.options) resolve.
+$props: (
+  color-text-option,
+  color-background-option-hover,
+  color-background-option-selected,
+  color-text-option-highlighted
+);

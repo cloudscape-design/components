@@ -14,10 +14,11 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
-// Register token's public Style API tokens as inheriting @property custom properties.
-@include style-api.register(style-tokens.$component, style-tokens.$props);
+// Register token's public Style API tokens as non-inheriting @property custom properties.
+@include style-api.register(style-tokens.$props);
 
 .root {
+  @include style-api.carriers(style-tokens.$props);
   @include styles.styles-reset;
 }
 
@@ -30,7 +31,7 @@
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
   color: var(
-    #{style-api.name(style-tokens.$tokens, dismiss-color-default)},
+    #{style-api.name(style-tokens.$tokens, color-dismiss-default)},
     var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default)
   );
   background-color: transparent;
@@ -55,7 +56,7 @@
 
   &:hover {
     color: var(
-      #{style-api.name(style-tokens.$tokens, dismiss-color-hover)},
+      #{style-api.name(style-tokens.$tokens, color-dismiss-hover)},
       var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover)
     );
   }
@@ -129,17 +130,17 @@
 
 .token-box-readonly {
   border-color: var(
-    #{style-api.name(style-tokens.$tokens, border-color-readonly)},
+    #{style-api.name(style-tokens.$tokens, color-border-readonly)},
     var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled)
   );
   background: var(
-    #{style-api.name(style-tokens.$tokens, background-readonly)},
+    #{style-api.name(style-tokens.$tokens, color-background-readonly)},
     var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content)
   );
 
   > .dismiss-button {
     color: var(
-      #{style-api.name(style-tokens.$tokens, dismiss-color-readonly)},
+      #{style-api.name(style-tokens.$tokens, color-dismiss-readonly)},
       var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled)
     );
   }
@@ -148,11 +149,11 @@
 .token-box-disabled {
   pointer-events: none;
   border-color: var(
-    #{style-api.name(style-tokens.$tokens, border-color-disabled)},
+    #{style-api.name(style-tokens.$tokens, color-border-disabled)},
     var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled)
   );
   background: var(
-    #{style-api.name(style-tokens.$tokens, background-disabled)},
+    #{style-api.name(style-tokens.$tokens, color-background-disabled)},
     var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content)
   );
   color: awsui.$color-text-disabled;
@@ -160,7 +161,7 @@
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
     color: var(
-      #{style-api.name(style-tokens.$tokens, dismiss-color-disabled)},
+      #{style-api.name(style-tokens.$tokens, color-dismiss-disabled)},
       var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled)
     );
   }

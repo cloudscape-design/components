@@ -15,12 +15,12 @@
   block-size: 100%;
   border-block: awsui.$border-width-token solid
     var(
-      #{style-api.name(style-tokens.$tokens, border-color-default)},
+      #{style-api.name(style-tokens.$tokens, color-border-default)},
       var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
     );
   border-inline: awsui.$border-width-token solid
     var(
-      #{style-api.name(style-tokens.$tokens, border-color-default)},
+      #{style-api.name(style-tokens.$tokens, color-border-default)},
       var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
     );
   padding-block-start: awsui.$space-token-vertical;
@@ -30,14 +30,14 @@
   display: flex;
   align-items: flex-start;
   background: var(
-    #{style-api.name(style-tokens.$tokens, background-default)},
+    #{style-api.name(style-tokens.$tokens, color-background-default)},
     var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background)
   );
   border-start-start-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-token});
   border-start-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-token});
   border-end-start-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-token});
   border-end-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-token});
-  color: var(#{style-api.name(style-tokens.$tokens, color-default)}, #{awsui.$color-text-body-default});
+  color: var(#{style-api.name(style-tokens.$tokens, color-text-default)}, #{awsui.$color-text-body-default});
   box-sizing: border-box;
 }
 

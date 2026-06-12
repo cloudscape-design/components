@@ -40,7 +40,11 @@ export default function DatePickerStyleV2Page() {
         disabled={disabled}
         readOnly={readOnly}
         invalid={invalid}
-        classNames={{ root: styles['styled-date-picker'] }}
+        classNames={{
+          root: styles['styled-date-picker'],
+          openCalendarButton: styles['styled-dp-button'],
+          calendar: styles['styled-dp-calendar'],
+        }}
       />
     </SimplePage>
   );

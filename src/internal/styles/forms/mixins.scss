@@ -255,17 +255,17 @@
 
   &.refresh {
     border-block: solid var(#{style-api.name($tokens, border-width)}, #{awsui.$border-divider-section-width})
-      var(#{style-api.name($tokens, divider-color)}, #{awsui.$color-border-divider-default});
+      var(#{style-api.name($tokens, color-divider)}, #{awsui.$color-border-divider-default});
     border-inline: solid var(#{style-api.name($tokens, border-width)}, #{awsui.$border-divider-section-width})
-      var(#{style-api.name($tokens, divider-color)}, #{awsui.$color-border-divider-default});
+      var(#{style-api.name($tokens, color-divider)}, #{awsui.$color-border-divider-default});
   }
 
   &:not(.refresh)::before {
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-block-start: var(#{style-api.name($tokens, top-border-width)}, #{awsui.$border-container-top-width}) solid
-      var(#{style-api.name($tokens, top-border-color)}, #{awsui.$color-border-container-top});
+    border-block-start: var(#{style-api.name($tokens, border-width-top)}, #{awsui.$border-container-top-width}) solid
+      var(#{style-api.name($tokens, color-border-top)}, #{awsui.$color-border-container-top});
     border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
     border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
     border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});

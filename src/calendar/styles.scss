@@ -14,15 +14,17 @@
 
 /* stylelint-disable custom-property-pattern */
 
-// Calendar's public Style API tokens.
-$component: 'calendar';
-$props: style-api.uniform(
-  (current-background, hover-background, hover-border-color, selected-background, selected-color),
-  $inherits: true
+// Calendar's public Style API tokens (shared, component-less, value-type-first names).
+$props: (
+  color-background-current,
+  color-background-hover,
+  color-border-hover,
+  color-background-selected,
+  color-text-selected
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 .root {
   /* used in test-utils */
@@ -36,6 +38,7 @@ $tokens: style-api.resolve($component, $props);
 }
 
 .calendar {
+  @include style-api.carriers($props);
   @include styles.styles-reset;
   display: block;
   inline-size: awsui.$size-calendar-grid-width;
@@ -119,13 +122,16 @@ $tokens: style-api.resolve($component, $props);
         &:hover {
           @include item-border-radius;
           color: awsui.$color-text-calendar-date-hover;
-          background-color: var(#{style-api.name($tokens, hover-background)}, #{calendar.$grid-hover-background-color});
+          background-color: var(
+            #{style-api.name($tokens, color-background-hover)},
+            #{calendar.$grid-hover-background-color}
+          );
           &:not(.calendar-date-selected) {
             &::after {
               border-block: awsui.$border-item-width solid
-                var(#{style-api.name($tokens, hover-border-color)}, #{calendar.$grid-hover-border-color});
+                var(#{style-api.name($tokens, color-border-hover)}, #{calendar.$grid-hover-border-color});
               border-inline: awsui.$border-item-width solid
-                var(#{style-api.name($tokens, hover-border-color)}, #{calendar.$grid-hover-border-color});
+                var(#{style-api.name($tokens, color-border-hover)}, #{calendar.$grid-hover-border-color});
             }
           }
         }
@@ -135,7 +141,7 @@ $tokens: style-api.resolve($component, $props);
     &-current {
       @include item-border-radius;
       background-color: var(
-        #{style-api.name($tokens, current-background)},
+        #{style-api.name($tokens, color-background-current)},
         #{calendar.$grid-current-date-background-color}
       );
       font-weight: styles.$font-weight-bold;
@@ -201,17 +207,17 @@ $tokens: style-api.resolve($component, $props);
       &::after {
         @include item-border-radius;
         background-color: var(
-          #{style-api.name($tokens, selected-background)},
+          #{style-api.name($tokens, color-background-selected)},
           #{calendar.$grid-selected-background-color}
         );
         border-block: awsui.$border-item-width solid
-          var(#{style-api.name($tokens, selected-background)}, #{calendar.$grid-selected-border-color});
+          var(#{style-api.name($tokens, color-background-selected)}, #{calendar.$grid-selected-border-color});
         border-inline: awsui.$border-item-width solid
-          var(#{style-api.name($tokens, selected-background)}, #{calendar.$grid-selected-border-color});
+          var(#{style-api.name($tokens, color-background-selected)}, #{calendar.$grid-selected-border-color});
       }
       > .date-inner {
         z-index: 2;
-        color: var(#{style-api.name($tokens, selected-color)}, #{calendar.$grid-selected-text-color});
+        color: var(#{style-api.name($tokens, color-text-selected)}, #{calendar.$grid-selected-text-color});
         position: relative;
       }
     }

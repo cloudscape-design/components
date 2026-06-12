@@ -19,18 +19,18 @@ $radio-size: awsui.$size-control;
 .outline {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-internal-style-radio-focus-ring-border-width,
+      --awsui-internal-style-focus-outline-width,
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      --awsui-internal-style-radio-focus-ring-color,
+      --awsui-internal-style-color-focus-outline,
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 
   @include styles.focus-highlight(
     $gutter: 2px,
     $border-radius: var(
-        --awsui-internal-style-radio-focus-ring-border-radius,
+        --awsui-internal-style-focus-outline-radius,
         var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring)
       ),
     $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -38,18 +38,18 @@ $radio-size: awsui.$size-control;
 }
 
 .styled-circle-border {
-  stroke: var(--awsui-internal-style-radio-border-color-default, #{awsui.$color-border-control-default});
-  fill: var(--awsui-internal-style-radio-background-default, #{awsui.$color-background-control-default});
+  stroke: var(--awsui-internal-style-color-border-control-default, #{awsui.$color-border-control-default});
+  fill: var(--awsui-internal-style-color-background-control-default, #{awsui.$color-background-control-default});
   &.styled-circle-disabled,
   &.styled-circle-readonly {
-    fill: var(--awsui-internal-style-radio-background-disabled, #{awsui.$color-background-control-disabled});
-    stroke: var(--awsui-internal-style-radio-border-color-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
+    stroke: var(--awsui-internal-style-color-border-control-disabled, #{awsui.$color-background-control-disabled});
   }
 }
 
 .styled-circle-fill {
-  stroke: var(--awsui-internal-style-radio-background-checked, #{awsui.$color-background-control-checked});
-  fill: var(--awsui-internal-style-radio-foreground-default, #{awsui.$color-foreground-control-default});
+  stroke: var(--awsui-internal-style-color-background-control-checked, #{awsui.$color-background-control-checked});
+  fill: var(--awsui-internal-style-color-foreground-control-default, #{awsui.$color-foreground-control-default});
   opacity: 0;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
@@ -58,11 +58,11 @@ $radio-size: awsui.$size-control;
     opacity: 1;
   }
   &.styled-circle-disabled {
-    fill: var(--awsui-internal-style-radio-foreground-disabled, #{awsui.$color-foreground-control-disabled});
-    stroke: var(--awsui-internal-style-radio-background-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-foreground-control-disabled, #{awsui.$color-foreground-control-disabled});
+    stroke: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
   }
   &.styled-circle-readonly {
-    fill: var(--awsui-internal-style-radio-foreground-readonly, #{awsui.$color-foreground-control-read-only});
-    stroke: var(--awsui-internal-style-radio-background-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-foreground-control-readonly, #{awsui.$color-foreground-control-read-only});
+    stroke: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
   }
 }

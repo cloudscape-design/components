@@ -5,6 +5,18 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/option' as option;
+
+/* stylelint-disable custom-property-pattern */
+
+// Register the shared option tokens; the .option bridge re-anchors them on each option element so
+// per-option overrides via classNames.options resolve where the selectable-item reads them.
+@include style-api.register(option.$props);
+
+.option {
+  @include style-api.carriers(option.$props);
+}
 
 .root {
   @include styles.styles-reset;

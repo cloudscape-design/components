@@ -197,12 +197,12 @@ export function DrawerImplementation({
                 </div>
               )}
               {closeAction && !hideCloseAction && (
-                <div className={clsx(styles['close-action'], classNames?.closeButton ?? closeAction.className)}>
+                <div className={clsx(styles['close-action'], closeAction.className)}>
                   <InternalButton
                     variant="icon"
                     iconName="close"
                     {...{ ...closeAction, className: undefined }}
-                    className={testClasses['close-action']}
+                    className={clsx(testClasses['close-action'], classNames?.closeButton)}
                     onClick={() => handleClose('close-action')}
                   />
                 </div>

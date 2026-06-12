@@ -203,34 +203,34 @@ the grid layout will be:
 .stack > .notification-bar {
   @include styles.text-wrapping;
   background: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-background-default)},
+    #{style-api.name(style-tokens.$tokens, color-background-notification-bar-default)},
     var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar)
   );
   border-color: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-border-color-default)},
+    #{style-api.name(style-tokens.$tokens, color-border-notification-bar-default)},
     var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar)
   );
   border-start-start-radius: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-border-radius)},
+    #{style-api.name(style-tokens.$tokens, border-radius-notification-bar)},
     #{awsui.$border-radius-button}
   );
   border-start-end-radius: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-border-radius)},
+    #{style-api.name(style-tokens.$tokens, border-radius-notification-bar)},
     #{awsui.$border-radius-button}
   );
   border-end-start-radius: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-border-radius)},
+    #{style-api.name(style-tokens.$tokens, border-radius-notification-bar)},
     #{awsui.$border-radius-button}
   );
   border-end-end-radius: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-border-radius)},
+    #{style-api.name(style-tokens.$tokens, border-radius-notification-bar)},
     #{awsui.$border-radius-button}
   );
   border-block-style: solid;
   border-inline-style: solid;
   box-shadow: awsui.$shadow-panel-toggle;
   color: var(
-    #{style-api.name(style-tokens.$tokens, notification-bar-color-default)},
+    #{style-api.name(style-tokens.$tokens, color-text-notification-bar-default)},
     var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar)
   );
   cursor: pointer;
@@ -287,45 +287,45 @@ the grid layout will be:
 
   &:hover {
     background: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-background-hover)},
+      #{style-api.name(style-tokens.$tokens, color-background-notification-bar-hover)},
       var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover)
     );
     border-color: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-border-color-hover)},
+      #{style-api.name(style-tokens.$tokens, color-border-notification-bar-hover)},
       var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover)
     );
     color: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-color-hover)},
+      #{style-api.name(style-tokens.$tokens, color-text-notification-bar-hover)},
       var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar)
     );
   }
 
   &:active {
     background: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-background-active)},
+      #{style-api.name(style-tokens.$tokens, color-background-notification-bar-active)},
       var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active)
     );
     border-color: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-border-color-active)},
+      #{style-api.name(style-tokens.$tokens, color-border-notification-bar-active)},
       var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar)
     );
     color: var(
-      #{style-api.name(style-tokens.$tokens, notification-bar-color-active)},
+      #{style-api.name(style-tokens.$tokens, color-text-notification-bar-active)},
       var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar)
     );
   }
 
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
-    border-block-width: var(#{style-api.name(style-tokens.$tokens, notification-bar-border-width)}, $border-width);
-    border-inline-width: var(#{style-api.name(style-tokens.$tokens, notification-bar-border-width)}, $border-width);
+    border-block-width: var(#{style-api.name(style-tokens.$tokens, border-width-notification-bar)}, $border-width);
+    border-inline-width: var(#{style-api.name(style-tokens.$tokens, border-width-notification-bar)}, $border-width);
     padding-inline: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
-    border-block-width: var(#{style-api.name(style-tokens.$tokens, notification-bar-border-width)}, $border-width);
-    border-inline-width: var(#{style-api.name(style-tokens.$tokens, notification-bar-border-width)}, $border-width);
+    border-block-width: var(#{style-api.name(style-tokens.$tokens, border-width-notification-bar)}, $border-width);
+    border-inline-width: var(#{style-api.name(style-tokens.$tokens, border-width-notification-bar)}, $border-width);
     padding-inline: awsui.$space-s;
 
     &:focus {
@@ -346,11 +346,11 @@ the grid layout will be:
     padding-block: 0;
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
       var(
-        #{style-api.name(style-tokens.$tokens, notification-bar-focus-ring-border-width)},
+        #{style-api.name(style-tokens.$tokens, focus-outline-width-notification-bar)},
         var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
       )
       var(
-        #{style-api.name(style-tokens.$tokens, notification-bar-focus-ring-color)},
+        #{style-api.name(style-tokens.$tokens, color-focus-outline-notification-bar)},
         var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
       );
 
@@ -371,7 +371,7 @@ the grid layout will be:
       @include styles.focus-highlight(
         $gutter: 0px,
         $border-radius: var(
-            #{style-api.name(style-tokens.$tokens, notification-bar-focus-ring-border-radius)},
+            #{style-api.name(style-tokens.$tokens, focus-outline-radius-notification-bar)},
             var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
           ),
         $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})

@@ -3,33 +3,29 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/surface' as surface;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
 
-$component: 'flashbar';
-$props: style-api.uniform(
-  (
-    background,
-    border-color,
-    border-radius,
-    border-width,
-    color,
-    focus-ring-color,
-    focus-ring-border-radius,
-    focus-ring-border-width,
-    notification-bar-background-default,
-    notification-bar-background-hover,
-    notification-bar-background-active,
-    notification-bar-border-color-default,
-    notification-bar-border-color-hover,
-    notification-bar-border-color-active,
-    notification-bar-border-radius,
-    notification-bar-border-width,
-    notification-bar-color-default,
-    notification-bar-color-hover,
-    notification-bar-color-active,
-    notification-bar-focus-ring-color,
-    notification-bar-focus-ring-border-radius,
-    notification-bar-focus-ring-border-width
-  ),
-  $inherits: true
+// Flashbar's tokens: the shared surface + focus-outline groups (for the flash items) plus its own
+// notification-bar tokens, including a separately-targetable notification-bar focus ring.
+// Flash-item tokens re-anchor per-item on each .flash (themed via classNames.item); the
+// notification-bar tokens re-anchor on the flashbar shell root (themed via classNames.root).
+$flash-props: style-api.combine(surface.$props, focus-outline.$props);
+$nb-props: (
+  color-background-notification-bar-default,
+  color-background-notification-bar-hover,
+  color-background-notification-bar-active,
+  color-border-notification-bar-default,
+  color-border-notification-bar-hover,
+  color-border-notification-bar-active,
+  border-radius-notification-bar,
+  border-width-notification-bar,
+  color-text-notification-bar-default,
+  color-text-notification-bar-hover,
+  color-text-notification-bar-active,
+  color-focus-outline-notification-bar,
+  focus-outline-radius-notification-bar,
+  focus-outline-width-notification-bar
 );
-$tokens: style-api.resolve($component, $props);
+$props: style-api.combine($flash-props, $nb-props);
+$tokens: style-api.resolve($props);

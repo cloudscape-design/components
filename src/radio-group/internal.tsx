@@ -74,7 +74,10 @@ const InternalRadioGroup = React.forwardRef(
                 styles.radio,
                 item.description && styles['radio--has-description'],
                 direction === 'horizontal' && styles.horizontal,
-                item.value === value && analyticsSelectors.selected
+                item.value === value && analyticsSelectors.selected,
+                typeof classNames?.radioButton === 'function'
+                  ? classNames.radioButton({ item })
+                  : classNames?.radioButton
               )}
               checked={item.value === value}
               name={name || generatedName}

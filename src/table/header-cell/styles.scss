@@ -58,9 +58,12 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   text-align: start;
   box-sizing: border-box;
   border-block-end: awsui.$border-divider-section-width solid
-    var(#{style-api.name(style-tokens.$tokens, border-color)}, #{awsui.$color-border-divider-default});
-  background: var(#{style-api.name(style-tokens.$tokens, header-background)}, #{awsui.$color-background-table-header});
-  color: var(#{style-api.name(style-tokens.$tokens, header-color)}, #{awsui.$color-text-column-header});
+    var(#{style-api.name(style-tokens.$tokens, color-border)}, #{awsui.$color-border-divider-default});
+  background: var(
+    #{style-api.name(style-tokens.$tokens, color-background-header)},
+    #{awsui.$color-background-table-header}
+  );
+  color: var(#{style-api.name(style-tokens.$tokens, color-text-header)}, #{awsui.$color-text-column-header});
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding-block: awsui.$space-scaled-xxs;
@@ -92,7 +95,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &.sticky-cell {
     position: sticky;
     background: var(
-      #{style-api.name(style-tokens.$tokens, header-background)},
+      #{style-api.name(style-tokens.$tokens, color-background-header)},
       #{awsui.$color-background-table-header}
     );
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
@@ -136,7 +139,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   inset-block-start: 50%;
   transform: translateY(-50%);
   inset-inline-end: awsui.$space-xxs;
-  color: var(#{style-api.name(style-tokens.$tokens, sorting-icon-color)}, #{awsui.$color-text-column-sorting-icon});
+  color: var(#{style-api.name(style-tokens.$tokens, color-icon-sort)}, #{awsui.$color-text-column-sorting-icon});
 }
 
 .edit-icon {
@@ -174,9 +177,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
   & > .header-cell-content:hover,
   &.header-cell-sorted > .header-cell-content {
-    color: var(#{style-api.name(style-tokens.$tokens, header-color)}, #{awsui.$color-text-interactive-active});
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-header)}, #{awsui.$color-text-interactive-active});
     & > .sorting-icon {
-      color: var(#{style-api.name(style-tokens.$tokens, sorting-icon-color)}, #{awsui.$color-text-interactive-active});
+      color: var(#{style-api.name(style-tokens.$tokens, color-icon-sort)}, #{awsui.$color-text-interactive-active});
     }
   }
 }

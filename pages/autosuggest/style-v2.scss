@@ -8,54 +8,54 @@
 /* stylelint-disable custom-property-pattern */
 
 .styled-autosuggest {
-  --awsui-style-input-background: #{palette.$surface-alt};
-  --awsui-style-input-background-focus: #{palette.$control-bg};
-  --awsui-style-input-border-color: #{palette.$accent};
-  --awsui-style-input-border-color-focus: #{palette.$accent-hover};
-  --awsui-style-input-color: #{palette.$text};
-  --awsui-style-input-placeholder-color: #{palette.$text-muted};
-  --awsui-style-input-border-radius: 12px;
-  --awsui-style-input-border-width: 2px;
-  --awsui-style-autosuggest-dropdown-border-color: #{palette.$accent};
-  --awsui-style-autosuggest-dropdown-border-radius: 12px;
-  --awsui-style-autosuggest-dropdown-border-width: 2px;
-  --awsui-style-autosuggest-option-background-hover: #{palette.$surface-alt};
-  --awsui-style-autosuggest-option-background-selected: #{palette.$surface-alt};
+  --awsui-style-color-background-default: #{palette.$surface-alt};
+  --awsui-style-color-background-focus: #{palette.$control-bg};
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-color-border-focus: #{palette.$accent-hover};
+  --awsui-style-color-text-default: #{palette.$text};
+  --awsui-style-color-placeholder: #{palette.$text-muted};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-border-width: 2px;
+  --awsui-style-color-border-dropdown: #{palette.$accent};
+  --awsui-style-border-radius-dropdown: 12px;
+  --awsui-style-border-width-dropdown: 2px;
+  --awsui-style-color-background-option-hover: #{palette.$surface-alt};
+  --awsui-style-color-background-option-selected: #{palette.$surface-alt};
 
   &:hover {
-    --awsui-style-input-border-color: #{palette.$accent-hover};
+    --awsui-style-color-border-default: #{palette.$accent-hover};
   }
 }
 
 .styled-autosuggest-invalid {
-  --awsui-style-input-background: #{palette.$error-surface};
-  --awsui-style-input-border-color: #{palette.$error};
-  --awsui-style-input-border-color-focus: #{palette.$error};
-  --awsui-style-input-color: #{palette.$text};
-  --awsui-style-input-border-radius: 12px;
-  --awsui-style-input-border-width: 2px;
-  --awsui-style-autosuggest-dropdown-border-color: #{palette.$error};
-  --awsui-style-autosuggest-dropdown-border-radius: 12px;
-  --awsui-style-autosuggest-option-background-hover: #{palette.$error-surface};
-  --awsui-style-autosuggest-option-background-selected: #{palette.$error-surface};
+  --awsui-style-color-background-default: #{palette.$error-surface};
+  --awsui-style-color-border-default: #{palette.$error};
+  --awsui-style-color-border-focus: #{palette.$error};
+  --awsui-style-color-text-default: #{palette.$text};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-border-width: 2px;
+  --awsui-style-color-border-dropdown: #{palette.$error};
+  --awsui-style-border-radius-dropdown: 12px;
+  --awsui-style-color-background-option-hover: #{palette.$error-surface};
+  --awsui-style-color-background-option-selected: #{palette.$error-surface};
 }
 
 .option-compute {
-  --awsui-style-autosuggest-option-color: #{palette.$accent};
+  --awsui-style-color-text-option: #{palette.$accent};
 
   &[data-highlighted] {
-    --awsui-style-autosuggest-option-background-hover: #{palette.$accent};
-    --awsui-style-autosuggest-option-color-highlighted: #{palette.$text-on-accent};
-    --awsui-style-autosuggest-option-color: #{palette.$text-on-accent};
+    --awsui-style-color-background-option-hover: #{palette.$accent};
+    --awsui-style-color-text-option-highlighted: #{palette.$text-on-accent};
+    --awsui-style-color-text-option: #{palette.$text-on-accent};
   }
 }
 
 .option-storage {
-  --awsui-style-autosuggest-option-color: #{palette.$success};
+  --awsui-style-color-text-option: #{palette.$success};
 
   &[data-highlighted] {
-    --awsui-style-autosuggest-option-background-hover: #{palette.$success};
-    --awsui-style-autosuggest-option-color-highlighted: #{palette.$text-on-accent};
-    --awsui-style-autosuggest-option-color: #{palette.$text-on-accent};
+    --awsui-style-color-background-option-hover: #{palette.$success};
+    --awsui-style-color-text-option-highlighted: #{palette.$text-on-accent};
+    --awsui-style-color-text-option: #{palette.$text-on-accent};
   }
 }

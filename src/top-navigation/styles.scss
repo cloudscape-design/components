@@ -6,44 +6,39 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/style-api' as style-api;
-@use '../internal/components/menu-dropdown/mixins' as menu-dropdown;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 /* stylelint-disable custom-property-pattern */
 
-// Top-navigation owns its tokens, including the menu trigger and menu items rendered by the shared
-// menu-dropdown (impl detail). The embedded Input/Button/Link utilities are themed via their own
-// `--awsui-style-{component}-*` tokens through classNames.
-$component: 'top-navigation';
-$props: style-api.uniform(
-  (
-    background,
-    title-color,
-    title-color-hover,
-    menu-trigger-background-active,
-    menu-trigger-background-hover,
-    menu-trigger-color,
-    menu-trigger-color-active,
-    menu-trigger-color-hover,
-    menu-item-color,
-    menu-item-color-highlighted,
-    menu-item-background-hover
-  ),
-  $inherits: true
+// Top-navigation owns its background + title tokens (read here), plus the menu trigger and menu item
+// tokens read by the shared menu-dropdown/item-element internals. The embedded Input/Button/Link
+// utilities are themed via their own `--awsui-style-*` tokens through classNames.
+$own-props: (color-background, color-text-title, color-text-title-hover);
+$menu-props: (
+  color-background-menu-trigger-active,
+  color-background-menu-trigger-hover,
+  color-text-menu-trigger,
+  color-text-menu-trigger-active,
+  color-text-menu-trigger-hover,
+  color-text-menu-item,
+  color-text-menu-item-highlighted,
+  color-background-menu-item-hover
 );
-$tokens: style-api.resolve($component, $props);
+$props: style-api.combine($own-props, $menu-props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
-// Bridge class applied by top-navigation to each utility, mapping its menu tokens to the
-// menu-dropdown internal vars (per-utility so per-utility overrides resolve on the same element).
+// Per-utility bridge: re-anchors the menu carriers on each utility so per-utility overrides resolve
+// on the same element the menu-dropdown/item-element internals read.
 .utility-style {
-  @include menu-dropdown.host($tokens);
+  @include style-api.carriers($menu-props);
 }
 
 .top-navigation {
   @include styles.styles-reset;
-  background: var(#{style-api.name($tokens, background)}, #{awsui.$color-background-container-content});
+  @include style-api.carriers($own-props);
+  background: var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-content});
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   > .padding-box {
@@ -96,10 +91,10 @@ $tokens: style-api.resolve($component, $props);
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(#{style-api.name($tokens, title-color)}, #{awsui.$color-text-top-navigation-title});
+    color: var(#{style-api.name($tokens, color-text-title)}, #{awsui.$color-text-top-navigation-title});
 
     &:hover {
-      color: var(#{style-api.name($tokens, title-color-hover)}, #{awsui.$color-text-accent});
+      color: var(#{style-api.name($tokens, color-text-title-hover)}, #{awsui.$color-text-accent});
     }
 
     @include focus-visible.when-visible {
@@ -251,7 +246,7 @@ $tokens: style-api.resolve($component, $props);
 
 .overflow-menu {
   @include styles.styles-reset;
-  background: var(#{style-api.name($tokens, background)}, #{awsui.$color-background-container-content});
+  background: var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-content});
   block-size: 100%;
 }
 

@@ -16,20 +16,21 @@
 /* stylelint-disable custom-property-pattern */
 
 // Register link's public Style API tokens (declared in ./style-tokens; read in the shared links mixin).
-@include style-api.register(style-tokens.$component, style-tokens.$props);
+@include style-api.register(style-tokens.$props);
 
 .link {
+  @include style-api.carriers(style-tokens.$props);
   @include styles.styles-reset;
   display: inline;
   white-space: inherit;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      --awsui-style-link-focus-ring-border-width,
+      #{style-api.name(style-tokens.$tokens, focus-outline-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, awsui.$border-link-focus-ring-shadow-spread)
     )
     var(
-      --awsui-style-link-focus-ring-color,
+      #{style-api.name(style-tokens.$tokens, color-focus-outline)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 
@@ -67,11 +68,11 @@
   @include focus-visible.when-visible {
     @include styles.link-focus(
       $border-color: var(
-          --awsui-style-link-focus-ring-color,
+          #{style-api.name(style-tokens.$tokens, color-focus-outline)},
           var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
         ),
       $border-radius: var(
-          --awsui-style-link-focus-ring-border-radius,
+          #{style-api.name(style-tokens.$tokens, focus-outline-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})

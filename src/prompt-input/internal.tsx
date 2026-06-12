@@ -362,6 +362,7 @@ const InternalPromptInput = React.forwardRef(
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
+            classNames={{ root: classNames?.actionButton }}
             ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}

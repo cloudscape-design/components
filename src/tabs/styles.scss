@@ -14,9 +14,10 @@
 /* stylelint-disable custom-property-pattern */
 
 // Tabs' public Style API tokens.
-@include style-api.register(style-tokens.$component, style-tokens.$props);
+@include style-api.register(style-tokens.$props);
 
 .root {
+  @include style-api.carriers(style-tokens.$props);
   /* used in test-utils or tests */
 }
 

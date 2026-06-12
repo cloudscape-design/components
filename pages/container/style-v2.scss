@@ -8,10 +8,10 @@
 /* stylelint-disable custom-property-pattern */
 
 .container-outer {
-  --awsui-style-container-border-radius: 8px;
-  --awsui-style-container-header-background: #{palette.$info-surface};
+  --awsui-style-border-radius: 8px;
+  --awsui-style-color-background-header: #{palette.$info-surface};
 }
 
 .container-inner {
-  --awsui-style-container-header-background: #{palette.$success-surface};
+  --awsui-style-color-background-header: #{palette.$success-surface};
 }

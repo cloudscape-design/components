@@ -4,27 +4,23 @@
 */
 @use '../internal/styles/style-api' as style-api;
 
-$component: 'tabs';
-$props: style-api.uniform(
-  (
-    active-indicator-color,
-    active-indicator-width,
-    active-indicator-border-radius,
-    background-default,
-    background-hover,
-    background-active,
-    background-disabled,
-    border-color-default,
-    border-color-hover,
-    border-color-active,
-    border-color-disabled,
-    color-default,
-    color-hover,
-    color-active,
-    color-disabled,
-    separator-color,
-    separator-width
-  ),
-  $inherits: true
+$props: (
+  color-background-default,
+  color-background-hover,
+  color-background-active,
+  color-background-disabled,
+  color-border-default,
+  color-border-hover,
+  color-border-active,
+  color-border-disabled,
+  color-text-default,
+  color-text-hover,
+  color-text-active,
+  color-text-disabled,
+  active-indicator-color,
+  active-indicator-width,
+  active-indicator-border-radius,
+  separator-color,
+  separator-width
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);

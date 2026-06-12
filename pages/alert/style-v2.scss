@@ -6,18 +6,18 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 @mixin alert-theme($bg, $border, $icon) {
-  --awsui-style-alert-background: #{$bg};
-  --awsui-style-alert-border-color: #{$border};
-  --awsui-style-alert-border-width: 4px;
-  --awsui-style-alert-border-radius: 8px;
-  --awsui-style-alert-color: #{palette.$text};
-  --awsui-style-alert-icon-color: #{$icon};
+  --awsui-style-color-background: #{$bg};
+  --awsui-style-color-border: #{$border};
+  --awsui-style-border-width: 4px;
+  --awsui-style-border-radius: 8px;
+  --awsui-style-color-text: #{palette.$text};
+  --awsui-style-color-icon: #{$icon};
 }
 
 @mixin dismiss-theme($color) {
-  --awsui-style-button-color-default: #{$color};
-  --awsui-style-button-color-hover: #{$color};
-  --awsui-style-button-color-active: #{palette.$accent-active};
+  --awsui-style-color-text-default: #{$color};
+  --awsui-style-color-text-hover: #{$color};
+  --awsui-style-color-text-active: #{palette.$accent-active};
 }
 
 .custom-alert {

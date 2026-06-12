@@ -9,35 +9,25 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/surface' as surface;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
 
 @use './motion';
-@use '../internal/styles/style-api' as style-api;
 
-// Alert's public Style API tokens.
-$component: 'alert';
-$props: style-api.uniform(
-  (
-    background,
-    border-color,
-    border-radius,
-    border-width,
-    color,
-    icon-color,
-    focus-ring-color,
-    focus-ring-border-radius,
-    focus-ring-border-width
-  ),
-  $inherits: true
-);
-$tokens: style-api.resolve($component, $props);
+// Alert's public Style API tokens: the shared "surface" and "focus-outline" groups (reused across
+// components) plus its own icon-color.
+$props: style-api.combine(surface.$props, focus-outline.$props, (color-icon));
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 /* stylelint-disable custom-property-pattern */
 
 .root {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
+  @include style-api.carriers($props);
   display: block;
 
   &.hidden {
@@ -61,17 +51,7 @@ $tokens: style-api.resolve($component, $props);
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-  color: var(#{style-api.name($tokens, color)}, inherit);
-
-  #{custom-props.$alertFocusRingBoxShadow}: 0 0 0
-    var(
-      #{style-api.name($tokens, focus-ring-border-width)},
-      var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    )
-    var(
-      #{style-api.name($tokens, focus-ring-color)},
-      var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused)
-    );
+  color: var(#{style-api.name($tokens, color-text)}, inherit);
 }
 
 .alert-wrapper {
@@ -111,19 +91,9 @@ $tokens: style-api.resolve($component, $props);
   display: grid;
   grid-template-columns: min-content auto;
 
-  &:focus {
-    outline: none;
-  }
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(
-          #{style-api.name($tokens, focus-ring-border-radius)},
-          var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
-        ),
-      $box-shadow: var(#{custom-props.$alertFocusRingBoxShadow})
-    );
-  }
+  // Shared, param-free focus ring driven by the focus-outline group's tokens (carriers re-anchored
+  // on .root above), reused identically by any component that composes the group.
+  @include focus-outline.styles;
 }
 
 .text {
@@ -192,11 +162,11 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: var(#{style-api.name($tokens, border-color)}, #{map.get($_border-colors, $type)});
-    background-color: var(#{style-api.name($tokens, background)}, #{map.get($_background-colors, $type)});
+    border-color: var(#{style-api.name($tokens, color-border)}, #{map.get($_border-colors, $type)});
+    background-color: var(#{style-api.name($tokens, color-background)}, #{map.get($_background-colors, $type)});
     > .alert-wrapper > .alert-focus-wrapper > .icon {
       color: var(
-        #{style-api.name($tokens, icon-color)},
+        #{style-api.name($tokens, color-icon)},
         var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
       );
     }

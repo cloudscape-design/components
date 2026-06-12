@@ -32,7 +32,7 @@ export default function StyleV2PromptInputPage() {
       }
     >
       <PromptInput
-        classNames={{ root: styles['styled-prompt-input'] }}
+        classNames={{ root: styles['styled-prompt-input'], actionButton: styles['styled-prompt-action'] }}
         value={value}
         onChange={({ detail }) => setValue(detail.value)}
         placeholder="Ask a question..."

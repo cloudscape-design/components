@@ -271,7 +271,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                         !isFlashbarStackExpanded && styles.item,
                         !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
                       )
-                    : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+                    : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item, item.className)
                 }
                 ref={element => {
                   if (isFlashbarStackExpanded) {

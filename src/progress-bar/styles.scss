@@ -11,17 +11,21 @@
 @use './motion';
 
 // Register public Style API tokens as @property.
-$component: 'progress-bar';
-$props: style-api.uniform(
-  (border-radius, height, percentage-color, percentage-font-size, percentage-font-weight, track-color, value-color),
-  $inherits: true
+$props: (
+  border-radius,
+  block-size,
+  color-text-percentage,
+  font-size-percentage,
+  font-weight-percentage,
+  color-background-track,
+  color-background-value
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 $progress-height: var(
-  #{style-api.name($tokens, height)},
+  #{style-api.name($tokens, block-size)},
   var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
 );
 $progress-border-radius: var(
@@ -29,15 +33,16 @@ $progress-border-radius: var(
   var(#{custom-props.$progressBarBorderRadius}, 10px)
 );
 $progress-background-color: var(
-  #{style-api.name($tokens, track-color)},
+  #{style-api.name($tokens, color-background-track)},
   var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
 );
 $progress-value-background-color: var(
-  #{style-api.name($tokens, value-color)},
+  #{style-api.name($tokens, color-background-value)},
   var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
 );
 
 .root {
+  @include style-api.carriers($props);
   @include styles.styles-reset;
 }
 
@@ -98,9 +103,9 @@ $progress-value-background-color: var(
 
 .percentage {
   /* used in test-utils */
-  color: var(#{style-api.name($tokens, percentage-color)}, inherit);
-  font-size: var(#{style-api.name($tokens, percentage-font-size)}, inherit);
-  font-weight: var(#{style-api.name($tokens, percentage-font-weight)}, inherit);
+  color: var(#{style-api.name($tokens, color-text-percentage)}, inherit);
+  font-size: var(#{style-api.name($tokens, font-size-percentage)}, inherit);
+  font-weight: var(#{style-api.name($tokens, font-weight-percentage)}, inherit);
 }
 
 @mixin general-progress-background-style {

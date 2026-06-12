@@ -6,45 +6,45 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-table {
-  --awsui-style-table-header-background: #{palette.$accent};
-  --awsui-style-table-header-color: #{palette.$text-on-accent};
-  --awsui-style-table-sorting-icon-color: #{palette.$text-on-accent};
-  --awsui-style-table-border-color: #{palette.$border-accent};
-  --awsui-style-table-selected-background: #{palette.$info-surface};
-  --awsui-style-table-selected-border-color: #{palette.$accent};
+  --awsui-style-color-background-header: #{palette.$accent};
+  --awsui-style-color-text-header: #{palette.$text-on-accent};
+  --awsui-style-color-icon-sort: #{palette.$text-on-accent};
+  --awsui-style-color-border: #{palette.$border-accent};
+  --awsui-style-color-background-selected: #{palette.$info-surface};
+  --awsui-style-color-border-selected: #{palette.$accent};
 }
 
 .selection-base {
-  --awsui-style-checkbox-background: #{palette.$control-bg};
-  --awsui-style-checkbox-background-checked: #{palette.$accent};
-  --awsui-style-checkbox-border-color: #{palette.$control-border};
-  --awsui-style-checkbox-foreground: #{palette.$control-foreground};
-  --awsui-style-checkbox-border-width: 2px;
+  --awsui-style-color-background-control: #{palette.$control-bg};
+  --awsui-style-color-background-control-checked: #{palette.$accent};
+  --awsui-style-color-border-control: #{palette.$control-border};
+  --awsui-style-color-foreground-control: #{palette.$control-foreground};
+  --awsui-style-border-width-control: 2px;
 }
 
 .selection-header {
-  --awsui-style-checkbox-background: #{palette.$surface};
-  --awsui-style-checkbox-background-checked: #{palette.$text-on-accent};
-  --awsui-style-checkbox-border-color: #{palette.$text-on-accent};
-  --awsui-style-checkbox-foreground: #{palette.$accent};
+  --awsui-style-color-background-control: #{palette.$surface};
+  --awsui-style-color-background-control-checked: #{palette.$text-on-accent};
+  --awsui-style-color-border-control: #{palette.$text-on-accent};
+  --awsui-style-color-foreground-control: #{palette.$accent};
 }
 
 .selection-green {
-  --awsui-style-checkbox-background-checked: #{palette.$success};
-  --awsui-style-checkbox-border-color: #{palette.$success};
+  --awsui-style-color-background-control-checked: #{palette.$success};
+  --awsui-style-color-border-control: #{palette.$success};
 }
 
 .selection-blue {
-  --awsui-style-checkbox-background-checked: #{palette.$info};
-  --awsui-style-checkbox-border-color: #{palette.$info};
+  --awsui-style-color-background-control-checked: #{palette.$info};
+  --awsui-style-color-border-control: #{palette.$info};
 }
 
 .styled-filter {
-  --awsui-style-input-border-color: #{palette.$border-accent};
-  --awsui-style-input-border-color-focus: #{palette.$accent};
-  --awsui-style-input-background: #{palette.$surface};
+  --awsui-style-color-border-default: #{palette.$border-accent};
+  --awsui-style-color-border-focus: #{palette.$accent};
+  --awsui-style-color-background-default: #{palette.$surface};
 
   &:hover {
-    --awsui-style-input-border-color: #{palette.$accent-hover};
+    --awsui-style-color-border-default: #{palette.$accent-hover};
   }
 }

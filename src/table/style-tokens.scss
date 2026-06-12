@@ -6,9 +6,12 @@
 @use '../internal/styles/style-api' as style-api;
 
 // Table's public Style API tokens (read in styles.scss and the body-cell/header-cell sub-files).
-$component: 'table';
-$props: style-api.uniform(
-  (border-color, header-background, header-color, selected-background, selected-border-color, sorting-icon-color),
-  $inherits: true
+$props: (
+  color-border,
+  color-background-header,
+  color-text-header,
+  color-background-selected,
+  color-border-selected,
+  color-icon-sort
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);

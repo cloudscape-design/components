@@ -96,6 +96,7 @@ export function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
+      classNames={{ root: selectionClassName }}
       onChange={onChange}
       showOutline={focusedComponent === 'selection-control'}
       controlId={controlId}
@@ -107,6 +108,7 @@ export function SelectionControl({
   ) : (
     <RadioButton
       {...sharedProps}
+      className={selectionClassName}
       controlId={controlId}
       name={name}
       value={''}

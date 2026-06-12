@@ -142,6 +142,7 @@ const DatePicker = React.forwardRef(
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
           <InternalDateInput
+            className={classNames?.root}
             name={name}
             invalid={invalid}
             warning={warning}
@@ -169,6 +170,7 @@ const DatePicker = React.forwardRef(
           <InternalButton
             iconName="calendar"
             className={styles['open-calendar-button']}
+            classNames={{ root: classNames?.openCalendarButton }}
             onClick={onButtonClickHandler}
             ref={buttonRef}
             ariaLabel={buttonAriaLabel}
@@ -204,6 +206,7 @@ const DatePicker = React.forwardRef(
                 <FocusLock className={styles['focus-lock']} autoFocus={true}>
                   <div tabIndex={0} className={styles.calendar} role="dialog">
                     <InternalCalendar
+                      className={classNames?.calendar}
                       value={value}
                       onChange={e => {
                         fireNonCancelableEvent(onChange, e.detail);

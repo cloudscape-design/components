@@ -6,9 +6,9 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-link {
-  --awsui-style-link-color-default: #{palette.$accent};
-  --awsui-style-link-color-hover: #{palette.$error};
-  --awsui-style-link-color-active: #{palette.$accent-active};
-  --awsui-style-link-font-weight: 700;
-  --awsui-style-link-text-decoration: underline;
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-text-hover: #{palette.$error};
+  --awsui-style-color-text-active: #{palette.$accent-active};
+  --awsui-style-font-weight: 700;
+  --awsui-style-text-decoration: underline;
 }

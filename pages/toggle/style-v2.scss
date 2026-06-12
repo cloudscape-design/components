@@ -6,19 +6,19 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 @mixin toggle-theme($checked-bg, $hover-bg) {
-  --awsui-style-toggle-background-default: #{palette.$border};
-  --awsui-style-toggle-background-checked: #{$checked-bg};
-  --awsui-style-toggle-background-disabled: #{palette.$control-bg-disabled};
-  --awsui-style-toggle-handle-default: #{palette.$control-bg};
-  --awsui-style-toggle-handle-checked: #{palette.$control-bg};
-  --awsui-style-toggle-handle-disabled: #{palette.$control-foreground-disabled};
-  --awsui-style-toggle-label-color: #{palette.$text};
-  --awsui-style-toggle-label-color-disabled: #{palette.$text-disabled};
-  --awsui-style-toggle-border-radius: 4px;
-  --awsui-style-toggle-transition-duration: 200ms;
+  --awsui-style-color-background-control-default: #{palette.$border};
+  --awsui-style-color-background-control-checked: #{$checked-bg};
+  --awsui-style-color-background-control-disabled: #{palette.$control-bg-disabled};
+  --awsui-style-color-handle-default: #{palette.$control-bg};
+  --awsui-style-color-handle-checked: #{palette.$control-bg};
+  --awsui-style-color-handle-disabled: #{palette.$control-foreground-disabled};
+  --awsui-style-color-text-label: #{palette.$text};
+  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-transition-duration: 200ms;
 
   &:hover {
-    --awsui-style-toggle-background-default: #{$hover-bg};
+    --awsui-style-color-background-control-default: #{$hover-bg};
   }
 }
 

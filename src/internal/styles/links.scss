@@ -18,7 +18,7 @@
 
 @mixin link-variant-style($variant) {
   color: var(
-    #{style-api.name(link-tokens.$tokens, color-default)},
+    #{style-api.name(link-tokens.$tokens, color-text-default)},
     var(#{custom-props.$styleColorDefault}, #{map.get($variant, 'text-color-default')})
   );
   font-weight: var(#{style-api.name(link-tokens.$tokens, font-weight)}, #{map.get($variant, 'font-weight')});
@@ -37,7 +37,7 @@
   &:hover {
     cursor: pointer;
     color: var(
-      #{style-api.name(link-tokens.$tokens, color-hover)},
+      #{style-api.name(link-tokens.$tokens, color-text-hover)},
       var(#{custom-props.$styleColorHover}, #{map.get($variant, 'text-color-hover')})
     );
   }
@@ -48,7 +48,7 @@
 
   &:active {
     color: var(
-      #{style-api.name(link-tokens.$tokens, color-active)},
+      #{style-api.name(link-tokens.$tokens, color-text-active)},
       var(#{custom-props.$styleColorActive}, #{map.get($variant, 'text-color-active')})
     );
   }

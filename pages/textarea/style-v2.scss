@@ -6,16 +6,16 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-textarea {
-  --awsui-style-input-background: #{palette.$surface-alt};
-  --awsui-style-input-background-focus: #{palette.$surface};
-  --awsui-style-input-border-color: #{palette.$accent};
-  --awsui-style-input-border-color-focus: #{palette.$accent-hover};
-  --awsui-style-input-color: #{palette.$text};
-  --awsui-style-input-placeholder-color: #{palette.$accent};
-  --awsui-style-input-border-radius: 16px;
-  --awsui-style-input-border-width: 3px;
+  --awsui-style-color-background-default: #{palette.$surface-alt};
+  --awsui-style-color-background-focus: #{palette.$surface};
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-color-border-focus: #{palette.$accent-hover};
+  --awsui-style-color-text-default: #{palette.$text};
+  --awsui-style-color-placeholder: #{palette.$accent};
+  --awsui-style-border-radius: 16px;
+  --awsui-style-border-width: 3px;
 
   &:hover {
-    --awsui-style-input-border-color: #{palette.$accent-hover};
+    --awsui-style-color-border-default: #{palette.$accent-hover};
   }
 }

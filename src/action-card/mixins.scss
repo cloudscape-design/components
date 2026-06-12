@@ -53,8 +53,8 @@ $variant-padding-inline: (
   $s: map.get(constants.$states, $state);
 
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background-#{$state})},
-    var(#{style-api.name(style-tokens.$tokens, background)}, #{map.get($s, 'background')})
+    #{style-api.name(style-tokens.$tokens, color-background-#{$state})},
+    var(#{style-api.name(style-tokens.$tokens, color-background-default)}, #{map.get($s, 'background')})
   );
   box-shadow: map.get($s, 'box-shadow');
   color: map.get($s, 'text-color');
@@ -65,8 +65,8 @@ $variant-padding-inline: (
 
   &:after {
     border-color: var(
-      #{style-api.name(style-tokens.$tokens, border-color-#{$state})},
-      var(#{style-api.name(style-tokens.$tokens, border-color)}, #{map.get($s, 'border-color')})
+      #{style-api.name(style-tokens.$tokens, color-border-#{$state})},
+      var(#{style-api.name(style-tokens.$tokens, color-border-default)}, #{map.get($s, 'border-color')})
     );
     border-block-width: map.get($s, 'border-width');
     border-inline-width: map.get($s, 'border-width');
@@ -75,8 +75,8 @@ $variant-padding-inline: (
   > .icon,
   > .inner-card > .header-row > .icon {
     color: var(
-      #{style-api.name(style-tokens.$tokens, icon-color-#{$state})},
-      var(#{style-api.name(style-tokens.$tokens, icon-color)}, #{map.get($s, 'icon-color')})
+      #{style-api.name(style-tokens.$tokens, color-icon-#{$state})},
+      var(#{style-api.name(style-tokens.$tokens, color-icon-default)}, #{map.get($s, 'icon-color')})
     );
   }
 }

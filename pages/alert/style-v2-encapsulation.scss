@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+// A SINGLE shared style, reused across different components via shared (component-less) tokens.
+// Applied to an Alert it themes the alert; applied to a Badge it themes the badge. Because the
+// tokens are inherits:false + per-root carrier, a value set on the Alert does NOT leak into a Badge
+// nested inside it.
+.shared-accent {
+  --awsui-style-color-background: #6b21a8;
+  --awsui-style-color-text: #ffffff;
+  --awsui-style-color-border: #4c1d95;
+  --awsui-style-border-width: 2px;
+  --awsui-style-border-radius: 10px;
+}

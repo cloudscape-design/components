@@ -4,43 +4,9 @@
 */
 
 @use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/form-field' as form-field;
 
-// Input's public Style API tokens. Shared with Textarea, which renders the same form-field surface
-// and is themed through Input's tokens.
-$component: 'input';
-$props: style-api.uniform(
-  (
-    background,
-    background-disabled,
-    background-focus,
-    background-hover,
-    background-readonly,
-    border-color,
-    border-color-disabled,
-    border-color-focus,
-    border-color-hover,
-    border-color-readonly,
-    border-radius,
-    border-width,
-    box-shadow-default,
-    box-shadow-disabled,
-    box-shadow-hover,
-    box-shadow-readonly,
-    color,
-    color-disabled,
-    color-focus,
-    color-hover,
-    color-readonly,
-    focus-ring-shadow,
-    font-size,
-    font-weight,
-    padding-block,
-    padding-inline,
-    placeholder-color,
-    placeholder-font-size,
-    placeholder-font-style,
-    placeholder-font-weight
-  ),
-  $inherits: true
-);
-$tokens: style-api.resolve($component, $props);
+// Input's public Style API tokens are the shared form-field group (also used by Textarea and
+// Prompt-input, so one consumer style themes any of them).
+$props: form-field.$props;
+$tokens: style-api.resolve($props);

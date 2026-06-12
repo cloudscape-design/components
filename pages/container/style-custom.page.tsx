@@ -248,15 +248,7 @@ export default function CustomContainer() {
         >
           <SpaceBetween size="m">
             <Box>Outer container</Box>
-            <Container
-              style={{
-                root: {
-                  background: 'light-dark(#eaeaea, #444)',
-                },
-              }}
-            >
-              Inner container
-            </Container>
+            <Container>Inner container</Container>
           </SpaceBetween>
         </Container>
       </SpaceBetween>

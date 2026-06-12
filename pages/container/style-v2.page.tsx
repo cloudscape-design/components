@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { Container } from '~components';
+import { Box, Button, Container } from '~components';
 
 import { SimplePage } from '../app/templates';
 
@@ -15,7 +15,8 @@ export default function StyleV2ContainerPage() {
       <Container classNames={{ root: styles['container-outer'] }} header="Level 1 with header and border radius styles">
         <Container classNames={{ root: styles['container-inner'] }} header="Level 2 with different header styles">
           <Container variant="stacked" header="Level 3 without style overrides — not affected by Level 1/2 styles">
-            Content
+            <Box>Text content </Box>
+            <Button>Button</Button>
           </Container>
         </Container>
       </Container>

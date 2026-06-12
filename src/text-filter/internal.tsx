@@ -66,6 +66,7 @@ const InternalTextFilter = React.forwardRef(
       <div {...baseProps} className={clsx(baseProps.className, classNames?.root, styles.root)} ref={__internalRootRef}>
         <InternalInput
           __inheritFormFieldProps={true}
+          classNames={{ root: classNames?.root, clearButton: classNames?.clearButton }}
           disableBrowserAutocorrect={disableBrowserAutocorrect}
           ref={inputRef}
           className={styles.input}

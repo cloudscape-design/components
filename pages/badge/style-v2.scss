@@ -6,30 +6,30 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .badge-pill {
-  --awsui-style-badge-background: #{palette.$accent};
-  --awsui-style-badge-color: #{palette.$text-on-accent};
-  --awsui-style-badge-border-color: transparent;
-  --awsui-style-badge-border-radius: 99px;
-  --awsui-style-badge-padding-block: 4px;
-  --awsui-style-badge-padding-inline: 12px;
+  --awsui-style-color-background: #{palette.$accent};
+  --awsui-style-color-text: #{palette.$text-on-accent};
+  --awsui-style-color-border: transparent;
+  --awsui-style-border-radius: 99px;
+  --awsui-style-padding-block: 4px;
+  --awsui-style-padding-inline: 12px;
 }
 
 .badge-square {
-  --awsui-style-badge-background: #{palette.$error-surface};
-  --awsui-style-badge-color: #{palette.$error};
-  --awsui-style-badge-border-color: #{palette.$error};
-  --awsui-style-badge-border-radius: 2px;
-  --awsui-style-badge-border-width: 2px;
-  --awsui-style-badge-padding-block: 2px;
-  --awsui-style-badge-padding-inline: 6px;
+  --awsui-style-color-background: #{palette.$error-surface};
+  --awsui-style-color-text: #{palette.$error};
+  --awsui-style-color-border: #{palette.$error};
+  --awsui-style-border-radius: 2px;
+  --awsui-style-border-width: 2px;
+  --awsui-style-padding-block: 2px;
+  --awsui-style-padding-inline: 6px;
 }
 
 .badge-outline {
-  --awsui-style-badge-background: transparent;
-  --awsui-style-badge-color: #{palette.$accent};
-  --awsui-style-badge-border-color: #{palette.$accent};
-  --awsui-style-badge-border-radius: 4px;
-  --awsui-style-badge-border-width: 2px;
-  --awsui-style-badge-padding-block: 3px;
-  --awsui-style-badge-padding-inline: 10px;
+  --awsui-style-color-background: transparent;
+  --awsui-style-color-text: #{palette.$accent};
+  --awsui-style-color-border: #{palette.$accent};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-border-width: 2px;
+  --awsui-style-padding-block: 3px;
+  --awsui-style-padding-inline: 10px;
 }

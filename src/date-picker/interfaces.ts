@@ -126,6 +126,10 @@ export namespace DatePickerProps {
 
   export interface ClassNames {
     root?: string;
+    /** Class name applied to the open-calendar (icon) button. Theme via `--awsui-style-*` button tokens. */
+    openCalendarButton?: string;
+    /** Class name applied to the dropdown Calendar. Theme via `--awsui-style-*` calendar tokens. */
+    calendar?: string;
   }
 
   export interface IsDateEnabledFunction {

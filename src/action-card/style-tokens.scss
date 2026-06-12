@@ -5,25 +5,21 @@
 
 @use '../internal/styles/style-api' as style-api;
 
-// action-card's public Style API tokens (base + per-state: hover, active, disabled). Read in
-// styles.scss and the state mixins in mixins.scss.
-$component: 'action-card';
-$props: style-api.uniform(
-  (
-    background,
-    background-hover,
-    background-active,
-    background-disabled,
-    border-color,
-    border-color-hover,
-    border-color-active,
-    border-color-disabled,
-    border-radius,
-    icon-color,
-    icon-color-hover,
-    icon-color-active,
-    icon-color-disabled
-  ),
-  $inherits: true
+// action-card's public Style API tokens (base + per-state: hover, active, disabled). Component-less,
+// value-type-first names. Read in styles.scss and the state mixins in mixins.scss.
+$props: (
+  color-background-default,
+  color-background-hover,
+  color-background-active,
+  color-background-disabled,
+  color-border-default,
+  color-border-hover,
+  color-border-active,
+  color-border-disabled,
+  color-icon-default,
+  color-icon-hover,
+  color-icon-active,
+  color-icon-disabled,
+  border-radius
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);

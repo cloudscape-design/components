@@ -8,17 +8,23 @@
 
 /* stylelint-disable custom-property-pattern */
 
-// Button-group's public Style API tokens.
-$component: 'button-group';
-$props: style-api.uniform(
-  (background, border-color, border-radius, border-width, box-shadow, inline-size, padding-block, padding-inline),
-  $inherits: true
+// Button-group's public Style API tokens (shared, component-less, value-type-first names).
+$props: (
+  color-background,
+  color-border,
+  border-radius,
+  border-width,
+  box-shadow,
+  inline-size,
+  padding-block,
+  padding-inline
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 .root {
+  @include style-api.carriers($props);
   @include styles.styles-reset;
 
   display: flex;
@@ -28,11 +34,11 @@ $tokens: style-api.resolve($component, $props);
   inline-size: var(#{style-api.name($tokens, inline-size)}, auto);
   padding-block: var(#{style-api.name($tokens, padding-block)}, 0);
   padding-inline: var(#{style-api.name($tokens, padding-inline)}, 0);
-  background-color: var(#{style-api.name($tokens, background)}, transparent);
+  background-color: var(#{style-api.name($tokens, color-background)}, transparent);
   border-block: var(#{style-api.name($tokens, border-width)}, 1px) solid
-    var(#{style-api.name($tokens, border-color)}, transparent);
+    var(#{style-api.name($tokens, color-border)}, transparent);
   border-inline: var(#{style-api.name($tokens, border-width)}, 1px) solid
-    var(#{style-api.name($tokens, border-color)}, transparent);
+    var(#{style-api.name($tokens, color-border)}, transparent);
   border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, 0);
   border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, 0);
   border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, 0);

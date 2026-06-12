@@ -6,22 +6,22 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .progress-thick {
-  --awsui-style-progress-bar-track-color: #{palette.$surface-alt};
-  --awsui-style-progress-bar-value-color: #{palette.$accent};
-  --awsui-style-progress-bar-border-radius: 12px;
-  --awsui-style-progress-bar-height: 16px;
+  --awsui-style-color-background-track: #{palette.$surface-alt};
+  --awsui-style-color-background-value: #{palette.$accent};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-block-size: 16px;
 }
 
 .progress-thin {
-  --awsui-style-progress-bar-track-color: #{palette.$border};
-  --awsui-style-progress-bar-value-color: #{palette.$success};
-  --awsui-style-progress-bar-border-radius: 0;
-  --awsui-style-progress-bar-height: 4px;
+  --awsui-style-color-background-track: #{palette.$border};
+  --awsui-style-color-background-value: #{palette.$success};
+  --awsui-style-border-radius: 0;
+  --awsui-style-block-size: 4px;
 }
 
 .progress-accent {
-  --awsui-style-progress-bar-track-color: #{palette.$error-surface};
-  --awsui-style-progress-bar-value-color: #{palette.$error};
-  --awsui-style-progress-bar-border-radius: 4px;
-  --awsui-style-progress-bar-height: 8px;
+  --awsui-style-color-background-track: #{palette.$error-surface};
+  --awsui-style-color-background-value: #{palette.$error};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-block-size: 8px;
 }

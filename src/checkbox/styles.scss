@@ -7,8 +7,8 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles/style-api' as style-api;
-@use '../internal/components/abstract-switch/mixins' as abstract-switch;
-@use '../internal/components/checkbox-icon/mixins' as checkbox-icon;
+@use '../internal/styles/style-groups/control' as control;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
@@ -16,49 +16,18 @@ $checkbox-size: awsui.$size-control;
 
 /* stylelint-disable custom-property-pattern */
 
-// Checkbox owns all of its style tokens, including the parts rendered by the internal
-// abstract-switch and checkbox-icon (impl details). Control tokens inherit so a value set on the
-// checkbox root reaches those internal elements; the host mixins below map them into the internal
-// propagation vars. The focus ring is on checkbox's own `.outline`, so it reads checkbox tokens
-// directly.
-$component: 'checkbox';
-$props: style-api.uniform(
-  (
-    background,
-    background-default,
-    background-checked,
-    background-disabled,
-    border-color,
-    border-color-default,
-    border-color-checked,
-    border-color-disabled,
-    foreground,
-    foreground-default,
-    foreground-disabled,
-    foreground-readonly,
-    border-width,
-    stroke-width,
-    label-color,
-    label-color-disabled,
-    label-color-readonly,
-    label-spacing,
-    transition-duration,
-    transition-easing,
-    focus-ring-color,
-    focus-ring-border-radius,
-    focus-ring-border-width
-  ),
-  $inherits: true
-);
-$tokens: style-api.resolve($component, $props);
+// Checkbox uses the shared control + focus-outline groups. The internal checkbox-icon and
+// abstract-switch read the control/label/transition tokens through the carriers re-anchored on
+// .root.root; the focus ring on checkbox's own .outline reads the focus-outline tokens.
+$props: style-api.combine(control.$props, focus-outline.$props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 // double selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
 .root.root {
   @include styles.styles-reset;
-  @include abstract-switch.host($tokens);
-  @include checkbox-icon.host($tokens);
+  @include style-api.carriers($props);
   display: flex;
 }
 
@@ -69,18 +38,18 @@ $tokens: style-api.resolve($component, $props);
 .outline {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      #{style-api.name($tokens, focus-ring-border-width)},
+      #{style-api.name($tokens, focus-outline-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, #{foundation.$box-shadow-focused-width})
     )
     var(
-      #{style-api.name($tokens, focus-ring-color)},
+      #{style-api.name($tokens, color-focus-outline)},
       var(#{custom-props.$styleFocusRingBorderColor}, #{awsui.$color-border-item-focused})
     );
 
   @include styles.focus-highlight(
     $gutter: 2px,
     $border-radius: var(
-        #{style-api.name($tokens, focus-ring-border-radius)},
+        #{style-api.name($tokens, focus-outline-radius)},
         var(#{custom-props.$styleFocusRingBorderRadius}, #{awsui.$border-radius-control-default-focus-ring})
       ),
     $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})

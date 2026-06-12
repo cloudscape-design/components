@@ -1,0 +1,9 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Shared "surface" token group: the box every surface-like component draws (text, background,
+// border colour, radius, width). Components compose this with `style-api.combine(...)` so one consumer
+// style can theme any of them.
+$props: (color-text, color-background, color-border, border-radius, border-width);

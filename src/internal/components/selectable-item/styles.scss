@@ -88,7 +88,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
 
   border-width: 0;
   background-color: awsui.$color-background-dropdown-item-default;
-  color: var(--awsui-internal-style-selectable-item-color, #{awsui.$color-text-dropdown-item-default});
+  color: var(--awsui-internal-style-color-text-option, #{awsui.$color-text-dropdown-item-default});
 
   @include content-pad(awsui.$border-item-width, awsui.$border-item-width);
 
@@ -119,7 +119,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
 
   &.has-background {
     background-color: var(
-      --awsui-internal-style-selectable-item-background-hover,
+      --awsui-internal-style-color-background-option-hover,
       #{awsui.$color-background-dropdown-item-hover}
     );
   }
@@ -136,17 +136,14 @@ $neg-divider-w: calc(-1 * #{$divider-w});
 
   &.highlighted,
   &.selected {
-    color: var(
-      --awsui-internal-style-selectable-item-color-highlighted,
-      #{awsui.$color-text-dropdown-item-highlighted}
-    );
+    color: var(--awsui-internal-style-color-text-option-highlighted, #{awsui.$color-text-dropdown-item-highlighted});
     @include logical-radius(awsui.$border-radius-item);
   }
 
   &.highlighted {
     z-index: 3;
     background-color: var(
-      --awsui-internal-style-selectable-item-background-hover,
+      --awsui-internal-style-color-background-option-hover,
       #{awsui.$color-background-dropdown-item-hover}
     );
     @include highlighted-shadow;
@@ -165,7 +162,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   &.selected {
     z-index: 2;
     background-color: var(
-      --awsui-internal-style-selectable-item-background-selected,
+      --awsui-internal-style-color-background-option-selected,
       #{awsui.$color-background-dropdown-item-selected}
     );
     @include selected-shadow;

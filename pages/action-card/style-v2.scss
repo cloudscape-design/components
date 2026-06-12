@@ -6,15 +6,15 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 @mixin card-theme($border, $border-hover, $bg, $bg-hover, $icon-color: null) {
-  --awsui-style-action-card-background: #{$bg};
-  --awsui-style-action-card-background-hover: #{$bg-hover};
-  --awsui-style-action-card-border-color: #{$border};
-  --awsui-style-action-card-border-color-hover: #{$border-hover};
-  --awsui-style-action-card-border-radius: 12px;
-  --awsui-style-action-card-icon-color-disabled: #{palette.$text-disabled};
+  --awsui-style-color-background-default: #{$bg};
+  --awsui-style-color-background-hover: #{$bg-hover};
+  --awsui-style-color-border-default: #{$border};
+  --awsui-style-color-border-hover: #{$border-hover};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-color-icon-disabled: #{palette.$text-disabled};
 
   @if $icon-color {
-    --awsui-style-action-card-icon-color: #{$icon-color};
+    --awsui-style-color-icon-default: #{$icon-color};
   }
 }
 

@@ -213,12 +213,12 @@ $label-horizontal-spacing: awsui.$space-xs;
   margin-block-start: 1px;
   border-block: awsui.$border-divider-section-width solid
     var(
-      #{style-api.name(style-tokens.$tokens, border-color-default)},
+      #{style-api.name(style-tokens.$tokens, color-border-default)},
       var(#{custom-props.$styleBorderColorDefault}, transparent)
     );
   border-inline: awsui.$border-divider-section-width solid
     var(
-      #{style-api.name(style-tokens.$tokens, border-color-default)},
+      #{style-api.name(style-tokens.$tokens, color-border-default)},
       var(#{custom-props.$styleBorderColorDefault}, transparent)
     );
 
@@ -226,11 +226,11 @@ $label-horizontal-spacing: awsui.$space-xs;
   line-height: awsui.$line-height-tabs;
   font-weight: awsui.$font-weight-tabs;
   color: var(
-    #{style-api.name(style-tokens.$tokens, color-default)},
+    #{style-api.name(style-tokens.$tokens, color-text-default)},
     var(#{custom-props.$styleColorDefault}, #{awsui.$color-text-interactive-default})
   );
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background-default)},
+    #{style-api.name(style-tokens.$tokens, color-background-default)},
     var(#{custom-props.$styleBackgroundDefault}, transparent)
   );
 
@@ -247,15 +247,15 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   &:hover {
     color: var(
-      #{style-api.name(style-tokens.$tokens, color-hover)},
+      #{style-api.name(style-tokens.$tokens, color-text-hover)},
       var(#{custom-props.$styleColorHover}, #{awsui.$color-text-accent})
     );
     border-color: var(
-      #{style-api.name(style-tokens.$tokens, border-color-hover)},
+      #{style-api.name(style-tokens.$tokens, color-border-hover)},
       var(#{custom-props.$styleBorderColorHover}, var(#{custom-props.$styleBorderColorDefault}, transparent))
     );
     background-color: var(
-      #{style-api.name(style-tokens.$tokens, background-hover)},
+      #{style-api.name(style-tokens.$tokens, color-background-hover)},
       var(#{custom-props.$styleBackgroundHover}, var(#{custom-props.$styleBackgroundDefault}, transparent))
     );
   }
@@ -303,15 +303,15 @@ $label-horizontal-spacing: awsui.$space-xs;
   &:hover {
     cursor: default;
     color: var(
-      #{style-api.name(style-tokens.$tokens, color-disabled)},
+      #{style-api.name(style-tokens.$tokens, color-text-disabled)},
       var(#{custom-props.$styleColorDisabled}, #{awsui.$color-text-interactive-disabled})
     );
     border-color: var(
-      #{style-api.name(style-tokens.$tokens, border-color-disabled)},
+      #{style-api.name(style-tokens.$tokens, color-border-disabled)},
       var(#{custom-props.$styleBorderColorDisabled}, transparent)
     );
     background-color: var(
-      #{style-api.name(style-tokens.$tokens, background-disabled)},
+      #{style-api.name(style-tokens.$tokens, color-background-disabled)},
       var(#{custom-props.$styleBackgroundDisabled}, transparent)
     );
     font-weight: awsui.$font-weight-tabs-disabled;
@@ -320,15 +320,15 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
   color: var(
-    #{style-api.name(style-tokens.$tokens, color-active)},
+    #{style-api.name(style-tokens.$tokens, color-text-active)},
     var(#{custom-props.$styleColorActive}, #{awsui.$color-text-accent})
   );
   border-color: var(
-    #{style-api.name(style-tokens.$tokens, border-color-active)},
+    #{style-api.name(style-tokens.$tokens, color-border-active)},
     var(#{custom-props.$styleBorderColorActive}, transparent)
   );
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background-active)},
+    #{style-api.name(style-tokens.$tokens, color-background-active)},
     var(#{custom-props.$styleBackgroundActive}, transparent)
   );
   &:after {

@@ -6,19 +6,19 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .token-pill {
-  --awsui-style-token-background-default: #{palette.$accent};
-  --awsui-style-token-border-color-default: #{palette.$accent};
-  --awsui-style-token-border-radius: 99px;
-  --awsui-style-token-color-default: #{palette.$text-on-accent};
-  --awsui-style-token-dismiss-color-default: #{palette.$text-on-accent};
-  --awsui-style-token-dismiss-color-hover: #{palette.$text-on-accent};
+  --awsui-style-color-background-default: #{palette.$accent};
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-border-radius: 99px;
+  --awsui-style-color-text-default: #{palette.$text-on-accent};
+  --awsui-style-color-dismiss-default: #{palette.$text-on-accent};
+  --awsui-style-color-dismiss-hover: #{palette.$text-on-accent};
 }
 
 .token-outline {
-  --awsui-style-token-background-default: transparent;
-  --awsui-style-token-border-color-default: #{palette.$accent};
-  --awsui-style-token-border-radius: 4px;
-  --awsui-style-token-color-default: #{palette.$accent};
-  --awsui-style-token-dismiss-color-default: #{palette.$accent};
-  --awsui-style-token-dismiss-color-hover: #{palette.$accent-hover};
+  --awsui-style-color-background-default: transparent;
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-dismiss-default: #{palette.$accent};
+  --awsui-style-color-dismiss-hover: #{palette.$accent-hover};
 }

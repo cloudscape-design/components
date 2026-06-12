@@ -5,24 +5,26 @@
 
 @use '../app/themes/style-v2-palette' as palette;
 
+// Field (prompt-input root is the field boundary).
 .styled-prompt-input {
-  // Field
-  --awsui-style-prompt-input-background-default: #{palette.$surface-alt};
-  --awsui-style-prompt-input-background-focus: #{palette.$surface};
-  --awsui-style-prompt-input-border-color-default: #{palette.$accent};
-  --awsui-style-prompt-input-border-color-focus: #{palette.$accent-hover};
-  --awsui-style-prompt-input-color-default: #{palette.$text};
-  --awsui-style-prompt-input-placeholder-color: #{palette.$accent};
-  --awsui-style-prompt-input-border-radius: 16px;
-  --awsui-style-prompt-input-border-width: 3px;
-
-  // Send button + secondary action buttons (cohesive accent theme)
-  --awsui-style-button-color-default: #{palette.$accent};
-  --awsui-style-button-color-hover: #{palette.$text-on-accent};
-  --awsui-style-button-background-hover: #{palette.$accent};
-  --awsui-style-button-border-radius: 50%;
+  --awsui-style-color-background-default: #{palette.$surface-alt};
+  --awsui-style-color-background-focus: #{palette.$surface};
+  --awsui-style-color-border-default: #{palette.$accent};
+  --awsui-style-color-border-focus: #{palette.$accent-hover};
+  --awsui-style-color-text-default: #{palette.$text};
+  --awsui-style-color-placeholder: #{palette.$accent};
+  --awsui-style-border-radius: 16px;
+  --awsui-style-border-width: 3px;
 
   &:hover {
-    --awsui-style-prompt-input-border-color-default: #{palette.$accent-hover};
+    --awsui-style-color-border-default: #{palette.$accent-hover};
   }
+}
+
+// Action (send) button — themed via the dedicated classNames.actionButton slot (its own boundary).
+.styled-prompt-action {
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-text-hover: #{palette.$text-on-accent};
+  --awsui-style-color-background-hover: #{palette.$accent};
+  --awsui-style-border-radius: 50%;
 }

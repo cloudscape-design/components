@@ -16,14 +16,14 @@
 }
 
 @mixin item-card-theme($border, $border-hover, $bg, $bg-hover) {
-  --awsui-style-item-card-background-default: #{$bg};
-  --awsui-style-item-card-border-color-default: #{$border};
-  --awsui-style-item-card-border-radius: 12px;
-  --awsui-style-item-card-border-width-default: 2px;
+  --awsui-style-color-background-default: #{$bg};
+  --awsui-style-color-border-default: #{$border};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-border-width-default: 2px;
 
   &:hover {
-    --awsui-style-item-card-border-color-default: #{$border-hover};
-    --awsui-style-item-card-background-default: #{$bg-hover};
+    --awsui-style-color-border-default: #{$border-hover};
+    --awsui-style-color-background-default: #{$bg-hover};
   }
 }
 

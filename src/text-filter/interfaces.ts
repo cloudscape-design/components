@@ -83,6 +83,8 @@ export namespace TextFilterProps {
 
   export interface ClassNames {
     root?: string;
+    /** Class name applied to the clear (X) button. Theme via `--awsui-style-*` button tokens. */
+    clearButton?: string;
   }
 
   export interface Ref {

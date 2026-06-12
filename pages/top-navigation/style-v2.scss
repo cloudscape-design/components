@@ -16,38 +16,38 @@ $menu-item: hsl(330, 85%, 82%);
 $menu-item-highlight-bg: hsl(330, 65%, 48%);
 
 .styled-nav {
-  --awsui-style-top-navigation-background: #{palette.$accent};
+  --awsui-style-color-background: #{palette.$accent};
   // CloudApp identity title.
-  --awsui-style-top-navigation-title-color: #{palette.$text-on-accent};
-  --awsui-style-top-navigation-title-color-hover: #{$util-hover};
+  --awsui-style-color-text-title: #{palette.$text-on-accent};
+  --awsui-style-color-text-title-hover: #{$util-hover};
 }
 
 // Search input — themed focus that stays visible against the pink bar.
 .search-input {
-  --awsui-style-input-border-color-focus: #{palette.$accent};
-  --awsui-style-input-focus-ring-shadow: 0 0 0 2px #{palette.$text-on-accent};
-  --awsui-style-button-color-default: #{palette.$accent};
-  --awsui-style-button-color-hover: #{palette.$accent-active};
+  --awsui-style-color-border-focus: #{palette.$accent};
+  --awsui-style-focus-ring-shadow: 0 0 0 2px #{palette.$text-on-accent};
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-text-hover: #{palette.$accent-active};
 }
 
 .utility-notification {
   // A button utility without `primary-button` variant renders as a link.
-  --awsui-style-link-color-default: #{palette.$text-on-accent};
-  --awsui-style-link-color-hover: #{$util-hover};
+  --awsui-style-color-text-default: #{palette.$text-on-accent};
+  --awsui-style-color-text-hover: #{$util-hover};
 }
 
 .utility-settings {
-  --awsui-style-link-color-default: #{palette.$text-on-accent};
-  --awsui-style-link-color-hover: #{$util-hover};
+  --awsui-style-color-text-default: #{palette.$text-on-accent};
+  --awsui-style-color-text-hover: #{$util-hover};
 }
 
 .utility-profile {
   // Jane Doe trigger — subtle text-color hover/open, no inverse pill.
-  --awsui-style-top-navigation-menu-trigger-color: #{palette.$text-on-accent};
-  --awsui-style-top-navigation-menu-trigger-color-hover: #{$util-hover};
-  --awsui-style-top-navigation-menu-trigger-color-active: #{$util-hover};
+  --awsui-style-color-text-menu-trigger: #{palette.$text-on-accent};
+  --awsui-style-color-text-menu-trigger-hover: #{$util-hover};
+  --awsui-style-color-text-menu-trigger-active: #{$util-hover};
   // Menu items on the dark dropdown surface.
-  --awsui-style-top-navigation-menu-item-color: #{$menu-item};
-  --awsui-style-top-navigation-menu-item-color-highlighted: #{hsl(0, 0%, 100%)};
-  --awsui-style-top-navigation-menu-item-background-hover: #{$menu-item-highlight-bg};
+  --awsui-style-color-text-menu-item: #{$menu-item};
+  --awsui-style-color-text-menu-item-highlighted: #{hsl(0, 0%, 100%)};
+  --awsui-style-color-background-menu-item-hover: #{$menu-item-highlight-bg};
 }

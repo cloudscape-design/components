@@ -155,7 +155,6 @@ export default function CustomCard() {
         <ItemCard
           style={{
             root: {
-              background,
               borderColor: 'green',
               borderRadius: '8px',
               borderWidth: '4px',

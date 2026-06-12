@@ -243,13 +243,14 @@ const InternalAlert = React.forwardRef(
               </div>
               {dismissible && (
                 <div
-                  className={clsx(styles.dismiss, dismissClassName, classNames?.dismissButton)}
+                  className={clsx(styles.dismiss, dismissClassName)}
                   {...getAnalyticsMetadataAttribute({
                     action: 'dismiss',
                   } as Partial<GeneratedAnalyticsMetadataAlertDismiss>)}
                 >
                   <InternalButton
                     className={styles['dismiss-button']}
+                    classNames={{ root: classNames?.dismissButton }}
                     variant="icon"
                     iconName="close"
                     formAction="none"

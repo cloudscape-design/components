@@ -96,6 +96,11 @@ export namespace RadioGroupProps {
 
   export interface ClassNames {
     root?: string;
+    /**
+     * Class name applied to each radio button. A string is applied to all; a function receiving the
+     * item is called per radio button. Use to theme individual radio buttons via `--awsui-style-*`.
+     */
+    radioButton?: string | ((detail: { item: RadioGroupProps.RadioButtonDefinition }) => string);
   }
 
   export interface ChangeDetail {

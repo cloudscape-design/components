@@ -33,7 +33,7 @@ export default function StyleV2TextFilterPage() {
         filteringPlaceholder="Filter resources..."
         countText={`${matchCount} match${matchCount !== 1 ? 'es' : ''}`}
         disabled={disabled}
-        classNames={{ root: styles['styled-text-filter'] }}
+        classNames={{ root: styles['styled-text-filter'], clearButton: styles['styled-tf-clear'] }}
       />
     </SimplePage>
   );

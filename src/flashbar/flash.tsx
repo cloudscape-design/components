@@ -73,6 +73,7 @@ function dismissButton(
           }
         }}
         className={styles['dismiss-button']}
+        classNames={{ root: dismissButtonClassName }}
         variant="flashbar-icon"
         iconName="close"
         formAction="none"

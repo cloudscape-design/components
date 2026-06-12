@@ -10,13 +10,13 @@
 /* stylelint-disable custom-property-pattern */
 
 // Register public Style API tokens as @property.
-$component: 'file-dropzone';
-$props: style-api.uniform((background, border-color, border-radius, border-style), $inherits: true);
-$tokens: style-api.resolve($component, $props);
+$props: (color-background, color-border, border-radius, border-style);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 .root {
+  @include style-api.carriers($props);
   padding-block: awsui.$space-static-l;
   padding-inline: awsui.$space-static-l;
   border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-dropzone});
@@ -24,12 +24,12 @@ $tokens: style-api.resolve($component, $props);
   border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-dropzone});
   border-end-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-dropzone});
   color: awsui.$color-dropzone-text-default;
-  background-color: var(#{style-api.name($tokens, background)}, #{awsui.$color-dropzone-background-default});
-  border-color: var(#{style-api.name($tokens, border-color)}, #{awsui.$color-dropzone-border-default});
+  background-color: var(#{style-api.name($tokens, color-background)}, #{awsui.$color-dropzone-background-default});
+  border-color: var(#{style-api.name($tokens, color-border)}, #{awsui.$color-dropzone-border-default});
   border-block: 1px var(#{style-api.name($tokens, border-style)}, dashed)
-    var(#{style-api.name($tokens, border-color)}, #{awsui.$color-dropzone-border-default});
+    var(#{style-api.name($tokens, color-border)}, #{awsui.$color-dropzone-border-default});
   border-inline: 1px var(#{style-api.name($tokens, border-style)}, dashed)
-    var(#{style-api.name($tokens, border-color)}, #{awsui.$color-dropzone-border-default});
+    var(#{style-api.name($tokens, color-border)}, #{awsui.$color-dropzone-border-default});
 
   &.hovered {
     color: awsui.$color-dropzone-text-hover;

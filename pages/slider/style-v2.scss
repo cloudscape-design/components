@@ -8,17 +8,17 @@
 // $hover-color defaults to the base color, so hover matches the styled base
 // color unless a variant explicitly overrides it.
 @mixin slider-theme($color, $hover-color: $color) {
-  --awsui-style-slider-track-background-color: #{palette.$border};
-  --awsui-style-slider-range-background-default: #{$color};
-  --awsui-style-slider-range-background-active: #{$hover-color};
-  --awsui-style-slider-handle-background-default: #{$color};
-  --awsui-style-slider-handle-background-hover: #{$hover-color};
-  --awsui-style-slider-handle-background-active: #{$hover-color};
-  --awsui-style-slider-handle-border-radius: 999px;
+  --awsui-style-color-background-track: #{palette.$border};
+  --awsui-style-color-background-range-default: #{$color};
+  --awsui-style-color-background-range-active: #{$hover-color};
+  --awsui-style-color-background-handle-default: #{$color};
+  --awsui-style-color-background-handle-hover: #{$hover-color};
+  --awsui-style-color-background-handle-active: #{$hover-color};
+  --awsui-style-border-radius-handle: 999px;
 
   &:hover {
-    --awsui-style-slider-range-background-default: #{$hover-color};
-    --awsui-style-slider-handle-background-default: #{$hover-color};
+    --awsui-style-color-background-range-default: #{$hover-color};
+    --awsui-style-color-background-handle-default: #{$hover-color};
   }
 }
 

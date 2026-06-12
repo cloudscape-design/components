@@ -6,25 +6,25 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .styled-dropzone {
-  --awsui-style-file-dropzone-background: #{palette.$surface};
-  --awsui-style-file-dropzone-border-color: #{palette.$border-accent};
-  --awsui-style-file-dropzone-border-style: dashed;
-  --awsui-style-file-dropzone-border-radius: 16px;
+  --awsui-style-color-background: #{palette.$surface};
+  --awsui-style-color-border: #{palette.$border-accent};
+  --awsui-style-border-style: dashed;
+  --awsui-style-border-radius: 16px;
 
   &:hover {
-    --awsui-style-file-dropzone-background: #{palette.$surface-alt};
-    --awsui-style-file-dropzone-border-color: #{palette.$accent-hover};
+    --awsui-style-color-background: #{palette.$surface-alt};
+    --awsui-style-color-border: #{palette.$accent-hover};
   }
 }
 
 .styled-dropzone-alt {
-  --awsui-style-file-dropzone-background: #{palette.$info-surface};
-  --awsui-style-file-dropzone-border-color: #{palette.$info};
-  --awsui-style-file-dropzone-border-style: dashed;
-  --awsui-style-file-dropzone-border-radius: 8px;
+  --awsui-style-color-background: #{palette.$info-surface};
+  --awsui-style-color-border: #{palette.$info};
+  --awsui-style-border-style: dashed;
+  --awsui-style-border-radius: 8px;
 
   &:hover {
-    --awsui-style-file-dropzone-background: #{palette.$surface-alt};
-    --awsui-style-file-dropzone-border-color: #{palette.$accent};
+    --awsui-style-color-background: #{palette.$surface-alt};
+    --awsui-style-color-border: #{palette.$accent};
   }
 }

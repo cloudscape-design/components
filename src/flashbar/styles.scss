@@ -16,9 +16,12 @@
 /* stylelint-disable custom-property-pattern */
 
 // Flashbar's public Style API tokens: the flash items and the collapsed notification bar.
-@include style-api.register(style-tokens.$component, style-tokens.$props);
+@include style-api.register(style-tokens.$props);
 
 .flashbar {
+  // Shell-level tokens: the collapsed notification bar lives in the flashbar's own subtree, so its
+  // tokens re-anchor here on the root (themed via classNames.root, the flashbar shell).
+  @include style-api.carriers(style-tokens.$nb-props);
   position: relative;
   /* stylelint-disable-next-line selector-max-type */
   > li + li {
@@ -33,6 +36,9 @@
 }
 
 .flash {
+  // Each flash is its own styling boundary: flash-item tokens re-anchor here and are themed
+  // per-item via classNames.item. classNames.root themes the shell, not individual flashes.
+  @include style-api.carriers(style-tokens.$flash-props);
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -53,21 +59,21 @@
   );
   border-end-end-radius: var(#{style-api.name(style-tokens.$tokens, border-radius)}, #{awsui.$border-radius-flashbar});
   border-block: var(#{style-api.name(style-tokens.$tokens, border-width)}, 0) solid
-    var(#{style-api.name(style-tokens.$tokens, border-color)}, transparent);
+    var(#{style-api.name(style-tokens.$tokens, color-border)}, transparent);
   border-inline: var(#{style-api.name(style-tokens.$tokens, border-width)}, 0) solid
-    var(#{style-api.name(style-tokens.$tokens, border-color)}, transparent);
-  color: var(#{style-api.name(style-tokens.$tokens, color)}, #{awsui.$color-text-notification-default});
+    var(#{style-api.name(style-tokens.$tokens, color-border)}, transparent);
+  color: var(#{style-api.name(style-tokens.$tokens, color-text)}, #{awsui.$color-text-notification-default});
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
-      #{style-api.name(style-tokens.$tokens, focus-ring-border-width)},
+      #{style-api.name(style-tokens.$tokens, focus-outline-width)},
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     )
     var(
-      #{style-api.name(style-tokens.$tokens, focus-ring-color)},
+      #{style-api.name(style-tokens.$tokens, color-focus-outline)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
 }
@@ -111,7 +117,7 @@
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
       $border-radius: var(
-          #{style-api.name(style-tokens.$tokens, focus-ring-border-radius)},
+          #{style-api.name(style-tokens.$tokens, focus-outline-radius)},
           var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
         ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
@@ -176,14 +182,14 @@
 
 .flash-type-success {
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background)},
+    #{style-api.name(style-tokens.$tokens, color-background)},
     #{awsui.$color-background-notification-green}
   );
 }
 
 .flash-type-error {
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background)},
+    #{style-api.name(style-tokens.$tokens, color-background)},
     #{awsui.$color-background-notification-red}
   );
 }
@@ -191,15 +197,15 @@
 .flash-type-info,
 .flash-type-in-progress {
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background)},
+    #{style-api.name(style-tokens.$tokens, color-background)},
     #{awsui.$color-background-notification-blue}
   );
 }
 
 .flash-type-warning {
-  color: var(#{style-api.name(style-tokens.$tokens, color)}, #{awsui.$color-text-notification-yellow});
+  color: var(#{style-api.name(style-tokens.$tokens, color-text)}, #{awsui.$color-text-notification-yellow});
   background-color: var(
-    #{style-api.name(style-tokens.$tokens, background)},
+    #{style-api.name(style-tokens.$tokens, color-background)},
     #{awsui.$color-background-notification-yellow}
   );
 }

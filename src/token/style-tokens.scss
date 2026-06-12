@@ -4,22 +4,18 @@
 */
 @use '../internal/styles/style-api' as style-api;
 
-$component: 'token';
-$props: style-api.uniform(
-  (
-    background-default,
-    background-disabled,
-    background-readonly,
-    border-color-default,
-    border-color-disabled,
-    border-color-readonly,
-    border-radius,
-    color-default,
-    dismiss-color-default,
-    dismiss-color-disabled,
-    dismiss-color-hover,
-    dismiss-color-readonly
-  ),
-  $inherits: true
+$props: (
+  color-background-default,
+  color-background-disabled,
+  color-background-readonly,
+  color-border-default,
+  color-border-disabled,
+  color-border-readonly,
+  color-text-default,
+  color-dismiss-default,
+  color-dismiss-hover,
+  color-dismiss-disabled,
+  color-dismiss-readonly,
+  border-radius
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);

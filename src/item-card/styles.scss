@@ -15,23 +15,19 @@
 @use '../internal/styles/style-api' as style-api;
 
 // Register public Style API tokens as @property.
-$component: 'item-card';
-$props: style-api.uniform(
-  (
-    background-default,
-    border-color-default,
-    border-radius,
-    border-width-default,
-    box-shadow-default,
-    footer-divider-border-color,
-    footer-divider-border-width,
-    footer-divider-style
-  ),
-  $inherits: true
+$props: (
+  color-background-default,
+  color-border-default,
+  border-radius,
+  border-width-default,
+  box-shadow-default,
+  color-border-footer-divider,
+  border-width-footer-divider,
+  border-style-footer-divider
 );
-$tokens: style-api.resolve($component, $props);
+$tokens: style-api.resolve($props);
 
-@include style-api.register($component, $props);
+@include style-api.register($props);
 
 // Variant configuration maps — adjust values here for easy customization
 $variant-border-radius: (
@@ -86,9 +82,9 @@ $action-padding-horizontal: awsui.$space-xxs;
 }
 
 .footer {
-  border-block-start-style: var(#{style-api.name($tokens, footer-divider-style)}, none);
-  border-block-start-color: var(#{style-api.name($tokens, footer-divider-border-color)}, transparent);
-  border-block-start-width: var(#{style-api.name($tokens, footer-divider-border-width)}, 0);
+  border-block-start-style: var(#{style-api.name($tokens, border-style-footer-divider)}, none);
+  border-block-start-color: var(#{style-api.name($tokens, color-border-footer-divider)}, transparent);
+  border-block-start-width: var(#{style-api.name($tokens, border-width-footer-divider)}, 0);
 
   &:first-child {
     margin-block-start: auto;
@@ -96,11 +92,12 @@ $action-padding-horizontal: awsui.$space-xxs;
 }
 
 .root {
+  @include style-api.carriers($props);
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
   background: var(
-    #{style-api.name($tokens, background-default)},
+    #{style-api.name($tokens, color-background-default)},
     var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card)
   );
   min-inline-size: 0;
@@ -119,7 +116,7 @@ $action-padding-horizontal: awsui.$space-xxs;
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
       )
       var(
-        #{style-api.name($tokens, border-color-default)},
+        #{style-api.name($tokens, color-border-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card)
       );
     border-inline: solid
@@ -128,7 +125,7 @@ $action-padding-horizontal: awsui.$space-xxs;
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
       )
       var(
-        #{style-api.name($tokens, border-color-default)},
+        #{style-api.name($tokens, color-border-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card)
       );
   }
@@ -144,7 +141,7 @@ $action-padding-horizontal: awsui.$space-xxs;
         var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-container-top-width)
       )
       var(
-        #{style-api.name($tokens, border-color-default)},
+        #{style-api.name($tokens, color-border-default)},
         var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-container-top)
       );
   }

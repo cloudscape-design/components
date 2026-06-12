@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../tokens' as awsui;
+@use '../foundation' as foundation;
+@use '../forms/mixins' as forms;
+@use '../style-api' as style-api;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+/* stylelint-disable custom-property-pattern */
+
+// Shared focus-outline token group + a PARAM-FREE focus style. Any component that composes
+// `$props` into its token set (so the carriers are re-anchored on its root) can apply `styles` to
+// its focusable element and get a themeable focus ring driven by the shared tokens. No per-host
+// parameters — the mixin reads the shared carriers, which inherit from the nearest component root.
+$props: (color-focus-outline, focus-outline-width, focus-outline-radius);
+$tokens: style-api.resolve($props);
+
+@mixin styles {
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include forms.focus-highlight(
+      $gutter: awsui.$space-button-focus-outline-gutter,
+      $border-radius: var(
+          #{style-api.name($tokens, focus-outline-radius)},
+          #{awsui.$border-radius-control-default-focus-ring}
+        ),
+      $box-shadow: 0 0 0 var(#{style-api.name($tokens, focus-outline-width)}, #{foundation.$box-shadow-focused-width})
+        var(#{style-api.name($tokens, color-focus-outline)}, #{awsui.$color-border-item-focused})
+    );
+  }
+}

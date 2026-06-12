@@ -4,36 +4,36 @@
 */
 
 @mixin checkbox-theme($accent, $accent-hover, $background) {
-  --awsui-style-checkbox-background: #{$background};
-  --awsui-style-checkbox-background-checked: #{$accent};
-  --awsui-style-checkbox-border-color: #{$accent};
-  --awsui-style-checkbox-label-color: #{$accent};
+  --awsui-style-color-background-control: #{$background};
+  --awsui-style-color-background-control-checked: #{$accent};
+  --awsui-style-color-border-control: #{$accent};
+  --awsui-style-color-text-label: #{$accent};
 
   &:hover,
   &[data-highlighted] {
-    --awsui-style-checkbox-border-color: #{$accent-hover};
-    --awsui-style-checkbox-background-checked: #{$accent-hover};
-    --awsui-style-checkbox-label-color: #{$accent-hover};
+    --awsui-style-color-border-control: #{$accent-hover};
+    --awsui-style-color-background-control-checked: #{$accent-hover};
+    --awsui-style-color-text-label: #{$accent-hover};
   }
 }
 
 .styled-checkbox {
   @include checkbox-theme($accent: #ff5544, $accent-hover: #cc2200, $background: #ffee88);
-  --awsui-style-checkbox-background-disabled: #cccccc;
-  --awsui-style-checkbox-border-color-disabled: #cccccc;
-  --awsui-style-checkbox-border-width: 2px;
-  --awsui-style-checkbox-foreground: #ffffff;
-  --awsui-style-checkbox-foreground-disabled: #999999;
-  --awsui-style-checkbox-foreground-readonly: #777799;
-  --awsui-style-checkbox-stroke-width: 2;
-  --awsui-style-checkbox-label-color-disabled: #999999;
-  --awsui-style-checkbox-label-color-readonly: #777799;
-  --awsui-style-checkbox-label-spacing: 12px;
-  --awsui-style-checkbox-focus-ring-color: #ff5544;
-  --awsui-style-checkbox-focus-ring-border-radius: 4px;
-  --awsui-style-checkbox-focus-ring-border-width: 3px;
-  --awsui-style-checkbox-transition-duration: 200ms;
-  --awsui-style-checkbox-transition-easing: ease-in-out;
+  --awsui-style-color-background-control-disabled: #cccccc;
+  --awsui-style-color-border-control-disabled: #cccccc;
+  --awsui-style-border-width-control: 2px;
+  --awsui-style-color-foreground-control: #ffffff;
+  --awsui-style-color-foreground-control-disabled: #999999;
+  --awsui-style-color-foreground-control-readonly: #777799;
+  --awsui-style-stroke-width-control: 2;
+  --awsui-style-color-text-label-disabled: #999999;
+  --awsui-style-color-text-label-readonly: #777799;
+  --awsui-style-space-label: 12px;
+  --awsui-style-color-focus-outline: #ff5544;
+  --awsui-style-focus-outline-radius: 4px;
+  --awsui-style-focus-outline-width: 3px;
+  --awsui-style-transition-duration: 200ms;
+  --awsui-style-transition-easing: ease-in-out;
 }
 
 .styled-checkbox-one {

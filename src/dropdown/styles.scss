@@ -45,19 +45,22 @@
     @include styles.styles-reset;
     white-space: inherit;
     position: relative;
-    background-color: var(--awsui-internal-style-dropdown-background, awsui.$color-background-dropdown-item-default);
+    background-color: var(
+      --awsui-internal-style-color-background-dropdown,
+      awsui.$color-background-dropdown-item-default
+    );
     outline: none;
     @include styles.dropdown-shadow(
       $border-color: var(
-          --awsui-internal-style-dropdown-border-color,
+          --awsui-internal-style-color-border-dropdown,
           var(#{custom-props.$dropdownContentBorderColor}, #{awsui.$color-border-dropdown-container})
         ),
       $border-width: var(
-          --awsui-internal-style-dropdown-border-width,
+          --awsui-internal-style-border-width-dropdown,
           var(#{custom-props.$dropdownContentBorderWidth}, #{awsui.$border-width-popover})
         ),
       $border-radius: var(
-          --awsui-internal-style-dropdown-border-radius,
+          --awsui-internal-style-border-radius-dropdown,
           var(#{custom-props.$dropdownContentBorderRadius}, #{awsui.$border-radius-dropdown})
         )
     );

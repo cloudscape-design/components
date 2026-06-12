@@ -8,21 +8,21 @@
 /* stylelint-disable custom-property-pattern */
 
 .styled-segmented-control {
-  --awsui-style-segmented-control-background-default: #{palette.$surface};
-  --awsui-style-segmented-control-color-default: #{palette.$text-muted};
-  --awsui-style-segmented-control-background-active: #{palette.$accent};
-  --awsui-style-segmented-control-color-active: #{palette.$text-on-accent};
-  --awsui-style-segmented-control-background-hover: #{palette.$surface-alt};
-  --awsui-style-segmented-control-color-hover: #{palette.$accent};
-  --awsui-style-segmented-control-border-radius: 999px;
+  --awsui-style-color-background-default: #{palette.$surface};
+  --awsui-style-color-text-default: #{palette.$text-muted};
+  --awsui-style-color-background-active: #{palette.$accent};
+  --awsui-style-color-text-active: #{palette.$text-on-accent};
+  --awsui-style-color-background-hover: #{palette.$surface-alt};
+  --awsui-style-color-text-hover: #{palette.$accent};
+  --awsui-style-border-radius: 999px;
 }
 
 .square-segmented-control {
-  --awsui-style-segmented-control-background-default: #{palette.$surface};
-  --awsui-style-segmented-control-color-default: #{palette.$text-muted};
-  --awsui-style-segmented-control-background-active: #{palette.$success};
-  --awsui-style-segmented-control-color-active: #{palette.$text-on-accent};
-  --awsui-style-segmented-control-background-hover: #{palette.$success-surface};
-  --awsui-style-segmented-control-color-hover: #{palette.$success};
-  --awsui-style-segmented-control-border-radius: 0;
+  --awsui-style-color-background-default: #{palette.$surface};
+  --awsui-style-color-text-default: #{palette.$text-muted};
+  --awsui-style-color-background-active: #{palette.$success};
+  --awsui-style-color-text-active: #{palette.$text-on-accent};
+  --awsui-style-color-background-hover: #{palette.$success-surface};
+  --awsui-style-color-text-hover: #{palette.$success};
+  --awsui-style-border-radius: 0;
 }

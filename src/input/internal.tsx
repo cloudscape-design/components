@@ -257,6 +257,7 @@ function InternalInput(
           <InternalButton
             // Used for test utils
             className={styles['input-button-right']}
+            classNames={{ root: classNames?.clearButton }}
             variant="inline-icon-pointer-target"
             formAction="none"
             iconName={__rightIcon}

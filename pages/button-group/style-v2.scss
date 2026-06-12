@@ -6,19 +6,19 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 .button-group-card {
-  --awsui-style-button-group-background: #{palette.$surface};
-  --awsui-style-button-group-border-color: #{palette.$border};
-  --awsui-style-button-group-border-radius: 12px;
-  --awsui-style-button-group-padding-block: 8px;
-  --awsui-style-button-group-padding-inline: 12px;
-  --awsui-style-button-group-inline-size: fit-content;
+  --awsui-style-color-background: #{palette.$surface};
+  --awsui-style-color-border: #{palette.$border};
+  --awsui-style-border-radius: 12px;
+  --awsui-style-padding-block: 8px;
+  --awsui-style-padding-inline: 12px;
+  --awsui-style-inline-size: fit-content;
 }
 
 .button-group-minimal {
-  --awsui-style-button-group-background: transparent;
-  --awsui-style-button-group-border-color: transparent;
-  --awsui-style-button-group-border-radius: 0;
-  --awsui-style-button-group-inline-size: fit-content;
-  --awsui-style-button-color-default: #{palette.$accent};
-  --awsui-style-button-color-hover: #{palette.$accent-hover};
+  --awsui-style-color-background: transparent;
+  --awsui-style-color-border: transparent;
+  --awsui-style-border-radius: 0;
+  --awsui-style-inline-size: fit-content;
+  --awsui-style-color-text-default: #{palette.$accent};
+  --awsui-style-color-text-hover: #{palette.$accent-hover};
 }
