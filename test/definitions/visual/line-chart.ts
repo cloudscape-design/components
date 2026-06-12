@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import { TestSuite } from '../types';
 
 const TEST_CHART_FILTER_TRIGGER = '#chart button';
@@ -87,11 +86,11 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async ({ page }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
-        await page.waitForVisible('[class*="detail-popover"]');
+        await page.waitForVisible(wrapper.findLineChart().findDetailPopover().toSelector());
       },
     },
     {
@@ -100,11 +99,11 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async ({ page }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
-        await page.waitForVisible('[class*="detail-popover"]');
+        await page.waitForVisible(wrapper.findLineChart().findDetailPopover().toSelector());
         await page.keys(['Tab']);
         await page.keys(['Enter']);
       },
@@ -115,12 +114,12 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async ({ page }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
         await page.keys(['ArrowUp']);
-        await page.waitForVisible('[class*="detail-popover"]');
+        await page.waitForVisible(wrapper.findLineChart().findDetailPopover().toSelector());
       },
     },
     {
@@ -129,12 +128,12 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async ({ page }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
         await page.keys(['ArrowUp']);
-        await page.waitForVisible('[class*="detail-popover"]');
+        await page.waitForVisible(wrapper.findLineChart().findDetailPopover().toSelector());
         await page.keys(['Tab']);
         await page.keys(['Enter']);
       },

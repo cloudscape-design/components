@@ -98,7 +98,7 @@ async function preparePage(
   await browser.url(`${url}?${params.toString()}`);
   await page.waitForVisible(screenshotAreaSelector);
   if (testDef.setup) {
-    await testDef.setup({ page, wrapper, browser });
+    return testDef.setup({ page, wrapper, browser });
   }
 }
 
