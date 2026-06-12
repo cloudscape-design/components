@@ -101,8 +101,7 @@ async function preparePage(
 }
 
 /**
- * Captures a screenshot based on the test's screenshotType using the
- * ScreenshotPageObject methods from browser-test-tools.
+ * Captures a screenshot based on the test's screenshotType.
  */
 function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<ScreenshotWithOffset> {
   if (testDef.screenshotType === 'viewport') {
@@ -120,12 +119,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    await preparePage(browser, page, newUrl, testDef, windowSize);
-    const newScreenshot = await capture(page, testDef);
-
-    await preparePage(browser, page, oldUrl, testDef, windowSize);
-    const oldScreenshot = await capture(page, testDef);
-
+    // For permutations, go directly to capturePermutations (no extra navigation).
     if (testDef.screenshotType === 'permutations') {
       await preparePage(browser, page, newUrl, testDef, windowSize);
       const newPermutations = await page.capturePermutations();
@@ -134,19 +128,32 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       const oldPermutations = await page.capturePermutations();
 
       expect(newPermutations.length).toBe(oldPermutations.length);
+      const permFailures: number[] = [];
+      const attachmentPromises: Promise<void>[] = [];
       for (let i = 0; i < newPermutations.length; i++) {
         const permResult = await cropAndCompare(newPermutations[i], oldPermutations[i]);
-        await attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`);
-        expect(permResult.diffPixels).toBe(0);
+        attachmentPromises.push(attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`));
+        if (permResult.diffPixels !== 0) {
+          permFailures.push(i);
+        }
       }
-    } else {
-      const result = await cropAndCompare(newScreenshot, oldScreenshot);
-
-      // Attach comparison to Allure report for visibility (pass or fail).
-      await attachDiffImages(result, testDef.description);
-
-      // For screenshotArea and viewport types, the diff is a real failure.
-      expect(result.diffPixels).toBe(0);
+      await Promise.all(attachmentPromises);
+      expect(permFailures).toEqual([]);
+      return;
     }
+
+    // For screenshotArea and viewport: capture from both hosts and compare.
+    await preparePage(browser, page, newUrl, testDef, windowSize);
+    const newScreenshot = await capture(page, testDef);
+
+    await preparePage(browser, page, oldUrl, testDef, windowSize);
+    const oldScreenshot = await capture(page, testDef);
+
+    const result = await cropAndCompare(newScreenshot, oldScreenshot);
+
+    // Always attach for visibility in the Allure report.
+    await attachDiffImages(result, testDef.description);
+
+    expect(result.diffPixels).toBe(0);
   });
 }
