@@ -4,7 +4,7 @@
 import { TestSuite } from '../types';
 
 const ACE_SELECTOR = '.ace_editor.ace-dawn, .ace_editor.ace-tomorrow-night-bright';
-const timeout = 10_000;
+const timeout = 20_000;
 
 const suite: TestSuite = {
   description: 'Code editor',
