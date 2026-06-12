@@ -106,7 +106,9 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       queryParams: { type: 'multiselect' },
       setup: async ({ page, wrapper }) => {
-        await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+        const triggerSelector = wrapper.findMultiselect().findTrigger().toSelector();
+        page.waitForVisible(triggerSelector);
+        await page.click(triggerSelector);
         await page.elementScrollTo(wrapper.findMultiselect().findDropdown().findOptionsContainer().toSelector(), {
           top: 99999,
         });
@@ -119,7 +121,9 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       queryParams: { type: 'multiselect-select-all' },
       setup: async ({ page, wrapper }) => {
-        await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+        const triggerSelector = wrapper.findMultiselect().findTrigger().toSelector();
+        page.waitForVisible(triggerSelector);
+        await page.click(triggerSelector);
         await page.elementScrollTo(wrapper.findMultiselect().findDropdown().findOptionsContainer().toSelector(), {
           top: 99999,
         });
