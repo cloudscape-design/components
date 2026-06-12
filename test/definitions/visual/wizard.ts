@@ -31,6 +31,7 @@ const suite: TestSuite = {
       description: 'steps menu expanded in mobile view',
       path: 'wizard/wizard-screenshot',
       screenshotType: 'screenshotArea',
+      configuration: { width: 600 },
       setup: async ({ page }) => {
         await page.click('[role="button"][aria-expanded]');
       },
