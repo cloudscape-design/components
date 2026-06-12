@@ -132,7 +132,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       const attachmentPromises: Promise<void>[] = [];
       for (let i = 0; i < newPermutations.length; i++) {
         const permResult = await cropAndCompare(newPermutations[i], oldPermutations[i]);
-        attachmentPromises.push(attachDiffImages(permResult, `${testDef.description} [permutation ${i}]`));
+        attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i + 1}`));
         if (permResult.diffPixels !== 0) {
           permFailures.push(i);
         }
