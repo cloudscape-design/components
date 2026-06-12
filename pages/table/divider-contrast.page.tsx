@@ -31,19 +31,24 @@ import { SimplePage } from '../app/templates';
 // ---------------------------------------------------------------------------
 // Resolved from style-dictionary/visual-refresh + style-dictionary/core/color-palette.ts:
 //   colorBorderDividerDefault             → colorNeutral350 (light) / colorNeutral650 (dark)
-//   colorBorderDividerInteractiveDefault  → colorNeutral500 (light) / colorNeutral300 (dark)
+//   colorBorderDividerInteractiveDefault  → colorNeutral500 (light) / colorNeutral300 (dark)  [current]
 //   colorBackgroundTableHeader            → colorBackgroundContainerHeader
 //                                         → colorWhite (light) / colorNeutral850 (dark)
 //   neutral{N} maps to colorGrey{N} in core/color-palette.ts.
+//
+// "interactive-proposed" is the value under design review:
+//   light = colorNeutral500 (unchanged), dark = colorNeutral600 — muted but still ≥ 3:1.
 const TOKEN_VALUES = {
   light: {
     'color-border-divider-default': '#c6c6cd', // colorGrey350
-    'color-border-divider-interactive-default': '#8c8c94', // colorGrey500
+    'color-border-divider-interactive-default': '#8c8c94', // colorGrey500 (current)
+    'color-border-divider-interactive-proposed': '#8c8c94', // colorGrey500 (unchanged in light)
     'color-background-table-header': '#ffffff', // colorWhite
   },
   dark: {
     'color-border-divider-default': '#424650', // colorGrey650
-    'color-border-divider-interactive-default': '#dedee3', // colorGrey300
+    'color-border-divider-interactive-default': '#dedee3', // colorGrey300 (current)
+    'color-border-divider-interactive-proposed': '#656871', // colorGrey600 (proposed)
     'color-background-table-header': '#161d26', // colorGrey850
   },
 };
@@ -185,11 +190,15 @@ const depthOptions = [
 // ---------------------------------------------------------------------------
 // Color presets (the actual question on the table).
 // ---------------------------------------------------------------------------
-type TokenPreset = 'default' | 'interactive';
+type TokenPreset = 'default' | 'interactive' | 'interactive-proposed';
 
 const presetOptions = [
   { value: 'default', label: 'colorBorderDividerDefault' },
-  { value: 'interactive', label: 'colorBorderDividerInteractiveDefault' },
+  { value: 'interactive', label: 'colorBorderDividerInteractiveDefault (current)' },
+  {
+    value: 'interactive-proposed',
+    label: 'colorBorderDividerInteractiveDefault (proposed: dark → grey600)',
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -238,8 +247,13 @@ function ContrastIndicator({ ratio }: { ratio: number | null }) {
 // as a "load preset" action — the editable Input is always the source of
 // truth for what gets applied to the table.
 // ---------------------------------------------------------------------------
-function presetHex(preset: 'default' | 'interactive', mode: 'light' | 'dark'): string {
-  const tokenName = preset === 'default' ? 'color-border-divider-default' : 'color-border-divider-interactive-default';
+function presetHex(preset: TokenPreset, mode: 'light' | 'dark'): string {
+  const tokenName =
+    preset === 'default'
+      ? 'color-border-divider-default'
+      : preset === 'interactive'
+        ? 'color-border-divider-interactive-default'
+        : 'color-border-divider-interactive-proposed';
   return TOKEN_VALUES[mode][tokenName];
 }
 
