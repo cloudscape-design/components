@@ -3,6 +3,8 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../../icon/internal';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import Tooltip from '../../tooltip/internal.js';
@@ -135,7 +137,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
       )}
       {!isLast ? (
         <span className={styles.icon}>
-          <InternalIcon name="angle-right" />
+          <InternalIcon name={isThemeActive(Theme.OneTheme) ? 'slash-divider' : 'angle-right'} />
         </span>
       ) : null}
     </div>
