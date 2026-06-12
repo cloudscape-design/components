@@ -7,19 +7,26 @@ const suite: TestSuite = {
   description: 'Wizard',
   componentName: 'wizard',
   tests: [
-    {
-      description: 'first step',
-      path: 'wizard/wizard-screenshot',
-      screenshotType: 'screenshotArea',
-    },
-    {
-      description: 'second step',
-      path: 'wizard/wizard-screenshot',
-      screenshotType: 'screenshotArea',
-      setup: async ({ page }) => {
-        await page.click('#next');
-      },
-    },
+    ...[600, 1280].map(width => ({
+      description: `width ${width}px`,
+      tests: [
+        {
+          description: 'first step',
+          path: 'wizard/wizard-screenshot',
+          screenshotType: 'screenshotArea' as const,
+          configuration: { width },
+        },
+        {
+          description: 'second step',
+          path: 'wizard/wizard-screenshot',
+          screenshotType: 'screenshotArea' as const,
+          configuration: { width },
+          setup: async ({ page }: { page: any }) => {
+            await page.click('#next');
+          },
+        },
+      ],
+    })),
     {
       description: 'steps menu expanded in mobile view',
       path: 'wizard/wizard-screenshot',
