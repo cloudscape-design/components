@@ -66,8 +66,8 @@ describe('Table skeleton loading', () => {
       const table = wrapper.findTable()!;
       const allRows = table.findRows();
       const skeletonRows = wrapper.findAll('tr[aria-hidden="true"]');
-      // 3 data + 3 skeleton = 6 rows with .row class
-      expect(allRows).toHaveLength(6);
+      // findRows() returns only data rows, not skeleton rows
+      expect(allRows).toHaveLength(3);
       expect(skeletonRows).toHaveLength(3);
       expect(wrapper.findAllSkeletons()).toHaveLength(6); // 2 columns × 3 rows
       expect(table.findBodyCell(1, 2)!.getElement().textContent).toBe('Apples');
