@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import Dropdown from '../../dropdown/internal';
@@ -116,8 +117,17 @@ const ExpandableCategoryElement = ({
             </span>
           )}
           <span>{item.text}</span>
-          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-            <InternalIcon name="caret-down-filled" />
+          <span
+            className={clsx(
+              styles['expand-icon'],
+              styles['expand-icon-right'],
+              isThemeActive(Theme.OneTheme) && styles['one-theme']
+            )}
+          >
+            <InternalIcon
+              name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+              size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}

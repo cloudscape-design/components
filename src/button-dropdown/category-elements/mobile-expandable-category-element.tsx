@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
@@ -109,11 +110,14 @@ const MobileExpandableCategoryElement = ({
           )}
           <span>{item.text}</span>
           <span
-            className={clsx(styles['expand-icon'], {
+            className={clsx(styles['expand-icon'], isThemeActive(Theme.OneTheme) && styles['one-theme'], {
               [styles['expand-icon-up']]: expanded,
             })}
           >
-            <InternalIcon name="caret-down-filled" />
+            <InternalIcon
+              name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+              size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}
