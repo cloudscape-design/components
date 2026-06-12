@@ -88,11 +88,12 @@ async function preparePage(
   page: ScreenshotPageObject,
   url: string,
   testDef: TestDefinition,
-  windowSize: { width: number; height: number } | undefined
+  windowSize?: { width?: number; height?: number }
 ): Promise<void> {
-  if (windowSize) {
-    await browser.setWindowSize(windowSize.width, windowSize.height);
-  }
+  await browser.setWindowSize(
+    windowSize?.width ?? defaultWindowSize.width,
+    windowSize?.height ?? defaultWindowSize.height
+  );
   await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
   if (testDef.setup) {
@@ -113,7 +114,6 @@ function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<S
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
     const browser = getBrowser();
-    const windowSize = testDef.configuration ? { ...defaultWindowSize, ...testDef.configuration } : undefined;
     const page = new ScreenshotPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
@@ -121,10 +121,10 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
 
     // For permutations, go directly to capturePermutations (no extra navigation).
     if (testDef.screenshotType === 'permutations') {
-      await preparePage(browser, page, newUrl, testDef, windowSize);
+      await preparePage(browser, page, newUrl, testDef, testDef.configuration);
       const newPermutations = await page.capturePermutations();
 
-      await preparePage(browser, page, oldUrl, testDef, windowSize);
+      await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
       const oldPermutations = await page.capturePermutations();
 
       expect(newPermutations.length).toBe(oldPermutations.length);
@@ -143,10 +143,10 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     }
 
     // For screenshotArea and viewport: capture from both hosts and compare.
-    await preparePage(browser, page, newUrl, testDef, windowSize);
+    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
     const newScreenshot = await capture(page, testDef);
 
-    await preparePage(browser, page, oldUrl, testDef, windowSize);
+    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
     const oldScreenshot = await capture(page, testDef);
 
     const result = await cropAndCompare(newScreenshot, oldScreenshot);
