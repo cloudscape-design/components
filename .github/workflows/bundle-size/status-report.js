@@ -22,38 +22,40 @@ function formatDiff(prSize, headSize) {
   )} KB)`;
 }
 
-function getStatusMetadata(context) {
+function getStatusMetadata(context, sha, targetUrl) {
   return {
     owner: context.repo.owner,
     repo: context.repo.repo,
-    sha: context.sha,
+    sha,
     context: 'Bundle size',
-    state: 'pending',
-    target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+    target_url: targetUrl,
   };
 }
 
-export async function statusReportStart({ github, context }) {
-  await github.rest.repos.createCommitStatus({ ...getStatusMetadata(context), state: 'pending' });
-}
+// Entry point for the "Report bundle size" workflow. Posts a commit status on
+// `sha` (the trusted workflow_run head SHA). On a non-success run it reports an
+// error without touching the artifact. On success it reads the measurement
+// data, whose values only ever flow into numeric formatting, never execution.
+export async function reportBundleSize({ github, context, sha, dataDir, conclusion, targetUrl }) {
+  const metadata = getStatusMetadata(context, sha, targetUrl);
 
-export async function statusReportFailure({ github, context }) {
-  await github.rest.repos.createCommitStatus({
-    ...getStatusMetadata(context),
-    state: 'error',
-    description: 'The workflow encountered an error.',
-  });
-}
+  if (conclusion !== 'success') {
+    await github.rest.repos.createCommitStatus({
+      ...metadata,
+      state: 'error',
+      description: 'The workflow encountered an error.',
+    });
+    return;
+  }
 
-export async function statusReportSuccess({ github, context }) {
-  const basebranch = readJson('./bundle-size/output-basebranch.json');
-  const pr = readJson('./bundle-size/output.json');
+  const basebranch = readJson(`${dataDir}/output-basebranch.json`);
+  const pr = readJson(`${dataDir}/output.json`);
 
   console.log('Base branch:', basebranch);
   console.log('This PR:', pr);
 
   await github.rest.repos.createCommitStatus({
-    ...getStatusMetadata(context),
+    ...metadata,
     state: 'success',
     description: [
       `CSS: ${formatDiff(pr.cssCompressedSize, basebranch.cssCompressedSize)}`,

@@ -1,0 +1,63 @@
+name: Report bundle size
+
+# Runs after "Measure bundle size" completes. Because workflow_run executes in
+# the context of the base repository, its GITHUB_TOKEN keeps statuses:write
+# even when the triggering run came from a fork PR. This workflow posts a commit
+# status using the trusted workflow_run head SHA and (on success) the measured
+# sizes from the artifact — it never checks out or executes the PR's code.
+on:
+  workflow_run:
+    workflows: ['Measure bundle size']
+    types:
+      - completed
+
+permissions:
+  statuses: write
+  # Required to download the artifact from the triggering workflow run.
+  actions: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' ||
+      github.event.workflow_run.event == 'push'
+    steps:
+      # Trusted code only: the reporting script comes from the base repo's
+      # default branch, not from the artifact produced by the PR build.
+      - name: Checkout the base repo
+        uses: actions/checkout@v4
+
+      # Untrusted DATA only, pinned to the run that triggered this workflow.
+      # Skipped on a failed run (no artifact is produced); the report workflow
+      # posts an error status from the run conclusion instead.
+      - name: Download the size report artifact
+        if: github.event.workflow_run.conclusion == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: size-report
+          path: bundle-size-data
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Post the commit status
+        uses: actions/github-script@v7
+        env:
+          # head_sha comes from the trusted workflow_run event, not from the
+          # untrusted artifact, so a fork PR cannot redirect the status onto an
+          # arbitrary commit. It is the PR head (not the merge commit), which is
+          # what we want to annotate.
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          TARGET_URL: ${{ github.event.workflow_run.html_url }}
+        with:
+          script: |
+            const { reportBundleSize } = await import(process.cwd() + '/.github/workflows/bundle-size/status-report.js');
+            await reportBundleSize({
+              github,
+              context,
+              sha: process.env.HEAD_SHA,
+              dataDir: process.cwd() + '/bundle-size-data',
+              conclusion: process.env.CONCLUSION,
+              targetUrl: process.env.TARGET_URL,
+            });
