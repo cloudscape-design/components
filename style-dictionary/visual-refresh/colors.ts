@@ -64,6 +64,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundDrawer: '{colorBackgroundLayoutPanelContent}',
   colorBackgroundDrawerBackdrop: '{colorGreyOpaque70}',
   colorBackgroundLayoutMobilePanel: '{colorNeutral950}',
+  colorBackgroundLayoutPanel: '{colorBackgroundContainerContent}',
   colorBackgroundLayoutPanelContent: '{colorBackgroundContainerContent}',
   colorBackgroundLayoutPanelHover: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorBackgroundLayoutToolbar: '{colorBackgroundLayoutPanelContent}',
