@@ -18,7 +18,7 @@ const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
 const wrapper = createWrapper();
 
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
-  const params = new URLSearchParams(queryParams);
+  const params = new URLSearchParams({ motionDisabled: 'true', ...queryParams });
   const qs = params.toString();
   return `${host}/#/${path}${qs ? `?${qs}` : ''}`;
 }
@@ -94,8 +94,7 @@ async function preparePage(
     windowSize?.width ?? defaultWindowSize.width,
     windowSize?.height ?? defaultWindowSize.height
   );
-  const params = new URLSearchParams({ motionDisabled: 'true' });
-  await browser.url(`${url}?${params.toString()}`);
+  await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
   if (testDef.setup) {
     return testDef.setup({ page, wrapper, browser });
