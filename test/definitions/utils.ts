@@ -9,7 +9,7 @@ import createWrapper from '../../lib/components/test-utils/selectors';
 import { TestDefinition, TestSuite } from './types';
 
 const screenshotAreaSelector = '.screenshot-area';
-const defaultWindowSize = { width: 1600, height: 800 };
+const defaultWindowSize = { width: 1200, height: 800 };
 
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
