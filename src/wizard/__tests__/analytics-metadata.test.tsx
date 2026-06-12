@@ -26,6 +26,7 @@ import labels from '../../../lib/components/wizard/analytics-metadata/styles.css
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+  useOneTheme: jest.fn().mockReturnValue(false),
 }));
 
 const steps: WizardProps['steps'] = [

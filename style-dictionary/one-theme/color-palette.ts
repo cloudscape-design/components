@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
 import pick from 'lodash/pick.js';
 
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
@@ -7,6 +8,7 @@ import { ReferenceTokens } from '@cloudscape-design/theming-build';
 import { paletteTokens as brand } from '../core/color-palette.js';
 import { expandColorDictionary, expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
+import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '../visual-refresh/color-palette.js';
 
 /**
  * @deprecated These color palette tokens are deprecated and may be removed in a future version.
@@ -82,7 +84,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   ]),
 };
 
-// Reference tokens for visual-refresh theme
+// Reference tokens for one-theme theme
 const referenceTokens: ReferenceTokens = {
   color: {
     primary: {
@@ -160,14 +162,19 @@ const referenceTokens: ReferenceTokens = {
       500: brand.colorIndigo500,
       600: brand.colorIndigo600,
       700: brand.colorIndigo700,
+      800: brand.colorIndigo800,
       950: brand.colorIndigo950,
       1000: brand.colorIndigo1000,
     },
   },
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
-const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(referenceTokens);
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
+  {},
+  parentTokens,
+  expandColorDictionary(tokens)
+);
+const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(merge({}, vrReferenceTokens, referenceTokens));
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
 export { expandedTokens as tokens };

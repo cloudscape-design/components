@@ -28,7 +28,7 @@ $ai-drawer-heider-height: 42px;
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;
-  background-color: awsui.$color-background-container-content;
+  background-color: awsui.$color-background-layout-panel-content;
   display: grid;
   grid-template-columns: awsui.$space-m 1fr;
   inline-size: var(#{custom-props.$drawerSize});

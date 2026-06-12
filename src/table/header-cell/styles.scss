@@ -71,7 +71,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-interactive-default;
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
