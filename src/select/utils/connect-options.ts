@@ -9,10 +9,6 @@ export const connectOptionsByValue = (
   if (!selectedOptions || selectedOptions.length === 0) {
     return [];
   }
-  // Index the dropdown options by value so each selected option resolves in O(1), turning the
-  // overall cost from O(selected × options) into O(selected + options). This matters for large
-  // multiselects, which re-run this on every render. The first non-parent option for a given value
-  // wins, preserving the previous linear-scan order.
   const optionByValue = new Map<OptionDefinition['value'], DropdownOption>();
   for (const dropdownOption of options) {
     if (dropdownOption.type !== 'parent') {
