@@ -153,10 +153,10 @@ const referenceTokens: ReferenceTokens = {
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
   {},
   parentTokens,
-  expandColorDictionary(tokens)
+  expandColorDictionary(paletteTokens)
 );
 const expandedReferenceTokens: ReferenceTokens = expandReferenceTokens(merge({}, vrReferenceTokens, referenceTokens));
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
+export { expandedTokens as tokens };
 export { expandedReferenceTokens as referenceTokens };
-export const tokens: StyleDictionary.ExpandedColorScopeDictionary = { ...expandedTokens, ...primaryOverrides };
