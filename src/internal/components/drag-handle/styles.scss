@@ -64,7 +64,11 @@
 
   @include focus-visible.when-visible {
     &:not(.hide-focus) {
-      @include styles.focus-highlight(0px);
+      // Render the focus ring above container border overlays. The dropdown content border is
+      // drawn by `dropdown-shadow`'s `::after` at `z-index: 1`; since that `::after` is the
+      // wrapper's generated last child, it paints after (on top of) this deeply-nested ring in
+      // tree order, so the ring must use a strictly higher z-index to win.
+      @include styles.focus-highlight(0px, $z-index: 2);
     }
   }
 }
