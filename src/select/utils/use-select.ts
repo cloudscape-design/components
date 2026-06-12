@@ -76,8 +76,6 @@ export function useSelect({
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
-  // Membership set for the selected dropdown options so getOptionProps can test selection in O(1)
-  // instead of scanning __selectedOptions for every (filtered) option, which is O(filtered × selected).
   const __selectedOptionsSet = new Set(__selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
