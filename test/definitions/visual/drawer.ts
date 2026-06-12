@@ -49,8 +49,8 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 268 },
       queryParams: { longContent: 'true', hasFooter: 'true' },
-      setup: async ({ page, wrapper }) => {
-        await (page as any).scrollIntoView(wrapper.findDrawer().findFooter().toSelector());
+      setup: ({ browser, wrapper }) => {
+        browser.$(wrapper.findDrawer().findFooter().toSelector()).scrollIntoView();
       },
     },
     {

@@ -69,10 +69,10 @@ const suite: TestSuite = {
       description: 'popover in bottom panel',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async ({ page, wrapper }) => {
+      setup: async ({ page, wrapper, browser }) => {
         await page.click('aria/Open panel');
         await page.click(wrapper.findSplitPanel().findOpenPanelBottom().findPopover().findTrigger().toSelector());
-        await (page as any).scrollIntoView('[data-testid="scroll-me"]');
+        browser.$('[data-testid="scroll-me"]').scrollIntoView();
       },
     },
     {
