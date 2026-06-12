@@ -23,15 +23,7 @@ export interface TestDefinition {
   screenshotType: ScreenshotType;
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
-  setup?: ({
-    page,
-    wrapper,
-    browser,
-  }: {
-    page: ScreenshotPageObject;
-    wrapper: Wrapper;
-    browser: Browser;
-  }) => Promise<void>;
+  setup?: ({ page, wrapper, browser }: { page: ScreenshotPageObject; wrapper: Wrapper; browser: Browser }) => void;
 }
 
 export interface TestSuite {
