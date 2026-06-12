@@ -22,7 +22,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', variant: 'container' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', variant: 'default' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -42,7 +42,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', variant: 'footer' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -52,7 +52,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', variant: 'navigation' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -62,7 +62,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', headerDescription: 'Header description', variant: 'container' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -72,7 +72,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', headerDescription: 'Header description', variant: 'default' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -82,7 +82,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', headerDescription: 'Header description', variant: 'footer' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -92,7 +92,7 @@ const suite: TestSuite = {
       path: 'expandable-section/focus',
       screenshotType: 'screenshotArea',
       queryParams: { headerText: 'Header text', hasHeaderInfo: 'true', hasHeaderActions: 'true', variant: 'container' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -108,7 +108,7 @@ const suite: TestSuite = {
         hasHeaderActions: 'true',
         variant: 'container',
       },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },

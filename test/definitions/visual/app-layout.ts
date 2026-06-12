@@ -18,7 +18,7 @@ const suite: TestSuite = {
       path: 'app-layout/default',
       screenshotType: 'viewport',
       configuration: { width: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Open tools"]');
       },
     },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       path: 'app-layout/disable-paddings',
       screenshotType: 'viewport',
       configuration: { width: 1280 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Close navigation"]');
       },
     },
@@ -59,7 +59,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { splitPanelPosition: 'side' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Security trigger button"]');
         await page.click('[aria-label="Open panel"]');
       },
@@ -72,7 +72,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1500 },
       queryParams: { splitPanelPosition: 'side' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Security trigger button"]');
         await page.click('[aria-label="Open panel"]');
         await page.setWindowSize({ width: 1400, height: 800 });
@@ -85,7 +85,7 @@ const suite: TestSuite = {
       path: 'app-layout/default',
       screenshotType: 'viewport',
       configuration: { width: 400, height: 400 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.setWindowSize({ width: 1800, height: 400 });
       },
     },
@@ -94,7 +94,7 @@ const suite: TestSuite = {
       path: 'app-layout/default',
       screenshotType: 'viewport',
       configuration: { width: 1800, height: 400 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.setWindowSize({ width: 400, height: 400 });
       },
     },

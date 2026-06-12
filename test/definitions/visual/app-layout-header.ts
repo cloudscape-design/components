@@ -22,7 +22,7 @@ const suite: TestSuite = {
           path: 'app-layout/with-table',
           screenshotType: 'viewport' as const,
           configuration: { width },
-          setup: async page => {
+          setup: async ({ page }) => {
             await page.windowScrollTo({ top: 200 });
           },
         },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
           screenshotType: 'viewport' as const,
           configuration: { width },
           queryParams: { stickyNotifications: 'true' },
-          setup: async page => {
+          setup: async ({ page }) => {
             await page.windowScrollTo({ top: 200 });
           },
         },

@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'In fixed container',
       path: 'dropdown/fixed-container',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         const { height: windowHeight } = await page.getViewportSize();
         await page.windowScrollTo({ top: windowHeight });
         await page.click('button=Open dropdown');
@@ -22,7 +22,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'false' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#show-modal');
         await page.click('#in-modal');
       },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#show-modal');
         await page.click('#in-modal');
       },
@@ -42,7 +42,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'false' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#show-popover');
         await page.click('#in-popover');
         await page.click('[data-test-index="5"]');
@@ -53,7 +53,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#show-popover');
         await page.click('#in-popover');
         await page.click('[data-test-index="5"]');
@@ -64,7 +64,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'false' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#bottom-left');
       },
     },
@@ -73,7 +73,7 @@ const suite: TestSuite = {
       path: 'dropdown/expandable',
       screenshotType: 'viewport',
       queryParams: { componentType: 'Select', expandToViewport: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#bottom-left');
       },
     },

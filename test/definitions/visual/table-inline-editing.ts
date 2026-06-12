@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'active select editing',
       path: 'table/editable',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Edit EKXAM4L45YPC8 TLS Version"]');
       },
     },
@@ -24,7 +24,7 @@ const suite: TestSuite = {
       description: 'active select editing with open dropdown',
       path: 'table/editable',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('[aria-label="Edit EKXAM4L45YPC8 TLS Version"]');
         await page.click(wrapper.findSelect().findTrigger().toSelector());
       },
@@ -33,7 +33,7 @@ const suite: TestSuite = {
       description: 'hovering over cell, resizableColumns=${resizableColumns}',
       path: 'table/editable',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[aria-label="Edit EKXAM4L45YPC8 Domain name"]');
       },
     },
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 1600 },
       queryParams: { enableKeyboardNavigation: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="focus"]');
         await page.keys(['Tab', 'ArrowDown', 'ArrowRight', 'Enter']);
       },

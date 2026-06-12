@@ -20,7 +20,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -33,7 +33,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -46,7 +46,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -61,7 +61,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -76,7 +76,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[aria-label="Line chart"]', 200, 50);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
@@ -87,7 +87,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
@@ -100,7 +100,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
@@ -115,7 +115,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
@@ -129,7 +129,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 1000 },
       queryParams: { expandableSubItems: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['ArrowRight']);
@@ -144,7 +144,7 @@ const suite: TestSuite = {
       path: 'line-chart/in-expandable-section-test',
       screenshotType: 'screenshotArea',
       configuration: { width: 800, height: 800 },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const expandableSectionWrapper = wrapper.findExpandableSection();
         await page.waitForVisible(expandableSectionWrapper.toSelector());
         await page.click(expandableSectionWrapper.findExpandButton().toSelector());

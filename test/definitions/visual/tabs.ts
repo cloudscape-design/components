@@ -21,7 +21,7 @@ const suite: TestSuite = {
       description: 'focuses next tab header after clicking on tab header without an href',
       path: 'tabs/integration-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#first-tabs li:nth-child(3) button');
         await page.keys('ArrowRight');
       },
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       description: 'focus active tab - default variant',
       path: 'tabs/integration-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#click-this');
         await page.focusNextElement();
       },
@@ -44,7 +44,7 @@ const suite: TestSuite = {
       description: 'focus active tab - container variant',
       path: 'tabs/integration-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#click-this-2');
         await page.focusNextElement();
       },
@@ -53,7 +53,7 @@ const suite: TestSuite = {
       description: 'focus content - default variant',
       path: 'tabs/integration-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#click-this');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -63,7 +63,7 @@ const suite: TestSuite = {
       description: 'focus content - container variant',
       path: 'tabs/integration-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#click-this-2');
         await page.focusNextElement();
         await page.focusNextElement();

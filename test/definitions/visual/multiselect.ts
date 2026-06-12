@@ -22,7 +22,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { expandToViewport: 'true', virtualScroll: 'true', filteringType: 'manual' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -31,7 +31,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { expandToViewport: 'true', virtualScroll: 'true', filteringType: 'auto' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -40,7 +40,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { expandToViewport: 'true', virtualScroll: 'true', filteringType: 'none' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -49,7 +49,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { expandToViewport: 'false', virtualScroll: 'false', filteringType: 'manual' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -58,7 +58,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { statusType: 'error' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -67,7 +67,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { virtualScroll: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
         await page.click('[data-test-index="4"]');
       },
@@ -77,7 +77,7 @@ const suite: TestSuite = {
       path: 'multiselect/screenshot',
       screenshotType: 'screenshotArea',
       queryParams: { virtualScroll: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
         await page.click('[data-test-index="4"]');
       },
@@ -87,7 +87,7 @@ const suite: TestSuite = {
       path: 'multiselect/custom-render-option',
       screenshotType: 'screenshotArea',
       queryParams: { virtualScroll: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -96,7 +96,7 @@ const suite: TestSuite = {
       path: 'multiselect/custom-render-option',
       screenshotType: 'screenshotArea',
       queryParams: { virtualScroll: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
       },
     },
@@ -105,7 +105,7 @@ const suite: TestSuite = {
       path: 'multiselect/virtual-scroll',
       screenshotType: 'screenshotArea',
       queryParams: { type: 'multiselect' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
         await page.elementScrollTo(wrapper.findMultiselect().findDropdown().findOptionsContainer().toSelector(), {
           top: 99999,
@@ -118,7 +118,7 @@ const suite: TestSuite = {
       path: 'multiselect/virtual-scroll',
       screenshotType: 'screenshotArea',
       queryParams: { type: 'multiselect-select-all' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findMultiselect().findTrigger().toSelector());
         await page.elementScrollTo(wrapper.findMultiselect().findDropdown().findOptionsContainer().toSelector(), {
           top: 99999,

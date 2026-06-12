@@ -36,7 +36,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -47,7 +47,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -62,7 +62,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -79,7 +79,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('#chart svg[aria-label="Mixed chart 1"]', 200, 100);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },

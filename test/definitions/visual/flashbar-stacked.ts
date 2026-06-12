@@ -18,7 +18,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 380 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -28,7 +28,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 380 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['Space']);
@@ -46,7 +46,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 450 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -56,7 +56,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 450 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['Space']);
@@ -74,7 +74,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -84,7 +84,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['Space']);
@@ -102,7 +102,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -112,7 +112,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['Space']);

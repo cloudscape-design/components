@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'with different toggle icon',
       path: 'tree-view/basic',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const select = wrapper.findSelect();
         await page.click(select.findTrigger().toSelector());
         await page.click(select.findDropdown().findOptionByValue('custom').toSelector());

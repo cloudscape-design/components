@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'permutations',
       path: 'help-panel/permutations',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await (page as any).focusInputs();
       },
     },
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       description: 'with AppLayout',
       path: 'help-panel/with-app-layout',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await (page as any).focusInputs();
       },
     },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       description: 'loading state - with AppLayout',
       path: 'help-panel/loading-with-app-layout',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await (page as any).focusInputs();
       },
     },

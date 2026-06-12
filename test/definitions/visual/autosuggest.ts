@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'permutations',
       path: 'autosuggest/permutations',
       screenshotType: 'permutations',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('input');
       },
     },
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       description: 'permutations for async properties',
       path: 'autosuggest/permutations-async',
       screenshotType: 'permutations',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('input');
       },
     },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       description: 'Displays options with groups correctly',
       path: 'autosuggest/scenarios',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('input');
       },
     },
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       description: 'Correctly displays dropdown regions',
       path: 'autosuggest/regions-scenarios',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('input');
       },
     },
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       description: 'Long virtual list - navigate to last item',
       path: 'autosuggest/virtual-scroll',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
         await page.keys(['ArrowUp']);
       },
@@ -55,7 +55,7 @@ const suite: TestSuite = {
           path: 'autosuggest/custom-render-option',
           screenshotType: 'screenshotArea' as const,
           queryParams: { virtualScroll: String(virtualScroll) },
-          setup: async (page, wrapper) => {
+          setup: async ({ page, wrapper }) => {
             await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
             await page.keys(['ArrowDown']);
           },
