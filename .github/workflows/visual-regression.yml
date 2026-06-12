@@ -19,6 +19,10 @@ on:
         description: 'URL of the deployed PR pages. If provided, uses this instead of a local server for the new host.'
         required: false
         type: string
+      new-host-url:
+        description: 'URL of the deployed PR pages. If provided, uses this instead of a local server for the new host.'
+        required: false
+        type: string
 
 defaults:
   run:
@@ -87,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+        shard: [1, 2]
     steps:
       - uses: actions/checkout@v4
 
@@ -177,11 +181,61 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Resolve deployment URLs
+        id: hosts
+        run: |
+          # --- New host: deployment for this PR ---
+          if [ -n "${{ inputs.new-host-url }}" ]; then
+            NEW_URL="${{ inputs.new-host-url }}"
+          else
+            # Find the latest deployment for this PR (environment name contains the PR number)
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            NEW_URL=""
+            if [ -n "$PR_NUMBER" ]; then
+              DEPLOY_ID=$(gh api \
+                "repos/${{ github.repository }}/deployments?per_page=50" \
+                --jq "[.[] | select(.environment | contains(\"$PR_NUMBER\"))] | first | .id // empty" 2>/dev/null || true)
+              if [ -n "$DEPLOY_ID" ]; then
+                NEW_URL=$(gh api \
+                  "repos/${{ github.repository }}/deployments/${DEPLOY_ID}/statuses" \
+                  --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+              fi
+            fi
+          fi
+          echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+
+          # --- Old host: deployment from the last PR merged to main ---
+          # Deployments only exist for PRs, not for merges to main.
+          # Find the most recently merged PR and use its deployment URL.
+          OLD_URL=""
+          LAST_MERGED_PR=$(gh api \
+            "repos/${{ github.repository }}/pulls?state=closed&base=main&sort=updated&direction=desc&per_page=10" \
+            --jq '[.[] | select(.merged_at != null)] | first | .number // empty' 2>/dev/null || true)
+          if [ -n "$LAST_MERGED_PR" ]; then
+            echo "Last merged PR: #${LAST_MERGED_PR}"
+            DEPLOY_ID=$(gh api \
+              "repos/${{ github.repository }}/deployments?per_page=50" \
+              --jq "[.[] | select(.environment | contains(\"${LAST_MERGED_PR}\"))] | first | .id // empty" 2>/dev/null || true)
+            if [ -n "$DEPLOY_ID" ]; then
+              OLD_URL=$(gh api \
+                "repos/${{ github.repository }}/deployments/${DEPLOY_ID}/statuses" \
+                --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            fi
+          fi
+          echo "old=${OLD_URL}" >> "$GITHUB_OUTPUT"
+
+          echo "New host: ${NEW_URL:-'(local server)'}"
+          echo "Old host: ${OLD_URL:-'(local server)'}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Start test server (port 8080)
+        if: ${{ !steps.hosts.outputs.new }}
         if: ${{ !steps.hosts.outputs.new }}
         run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
 
       - name: Start baseline server (port 8081)
+        if: ${{ !steps.hosts.outputs.old }}
         if: ${{ !steps.hosts.outputs.old }}
         run: npx --yes serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
 
@@ -197,11 +251,25 @@ jobs:
           if [ -n "$WAIT_TARGETS" ]; then
             node_modules/.bin/wait-on $WAIT_TARGETS
           fi
+      - name: Wait for local servers
+        run: |
+          WAIT_TARGETS=""
+          if [ -z "${{ steps.hosts.outputs.new }}" ]; then
+            WAIT_TARGETS="http://localhost:8080"
+          fi
+          if [ -z "${{ steps.hosts.outputs.old }}" ]; then
+            WAIT_TARGETS="$WAIT_TARGETS http://localhost:8081"
+          fi
+          if [ -n "$WAIT_TARGETS" ]; then
+            node_modules/.bin/wait-on $WAIT_TARGETS
+          fi
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/30
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/2
         env:
           TZ: UTC
+          NEW_HOST: ${{ steps.hosts.outputs.new || 'http://localhost:8080' }}
+          OLD_HOST: ${{ steps.hosts.outputs.old || 'http://localhost:8081' }}
           NEW_HOST: ${{ steps.hosts.outputs.new || 'http://localhost:8080' }}
           OLD_HOST: ${{ steps.hosts.outputs.old || 'http://localhost:8081' }}
 
