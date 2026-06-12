@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { Browser } from 'webdriverio';
+
 import type { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import type createWrapper from '../../lib/components/test-utils/selectors';
@@ -21,7 +23,15 @@ export interface TestDefinition {
   screenshotType: ScreenshotType;
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
-  setup?: (page: ScreenshotPageObject, wrapper: Wrapper) => Promise<void>;
+  setup?: ({
+    page,
+    wrapper,
+    browser,
+  }: {
+    page: ScreenshotPageObject;
+    wrapper: Wrapper;
+    browser: Browser;
+  }) => Promise<void>;
 }
 
 export interface TestSuite {
