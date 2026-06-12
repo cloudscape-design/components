@@ -94,7 +94,8 @@ async function preparePage(
     windowSize?.width ?? defaultWindowSize.width,
     windowSize?.height ?? defaultWindowSize.height
   );
-  await browser.url(url);
+  const params = new URLSearchParams({ motionDisabled: 'true' });
+  await browser.url(`${url}?${params.toString()}`);
   await page.waitForVisible(screenshotAreaSelector);
   if (testDef.setup) {
     await testDef.setup(page, wrapper);
