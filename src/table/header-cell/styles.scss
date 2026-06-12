@@ -53,7 +53,10 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
+  /* stylelint-disable custom-property-pattern -- prototype-only override; remove with the prototype page */
+  border-block-end: awsui.$border-divider-list-width solid
+    var(--awsui-table-divider-horizontal-prototype, #{awsui.$color-border-divider-interactive-default});
+  /* stylelint-enable custom-property-pattern */
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -71,7 +74,10 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-interactive-default;
+    /* stylelint-disable custom-property-pattern -- prototype-only override; remove with the prototype page */
+    border-block-end: awsui.$border-table-sticky-width solid
+      var(--awsui-table-divider-horizontal-prototype, #{awsui.$color-border-divider-interactive-default});
+    /* stylelint-enable custom-property-pattern */
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;

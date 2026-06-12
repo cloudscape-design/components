@@ -46,9 +46,11 @@ th:not([data-rightmost]) > .divider,
   max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
-  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
+  /* stylelint-disable custom-property-pattern -- prototype-only override; remove with the prototype page */
+  border-inline-start: awsui.$border-divider-list-width solid
+    var(--awsui-table-divider-vertical-prototype, #{awsui.$color-border-divider-interactive-default});
+  /* stylelint-enable custom-property-pattern */
   box-sizing: border-box;
-
   // Position variants for grouped column headers.
   // All Column dividers maintain the same bottom gap ($block-gap / 2) as the default.
   &.divider-position-top {
