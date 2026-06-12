@@ -109,7 +109,7 @@ function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<S
   if (testDef.screenshotType === 'viewport') {
     return page.captureViewport();
   }
-  return page.captureBySelector(screenshotAreaSelector, { viewportOnly: true });
+  return page.captureBySelector(screenshotAreaSelector);
 }
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
