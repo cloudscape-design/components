@@ -130,6 +130,44 @@ describe('Dropdown Component', () => {
       expect(handleOutsideClick).not.toHaveBeenCalled();
       expect(screen.getByTestId('after-dismiss')).toBeTruthy();
     });
+
+    test('does not fire event when a pointer gesture starts inside the dropdown but is released outside', async () => {
+      const handleOutsideClick = jest.fn();
+      const [, outsideElement] = renderDropdown(
+        <Dropdown
+          trigger={<button />}
+          onOutsideClick={handleOutsideClick}
+          open={true}
+          content={<button data-testid="inside-content">item</button>}
+        />
+      );
+      await runPendingEvents();
+
+      // Gesture begins on an element inside the dropdown (e.g. a drag handle)...
+      fireEvent.mouseDown(screen.getByTestId('inside-content'));
+      // ...and the resulting click resolves outside the dropdown because the pointer moved past its edge.
+      act(() => outsideElement.click());
+
+      expect(handleOutsideClick).not.toHaveBeenCalled();
+    });
+
+    test('still fires event when the pointer gesture starts outside the dropdown', async () => {
+      const handleOutsideClick = jest.fn();
+      const [, outsideElement] = renderDropdown(
+        <Dropdown
+          trigger={<button />}
+          onOutsideClick={handleOutsideClick}
+          open={true}
+          content={<button data-testid="inside-content">item</button>}
+        />
+      );
+      await runPendingEvents();
+
+      fireEvent.mouseDown(outsideElement);
+      act(() => outsideElement.click());
+
+      expect(handleOutsideClick).toHaveBeenCalled();
+    });
   });
 
   describe('dropdown focus events', () => {
