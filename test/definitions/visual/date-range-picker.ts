@@ -90,7 +90,7 @@ const suite: TestSuite = {
       description: 'selects text when double-clicking calendar header',
       path: 'date-range-picker/with-value',
       screenshotType: 'screenshotArea',
-      setup: async ({ page, wrapper }) => {
+      setup: async ({ page, wrapper, browser }) => {
         await page.click('#focusable-before');
         await page.focusNextElement();
         await page.keys(['Enter']);
@@ -100,19 +100,19 @@ const suite: TestSuite = {
           .findHeader()
           .find('h2 span')
           .toSelector();
-        await (page as any).doubleClick(firstCalendarHeaderSelector);
+        browser.$(firstCalendarHeaderSelector).doubleClick();
       },
     },
     {
       description: 'does not select text when double-clicking next button',
       path: 'date-range-picker/with-value',
       screenshotType: 'screenshotArea',
-      setup: async ({ page, wrapper }) => {
+      setup: async ({ page, wrapper, browser }) => {
         await page.click('#focusable-before');
         await page.focusNextElement();
         await page.keys(['Enter']);
         const nextButtonSelector = wrapper.findDateRangePicker().findDropdown().findNextMonthButton().toSelector();
-        await (page as any).doubleClick(nextButtonSelector);
+        browser.$(nextButtonSelector).doubleClick();
       },
     },
   ],
