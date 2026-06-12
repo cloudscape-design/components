@@ -325,3 +325,83 @@ test('updateCellOffsets element widths fallback to 0 when elements are missing',
   expect(offsets.get('a')).toEqual({ first: 0, last: 0 });
   expect(offsets.get('c')).toEqual({ first: 0, last: 0 });
 });
+
+describe('useStickyCellStyles boundaryColumnId', () => {
+  // Stub store lets us toggle the boundary leaf's `lastInsetInlineEnd` while keeping the
+  // position leaf's flag false — a state the real store never produces (it only ever sets
+  // the flag on one leaf), but exactly the situation a group header relies on.
+  const cellState = (overrides: { lastInsetInlineEnd?: boolean; offset?: { insetInlineEnd: number } } = {}) => ({
+    padInlineStart: false,
+    lastInsetInlineStart: false,
+    lastInsetInlineEnd: false,
+    offset: { insetInlineEnd: 100 },
+    ...overrides,
+  });
+  function stubModel(initial: Map<PropertyKey, any>) {
+    const listeners: Array<(n: any, p: any) => void> = [];
+    let state = { cellState: initial, wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } };
+    return {
+      model: {
+        store: {
+          get: () => state,
+          subscribe: (_: any, l: any) => (listeners.push(l), () => {}),
+          unsubscribe: () => {},
+        },
+        style: { wrapper: {} },
+        refs: { table: () => {}, wrapper: () => {}, cell: () => {} },
+      } as unknown as StickyColumnsModel,
+      setCellState: (next: Map<PropertyKey, any>) => {
+        const prev = state;
+        state = { ...state, cellState: next };
+        listeners.forEach(l => l(state, prev));
+      },
+    };
+  }
+
+  test("OR-merges boundary leaf's shadow flag into className but keeps position leaf's offset", () => {
+    const { model } = stubModel(
+      new Map<PropertyKey, any>([
+        ['pos', cellState({ offset: { insetInlineEnd: 120 } })],
+        ['boundary', cellState({ lastInsetInlineEnd: true, offset: { insetInlineEnd: 240 } })],
+      ])
+    );
+    const getClassName = jest.fn(state => ({ 'last-end': !!state?.lastInsetInlineEnd }));
+    const { result } = renderHook(() =>
+      useStickyCellStyles({ stickyColumns: model, columnId: 'pos', boundaryColumnId: 'boundary', getClassName })
+    );
+    expect(getClassName).toHaveBeenLastCalledWith(expect.objectContaining({ lastInsetInlineEnd: true }));
+    expect(result.current.className).toBe('last-end');
+    expect(result.current.style).toEqual({ insetInlineEnd: 120 });
+  });
+
+  test("scroll updates merge boundary shadow class without touching position leaf's offset", () => {
+    const th = document.createElement('th');
+    const pos = cellState({ offset: { insetInlineEnd: 120 } });
+    const { model, setCellState } = stubModel(
+      new Map<PropertyKey, any>([
+        ['pos', pos],
+        ['boundary', cellState({ offset: { insetInlineEnd: 240 } })],
+      ])
+    );
+    const styles = { 'sticky-cell': 'sticky-cell', 'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end' };
+    const { result } = renderHook(() =>
+      useStickyCellStyles({
+        stickyColumns: model,
+        columnId: 'pos',
+        boundaryColumnId: 'boundary',
+        getClassName: state => getStickyClassNames(styles, state),
+      })
+    );
+    result.current.ref(th);
+    expect(th).not.toHaveClass('sticky-cell-last-inline-end');
+
+    setCellState(
+      new Map<PropertyKey, any>([
+        ['pos', pos],
+        ['boundary', cellState({ lastInsetInlineEnd: true, offset: { insetInlineEnd: 240 } })],
+      ])
+    );
+    expect(th).toHaveClass('sticky-cell-last-inline-end');
+    expect(th.style.insetInlineEnd).toBe('120px');
+  });
+});
