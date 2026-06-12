@@ -76,6 +76,9 @@ export function useSelect({
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
+  // Membership set for the selected dropdown options so getOptionProps can test selection in O(1)
+  // instead of scanning __selectedOptions for every (filtered) option, which is O(filtered × selected).
+  const __selectedOptionsSet = new Set(__selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
       selectedValuesSet.add(item.value);
@@ -277,17 +280,17 @@ export function useSelect({
     const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = isSelectAll ? isAllSelected : __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
+    const selected = isSelectAll ? isAllSelected : __selectedOptionsSet.has(option) || !!groupState?.selected;
     const nextOption = options[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
-        : __selectedOptions.indexOf(options[index + 1]) > -1;
+        : __selectedOptionsSet.has(options[index + 1]);
     const previousOption = options[index - 1]?.option;
     const isPreviousSelected =
       !!previousOption && isGroup(previousOption)
         ? getGroupState(previousOption).selected
-        : __selectedOptions.indexOf(options[index - 1]) > -1;
+        : __selectedOptionsSet.has(options[index - 1]);
     const optionProps: any = {
       key: index,
       option,
@@ -354,7 +357,7 @@ export function useSelect({
   const highlightedGroupSelected =
     !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption.option).selected;
   const announceSelected =
-    !!highlightedOption && (__selectedOptions.indexOf(highlightedOption) > -1 || highlightedGroupSelected);
+    !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 
   return {
     isOpen,
