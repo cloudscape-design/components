@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'Permutations: states',
       path: 'date-picker/permutations',
       screenshotType: 'permutations',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="date-picker-expanded-example"] button');
       },
     },
@@ -28,7 +28,7 @@ const suite: TestSuite = {
           description: 'focus ring on selected month',
           path: 'date-picker/month-picker',
           screenshotType: 'screenshotArea',
-          setup: async (page, wrapper) => {
+          setup: async ({ page, wrapper }) => {
             await page.click(wrapper.findDatePicker().findOpenCalendarButton().toSelector());
             await page.keys(['Tab', 'Tab', 'Tab']);
           },
@@ -37,7 +37,7 @@ const suite: TestSuite = {
           description: 'focus ring on current month',
           path: 'date-picker/month-picker',
           screenshotType: 'screenshotArea',
-          setup: async (page, wrapper) => {
+          setup: async ({ page, wrapper }) => {
             await page.click(wrapper.findDatePicker().findOpenCalendarButton().toSelector());
             await page.keys(['Tab', 'Tab', 'Tab']);
             await page.keys(['ArrowRight']);
@@ -47,7 +47,7 @@ const suite: TestSuite = {
           description: 'focus ring on non selected, non current month',
           path: 'date-picker/month-picker',
           screenshotType: 'screenshotArea',
-          setup: async (page, wrapper) => {
+          setup: async ({ page, wrapper }) => {
             await page.click(wrapper.findDatePicker().findOpenCalendarButton().toSelector());
             await page.keys(['Tab', 'Tab', 'Tab']);
             await page.keys(['ArrowRight', 'ArrowRight']);

@@ -12,7 +12,7 @@ const suite: TestSuite = {
       path: 'collection-preferences/simple',
       screenshotType: 'viewport',
       configuration: { width: 600, height: 1100 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.cp-1 button');
       },
     },
@@ -20,7 +20,7 @@ const suite: TestSuite = {
       description: 'visible content only at 600x1100',
       path: 'collection-preferences/simple',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.cp-4 button');
       },
     },
@@ -29,7 +29,7 @@ const suite: TestSuite = {
       path: 'collection-preferences/simple',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 700 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.cp-1 button');
       },
     },
@@ -37,7 +37,7 @@ const suite: TestSuite = {
       description: 'visible content only at 1280x700',
       path: 'collection-preferences/simple',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.cp-4 button');
       },
     },
@@ -45,7 +45,7 @@ const suite: TestSuite = {
       description: 'custom',
       path: 'collection-preferences/simple',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.cp-2 button');
       },
     },
@@ -58,7 +58,7 @@ const suite: TestSuite = {
           path: 'collection-preferences/reorder-content',
           screenshotType: 'viewport',
           configuration: { width: 900, height: 650 },
-          setup: async page => {
+          setup: async ({ page }) => {
             await page.click('.cp-1 button');
             await page.keys(Array(5).fill('Tab'));
           },
@@ -68,7 +68,7 @@ const suite: TestSuite = {
           path: 'collection-preferences/reorder-content',
           screenshotType: 'viewport',
           configuration: { width: 900, height: 650 },
-          setup: async page => {
+          setup: async ({ page }) => {
             await page.click('.cp-1 button');
             await page.keys(Array(5).fill('Tab'));
             await page.keys('Space');

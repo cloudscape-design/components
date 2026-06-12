@@ -12,7 +12,7 @@ const suite: TestSuite = {
       path: 'container/sticky-permutations',
       screenshotType: 'viewport',
       configuration: { width: 1400 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -22,7 +22,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { hasNotifications: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { hasBreadcrumbs: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -42,7 +42,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { hasNotifications: 'true', hasAlert: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -59,7 +59,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { hasNotifications: 'true', highContrast: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -68,7 +68,7 @@ const suite: TestSuite = {
       path: 'container/sticky-permutations',
       screenshotType: 'viewport',
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -78,7 +78,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 600 },
       queryParams: { hasNotifications: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -88,7 +88,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 600 },
       queryParams: { hasBreadcrumbs: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -98,7 +98,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 600 },
       queryParams: { hasNotifications: 'true', hasAlert: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },
@@ -115,7 +115,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 600 },
       queryParams: { hasNotifications: 'true', highContrast: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 200 });
       },
     },

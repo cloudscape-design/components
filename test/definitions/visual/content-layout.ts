@@ -31,7 +31,7 @@ const suite: TestSuite = {
       description: 'form with content layout header',
       path: 'content-layout/with-header-toggles',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="toggle-form-header"] input');
         await page.click('[data-testid="toggle-content-layout"] input');
       },

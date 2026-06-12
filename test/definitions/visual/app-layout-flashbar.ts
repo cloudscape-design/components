@@ -14,7 +14,7 @@ const suite: TestSuite = {
           path: 'app-layout/with-stacked-notifications-and-table',
           screenshotType: 'screenshotArea' as const,
           configuration: { width: 1280, height: 900 },
-          setup: async (page: import('@cloudscape-design/browser-test-tools/page-objects').ScreenshotPageObject) => {
+          setup: async ({ page }) => {
             if (!disableContentPaddings) {
               await page.click('[data-id="toggle-content-paddings"]');
             }

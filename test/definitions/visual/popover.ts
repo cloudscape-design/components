@@ -21,7 +21,7 @@ const suite: TestSuite = {
       description: 'inside modal',
       path: 'popover/scenario-in-modal',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
         await page.click('#popover button');
       },
@@ -30,7 +30,7 @@ const suite: TestSuite = {
       description: 'positioning with navigation v1.0',
       path: 'popover/nav-v1-0-positioning',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#popover button');
       },
     },
@@ -38,7 +38,7 @@ const suite: TestSuite = {
       description: 'close icon positioned inside the popover (no header and fixed width)',
       path: 'popover/header-variant',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="popover-without-title"] button');
       },
     },
@@ -46,7 +46,7 @@ const suite: TestSuite = {
       description: 'inside table - renderWithPortal=false',
       path: 'popover/scenario-in-table',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('table button');
       },
     },
@@ -54,7 +54,7 @@ const suite: TestSuite = {
       description: 'inside table - renderWithPortal=true',
       path: 'popover/scenario-in-table',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#renderWithPortal');
         await page.click('table button');
       },
@@ -63,7 +63,7 @@ const suite: TestSuite = {
       description: 'scenario - copy - renderWithPortal=false',
       path: 'popover/scenarios',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#scenario-copy button');
       },
     },
@@ -71,7 +71,7 @@ const suite: TestSuite = {
       description: 'scenario - copy - renderWithPortal=true',
       path: 'popover/scenarios',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#renderWithPortal');
         await page.click('#scenario-copy button');
       },
@@ -80,7 +80,7 @@ const suite: TestSuite = {
       description: 'scenario - medium-key-value - renderWithPortal=false',
       path: 'popover/scenarios',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#scenario-medium-key-value button');
       },
     },
@@ -88,7 +88,7 @@ const suite: TestSuite = {
       description: 'scenario - large-key-value - renderWithPortal=false',
       path: 'popover/scenarios',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#scenario-large-key-value button');
       },
     },
@@ -101,7 +101,7 @@ const suite: TestSuite = {
       description: 'inline popover - closed - renderWithPortal=true',
       path: 'popover/inline',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#renderWithPortal');
       },
     },
@@ -109,7 +109,7 @@ const suite: TestSuite = {
       description: 'inline popover - open - renderWithPortal=false',
       path: 'popover/inline',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findPopover().findTrigger().toSelector());
       },
     },
@@ -117,7 +117,7 @@ const suite: TestSuite = {
       description: 'inline popover - open - renderWithPortal=true',
       path: 'popover/inline',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#renderWithPortal');
         await page.click(wrapper.findPopover().findTrigger().toSelector());
       },
@@ -126,7 +126,7 @@ const suite: TestSuite = {
       description: 'positioning - opens in the correct position - renderWithPortal=false',
       path: 'popover/positioning',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#popover-2-2 button');
       },
     },
@@ -134,7 +134,7 @@ const suite: TestSuite = {
       description: 'positioning - flips to the opposite position - renderWithPortal=false',
       path: 'popover/positioning',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#popover-1-2 button');
       },
     },
@@ -142,7 +142,7 @@ const suite: TestSuite = {
       description: 'focus - Permutation 1',
       path: 'popover/focus-ring',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -151,7 +151,7 @@ const suite: TestSuite = {
       description: 'focus - Permutation 2',
       path: 'popover/focus-ring',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         for (let j = 0; j < 2; j++) {
           await page.focusNextElement();
@@ -162,7 +162,7 @@ const suite: TestSuite = {
       description: 'focus - Permutation 3',
       path: 'popover/focus-ring',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         for (let j = 0; j < 3; j++) {
           await page.focusNextElement();
@@ -173,7 +173,7 @@ const suite: TestSuite = {
       description: 'focus - Permutation 6',
       path: 'popover/focus-ring',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         for (let j = 0; j < 6; j++) {
           await page.focusNextElement();
@@ -184,7 +184,7 @@ const suite: TestSuite = {
       description: 'focus - Permutation 12',
       path: 'popover/focus-ring',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         for (let j = 0; j < 12; j++) {
           await page.focusNextElement();

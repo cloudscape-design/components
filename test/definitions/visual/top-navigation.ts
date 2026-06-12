@@ -18,7 +18,7 @@ const suite: TestSuite = {
       path: 'top-navigation/scenario-full-page',
       screenshotType: 'viewport',
       configuration: { width: 1300, height: 800 },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findTopNavigation().findUtility(4).toSelector());
       },
     },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
       path: 'top-navigation/scenario-full-page',
       screenshotType: 'viewport',
       configuration: { width: 500, height: 800 },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findTopNavigation().findOverflowMenuButton().toSelector());
         await page.keys(['Tab']);
       },
@@ -42,7 +42,7 @@ const suite: TestSuite = {
       path: 'top-navigation/scenario-full-page',
       screenshotType: 'viewport',
       configuration: { width: 500, height: 800 },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findTopNavigation().findOverflowMenuButton().toSelector());
         await page.click(wrapper.findTopNavigation().findOverflowMenu().findUtility(3).toSelector());
         await page.keys(['Tab']);

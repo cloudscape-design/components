@@ -33,7 +33,7 @@ const suite: TestSuite = {
       description: 'can focus chart plot',
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       description: 'can navigate segments with keyboard',
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -55,7 +55,7 @@ const suite: TestSuite = {
       description: 'can pin segments with mouse',
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('svg [aria-label~="Apples"] > path');
         await page.waitForVisible('[aria-label="Dismiss"]');
       },

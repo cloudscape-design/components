@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'simple',
       path: 'modal/simple',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       description: 'no-paddings',
       path: 'modal/no-paddings',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       description: 'vertical-scroll',
       path: 'modal/vertical-scroll',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       description: 'long-header',
       path: 'modal/long-header',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       description: 'unbreakable-header',
       path: 'modal/unbreakable-header',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -51,7 +51,7 @@ const suite: TestSuite = {
       description: 'size-small',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/small');
       },
     },
@@ -59,7 +59,7 @@ const suite: TestSuite = {
       description: 'size-medium',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/medium');
       },
     },
@@ -67,7 +67,7 @@ const suite: TestSuite = {
       description: 'size-large',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/large');
       },
     },
@@ -75,7 +75,7 @@ const suite: TestSuite = {
       description: 'size-x-large',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/x-large');
       },
     },
@@ -83,7 +83,7 @@ const suite: TestSuite = {
       description: 'size-xx-large',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/xx-large');
       },
     },
@@ -91,7 +91,7 @@ const suite: TestSuite = {
       description: 'size-max',
       path: 'modal/sizes',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/max');
       },
     },
@@ -99,7 +99,7 @@ const suite: TestSuite = {
       description: 'position-top',
       path: 'modal/position-top',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Show modal');
       },
     },
@@ -108,7 +108,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { width: '600', height: '400', footer: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },
@@ -117,7 +117,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { width: '600', height: '400', footer: 'false' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },
@@ -126,7 +126,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { width: '10' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },
@@ -135,7 +135,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { height: '10', footer: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },
@@ -144,7 +144,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { width: '10', height: '15', footer: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },
@@ -153,7 +153,7 @@ const suite: TestSuite = {
       path: 'modal/custom-dimensions',
       screenshotType: 'viewport',
       queryParams: { width: '10000', height: '10000', footer: 'true' },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="modal-trigger"]');
       },
     },

@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'hovering over normal variant',
       path: 'toggle-button/permutations',
       screenshotType: 'permutations',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[aria-label="Favorite"][aria-pressed="false"]');
       },
     },
