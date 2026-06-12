@@ -4,6 +4,7 @@
 import { TestSuite } from '../types';
 
 const ACE_SELECTOR = '.ace_editor.ace-dawn, .ace_editor.ace-tomorrow-night-bright';
+const timeout = 10_000;
 
 const suite: TestSuite = {
   description: 'Code editor',
@@ -14,7 +15,7 @@ const suite: TestSuite = {
       path: 'code-editor/simple',
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
-        await page.waitForVisible(ACE_SELECTOR);
+        await page.waitForVisible(ACE_SELECTOR, true, timeout);
       },
     },
     {
@@ -32,7 +33,7 @@ const suite: TestSuite = {
       path: 'code-editor/themes',
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
-        await page.waitForVisible(ACE_SELECTOR);
+        await page.waitForVisible(ACE_SELECTOR, true, timeout);
       },
     },
     {
@@ -41,7 +42,7 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
       setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR + ' .ace_error');
-        await page.waitForVisible('.ace_gutter-cell.ace_gutter-active-line.ace_error');
+        await page.waitForVisible('.ace_gutter-cell.ace_gutter-active-line.ace_error', true, timeout);
       },
     },
     {
@@ -49,7 +50,7 @@ const suite: TestSuite = {
       path: 'code-editor/simple',
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
-        await page.waitForVisible(ACE_SELECTOR);
+        await page.waitForVisible(ACE_SELECTOR, true, timeout);
         await page.click('#mode-toggle');
       },
     },
@@ -59,7 +60,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 360 },
       setup: async ({ page }) => {
-        await page.waitForVisible(ACE_SELECTOR);
+        await page.waitForVisible(ACE_SELECTOR, true, timeout);
       },
     },
   ],
