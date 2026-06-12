@@ -120,8 +120,18 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    // For permutations, go directly to capturePermutations (no extra navigation).
+    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
+    const newScreenshot = await capture(page, testDef);
+
+    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
+    const oldScreenshot = await capture(page, testDef);
+
+    const result = await cropAndCompare(newScreenshot, oldScreenshot);
+
     if (testDef.screenshotType === 'permutations') {
+      if (result.diffPixels === 0) {
+        return;
+      }
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
       const newPermutations = await page.capturePermutations();
 
@@ -142,15 +152,6 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       expect(permFailures).toEqual([]);
       return;
     }
-
-    // For screenshotArea and viewport: capture from both hosts and compare.
-    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-    const newScreenshot = await capture(page, testDef);
-
-    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-    const oldScreenshot = await capture(page, testDef);
-
-    const result = await cropAndCompare(newScreenshot, oldScreenshot);
 
     // Always attach for visibility in the Allure report.
     await attachDiffImages(result, testDef.description);
