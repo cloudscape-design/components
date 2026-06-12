@@ -33,7 +33,7 @@ const suite: TestSuite = {
       path: 'table/empty-state',
       screenshotType: 'screenshotArea',
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#scroll-content');
       },
     },
@@ -51,7 +51,7 @@ const suite: TestSuite = {
       description: 'inside stacked container',
       path: 'table/sticky-header-in-stacked-container',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 10 });
         await page.click('button=Actions');
       },
@@ -60,7 +60,7 @@ const suite: TestSuite = {
       description: 'sticky header with open action button dropdown',
       path: 'table/sticky-header-with-actions',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-test-id="actions-button"]');
       },
     },
@@ -73,7 +73,7 @@ const suite: TestSuite = {
       description: 'focus on last cell inline action',
       path: 'table/inline-actions',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const tableWrapper = wrapper.findTable('[data-testid="table-with-dropdown-actions"]');
         await page.click(tableWrapper.findRows().get(1).findButtonDropdown().findNativeButton().toSelector());
         await page.keys(['Escape']);
@@ -83,7 +83,7 @@ const suite: TestSuite = {
       description: 'focus on first cell link',
       path: 'table/inline-actions',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const tableWrapper = wrapper.findTable('[data-testid="table-with-dropdown-actions"]');
         await page.click(tableWrapper.findRowSelectionArea(1).toSelector());
         await page.keys(['Tab']);

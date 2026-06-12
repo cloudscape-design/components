@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'token editor popover',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.property-filter-default [aria-haspopup=dialog]');
       },
     },
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       description: 'filtering token select',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.property-filter-default [aria-haspopup=listbox]');
       },
     },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       description: 'token editor popover overflow',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.property-filter-overflow [aria-haspopup=dialog]');
       },
     },
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       description: 'token editor custom property boolean',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.property-filter-custom-prop-boolean [aria-haspopup=dialog]');
       },
     },
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       description: 'token editor custom property datetime',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.property-filter-custom-prop-datetime [aria-haspopup=dialog]');
       },
     },
@@ -51,7 +51,7 @@ const suite: TestSuite = {
       description: 'token editor group string property',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const propertyFilter = wrapper.findPropertyFilter('.property-filter-group-editor');
         await page.click(propertyFilter.findTokens().get(1).findLabel().toSelector());
       },
@@ -60,7 +60,7 @@ const suite: TestSuite = {
       description: 'token editor group datetime property',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const propertyFilter = wrapper.findPropertyFilter('.property-filter-group-editor');
         await page.click(propertyFilter.findTokens().get(1).findLabel().toSelector());
         await page.keys(['Escape']);
@@ -71,7 +71,7 @@ const suite: TestSuite = {
       description: 'token editor enum property',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const propertyFilter = wrapper.findPropertyFilter('.property-filter-group-editor');
         await page.click(propertyFilter.findNativeInput().toSelector());
         await page.keys('state = s');
@@ -81,7 +81,7 @@ const suite: TestSuite = {
       description: 'token editor enum property no matches',
       path: 'property-filter/token-editor',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const propertyFilter = wrapper.findPropertyFilter('.property-filter-group-editor');
         await page.click(propertyFilter.findNativeInput().toSelector());
         await page.keys('state = x');
@@ -113,7 +113,7 @@ const suite: TestSuite = {
       description: 'split panel integration - main content dropdown',
       path: 'property-filter/split-panel-app-layout-integration',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.main-content input[aria-label="your choice"]');
       },
     },
@@ -121,7 +121,7 @@ const suite: TestSuite = {
       description: 'split panel integration - main content popover',
       path: 'property-filter/split-panel-app-layout-integration',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.main-content button[aria-haspopup=dialog]');
       },
     },
@@ -129,7 +129,7 @@ const suite: TestSuite = {
       description: 'virtual scroll navigate through 100 items',
       path: 'property-filter/virtual-scroll',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const propertyFilter = wrapper.findPropertyFilter();
         await page.click(propertyFilter.findNativeInput().toSelector());
         await page.keys('Property = ');

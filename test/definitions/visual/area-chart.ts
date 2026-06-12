@@ -37,7 +37,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -48,7 +48,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -61,7 +61,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -76,7 +76,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.keys(['Tab']);
@@ -92,7 +92,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -108,7 +108,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -125,7 +125,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[aria-label="Linear latency chart"]', 200, 50);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },

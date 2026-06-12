@@ -56,7 +56,7 @@ const suite: TestSuite = {
       description: 'focus border color',
       path: 'flashbar/dismissal',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },

@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'focused column resizer',
       path: 'table/resizable-columns',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.buttonDownOnElement('#reset-state');
         await page.keys(['Tab']);
       },
@@ -25,7 +25,7 @@ const suite: TestSuite = {
       description: 'active column resizer on sticky header',
       path: 'table/resizable-columns',
       screenshotType: 'viewport',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const table = wrapper.findTable();
         await page.click('#sticky-header-toggle input');
         await page.windowScrollTo({ top: 600 });
@@ -36,7 +36,7 @@ const suite: TestSuite = {
       description: 'active column resizer',
       path: 'table/resizable-columns',
       screenshotType: 'screenshotArea',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const table = wrapper.findTable();
         await page.buttonDownOnElement(table.findColumnResizer(3).toSelector());
       },
@@ -46,7 +46,7 @@ const suite: TestSuite = {
       path: 'table/resizable-columns',
       screenshotType: 'screenshotArea',
       queryParams: { enableKeyboardNavigation: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const table = wrapper.findTable();
         await page.click(table.findHeaderSlot().toSelector());
         await page.keys(['Tab', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'Enter']);
@@ -57,7 +57,7 @@ const suite: TestSuite = {
       path: 'table/resizable-columns',
       screenshotType: 'screenshotArea',
       queryParams: { enableKeyboardNavigation: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         const table = wrapper.findTable();
         await page.click(table.findHeaderSlot().toSelector());
         await page.keys(['Tab', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'Enter']);

@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'Checkbox is focused',
       path: 'checkbox/focus-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },

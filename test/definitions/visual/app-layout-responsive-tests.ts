@@ -23,7 +23,7 @@ export function responsiveTests(width: number): TestSuite {
         path: 'app-layout/with-wizard',
         screenshotType: 'viewport',
         configuration: { width },
-        setup: async page => {
+        setup: async ({ page }) => {
           await page.click('[aria-label="Open navigation"]');
         },
       },
@@ -117,7 +117,7 @@ export function responsiveTests(width: number): TestSuite {
         path: 'app-layout/with-sticky-notifications',
         screenshotType: 'viewport',
         configuration: { width },
-        setup: async page => {
+        setup: async ({ page }) => {
           await page.windowScrollTo({ top: 2000 });
         },
       },
@@ -150,7 +150,7 @@ export function responsiveTests(width: number): TestSuite {
         path: 'app-layout/with-drawers',
         screenshotType: 'viewport',
         configuration: { width },
-        setup: async page => {
+        setup: async ({ page }) => {
           await page.click('[aria-label="Security trigger button"]');
         },
       },

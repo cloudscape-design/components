@@ -13,7 +13,7 @@ const suite: TestSuite = {
         path: 'app-layout/with-absolute-components',
         screenshotType: 'viewport' as const,
         configuration: { width },
-        setup: async page => {
+        setup: async ({ page }) => {
           await page.click('button=Button dropdown');
           await page.click('[data-testid="2"]');
           await page.windowScrollTo({ top: 300 });
@@ -24,7 +24,7 @@ const suite: TestSuite = {
         path: 'app-layout/with-absolute-components',
         screenshotType: 'viewport' as const,
         configuration: { width, height: 800 },
-        setup: async page => {
+        setup: async ({ page }) => {
           await page.click('[data-testid="select-demo"] button');
           await page.windowScrollTo({ top: 300 });
         },
@@ -41,7 +41,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-full-page-table-and-split-panel',
       screenshotType: 'viewport' as const,
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('button[aria-label="Open navigation"]');
       },
     },
@@ -50,7 +50,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-full-page-table-and-split-panel',
       screenshotType: 'viewport' as const,
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('button[aria-label="Open tools"]');
       },
     },

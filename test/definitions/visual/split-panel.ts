@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'position bottom',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Open panel');
       },
     },
@@ -24,7 +24,7 @@ const suite: TestSuite = {
       description: 'position side',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Open panel');
         await page.click('aria/Preferences');
         await page.click('aria/Side');
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       description: 'position side with tools open',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Open panel');
         await page.click('aria/Preferences');
         await page.click('aria/Side');
@@ -48,7 +48,7 @@ const suite: TestSuite = {
       description: 'position side - closed',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Open panel');
         await page.click('[aria-label="Preferences"]');
         await page.click('aria/Side');
@@ -60,7 +60,7 @@ const suite: TestSuite = {
       description: 'preferences open',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('aria/Open panel');
         await page.click('aria/Preferences');
       },
@@ -69,7 +69,7 @@ const suite: TestSuite = {
       description: 'popover in bottom panel',
       path: 'app-layout/with-split-panel',
       screenshotType: 'viewport',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('aria/Open panel');
         await page.click(wrapper.findSplitPanel().findOpenPanelBottom().findPopover().findTrigger().toSelector());
         await (page as any).scrollIntoView('[data-testid="scroll-me"]');

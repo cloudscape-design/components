@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'Focused and not checked',
       path: 'radio-button/focus-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },
@@ -25,7 +25,7 @@ const suite: TestSuite = {
       description: 'Focused and checked',
       path: 'radio-button/focus-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.keys(['Space']);

@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'mid-scroll sticky state - container variant',
       path: 'table/sticky-header',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#container');
         await page.windowScrollTo({ top: 400 });
       },
@@ -25,7 +25,7 @@ const suite: TestSuite = {
       description: 'mid-scroll sticky state - embedded variant',
       path: 'table/sticky-header',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#embedded');
         await page.windowScrollTo({ top: 400 });
       },
@@ -34,7 +34,7 @@ const suite: TestSuite = {
       description: 'bottom sticky state',
       path: 'table/sticky-header',
       screenshotType: 'viewport',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.windowScrollTo({ top: 925 });
       },
     },

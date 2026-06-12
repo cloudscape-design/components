@@ -21,7 +21,7 @@ const suite: TestSuite = {
       description: 'shows tooltip when hovering item',
       path: 'button-group/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[data-testid="like"]');
       },
     },
@@ -29,7 +29,7 @@ const suite: TestSuite = {
       description: 'shows tooltip when hovering menu',
       path: 'button-group/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[data-testid="more-actions"]');
       },
     },
@@ -37,7 +37,7 @@ const suite: TestSuite = {
       description: 'shows feedback when clicking copy',
       path: 'button-group/test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('[data-testid="copy"]');
       },
     },

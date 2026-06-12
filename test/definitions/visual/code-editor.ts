@@ -13,7 +13,7 @@ const suite: TestSuite = {
       description: 'simple',
       path: 'code-editor/simple',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR);
       },
     },
@@ -31,7 +31,7 @@ const suite: TestSuite = {
       description: 'theme resolution',
       path: 'code-editor/themes',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR);
       },
     },
@@ -39,7 +39,7 @@ const suite: TestSuite = {
       description: 'permutations',
       path: 'code-editor/permutations',
       screenshotType: 'permutations',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR + ' .ace_error');
         await page.waitForVisible('.ace_gutter-cell.ace_gutter-active-line.ace_error');
       },
@@ -48,7 +48,7 @@ const suite: TestSuite = {
       description: 'listens to mode change',
       path: 'code-editor/simple',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR);
         await page.click('#mode-toggle');
       },
@@ -58,7 +58,7 @@ const suite: TestSuite = {
       path: 'code-editor/simple',
       screenshotType: 'screenshotArea',
       configuration: { width: 360 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible(ACE_SELECTOR);
       },
     },

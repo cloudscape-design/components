@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'Radio button is focused',
       path: 'radio-group/focus-test',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
       },

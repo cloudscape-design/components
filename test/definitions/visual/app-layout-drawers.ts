@@ -11,7 +11,7 @@ const suite: TestSuite = {
       description: 'with split panel',
       path: 'app-layout/with-drawers',
       screenshotType: 'viewport',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
       },
     },
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       description: 'with tooltip on hover',
       path: 'app-layout/with-drawers',
       screenshotType: 'viewport',
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.hoverElement(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
       },
     },
@@ -28,7 +28,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-drawers-scrollable',
       screenshotType: 'viewport',
       queryParams: { sideNavFill: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findAppLayout().findDrawerTriggerById('chat').toSelector());
       },
     },

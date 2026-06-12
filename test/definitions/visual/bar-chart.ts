@@ -44,7 +44,7 @@ const suite: TestSuite = {
       path: 'bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -57,7 +57,7 @@ const suite: TestSuite = {
       path: 'bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
@@ -72,7 +72,7 @@ const suite: TestSuite = {
       path: 'bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.hoverElement('#chart svg[aria-label="Bar chart"]');
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
@@ -82,7 +82,7 @@ const suite: TestSuite = {
       path: 'bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.scrollToBottom('html');
         await page.click('#focus-target-3');
         await page.focusNextElement();

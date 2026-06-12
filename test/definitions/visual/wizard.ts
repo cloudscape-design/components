@@ -16,7 +16,7 @@ const suite: TestSuite = {
       description: 'second step',
       path: 'wizard/wizard-screenshot',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#next');
       },
     },
@@ -24,7 +24,7 @@ const suite: TestSuite = {
       description: 'steps menu expanded in mobile view',
       path: 'wizard/wizard-screenshot',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[role="button"][aria-expanded]');
       },
     },

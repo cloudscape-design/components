@@ -17,7 +17,7 @@ const suite: TestSuite = {
       path: 's3-resource-selector/permutations',
       screenshotType: 'viewport',
       configuration: { height: 1000 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('button=Browse S3');
         await page.waitForVisible('[role="dialog"]');
       },
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       path: 's3-resource-selector/with-alert',
       screenshotType: 'viewport',
       configuration: { height: 1100 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('button=Browse S3');
         await page.waitForVisible('[role="dialog"]');
       },

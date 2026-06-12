@@ -12,7 +12,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-sticky-table-and-split-panel',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="set-item-count-to-1"]');
         await page.scrollToBottom('html');
       },
@@ -22,7 +22,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-sticky-table-and-split-panel',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="set-item-count-to-30"]');
         await page.scrollToBottom('html');
       },
@@ -32,7 +32,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-sticky-table-and-split-panel',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="set-item-count-to-1"]');
         await page.click('aria/Open panel');
         await page.scrollToBottom('html');
@@ -43,7 +43,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-sticky-table-and-split-panel',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="set-item-count-to-30"]');
         await page.click('aria/Open panel');
         await page.scrollToBottom('html');
@@ -54,7 +54,7 @@ const suite: TestSuite = {
       path: 'app-layout/with-sticky-table-and-split-panel',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="set-item-count-to-30"]');
         await page.click('aria/Open panel');
         await page.windowScrollTo({ top: 0 });
@@ -68,7 +68,7 @@ const suite: TestSuite = {
       path: 'app-layout/refresh-content-width',
       screenshotType: 'viewport',
       configuration: { width: 1280, height: 700 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-test-id="button_width-number-max_value"]');
       },
     },

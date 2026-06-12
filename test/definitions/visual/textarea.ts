@@ -18,7 +18,7 @@ function pseudoSelectorTests(withStyling: boolean): TestSuite {
         description: `${state.label} - focus`,
         path: 'textarea/pseudo-selectors',
         screenshotType: 'screenshotArea' as const,
-        setup: async (page: any, wrapper: any) => {
+        setup: async ({ page, wrapper }) => {
           const textareaSelector = wrapper
             .findTextarea('[data-testid="test-textarea"]')
             .findNativeTextarea()
@@ -36,7 +36,7 @@ function pseudoSelectorTests(withStyling: boolean): TestSuite {
         description: `${state.label} - focus + hover`,
         path: 'textarea/pseudo-selectors',
         screenshotType: 'screenshotArea' as const,
-        setup: async (page: any, wrapper: any) => {
+        setup: async ({ page, wrapper }) => {
           const textareaSelector = wrapper
             .findTextarea('[data-testid="test-textarea"]')
             .findNativeTextarea()

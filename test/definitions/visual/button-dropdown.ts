@@ -12,7 +12,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-left');
       },
     },
@@ -21,7 +21,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-right');
       },
     },
@@ -30,7 +30,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-left');
       },
     },
@@ -39,7 +39,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-right');
       },
     },
@@ -48,7 +48,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-left');
       },
     },
@@ -57,7 +57,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-right');
       },
     },
@@ -66,7 +66,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-left');
       },
     },
@@ -75,7 +75,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 800 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-right');
       },
     },
@@ -84,7 +84,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 230, height: 400 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-left');
       },
     },
@@ -93,7 +93,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-positioning',
       screenshotType: 'viewport',
       configuration: { width: 230, height: 400 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-left');
       },
     },
@@ -102,7 +102,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-left');
         await page.click('[data-testid="category1"]');
       },
@@ -112,7 +112,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-right');
         await page.click('[data-testid="category1"]');
       },
@@ -122,7 +122,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-left');
         await page.click('[data-testid="category1"]');
       },
@@ -132,7 +132,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 500 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-right');
         await page.click('[data-testid="category1"]');
       },
@@ -142,7 +142,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-left');
         await page.click('[data-testid="category1"]');
       },
@@ -152,7 +152,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-top-right');
         await page.click('[data-testid="category1"]');
       },
@@ -162,7 +162,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-left');
         await page.click('[data-testid="category1"]');
       },
@@ -172,7 +172,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-expandable',
       screenshotType: 'viewport',
       configuration: { width: 1200 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('.bd-bottom-right');
         await page.click('[data-testid="category1"]');
       },
@@ -182,7 +182,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-container',
       screenshotType: 'viewport',
       configuration: { width: 600 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible('#scrollable-container');
         const containerBBox = await page.getBoundingBox('#scrollable-container');
         const buttonBBox = await page.getBoundingBox('#ButtonDropdown button');
@@ -198,7 +198,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-overflow-container',
       screenshotType: 'viewport',
       configuration: { width: 1000 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible('#scroll-container');
         const containerBBox = await page.getBoundingBox('#scroll-container');
         const buttonBBox = await page.getBoundingBox('#button-dropdown-scroll button');
@@ -215,7 +215,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-overflow-container',
       screenshotType: 'viewport',
       configuration: { width: 1000 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible('#hidden-container');
         await page.click('#button-dropdown-hidden');
         await page.click('[data-testid="category1"]');
@@ -226,7 +226,7 @@ const suite: TestSuite = {
       path: 'button-dropdown/scenarios-overflow-container',
       screenshotType: 'viewport',
       configuration: { width: 1000 },
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.waitForVisible('#auto-container');
         const containerBBox = await page.getBoundingBox('#auto-container');
         const buttonBBox = await page.getBoundingBox('#button-dropdown-auto button');
@@ -257,7 +257,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown dimmed category group at width 500',
       path: 'button-dropdown/simple',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#ButtonDropdown8');
         await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       },
@@ -266,7 +266,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown dimmed category group at width 800',
       path: 'button-dropdown/simple',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('#ButtonDropdown8');
         await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       },
@@ -275,7 +275,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown with disabled reason at width 500',
       path: 'button-dropdown/disabled-reason',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="buttonDropdown"]');
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown']);
       },
@@ -284,7 +284,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown with disabled reason at width 800',
       path: 'button-dropdown/disabled-reason',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="buttonDropdown"]');
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown']);
       },
@@ -293,7 +293,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown with disabled reason for selectable item at width 500',
       path: 'button-dropdown/disabled-reason',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="buttonDropdownSelectableItems"]');
       },
     },
@@ -301,7 +301,7 @@ const suite: TestSuite = {
       description: 'ButtonDropdown with disabled reason for selectable item at width 800',
       path: 'button-dropdown/disabled-reason',
       screenshotType: 'screenshotArea',
-      setup: async page => {
+      setup: async ({ page }) => {
         await page.click('[data-testid="buttonDropdownSelectableItems"]');
       },
     },
@@ -311,7 +311,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 500 },
       queryParams: { expandableGroups: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
         await page.click('[data-testid="category1"]');
       },
@@ -322,7 +322,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 500 },
       queryParams: { expandableGroups: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
       },
     },
@@ -332,7 +332,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800 },
       queryParams: { expandableGroups: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
         await page.click('[data-testid="category1"]');
       },
@@ -343,7 +343,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800 },
       queryParams: { expandableGroups: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
       },
     },
@@ -353,7 +353,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 500 },
       queryParams: { expandableGroups: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
         await page.click('[data-testid="group"]');
       },
@@ -364,7 +364,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 500 },
       queryParams: { expandableGroups: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
       },
     },
@@ -374,7 +374,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 1000 },
       queryParams: { expandableGroups: 'true' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
         await page.click('[data-testid="group"]');
       },
@@ -385,7 +385,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 1000 },
       queryParams: { expandableGroups: 'false' },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findButtonDropdown().toSelector());
       },
     },

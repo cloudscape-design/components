@@ -30,7 +30,7 @@ const suite: TestSuite = {
       path: 'breadcrumb-group/scenarios',
       screenshotType: 'viewport',
       configuration: { width: 300, height: 1000 },
-      setup: async (page, wrapper) => {
+      setup: async ({ page, wrapper }) => {
         await page.click(wrapper.findBreadcrumbGroup('[data-testid="breadcrumbs-6"]').findDropdown().toSelector());
       },
     },
