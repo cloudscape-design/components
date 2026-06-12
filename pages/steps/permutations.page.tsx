@@ -2,22 +2,47 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Steps from '~components/steps';
+import Steps, { StepsProps } from '~components/steps';
 
+import { SimplePage } from '../app/templates';
+import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
-import { stepsPermutations } from './permutations-utils';
+import * as variants from './permutations-utils';
+
+const stepsPermutations = createPermutations<StepsProps>([
+  {
+    orientation: ['vertical', 'horizontal'],
+    steps: [
+      variants.initialSteps,
+      variants.loadingSteps,
+      variants.loadingSteps2,
+      variants.loadingSteps3,
+      variants.successfulSteps,
+      variants.blockedSteps,
+      variants.failedSteps,
+      variants.allStatusesSteps,
+      variants.initialStepsInteractive,
+      variants.loadingStepsInteractive,
+      variants.loadingSteps2Interactive,
+      variants.loadingSteps3Interactive,
+      variants.successfulStepsInteractive,
+      variants.blockedStepsInteractive,
+      variants.failedStepsInteractive,
+      variants.failedStepsWithRetryTextInteractive,
+      variants.failedStepsWithRetryButtonInteractive,
+      variants.changesetStepsInteractive,
+    ],
+    ariaLabel: ['test label'],
+  },
+]);
 
 export default function StepsPermutations() {
   return (
-    <ScreenshotArea disableAnimations={true}>
-      <article>
-        <h1>Steps permutations</h1>
-        <PermutationsView
-          permutations={stepsPermutations}
-          render={permutation => <div>{<Steps {...permutation} />}</div>}
-        />
-      </article>
-    </ScreenshotArea>
+    <SimplePage screenshotArea={{ disableAnimations: true }} title="Steps permutations">
+      <PermutationsView
+        permutations={stepsPermutations}
+        render={permutation => <div>{<Steps {...permutation} />}</div>}
+      />
+    </SimplePage>
   );
 }
