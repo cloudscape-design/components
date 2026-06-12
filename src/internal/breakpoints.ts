@@ -31,14 +31,43 @@ export function matchBreakpointMapping<T>(subset: Partial<Record<Breakpoint, T>>
 }
 
 /**
+ * The width (in px) by which a measured container can switch into a breakpoint boundary without
+ * actually triggering that breakpoint switch. This makes each breakpoint edge "sticky", making
+ * you have to travel a little further into the breakpoint to "lose" the previous one.
+ *
+ * When a JS-resolved breakpoint sits within a scrollbar-width of a boundary, switching the layout
+ * can grow/shrink the page enough to toggle the viewport scrollbar, which in turn changes the
+ * measured width and flips the breakpoint back — an infinite layout loop (see AWSUI-62065).
+ */
+const BREAKPOINT_SWITCH_OFFSET = 20;
+
+/**
  * Get the named breakpoint for a provided width, optionally filtering to a subset of breakpoints.
  */
 export function getMatchingBreakpoint<T extends readonly Breakpoint[]>(
   width: number,
-  breakpointFilter?: T
+  breakpointFilter?: T,
+  previousBreakpoint?: Breakpoint | null
 ): T[number] | 'default' {
-  for (const [breakpoint, breakpointWidth] of BREAKPOINT_MAPPING) {
-    if (width > breakpointWidth && (!breakpointFilter || breakpointFilter.indexOf(breakpoint) !== -1)) {
+  const previousBreakpointIndex =
+    previousBreakpoint === undefined || previousBreakpoint === null
+      ? -1
+      : BREAKPOINTS_DESCENDING.indexOf(previousBreakpoint);
+
+  for (let i = 0; i < BREAKPOINT_MAPPING.length; i++) {
+    const [breakpoint, breakpointWidth] = BREAKPOINT_MAPPING[i];
+    if (breakpointFilter && breakpointFilter.indexOf(breakpoint) === -1) {
+      continue;
+    }
+    // Based on BREAKPOINT_SWITCH_OFFSET, we either shrink or grow the breakpoint value we match against
+    // depending on whether the previous breakpoint was above or below the matched one. This enables the
+    // "sticky" behavior that makes the user have to resize the element further into a breakpoint boundary
+    // to actually switch the breakpoint.
+    let stickyBreakpointWidth = breakpointWidth;
+    if (previousBreakpointIndex !== -1) {
+      stickyBreakpointWidth += previousBreakpointIndex <= i ? -BREAKPOINT_SWITCH_OFFSET : BREAKPOINT_SWITCH_OFFSET;
+    }
+    if (width > stickyBreakpointWidth) {
       return breakpoint;
     }
   }
