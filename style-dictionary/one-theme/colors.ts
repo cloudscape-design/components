@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/colors.js';
 
-// One Theme color overrides on top of the visual-refresh baseline.
-// Tokens not listed here fall back to the visual-refresh value via ThemeBuilder.addTokens in ./index.ts.
+// One Theme color overrides; the full visual-refresh color set (parentTokens) is the base.
 const tokens: StyleDictionary.ColorsDictionary = {
   // ── Body text ─────────────────────────────────────────────────────────────
   colorTextBodyDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
@@ -135,7 +137,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
+  {},
+  parentTokens,
+  expandColorDictionary(tokens)
+);
 
 export { expandedTokens as tokens };
 export const mode: StyleDictionary.ModeIdentifier = 'color';
