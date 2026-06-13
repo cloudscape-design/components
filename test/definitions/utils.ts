@@ -82,6 +82,7 @@ async function preparePage(
   );
   await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
+  await page.waitForJsTimers(100);
   if (testDef.setup) {
     await testDef.setup({ page, wrapper, browser });
   }
