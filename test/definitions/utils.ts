@@ -253,7 +253,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       for (let i = 0; i < newPerms.length; i++) {
         const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
         if (permResult.diffPixels !== 0) {
-          attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i + 1}`));
+          attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i.toString().padStart(3, '0')}`));
           permFailures.push(i);
         }
       }
