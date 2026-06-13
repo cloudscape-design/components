@@ -23,6 +23,7 @@ export interface TestDefinition {
   screenshotType: ScreenshotType;
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
+  pixelDiffTolerance?: number;
   setup?: ({ page, wrapper, browser }: { page: ScreenshotPageObject; wrapper: Wrapper; browser: Browser }) => void;
 }
 

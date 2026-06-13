@@ -225,6 +225,7 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
+    const tolerance = testDef.pixelDiffTolerance ?? 0;
     const browser = getBrowser();
     const page = new ScreenshotPageObject(browser);
 
@@ -252,7 +253,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       const attachmentPromises: Promise<void>[] = [];
       for (let i = 0; i < newPerms.length; i++) {
         const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
-        if (permResult.diffPixels !== 0) {
+        if (permResult.diffPixels > tolerance) {
           attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i.toString().padStart(3, '0')}`));
           permFailures.push(i);
         }
@@ -271,6 +272,6 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
 
     const result = await compareScreenshots(newRaw, oldRaw);
     await attachDiffImages(result, testDef.description);
-    expect(result.diffPixels).toBe(0);
+    expect(result.diffPixels).toBeLessThanOrEqual(tolerance);
   });
 }

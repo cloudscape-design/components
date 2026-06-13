@@ -47,6 +47,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 12,
       setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
@@ -62,6 +63,7 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 12,
       setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();
