@@ -75,7 +75,9 @@ export class InstrumentedPageObject extends ScreenshotPageObject {
 
     t = performance.now();
     const image = await parsePng(rawBase64);
-    this.log(`  parsePng: ${ms(t)}`);
+    this.log(
+      `  parsePng: ${ms(t)} (${image.width}x${image.height}px, ${(image.data.length / 1024 / 1024).toFixed(1)}MB raw)`
+    );
 
     const offset = { top: box.top, left: box.left };
     if (!options.viewportOnly) {
@@ -137,7 +139,9 @@ export class InstrumentedPageObject extends ScreenshotPageObject {
     // parsePng
     t = performance.now();
     const image = await parsePng(rawBase64);
-    this.log(`  parsePng: ${ms(t)}`);
+    this.log(
+      `  parsePng: ${ms(t)} (${image.width}x${image.height}px, ${(image.data.length / 1024 / 1024).toFixed(1)}MB raw pixels)`
+    );
 
     // restore window size
     t = performance.now();
@@ -268,7 +272,9 @@ export async function instrumentedCropAndCompare(
     { top: secondScreenshot.offset.top, left: secondScreenshot.offset.left, width: size.width, height: size.height },
     pixelRatio
   );
-  console.log(`  ⏱ ${prefix}  crop (2 images): ${ms(t)} (${scaledSize.width}x${scaledSize.height}px)`);
+  console.log(
+    `  ⏱ ${prefix}  crop (2 images): ${ms(t)} (${scaledSize.width}x${scaledSize.height}px, src: ${firstScreenshot.image.width}x${firstScreenshot.image.height}px)`
+  );
 
   // Pixel comparison
   t = performance.now();
