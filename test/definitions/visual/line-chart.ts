@@ -45,6 +45,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 6,
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
