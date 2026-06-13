@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment } from 'allure-js-commons';
 
+import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../lib/components/test-utils/selectors';
-import { instrumentedCropAndCompare, InstrumentedPageObject } from './instrumented-page-object';
 import { TestDefinition, TestSuite } from './types';
 
 const screenshotAreaSelector = '.screenshot-area';
@@ -16,6 +16,30 @@ const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
 
 const wrapper = createWrapper();
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+interface CropAndCompareResult {
+  firstImage: Buffer;
+  secondImage: Buffer;
+  diffImage: Buffer | null;
+  isEqual: boolean;
+  diffPixels: number;
+}
+
+/**
+ * A raw screenshot that defers PNG decoding until needed.
+ * Allows fast byte-equality comparison on the compressed data.
+ */
+interface RawScreenshot {
+  rawBase64: string;
+  offset: { top: number; left: number };
+  width: number;
+  height: number;
+  pixelRatio?: number;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams({ motionDisabled: 'true', ...queryParams });
@@ -28,28 +52,146 @@ function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinit
 }
 
 /**
- * Attaches a visual comparison to the Allure report using the built-in image diff viewer.
+ * Attaches a visual comparison to the Allure report.
  */
-async function attachDiffImages(
-  result: { firstImage: Buffer; secondImage: Buffer; diffImage: Buffer | null },
-  testName: string
-): Promise<void> {
+async function attachDiffImages(result: CropAndCompareResult, testName: string): Promise<void> {
   const diffPayload = JSON.stringify({
     expected: `data:image/png;base64,${result.secondImage.toString('base64')}`,
     actual: `data:image/png;base64,${result.firstImage.toString('base64')}`,
     diff: result.diffImage ? `data:image/png;base64,${result.diffImage.toString('base64')}` : undefined,
   });
 
-  await attachment(testName, diffPayload, {
-    contentType: 'application/vnd.allure.image.diff',
-    fileExtension: 'imagediff',
-  } as any);
+  await attachment(testName, diffPayload, 'application/vnd.allure.image.diff');
+}
+
+// ─── Capture functions ───────────────────────────────────────────────────────
+
+/**
+ * Navigates to a URL, waits for the screenshot area, and runs setup.
+ */
+async function preparePage(
+  browser: WebdriverIO.Browser,
+  page: ScreenshotPageObject,
+  url: string,
+  testDef: TestDefinition,
+  windowSize?: { width?: number; height?: number }
+): Promise<void> {
+  await browser.setWindowSize(
+    windowSize?.width ?? defaultWindowSize.width,
+    windowSize?.height ?? defaultWindowSize.height
+  );
+  await browser.url(url);
+  await page.waitForVisible(screenshotAreaSelector);
+  if (testDef.setup) {
+    await testDef.setup({ page, wrapper, browser });
+  }
 }
 
 /**
- * Registers all test suites with a single shared browser session per worker.
- * This avoids the per-test session creation overhead.
+ * Captures a raw screenshot (base64 + metadata) WITHOUT decoding the PNG.
+ * This enables fast comparison on the compressed bytes.
  */
+async function captureRaw(
+  browser: WebdriverIO.Browser,
+  page: ScreenshotPageObject,
+  testDef: TestDefinition
+): Promise<RawScreenshot> {
+  if (testDef.screenshotType === 'viewport') {
+    const { height, width } = await page.getViewportSize();
+    const rawBase64 = await browser.takeScreenshot();
+    return { rawBase64, offset: { top: 0, left: 0 }, width, height };
+  }
+
+  // screenshotArea or permutations: full-page screenshot with offset
+  const { pixelRatio } = await page.getViewportSize();
+  const box = await page.getBoundingBox(screenshotAreaSelector);
+  const rawBase64 = await page.fullPageScreenshot();
+  return { rawBase64, offset: { top: box.top, left: box.left }, width: box.width, height: box.height, pixelRatio };
+}
+
+/**
+ * Decodes a RawScreenshot into a ScreenshotWithOffset for cropAndCompare.
+ */
+async function decodeRaw(raw: RawScreenshot): Promise<ScreenshotWithOffset> {
+  const image = await parsePng(raw.rawBase64);
+  return { image, offset: raw.offset, width: raw.width, height: raw.height, pixelRatio: raw.pixelRatio };
+}
+
+/**
+ * Compares two raw screenshots. If the compressed bytes are identical,
+ * skips the expensive parsePng + cropAndCompare pipeline entirely.
+ */
+async function compareScreenshots(newRaw: RawScreenshot, oldRaw: RawScreenshot): Promise<CropAndCompareResult> {
+  // Fast path: identical compressed PNG bytes → images are the same.
+  // Skips parsePng (~300-1200ms) and packPng (~6000-45000ms).
+  if (newRaw.rawBase64 === oldRaw.rawBase64) {
+    const imageBuffer = Buffer.from(newRaw.rawBase64, 'base64');
+    return { firstImage: imageBuffer, secondImage: imageBuffer, diffImage: null, isEqual: true, diffPixels: 0 };
+  }
+
+  // Slow path: decode and do full pixel comparison.
+  const [newScreenshot, oldScreenshot] = await Promise.all([decodeRaw(newRaw), decodeRaw(oldRaw)]);
+  return cropAndCompare(newScreenshot, oldScreenshot);
+}
+
+/**
+ * Similar to page.capturePermutations() but returns raw base64 per permutation
+ * without decoding the shared full-page PNG upfront. Decoding is deferred until
+ * an actual difference is detected.
+ */
+async function capturePermutationsRaw(
+  browser: WebdriverIO.Browser,
+  page: ScreenshotPageObject
+): Promise<RawScreenshot[]> {
+  // Replicates the logic from ScreenshotPageObject.capturePermutations()
+  // but keeps the screenshot as raw base64 instead of decoding it.
+  await page.windowScrollTo({ top: 0, left: 0 });
+
+  // Fit window height to page content
+  const originalWindowSize = await browser.getWindowSize();
+  const dims: { viewportHeight: number; pageHeight: number } = await browser.execute(function () {
+    return { viewportHeight: window.innerHeight, pageHeight: document.documentElement.scrollHeight };
+  });
+  const windowUIHeight = originalWindowSize.height - dims.viewportHeight;
+  await browser.setWindowSize(originalWindowSize.width, dims.pageHeight + windowUIHeight);
+
+  // Get permutation sizes
+  const permutations: Array<{ id: string; width: number; height: number; offset: { top: number; left: number } }> =
+    await browser.execute(function () {
+      const elements = document.querySelectorAll('[data-testid="permutation"]');
+      return Array.from(elements).map(function (el) {
+        const rect = el.getBoundingClientRect();
+        return {
+          id: el.getAttribute('data-permutation-id') || `${rect.top}-${rect.left}`,
+          width: rect.width,
+          height: rect.height,
+          offset: { top: rect.top, left: rect.left },
+        };
+      });
+    });
+
+  if (permutations.length === 0) {
+    throw new Error('No permutations found on current page.');
+  }
+
+  // Take full page screenshot (raw base64, NOT decoded)
+  const rawBase64 = await page.fullPageScreenshot();
+
+  // Restore window size
+  await browser.setWindowSize(originalWindowSize.width, originalWindowSize.height);
+
+  // Return one RawScreenshot per permutation — they all share the same rawBase64
+  // but have different offsets/sizes for cropping later if needed.
+  return permutations.map(p => ({
+    rawBase64,
+    offset: p.offset,
+    width: p.width,
+    height: p.height,
+  }));
+}
+
+// ─── Test runner ─────────────────────────────────────────────────────────────
+
 export function runTestSuites(suites: Array<TestDefinition | TestSuite>) {
   let browser: WebdriverIO.Browser;
 
@@ -80,120 +222,54 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
   }
 }
 
-/**
- * Navigates to a URL, waits for the screenshot area, and runs any setup interactions.
- */
-async function preparePage(
-  browser: WebdriverIO.Browser,
-  page: ScreenshotPageObject,
-  url: string,
-  testDef: TestDefinition,
-  windowSize?: { width?: number; height?: number }
-): Promise<void> {
-  await browser.setWindowSize(
-    windowSize?.width ?? defaultWindowSize.width,
-    windowSize?.height ?? defaultWindowSize.height
-  );
-  await browser.url(url);
-  await page.waitForVisible(screenshotAreaSelector);
-  if (testDef.setup) {
-    return testDef.setup({ page, wrapper, browser });
-  }
-}
-
-/**
- * Captures a screenshot based on the test's screenshotType.
- */
-function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<ScreenshotWithOffset> {
-  if (testDef.screenshotType === 'viewport') {
-    return page.captureViewport();
-  }
-  return page.captureBySelector(screenshotAreaSelector);
-}
-
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
-    const testStart = performance.now();
     const browser = getBrowser();
-    const page = new InstrumentedPageObject(browser);
-    page.setLabel(testDef.description);
+    const page = new ScreenshotPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    let t = performance.now();
-    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-    console.log(`  ⏱ [${testDef.description}] preparePage(new): ${(performance.now() - t).toFixed(0)}ms`);
-
-    t = performance.now();
-    const newScreenshot = await capture(page, testDef);
-    console.log(`  ⏱ [${testDef.description}] capture(new): ${(performance.now() - t).toFixed(0)}ms`);
-
-    t = performance.now();
-    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-    console.log(`  ⏱ [${testDef.description}] preparePage(old): ${(performance.now() - t).toFixed(0)}ms`);
-
-    t = performance.now();
-    const oldScreenshot = await capture(page, testDef);
-    console.log(`  ⏱ [${testDef.description}] capture(old): ${(performance.now() - t).toFixed(0)}ms`);
-
-    t = performance.now();
-    const result = await instrumentedCropAndCompare(newScreenshot, oldScreenshot);
-    console.log(
-      `  ⏱ [${testDef.description}] cropAndCompare: ${(performance.now() - t).toFixed(0)}ms (diffPixels=${result.diffPixels})`
-    );
-
     if (testDef.screenshotType === 'permutations') {
-      if (result.diffPixels === 0) {
-        console.log(
-          `  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms (pass, no permutation re-capture needed)`
-        );
+      // Capture permutations as raw (no PNG decode)
+      await preparePage(browser, page, newUrl, testDef, testDef.configuration);
+      const newPerms = await capturePermutationsRaw(browser, page);
+
+      await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
+      const oldPerms = await capturePermutationsRaw(browser, page);
+
+      expect(newPerms.length).toBe(oldPerms.length);
+
+      // All permutations share the same full-page screenshot raw base64.
+      // If the full-page screenshots are byte-identical, ALL permutations pass.
+      if (newPerms.length > 0 && newPerms[0].rawBase64 === oldPerms[0].rawBase64) {
         return;
       }
 
-      t = performance.now();
-      await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-      const newPermutations = await page.capturePermutations();
-      console.log(`  ⏱ [${testDef.description}] capturePermutations(new): ${(performance.now() - t).toFixed(0)}ms`);
-
-      t = performance.now();
-      await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-      const oldPermutations = await page.capturePermutations();
-      console.log(`  ⏱ [${testDef.description}] capturePermutations(old): ${(performance.now() - t).toFixed(0)}ms`);
-
-      expect(newPermutations.length).toBe(oldPermutations.length);
+      // Full-page differs — decode and compare individual permutations.
       const permFailures: number[] = [];
       const attachmentPromises: Promise<void>[] = [];
-
-      t = performance.now();
-      for (let i = 0; i < newPermutations.length; i++) {
-        const permResult = await instrumentedCropAndCompare(newPermutations[i], oldPermutations[i]);
-        attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i + 1}`));
+      for (let i = 0; i < newPerms.length; i++) {
+        const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
         if (permResult.diffPixels !== 0) {
+          attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i + 1}`));
           permFailures.push(i);
         }
       }
-      console.log(
-        `  ⏱ [${testDef.description}] comparePermutations(${newPermutations.length}): ${(performance.now() - t).toFixed(0)}ms`
-      );
-
-      t = performance.now();
       await Promise.all(attachmentPromises);
-      console.log(
-        `  ⏱ [${testDef.description}] attachPermutations(${newPermutations.length}): ${(performance.now() - t).toFixed(0)}ms`
-      );
-
-      console.log(`  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms`);
       expect(permFailures).toEqual([]);
       return;
     }
 
-    // Always attach for visibility in the Allure report.
-    t = performance.now();
-    await attachDiffImages(result, testDef.description);
-    console.log(`  ⏱ [${testDef.description}] attachDiffImages: ${(performance.now() - t).toFixed(0)}ms`);
+    // Non-permutation: single screenshot comparison
+    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
+    const newRaw = await captureRaw(browser, page, testDef);
 
-    console.log(`  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms`);
+    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
+    const oldRaw = await captureRaw(browser, page, testDef);
+
+    const result = await compareScreenshots(newRaw, oldRaw);
+    await attachDiffImages(result, testDef.description);
     expect(result.diffPixels).toBe(0);
   });
 }

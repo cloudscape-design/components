@@ -293,14 +293,33 @@ export async function instrumentedCropAndCompare(
     console.log(`  ⏱ ${prefix}  pixelmatch: ${ms(t)} (diffPixels=${diffPixels})`);
   }
 
-  // Pack PNGs
+  // Pack PNGs — skip entirely when images are identical since we can use rawBase64 directly
   t = performance.now();
-  const [firstPacked, secondPacked, diffPacked] = await Promise.all([
-    packPng(firstImage),
-    packPng(secondImage),
-    diffImage ? packPng(diffImage) : Promise.resolve(null),
-  ]);
-  console.log(`  ⏱ ${prefix}  packPng (${diffImage ? 3 : 2} images): ${ms(t)}`);
+  let firstPacked: Buffer;
+  let secondPacked: Buffer;
+  let diffPacked: Buffer | null = null;
+
+  if (diffPixels === 0 && !diffImage) {
+    // Images are identical — use the raw screenshot PNG directly (it's already a valid PNG).
+    // This avoids the extremely expensive packPng re-encoding.
+    const rawFirst = (firstScreenshot as any).rawBase64;
+    if (rawFirst) {
+      firstPacked = Buffer.from(rawFirst, 'base64');
+      secondPacked = firstPacked;
+      console.log(`  ⏱ ${prefix}  packPng SKIPPED (using rawBase64: ${(firstPacked.length / 1024).toFixed(0)}KB)`);
+    } else {
+      firstPacked = await packPng(firstImage);
+      secondPacked = firstPacked;
+      console.log(`  ⏱ ${prefix}  packPng (1 image, reused): ${ms(t)}`);
+    }
+  } else {
+    [firstPacked, secondPacked, diffPacked] = await Promise.all([
+      packPng(firstImage),
+      packPng(secondImage),
+      diffImage ? packPng(diffImage) : Promise.resolve(null),
+    ]);
+    console.log(`  ⏱ ${prefix}  packPng (${diffImage ? 3 : 2} images): ${ms(t)}`);
+  }
 
   console.log(`  ⏱ ${prefix}cropAndCompare total: ${ms(t0)} (diffPixels=${diffPixels})`);
   return {
