@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment } from 'allure-js-commons';
 
-import { cropAndCompare } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../lib/components/test-utils/selectors';
+import { instrumentedCropAndCompare, InstrumentedPageObject } from './instrumented-page-object';
 import { TestDefinition, TestSuite } from './types';
 
 const screenshotAreaSelector = '.screenshot-area';
@@ -113,48 +113,87 @@ function capture(page: ScreenshotPageObject, testDef: TestDefinition): Promise<S
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
+    const testStart = performance.now();
     const browser = getBrowser();
-    const page = new ScreenshotPageObject(browser);
+    const page = new InstrumentedPageObject(browser);
+    page.setLabel(testDef.description);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
+    let t = performance.now();
     await preparePage(browser, page, newUrl, testDef, testDef.configuration);
+    console.log(`  ⏱ [${testDef.description}] preparePage(new): ${(performance.now() - t).toFixed(0)}ms`);
+
+    t = performance.now();
     const newScreenshot = await capture(page, testDef);
+    console.log(`  ⏱ [${testDef.description}] capture(new): ${(performance.now() - t).toFixed(0)}ms`);
 
+    t = performance.now();
     await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-    const oldScreenshot = await capture(page, testDef);
+    console.log(`  ⏱ [${testDef.description}] preparePage(old): ${(performance.now() - t).toFixed(0)}ms`);
 
-    const result = await cropAndCompare(newScreenshot, oldScreenshot);
+    t = performance.now();
+    const oldScreenshot = await capture(page, testDef);
+    console.log(`  ⏱ [${testDef.description}] capture(old): ${(performance.now() - t).toFixed(0)}ms`);
+
+    t = performance.now();
+    const result = await instrumentedCropAndCompare(newScreenshot, oldScreenshot);
+    console.log(
+      `  ⏱ [${testDef.description}] cropAndCompare: ${(performance.now() - t).toFixed(0)}ms (diffPixels=${result.diffPixels})`
+    );
 
     if (testDef.screenshotType === 'permutations') {
       if (result.diffPixels === 0) {
+        console.log(
+          `  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms (pass, no permutation re-capture needed)`
+        );
         return;
       }
+
+      t = performance.now();
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
       const newPermutations = await page.capturePermutations();
+      console.log(`  ⏱ [${testDef.description}] capturePermutations(new): ${(performance.now() - t).toFixed(0)}ms`);
 
+      t = performance.now();
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
       const oldPermutations = await page.capturePermutations();
+      console.log(`  ⏱ [${testDef.description}] capturePermutations(old): ${(performance.now() - t).toFixed(0)}ms`);
 
       expect(newPermutations.length).toBe(oldPermutations.length);
       const permFailures: number[] = [];
       const attachmentPromises: Promise<void>[] = [];
+
+      t = performance.now();
       for (let i = 0; i < newPermutations.length; i++) {
-        const permResult = await cropAndCompare(newPermutations[i], oldPermutations[i]);
+        const permResult = await instrumentedCropAndCompare(newPermutations[i], oldPermutations[i]);
         attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i + 1}`));
         if (permResult.diffPixels !== 0) {
           permFailures.push(i);
         }
       }
+      console.log(
+        `  ⏱ [${testDef.description}] comparePermutations(${newPermutations.length}): ${(performance.now() - t).toFixed(0)}ms`
+      );
+
+      t = performance.now();
       await Promise.all(attachmentPromises);
+      console.log(
+        `  ⏱ [${testDef.description}] attachPermutations(${newPermutations.length}): ${(performance.now() - t).toFixed(0)}ms`
+      );
+
+      console.log(`  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms`);
       expect(permFailures).toEqual([]);
       return;
     }
 
     // Always attach for visibility in the Allure report.
+    t = performance.now();
     await attachDiffImages(result, testDef.description);
+    console.log(`  ⏱ [${testDef.description}] attachDiffImages: ${(performance.now() - t).toFixed(0)}ms`);
 
+    console.log(`  ⏱ [${testDef.description}] TOTAL: ${(performance.now() - testStart).toFixed(0)}ms`);
     expect(result.diffPixels).toBe(0);
   });
 }
