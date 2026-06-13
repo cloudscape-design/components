@@ -149,26 +149,26 @@ async function capturePermutationsRaw(
 
   // Fit window height to page content
   const originalWindowSize = await browser.getWindowSize();
-  const dims: { viewportHeight: number; pageHeight: number } = await browser.execute(function () {
-    return { viewportHeight: window.innerHeight, pageHeight: document.documentElement.scrollHeight };
-  });
+  const dims = (await browser.execute(() => ({
+    viewportHeight: window.innerHeight,
+    pageHeight: document.documentElement.scrollHeight,
+  }))) as { viewportHeight: number; pageHeight: number };
   const windowUIHeight = originalWindowSize.height - dims.viewportHeight;
   await browser.setWindowSize(originalWindowSize.width, dims.pageHeight + windowUIHeight);
 
-  // Get permutation sizes
-  const permutations: Array<{ id: string; width: number; height: number; offset: { top: number; left: number } }> =
-    await browser.execute(function () {
-      const elements = document.querySelectorAll('[data-testid="permutation"]');
-      return Array.from(elements).map(function (el) {
-        const rect = el.getBoundingClientRect();
-        return {
-          id: el.getAttribute('data-permutation-id') || `${rect.top}-${rect.left}`,
-          width: rect.width,
-          height: rect.height,
-          offset: { top: rect.top, left: rect.left },
-        };
-      });
+  // Get permutation sizes (same logic as browser-test-tools getPermutationSizes)
+  const permutations = (await browser.execute(() => {
+    const pixelRatio = window.devicePixelRatio || 1;
+    return Array.from(document.querySelectorAll('[data-permutation]')).map(element => {
+      const rect = element.getBoundingClientRect();
+      return {
+        id: element.getAttribute('data-permutation') || '',
+        width: rect.width * pixelRatio,
+        height: rect.height * pixelRatio,
+        offset: { top: rect.top * pixelRatio, left: rect.left * pixelRatio },
+      };
     });
+  })) as Array<{ id: string; width: number; height: number; offset: { top: number; left: number } }>;
 
   if (permutations.length === 0) {
     throw new Error('No permutations found on current page.');
