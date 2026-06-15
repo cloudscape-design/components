@@ -8,6 +8,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Token, { TokenProps } from '../../../lib/components/token';
 import InternalToken from '../../../lib/components/token/internal';
 
+import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 import styles from '../../../lib/components/token/styles.selectors.js';
 
 function renderToken(props: TokenProps) {
@@ -151,6 +152,22 @@ describe('Token', () => {
       const inlineIcon = screen.getByTestId('inline-icon').parentElement;
       expect(inlineIcon).toHaveClass(styles.icon);
       expect(inlineIcon).toHaveClass(styles['icon-inline']);
+    });
+
+    test('overrides icon size to x-small for inline variant in OneTheme', () => {
+      document.body.classList.add('awsui-one-theme');
+      try {
+        renderToken({
+          label: 'Test token',
+          variant: 'inline',
+          icon: <Icon name="settings" size="normal" data-testid="one-theme-inline-icon" />,
+        });
+        const iconElement = screen.getByTestId('one-theme-inline-icon');
+        expect(iconElement).toHaveClass(iconStyles['size-x-small']);
+        expect(iconElement).not.toHaveClass(iconStyles['size-normal']);
+      } finally {
+        document.body.classList.remove('awsui-one-theme');
+      }
     });
   });
 
