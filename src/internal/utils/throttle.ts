@@ -58,12 +58,14 @@ export function throttle<F extends (...args: any) => any>(
   }
 
   // Prevents delayed function from execution when no longer needed.
+  // Note: only the pending trailing invocation is cancelled. The throttle
+  // window (`lastInvokeTime`) is preserved so subsequent calls keep respecting
+  // the configured delay rather than firing immediately as a leading call.
   throttled.cancel = () => {
     if (timerId) {
       cancelAnimationFrame(timerId);
     }
     pending = null;
-    lastInvokeTime = null;
     timerId = null;
   };
 
