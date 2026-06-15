@@ -216,6 +216,7 @@ const Thead = React.forwardRef(
                 onFocusMove={onFocusMove}
                 singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
                 rowSpan={columnGroupsLayout.rows.length}
+                isGrouped={true}
               />
             ) : null}
 

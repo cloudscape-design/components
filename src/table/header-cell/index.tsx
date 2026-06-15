@@ -78,6 +78,7 @@ export function TableHeaderCell<ItemType>({
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
   const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
+  const isGrouped = !!columnGroupId || (rowSpan ?? 1) > 1;
   const handleClick = () =>
     onClick({
       sortingColumn: column,
@@ -210,14 +211,14 @@ export function TableHeaderCell<ItemType>({
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
           isLast={isLast}
-          isGrouped={!!columnGroupId}
+          isGrouped={isGrouped}
           dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
         <Divider
           className={styles['resize-divider']}
           position={isLastChildOfGroup ? 'top' : undefined}
-          isGrouped={!!columnGroupId}
+          isGrouped={isGrouped}
         />
       )}
     </TableThElement>

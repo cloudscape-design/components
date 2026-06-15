@@ -18,6 +18,7 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   singleSelectionHeaderAriaLabel?: string;
   getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
+  isGrouped?: boolean;
 }
 
 interface TableBodySelectionCellProps
@@ -30,6 +31,7 @@ export function TableHeaderSelectionCell({
   singleSelectionHeaderAriaLabel,
   getSelectAllProps,
   onFocusMove,
+  isGrouped,
   ...props
 }: TableHeaderSelectionCellProps) {
   const selectAllProps = getSelectAllProps ? getSelectAllProps() : undefined;
@@ -56,7 +58,7 @@ export function TableHeaderSelectionCell({
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
       )}
-      <Divider className={styles['resize-divider']} />
+      <Divider className={styles['resize-divider']} isGrouped={isGrouped} />
     </TableThElement>
   );
 }
