@@ -75,6 +75,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextFormSecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorTextLabel: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorTextKeyValuePairsValue: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
+  colorBorderInputFocused: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
 
   // ── Controls ──────────────────────────────────────────────────────────────
   colorBackgroundControlChecked: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
@@ -98,6 +99,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
   colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary100}', dark: '{colorPrimary1000}' },
   colorTextLayoutToggleSelected: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorItemSelected: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
   colorBackgroundSegmentActive: { light: '{colorNeutralGrey800}', dark: '{colorNeutralGrey300}' },
