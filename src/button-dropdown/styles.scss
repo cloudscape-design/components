@@ -117,6 +117,8 @@ $dropdown-trigger-icon-offset: 2px;
 
   & > .trigger-item:not(:first-child).one-theme {
     & > .trigger-button {
+      // Resets the padding-inline-end override applied by .visual-refresh above,
+      // so both sides stay at $space-xs - $dropdown-trigger-icon-offset.
       padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
     }
 
