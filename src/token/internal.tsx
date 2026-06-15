@@ -4,7 +4,13 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  isThemeActive,
+  Theme,
+  useResizeObserver,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
@@ -57,6 +63,7 @@ function InternalToken({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
+  const isOneTheme = isThemeActive(Theme.OneTheme);
   const ariaLabelledbyId = useUniqueId();
 
   const isLabelOverflowing = () => {
@@ -74,6 +81,13 @@ function InternalToken({
     }
   });
 
+  const sizedIcon = (iconNode: React.ReactNode) => {
+    if (isInline && isOneTheme && React.isValidElement(iconNode)) {
+      return React.cloneElement(iconNode as React.ReactElement<{ size?: string }>, { size: 'x-small' });
+    }
+    return iconNode;
+  };
+
   const buildOptionDefinition = () => {
     const isLabelStringOrNumber = typeof label === 'string' || typeof label === 'number';
     const labelObject = isLabelStringOrNumber ? { label: String(label) } : { labelContent: label };
@@ -86,7 +100,7 @@ function InternalToken({
       return {
         ...labelObject,
         disabled,
-        __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{icon}</span>,
+        __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{sizedIcon(icon)}</span>,
       };
     } else {
       return {
@@ -95,7 +109,7 @@ function InternalToken({
         labelTag,
         description,
         tags,
-        __customIcon: icon && <span className={styles.icon}>{icon}</span>,
+        __customIcon: icon && <span className={styles.icon}>{sizedIcon(icon)}</span>,
       };
     }
   };

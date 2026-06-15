@@ -33,6 +33,8 @@ export interface TokenProps extends BaseComponentProps {
    * When `variant="normal"`, if a description or tags are set, icon size should be `normal`.
    *
    * When `variant="inline"`, icon size should be `small`.
+   *
+   * For the OneTheme with `variant="inline"`, the icon size will automatically be overridden to `x-small`.
    */
   icon?: React.ReactNode;
 

@@ -54,6 +54,10 @@
     align-items: center;
     align-self: center;
   }
+
+  &:not(&-inline).one-theme {
+    padding-block-start: 1px;
+  }
 }
 
 .icon {
