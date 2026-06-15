@@ -150,6 +150,23 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   color: awsui.$color-text-column-sorting-icon;
 }
 
+.header-cell-main {
+  /* When the wrapper is present without a sort menu, behave as if it weren't there. */
+  display: contents;
+}
+
+.sort-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-end: awsui.$space-xxs;
+  line-height: 1;
+}
+
+.sort-menu {
+  display: inline-flex;
+  align-items: center;
+}
+
 .edit-icon {
   margin-inline-start: awsui.$space-xxs;
   margin-block-start: awsui.$space-scaled-xxs;
@@ -168,9 +185,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     padding-block: awsui.$space-xxxs;
   }
 
-  .header-cell-sortable > & {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
-  }
   &:focus {
     outline: none;
     text-decoration: none;
@@ -178,10 +192,31 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
   @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
 
-  .header-cell-disabled.header-cell-sorted > & {
+  .header-cell-sortable > .header-cell-main > & {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
+
+  // The multi-sort priority badge renders alongside the sort arrow inside the
+  // absolutely-positioned sort icon. Reserve extra inline-end space for it so it
+  // does not overlap long, non-truncated header text (e.g. resizable columns off).
+  .header-cell-sortable > .header-cell-main > &.header-cell-content-multi-sorted {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs} + #{awsui.$space-m});
+  }
+
+  .header-cell-disabled.header-cell-sorted > .header-cell-main > & {
     & > .sorting-icon {
       color: awsui.$color-text-interactive-disabled;
     }
+  }
+}
+
+.header-cell-main-with-menu {
+  display: flex;
+  align-items: center;
+  // stylelint-disable-next-line no-descending-specificity
+  & > .header-cell-content {
+    flex-grow: 1;
+    min-inline-size: 0;
   }
 }
 
@@ -189,7 +224,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   block-size: 100%;
   vertical-align: bottom;
 
-  > .header-cell-content {
+  > .header-cell-main > .header-cell-content {
     block-size: 100%;
     box-sizing: border-box;
     display: flex;
@@ -206,11 +241,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 .header-cell-sortable:not(.header-cell-disabled) {
-  & > .header-cell-content {
-    cursor: pointer;
-  }
-  & > .header-cell-content:hover,
-  &.header-cell-sorted > .header-cell-content {
+  cursor: pointer;
+  & > .header-cell-main > .header-cell-content:hover,
+  &.header-cell-sorted > .header-cell-main > .header-cell-content {
     color: awsui.$color-text-interactive-active;
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;

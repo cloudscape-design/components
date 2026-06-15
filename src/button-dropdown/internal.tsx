@@ -65,6 +65,7 @@ const InternalButtonDropdown = React.forwardRef(
       nativeMainActionAttributes,
       nativeTriggerAttributes,
       renderItem,
+      compactTrigger,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -332,6 +333,7 @@ const InternalButtonDropdown = React.forwardRef(
             className={clsx(baseTriggerProps.className, {
               [styles['full-width']]: canBeFullWidth,
               [styles.loading]: canBeFullWidth && !!loading,
+              [styles['compact-trigger']]: compactTrigger,
             })}
             badge={triggerHasBadge()}
             fullWidth={fullWidth}

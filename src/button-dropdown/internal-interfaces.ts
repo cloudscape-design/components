@@ -129,4 +129,11 @@ export interface InternalButtonDropdownProps
    * Position of the button dropdown inside a list of elements, for example a button group
    */
   position?: string;
+
+  /**
+   * Renders the trigger button without vertical padding or borders, matching the compact
+   * `inline-icon` footprint. Use with `variant="icon"` to get the icon variant's neutral colour
+   * while keeping an inline footprint (used by the table multi-column sort menu).
+   */
+  compactTrigger?: boolean;
 }

@@ -9,11 +9,21 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
+import {
+  appendSort,
+  getSortIndex,
+  removeSort,
+  replaceSort,
+  setDirection,
+  toggleDirection,
+} from '../multi-column-sort/utils';
 import { Divider, Resizer } from '../resizer';
 import { BaseHeaderCellProps } from './common-props';
+import { SortMenu, SortMenuAction } from './sort-menu';
 import { TableThElement } from './th-element';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 
@@ -27,6 +37,9 @@ export interface TableHeaderCellProps<ItemType> extends BaseHeaderCellProps {
   sortingDisabled?: boolean;
   stuck?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
+  multiColumnSort?: TableProps.MultiColumnSort<ItemType>;
+  i18nStrings?: TableProps.I18nStrings;
+  sortMenuTriggerLabel?: string;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   isEditable?: boolean;
   columnId: PropertyKey;
@@ -73,17 +86,77 @@ export function TableHeaderCell<ItemType>({
   isLastChildOfGroup,
   isLast,
   tableVariant,
+  multiColumnSort,
+  i18nStrings,
+  sortMenuTriggerLabel,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
-  const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
-  const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
   const isGrouped = !!columnGroupId || (rowSpan ?? 1) > 1;
-  const handleClick = () =>
+
+  // Multi-column sort context — derived from `multiColumnSort.sortingColumns` when present.
+  const multiSortIndex = multiColumnSort ? getSortIndex(multiColumnSort.sortingColumns, column) : null;
+  const multiSortEntry =
+    multiSortIndex !== null && multiColumnSort ? multiColumnSort.sortingColumns[multiSortIndex - 1] : undefined;
+  const inMultiSort = multiSortIndex !== null;
+  const isPrimaryMultiSort = multiSortIndex === 1;
+  // Priority badges are only meaningful when 2+ columns are sorted; with a single column, the position number adds no information.
+  const showPriorityBadge = !!multiColumnSort && multiColumnSort.sortingColumns.length >= 2 && multiSortIndex !== null;
+
+  // For multi-sort, derive sorted/descending from the matching entry; otherwise fall back to single-sort props.
+  const sorted = multiColumnSort ? inMultiSort : !!activeSortingColumn && isSorted(column, activeSortingColumn);
+  const descending = multiColumnSort ? !!multiSortEntry?.isDescending : !!sortingDescending;
+  const sortingStatus = getSortingStatus(sortable, sorted, descending, !!sortingDisabled);
+  // In multi-sort, only the primary column declares aria-sort (ARIA only allows one column sorted at a time).
+  const suppressAriaSort = !!multiColumnSort && inMultiSort && !isPrimaryMultiSort;
+  const handleClick = (shiftKey = false) => {
+    if (multiColumnSort) {
+      const current = multiColumnSort.sortingColumns;
+      let next: ReadonlyArray<TableProps.SortingState<ItemType>>;
+      if (shiftKey && !inMultiSort) {
+        next = appendSort(current, column, false);
+      } else if (inMultiSort) {
+        next = toggleDirection(current, column);
+      } else {
+        next = replaceSort(column, false);
+      }
+      fireNonCancelableEvent(multiColumnSort.onChange, { sortingColumns: next });
+      return;
+    }
     onClick({
       sortingColumn: column,
       isDescending: sorted ? !sortingDescending : false,
     });
+  };
+
+  const handleSortMenuAction = (action: SortMenuAction) => {
+    // The sort menu is only rendered when `multiColumnSort` is set (see render below), so this guard
+    // exists purely to narrow the type for the accesses that follow and is unreachable at runtime.
+    /* istanbul ignore next */
+    if (!multiColumnSort) {
+      return;
+    }
+    const current = multiColumnSort.sortingColumns;
+    let next: ReadonlyArray<TableProps.SortingState<ItemType>>;
+    switch (action) {
+      case 'sort-ascending':
+        next = inMultiSort ? setDirection(current, column, false) : replaceSort(column, false);
+        break;
+      case 'sort-descending':
+        next = inMultiSort ? setDirection(current, column, true) : replaceSort(column, true);
+        break;
+      case 'add-to-sort-ascending':
+        next = appendSort(current, column, false);
+        break;
+      case 'add-to-sort-descending':
+        next = appendSort(current, column, true);
+        break;
+      case 'remove-from-sort':
+        next = removeSort(current, column);
+        break;
+    }
+    fireNonCancelableEvent(multiColumnSort.onChange, { sortingColumns: next });
+  };
 
   // Elements with role="button" do not have the default behavior of <button>, where pressing
   // Enter or Space will trigger a click event. Therefore we need to add this ourselves.
@@ -92,7 +165,7 @@ export function TableHeaderCell<ItemType>({
   const handleKeyPress = ({ nativeEvent: e }: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.enter || e.keyCode === KeyCode.space) {
       e.preventDefault();
-      handleClick();
+      handleClick(e.shiftKey);
     }
   };
 
@@ -119,6 +192,7 @@ export function TableHeaderCell<ItemType>({
       cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
+      suppressAriaSort={suppressAriaSort}
       focusedComponent={focusedComponent}
       stuck={stuck}
       sticky={sticky}
@@ -143,57 +217,86 @@ export function TableHeaderCell<ItemType>({
               position: `${colIndex + 1}`,
               columnId: column.id ? `${column.id}` : '',
               label: `.${analyticsSelectors['header-cell-text']}`,
-              sortingDescending: `${!sortingDescending}`,
+              sortingDescending: `${!descending}`,
             },
           } as GeneratedAnalyticsMetadataTableSort))}
     >
-      <div
-        ref={clickableHeaderRef}
-        data-focus-id={`sorting-control-${String(columnId)}`}
-        className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-          [styles['header-cell-content-expandable']]: isExpandable,
-        })}
-        aria-label={
-          column.ariaLabel
-            ? column.ariaLabel({
-                sorted: sorted,
-                descending: sorted && !!sortingDescending,
-                disabled: !!sortingDisabled,
-              })
-            : undefined
-        }
-        {...(sortingStatus && !sortingDisabled
-          ? {
-              onKeyPress: handleKeyPress,
-              tabIndex: clickableHeaderTabIndex,
-              role: 'button',
-              onClick: handleClick,
-            }
-          : {})}
-      >
+      <div className={clsx(styles['header-cell-main'], multiColumnSort && styles['header-cell-main-with-menu'])}>
         <div
-          className={clsx(
-            styles['header-cell-text'],
-            analyticsSelectors['header-cell-text'],
-            wrapLines && styles['header-cell-text-wrap']
-          )}
-          id={headerId}
+          ref={clickableHeaderRef}
+          data-focus-id={`sorting-control-${String(columnId)}`}
+          className={clsx(styles['header-cell-content'], {
+            [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+            [styles['header-cell-content-expandable']]: isExpandable,
+            [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
+          })}
+          aria-label={
+            column.ariaLabel
+              ? column.ariaLabel({
+                  sorted: sorted,
+                  descending: sorted && descending,
+                  disabled: !!sortingDisabled,
+                  sortIndex: multiSortIndex ?? undefined,
+                })
+              : undefined
+          }
+          {...(sortingStatus && !sortingDisabled
+            ? {
+                onKeyPress: handleKeyPress,
+                tabIndex: clickableHeaderTabIndex,
+                role: 'button',
+                onClick: event => handleClick(event.shiftKey),
+                // Prevent the browser from extending the text selection on Shift+click.
+                onMouseDown: (event: React.MouseEvent) => {
+                  if (event.shiftKey) {
+                    event.preventDefault();
+                  }
+                },
+              }
+            : {})}
         >
-          {column.header}
-          {isEditable ? (
-            <span className={styles['edit-icon']}>
-              <InternalIcon
-                name="edit"
-                ariaLabel={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
-              />
+          <div
+            className={clsx(
+              styles['header-cell-text'],
+              analyticsSelectors['header-cell-text'],
+              wrapLines && styles['header-cell-text-wrap']
+            )}
+            id={headerId}
+          >
+            {column.header}
+            {isEditable ? (
+              <span className={styles['edit-icon']}>
+                <InternalIcon
+                  name="edit"
+                  ariaLabel={i18n(
+                    'columnDefinitions.editConfig.editIconAriaLabel',
+                    column.editConfig?.editIconAriaLabel
+                  )}
+                />
+              </span>
+            ) : null}
+          </div>
+          {sortingStatus && (
+            <span className={styles['sorting-icon']}>
+              {showPriorityBadge && (
+                <span className={styles['sort-priority-badge']} aria-hidden="true">
+                  {multiSortIndex}
+                </span>
+              )}
+              <InternalIcon name={getSortingIconName(sortingStatus)} />
             </span>
-          ) : null}
+          )}
         </div>
-        {sortingStatus && (
-          <span className={styles['sorting-icon']}>
-            <InternalIcon name={getSortingIconName(sortingStatus)} />
-          </span>
+        {multiColumnSort && sortable && !sortingDisabled && (
+          <SortMenu<ItemType>
+            column={column}
+            inSort={inMultiSort}
+            isSortedAscending={inMultiSort && !descending}
+            isSortedDescending={inMultiSort && descending}
+            i18nStrings={i18nStrings}
+            ariaLabel={sortMenuTriggerLabel}
+            onAction={handleSortMenuAction}
+          />
         )}
       </div>
       {resizableColumns ? (

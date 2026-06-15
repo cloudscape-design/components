@@ -409,7 +409,20 @@
     "ariaLabels.expandButtonLabel": "Expand",
     "ariaLabels.collapseButtonLabel": "Collapse",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdown.sortAscending": "Sort ascending",
+    "i18nStrings.sortDropdown.sortDescending": "Sort descending",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Multi-column sort (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Add to sort (ascending)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Add to sort (descending)",
+    "i18nStrings.sortDropdown.removeFromSort": "Remove from sort",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "This column is not sorted",
+    "i18nStrings.clearSort": "Clear sort",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} descending} other {{columnLabel} ascending}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Sorting cleared",
+    "ariaLabels.sortMenuTriggerLabel": "Sort options"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",
