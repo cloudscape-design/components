@@ -408,7 +408,15 @@
     "ariaLabels.expandButtonLabel": "Expand",
     "ariaLabels.collapseButtonLabel": "Collapse",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdown.sortAscending": "Sort ascending",
+    "i18nStrings.sortDropdown.sortDescending": "Sort descending",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Multi-column sort (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Add to sort (ascending)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Add to sort (descending)",
+    "i18nStrings.sortDropdown.removeFromSort": "Remove from sort",
+    "i18nStrings.clearSort": "Clear sort",
+    "ariaLabels.sortMenuTriggerLabel": "Sort options"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",

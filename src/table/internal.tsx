@@ -37,11 +37,13 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
+import { ClearSortButton } from './clear-sort';
 import { TableColGroup } from './column-groups/col-group';
 import { useColumnGroups } from './column-groups/use-column-groups';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
+import { SortLiveAnnouncement } from './multi-column-sort/live-announcement';
 import { NoDataCell } from './no-data-cell';
 import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
@@ -124,6 +126,8 @@ const InternalTable = React.forwardRef(
       sortingColumn,
       sortingDescending,
       sortingDisabled,
+      multiColumnSort,
+      i18nStrings,
       visibleColumns,
       stickyHeader,
       stickyHeaderVerticalOffset,
@@ -189,7 +193,7 @@ const InternalTable = React.forwardRef(
     const wrapperMeasureMergedRef = useMergeRefs(wrapperMeasureRef, wrapperMeasureRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
-    const tableRefObject = useRef(null);
+    const tableRefObject = useRef<HTMLTableElement>(null);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
@@ -354,6 +358,12 @@ const InternalTable = React.forwardRef(
       if (sortingColumn?.sortingComparator) {
         checkSortingState(columnDefinitions, sortingColumn.sortingComparator);
       }
+      if (multiColumnSort && (sortingColumn || sortingDescending !== undefined || onSortingChange)) {
+        warnOnce(
+          'Table',
+          'The `multiColumnSort` prop is mutually exclusive with `sortingColumn`, `sortingDescending`, and `onSortingChange`. When both are provided, the single-column sorting props are ignored.'
+        );
+      }
     }
 
     const isVisualRefresh = useVisualRefresh();
@@ -362,7 +372,8 @@ const InternalTable = React.forwardRef(
       : ['embedded', 'full-page'].indexOf(variant) > -1
         ? 'container'
         : variant;
-    const hasHeader = !!(header || filter || pagination || preferences);
+    const hasActiveMultiSort = !!multiColumnSort && multiColumnSort.sortingColumns.length > 0;
+    const hasHeader = !!(header || filter || pagination || preferences || hasActiveMultiSort);
     const hasSelection = !!selectionType;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
@@ -418,6 +429,9 @@ const InternalTable = React.forwardRef(
       sortingDisabled,
       sortingDescending,
       onSortingChange,
+      multiColumnSort,
+      i18nStrings,
+      sortMenuTriggerLabel: ariaLabels?.sortMenuTriggerLabel,
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
@@ -446,6 +460,14 @@ const InternalTable = React.forwardRef(
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
+
+    // When the clear-sort button is activated it unmounts (there is no longer a sort to clear),
+    // which would drop keyboard focus to the document body. Move focus to the first sortable
+    // column header instead. Focusing synchronously (before the re-render unmounts the button)
+    // keeps focus on the persistent header element.
+    const focusFirstSortableColumn = () => {
+      tableRefObject.current?.querySelector<HTMLElement>('[data-focus-id^="sorting-control-"][role="button"]')?.focus();
+    };
 
     const wrapperProps = getTableWrapperRoleProps({
       tableRole,
@@ -500,6 +522,15 @@ const InternalTable = React.forwardRef(
                           <ToolsHeader
                             header={header}
                             filter={filter}
+                            clearSort={
+                              hasActiveMultiSort && multiColumnSort ? (
+                                <ClearSortButton
+                                  multiColumnSort={multiColumnSort}
+                                  i18nStrings={i18nStrings}
+                                  onClearSort={focusFirstSortableColumn}
+                                />
+                              ) : undefined
+                            }
                             pagination={pagination}
                             preferences={preferences}
                             setLastUserAction={setLastUserAction}
@@ -571,6 +602,17 @@ const InternalTable = React.forwardRef(
                       })}
                     </span>
                   </InternalLiveRegion>
+                )}
+                {/* Announce multi-column sort changes politely. The text is built internally from
+                    per-column i18n fragments and only changes when the sort changes, so it isn't
+                    announced on initial mount. */}
+                {multiColumnSort?.sortingColumns && (
+                  <SortLiveAnnouncement
+                    sortingColumns={multiColumnSort.sortingColumns}
+                    columnDefinitions={columnDefinitions}
+                    i18nStrings={i18nStrings}
+                    containerRef={tableRefObject}
+                  />
                 )}
                 <GridNavigationProvider
                   keyboardNavigation={!!enableKeyboardNavigation}
