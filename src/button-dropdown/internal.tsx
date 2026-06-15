@@ -82,6 +82,7 @@ const InternalButtonDropdown = React.forwardRef(
     }
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
+    const isOneTheme = isThemeActive(Theme.OneTheme);
 
     const {
       isOpen,
@@ -148,8 +149,8 @@ const InternalButtonDropdown = React.forwardRef(
             iconName: 'ellipsis',
           }
         : {
-            iconName: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
-            __iconSize: isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
+            iconName: isOneTheme ? 'angle-down' : 'caret-down-filled',
+            __iconSize: isOneTheme ? 'x-small' : 'normal',
             iconAlign: 'right',
             __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
           };
@@ -157,7 +158,7 @@ const InternalButtonDropdown = React.forwardRef(
     const baseTriggerProps: InternalButtonProps = {
       className: clsx(
         styles['trigger-button'],
-        isThemeActive(Theme.OneTheme) && styles['one-theme'],
+        isOneTheme && styles['one-theme'],
         styles['test-utils-button-trigger'],
         analyticsSelectors['trigger-label']
       ),
@@ -289,7 +290,7 @@ const InternalButtonDropdown = React.forwardRef(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
                 isVisualRefresh && styles['visual-refresh'],
-                isThemeActive(Theme.OneTheme) && styles['one-theme'],
+                isOneTheme && styles['one-theme'],
                 !!children && styles['has-trigger-text'],
                 styles[`variant-${variant}`],
                 baseTriggerProps.loading && styles.loading
