@@ -28,6 +28,9 @@ export interface TheadProps {
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;
   sortingDisabled: boolean | undefined;
+  multiColumnSort?: TableProps.MultiColumnSort<any>;
+  i18nStrings?: TableProps.I18nStrings;
+  sortMenuTriggerLabel?: string;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   wrapLines: boolean | undefined;
@@ -64,6 +67,9 @@ const Thead = React.forwardRef(
       sortingColumn,
       sortingDisabled,
       sortingDescending,
+      multiColumnSort,
+      i18nStrings,
+      sortMenuTriggerLabel,
       resizableColumns,
       variant,
       tableVariant,
@@ -164,6 +170,9 @@ const Thead = React.forwardRef(
                   activeSortingColumn={sortingColumn}
                   sortingDescending={sortingDescending}
                   sortingDisabled={sortingDisabled}
+                  multiColumnSort={multiColumnSort}
+                  i18nStrings={i18nStrings}
+                  sortMenuTriggerLabel={sortMenuTriggerLabel}
                   wrapLines={wrapLines}
                   colIndex={selectionType ? colIndex + 1 : colIndex}
                   columnId={columnId}
@@ -398,6 +407,9 @@ const Thead = React.forwardRef(
                     activeSortingColumn={sortingColumn}
                     sortingDescending={sortingDescending}
                     sortingDisabled={sortingDisabled}
+                    multiColumnSort={multiColumnSort}
+                    i18nStrings={i18nStrings}
+                    sortMenuTriggerLabel={sortMenuTriggerLabel}
                     wrapLines={wrapLines}
                     colIndex={selectionType ? colIndex + 1 : colIndex}
                     columnId={columnId}

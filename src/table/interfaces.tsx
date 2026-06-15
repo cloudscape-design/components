@@ -101,7 +101,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   Note that when the `resizableColumns` property is set to `true` this property is ignored.
    * * `ariaLabel` (LabelData => string) - An optional function that's called to provide an `aria-label` for the cell header.
    *   It receives the current sorting state of this column, the direction it's sorted in, and an indication of
-   *   whether the sorting is disabled, as three Boolean values: `sorted`, `descending` and `disabled`.
+   *   whether the sorting is disabled, as three Boolean values: `sorted`, `descending` and `disabled`,
+   *   plus a number `sortIndex` if the column is part of a multi-column sort.
    *   We recommend that you use this for sortable columns to provide more meaningful labels based on the
    *   current sorting direction.
    * * `sortingField` (string) - Enables default column sorting. The value is used in [collection hooks](/get-started/dev-guides/collection-hooks/)
@@ -243,6 +244,37 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * to prevent the user from sorting before items are fully loaded.
    */
   sortingDisabled?: boolean;
+
+  /**
+   * Enables multi-column sorting on the table. The object contains:
+   *
+   * * `sortingColumns` (ReadonlyArray<TableProps.SortingState<T>>): The current
+   *   state of multi-column sorting. Position in the array determines sort priority.
+   * * `onChange` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>):
+   *   Fired when the multi-column sort state changes.
+   *
+   * Mutually exclusive with `sortingColumn` / `sortingDescending` / `onSortingChange`.
+   * When both sets of props are passed, the component warns in development and prefers
+   * `multiColumnSort` at runtime.
+   */
+  multiColumnSort?: TableProps.MultiColumnSort<T>;
+
+  /**
+   * An object containing all the localized strings required by the multi-column
+   * sorting UI:
+   *
+   * * `sortDropdown` (object): Strings for the per-column sort dropdown menu.
+   *   * `sortAscending` (string): Label for the "Sort ascending" dropdown menu item.
+   *   * `sortDescending` (string): Label for the "Sort descending" dropdown menu item.
+   *   * `multiColumnSortGroup` (string): Label for the "Multi-column sort" dropdown menu group.
+   *   * `addToSortAscending` (string): Label for the "Add to sort (ascending)" dropdown menu item.
+   *   * `addToSortDescending` (string): Label for the "Add to sort (descending)" dropdown menu item.
+   *   * `removeFromSort` (string): Label for the "Remove from sort" dropdown menu item.
+   * * `clearSort` (string): Label for the "Clear sort" button.
+   *
+   * @i18n
+   */
+  i18nStrings?: TableProps.I18nStrings;
 
   /**
    * Specifies the number of first and/or last columns that should be sticky.
@@ -587,6 +619,7 @@ export namespace TableProps {
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
+    sortMenuTriggerLabel?: string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -596,10 +629,29 @@ export namespace TableProps {
     sortingField?: string;
     sortingComparator?: (a: T, b: T) => number;
   }
+  export interface MultiColumnSort<T> {
+    sortingColumns: ReadonlyArray<SortingState<T>>;
+    onChange: NonCancelableEventHandler<MultiColumnSortChangeDetail<T>>;
+  }
+  export interface MultiColumnSortChangeDetail<T> {
+    sortingColumns: ReadonlyArray<SortingState<T>>;
+  }
+  export interface I18nStrings {
+    sortDropdown?: {
+      sortAscending?: string;
+      sortDescending?: string;
+      multiColumnSortGroup?: string;
+      addToSortAscending?: string;
+      addToSortDescending?: string;
+      removeFromSort?: string;
+    };
+    clearSort?: string;
+  }
   export interface LabelData {
     sorted: boolean;
     descending: boolean;
     disabled: boolean;
+    sortIndex?: number;
   }
   export interface OnRowClickDetail<T> {
     rowIndex: number;

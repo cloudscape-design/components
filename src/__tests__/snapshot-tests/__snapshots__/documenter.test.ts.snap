@@ -27718,6 +27718,11 @@ in tables with data grouping.
             "type": "string",
           },
           {
+            "name": "sortMenuTriggerLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "inlineType": {
               "name": "(column: TableProps.ColumnDefinition<any>) => string",
               "parameters": [
@@ -27820,7 +27825,8 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
   Note that when the \`resizableColumns\` property is set to \`true\` this property is ignored.
 * \`ariaLabel\` (LabelData => string) - An optional function that's called to provide an \`aria-label\` for the cell header.
   It receives the current sorting state of this column, the direction it's sorted in, and an indication of
-  whether the sorting is disabled, as three Boolean values: \`sorted\`, \`descending\` and \`disabled\`.
+  whether the sorting is disabled, as three Boolean values: \`sorted\`, \`descending\` and \`disabled\`,
+  plus a number \`sortIndex\` if the column is part of a multi-column sort.
   We recommend that you use this for sortable columns to provide more meaningful labels based on the
   current sorting direction.
 * \`sortingField\` (string) - Enables default column sorting. The value is used in [collection hooks](/get-started/dev-guides/collection-hooks/)
@@ -28110,6 +28116,75 @@ Each group definition contains the following:
       "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
     },
     {
+      "description": "An object containing all the localized strings required by the multi-column
+sorting UI:
+
+* \`sortDropdown\` (object): Strings for the per-column sort dropdown menu.
+  * \`sortAscending\` (string): Label for the "Sort ascending" dropdown menu item.
+  * \`sortDescending\` (string): Label for the "Sort descending" dropdown menu item.
+  * \`multiColumnSortGroup\` (string): Label for the "Multi-column sort" dropdown menu group.
+  * \`addToSortAscending\` (string): Label for the "Add to sort (ascending)" dropdown menu item.
+  * \`addToSortDescending\` (string): Label for the "Add to sort (descending)" dropdown menu item.
+  * \`removeFromSort\` (string): Label for the "Remove from sort" dropdown menu item.
+* \`clearSort\` (string): Label for the "Clear sort" button.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "TableProps.I18nStrings",
+        "properties": [
+          {
+            "name": "clearSort",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "addToSortAscending",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "addToSortDescending",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "multiColumnSortGroup",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "removeFromSort",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "sortAscending",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "sortDescending",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "sortDropdown",
+            "optional": true,
+            "type": "{ sortAscending?: string | undefined; sortDescending?: string | undefined; multiColumnSortGroup?: string | undefined; addToSortAscending?: string | undefined; addToSortDescending?: string | undefined; removeFromSort?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "TableProps.I18nStrings",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -28155,6 +28230,48 @@ In skeleton-loading mode this will be used as a label for screenreaders.",
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Enables multi-column sorting on the table. The object contains:
+
+* \`sortingColumns\` (ReadonlyArray<TableProps.SortingState<T>>): The current
+  state of multi-column sorting. Position in the array determines sort priority.
+* \`onChange\` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>):
+  Fired when the multi-column sort state changes.
+
+Mutually exclusive with \`sortingColumn\` / \`sortingDescending\` / \`onSortingChange\`.
+When both sets of props are passed, the component warns in development and prefers
+\`multiColumnSort\` at runtime.",
+      "inlineType": {
+        "name": "TableProps.MultiColumnSort<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "NonCancelableCustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onChange",
+            "optional": false,
+            "type": "NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>",
+          },
+          {
+            "name": "sortingColumns",
+            "optional": false,
+            "type": "ReadonlyArray<TableProps.SortingState<T>>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "multiColumnSort",
+      "optional": true,
+      "type": "TableProps.MultiColumnSort<T>",
     },
     {
       "description": "Use this function to announce page changes to screen reader users.
