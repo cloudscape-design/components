@@ -157,6 +157,14 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Tile ─────────────────────────────────────────────────────────────────
   colorBackgroundTilesDisabled: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
+
+  // ── Dropzone ──────────────────────────────────────────────────────────────
+  colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorDropzoneBackgroundHover: { light: '{colorPrimary50}', dark: '{colorPrimary1000}' },
+  colorDropzoneTextDefault: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
+  colorDropzoneTextHover: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
+  colorDropzoneBorderDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
