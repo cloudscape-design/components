@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import Dropdown from '../../dropdown/internal';
@@ -62,6 +63,7 @@ const ExpandableCategoryElement = ({
   };
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -116,8 +118,11 @@ const ExpandableCategoryElement = ({
             </span>
           )}
           <span>{item.text}</span>
-          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-            <InternalIcon name="caret-down-filled" />
+          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'], isOneTheme && styles['one-theme'])}>
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}
