@@ -87,6 +87,25 @@ describe('TopNavigation Component', () => {
     expect(onFollowSpy).toHaveBeenCalledWith({});
   });
 
+  test('does not throw when the identity is clicked without an onFollow handler', () => {
+    const topNavigation = renderTopNavigation({
+      identity: { href: '#', title: 'Application Title' },
+    });
+    expect(() => topNavigation.findIdentityLink()!.click()).not.toThrow();
+  });
+
+  test('renders the structured variant without an identity', () => {
+    const wrapper = renderTopNavigation({
+      search: <Input value="" onChange={() => {}} />,
+      utilities: [{ type: 'button', text: 'Help' }],
+    });
+    expect(wrapper.findIdentityLink()).toBeNull();
+    expect(wrapper.findTitle()).toBeNull();
+    expect(wrapper.findLogo()).toBeNull();
+    expect(wrapper.findUtilities()).toHaveLength(1);
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
   test('does not fire a follow event when the item is clicked with a modifier', () => {
     const onFollowSpy = jest.fn();
 
@@ -468,6 +487,11 @@ describe('custom content - children', () => {
     expect(wrapper.findIdentityLink()).toBeNull();
     expect(wrapper.findSearch()).toBeNull();
     expect(wrapper.findUtilities()).toHaveLength(0);
+  });
+
+  test('does not render custom content for the structured variant', () => {
+    const wrapper = renderTopNavigation({ identity: { href: '#', title: 'Structured' } });
+    expect(wrapper.findContent()).toBeNull();
   });
 });
 

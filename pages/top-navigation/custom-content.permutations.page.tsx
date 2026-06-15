@@ -135,13 +135,13 @@ function useCustomContents(): Array<{ label: string; content: React.ReactNode }>
         <div style={navStyle}>
           <Button variant="icon" iconName="menu" ariaLabel="Open navigation" />
           <Brand title="Cloudscape" />
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, justifyContent: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, justifyContent: 'center' }}>
             <Link href="#">Get started</Link>
             <Link href="#">Foundation</Link>
             <Link href="#">Components</Link>
             <Link href="#">Patterns</Link>
             <Link href="#">Demos</Link>
-          </nav>
+          </div>
           <div style={trailingStyle}>
             <Input
               type="search"
