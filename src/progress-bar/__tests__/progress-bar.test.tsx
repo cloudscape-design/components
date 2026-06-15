@@ -10,6 +10,20 @@ import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/progress-bar/styles.css.js';
 
+// Wrap throttle's inner callback with a spy so tests can assert when it runs.
+const mockThrottledCallbacks: jest.Mock[] = [];
+jest.mock('../../../lib/components/internal/utils/throttle', () => {
+  const actual = jest.requireActual('../../../lib/components/internal/utils/throttle');
+  return {
+    ...actual,
+    throttle: (fn: (...args: unknown[]) => unknown, delay: number, opts?: unknown) => {
+      const spy = jest.fn(fn);
+      mockThrottledCallbacks.push(spy);
+      return actual.throttle(spy, delay, opts);
+    },
+  };
+});
+
 const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standalone', 'key-value'];
 const allVariants: Array<ProgressBarProps.Variant> = [...standaloneAndKeyvalueVariants, 'flash'];
 const statuses: Array<ProgressBarProps.Status> = ['success', 'error'];
@@ -287,23 +301,21 @@ describe('Progress updates', () => {
     expect(wrapper.findAdditionalInfo()!.getElement().textContent).toBe('additional info');
   });
 
-  test('does not attempt a state update after the component is unmounted', () => {
+  test('does not invoke the throttled callback after the component is unmounted', () => {
     jest.useFakeTimers();
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mockThrottledCallbacks.length = 0;
 
     const { rerender, unmount } = render(<ProgressBar label="progress" value={0} />);
-    // Trigger a value change so the throttle schedules a trailing call.
+    const callback = mockThrottledCallbacks[0];
+    // Drop the leading invocation that runs synchronously on mount.
+    callback.mockClear();
+
+    // Schedule a trailing invocation, then unmount before it fires.
     rerender(<ProgressBar label="progress" value={42} />);
     unmount();
+    act(() => jest.advanceTimersByTime(6000));
 
-    act(() => {
-      // Advance past the throttle interval so any pending timers would fire.
-      jest.advanceTimersByTime(6000);
-    });
-
-    // No "Can't perform a React state update on an unmounted component" warning.
-    expect(consoleError).not.toHaveBeenCalled();
-    consoleError.mockRestore();
+    expect(callback).not.toHaveBeenCalled();
     jest.useRealTimers();
   });
 });
