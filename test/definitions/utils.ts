@@ -224,19 +224,13 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
 
       expect(newPerms.length).toBe(oldPerms.length);
 
-      // All permutations share the same full-page screenshot raw base64.
-      // If the full-page screenshots are byte-identical, ALL permutations pass.
-      if (newPerms.length > 0 && newPerms[0].rawBase64 === oldPerms[0].rawBase64) {
-        return;
-      }
-
-      // Full-page differs — decode and compare individual permutations.
+      // Compare each permutation individually and attach results.
       const permFailures: number[] = [];
       const attachmentPromises: Promise<void>[] = [];
       for (let i = 0; i < newPerms.length; i++) {
         const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
+        attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i.toString().padStart(3, '0')}`));
         if (permResult.diffPixels > tolerance) {
-          attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i.toString().padStart(3, '0')}`));
           permFailures.push(i);
         }
       }
