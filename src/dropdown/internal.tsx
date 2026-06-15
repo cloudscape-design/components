@@ -16,6 +16,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { nodeBelongs } from '../internal/utils/node-belongs';
@@ -250,6 +251,11 @@ const InternalDropdown = ({
 
   const isRefresh = useVisualRefresh();
 
+  // Tracks where the most recent pointer gesture started, so a gesture that begins
+  // inside the dropdown but releases outside it (e.g. drag-to-reorder, text selection)
+  // is not mistaken for an outside click.
+  const getMouseDownTarget = useMouseDownTarget();
+
   const dropdownClasses = usePortalModeClasses(triggerRef);
   const [position, setPosition] = useState<DropdownContextProviderProps['position']>('bottom-right');
 
@@ -445,12 +451,21 @@ const InternalDropdown = ({
       // Since the listener is registered on the window, `event.target` will incorrectly point at the
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
+      // The gesture's origin. A native `click` is dispatched on the common ancestor of the mousedown
+      // and mouseup elements, so a gesture starting inside the dropdown but released just outside it
+      // (drag-to-reorder, text selection, slider drags) resolves to a target outside the dropdown.
+      // Considering the mousedown origin prevents closing the dropdown in those cases.
+      const mouseDownTarget = getMouseDownTarget();
       // For internal triggers, the wrapper div itself counts as outside — only its children are the trigger.
       // For external triggers, the ref is the trigger element directly, so it counts as inside.
       const isOutsideTrigger =
         !nodeBelongs(triggerRef.current, target) || (!externalTriggerRef && target === triggerRef.current);
 
-      if (!nodeBelongs(dropdownRef.current, target) && isOutsideTrigger) {
+      if (
+        !nodeBelongs(dropdownRef.current, target) &&
+        !nodeBelongs(dropdownRef.current, mouseDownTarget) &&
+        isOutsideTrigger
+      ) {
         fireNonCancelableEvent(onOutsideClick);
       }
     };
@@ -459,7 +474,7 @@ const InternalDropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick, triggerRef, externalTriggerRef]);
+  }, [open, onOutsideClick, triggerRef, externalTriggerRef, getMouseDownTarget]);
 
   // subscribe to Escape key press
   useEffect(() => {

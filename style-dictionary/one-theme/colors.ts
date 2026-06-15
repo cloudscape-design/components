@@ -22,10 +22,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
+  colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '#000000' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
   colorBackgroundModalOverlay: '{colorGreyOpaque70}',
 
   // ── Normal button ─────────────────────────────────────────────────────────

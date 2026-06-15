@@ -84,7 +84,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
   ]),
 };
 
-// Reference tokens for visual-refresh theme
+// Reference tokens for one-theme theme
 const referenceTokens: ReferenceTokens = {
   color: {
     primary: {
@@ -165,6 +165,7 @@ const referenceTokens: ReferenceTokens = {
       600: brand.colorIndigo600,
       700: brand.colorIndigo700,
       900: brand.colorIndigo900,
+      800: brand.colorIndigo800,
       950: brand.colorIndigo950,
       1000: brand.colorIndigo1000,
     },

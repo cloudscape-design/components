@@ -43,10 +43,11 @@ export interface TableThElementProps {
   scope?: 'col' | 'colgroup';
   columnGroupId?: string;
   isLast?: boolean;
-  /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
-  className?: string;
-  /** Additional ref for boundary sticky subscription (imperatively updates shadow classes). */
-  boundaryRef?: React.RefCallback<HTMLElement>;
+  /**
+   * For cells that span multiple columns (group headers): the column id of the boundary leaf
+   * whose sticky shadow this cell should inherit. The cell's position still comes from `columnId`.
+   */
+  stickyBoundaryColumnId?: PropertyKey;
 }
 
 export function TableThElement({
@@ -74,8 +75,7 @@ export function TableThElement({
   scope,
   columnGroupId,
   isLast,
-  className,
-  boundaryRef,
+  stickyBoundaryColumnId,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -84,10 +84,11 @@ export function TableThElement({
     stickyColumns: stickyState,
     columnId,
     getClassName: props => getStickyClassNames(styles, props),
+    boundaryColumnId: stickyBoundaryColumnId,
   });
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, boundaryRef);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
   return (
@@ -115,8 +116,7 @@ export function TableThElement({
           [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
           [styles['header-cell-grouped']]: !!columnGroupId,
         },
-        stickyStyles.className,
-        className
+        stickyStyles.className
       )}
       colSpan={colSpan}
       rowSpan={rowSpan}
