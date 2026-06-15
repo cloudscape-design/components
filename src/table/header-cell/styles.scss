@@ -150,6 +150,35 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   color: awsui.$color-text-column-sorting-icon;
 }
 
+.header-cell-main {
+  /* When the wrapper is present without a sort menu, behave as if it weren't there. */
+  display: contents;
+}
+
+.header-cell-main-with-menu {
+  display: flex;
+  align-items: center;
+  & > .header-cell-content {
+    flex-grow: 1;
+    min-inline-size: 0;
+    /* The absolutely-positioned sort icon already lives close to the right edge,
+       so shrink the content's trailing padding to keep the kebab tight to it. */
+    padding-inline-end: awsui.$space-xs;
+  }
+}
+
+.sort-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-end: awsui.$space-xxs;
+  line-height: 1;
+}
+
+.sort-menu {
+  display: inline-flex;
+  align-items: center;
+}
+
 .edit-icon {
   margin-inline-start: awsui.$space-xxs;
   margin-block-start: awsui.$space-scaled-xxs;
@@ -189,7 +218,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   block-size: 100%;
   vertical-align: bottom;
 
-  > .header-cell-content {
+  .header-cell-content {
     block-size: 100%;
     box-sizing: border-box;
     display: flex;
@@ -206,11 +235,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 .header-cell-sortable:not(.header-cell-disabled) {
-  & > .header-cell-content {
-    cursor: pointer;
-  }
-  & > .header-cell-content:hover,
-  &.header-cell-sorted > .header-cell-content {
+  cursor: pointer;
+  & .header-cell-content:hover,
+  &.header-cell-sorted .header-cell-content {
     color: awsui.$color-text-interactive-active;
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;

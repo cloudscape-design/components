@@ -124,6 +124,8 @@ const InternalTable = React.forwardRef(
       sortingColumn,
       sortingDescending,
       sortingDisabled,
+      multiColumnSort,
+      i18nStrings,
       visibleColumns,
       stickyHeader,
       stickyHeaderVerticalOffset,
@@ -418,6 +420,9 @@ const InternalTable = React.forwardRef(
       sortingDisabled,
       sortingDescending,
       onSortingChange,
+      multiColumnSort,
+      i18nStrings,
+      sortMenuTriggerLabel: ariaLabels?.sortMenuTriggerLabel,
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(

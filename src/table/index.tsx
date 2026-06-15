@@ -62,6 +62,7 @@ const Table = React.forwardRef(
           inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
           disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
           hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),
+          hasMultiColumnSort: !!props.multiColumnSort,
           hasHiddenColumns,
           hasStickyColumns,
           hasFilterSlot: !!props.filter,
