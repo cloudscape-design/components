@@ -711,11 +711,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -1040,6 +1054,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -1066,6 +1087,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#16191f",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -2244,6 +2279,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -2690,6 +2732,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-link-default": {
@@ -4113,11 +4169,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -4442,6 +4512,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -4468,6 +4545,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#16191f",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -5646,6 +5737,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -6092,6 +6190,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-link-default": {
@@ -7515,11 +7627,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -7844,6 +7970,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -7870,6 +8003,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#16191f",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -9048,6 +9195,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -9494,6 +9648,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-link-default": {
@@ -10917,11 +11085,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -11246,6 +11428,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -11272,6 +11461,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -12450,6 +12653,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -12895,6 +13105,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
@@ -14319,11 +14543,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -14648,6 +14886,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -14674,6 +14919,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#906806",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -15852,6 +16111,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -16298,6 +16564,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-link-default": {
@@ -17721,11 +18001,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#191100",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#2a2e33",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -18050,6 +18344,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -18076,6 +18377,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fbd332",
             "light": "#fbd332",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -19254,6 +19569,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#44b9d6",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -19700,6 +20022,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
           },
         },
         "color-text-link-default": {
@@ -21123,11 +21459,25 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#fffef0",
       },
     },
+    "color-background-tiles-disabled": {
+      "$description": "The background color of disabled tiles.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#eaeded",
+      },
+    },
     "color-background-toggle-button-normal-default": {
       "$description": "The default background color of normal toggle buttons.",
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
+      },
+    },
+    "color-background-toggle-button-normal-hover": {
+      "$description": "The background color of normal toggle buttons in hover state.",
+      "$value": {
+        "dark": "#21252c",
+        "light": "#fafafa",
       },
     },
     "color-background-toggle-button-normal-pressed": {
@@ -21452,6 +21802,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-border-segment-wrapper": {
+      "$description": "The border color of the segmented control wrapper.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#687078",
+      },
+    },
     "color-border-status-error": {
       "$description": "The border color of an item in error state. For example: error alerts.",
       "$value": {
@@ -21478,6 +21835,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#fbd332",
         "light": "#906806",
+      },
+    },
+    "color-border-toggle-button-normal-default": {
+      "$description": "The default border color of normal toggle buttons.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#545b64",
+      },
+    },
+    "color-border-toggle-button-normal-hover": {
+      "$description": "The border color of normal toggle buttons in hover state.",
+      "$value": {
+        "dark": "#aab7b8",
+        "light": "#16191f",
       },
     },
     "color-border-toggle-button-normal-pressed": {
@@ -22656,6 +23027,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#0073bb",
       },
     },
+    "color-shadow-toggle-handle": {
+      "$description": "The color of the drop shadow under the toggle handle.",
+      "$value": {
+        "dark": "rgba(0, 0, 0, 0.25)",
+        "light": "rgba(0, 0, 0, 0.25)",
+      },
+    },
     "color-text-accent": {
       "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
       "$value": {
@@ -23102,6 +23480,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#16191f",
         "light": "#ffffff",
+      },
+    },
+    "color-text-link-decoration-default": {
+      "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0073bb",
+      },
+    },
+    "color-text-link-decoration-hover": {
+      "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+      "$value": {
+        "dark": "#99cbe4",
+        "light": "#0a4a74",
       },
     },
     "color-text-link-default": {
@@ -24530,11 +24922,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#ebebf0",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -24859,6 +25265,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -24885,6 +25298,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#855900",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#0f141a",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -26063,6 +26490,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -26509,6 +26943,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-text-link-default": {
@@ -27932,11 +28380,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(255, 255, 255, 0.1)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -28261,6 +28723,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -28287,6 +28756,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#fbd332",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -29465,6 +29948,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -29911,6 +30401,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-link-default": {
@@ -31334,11 +31838,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#ebebf0",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -31663,6 +32181,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -31689,6 +32214,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#855900",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -32867,6 +33406,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -33313,6 +33859,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-text-link-default": {
@@ -34736,11 +35296,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#ebebf0",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -35065,6 +35639,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -35091,6 +35672,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#855900",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -36269,6 +36864,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -36715,6 +37317,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-text-link-default": {
@@ -38138,11 +38754,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#ebebf0",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -38467,6 +39097,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -38493,6 +39130,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#855900",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -39671,6 +40322,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -40116,6 +40774,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
@@ -41540,11 +42212,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#ebebf0",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -41869,6 +42555,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -41895,6 +42588,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#855900",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -43073,6 +43780,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -43519,6 +44233,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-default": {
@@ -44942,11 +45670,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -45271,6 +46013,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -45297,6 +46046,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#fbd332",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -46475,6 +47238,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -46921,6 +47691,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-link-default": {
@@ -48344,11 +49128,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
         "color-background-toggle-button-normal-default": {
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-toggle-button-normal-pressed": {
@@ -48673,6 +49471,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -48699,6 +49504,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#fbd332",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -49877,6 +50696,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -50323,6 +51149,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-link-default": {
@@ -51746,11 +52586,25 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#fffef0",
       },
     },
+    "color-background-tiles-disabled": {
+      "$description": "The background color of disabled tiles.",
+      "$value": {
+        "dark": "#1b232d",
+        "light": "#ebebf0",
+      },
+    },
     "color-background-toggle-button-normal-default": {
       "$description": "The default background color of normal toggle buttons.",
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
+      },
+    },
+    "color-background-toggle-button-normal-hover": {
+      "$description": "The background color of normal toggle buttons in hover state.",
+      "$value": {
+        "dark": "#1b232d",
+        "light": "#f0fbff",
       },
     },
     "color-background-toggle-button-normal-pressed": {
@@ -52075,6 +52929,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#424650",
       },
     },
+    "color-border-segment-wrapper": {
+      "$description": "The border color of the segmented control wrapper.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
+      },
+    },
     "color-border-status-error": {
       "$description": "The border color of an item in error state. For example: error alerts.",
       "$value": {
@@ -52101,6 +52962,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#fbd332",
         "light": "#855900",
+      },
+    },
+    "color-border-toggle-button-normal-default": {
+      "$description": "The default border color of normal toggle buttons.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-border-toggle-button-normal-hover": {
+      "$description": "The border color of normal toggle buttons in hover state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
       },
     },
     "color-border-toggle-button-normal-pressed": {
@@ -53279,6 +54154,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#006ce0",
       },
     },
+    "color-shadow-toggle-handle": {
+      "$description": "The color of the drop shadow under the toggle handle.",
+      "$value": {
+        "dark": "rgba(0, 0, 0, 0.25)",
+        "light": "rgba(0, 0, 0, 0.25)",
+      },
+    },
     "color-text-accent": {
       "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
       "$value": {
@@ -53725,6 +54607,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#0f141a",
         "light": "#ffffff",
+      },
+    },
+    "color-text-link-decoration-default": {
+      "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-link-decoration-hover": {
+      "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
       },
     },
     "color-text-link-default": {

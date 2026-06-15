@@ -55,4 +55,42 @@ describe('throttle', () => {
     expect(funcMock).toHaveBeenCalledWith('arg-25');
     expect(funcMock).toHaveBeenCalledWith('arg-50');
   });
+
+  describe('cancel', () => {
+    it('prevents a pending trailing invocation from firing', () => {
+      const throttled = throttle(funcMock, 25);
+
+      throttled('a'); // leading invocation, fires immediately
+      throttled('b'); // schedules trailing
+      throttled.cancel();
+
+      // Advance well past the delay; nothing additional should fire.
+      for (let i = 0; i < 30; i++) {
+        tick();
+      }
+
+      expect(funcMock).toHaveBeenCalledTimes(1);
+      expect(funcMock).toHaveBeenCalledWith('a');
+    });
+
+    it('preserves the throttle window so subsequent calls within the delay are still throttled', () => {
+      const throttled = throttle(funcMock, 25);
+
+      throttled('a'); // leading invocation, fires immediately
+      throttled.cancel();
+      // A call within the throttle window after a cancel should NOT fire as a
+      // new leading invocation — it should be deferred as a trailing call.
+      throttled('b');
+
+      expect(funcMock).toHaveBeenCalledTimes(1);
+      expect(funcMock).toHaveBeenCalledWith('a');
+
+      // After the delay elapses, the trailing call fires.
+      for (let i = 0; i < 30; i++) {
+        tick();
+      }
+      expect(funcMock).toHaveBeenCalledTimes(2);
+      expect(funcMock).toHaveBeenCalledWith('b');
+    });
+  });
 });
