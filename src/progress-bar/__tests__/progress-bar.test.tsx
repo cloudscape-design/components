@@ -286,4 +286,24 @@ describe('Progress updates', () => {
 
     expect(wrapper.findAdditionalInfo()!.getElement().textContent).toBe('additional info');
   });
+
+  test('does not attempt a state update after the component is unmounted', () => {
+    jest.useFakeTimers();
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const { rerender, unmount } = render(<ProgressBar label="progress" value={0} />);
+    // Trigger a value change so the throttle schedules a trailing call.
+    rerender(<ProgressBar label="progress" value={42} />);
+    unmount();
+
+    act(() => {
+      // Advance past the throttle interval so any pending timers would fire.
+      jest.advanceTimersByTime(6000);
+    });
+
+    // No "Can't perform a React state update on an unmounted component" warning.
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
+    jest.useRealTimers();
+  });
 });
