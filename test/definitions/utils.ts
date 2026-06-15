@@ -37,6 +37,7 @@ interface RawScreenshot {
   width: number;
   height: number;
   pixelRatio?: number;
+  id?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -124,10 +125,17 @@ async function decodeRaw(raw: RawScreenshot): Promise<ScreenshotWithOffset> {
  */
 async function compareScreenshots(newRaw: RawScreenshot, oldRaw: RawScreenshot): Promise<CropAndCompareResult> {
   // Fast path: identical compressed PNG bytes → images are the same.
-  // Skips parsePng (~300-1200ms) and packPng (~6000-45000ms).
   if (newRaw.rawBase64 === oldRaw.rawBase64) {
     const imageBuffer = Buffer.from(newRaw.rawBase64, 'base64');
     return { firstImage: imageBuffer, secondImage: imageBuffer, diffImage: null, isEqual: true, diffPixels: 0 };
+  }
+
+  // For element screenshots (taken via takeElementScreenshot with offset 0,0 and width 0),
+  // the PNG is already cropped — no decode/crop/re-encode needed. Just report the diff.
+  if (newRaw.width === 0 && newRaw.offset.top === 0 && newRaw.offset.left === 0) {
+    const firstImage = Buffer.from(newRaw.rawBase64, 'base64');
+    const secondImage = Buffer.from(oldRaw.rawBase64, 'base64');
+    return { firstImage, secondImage, diffImage: null, isEqual: false, diffPixels: 1 };
   }
 
   // Slow path: decode and do full pixel comparison.
@@ -136,59 +144,33 @@ async function compareScreenshots(newRaw: RawScreenshot, oldRaw: RawScreenshot):
 }
 
 /**
- * Similar to page.capturePermutations() but returns raw base64 per permutation
- * without decoding the shared full-page PNG upfront. Decoding is deferred until
- * an actual difference is detected.
+ * Captures each permutation element individually using takeElementScreenshot.
+ * Returns one raw base64 PNG per permutation — no decode, no crop, no re-encode.
  */
 async function capturePermutationsRaw(
   browser: WebdriverIO.Browser,
   page: ScreenshotPageObject
 ): Promise<RawScreenshot[]> {
-  // Replicates the logic from ScreenshotPageObject.capturePermutations()
-  // but keeps the screenshot as raw base64 instead of decoding it.
   await page.windowScrollTo({ top: 0, left: 0 });
 
-  // Fit window height to page content
-  const originalWindowSize = await browser.getWindowSize();
-  const dims = (await browser.execute(() => ({
-    viewportHeight: window.innerHeight,
-    pageHeight: document.documentElement.scrollHeight,
-  }))) as { viewportHeight: number; pageHeight: number };
-  const windowUIHeight = originalWindowSize.height - dims.viewportHeight;
-  await browser.setWindowSize(originalWindowSize.width, dims.pageHeight + windowUIHeight);
+  // Find all permutation elements
+  const elements = await browser.$$('[data-permutation]');
 
-  // Get permutation sizes (same logic as browser-test-tools getPermutationSizes)
-  const permutations = (await browser.execute(() => {
-    const pixelRatio = window.devicePixelRatio || 1;
-    return Array.from(document.querySelectorAll('[data-permutation]')).map(element => {
-      const rect = element.getBoundingClientRect();
-      return {
-        id: element.getAttribute('data-permutation') || '',
-        width: rect.width * pixelRatio,
-        height: rect.height * pixelRatio,
-        offset: { top: rect.top * pixelRatio, left: rect.left * pixelRatio },
-      };
-    });
-  })) as Array<{ id: string; width: number; height: number; offset: { top: number; left: number } }>;
-
-  if (permutations.length === 0) {
+  if ((await elements.length) === 0) {
     throw new Error('No permutations found on current page.');
   }
 
-  // Take full page screenshot (raw base64, NOT decoded)
-  const rawBase64 = await page.fullPageScreenshot();
+  // Take a screenshot of each permutation element directly via WebDriver.
+  // This returns a pre-cropped PNG for each element — no parsePng/packPng needed.
+  const results: RawScreenshot[] = [];
+  for (const element of elements) {
+    const id = (await element.getAttribute('data-permutation')) || '';
+    const rawBase64 = await browser.takeElementScreenshot(element.elementId);
+    // offset/width/height are irrelevant since the screenshot is already cropped
+    results.push({ rawBase64, offset: { top: 0, left: 0 }, width: 0, height: 0, id });
+  }
 
-  // Restore window size
-  await browser.setWindowSize(originalWindowSize.width, originalWindowSize.height);
-
-  // Return one RawScreenshot per permutation — they all share the same rawBase64
-  // but have different offsets/sizes for cropping later if needed.
-  return permutations.map(p => ({
-    rawBase64,
-    offset: p.offset,
-    width: p.width,
-    height: p.height,
-  }));
+  return results;
 }
 
 // ─── Test runner ─────────────────────────────────────────────────────────────
