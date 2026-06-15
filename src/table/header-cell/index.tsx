@@ -210,10 +210,15 @@ export function TableHeaderCell<ItemType>({
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
           isLast={isLast}
+          isGrouped={!!columnGroupId}
           dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
-        <Divider className={styles['resize-divider']} position={isLastChildOfGroup ? 'top' : undefined} />
+        <Divider
+          className={styles['resize-divider']}
+          position={isLastChildOfGroup ? 'top' : undefined}
+          isGrouped={!!columnGroupId}
+        />
       )}
     </TableThElement>
   );
