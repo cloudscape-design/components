@@ -32132,7 +32132,9 @@ Defaults to \`normal\` if not specified.",
 
 When \`variant="normal"\`, if a description or tags are set, icon size should be \`normal\`.
 
-When \`variant="inline"\`, icon size should be \`small\`.",
+When \`variant="inline"\`, icon size should be \`small\`.
+
+For the OneTheme with \`variant="inline"\`, the icon size will automatically be overridden to \`x-small\`.",
       "isDefault": false,
       "name": "icon",
     },
