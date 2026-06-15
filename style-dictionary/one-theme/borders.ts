@@ -11,6 +11,8 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthToken: '1px',
   borderWidthAlert: '0px',
   borderItemWidth: '1px',
+  borderWidthDropdown: '1px',
+  borderWidthPopover: '1px',
   borderWidthAlertInlineStart: '2px',
   borderWidthItemSelected: '1px',
   borderWidthCardSelected: '1px',
