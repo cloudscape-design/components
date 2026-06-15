@@ -262,8 +262,16 @@ standaloneAndKeyvalueVariants.forEach(variant => {
 });
 
 describe('Progress updates', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    mockThrottledCallbacks.length = 0;
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   test('Announced progress value changes not more often then given interval', () => {
-    jest.useFakeTimers(); // Mock timers
     const label = 'progress';
     const { container, rerender } = render(<ProgressBar label={label} value={0} />);
     const wrapper = createWrapper(container).findProgressBar()!;
@@ -302,9 +310,6 @@ describe('Progress updates', () => {
   });
 
   test('does not invoke the throttled callback after the component is unmounted', () => {
-    jest.useFakeTimers();
-    mockThrottledCallbacks.length = 0;
-
     const { rerender, unmount } = render(<ProgressBar label="progress" value={0} />);
     const callback = mockThrottledCallbacks[0];
     // Drop the leading invocation that runs synchronously on mount.
@@ -316,6 +321,5 @@ describe('Progress updates', () => {
     act(() => jest.advanceTimersByTime(6000));
 
     expect(callback).not.toHaveBeenCalled();
-    jest.useRealTimers();
   });
 });

@@ -62,10 +62,8 @@ export default function ProgressBar({
 
   useEffect(() => {
     throttledAssertion(value);
+    return () => throttledAssertion.cancel();
   }, [throttledAssertion, value]);
-
-  // Cancel pending throttled invocation on unmount to avoid setting state on an unmounted component.
-  useEffect(() => () => throttledAssertion.cancel(), [throttledAssertion]);
 
   if (isInFlash && resultButtonText) {
     warnOnce(
