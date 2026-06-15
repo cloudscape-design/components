@@ -63,6 +63,7 @@ const ExpandableCategoryElement = ({
   };
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -117,16 +118,10 @@ const ExpandableCategoryElement = ({
             </span>
           )}
           <span>{item.text}</span>
-          <span
-            className={clsx(
-              styles['expand-icon'],
-              styles['expand-icon-right'],
-              isThemeActive(Theme.OneTheme) && styles['one-theme']
-            )}
-          >
+          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'], isOneTheme && styles['one-theme'])}>
             <InternalIcon
-              name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-              size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
             />
           </span>
         </>

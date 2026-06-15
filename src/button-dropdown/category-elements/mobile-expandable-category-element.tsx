@@ -55,6 +55,8 @@ const MobileExpandableCategoryElement = ({
     highlightItem(item);
   };
 
+  const isOneTheme = isThemeActive(Theme.OneTheme);
+
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
 
@@ -110,13 +112,13 @@ const MobileExpandableCategoryElement = ({
           )}
           <span>{item.text}</span>
           <span
-            className={clsx(styles['expand-icon'], isThemeActive(Theme.OneTheme) && styles['one-theme'], {
+            className={clsx(styles['expand-icon'], isOneTheme && styles['one-theme'], {
               [styles['expand-icon-up']]: expanded,
             })}
           >
             <InternalIcon
-              name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-              size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
             />
           </span>
         </>
