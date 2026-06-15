@@ -581,6 +581,7 @@ export type ColorsTokenName =
   | 'colorBackgroundDrawer'
   | 'colorBackgroundDrawerBackdrop'
   | 'colorBackgroundLayoutMobilePanel'
+  | 'colorBackgroundLayoutPanel'
   | 'colorBackgroundLayoutPanelContent'
   | 'colorBackgroundLayoutPanelHover'
   | 'colorBackgroundLayoutToolbar'

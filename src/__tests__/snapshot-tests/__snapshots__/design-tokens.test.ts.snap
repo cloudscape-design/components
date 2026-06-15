@@ -455,6 +455,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -3844,6 +3851,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-layout-toggle-active": {
@@ -7237,6 +7251,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -10626,6 +10647,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-layout-toggle-active": {
@@ -14019,6 +14047,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -17410,6 +17445,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -20799,6 +20841,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#16191f",
         "light": "#f2f3f3",
+      },
+    },
+    "color-background-layout-panel": {
+      "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
       },
     },
     "color-background-layout-toggle-active": {
@@ -24197,6 +24246,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -27583,6 +27639,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -30979,6 +31042,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fcfcfd",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -34365,6 +34435,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -37761,6 +37838,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -41147,6 +41231,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -44543,6 +44634,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -47934,6 +48032,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#161d26",
           },
         },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -51320,6 +51425,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-background-layout-main": {
       "$description": "The background color of the main content area on a page. For example: content area in app layout.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-layout-panel": {
+      "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
