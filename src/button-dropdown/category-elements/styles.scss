@@ -120,6 +120,11 @@
   display: inline-block;
   margin-inline-start: auto;
 
+  &.one-theme {
+    inset-inline-end: calc(-1 * #{awsui.$space-xs});
+    inline-size: awsui.$space-s;
+  }
+
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
   }

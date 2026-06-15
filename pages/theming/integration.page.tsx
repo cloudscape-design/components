@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Button, Container, Header, Link, Multiselect, SpaceBetween, Table } from '~components';
 import { applyTheme, generateThemeStylesheet, Theme } from '~components/theming';
+import ToggleButton from '~components/toggle-button';
 import * as Tokens from '~design-tokens';
 
 import AppContext from '../app/app-context';
@@ -31,6 +32,38 @@ const theme: Theme = {
     colorTextLinkDefault: {
       light: 'rgba(220, 24, 24, 1)',
       dark: 'rgba(255, 165, 0, 1)',
+    },
+    // Toggle button tokens are intentionally distinct from the normal button tokens.
+    // The toggle button must win a CSS specificity battle against the underlying button
+    // styles; if it regresses, the toggle button falls back to normal button colors and
+    // these screenshots will visibly differ.
+    colorBackgroundToggleButtonNormalDefault: {
+      light: '#f2e6ff',
+      dark: '#2a0a4a',
+    },
+    colorBorderToggleButtonNormalDefault: {
+      light: '#8000ff',
+      dark: '#b266ff',
+    },
+    colorBackgroundToggleButtonNormalHover: {
+      light: '#e6ccff',
+      dark: '#3d0d6b',
+    },
+    colorBorderToggleButtonNormalHover: {
+      light: '#6600cc',
+      dark: '#cc99ff',
+    },
+    colorBackgroundToggleButtonNormalPressed: {
+      light: '#8000ff',
+      dark: '#b266ff',
+    },
+    colorBorderToggleButtonNormalPressed: {
+      light: '#4d0099',
+      dark: '#e0ccff',
+    },
+    colorTextToggleButtonNormalPressed: {
+      light: '#ffffff',
+      dark: '#1a0033',
     },
   },
 };
@@ -133,6 +166,12 @@ export default function () {
           <SpaceBetween direction="vertical" size="m">
             <Button variant="primary">Primary button</Button>
             <Button variant="normal">Normal button</Button>
+            <ToggleButton pressed={false} iconName="star" pressedIconName="star-filled">
+              Toggle button default
+            </ToggleButton>
+            <ToggleButton pressed={true} iconName="star" pressedIconName="star-filled">
+              Toggle button pressed
+            </ToggleButton>
             <Link href="#">Link</Link>
             <a data-testid="element-color-text-link-default" style={{ color: Tokens.colorTextLinkDefault }}>
               Anchor using colorTextLinkDefault
