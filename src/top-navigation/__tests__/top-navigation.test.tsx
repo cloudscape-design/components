@@ -13,11 +13,27 @@ import TopNavigationWrapper, {
 } from '../../../lib/components/test-utils/dom/top-navigation';
 import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
 import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
+import { useTopNavigation } from '../../../lib/components/top-navigation/use-top-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
+
+// The hook defaults to the real implementation so existing tests are unaffected.
+// Individual tests can override the return value to force a specific responsive state.
+jest.mock('../../../lib/components/top-navigation/use-top-navigation', () => {
+  const actual = jest.requireActual('../../../lib/components/top-navigation/use-top-navigation');
+  return {
+    __esModule: true,
+    ...actual,
+    useTopNavigation: jest.fn(actual.useTopNavigation),
+  };
+});
+
+const actualUseTopNavigation = jest.requireActual(
+  '../../../lib/components/top-navigation/use-top-navigation'
+).useTopNavigation;
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
@@ -420,5 +436,52 @@ describe('visualContext', () => {
   test('uses no visual context', () => {
     renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'none' });
     expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
+  });
+});
+
+describe('overflow menu', () => {
+  afterEach(() => {
+    // Restore the real hook implementation for any subsequent tests.
+    (useTopNavigation as jest.Mock).mockImplementation(actualUseTopNavigation);
+  });
+
+  // The overflow drawer only renders once utilities are collapsed, which depends on layout
+  // measurements unavailable in JSDOM. We mock the hook to force that state. The behavior itself
+  // is verified end to end in __integ__/top-navigation.test.ts ("all collapsable utilities collapsed").
+  const renderWithCollapsedUtilities = () => {
+    (useTopNavigation as jest.Mock).mockReturnValue({
+      mainRef: { current: null },
+      virtualRef: { current: null },
+      responsiveState: { hideUtilities: [0], hideUtilityText: true },
+      breakpoint: 'default',
+      isSearchExpanded: false,
+      onSearchUtilityClick: jest.fn(),
+    });
+
+    return renderTopNavigation({
+      identity: { href: '#', title: 'Application' },
+      utilities: [
+        { type: 'button', text: 'Settings', iconName: 'settings' },
+        { type: 'button', text: 'User', iconName: 'user-profile' },
+      ],
+    });
+  };
+
+  test('opens and closes the overflow drawer when the menu trigger is clicked', () => {
+    const topNavigation = renderWithCollapsedUtilities();
+    const trigger = topNavigation.findOverflowMenuButton()!;
+    expect(trigger).not.toBeNull();
+
+    // Drawer is closed initially.
+    expect(topNavigation.findOverflowMenu()).toBeNull();
+
+    // Open the drawer.
+    act(() => trigger.click());
+    expect(topNavigation.findOverflowMenu()).not.toBeNull();
+
+    // Close the drawer; focus returns to the trigger.
+    act(() => trigger.click());
+    expect(topNavigation.findOverflowMenu()).toBeNull();
+    expect(trigger.getElement()).toHaveFocus();
   });
 });
