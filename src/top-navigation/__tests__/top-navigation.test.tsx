@@ -405,3 +405,20 @@ describe('URL sanitization', () => {
     });
   });
 });
+
+describe('visualContext', () => {
+  test('defaults to top-navigation visual context', () => {
+    renderTopNavigation({ identity: { href: '#', title: 'Structured' } });
+    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+  });
+
+  test('uses top-navigation visual context explicitly', () => {
+    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'top-navigation' });
+    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+  });
+
+  test('uses no visual context', () => {
+    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'none' });
+    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
+  });
+});
