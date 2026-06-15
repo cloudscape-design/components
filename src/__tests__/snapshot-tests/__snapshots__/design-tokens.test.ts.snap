@@ -89,6 +89,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "2px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "2px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
@@ -3485,6 +3489,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-token": {
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
+          "$value": "2px",
+        },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
           "$value": "2px",
         },
         "border-radius-tutorial-panel-item": {
@@ -6885,6 +6893,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "2px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "2px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
@@ -10281,6 +10293,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-token": {
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
+          "$value": "2px",
+        },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
           "$value": "2px",
         },
         "border-radius-tutorial-panel-item": {
@@ -13681,6 +13697,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "2px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "2px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
@@ -17079,6 +17099,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "2px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "2px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
@@ -20475,6 +20499,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-token": {
       "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
+      "$value": "2px",
+    },
+    "border-radius-token-inline": {
+      "$description": "The border radius of inline tokens. For example: multiselect component.",
       "$value": "2px",
     },
     "border-radius-tutorial-panel-item": {
@@ -23880,6 +23908,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
@@ -27277,6 +27309,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-token": {
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
+        },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
         },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
@@ -30676,6 +30712,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
@@ -34073,6 +34113,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-token": {
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
+        },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
         },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
@@ -37472,6 +37516,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
@@ -40869,6 +40917,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-token": {
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
+        },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
         },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
@@ -44268,6 +44320,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
@@ -47666,6 +47722,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
@@ -51063,6 +51123,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-radius-token": {
       "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
       "$value": "8px",
+    },
+    "border-radius-token-inline": {
+      "$description": "The border radius of inline tokens. For example: multiselect component.",
+      "$value": "4px",
     },
     "border-radius-tutorial-panel-item": {
       "$description": "The border radius of tutorials inside a tutorial panel.",
