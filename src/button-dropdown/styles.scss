@@ -114,6 +114,18 @@ $dropdown-trigger-icon-offset: 2px;
       margin-inline-start: calc(#{awsui.$border-width-button} * -1);
     }
   }
+
+  & > .trigger-item:not(:first-child).one-theme {
+    & > .trigger-button {
+      padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+    }
+
+    &.has-trigger-text {
+      & > .trigger-button {
+        padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
+      }
+    }
+  }
 }
 .split-trigger {
   display: contents;

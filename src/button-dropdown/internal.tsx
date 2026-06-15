@@ -289,6 +289,8 @@ const InternalButtonDropdown = React.forwardRef(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
                 isVisualRefresh && styles['visual-refresh'],
+                isThemeActive(Theme.OneTheme) && styles['one-theme'],
+                !!children && styles['has-trigger-text'],
                 styles[`variant-${variant}`],
                 baseTriggerProps.loading && styles.loading
               )}
