@@ -69,7 +69,7 @@ describe('TopNavigation Component', () => {
 
   test('has a link', () => {
     const topNavigation = renderTopNavigation({ identity: { href: '#', title: 'Application Title' } });
-    expect(topNavigation.findIdentityLink().getElement()).toHaveAttribute('href', '#');
+    expect(topNavigation.findIdentityLink()!.getElement()).toHaveAttribute('href', '#');
   });
 
   test('fires follow event when the title is clicked', () => {
@@ -82,7 +82,7 @@ describe('TopNavigation Component', () => {
         onFollow: event => onFollowSpy(event.detail),
       },
     });
-    const identityLink = topNavigation.findIdentityLink().getElement();
+    const identityLink = topNavigation.findIdentityLink()!.getElement();
     identityLink.click();
     expect(onFollowSpy).toHaveBeenCalledWith({});
   });
@@ -97,7 +97,7 @@ describe('TopNavigation Component', () => {
         onFollow: event => onFollowSpy(event.detail),
       },
     });
-    const identityLink = topNavigation.findIdentityLink();
+    const identityLink = topNavigation.findIdentityLink()!;
     identityLink.click({ ctrlKey: true });
     identityLink.click({ altKey: true });
     identityLink.click({ shiftKey: true });
@@ -269,7 +269,7 @@ describe('URL sanitization', () => {
   describe('for the identity', () => {
     test('does not throw an error when a safe javascript: URL is passed', () => {
       const element = renderTopNavigation({ identity: { href: 'javascript:void(0)' } });
-      expect((element.findIdentityLink().getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
+      expect((element.findIdentityLink()!.getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
 
       expect(warnOnce).toHaveBeenCalledTimes(0);
     });
@@ -424,18 +424,50 @@ describe('URL sanitization', () => {
 
 describe('visualContext', () => {
   test('defaults to top-navigation visual context', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' } });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+    const { container } = render(
+      <>
+        <TopNavigation identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation>custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(2);
   });
 
   test('uses top-navigation visual context explicitly', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'top-navigation' });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+    const { container } = render(
+      <>
+        <TopNavigation visualContext="top-navigation" identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation visualContext="top-navigation">custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(2);
   });
 
   test('uses no visual context', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'none' });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
+    const { container } = render(
+      <>
+        <TopNavigation visualContext="none" identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation visualContext="none">custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
+  });
+});
+
+describe('custom content - children', () => {
+  test('renders custom content and replaces structured elements when children are provided', () => {
+    const wrapper = renderTopNavigation({
+      identity: { href: '#', title: 'Should Not Render' },
+      search: <input placeholder="Search" />,
+      utilities: [{ type: 'button', text: 'Help' }],
+      children: <div data-testid="custom">Custom Nav</div>,
+    });
+    expect(wrapper.findContent()).not.toBeNull();
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Custom Nav');
+    expect(wrapper.findTitle()).toBeNull();
+    expect(wrapper.findIdentityLink()).toBeNull();
+    expect(wrapper.findSearch()).toBeNull();
+    expect(wrapper.findUtilities()).toHaveLength(0);
   });
 });
 

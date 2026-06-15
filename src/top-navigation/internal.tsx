@@ -18,6 +18,7 @@ import Utility from './parts/utility';
 import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
@@ -27,15 +28,46 @@ function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavig
 
 export default function InternalTopNavigation({
   __internalRootRef,
+  children,
+  visualContext = 'top-navigation',
+  ...restProps
+}: InternalTopNavigationProps) {
+  const baseProps = getBaseProps(restProps);
+
+  if (children !== undefined) {
+    return (
+      <div {...baseProps} ref={__internalRootRef}>
+        {wrapWithVisualContext(
+          <header className={styles['top-navigation']}>
+            <div className={testUtilStyles['custom-content']}>{children}</div>
+          </header>,
+          visualContext
+        )}
+      </div>
+    );
+  }
+
+  return <StructuredTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps} />;
+}
+
+interface StructuredTopNavigationProps extends Omit<InternalTopNavigationProps, 'children'> {
+  visualContext: TopNavigationProps.VisualContext;
+}
+
+function StructuredTopNavigation({
+  __internalRootRef,
   identity,
   i18nStrings,
   utilities,
   search,
-  visualContext = 'top-navigation',
+  visualContext,
   ...restProps
-}: InternalTopNavigationProps) {
-  checkSafeUrl('TopNavigation', identity.href);
+}: StructuredTopNavigationProps) {
+  if (identity) {
+    checkSafeUrl('TopNavigation', identity.href);
+  }
   const baseProps = getBaseProps(restProps);
+
   const { mainRef, virtualRef, breakpoint, responsiveState, isSearchExpanded, onSearchUtilityClick } = useTopNavigation(
     { identity, search, utilities }
   );
@@ -46,16 +78,7 @@ export default function InternalTopNavigation({
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
 
-  const onIdentityClick = (event: React.MouseEvent) => {
-    if (isPlainLeftClick(event)) {
-      fireCancelableEvent(identity.onFollow, {}, event);
-    }
-  };
-
-  const toggleOverflowMenu = () => {
-    setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
-  };
-
+  // const hasCollapsibleUtilities = utilities.some(u => !u.disableUtilityCollapse);
   const menuTriggerVisible = !isSearchExpanded && responsiveState.hideUtilities;
 
   useEffect(() => {
@@ -68,12 +91,22 @@ export default function InternalTopNavigation({
     }
   }, [overflowMenuOpen]);
 
+  const onIdentityClick = (event: React.MouseEvent) => {
+    if (isPlainLeftClick(event)) {
+      fireCancelableEvent(identity?.onFollow, {}, event);
+    }
+  };
+
+  const toggleOverflowMenu = () => {
+    setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
+  };
+
   // Render the top nav twice; once as the top nav that users can see, and another
   // "virtual" top nav used just for calculations. The virtual top nav doesn't react to
   // layout changes and renders two sets of utilities: one with labels and one without.
   const content = (isVirtual: boolean) => {
     const Wrapper = isVirtual ? 'div' : 'header';
-    const showIdentity = isVirtual || !isSearchExpanded;
+    const showIdentity = !!identity && (isVirtual || !isSearchExpanded);
     const showTitle = isVirtual || !responsiveState.hideTitle;
     const showSearchSlot = search && (isVirtual || !responsiveState.hideSearch || isSearchExpanded);
     const showSearchUtility = isVirtual || (search && responsiveState.hideSearch);
@@ -92,14 +125,14 @@ export default function InternalTopNavigation({
         })}
       >
         <div className={styles['padding-box']}>
-          {showIdentity && (
+          {showIdentity && identity && (
             <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
               <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
                 {identity.logo && (
                   <img
                     role="img"
-                    src={identity.logo?.src}
-                    alt={identity.logo?.alt}
+                    src={identity.logo.src}
+                    alt={identity.logo.alt}
                     className={clsx(styles.logo, {
                       [styles.narrow]: isNarrowViewport,
                     })}

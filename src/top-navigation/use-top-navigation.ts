@@ -59,7 +59,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
   // The component works by calculating the possible resize states that it can
   // be in, and having a state variable to track which state we're currently in.
   const hasSearch = !!search;
-  const hasTitleWithLogo = identity && !!identity.logo && !!identity.title;
+  const hasTitleWithLogo = !!identity && !!identity.logo && !!identity.title;
   const responsiveStates = useMemo<ReadonlyArray<ResponsiveState>>(() => {
     return generateResponsiveStateKeys(utilities, hasSearch, hasTitleWithLogo);
   }, [utilities, hasSearch, hasTitleWithLogo]);
@@ -93,7 +93,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       availableWidth,
 
       // Get widths from the hidden top navigation
-      fullIdentityWidth: virtualRef.current.querySelector(`.${styles.identity}`)!.getBoundingClientRect().width,
+      fullIdentityWidth: virtualRef.current.querySelector(`.${styles.identity}`)?.getBoundingClientRect().width ?? 0,
       titleWidth: virtualRef.current.querySelector(`.${styles.title}`)?.getBoundingClientRect().width ?? 0,
       searchSlotWidth: virtualRef.current.querySelector(`.${styles.search}`)?.getBoundingClientRect().width ?? 0,
       searchUtilityWidth: virtualRef.current.querySelector('[data-utility-special="search"]')!.getBoundingClientRect()
