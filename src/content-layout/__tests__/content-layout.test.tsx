@@ -13,6 +13,7 @@ import styles from '../../../lib/components/content-layout/styles.selectors.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+  useOneTheme: jest.fn().mockReturnValue(false),
 }));
 
 function renderContentLayout(props: ContentLayoutProps = {}) {

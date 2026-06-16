@@ -29,6 +29,7 @@ const MenuDropdownItem = React.forwardRef(
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const hasCustomIcon = item.iconName || item.iconUrl || item.iconSvg;
     const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
       fireCancelableEvent(onItemClick, { id: event.detail.id, checked: event.detail.checked }, event);
     };
@@ -62,7 +63,10 @@ const MenuDropdownItem = React.forwardRef(
               data-itemid={item.id}
               ariaExpanded={ariaExpanded}
               className={clsx(testUtilStyles.item, testUtilsClass)}
-              iconName="ellipsis"
+              iconName={hasCustomIcon ? item.iconName : 'ellipsis'}
+              iconAlt={item.iconAlt}
+              iconUrl={item.iconUrl}
+              iconSvg={item.iconSvg}
               loading={item.loading}
               loadingText={item.loadingText}
               disabled={item.disabled}

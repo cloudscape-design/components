@@ -53,6 +53,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundToggleButtonNormalHover: {
+    description: 'The background color of normal toggle buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
@@ -164,6 +169,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
+  },
+  colorBackgroundLayoutPanel: {
+    description:
+      'The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundLayoutPanelContent: {
     description:
@@ -335,6 +346,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundTilesDisabled: {
+    description: 'The background color of disabled tiles.',
+    themeable: true,
+    public: true,
+  },
+  colorShadowToggleHandle: {
+    description: 'The color of the drop shadow under the toggle handle.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundAvatarDefault: {
     description: 'The default background color of avatars.',
     themeable: false,
@@ -388,6 +409,16 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
   colorBorderToggleButtonNormalPressed: {
     description: 'The border color of normal toggle buttons in pressed state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderToggleButtonNormalDefault: {
+    description: 'The default border color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderToggleButtonNormalHover: {
+    description: 'The border color of normal toggle buttons in hover state.',
     themeable: true,
     public: true,
   },
@@ -538,6 +569,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderSegmentHover: {
     description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentWrapper: {
+    description: 'The border color of the segmented control wrapper.',
     public: true,
     themeable: true,
   },

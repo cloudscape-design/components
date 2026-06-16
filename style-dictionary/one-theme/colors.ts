@@ -1,24 +1,33 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/colors.js';
 
-// One Theme color overrides on top of the visual-refresh baseline.
-// Tokens not listed here fall back to the visual-refresh value via ThemeBuilder.addTokens in ./index.ts.
+// One Theme color overrides; the full visual-refresh color set (parentTokens) is the base.
 const tokens: StyleDictionary.ColorsDictionary = {
+  // ── Opaque ─────────────────────────────────────────────────────────────
+  colorGreyOpaque70: { light: 'rgba(0, 0, 0, 0.7)', dark: 'rgba(0, 0, 0, 0.7)' },
+
   // ── Body text ─────────────────────────────────────────────────────────────
-  colorTextBodyDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
+  colorTextBodyDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
-  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey950}' },
+  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+  colorBackgroundLayoutPanelContent: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
+  colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
+  colorBorderDividerTableGroup: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey1000}' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
+  colorBackgroundModalOverlay: '{colorGreyOpaque70}',
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
@@ -56,72 +65,85 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
-  colorBorderToggleButtonNormalPressed: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextToggleButtonNormalPressed: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
+
+  // ── Toggle ─────────────────────────────────────────────────────────
+  colorBackgroundToggleCheckedDisabled: {
+    light: '{colorBackgroundControlDisabled}',
+    dark: '{colorBackgroundControlDisabled}',
+  },
+  colorBackgroundToggleDefault: { light: '{colorNeutral650}', dark: '{colorNeutral500}' },
 
   // ── Input / form ──────────────────────────────────────────────────────────
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundInputDisabled: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
   colorBorderInputDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
-  colorTextFormLabel: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey300}' },
+  colorTextFormLabel: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
   colorTextFormSecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorTextLabel: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorTextKeyValuePairsValue: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
+  colorBorderInputFocused: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
 
   // ── Controls ──────────────────────────────────────────────────────────────
   colorBackgroundControlChecked: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
+  colorBackgroundControlDisabled: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey650}' },
   colorBorderControlDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
 
   // ── Links ─────────────────────────────────────────────────────────────────
-  colorTextLinkDefault: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
+  colorTextLinkDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
   colorTextLinkHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey200}' },
   colorTextLinkSecondaryDefault: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
-  colorTextLinkInfoDefault: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
-  colorTextLinkInfoHover: { light: '{colorIndigo800}', dark: '{colorIndigo300}' },
-  colorTextAccent: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
+  colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
 
   // ── Selection / focus ─────────────────────────────────────────────────────
-  colorBorderItemFocused: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBorderItemSelected: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundItemSelected: { light: '{colorNeutralGrey150}', dark: '{colorNeutralGrey1000}' },
-  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorIndigo100}', dark: '#5c7fff20' },
-  colorBackgroundLayoutToggleSelectedHover: { light: '{colorIndigo200}', dark: '#5c7fff40' },
-  colorBackgroundLayoutToggleSelectedActive: { light: '{colorIndigo100}', dark: '{colorIndigo1000}' },
-  colorTextLayoutToggleSelected: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
+  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorPrimary100}', dark: '#5c7fff20' },
+  colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
+  colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary100}', dark: '{colorPrimary1000}' },
+  colorTextLayoutToggleSelected: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorItemSelected: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
   colorBackgroundSegmentActive: { light: '{colorNeutralGrey800}', dark: '{colorNeutralGrey300}' },
   colorBackgroundSegmentDefault: { light: 'transparent', dark: 'transparent' },
+  colorTextSegmentActive: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey950}' },
+  colorTextSegmentDefault: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey300}' },
+  colorTextSegmentHover: '{colorTextButtonNormalHover}',
 
   // ── Slider / progress ─────────────────────────────────────────────────────
-  colorBackgroundSliderRangeDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundSliderHandleDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
-  colorBackgroundProgressBarValueDefault: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBackgroundSliderRangeDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundSliderHandleDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
 
   // ── Notifications ─────────────────────────────────────────────────────────
-  colorBackgroundNotificationGreen: { light: '{colorSuccess600}', dark: '{colorSuccess950}' },
-  colorBackgroundNotificationBlue: { light: '{colorInfo600}', dark: '{colorInfo950}' },
-  colorBackgroundNotificationRed: { light: '{colorError600}', dark: '{colorError950}' },
-  colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning950}' },
-  colorTextNotificationDefault: { light: '{colorWhite}', dark: '{colorWhite}' },
+  colorBackgroundNotificationGreen: { light: '{colorSuccess600}', dark: '{colorSuccess800}' },
+  colorBackgroundNotificationBlue: { light: '{colorInfo600}', dark: '{colorInfo900}' },
+  colorBackgroundNotificationRed: { light: '{colorError600}', dark: '{colorError800}' },
+  colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning900}' },
+  colorTextNotificationDefault: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey250}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
-  colorTextStatusInfo: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
+  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning800}', dark: '{colorWarning300}' },
-  colorTextStatusError: { light: '{colorError600}', dark: '{colorError300}' },
+  colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
   // ── Dropdown ─────────────────────────────────────────────────
-  colorTextDropdownItemFilterMatch: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorTextDropdownItemFilterMatch: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey1000}' },
   colorBackgroundDropdownItemDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey800}' },
   colorBackgroundDropdownItemHover: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey900}' },
 
   // ── Status indicator backgrounds (alpha values — no palette token available) ──
-  colorBackgroundStatusIndicatorInfo: { light: '{colorIndigo50}', dark: '#5c7fff20' },
+  colorBackgroundStatusIndicatorInfo: { light: '{colorInfo50}', dark: '#5c7fff20' },
   colorBackgroundStatusIndicatorWarning: { light: '{colorWarning50}', dark: '#fbd33220' },
   colorBackgroundStatusIndicatorSuccess: { light: '{colorSuccess50}', dark: '#2bb53420' },
   colorBackgroundStatusIndicatorError: { light: '{colorError50}', dark: '#ff7a7a20' },
@@ -132,10 +154,25 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderCellShaded: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey700}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
-  colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
+  colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey250}' },
+
+  // ── Tile ─────────────────────────────────────────────────────────────────
+  colorBackgroundTilesDisabled: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
+
+  // ── Dropzone ──────────────────────────────────────────────────────────────
+  colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorDropzoneBackgroundHover: { light: '{colorPrimary50}', dark: '{colorPrimary1000}' },
+  colorDropzoneTextDefault: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
+  colorDropzoneTextHover: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
+  colorDropzoneBorderDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
+  {},
+  parentTokens,
+  expandColorDictionary(tokens)
+);
 
 export { expandedTokens as tokens };
 export const mode: StyleDictionary.ModeIdentifier = 'color';

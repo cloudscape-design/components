@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces.js';
+import merge from 'lodash/merge.js';
 
-export const tokens: StyleDictionary.TypographyDictionary = {
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/typography.js';
+
+const tokens: StyleDictionary.TypographyDictionary = {
   fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
 
   // ── Headings ──────────────────────────────────────────────────────────────
@@ -52,3 +55,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   fontWeightBreadcrumbCurrent: '400',
 };
+
+const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+
+export { expandedTokens as tokens };

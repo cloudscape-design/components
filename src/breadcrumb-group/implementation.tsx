@@ -4,7 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getLogicalBoundingClientRect, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import {
+  getLogicalBoundingClientRect,
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
@@ -83,7 +88,7 @@ const EllipsisDropdown = ({
         }}
       />
       <span className={styles.icon}>
-        <InternalIcon name="angle-right" />
+        <InternalIcon name={isThemeActive(Theme.OneTheme) ? 'slash-divider' : 'angle-right'} />
       </span>
     </li>
   );

@@ -47,6 +47,10 @@ const InternalButtonDropdown = React.forwardRef(
       customTriggerBuilder,
       expandToViewport,
       ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
       title,
       description,
       preferCenter,
@@ -75,13 +79,19 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', mainAction.href);
     }
 
+    const hasCustomTriggerIcon = !!(iconName || iconUrl || iconSvg);
+
     if (isDevelopment) {
       if (mainAction && variant !== 'primary' && variant !== 'normal') {
         warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
       }
+      if (hasCustomTriggerIcon && variant !== 'icon' && variant !== 'inline-icon') {
+        warnOnce('ButtonDropdown', 'Custom icon is only supported for "icon" and "inline-icon" component variant.');
+      }
     }
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
+    const isOneTheme = isThemeActive(Theme.OneTheme);
 
     const {
       isOpen,
@@ -145,11 +155,14 @@ const InternalButtonDropdown = React.forwardRef(
     const iconProps: Partial<ButtonProps & { __iconClass?: string; __iconSize?: IconProps.Size }> =
       variant === 'icon' || variant === 'inline-icon'
         ? {
-            iconName: 'ellipsis',
+            iconName: hasCustomTriggerIcon ? iconName : 'ellipsis',
+            iconAlt,
+            iconUrl,
+            iconSvg,
           }
         : {
-            iconName: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
-            __iconSize: isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
+            iconName: isOneTheme ? 'angle-down' : 'caret-down-filled',
+            __iconSize: isOneTheme ? 'x-small' : 'normal',
             iconAlign: 'right',
             __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
           };
@@ -157,6 +170,7 @@ const InternalButtonDropdown = React.forwardRef(
     const baseTriggerProps: InternalButtonProps = {
       className: clsx(
         styles['trigger-button'],
+        isOneTheme && styles['one-theme'],
         styles['test-utils-button-trigger'],
         analyticsSelectors['trigger-label']
       ),
@@ -288,6 +302,8 @@ const InternalButtonDropdown = React.forwardRef(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
                 isVisualRefresh && styles['visual-refresh'],
+                isOneTheme && styles['one-theme'],
+                !!children && styles['has-trigger-text'],
                 styles[`variant-${variant}`],
                 baseTriggerProps.loading && styles.loading
               )}

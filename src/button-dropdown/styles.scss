@@ -50,8 +50,10 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .trigger-button {
-  display: flex;
-  align-items: center;
+  &.one-theme {
+    display: flex;
+    align-items: center;
+  }
   &.full-width {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -110,6 +112,20 @@ $dropdown-trigger-icon-offset: 2px;
 
     &:not(:first-child) > .trigger-button {
       margin-inline-start: calc(#{awsui.$border-width-button} * -1);
+    }
+  }
+
+  & > .trigger-item:not(:first-child).one-theme {
+    & > .trigger-button {
+      // Resets the padding-inline-end override applied by .visual-refresh above,
+      // so both sides stay at $space-xs - $dropdown-trigger-icon-offset.
+      padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+    }
+
+    &.has-trigger-text {
+      & > .trigger-button {
+        padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
+      }
     }
   }
 }

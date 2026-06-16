@@ -105,6 +105,7 @@ export type BuiltInIconName =
   | 'share'
   | 'shrink'
   | 'slash'
+  | 'slash-divider'
   | 'star-filled'
   | 'star-half'
   | 'star'

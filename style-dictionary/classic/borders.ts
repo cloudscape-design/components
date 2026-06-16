@@ -46,6 +46,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthToken: '1px',
   borderRadiusActionCardDefault: '{borderRadiusCardDefault}',
   borderRadiusActionCardEmbedded: '{borderRadiusCardEmbedded}',
+  borderRadiusTokenInline: '{borderRadiusToken}',
   borderWidthActionCardDefault: '1px',
   borderWidthActionCardHover: '1px',
   borderWidthActionCardActive: '1px',
