@@ -92,10 +92,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Links ─────────────────────────────────────────────────────────────────
   colorTextLinkDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
-  colorTextLinkHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey200}' },
+  colorTextLinkHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkSecondaryDefault: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
+  colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
 
