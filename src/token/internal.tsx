@@ -12,6 +12,7 @@ import {
   warnOnce,
 } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
 import { TokenInlineContext } from '../internal/context/token-inline-context';
@@ -82,8 +83,8 @@ function InternalToken({
   });
 
   const sizedIcon = (iconNode: React.ReactNode) => {
-    if (isInline && isOneTheme && React.isValidElement(iconNode)) {
-      return React.cloneElement(iconNode as React.ReactElement<{ size?: string }>, { size: 'x-small' });
+    if (isInline && isOneTheme && React.isValidElement(iconNode) && iconNode.type === InternalIcon) {
+      return React.cloneElement(iconNode, { size: 'x-small' });
     }
     return iconNode;
   };

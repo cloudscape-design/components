@@ -153,21 +153,26 @@ describe('Token', () => {
       expect(inlineIcon).toHaveClass(styles.icon);
       expect(inlineIcon).toHaveClass(styles['icon-inline']);
     });
+  });
+
+  describe('One theme', () => {
+    beforeEach(() => {
+      document.body.classList.add('awsui-one-theme');
+    });
+
+    afterEach(() => {
+      document.body.classList.remove('awsui-one-theme');
+    });
 
     test('overrides icon size to x-small for inline variant in OneTheme', () => {
-      document.body.classList.add('awsui-one-theme');
-      try {
-        renderToken({
-          label: 'Test token',
-          variant: 'inline',
-          icon: <Icon name="settings" size="normal" data-testid="one-theme-inline-icon" />,
-        });
-        const iconElement = screen.getByTestId('one-theme-inline-icon');
-        expect(iconElement).toHaveClass(iconStyles['size-x-small']);
-        expect(iconElement).not.toHaveClass(iconStyles['size-normal']);
-      } finally {
-        document.body.classList.remove('awsui-one-theme');
-      }
+      renderToken({
+        label: 'Test token',
+        variant: 'inline',
+        icon: <Icon name="settings" size="normal" data-testid="one-theme-inline-icon" />,
+      });
+      const iconElement = screen.getByTestId('one-theme-inline-icon');
+      expect(iconElement).toHaveClass(iconStyles['size-x-small']);
+      expect(iconElement).not.toHaveClass(iconStyles['size-normal']);
     });
   });
 
