@@ -64,7 +64,7 @@ jobs:
           NODE_ENV: production
 
       - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
         working-directory: /tmp/baseline
         env:
           NODE_ENV: production
@@ -128,39 +128,45 @@ jobs:
       - name: Resolve deployment URLs
         id: hosts
         run: |
+          # The deploy workflow creates deployments with environment name = artifact name.
+          # For React 18, the environment is "dev-pages-react18".
+          DEPLOY_ENV="dev-pages-react18"
+
           # --- New host: deployment for this PR ---
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          NEW_URL=""
-          if [ -n "$PR_NUMBER" ]; then
-            DEPLOY_ID=$(gh api \
-              "repos/${{ github.repository }}/deployments?per_page=50" \
-              --jq "[.[] | select(.environment | contains(\"$PR_NUMBER\"))] | first | .id // empty" 2>/dev/null || true)
-            if [ -n "$DEPLOY_ID" ]; then
-              NEW_URL=$(gh api \
-                "repos/${{ github.repository }}/deployments/${DEPLOY_ID}/statuses" \
-                --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
-            fi
+          echo "Looking for deployment with environment '${DEPLOY_ENV}' for this PR..."
+          NEW_URL=$(gh api \
+            "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
+            --jq '.[0].id // empty' 2>/dev/null || true)
+          if [ -n "$NEW_URL" ]; then
+            DEPLOY_ID="$NEW_URL"
+            NEW_URL=$(gh api \
+              "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
+              --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            echo "Found current PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
           fi
 
-          # --- Old host: deployment from the last PR merged to main ---
+          # --- Old host: deployment from the last PR that was merged to main ---
           OLD_URL=""
-          LAST_MERGED_PR=$(gh api \
-            "repos/${{ github.repository }}/pulls?state=closed&base=main&sort=updated&direction=desc&per_page=10" \
-            --jq '[.[] | select(.merged_at != null)] | first | .number // empty' 2>/dev/null || true)
-          if [ -n "$LAST_MERGED_PR" ]; then
-            echo "Last merged PR: #${LAST_MERGED_PR}"
-            DEPLOY_ID=$(gh api \
-              "repos/${{ github.repository }}/deployments?per_page=50" \
-              --jq "[.[] | select(.environment | contains(\"${LAST_MERGED_PR}\"))] | first | .id // empty" 2>/dev/null || true)
-            if [ -n "$DEPLOY_ID" ]; then
+          LAST_MERGED_SHA=$(gh api \
+            "repos/${REPO}/pulls?state=closed&base=main&sort=updated&direction=desc&per_page=10" \
+            --jq '[.[] | select(.merged_at != null)] | first | .head.sha // empty' 2>/dev/null || true)
+          if [ -n "$LAST_MERGED_SHA" ]; then
+            echo "Last merged PR head SHA: ${LAST_MERGED_SHA:0:8}"
+            OLD_DEPLOY_ID=$(gh api \
+              "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&sha=${LAST_MERGED_SHA}&per_page=1" \
+              --jq '.[0].id // empty' 2>/dev/null || true)
+            if [ -n "$OLD_DEPLOY_ID" ]; then
               OLD_URL=$(gh api \
-                "repos/${{ github.repository }}/deployments/${DEPLOY_ID}/statuses" \
+                "repos/${REPO}/deployments/${OLD_DEPLOY_ID}/statuses" \
                 --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+              echo "Found baseline deployment: ID=${OLD_DEPLOY_ID}, URL=${OLD_URL}"
             fi
           fi
 
           echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
           echo "old=${OLD_URL}" >> "$GITHUB_OUTPUT"
+          echo ""
+          echo "=== Result ==="
           echo "New host: ${NEW_URL:-(not found)}"
           echo "Old host: ${OLD_URL:-(not found)}"
 
@@ -170,11 +176,13 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/2
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
         env:
           TZ: UTC
+          SHARD: ${{ matrix.shard }}
           NEW_HOST: ${{ steps.hosts.outputs.new }}
           OLD_HOST: ${{ steps.hosts.outputs.old }}
 
