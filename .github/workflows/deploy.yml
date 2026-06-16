@@ -40,6 +40,7 @@ jobs:
         env:
           NODE_ENV: production
           REACT_VERSION: ${{ matrix.react }}
+          INCLUDE_ONE_THEME: 'true'
 
       - name: Bundle dev pages
         run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
