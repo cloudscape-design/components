@@ -116,3 +116,42 @@
     }
   }
 }
+
+// Vertical custom steps: a column-1 "rail" stacks the icon above a connector that grows to fill
+// the full height of the step (header + details), keeping the vertical line continuous and
+// connecting consecutive steps regardless of header height. Placed after `.horizontal` so
+// selectors stay in ascending specificity order.
+.root > .list > .container.custom-vertical {
+  // The rail stretches to the row height (default `align-items: stretch`), which is driven by the
+  // content column, so the connector always spans the full step.
+  > .rail {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > .connector {
+      grid-row: auto;
+      grid-column: auto;
+      flex: 1 1 auto;
+      background-color: awsui.$color-border-divider-default;
+      border-block: 0;
+      border-inline: 0;
+      inline-size: awsui.$border-divider-list-width;
+      block-size: auto;
+      min-block-size: awsui.$space-static-xs;
+      inset-inline-end: 0;
+      margin-block: awsui.$space-static-xxs 0;
+    }
+  }
+
+  > .content {
+    grid-column: 2;
+    // Allow long header/details text to wrap instead of stretching the grid column.
+    min-inline-size: 0;
+  }
+}
+
+.root > .list > .container.custom-vertical:last-of-type > .rail > .connector {
+  display: none;
+}
