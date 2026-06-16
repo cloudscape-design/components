@@ -12,6 +12,21 @@
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always"
       }
+    },
+    {
+      "files": [
+        "./demos/**/*.scss"
+      ],
+      "rules": {
+        "property-disallowed-list": null,
+        "csstools/use-logical": null,
+        "selector-max-type": null,
+        "selector-max-universal": null,
+        "@cloudscape-design/no-implicit-descendant": null,
+        "no-descending-specificity": null,
+        "scss/operator-no-unspaced": null,
+        "@cloudscape-design/license-headers": null
+      }
     }
   ],
   "plugins": [

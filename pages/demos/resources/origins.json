@@ -1,0 +1,8 @@
+[
+  {
+    "name": "AWS-PHOENIX-DEV.s3.amazon.com",
+    "id": "S3-aws-phoenix.example.com",
+    "type": "S3 origin",
+    "accessIdentity": "-"
+  }
+]

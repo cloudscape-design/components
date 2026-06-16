@@ -1,0 +1,57 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+@use '~@cloudscape-design/design-tokens' as cs;
+
+// The header is 40px (12+11 padding + 17 line-height)
+$header-height: 40px;
+
+:global {
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: cs.$space-static-l;
+
+    block-size: calc(100dvh - #{$header-height});
+
+    &:not(.classic) {
+      @media only screen and (min-width: 688px) and (max-width: 1280px) {
+        padding-inline: 60px;
+      }
+    }
+
+    &.classic {
+      inline-size: 100%;
+      block-size: 1000px;
+    }
+  }
+
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: cs.$space-scaled-xs;
+
+    padding-block-start: cs.$space-scaled-xxs;
+    padding-block-end: cs.$space-container-horizontal;
+    padding-inline: cs.$space-container-horizontal;
+  }
+
+  .access-denied-alert-wrapper {
+    display: flex;
+    gap: cs.$space-scaled-s;
+
+    &__box {
+      flex: 1;
+      overflow-x: auto;
+      padding-inline: cs.$space-scaled-m;
+      padding-block: cs.$space-scaled-s;
+      border: 2px solid cs.$color-border-input-default;
+      border-radius: cs.$border-radius-input;
+      background: cs.$color-background-input-default;
+    }
+  }
+
+  .other-content-vertically-align {
+    margin-inline-start: 36px;
+  }
+}

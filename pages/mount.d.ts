@@ -7,3 +7,8 @@ declare module '~mount' {
   export function mount(element: React.ReactElement, container: HTMLElement): void;
   export function unmount(container: Element): void;
 }
+
+declare module '*.jpg' {
+  const src: string;
+  export default src;
+}

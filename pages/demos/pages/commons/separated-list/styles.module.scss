@@ -1,0 +1,27 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+@use '~@cloudscape-design/design-tokens' as cs;
+
+.root {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    border-top: 1px solid cs.$color-border-divider-secondary;
+    padding: 0.8rem 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &:first-child {
+      padding-top: 0;
+      border-top: none;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}
