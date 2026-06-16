@@ -93,9 +93,9 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       availableWidth,
 
       // Get widths from the hidden top navigation
-      fullIdentityWidth: virtualRef.current.querySelector(`.${styles.identity}`)?.getBoundingClientRect().width ?? 0,
-      titleWidth: virtualRef.current.querySelector(`.${styles.title}`)?.getBoundingClientRect().width ?? 0,
-      searchSlotWidth: virtualRef.current.querySelector(`.${styles.search}`)?.getBoundingClientRect().width ?? 0,
+      fullIdentityWidth: getOptionalElementWidth(virtualRef.current, `.${styles.identity}`),
+      titleWidth: getOptionalElementWidth(virtualRef.current, `.${styles.title}`),
+      searchSlotWidth: getOptionalElementWidth(virtualRef.current, `.${styles.search}`),
       searchUtilityWidth: virtualRef.current.querySelector('[data-utility-special="search"]')!.getBoundingClientRect()
         .width,
       utilitiesLeftPadding: parseFloat(
@@ -169,6 +169,16 @@ function getContentBoxWidth(element: Element): number {
   return (
     parseFloat(style.width || '0px') - parseFloat(style.paddingLeft || '0px') - parseFloat(style.paddingRight || '0px')
   );
+}
+
+/**
+ * Measures the width of an optional element. Returns 0 when the element is not rendered
+ * (e.g. there is no `identity`, `title` or `search`). The `number` return type makes the
+ * zero fallback part of the contract, so a missing element can never leak `undefined` into
+ * the responsive-width math (which would turn it into `NaN` and collapse the layout).
+ */
+export function getOptionalElementWidth(parent: Element, selector: string): number {
+  return parent.querySelector(selector)?.getBoundingClientRect().width ?? 0;
 }
 
 /**
