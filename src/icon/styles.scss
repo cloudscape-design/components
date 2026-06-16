@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './mixins' as mixins;
 
 .icon {
@@ -14,6 +15,16 @@
   &-flex-height {
     display: inline-flex;
     align-items: center;
+  }
+
+  // The icon root only becomes focusable when `tooltipText` is provided. Apply focus-visible
+  // styling so keyboard users see a clear indicator when the icon receives focus.
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
   }
 
   /* stylelint-disable-next-line selector-max-type */
