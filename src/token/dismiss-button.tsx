@@ -43,8 +43,7 @@ function DismissButton(
         styles['dismiss-button'],
         legacyTestingStyles['dismiss-button'],
         testUtilStyles['dismiss-button'],
-        inline && styles['dismiss-button-inline'],
-        isOneTheme && styles['one-theme']
+        inline && styles['dismiss-button-inline']
       )}
       aria-disabled={disabled || readOnly ? true : undefined}
       onClick={() => {

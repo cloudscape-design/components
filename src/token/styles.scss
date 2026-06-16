@@ -10,6 +10,7 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
+@use '../internal/styles/utils/theming' as theming;
 
 .root {
   @include styles.styles-reset;
@@ -55,8 +56,10 @@
     align-self: center;
   }
 
-  &:not(&-inline).one-theme {
-    padding-block-start: 1px;
+  &:not(&-inline) {
+    @include theming.one-theme-only {
+      padding-block-start: 1px;
+    }
   }
 }
 
