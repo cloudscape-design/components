@@ -65,11 +65,7 @@ export function InternalStatusIcon({
 }: InternalStatusIconProps) {
   return (
     <span
-      className={clsx(
-        styles.icon,
-        animate && styles['icon-shake'],
-        isThemeActive(Theme.OneTheme) && styles['one-theme']
-      )}
+      className={clsx(styles.icon, animate && styles['icon-shake'])}
       aria-label={iconAriaLabel}
       role={iconAriaLabel ? 'img' : undefined}
     >
@@ -113,7 +109,6 @@ export default function StatusIndicator({
         className={clsx(
           styles.container,
           styles[`display-${__display}`],
-          isThemeActive(Theme.OneTheme) && styles['one-theme'],
           wrapText === false && styles['overflow-ellipsis'],
           __animate && styles['container-fade-in']
         )}

@@ -127,7 +127,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationBlue: { light: '{colorInfo600}', dark: '{colorInfo900}' },
   colorBackgroundNotificationRed: { light: '{colorError600}', dark: '{colorError800}' },
   colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning900}' },
-  colorTextNotificationDefault: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey250}' },
+  colorTextNotificationDefault: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey100}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
