@@ -34,12 +34,8 @@ export default function GridScrollbarOscillationSimplePage() {
           { colspan: { default: 12, m: 6 } }, // short side column
         ]}
       >
-        <div style={{ border: '1px solid #879596', borderRadius: 8, padding: 16, background: '#f1faff' }}>
-          {ARTICLE}
-        </div>
-        <div style={{ border: '1px solid #879596', borderRadius: 8, padding: 16, background: '#f7f7f7' }}>
-          Summary — a short side column
-        </div>
+        <div style={{ border: '1px solid black', padding: 16 }}>{ARTICLE}</div>
+        <div style={{ border: '1px solid black', padding: 16 }}>Summary — a short side column</div>
       </Grid>
     </>
   );
