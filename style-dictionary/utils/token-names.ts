@@ -676,6 +676,7 @@ export type ColorsTokenName =
   | 'colorBorderDividerActive'
   | 'colorBorderDividerDefault'
   | 'colorBorderDividerSecondary'
+  | 'colorBorderDividerTableGroup'
   | 'colorBorderDividerPanelBottom'
   | 'colorBorderDividerPanelSide'
   | 'colorBorderDropdownContainer'
