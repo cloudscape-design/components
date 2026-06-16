@@ -46,10 +46,11 @@ const ButtonDropdown = React.forwardRef(
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('ButtonDropdown', {
-      props: { expandToViewport, expandableGroups, variant },
+      props: { expandToViewport, expandableGroups, variant, iconName },
       metadata: {
         mainAction: !!mainAction,
         checkboxItems: hasCheckboxItems(items),
+        hasCustomIcon: Boolean(iconUrl || iconSvg || iconName),
         hasDisabledReason: Boolean(disabledReason),
         hasDisabledReasons: hasDisabledReasonItems(items),
       },
