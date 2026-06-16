@@ -37,6 +37,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusPopover: '4px',
   borderRadiusTabsFocusRing: '4px',
   borderRadiusToken: '2px',
+  borderRadiusTokenInline: '{borderRadiusToken}',
   borderRadiusTutorialPanelItem: '4px',
   borderRadiusStatusIndicator: '2px',
 };
