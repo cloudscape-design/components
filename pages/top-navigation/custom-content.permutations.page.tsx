@@ -18,12 +18,19 @@ import logo from './logos/simple-logo.svg';
 const navStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
+  flexWrap: 'wrap',
   paddingInline: 16,
-  height: 48,
+  minHeight: 48,
   gap: 16,
 };
 
-const trailingStyle: React.CSSProperties = { marginInlineStart: 'auto', display: 'flex', alignItems: 'center', gap: 8 };
+const trailingStyle: React.CSSProperties = {
+  marginInlineStart: 'auto',
+  display: 'flex',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: 8,
+};
 
 const Brand = ({ title }: { title: string }) => (
   <>
@@ -135,7 +142,16 @@ function useCustomContents(): Array<{ label: string; content: React.ReactNode }>
         <div style={navStyle}>
           <Button variant="icon" iconName="menu" ariaLabel="Open navigation" />
           <Brand title="Cloudscape" />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, justifyContent: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 16,
+              flex: 1,
+              justifyContent: 'center',
+            }}
+          >
             <Link href="#">Get started</Link>
             <Link href="#">Foundation</Link>
             <Link href="#">Components</Link>
@@ -158,7 +174,7 @@ function useCustomContents(): Array<{ label: string; content: React.ReactNode }>
     {
       label: 'Taller top navigation',
       content: (
-        <div style={{ ...navStyle, height: 72 }}>
+        <div style={{ ...navStyle, minHeight: 72 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <img src={logo} alt="My Service" style={{ height: 32 }} />
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>

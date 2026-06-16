@@ -11,9 +11,10 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
 } from '../../../lib/components/test-utils/dom/top-navigation';
-import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
+import TopNavigation from '../../../lib/components/top-navigation';
 import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
 import { useTopNavigation } from '../../../lib/components/top-navigation/use-top-navigation';
+import { renderTopNavigation } from './common';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -38,22 +39,6 @@ const actualUseTopNavigation = jest.requireActual(
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });
-
-const I18N_STRINGS: TopNavigationProps.I18nStrings = {
-  searchIconAriaLabel: 'Search',
-  searchDismissIconAriaLabel: 'Close search',
-  overflowMenuTriggerText: 'More',
-  overflowMenuTitleText: 'All',
-  overflowMenuBackIconAriaLabel: 'Back',
-  overflowMenuDismissIconAriaLabel: 'Close',
-};
-
-type PickPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
-const renderTopNavigation = (props: PickPartial<TopNavigationProps, 'i18nStrings'>) => {
-  const { container } = render(<TopNavigation i18nStrings={I18N_STRINGS} {...props} />);
-  return createWrapper(container).findTopNavigation()!;
-};
 
 describe('TopNavigation Component', () => {
   test('has title', () => {
@@ -470,28 +455,6 @@ describe('visualContext', () => {
       </>
     );
     expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
-  });
-});
-
-describe('custom content - children', () => {
-  test('renders custom content and replaces structured elements when children are provided', () => {
-    const wrapper = renderTopNavigation({
-      identity: { href: '#', title: 'Should Not Render' },
-      search: <input placeholder="Search" />,
-      utilities: [{ type: 'button', text: 'Help' }],
-      children: <div data-testid="custom">Custom Nav</div>,
-    });
-    expect(wrapper.findContent()).not.toBeNull();
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Custom Nav');
-    expect(wrapper.findTitle()).toBeNull();
-    expect(wrapper.findIdentityLink()).toBeNull();
-    expect(wrapper.findSearch()).toBeNull();
-    expect(wrapper.findUtilities()).toHaveLength(0);
-  });
-
-  test('does not render custom content for the structured variant', () => {
-    const wrapper = renderTopNavigation({ identity: { href: '#', title: 'Structured' } });
-    expect(wrapper.findContent()).toBeNull();
   });
 });
 

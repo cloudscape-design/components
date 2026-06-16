@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonTrigger } from '../internal/components/menu-dropdown';
@@ -10,6 +12,7 @@ import VisualContext from '../internal/components/visual-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { TopNavigationProps } from './interfaces';
@@ -32,22 +35,50 @@ export default function InternalTopNavigation({
   visualContext = 'top-navigation',
   ...restProps
 }: InternalTopNavigationProps) {
-  const baseProps = getBaseProps(restProps);
-
   if (children !== undefined) {
     return (
-      <div {...baseProps} ref={__internalRootRef}>
-        {wrapWithVisualContext(
-          <header className={styles['top-navigation']}>
-            <div className={testUtilStyles['custom-content']}>{children}</div>
-          </header>,
-          visualContext
-        )}
-      </div>
+      <CustomContentTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps}>
+        {children}
+      </CustomContentTopNavigation>
     );
   }
 
   return <StructuredTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps} />;
+}
+
+interface CustomContentTopNavigationProps extends InternalTopNavigationProps {
+  visualContext: TopNavigationProps.VisualContext;
+}
+
+function CustomContentTopNavigation({
+  __internalRootRef,
+  children,
+  visualContext,
+  ...restProps
+}: CustomContentTopNavigationProps) {
+  const baseProps = getBaseProps(restProps);
+
+  if (isDevelopment) {
+    const { identity, search, utilities } = restProps;
+    if (identity || search || (utilities && utilities.length > 0)) {
+      warnOnce(
+        'TopNavigation',
+        'You have provided `children` along with structured props (`identity`, `search`, and/or `utilities`). ' +
+          'When `children` is set, the structured props are ignored.'
+      );
+    }
+  }
+
+  return (
+    <div {...baseProps} ref={__internalRootRef}>
+      {wrapWithVisualContext(
+        <header className={styles['top-navigation']}>
+          <div className={testUtilStyles['custom-content']}>{children}</div>
+        </header>,
+        visualContext
+      )}
+    </div>
+  );
 }
 
 interface StructuredTopNavigationProps extends Omit<InternalTopNavigationProps, 'children'> {
@@ -78,7 +109,6 @@ function StructuredTopNavigation({
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
 
-  // const hasCollapsibleUtilities = utilities.some(u => !u.disableUtilityCollapse);
   const menuTriggerVisible = !isSearchExpanded && responsiveState.hideUtilities;
 
   useEffect(() => {
