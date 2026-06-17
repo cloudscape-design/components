@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Fragment, memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
-
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { ChartScale, NumericChartScale } from './scales';
@@ -21,19 +19,28 @@ interface LabelsMeasureProps {
 export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
+// Uses a plain useEffect + native ResizeObserver (not useContainerQuery) to avoid
+// the synchronous useLayoutEffect initial measurement in component-toolkit's
+// useResizeObserver, which triggers nested setState warnings during commit.
 function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth }: LabelsMeasureProps) {
-  const [width, ref] = useContainerQuery<number>((rect, prev) => {
-    if (prev === null) {
-      return rect.contentBoxWidth;
-    }
+  const ref = useRef<HTMLDivElement>(null);
+  const prevWidthRef = useRef<number>(0);
 
-    return Math.abs(prev - rect.contentBoxWidth) >= 1 ? rect.contentBoxWidth : prev;
-  });
-
-  // Tell elements's width to the parent.
   useEffect(() => {
-    autoWidth(width || 0);
-  }, [autoWidth, width]);
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const observer = new ResizeObserver(entries => {
+      const newWidth = entries[0]?.contentBoxSize?.[0]?.inlineSize ?? entries[0]?.contentRect?.width ?? 0;
+      if (Math.abs(newWidth - prevWidthRef.current) >= 1) {
+        prevWidthRef.current = newWidth;
+        autoWidth(newWidth);
+      }
+    });
+    observer.observe(element, { box: 'content-box' });
+    return () => observer.disconnect();
+  }, [autoWidth]);
 
   const labelMapper = (value: ChartDataTypes) => {
     const scaledValue = scale.d3Scale(value as any);
