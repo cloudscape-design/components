@@ -9,3 +9,5 @@ export const PACKAGE_VERSION: string;
 export const GIT_SHA: string;
 /** Indicates that the current theme is always in visual refresh mode. */
 export const ALWAYS_VISUAL_REFRESH: boolean;
+/** Secondary themes compiled into this build (controlled by the THEMES env var). */
+export const INCLUDED_THEMES: string[];
