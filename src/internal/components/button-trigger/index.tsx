@@ -130,7 +130,7 @@ const ButtonTrigger = (
     >
       {children}
       {!hideCaret && (
-        <span className={clsx(styles.arrow, isThemeActive(Theme.OneTheme) && styles['one-theme'])}>
+        <span className={styles.arrow}>
           <InternalIcon
             name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
             size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}

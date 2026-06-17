@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming';
 
 .header {
   position: relative;
@@ -120,7 +121,7 @@
   display: inline-block;
   margin-inline-start: auto;
 
-  &.one-theme {
+  @include theming.one-theme-only {
     inset-inline-end: calc(-1 * #{awsui.$space-xs});
     inline-size: awsui.$space-s;
   }

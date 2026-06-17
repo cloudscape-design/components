@@ -5,6 +5,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/styles/utils/theming';
 
 $item-toggle-column-width: 28px;
 
@@ -49,7 +50,7 @@ $item-toggle-column-width: 28px;
       }
     }
 
-    &.one-theme {
+    @include theming.one-theme-only {
       align-items: center;
       > .expand-toggle-wrapper {
         > .toggle {
