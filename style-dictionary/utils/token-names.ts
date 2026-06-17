@@ -609,6 +609,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSegmentDisabled'
   | 'colorBackgroundSegmentHover'
   | 'colorBackgroundSegmentWrapper'
+  | 'colorBackgroundSideNavigationItemActive'
   | 'colorBackgroundSkeleton'
   | 'colorBackgroundSkeletonWave'
   | 'colorBackgroundSliderRangeDefault'
@@ -827,6 +828,7 @@ export type ColorsTokenName =
   | 'colorTextSegmentActive'
   | 'colorTextSegmentDefault'
   | 'colorTextSegmentHover'
+  | 'colorTextSideNavigationItemActive'
   | 'colorTextSmall'
   | 'colorTextStatusError'
   | 'colorTextStatusInactive'
@@ -1065,7 +1067,8 @@ export type SizesTokenName =
   | 'sizeIconNormal'
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
-  | 'sizeVerticalPanelIconOffset';
+  | 'sizeVerticalPanelIconOffset'
+  | 'sizeSideNavigationItemHeight';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'
@@ -1138,6 +1141,8 @@ export type SpacingTokenName =
   | 'spaceTableHorizontal'
   | 'spaceTileGutter'
   | 'spaceTreeViewIndentation'
+  | 'spaceSideNavigationItemGap'
+  | 'spaceSideNavigationItemCollapsedGap'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'

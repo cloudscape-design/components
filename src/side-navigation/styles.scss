@@ -7,11 +7,40 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+// ==========================================================================
+// Item sizing — single source of truth for navigation density.
+// Adjust $item-height to scale all items uniformly.
+// ==========================================================================
+$item-icon-text-gap: awsui.$space-xs;
+$item-height: awsui.$size-side-navigation-item-height;
+$item-padding-block: calc((#{$item-height} - #{awsui.$line-height-body-m}) / 2);
+$item-margin-block: awsui.$space-side-navigation-item-gap;
+$item-padding-inline: awsui.$space-xs;
+$item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-padding-inline});
+$expandable-icon-negative-margin: awsui.$space-l;
+
+$color-background-active: awsui.$color-background-side-navigation-item-active;
+$color-text-active: awsui.$color-text-side-navigation-item-active;
+
+@mixin item-radius {
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+}
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
 }
 
+.with-toolbar {
+  /* Structural class — parent context for toolbar margin resets. */
+}
+
+// ==========================================================================
+// Header
+// ==========================================================================
 .header {
   @include styles.font-panel-header;
   margin-block: 0;
@@ -26,7 +55,6 @@
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
   min-block-size: awsui.$font-panel-header-line-height;
-
   display: flex;
 
   &--has-logo {
@@ -49,8 +77,12 @@
   }
 }
 
+// ==========================================================================
+// List structure
+// ==========================================================================
 .items-control {
   padding-inline: awsui.$space-l;
+  padding-block-start: $item-padding-block;
 }
 
 .list-container {
@@ -59,10 +91,10 @@
 
 .items-control,
 .list-container {
-  margin-block-start: awsui.$space-panel-content-top;
-  // Toolbar removes margin for whichever one comes first after the header
+  margin-block-start: calc(#{awsui.$space-panel-content-top} - #{$item-padding-block});
+  // Toolbar removes margin and item padding for whatever comes first after the header
   .with-toolbar > .divider-header + & {
-    margin-block-start: 0;
+    margin-block-start: calc(-1 * #{$item-padding-block});
   }
 }
 
@@ -71,15 +103,15 @@
   margin-inline: 0;
   padding-block: 0;
   padding-inline-end: 0;
-  padding-inline-start: awsui.$space-l;
+  padding-inline-start: $item-indent;
 }
 
 .list-variant-root {
   margin-block: 0;
   margin-inline: 0;
   padding-block: 0;
-  padding-inline-start: awsui.$space-panel-nav-left;
-  padding-inline-end: awsui.$space-panel-side-right;
+  padding-inline-start: calc(#{awsui.$space-panel-nav-left} - #{$item-padding-inline});
+  padding-inline-end: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
 
   &--first {
     margin-block-start: 0;
@@ -87,77 +119,149 @@
 }
 
 .list-variant-expandable-link-group {
-  padding-inline-start: awsui.$space-xxxl;
+  padding-inline-start: calc(#{$item-indent} + #{$expandable-icon-negative-margin});
 }
 
-.list-item {
+.list-variant-section {
+  padding-inline-start: calc(#{$expandable-icon-negative-margin} - #{$item-padding-inline});
+}
+
+.list-variant-link-group {
+  padding-inline-start: $item-indent;
+}
+
+.list-variant-section-group {
   margin-block: awsui.$space-scaled-xs;
-  margin-inline: 0;
+  margin-inline: calc(-1 * #{$item-padding-inline});
   padding-block: 0;
   padding-inline: 0;
-  list-style: none;
+}
 
+// ==========================================================================
+// List items
+// ==========================================================================
+.list-item {
+  margin-inline: 0;
+  margin-block: $item-margin-block;
+  padding-block: 0;
+  padding-inline: $item-padding-inline;
+  list-style: none;
+  @include styles.with-motion {
+    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+  }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
   }
 }
 
+// ==========================================================================
+// Sections and expandable link groups (InternalExpandableSection)
+// ==========================================================================
 .section,
 .expandable-link-group {
-  margin-inline-start: calc(-1 * #{awsui.$space-l});
+  margin-inline-start: calc(-1 * #{$expandable-icon-negative-margin});
+
+  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
+  // Hits the two direct <div> children of the ExpandableSection root: the header
+  // (.wrapper-footer / .header-footer) and the content (.content-footer).
+  /* stylelint-disable-next-line selector-max-type */
+  & > div {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  // Hits the header's first child only — the .icon-container inside the
+  // ExpandableSection header — to vertically align the icon with the text.
+  // Must NOT match the content div's first child (our <ul>); turning the <ul>
+  // into a grid container breaks sibling margin collapse on the .list-item children.
+  /* stylelint-disable-next-line selector-max-type */
+  & > div:first-child > :first-child {
+    display: grid;
+    align-items: flex-start;
+    padding-block: $item-padding-block;
+  }
 
   &--no-ident {
     margin-inline-start: 0;
   }
 }
 
+.expandable-link-group > div:first-child {
+  @include item-radius;
+  display: flex;
+  padding-inline: $item-padding-inline;
+  margin-inline: calc(-1 * #{$item-padding-inline});
+  box-sizing: content-box;
+}
+
+.expandable-link-group-active > div:first-child {
+  background-color: $color-background-active;
+}
+
 .section {
   margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
   &.refresh {
-    margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+    margin-block: calc(#{awsui.$space-scaled-xs} - #{awsui.$border-divider-section-width});
   }
   // Remove margin from section if it is the first item in side nav to prevent double margin stacking
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
   }
-  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
-  /* stylelint-disable-next-line selector-max-type */
-  > div {
-    padding-block: 0;
-    padding-inline: 0;
+}
+
+// ==========================================================================
+// Section groups
+// ==========================================================================
+.section-group {
+  @include styles.font-heading-s;
+  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-inline: 0;
+
+  .list-variant-root--first > .list-item:first-child > & {
+    margin-block-start: 0px;
   }
 }
 
-.list-variant-section-group {
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
-}
-
-.section-group {
-  @include styles.font-heading-m;
-  margin-block: 0;
-  margin-inline: 0;
-}
-
 .section-group-title {
-  /* used in test-utils */
+  display: flex;
+  align-items: center;
+  margin-block: 0;
+  padding-block: awsui.$space-scaled-xxs;
 }
 
+.section-header-text {
+  display: inline-flex;
+}
+
+// ==========================================================================
+// Links — all links use $item-height for consistent row sizing and collapse icon size.
+// ==========================================================================
 .link {
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
+  display: flex;
+  padding-block: $item-padding-block;
+  min-inline-size: $item-height;
+  padding-inline: $item-padding-inline;
+  margin-inline: calc(-1 * #{$item-padding-inline});
+  align-items: flex-start;
+  @include item-radius;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-}
+  @include styles.with-motion {
+    transition:
+      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
+      color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
+  }
 
-.link-active {
-  font-weight: awsui.$font-wayfinding-link-active-weight;
-  @include styles.font-smoothing;
-  color: awsui.$color-text-accent;
+  &--active {
+    font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
+    color: $color-text-active;
+    background-color: $color-background-active;
+  }
 }
 
 .header-link,
@@ -165,7 +269,7 @@
   text-decoration: none;
 
   &:hover {
-    color: awsui.$color-text-accent;
+    color: $color-text-active;
   }
 
   &:focus {
@@ -182,8 +286,17 @@
   }
 }
 
+// ==========================================================================
+// Misc
+// ==========================================================================
 .info {
   margin-inline-start: awsui.$space-xs;
+}
+
+.item-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-inline-end: $item-icon-text-gap;
 }
 
 .external-icon {
@@ -193,18 +306,15 @@
 .divider {
   border-block: none;
   border-inline: none;
-}
-
-.divider-default {
-  margin-block: awsui.$space-scaled-2x-xl;
-  margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-}
-
-.divider-header {
-  margin-block: 0;
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
-  .with-toolbar > & {
-    border-color: transparent;
+  &-default {
+    margin-block: awsui.$space-scaled-l;
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  }
+  &-header {
+    margin-block: 0;
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    .with-toolbar > & {
+      border-color: transparent;
+    }
   }
 }

@@ -298,7 +298,7 @@ function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
     <>
       <a
         href={definition.href}
-        className={clsx(styles.link, { [styles['link-active']]: isActive })}
+        className={clsx(styles.link, { [styles['link--active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-current={definition.href === activeHref ? 'page' : undefined}
