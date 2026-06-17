@@ -22,7 +22,13 @@ export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
 function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth }: LabelsMeasureProps) {
-  const [width, ref] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const [width, ref] = useContainerQuery<number>((rect, prev) => {
+    if (prev === null) {
+      return rect.contentBoxWidth;
+    }
+
+    return Math.abs(prev - rect.contentBoxWidth) >= 1 ? rect.contentBoxWidth : prev;
+  });
 
   // Tell elements's width to the parent.
   useEffect(() => {
