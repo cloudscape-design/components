@@ -676,6 +676,7 @@ export type ColorsTokenName =
   | 'colorBorderDividerActive'
   | 'colorBorderDividerDefault'
   | 'colorBorderDividerSecondary'
+  | 'colorBorderDividerTableGroup'
   | 'colorBorderDividerPanelBottom'
   | 'colorBorderDividerPanelSide'
   | 'colorBorderDropdownContainer'
@@ -1011,7 +1012,8 @@ export type BordersTokenName =
   | 'borderWidthActionCardHover'
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
-  | 'borderWidthBadge';
+  | 'borderWidthBadge'
+  | 'borderRadiusTokenInline';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

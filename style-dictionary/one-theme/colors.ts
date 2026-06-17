@@ -24,6 +24,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
+  colorBorderDividerTableGroup: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
   colorBackgroundModalOverlay: '{colorGreyOpaque70}',

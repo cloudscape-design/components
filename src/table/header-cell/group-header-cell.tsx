@@ -120,10 +120,11 @@ export function TableGroupHeaderCell({
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
           isLast={isLast}
+          isGrouped={true}
           dividerPosition={columnGroupId ? 'full' : 'bottom'}
         />
       ) : (
-        <Divider position={columnGroupId ? 'full' : 'bottom'} />
+        <Divider position={columnGroupId ? 'full' : 'bottom'} isGrouped={true} />
       )}
     </TableThElement>
   );
