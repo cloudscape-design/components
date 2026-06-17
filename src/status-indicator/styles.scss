@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
 
 @use './motion';
 
@@ -79,13 +80,21 @@ $_background-overrides: (
   border-start-end-radius: awsui.$border-radius-status-indicator;
   border-end-start-radius: awsui.$border-radius-status-indicator;
   border-end-end-radius: awsui.$border-radius-status-indicator;
+
+  .root.status-loading > & {
+    @include theming.one-theme-only {
+      background: transparent;
+      align-items: center;
+      color: awsui.$color-text-body-secondary;
+    }
+  }
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;
 
     > .icon {
       white-space: nowrap;
-      &.one-theme {
+      @include theming.one-theme-only {
         vertical-align: middle;
       }
     }
@@ -95,7 +104,7 @@ $_background-overrides: (
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
-    &.one-theme {
+    @include theming.one-theme-only {
       display: inline-flex;
       align-items: flex-start;
     }
@@ -103,7 +112,7 @@ $_background-overrides: (
     > .icon {
       padding-inline-end: awsui.$space-xxs;
 
-      &.one-theme {
+      @include theming.one-theme-only {
         display: inline-flex;
         align-items: center;
         margin-block-start: awsui.$space-xxxs;
@@ -119,7 +128,7 @@ $_background-overrides: (
   white-space: nowrap;
   vertical-align: text-bottom;
 
-  &.one-theme {
+  @include theming.one-theme-only {
     text-overflow: unset;
 
     > span:last-child {

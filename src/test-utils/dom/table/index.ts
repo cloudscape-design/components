@@ -102,7 +102,7 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findRows(): Array<ElementWrapper> {
-    return this.findNativeTable().findAllByClassName(styles.row);
+    return this.findNativeTable().findAll(`tr.${styles.row}:not([aria-hidden])`);
   }
 
   findSelectedRows(): Array<ElementWrapper> {

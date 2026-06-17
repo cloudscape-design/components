@@ -216,6 +216,7 @@ const Thead = React.forwardRef(
                 onFocusMove={onFocusMove}
                 singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
                 rowSpan={columnGroupsLayout.rows.length}
+                isGrouped={true}
               />
             ) : null}
 
@@ -331,6 +332,7 @@ const Thead = React.forwardRef(
                         resizerTooltipText={resizerTooltipText}
                         isLast={rightColIndex + rightColspan === totalColumns}
                         stickyColumnId={!isSplitFirst ? childIds[childIds.length - 1] : undefined}
+                        stickyBoundaryColumnId={!isSplitFirst ? rightChildIds[0] : undefined}
                       />
                     </React.Fragment>
                   );

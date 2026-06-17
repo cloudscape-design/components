@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../button/internal';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -109,6 +110,7 @@ function ActiveDrawer() {
       className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
+        [styles['one-theme']]: isThemeActive(Theme.OneTheme),
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
       })}
@@ -233,6 +235,7 @@ function DesktopTriggers() {
       className={clsx(styles['drawers-desktop-triggers-container'], {
         [styles['has-multiple-triggers']]: hasMultipleTriggers,
         [styles['has-open-drawer']]: hasOpenDrawer,
+        [styles['one-theme']]: isThemeActive(Theme.OneTheme),
       })}
       aria-label={drawersAriaLabel}
       ref={triggersContainerRef}

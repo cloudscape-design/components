@@ -544,6 +544,7 @@ export type ColorsTokenName =
   | 'colorBackgroundButtonNormalHover'
   | 'colorBackgroundToggleButtonNormalPressed'
   | 'colorBackgroundToggleButtonNormalDefault'
+  | 'colorBackgroundToggleButtonNormalHover'
   | 'colorBackgroundButtonPrimaryActive'
   | 'colorBackgroundButtonPrimaryDefault'
   | 'colorBackgroundButtonPrimaryDisabled'
@@ -645,6 +646,8 @@ export type ColorsTokenName =
   | 'colorBorderButtonNormalActive'
   | 'colorBorderButtonNormalDefault'
   | 'colorBorderToggleButtonNormalPressed'
+  | 'colorBorderToggleButtonNormalDefault'
+  | 'colorBorderToggleButtonNormalHover'
   | 'colorBorderButtonNormalDisabled'
   | 'colorTextButtonNormalDisabled'
   | 'colorTextButtonIconDisabled'
@@ -673,6 +676,7 @@ export type ColorsTokenName =
   | 'colorBorderDividerActive'
   | 'colorBorderDividerDefault'
   | 'colorBorderDividerSecondary'
+  | 'colorBorderDividerTableGroup'
   | 'colorBorderDividerPanelBottom'
   | 'colorBorderDividerPanelSide'
   | 'colorBorderDropdownContainer'
@@ -698,6 +702,7 @@ export type ColorsTokenName =
   | 'colorBorderSegmentDefault'
   | 'colorBorderSegmentDisabled'
   | 'colorBorderSegmentHover'
+  | 'colorBorderSegmentWrapper'
   | 'colorBorderStatusError'
   | 'colorBorderStatusInfo'
   | 'colorBorderStatusSuccess'
@@ -715,6 +720,7 @@ export type ColorsTokenName =
   | 'colorShadowDefault'
   | 'colorShadowMedium'
   | 'colorShadowSide'
+  | 'colorShadowToggleHandle'
   | 'colorStrokeChartLine'
   | 'colorStrokeCodeEditorGutterActiveLineDefault'
   | 'colorStrokeCodeEditorGutterActiveLineHover'
@@ -864,7 +870,8 @@ export type ColorsTokenName =
   | 'colorTextBadgeGreen'
   | 'colorTextBadgeBlue'
   | 'colorTextBadgeRed'
-  | 'colorBorderBadge';
+  | 'colorBorderBadge'
+  | 'colorBackgroundCodeView';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
@@ -1006,7 +1013,8 @@ export type BordersTokenName =
   | 'borderWidthActionCardHover'
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
-  | 'borderWidthBadge';
+  | 'borderWidthBadge'
+  | 'borderRadiusTokenInline';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

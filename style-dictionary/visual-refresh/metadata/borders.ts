@@ -109,6 +109,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusTokenInline: {
+    description: 'The border radius of inline tokens. For example: multiselect component.',
+    public: true,
+    themeable: true,
+  },
   borderRadiusChatBubble: {
     description: 'The border radius of chat bubbles.',
     public: true,

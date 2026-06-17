@@ -12,6 +12,7 @@ import styles from '../../../lib/components/header/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+  useOneTheme: jest.fn().mockReturnValue(false),
 }));
 
 function renderHeader(jsx: React.ReactElement) {

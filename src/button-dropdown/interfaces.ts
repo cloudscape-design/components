@@ -132,6 +132,28 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    */
   variant?: ButtonDropdownProps.Variant;
   /**
+   * Specifies the name of the icon used in the button dropdown trigger, used with the [icon component](/components/icon/).
+   * Defaults to `ellipsis`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconName?: IconProps.Name;
+  /**
+   * Specifies alternate text for a custom icon, for use with `iconUrl`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconAlt?: string;
+  /**
+   * Specifies the URL of a custom icon. Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconUrl?: string;
+  /**
+   * Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconSvg?: React.ReactNode;
+  /**
    * Controls expandability of the item groups.
    */
   expandableGroups?: boolean;

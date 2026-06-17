@@ -8,9 +8,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { useStickyCellStyles } from '../sticky-columns';
 import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from '../use-column-widths';
-import { getStickyClassNames } from '../utils';
 import { BaseHeaderCellProps } from './common-props';
 import { TableThElement } from './th-element';
 
@@ -74,18 +72,6 @@ export function TableGroupHeaderCell({
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
-  // Subscribe to the boundary column's sticky state to inherit shadow/clip-path classes.
-  // The offset/position comes from stickyColumnId (first child); this only adds boundary classes.
-  const boundaryStyles = useStickyCellStyles({
-    stickyColumns: stickyState,
-    columnId: stickyBoundaryColumnId ?? stickyColumnId ?? groupId,
-    getClassName: props => getStickyClassNames(styles, props),
-  });
-
-  // boundaryStyles.className is populated by scroll/intersection observers in the browser.
-  // In JSDOM these observers don't fire, so this branch is only exercised in integration tests.
-  const boundaryClassName = stickyBoundaryColumnId && boundaryStyles.className ? boundaryStyles.className : undefined;
-
   return (
     <TableThElement
       resizableStyle={resizableStyle}
@@ -97,6 +83,7 @@ export function TableGroupHeaderCell({
       stripedRows={stripedRows}
       colIndex={colIndex}
       columnId={stickyColumnId ?? groupId}
+      stickyBoundaryColumnId={stickyBoundaryColumnId}
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
@@ -106,8 +93,6 @@ export function TableGroupHeaderCell({
       scope="colgroup"
       isLast={isLast}
       columnGroupId={columnGroupId}
-      className={boundaryClassName}
-      boundaryRef={stickyBoundaryColumnId ? boundaryStyles.ref : undefined}
     >
       <div
         ref={clickableHeaderRef}
@@ -135,10 +120,11 @@ export function TableGroupHeaderCell({
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
           isLast={isLast}
+          isGrouped={true}
           dividerPosition={columnGroupId ? 'full' : 'bottom'}
         />
       ) : (
-        <Divider position={columnGroupId ? 'full' : 'bottom'} />
+        <Divider position={columnGroupId ? 'full' : 'bottom'} isGrouped={true} />
       )}
     </TableThElement>
   );

@@ -148,6 +148,21 @@ test('renders children', () => {
   expect(dragHandle).toBeInTheDocument();
 });
 
+test('associates the portaled UAP overlay with the drag handle via data-awsui-referrer-id', () => {
+  // This association lets outside-click / focus detection (nodeBelongs) treat the portaled UAP
+  // buttons as belonging to wherever the drag handle is mounted (e.g. inside a dropdown).
+  const { dragHandle } = renderDragHandle({ directions: { 'block-start': 'active' } });
+
+  const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
+  const referrerId = portalOverlay.dataset.awsuiReferrerId;
+  expect(referrerId).toBeTruthy();
+
+  const referrer = document.getElementById(referrerId!);
+  expect(referrer).toBeTruthy();
+  // The referenced element lives in the regular DOM and contains the drag handle content.
+  expect(referrer!.contains(dragHandle)).toBe(true);
+});
+
 test('shows tooltip on pointerin', () => {
   const { dragHandle, getTooltip } = renderDragHandle({
     directions: { 'block-start': 'active' },

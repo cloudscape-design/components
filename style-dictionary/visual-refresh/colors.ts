@@ -25,6 +25,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonNormalHover: { light: '{colorPrimary50}', dark: '{colorNeutral800}' },
   colorBackgroundToggleButtonNormalPressed: { light: '{colorPrimary100}', dark: '{colorNeutral700}' },
   colorBackgroundToggleButtonNormalDefault: '{colorBackgroundButtonNormalDefault}',
+  colorBackgroundToggleButtonNormalHover: '{colorBackgroundButtonNormalHover}',
   colorBackgroundButtonPrimaryActive: { light: '{colorPrimary900}', dark: '{colorPrimary400}' },
   colorBackgroundButtonPrimaryDefault: '{colorBorderButtonNormalDefault}',
   colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
@@ -133,6 +134,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorBorderButtonNormalDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorBorderToggleButtonNormalDefault: '{colorBorderButtonNormalDefault}',
+  colorBorderToggleButtonNormalHover: '{colorBorderButtonNormalHover}',
   colorBorderButtonNormalDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorTextButtonNormalDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral500}' },
   colorBorderButtonNormalHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
@@ -164,6 +167,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerPanelBottom: '{colorBorderDividerDefault}',
   colorBorderDividerPanelSide: '{colorBorderDividerDefault}',
   colorBorderDividerSecondary: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
+  colorBorderDividerTableGroup: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderDropdownContainer: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorBorderDropdownGroup: '{colorBorderDropdownItemDefault}',
   colorBorderDropdownItemDefault: '{colorBorderDividerDefault}',
@@ -187,6 +191,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderSegmentDefault: { light: '{colorNeutral650}', dark: '{colorNeutral300}' },
   colorBorderSegmentDisabled: '{colorBorderSegmentDefault}',
   colorBorderSegmentHover: '{colorBorderSegmentDefault}',
+  colorBorderSegmentWrapper: '{colorBorderInputDefault}',
   colorBorderStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
@@ -204,6 +209,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorShadowDefault: '{colorGreyTransparentHeavy}',
   colorShadowMedium: '{colorGreyTransparent}',
   colorShadowSide: '{colorGreyTransparentLight}',
+  colorShadowToggleHandle: { light: 'rgba(0, 0, 0, 0.25)', dark: 'rgba(0, 0, 0, 0.25)' },
   colorStrokeChartLine: '{colorNeutral500}',
   colorStrokeCodeEditorGutterActiveLineDefault: { light: '{colorNeutral300}', dark: '{colorNeutral800}' },
   colorStrokeCodeEditorGutterActiveLineHover: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
@@ -348,6 +354,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeGreen: '{colorTextNotificationDefault}',
   colorTextBadgeBlue: '{colorTextNotificationDefault}',
   colorTextBadgeRed: '{colorTextNotificationDefault}',
+  colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

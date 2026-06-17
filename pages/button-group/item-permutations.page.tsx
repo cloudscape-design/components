@@ -124,6 +124,28 @@ const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdow
       ],
     ],
   },
+  // Custom icon
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    iconName: [undefined, 'settings'],
+    iconSvg: [
+      undefined,
+      <svg key="custom-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" strokeWidth="2" />
+      </svg>,
+    ],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
+        },
+      ],
+    ],
+  },
 ]);
 
 export default function () {

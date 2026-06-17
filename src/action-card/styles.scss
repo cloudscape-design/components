@@ -7,6 +7,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use './mixins' as mixins;
@@ -17,6 +18,9 @@
     @include styles.font-heading-s;
     &.disabled {
       color: map.get(constants.$states, 'disabled', 'text-color');
+    }
+    @include theming.one-theme-only {
+      color: awsui.$color-text-heading-default;
     }
   }
   &:not(:has(+ .body)) {
