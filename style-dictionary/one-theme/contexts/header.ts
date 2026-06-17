@@ -8,6 +8,7 @@ import { tokens as parentColorTokens } from '../colors.js';
 import { tokens as parentShadowsTokens } from '../shadows.js';
 
 // The header context always renders on a dark background regardless of color mode.
+// All values are mode-invariant (single string = same in light and dark).
 
 const colorTokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutMain: '{colorNeutralGrey800}',
