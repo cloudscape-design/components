@@ -179,6 +179,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+    public: true,
+    themeable: true,
   },
   colorBackgroundLayoutToolbar: {
     description:
@@ -278,6 +280,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundSegmentWrapper: {
     description: 'The background color of segmented control wrapper.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSideNavigationItemActive: {
+    description: 'The background color of an active (highlighted) side navigation item.',
     public: true,
     themeable: true,
   },
@@ -985,6 +992,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextSegmentHover: {
     description: 'The text color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActive: {
+    description: 'The text color of an active (highlighted) side navigation item.',
     public: true,
     themeable: true,
   },

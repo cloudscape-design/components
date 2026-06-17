@@ -137,7 +137,11 @@ export function NavigationItemsList({
       case 'link': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], item.info && styles['list-item--info'])}
+            >
               <Link
                 definition={item}
                 activeHref={activeHref}
@@ -186,7 +190,11 @@ export function NavigationItemsList({
       case 'link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], item.info && styles['list-item--info'])}
+            >
               <LinkGroup
                 definition={item}
                 activeHref={activeHref}
@@ -298,7 +306,7 @@ function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
     <>
       <a
         href={definition.href}
-        className={clsx(styles.link, { [styles['link-active']]: isActive })}
+        className={clsx(styles.link, { [styles['link--active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-current={definition.href === activeHref ? 'page' : undefined}

@@ -166,6 +166,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextHover: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
   colorDropzoneBorderDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+
+  // ── Side Nav ─────────────────────────────────────────────────────────────────
+  colorTextSideNavigationItemActive: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorBackgroundSideNavigationItemActive: { light: '{colorPrimary50}', dark: 'rgba(0, 153, 255, 0.13)' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
