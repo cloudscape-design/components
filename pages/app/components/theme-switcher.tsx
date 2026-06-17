@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH, INCLUDE_ONE_THEME } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH, INCLUDED_THEMES } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
@@ -39,7 +39,7 @@ export default function ThemeSwitcher() {
         <input {...vrSwitchProps} />
         Visual refresh
       </label>
-      {INCLUDE_ONE_THEME && (
+      {INCLUDED_THEMES.includes('one-theme') && (
         <label>
           <input
             id="one-theme-toggle"
