@@ -16,7 +16,7 @@ $item-height: awsui.$size-side-navigation-item-height;
 $item-padding-block: calc((#{$item-height} - #{awsui.$line-height-body-m}) / 2);
 $item-margin-block: awsui.$space-side-navigation-item-gap;
 $item-padding-inline: awsui.$space-xs;
-$item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-padding-inline});
+$item-indent: calc(12px + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: awsui.$space-l;
 
 $color-background-active: awsui.$color-background-side-navigation-item-active;
@@ -222,7 +222,7 @@ $color-text-active: awsui.$color-text-side-navigation-item-active;
 // ==========================================================================
 .section-group {
   @include styles.font-heading-s;
-  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-block: calc(#{awsui.$space-scaled-xs} - #{awsui.$border-divider-section-width});
   margin-inline: 0;
 
   .list-variant-root--first > .list-item:first-child > & {
