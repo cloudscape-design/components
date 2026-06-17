@@ -354,6 +354,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeGreen: '{colorTextNotificationDefault}',
   colorTextBadgeBlue: '{colorTextNotificationDefault}',
   colorTextBadgeRed: '{colorTextNotificationDefault}',
+  colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

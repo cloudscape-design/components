@@ -354,6 +354,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -3796,6 +3803,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -7242,6 +7256,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -10684,6 +10705,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -14130,6 +14158,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -17574,6 +17609,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -21016,6 +21058,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "transparent",
         "light": "transparent",
+      },
+    },
+    "color-background-code-view": {
+      "$description": "The background color of the code view component.",
+      "$value": {
+        "dark": "#282c34",
+        "light": "#f8f8f8",
       },
     },
     "color-background-container-content": {
@@ -24467,6 +24516,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -27909,6 +27965,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
           },
         },
         "color-background-container-content": {
@@ -31355,6 +31418,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -34797,6 +34867,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -38243,6 +38320,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -41685,6 +41769,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -45131,6 +45222,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -48575,6 +48673,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -52017,6 +52122,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "transparent",
         "light": "transparent",
+      },
+    },
+    "color-background-code-view": {
+      "$description": "The background color of the code view component.",
+      "$value": {
+        "dark": "#282c34",
+        "light": "#f8f8f8",
       },
     },
     "color-background-container-content": {

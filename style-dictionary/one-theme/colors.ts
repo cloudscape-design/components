@@ -23,7 +23,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
+  colorBorderDividerSecondary: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
   colorBorderDividerTableGroup: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
@@ -31,7 +31,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
-  colorBorderButtonNormalHover: { light: '{colorNeutralGrey550}', dark: '{colorNeutralGrey500}' },
+  colorBorderButtonNormalHover: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorBorderButtonNormalActive: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey500}' },
   colorBorderButtonNormalDisabled: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey700}' },
   colorBackgroundButtonNormalDefault: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey850}' },
@@ -64,7 +64,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonPrimaryDisabled: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
-  colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey1000}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextToggleButtonNormalPressed: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
 
@@ -93,10 +93,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Links ─────────────────────────────────────────────────────────────────
   colorTextLinkDefault: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
-  colorTextLinkHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey200}' },
+  colorTextLinkHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkSecondaryDefault: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
+  colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
 
@@ -127,7 +128,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationBlue: { light: '{colorInfo600}', dark: '{colorInfo900}' },
   colorBackgroundNotificationRed: { light: '{colorError600}', dark: '{colorError800}' },
   colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning900}' },
-  colorTextNotificationDefault: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey250}' },
+  colorTextNotificationDefault: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey100}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
@@ -166,6 +167,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextHover: { light: '{colorNeutral650}', dark: '{colorNeutral350}' },
   colorDropzoneBorderDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+
+  // ── Code view ─────────────────────────────────────────────────────────────
+  colorBackgroundCodeView: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey700}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(

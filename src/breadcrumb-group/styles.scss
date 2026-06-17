@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/utils/theming' as theming;
 
 .breadcrumb-group {
   @include styles.styles-reset;
@@ -62,6 +63,12 @@
         margin-block: 0;
         margin-inline: styles.$base-size;
         color: awsui.$color-text-breadcrumb-icon;
+      }
+
+      @include theming.one-theme-only {
+        > .icon {
+          margin-inline: awsui.$space-xxs;
+        }
       }
     }
   }
