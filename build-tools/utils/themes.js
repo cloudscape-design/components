@@ -3,28 +3,36 @@
 const path = require('path');
 const workspace = require('./workspace');
 
-// Registry of secondary themes that can be layered on top of the primary theme as opt-in overrides.
-// To add a new theme, register its id and style-dictionary entry path here, then include it via the
-// THEMES env var.
-const SECONDARY_THEMES = {
+// Secondary themes are layered on top of the primary theme as opt-in overrides. Each entry maps a
+// theme id to its style-dictionary entry point. To add a new theme, register it here, then include
+// it via the THEMES env var.
+const SECONDARY_THEME_PATHS = {
   'visual-refresh': './visual-refresh-secondary/index.js',
   'one-theme': './one-theme/index.js',
 };
 
-// THEMES is a comma-separated list of secondary themes to compile into the build, e.g.
-// `THEMES=visual-refresh,one-theme`. Defaults to `visual-refresh`.
-const includedThemes = (process.env.THEMES ?? 'visual-refresh')
-  .split(',')
-  .map(name => name.trim())
-  .filter(Boolean);
+// Secondary themes included when THEMES is not set. Keeps visual refresh in, one-theme opt-in.
+const DEFAULT_THEMES = 'visual-refresh';
 
-includedThemes.forEach(name => {
-  if (!SECONDARY_THEMES[name]) {
-    throw new Error(
-      `Unknown theme "${name}" in THEMES env var. Available themes: ${Object.keys(SECONDARY_THEMES).join(', ')}.`
-    );
+// Resolves which secondary themes to compile from the comma-separated THEMES env var, e.g.
+// `THEMES=visual-refresh,one-theme`. Throws if a requested theme is not registered above.
+function resolveIncludedThemes() {
+  const themeIds = (process.env.THEMES ?? DEFAULT_THEMES)
+    .split(',')
+    .map(id => id.trim())
+    .filter(Boolean);
+
+  for (const id of themeIds) {
+    if (!SECONDARY_THEME_PATHS[id]) {
+      const availableThemes = Object.keys(SECONDARY_THEME_PATHS).join(', ');
+      throw new Error(`Unknown theme "${id}" in THEMES env var. Available themes: ${availableThemes}.`);
+    }
   }
-});
+
+  return themeIds;
+}
+
+const includedThemes = resolveIncludedThemes();
 
 const themes = [
   // This is the default Cloudscape theme, which is best used with Visual Refresh enabled (by default)
@@ -37,7 +45,7 @@ const themes = [
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic/index.js',
     includedThemes,
-    secondaryThemePaths: includedThemes.map(name => SECONDARY_THEMES[name]),
+    secondaryThemePaths: includedThemes.map(id => SECONDARY_THEME_PATHS[id]),
   },
 ];
 
