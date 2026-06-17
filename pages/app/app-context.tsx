@@ -12,7 +12,7 @@ interface AppUrlParams {
   density: Density;
   direction: 'ltr' | 'rtl';
   visualRefresh: boolean;
-  oneTheme: boolean;
+  theme?: string;
   motionDisabled: boolean;
   appLayoutWidget: boolean;
   mode?: Mode;
@@ -33,7 +33,6 @@ const appContextDefaults: AppContextType = {
     density: Density.Comfortable,
     direction: 'ltr',
     visualRefresh: THEME === 'default',
-    oneTheme: false,
     motionDisabled: false,
     appLayoutWidget: false,
   },

@@ -4,52 +4,47 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH, INCLUDED_THEMES } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
+import { CLASSIC_THEME_ID, includedThemes, resolveActiveTheme } from '../theme-config';
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
-    setUrlParams({
-      visualRefresh: theme === 'visualRefresh',
-      oneTheme: theme === 'oneTheme',
-    });
+  const activeTheme = resolveActiveTheme(urlParams.theme, Boolean(urlParams.visualRefresh));
+
+  function activateTheme(themeId: string) {
+    setUrlParams({ theme: themeId });
     window.location.reload();
   }
 
-  const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
-    id: 'visual-refresh-toggle',
-    type: 'checkbox',
-  };
-
-  if (ALWAYS_VISUAL_REFRESH) {
-    vrSwitchProps.checked = true;
-    vrSwitchProps.readOnly = true;
-  } else {
-    vrSwitchProps.checked = urlParams.visualRefresh && !urlParams.oneTheme;
-    vrSwitchProps.onChange = event => activateTheme(event.target.checked ? 'visualRefresh' : 'classic');
-  }
+  // Built from the themes compiled into this build. Classic is the baseline, except in
+  // always-visual-refresh builds where visual refresh is forced on and classic isn't selectable.
+  const themeOptions = [
+    ...(ALWAYS_VISUAL_REFRESH ? [] : [{ id: CLASSIC_THEME_ID, label: 'Classic' }]),
+    ...includedThemes,
+  ];
+  const selectedThemeId = activeTheme?.id ?? (ALWAYS_VISUAL_REFRESH ? 'visual-refresh' : CLASSIC_THEME_ID);
 
   return (
     <SpaceBetween direction="horizontal" size="xs">
       <label>
-        <input {...vrSwitchProps} />
-        Visual refresh
+        Theme{' '}
+        <select
+          id="theme-selector"
+          value={selectedThemeId}
+          disabled={ALWAYS_VISUAL_REFRESH}
+          onChange={event => activateTheme(event.target.value)}
+        >
+          {themeOptions.map(theme => (
+            <option key={theme.id} value={theme.id}>
+              {theme.label}
+            </option>
+          ))}
+        </select>
       </label>
-      {INCLUDED_THEMES.includes('one-theme') && (
-        <label>
-          <input
-            id="one-theme-toggle"
-            type="checkbox"
-            checked={urlParams.oneTheme}
-            onChange={event => activateTheme(event.target.checked ? 'oneTheme' : 'classic')}
-          />
-          One theme
-        </label>
-      )}
       <label>
         <input
           id="mode-toggle"
