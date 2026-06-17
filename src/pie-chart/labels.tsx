@@ -176,7 +176,11 @@ function useElementBoundaries(ref: React.RefObject<HTMLElement>): { left: number
   const [state, setState] = useState({ left: 0, right: 0 });
   useResizeObserver(ref, entry => {
     const elementRect = entry.target.getBoundingClientRect();
-    setState({ left: elementRect.left, right: elementRect.right });
+    setState(prev =>
+      prev.left === elementRect.left && prev.right === elementRect.right
+        ? prev
+        : { left: elementRect.left, right: elementRect.right }
+    );
   });
   return state;
 }
