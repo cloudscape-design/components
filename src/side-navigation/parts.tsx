@@ -137,7 +137,11 @@ export function NavigationItemsList({
       case 'link': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], item.info && styles['list-item--info'])}
+            >
               <Link
                 definition={item}
                 activeHref={activeHref}
@@ -186,7 +190,11 @@ export function NavigationItemsList({
       case 'link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], item.info && styles['list-item--info'])}
+            >
               <LinkGroup
                 definition={item}
                 activeHref={activeHref}

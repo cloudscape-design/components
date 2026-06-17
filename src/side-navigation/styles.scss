@@ -104,6 +104,7 @@ $color-text-active: awsui.$color-text-side-navigation-item-active;
   padding-block: 0;
   padding-inline-end: 0;
   padding-inline-start: $item-indent;
+  inline-size: 100%;
 }
 
 .list-variant-root {
@@ -152,6 +153,12 @@ $color-text-active: awsui.$color-text-side-navigation-item-active;
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
+  }
+
+  &--info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
   }
 }
 
