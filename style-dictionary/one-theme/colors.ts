@@ -23,7 +23,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorBorderDividerInteractiveDefault: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
-  colorBorderDividerSecondary: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey800}' },
+  colorBorderDividerSecondary: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
   colorBorderDividerTableGroup: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
   colorBorderLayout: { light: '{colorNeutralGrey300}', dark: '{colorNeutralGrey750}' },
   colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorBlack}' },
@@ -31,7 +31,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
-  colorBorderButtonNormalHover: { light: '{colorNeutralGrey550}', dark: '{colorNeutralGrey500}' },
+  colorBorderButtonNormalHover: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorBorderButtonNormalActive: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey500}' },
   colorBorderButtonNormalDisabled: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey700}' },
   colorBackgroundButtonNormalDefault: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey850}' },
@@ -64,7 +64,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonPrimaryDisabled: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
-  colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutralGrey1000}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextToggleButtonNormalPressed: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
 
