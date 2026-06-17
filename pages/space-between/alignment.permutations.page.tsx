@@ -49,7 +49,7 @@ const permutations = createPermutations<Pick<SpaceBetweenProps, 'direction' | 'a
   {
     children: [ExampleChildren, NestedExample],
     direction: ['vertical', 'horizontal'],
-    alignItems: [undefined, 'center', 'start', 'end'],
+    alignItems: [undefined, 'center', 'start', 'end', 'stretch'],
   },
 ]);
 
