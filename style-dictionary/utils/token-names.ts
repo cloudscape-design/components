@@ -870,7 +870,8 @@ export type ColorsTokenName =
   | 'colorTextBadgeGreen'
   | 'colorTextBadgeBlue'
   | 'colorTextBadgeRed'
-  | 'colorBorderBadge';
+  | 'colorBorderBadge'
+  | 'colorBackgroundCodeView';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

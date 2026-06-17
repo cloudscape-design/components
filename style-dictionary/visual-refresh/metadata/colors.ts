@@ -1200,6 +1200,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundCodeView: {
+    description: 'The background color of the code view component.',
+    themeable: true,
+    public: true,
+  },
 };
 
 export default metadata;
