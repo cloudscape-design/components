@@ -118,7 +118,7 @@ const ExpandableCategoryElement = ({
             </span>
           )}
           <span>{item.text}</span>
-          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'], isOneTheme && styles['one-theme'])}>
+          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
             <InternalIcon
               name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
               size={isOneTheme ? 'x-small' : 'normal'}

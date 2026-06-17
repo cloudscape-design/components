@@ -3,8 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
-
 import { InternalButton } from '../../button/internal';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -103,7 +101,6 @@ export default function Tools({ children }: ToolsProps) {
                   [styles.animating]: state === 'entering',
                   [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
                   [styles['is-tools-open']]: isToolsOpen,
-                  [styles['one-theme']]: isThemeActive(Theme.OneTheme),
                   [testutilStyles['drawer-closed']]: !isToolsOpen,
                 },
                 testutilStyles.tools
