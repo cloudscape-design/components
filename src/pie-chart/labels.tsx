@@ -1,10 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { arc, PieArcDatum } from 'd3-shape';
-
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { PieChartProps } from './interfaces';
 import { InternalChartDatum } from './pie-chart';
@@ -174,14 +172,34 @@ export default <T extends PieChartProps.Datum>({
 
 function useElementBoundaries(ref: React.RefObject<HTMLElement>): { left: number; right: number } {
   const [state, setState] = useState({ left: 0, right: 0 });
-  useResizeObserver(ref, entry => {
-    const elementRect = entry.target.getBoundingClientRect();
-    const left = elementRect.left;
-    const right = elementRect.right;
-    // Defer to break potential ResizeObserver → layout → ResizeObserver loops
-    setTimeout(() => {
-      setState(prev => (prev.left === left && prev.right === right ? prev : { left, right }));
-    }, 0);
-  });
+  // Use a plain useEffect (not useLayoutEffect) with requestAnimationFrame to avoid
+  // triggering setState synchronously during the layout commit phase.
+  // balanceLabelNodes mutates SVG transforms, which can trigger synchronous ResizeObserver
+  // callbacks inside useLayoutEffect, causing React's nested setState warning.
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    let rafId: ReturnType<typeof requestAnimationFrame> | null = null;
+    const observer = new ResizeObserver(() => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      rafId = requestAnimationFrame(() => {
+        const rect = element.getBoundingClientRect();
+        setState(prev =>
+          prev.left === rect.left && prev.right === rect.right ? prev : { left: rect.left, right: rect.right }
+        );
+      });
+    });
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, [ref]);
   return state;
 }
