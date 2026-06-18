@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
 import { I18nStringsInternal } from './i18n-utils';

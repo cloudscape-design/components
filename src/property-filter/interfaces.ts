@@ -20,8 +20,8 @@ import {
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
 

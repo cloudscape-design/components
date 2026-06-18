@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
-import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints';
 import { BaseComponentProps } from '../types/base-component';
+import { Breakpoint as InternalBreakpoint } from '../types/breakpoint';
 import { NonCancelableEventHandler } from '../types/events';
 
 /*

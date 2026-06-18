@@ -3,11 +3,11 @@
 import React, { ReactNode } from 'react';
 
 import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../types/option';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,

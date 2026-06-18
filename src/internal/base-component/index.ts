@@ -3,8 +3,8 @@
 
 import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal';
 
+import { AnalyticsMetadata } from '../../types/analytics';
 import { BaseComponentProps } from '../../types/base-component';
-import { AnalyticsMetadata } from '../analytics/interfaces';
 import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
 
 // these styles needed to be imported for every public component

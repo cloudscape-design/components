@@ -16,7 +16,7 @@ import {
   PromptInputProps,
   SpaceBetween,
 } from '~components';
-import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup } from '~components/types/option';
 
 import AppContext, { AppContextProvider, AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';

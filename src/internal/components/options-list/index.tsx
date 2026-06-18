@@ -7,10 +7,10 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { BaseComponentProps } from '../../../types/base-component';
+import { DropdownStatusProps } from '../../../types/dropdown-status';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../events';
-import { DropdownStatusProps } from '../dropdown-status';
 
 import styles from './styles.css.js';
 

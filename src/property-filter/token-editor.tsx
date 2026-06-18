@@ -11,10 +11,10 @@ import InternalButton from '../button/internal.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../button-dropdown/internal.js';
 import InternalFormField from '../form-field/internal.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import {
   GeneratedAnalyticsMetadataPropertyEditCancel,

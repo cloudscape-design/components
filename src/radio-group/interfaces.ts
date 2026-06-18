@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RadioButtonProps } from '../internal/components/radio-button/interfaces';
+import { RadioButtonProps } from '../radio-button/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';

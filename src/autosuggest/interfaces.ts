@@ -4,11 +4,11 @@ import React, { ReactNode } from 'react';
 
 import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
+import { OptionDefinition, OptionGroup } from '../types/option';
 
 export interface AutosuggestProps
   extends BaseComponentProps,

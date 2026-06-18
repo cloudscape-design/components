@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ErrorContext } from '../internal/analytics/interfaces';
+import { ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 

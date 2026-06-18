@@ -4,7 +4,7 @@ import React from 'react';
 
 import { PortalProps } from '@cloudscape-design/component-toolkit/internal';
 
-import { FlowType } from '../internal/analytics/interfaces';
+import { FlowType } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 

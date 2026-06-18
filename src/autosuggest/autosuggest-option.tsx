@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 import SelectableItem from '../internal/components/selectable-item';
 import { BaseComponentProps } from '../types/base-component';
+import { OptionDefinition, OptionGroup } from '../types/option';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
 import styles from './styles.css.js';

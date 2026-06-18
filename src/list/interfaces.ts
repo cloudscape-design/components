@@ -3,8 +3,8 @@
 
 import { ReactNode } from 'react';
 
-import { SortableAreaProps } from '../internal/components/sortable-area';
 import { NonCancelableEventHandler } from '../types/events';
+import { DndAreaI18nStrings } from '../types/sortable-area';
 
 export interface ListProps<T = any> {
   /**
@@ -88,5 +88,5 @@ export namespace ListProps {
     items: ReadonlyArray<T>;
   }
 
-  export type I18nStrings = SortableAreaProps.DndAreaI18nStrings;
+  export type I18nStrings = DndAreaI18nStrings;
 }

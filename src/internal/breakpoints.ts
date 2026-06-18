@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { Breakpoint } from '../types/breakpoint';
 import { browserScrollbarSize } from './utils/browser-scrollbar-size';
-
-export type Breakpoint = 'default' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
 const BREAKPOINT_MAPPING: [Breakpoint, number][] = [
   ['xl', 1840],

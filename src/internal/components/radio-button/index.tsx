@@ -7,12 +7,12 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { RadioButtonProps } from '../../../radio-button/interfaces';
 import { getBaseProps } from '../../base-component';
 import AbstractSwitch from '../../components/abstract-switch';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import WithNativeAttributes, { SkipWarnings } from '../../utils/with-native-attributes';
-import { RadioButtonProps } from './interfaces';
 import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
 
 import styles from './styles.css.js';

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { CSSProperties } from 'react';
 
-import { AnalyticsMetadata, ErrorContext } from '../internal/analytics/interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { AnalyticsMetadata, ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
 
 export interface FormFieldProps extends BaseComponentProps {

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ScaleType } from '../internal/components/cartesian-chart/interfaces';
 import { ChartDataTypes, CommonMixedChartProps, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
+import { ScaleType } from '../types/cartesian-chart';
 
 type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 

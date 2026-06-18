@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
 import { BaseComponentProps } from '../types/base-component';
+import { Breakpoint as _Breakpoint } from '../types/breakpoint';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
 
