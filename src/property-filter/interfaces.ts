@@ -21,9 +21,9 @@ import {
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**

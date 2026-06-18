@@ -3,10 +3,10 @@
 
 import { CalendarProps } from '../calendar/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 
 export interface DatePickerProps
   extends BaseComponentProps,

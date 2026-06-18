@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FormFieldCommonValidationControlProps } from '../internal/context/form-field-context';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldCommonValidationControlProps } from '../types/form-field';
 
 export interface FileUploadProps extends BaseComponentProps, FormFieldCommonValidationControlProps {
   /**

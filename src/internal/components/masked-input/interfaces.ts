@@ -3,7 +3,7 @@
 import { BaseChangeDetail } from '../../../input/interfaces';
 import { InternalInputProps } from '../../../input/internal';
 import { BaseComponentProps } from '../../../types/base-component';
-import { FormFieldValidationControlProps } from '../../context/form-field-context';
+import { FormFieldValidationControlProps } from '../../../types/form-field';
 import { MaskArgs } from './utils/mask-format';
 
 export interface MaskedInputProps extends InternalInputProps, FormFieldValidationControlProps, BaseComponentProps {

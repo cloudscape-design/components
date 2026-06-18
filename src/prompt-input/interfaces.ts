@@ -7,9 +7,9 @@ import { IconProps } from '../icon/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputSpellcheck } from '../input/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseComponentProps } from '../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 /**
  * @awsuiSystem core
  */

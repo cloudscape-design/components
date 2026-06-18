@@ -8,11 +8,11 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import ButtonTrigger from '../../internal/components/button-trigger';
 import Option from '../../internal/components/option';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
 import InternalToken from '../../token/internal';
+import { FormFieldValidationControlProps } from '../../types/form-field';
 import { SelectProps } from '../interfaces';
 import { SelectTriggerProps } from '../utils/use-select';
 

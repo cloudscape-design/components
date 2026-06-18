@@ -7,9 +7,9 @@ import {
   InputKeyEvents,
   InputSpellcheck,
 } from '../input/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseComponentProps } from '../types/base-component';
 import { BaseKeyDetail } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 /**
  * @awsuiSystem core
  */

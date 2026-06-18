@@ -4,11 +4,11 @@ import React from 'react';
 
 import { CalendarProps } from '../calendar/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { DateFormat, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 import { TimeInputProps } from '../time-input/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 
 export interface DateRangePickerBaseProps {
   /**
