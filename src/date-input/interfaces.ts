@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BaseInputProps, InputProps } from '../input/interfaces';
-import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { DateFormat, DateGranularity, EditableDateFormat } from '../types/date-time';
 import { FormFieldValidationControlProps } from '../types/form-field';
 
 export interface DateInputProps extends BaseInputProps, FormFieldValidationControlProps, BaseComponentProps {

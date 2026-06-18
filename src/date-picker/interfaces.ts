@@ -3,8 +3,8 @@
 
 import { CalendarProps } from '../calendar/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
-import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { DateFormat, DateGranularity, EditableDateFormat } from '../types/date-time';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
 

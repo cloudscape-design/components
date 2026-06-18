@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DateGranularity } from '../internal/utils/date-time/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { DateGranularity } from '../types/date-time';
 import { NonCancelableEventHandler } from '../types/events';
 
 export interface CalendarProps extends BaseComponentProps {
