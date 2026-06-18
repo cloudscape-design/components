@@ -20,6 +20,7 @@ export interface TopNavigationProps extends BaseComponentProps {
   /**
    * Specifies custom navigation content.
    * When provided, replaces all structured content (identity, search, utilities are ignored).
+   * @displayname custom content
    */
   children?: React.ReactNode;
 

@@ -172,12 +172,10 @@ function getContentBoxWidth(element: Element): number {
 }
 
 /**
- * Measures the width of an optional element. Returns 0 when the element is not rendered
- * (e.g. there is no `identity`, `title` or `search`). The `number` return type makes the
- * zero fallback part of the contract, so a missing element can never leak `undefined` into
- * the responsive-width math (which would turn it into `NaN` and collapse the layout).
+ * Measures the width of an optional element, returning 0 when it is not rendered
+ * (e.g. there is no `identity`, `title` or `search`).
  */
-export function getOptionalElementWidth(parent: Element, selector: string): number {
+function getOptionalElementWidth(parent: Element, selector: string): number {
   return parent.querySelector(selector)?.getBoundingClientRect().width ?? 0;
 }
 

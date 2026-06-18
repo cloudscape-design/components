@@ -12,7 +12,6 @@ import VisualContext from '../internal/components/visual-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { TopNavigationProps } from './interfaces';
@@ -23,7 +22,8 @@ import { useTopNavigation } from './use-top-navigation.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
+type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities' | 'visualContext'> &
+  InternalBaseComponentProps;
 
 function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavigationProps.VisualContext) {
   return visualContext === 'none' ? content : <VisualContext contextName={visualContext}>{content}</VisualContext>;
@@ -32,7 +32,7 @@ function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavig
 export default function InternalTopNavigation({
   __internalRootRef,
   children,
-  visualContext = 'top-navigation',
+  visualContext,
   ...restProps
 }: InternalTopNavigationProps) {
   if (children !== undefined) {
@@ -46,27 +46,20 @@ export default function InternalTopNavigation({
   return <StructuredTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps} />;
 }
 
-interface CustomContentTopNavigationProps extends InternalTopNavigationProps {
-  visualContext: TopNavigationProps.VisualContext;
-}
-
 function CustomContentTopNavigation({
   __internalRootRef,
   children,
   visualContext,
   ...restProps
-}: CustomContentTopNavigationProps) {
+}: InternalTopNavigationProps) {
   const baseProps = getBaseProps(restProps);
 
-  if (isDevelopment) {
-    const { identity, search, utilities } = restProps;
-    if (identity || search || (utilities && utilities.length > 0)) {
-      warnOnce(
-        'TopNavigation',
-        'You have provided `children` along with structured props (`identity`, `search`, and/or `utilities`). ' +
-          'When `children` is set, the structured props are ignored.'
-      );
-    }
+  const { identity, search, utilities } = restProps;
+  if (identity || search || (utilities && utilities.length > 0)) {
+    warnOnce(
+      'TopNavigation',
+      'When children is set, the structured props (identity, search, and utilities) are ignored'
+    );
   }
 
   return (
@@ -81,9 +74,7 @@ function CustomContentTopNavigation({
   );
 }
 
-interface StructuredTopNavigationProps extends Omit<InternalTopNavigationProps, 'children'> {
-  visualContext: TopNavigationProps.VisualContext;
-}
+type StructuredTopNavigationProps = Omit<InternalTopNavigationProps, 'children'>;
 
 function StructuredTopNavigation({
   __internalRootRef,
