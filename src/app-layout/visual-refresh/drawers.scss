@@ -5,6 +5,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../internal/styles' as styles;
+@use '../../internal/styles/utils/theming';
 @use '../constants.scss' as constants;
 
 .drawers-container {
@@ -22,7 +23,7 @@
     background-color: awsui.$color-background-container-content;
   }
 
-  &.one-theme {
+  @include theming.one-theme-only {
     &.has-open-drawer {
       background-color: awsui.$color-background-layout-panel-content;
     }
@@ -72,7 +73,7 @@
     background-color: awsui.$color-background-container-content;
   }
 
-  &.one-theme {
+  @include theming.one-theme-only {
     &.has-multiple-triggers.has-open-drawer {
       background-color: awsui.$color-background-layout-panel-content;
     }
@@ -137,7 +138,7 @@
   pointer-events: auto;
   word-wrap: break-word;
 
-  &.one-theme {
+  @include theming.one-theme-only {
     background-color: awsui.$color-background-layout-panel-content;
   }
 

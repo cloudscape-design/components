@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
+@use '../internal/styles/utils/theming';
 
 @use './motion';
 
@@ -54,7 +55,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   // For vertical alignment of text in side navigation items
   &-container {
     margin-inline-end: $icon-margin-right-medium;
-    &.one-theme {
+    @include theming.one-theme-only {
       margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
       inset-block-start: $icon-offset-block;
       > .icon {
@@ -62,7 +63,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       }
     }
   }
-  &.one-theme {
+  @include theming.one-theme-only {
     display: inline-flex;
     align-items: flex-start;
     margin-inline-end: calc(#{$icon-margin-right-normal} + #{$icon-offset-inline});

@@ -112,7 +112,7 @@ const MobileExpandableCategoryElement = ({
           )}
           <span>{item.text}</span>
           <span
-            className={clsx(styles['expand-icon'], isOneTheme && styles['one-theme'], {
+            className={clsx(styles['expand-icon'], {
               [styles['expand-icon-up']]: expanded,
             })}
           >

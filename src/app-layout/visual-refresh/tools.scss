@@ -6,6 +6,7 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../internal/styles/utils/theming';
 
 /*
 The Tools component container has a max width calculation that depends on the
@@ -95,7 +96,7 @@ viewport size and state of the Tools drawer.
     }
   }
 
-  &.one-theme {
+  @include theming.one-theme-only {
     background-color: awsui.$color-background-layout-panel-content;
   }
 
