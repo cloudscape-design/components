@@ -83,10 +83,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextFormSecondary: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
   colorTextLabel: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
   colorTextKeyValuePairsValue: { light: '{colorNeutral950}', dark: '{colorNeutral350}' },
-  colorBorderInputFocused: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
+  colorBorderInputFocused: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Controls ──────────────────────────────────────────────────────────────
-  colorBackgroundControlChecked: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
+  colorBackgroundControlChecked: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorBackgroundControlDisabled: { light: '{colorNeutral300}', dark: '{colorNeutral650}' },
   colorBorderControlDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
@@ -109,7 +109,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
   colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary100}', dark: '{colorPrimary1000}' },
   colorTextLayoutToggleSelected: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
-  colorItemSelected: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
+  colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
   colorBackgroundSegmentActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
@@ -137,11 +137,13 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextStatusInactive: { light: '{colorNeutral650}', dark: '{colorNeutral450}' },
 
-  // ── Dropdown ─────────────────────────────────────────────────
+  // ── Dropdown & Popover ─────────────────────────────────────────────────
   colorTextDropdownItemFilterMatch: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutral200}', dark: '{colorNeutral1000}' },
   colorBackgroundDropdownItemDefault: { light: '{colorWhite}', dark: '{colorNeutral800}' },
   colorBackgroundDropdownItemHover: { light: '{colorNeutral200}', dark: '{colorNeutral900}' },
+  colorBackgroundPopover: { light: '{colorWhite}', dark: '{colorNeutral800}' },
+  colorBorderPopover: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
 
   // ── Status indicator backgrounds (alpha values — no palette token available) ──
   colorBackgroundStatusIndicatorInfo: { light: '{colorInfo50}', dark: '#5c7fff20' },
