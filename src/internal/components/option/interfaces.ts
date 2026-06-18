@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import { IconProps } from '../../../icon/interfaces';
-import { BaseComponentProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
 
 interface BaseOption {
   value?: string;

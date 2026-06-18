@@ -7,7 +7,8 @@ import InternalFormField from '../../../form-field/internal';
 import { useInternalI18n } from '../../../i18n/context';
 import { MultiselectProps } from '../../../multiselect/interfaces';
 import InternalMultiselect from '../../../multiselect/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
 import { NonCancelableEventHandler } from '../../events';
 
 import styles from './styles.css.js';

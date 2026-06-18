@@ -7,13 +7,13 @@ import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component
 import { ButtonProps } from '../button/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlProps {
   /**

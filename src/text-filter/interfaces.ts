@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { InputAutoCorrect } from '../input/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface TextFilterProps extends BaseComponentProps, FormFieldControlProps, InputAutoCorrect {
   /**

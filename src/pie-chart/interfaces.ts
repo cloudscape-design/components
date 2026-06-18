@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface SeriesInfo {
   label: string;

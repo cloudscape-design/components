@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../internal/base-component';
 import { RadioButtonProps } from '../internal/components/radio-button/interfaces';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface RadioGroupProps extends BaseComponentProps, FormFieldControlProps {
   /**

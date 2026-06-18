@@ -13,12 +13,13 @@ import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,

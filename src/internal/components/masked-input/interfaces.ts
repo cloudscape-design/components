@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseChangeDetail } from '../../../input/interfaces';
 import { InternalInputProps } from '../../../input/internal';
-import { BaseComponentProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
 import { FormFieldValidationControlProps } from '../../context/form-field-context';
 import { MaskArgs } from './utils/mask-format';
 

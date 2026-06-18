@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import {
   BaseNavigationDetail,
   CancelableEventHandler,
@@ -13,6 +12,7 @@ import {
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface LinkProps extends BaseComponentProps {
   /**

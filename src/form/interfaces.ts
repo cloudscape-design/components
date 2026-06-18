@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { ErrorContext, FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 export namespace FormProps {
   export interface AnalyticsMetadata {

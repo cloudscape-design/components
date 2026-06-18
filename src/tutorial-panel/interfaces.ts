@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface TutorialPanelProps extends BaseComponentProps {
   /**

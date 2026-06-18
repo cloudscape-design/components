@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ItemCardProps extends BaseComponentProps {
   /**

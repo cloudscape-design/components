@@ -4,8 +4,8 @@ import React from 'react';
 
 import { BaseButtonProps } from '../button/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonProps, 'nativeAnchorAttributes'> {
   /** Determines the general styling of the toggle button as follows:

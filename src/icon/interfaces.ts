@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { BuiltInIconName, IconRegistryIconName } from '../icon-provider/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface IconProps extends BaseComponentProps {
   /**

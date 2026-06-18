@@ -7,7 +7,8 @@ import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/inter
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
 import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,

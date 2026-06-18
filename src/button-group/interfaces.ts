@@ -3,10 +3,10 @@
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /**

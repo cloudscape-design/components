@@ -21,6 +21,7 @@ export function getAllComponents(): string[] {
         name !== 'contexts' &&
         name !== 'plugins' &&
         name !== 'i18n' &&
+        name !== 'types' &&
         !name.includes('.') &&
         !name.includes('LICENSE') &&
         !name.includes('NOTICE')

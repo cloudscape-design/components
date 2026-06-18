@@ -6,7 +6,8 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
 import {
   BaseKeyDetail,
   CancelableEventHandler,

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect } from '../input/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface TimeInputProps
   extends BaseInputProps,

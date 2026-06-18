@@ -18,7 +18,8 @@ import {
   InputProps,
 } from '../../../input/interfaces';
 import InternalInput from '../../../input/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
