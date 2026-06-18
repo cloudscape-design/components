@@ -75,7 +75,7 @@ export default function TableSkeletonRowsPage() {
   ];
 
   return (
-    <ScreenshotArea>
+    <ScreenshotArea disableAnimations={true}>
       <SpaceBetween size="l">
         <Header variant="h1">Table with Skeleton Rows - Interactive Demo</Header>
 
