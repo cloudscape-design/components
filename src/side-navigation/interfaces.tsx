@@ -66,7 +66,6 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
-   * - `icon` (ReactNode) - Optional content rendered before the section title. Accepts any React node.
    *
    * #### Section Group
    * Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
@@ -74,7 +73,6 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `type`: `'section-group'`.
    * - `title` (string) - Specifies the text to display as a title of the section group.
    * - `items` (array) - Specifies the content of the section header group. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
-   * - `icon` (ReactNode) - Optional content rendered before the section group title. Accepts any React node.
    *
    * #### LinkGroup
    * Object that represents a group of links.
@@ -175,14 +173,12 @@ export namespace SideNavigationProps {
     text: string;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
-    icon?: React.ReactNode;
   }
 
   export interface SectionGroup {
     type: 'section-group';
     title: string;
     items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
-    icon?: React.ReactNode;
   }
   export interface LinkGroup {
     type: 'link-group';

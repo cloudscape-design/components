@@ -198,7 +198,7 @@ export function NavigationItemsList({
       pushCollapsedGroup(childItems, sectionLabel);
       return;
     }
-    if (collapsed && item.type !== 'divider' && !item.icon) {
+    if (collapsed && item.type !== 'divider' && !(item as SideNavigationProps.Link).icon) {
       return;
     }
     switch (item.type) {
@@ -367,7 +367,6 @@ export function NavigationItemsList({
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
                 [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
-                [styles['list-variant-root--symmetric']]: list.listVariant === 'root' && collapsed,
               })}
             >
               {list.element}
@@ -380,7 +379,6 @@ export function NavigationItemsList({
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
                 [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
-                [styles['list-variant-root--symmetric']]: list.listVariant === 'root' && collapsed,
               })}
             >
               {list.items.map(item => item.element)}
@@ -516,11 +514,11 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
             )}
           </span>
         )}
+        {collapsed && collapsedTooltip.tooltip}
       </a>
       {!collapsed && definition.info && (
         <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
       )}
-      {collapsed && collapsedTooltip.tooltip}
     </>
   );
 }
@@ -533,7 +531,6 @@ interface SectionProps extends BaseItemComponentProps {
 function Section({ definition, activeHref, fireFollow, fireChange, variant, position, collapsed }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
-  const collapsedTooltip = useCollapsedTooltip<HTMLSpanElement>(definition.text);
 
   const onExpandedChange = useCallback(
     (e: NonCancelableCustomEvent<ExpandableSectionProps.ChangeDetail>) => {
@@ -548,21 +545,10 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
   }, [definition]);
 
   if (collapsed) {
-    return (
-      <>
-        <ItemIcon
-          ref={collapsedTooltip.triggerRef}
-          icon={definition.icon}
-          collapsed={collapsed}
-          aria-label={definition.text}
-          {...collapsedTooltip.triggerProps}
-        />
-        {collapsedTooltip.tooltip}
-      </>
-    );
+    return null;
   }
 
-  const isNestedInSectionGroup = variant === 'section-group';
+  const isInSectionGroup = variant === 'section-group';
 
   return (
     <InternalExpandableSection
@@ -571,19 +557,10 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
       onChange={onExpandedChange}
       className={clsx(
         styles.section,
-        isNestedInSectionGroup && styles['section--no-ident'],
+        isInSectionGroup && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
-      headerText={
-        definition.icon ? (
-          <span className={styles['section-header-text']}>
-            <ItemIcon icon={definition.icon} />
-            {definition.text}
-          </span>
-        ) : (
-          definition.text
-        )
-      }
+      headerText={definition.text}
     >
       <NavigationItemsList
         variant="section"
@@ -602,26 +579,12 @@ interface SectionGroupProps extends BaseItemComponentProps {
 }
 
 function SectionGroup({ definition, activeHref, fireFollow, fireChange, position, collapsed }: SectionGroupProps) {
-  const collapsedTooltip = useCollapsedTooltip<HTMLSpanElement>(definition.title);
-
   if (collapsed) {
-    return (
-      <>
-        <ItemIcon
-          ref={collapsedTooltip.triggerRef}
-          icon={definition.icon}
-          collapsed={collapsed}
-          aria-label={definition.title}
-          {...collapsedTooltip.triggerProps}
-        />
-        {collapsedTooltip.tooltip}
-      </>
-    );
+    return null;
   }
   return (
     <div className={styles['section-group']}>
       <InternalBox className={styles['section-group-title']} variant="h3">
-        <ItemIcon icon={definition.icon} />
         {definition.title}
       </InternalBox>
       <NavigationItemsList

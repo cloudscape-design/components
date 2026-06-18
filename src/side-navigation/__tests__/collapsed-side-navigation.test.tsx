@@ -7,6 +7,8 @@ import Icon from '../../../lib/components/icon';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import testStyles from '../../../lib/components/side-navigation/test-classes/styles.css.js';
+
 function renderSideNavigation(props: SideNavigationProps = {}) {
   const { container } = render(<SideNavigation {...props} />);
   return createWrapper(container).findSideNavigation()!;
@@ -32,9 +34,25 @@ describe('SideNavigation collapsed mode', () => {
         collapsed: true,
         items: [plainLink('No icon', '#/no-icon'), iconLink('Has icon', '#/has-icon')],
       });
-      const links = wrapper.findAll('a');
-      expect(links).toHaveLength(1);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/has-icon');
+      expect(wrapper.findAll('a')).toHaveLength(1);
+      expect(wrapper.findLinkByHref('#/has-icon')).not.toBeNull();
+    });
+
+    it('renders icon inside collapsed link', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'link',
+            text: 'Has icon',
+            href: '#/has-icon',
+            icon: <span data-testid="custom-icon" />,
+          },
+        ],
+      });
+      const iconWrapper = wrapper.findItemByIndex(1)?.find(`.${testStyles['item-icon']}`);
+      expect(iconWrapper).not.toBeNull();
+      expect(iconWrapper?.getElement().querySelector('[data-testid="custom-icon"]')).not.toBeNull();
     });
 
     it('does not hide dividers', () => {
@@ -42,9 +60,8 @@ describe('SideNavigation collapsed mode', () => {
         collapsed: true,
         items: [iconLink('Link 1', '#/1'), { type: 'divider' }, iconLink('Link 2', '#/2')],
       });
-      const links = wrapper.findAll('a');
-      expect(links).toHaveLength(2);
-      expect(wrapper.findAll('hr')).toHaveLength(1);
+      expect(wrapper.findAll('a')).toHaveLength(2);
+      expect(wrapper.findItemByIndex(2)?.findDivider()).not.toBeNull();
     });
 
     it('removes consecutive dividers when collapsed segments are empty', () => {
@@ -58,120 +75,67 @@ describe('SideNavigation collapsed mode', () => {
           iconLink('Link 2', '#/2'),
         ],
       });
-      // The middle segment (plainLink without icon) is empty, so one of the
-      // dividers should be deduplicated.
+      // Only one divider survives — the middle segment is empty so one is deduplicated.
+      expect(wrapper.findItemByIndex(2)?.findDivider()).not.toBeNull();
       expect(wrapper.findAll('hr')).toHaveLength(1);
+    });
+
+    it('removes trailing dividers', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Link 1', '#/1'), { type: 'divider' }],
+      });
+      expect(wrapper.findAll('hr')).toHaveLength(0);
     });
   });
 
-  describe('sections', () => {
-    it('flattens section children with icons into the list', () => {
-      const wrapper = renderSideNavigation({
-        collapsed: true,
+  describe('sections and section groups', () => {
+    it.each([
+      {
+        label: 'section',
         items: [
           {
-            type: 'section',
+            type: 'section' as const,
             text: 'Resources',
             items: [iconLink('Compute', '#/compute'), iconLink('Storage', '#/storage'), plainLink('No icon', '#/none')],
           },
         ],
-      });
-      const links = wrapper.findAll('a');
-      // Only icon-bearing children are rendered; plainLink is hidden
-      expect(links).toHaveLength(2);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/compute');
-      expect(links[1].getElement()).toHaveAttribute('href', '#/storage');
-    });
-
-    it('applies aria-label from section text to the inner list', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute')],
-            },
-          ]}
-        />
-      );
-      const innerList = container.querySelector('ul[aria-label="Resources"]');
-      expect(innerList).toBeTruthy();
-    });
-
-    it('does not render section if no children have icons', () => {
-      const wrapper = renderSideNavigation({
-        collapsed: true,
+        iconHrefs: ['#/compute', '#/storage'],
+        hiddenHref: '#/none',
+        ariaLabel: 'Resources',
+      },
+      {
+        label: 'section-group',
         items: [
           {
-            type: 'section',
-            text: 'Empty Section',
-            items: [plainLink('A', '#/a'), plainLink('B', '#/b')],
-          },
-        ],
-      });
-      expect(wrapper.findAll('a')).toHaveLength(0);
-    });
-
-    it('renders section icon in header when expanded', () => {
-      const { container } = render(
-        <SideNavigation
-          items={[
-            {
-              type: 'section',
-              text: 'Resources',
-              icon: <Icon name="settings" />,
-              items: [plainLink('Child', '#/child')],
-            },
-          ]}
-        />
-      );
-      expect(container.querySelector('[class*="section-header-text"]')).toBeTruthy();
-    });
-  });
-
-  describe('section groups', () => {
-    it('flattens section-group children with icons into the list', () => {
-      const wrapper = renderSideNavigation({
-        collapsed: true,
-        items: [
-          {
-            type: 'section-group',
+            type: 'section-group' as const,
             title: 'My Group',
-            items: [
-              {
-                type: 'section',
-                text: 'Inner Section',
-                items: [iconLink('Item A', '#/a'), plainLink('Item B', '#/b')],
-              },
-              iconLink('Direct Link', '#/direct'),
-            ],
+            items: [iconLink('Item A', '#/a'), iconLink('Item B', '#/b'), plainLink('No icon', '#/none')],
           },
         ],
-      });
-      const links = wrapper.findAll('a');
-      // Inner section's icon-bearing child + the direct link
-      expect(links).toHaveLength(2);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/a');
-      expect(links[1].getElement()).toHaveAttribute('href', '#/direct');
+        iconHrefs: ['#/a', '#/b'],
+        hiddenHref: '#/none',
+        ariaLabel: 'My Group',
+      },
+    ])('flattens $label children with icons and applies aria-label', ({ items, iconHrefs, hiddenHref, ariaLabel }) => {
+      const wrapper = renderSideNavigation({ collapsed: true, items });
+      iconHrefs.forEach(href => expect(wrapper.findLinkByHref(href)).not.toBeNull());
+      expect(wrapper.findLinkByHref(hiddenHref)).toBeNull();
+      expect(wrapper.find(`ul[aria-label="${ariaLabel}"]`)).not.toBeNull();
     });
 
-    it('applies aria-label from section-group title to the inner list', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section-group',
-              title: 'My Group',
-              items: [iconLink('Item', '#/item')],
-            },
-          ]}
-        />
-      );
-      const innerList = container.querySelector('ul[aria-label="My Group"]');
-      expect(innerList).toBeTruthy();
+    it.each([
+      {
+        label: 'section',
+        items: [{ type: 'section' as const, text: 'Empty', items: [plainLink('A', '#/a'), plainLink('B', '#/b')] }],
+      },
+      {
+        label: 'section-group',
+        items: [{ type: 'section-group' as const, title: 'Empty', items: [plainLink('A', '#/a')] }],
+      },
+    ])('does not render $label if no children have icons', ({ items }) => {
+      const wrapper = renderSideNavigation({ collapsed: true, items });
+      expect(wrapper.findAll('a')).toHaveLength(0);
     });
   });
 
@@ -189,10 +153,8 @@ describe('SideNavigation collapsed mode', () => {
           },
         ],
       });
-      // In collapsed mode, ELG renders as a single link (no expansion)
-      const links = wrapper.findAll('a');
-      expect(links).toHaveLength(1);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/monitoring');
+      expect(wrapper.findLinkByHref('#/monitoring')).not.toBeNull();
+      expect(wrapper.findLinkByHref('#/alarms')).toBeNull();
     });
 
     it('flattens children with icons when ELG itself has no icon', () => {
@@ -207,10 +169,8 @@ describe('SideNavigation collapsed mode', () => {
           },
         ],
       });
-      // ELG without icon flattens its icon-bearing children (same as sections)
-      const links = wrapper.findAll('a');
-      expect(links).toHaveLength(1);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/child');
+      expect(wrapper.findLinkByHref('#/child')).not.toBeNull();
+      expect(wrapper.findLinkByHref('#/elg')).toBeNull();
     });
   });
 
@@ -228,10 +188,8 @@ describe('SideNavigation collapsed mode', () => {
           },
         ],
       });
-      // link-group renders only the parent link when collapsed, children hidden
-      const links = wrapper.findAll('a');
-      expect(links).toHaveLength(1);
-      expect(links[0].getElement()).toHaveAttribute('href', '#/group');
+      expect(wrapper.findLinkByHref('#/group')).not.toBeNull();
+      expect(wrapper.findLinkByHref('#/c1')).toBeNull();
     });
   });
 
@@ -261,26 +219,25 @@ describe('SideNavigation collapsed mode', () => {
 
   describe('defaults', () => {
     it('is not collapsed by default', () => {
-      const { container } = render(<SideNavigation items={[plainLink('Visible text', '#/link')]} />);
-      expect(container.textContent).toContain('Visible text');
+      const wrapper = renderSideNavigation({ items: [plainLink('Visible text', '#/link')] });
+      expect(wrapper.findLinkByHref('#/link')?.getElement().textContent).toContain('Visible text');
     });
 
     it('hides itemsControl when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[iconLink('Page', '#/page')]}
-          itemsControl={<input data-testid="control" />}
-        />
-      );
-      expect(container.querySelector('[data-testid="control"]')).toBeNull();
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Page', '#/page')],
+        itemsControl: <input data-testid="control" />,
+      });
+      expect(wrapper.findItemsControl()).toBeNull();
     });
 
     it('shows itemsControl when not collapsed', () => {
-      const { container } = render(
-        <SideNavigation items={[plainLink('Page', '#/page')]} itemsControl={<input data-testid="control" />} />
-      );
-      expect(container.querySelector('[data-testid="control"]')).toBeTruthy();
+      const wrapper = renderSideNavigation({
+        items: [plainLink('Page', '#/page')],
+        itemsControl: <input data-testid="control" />,
+      });
+      expect(wrapper.findItemsControl()).not.toBeNull();
     });
   });
 
@@ -293,8 +250,7 @@ describe('SideNavigation collapsed mode', () => {
           items={[iconLink('Page', '#/page')]}
         />
       );
-      const logo = container.querySelector('img')!;
-      expect(logo.className).toContain('header-logo--stretched');
+      expect(container.querySelector('img')!.className).toContain('header-logo--stretched');
     });
 
     it('stretches SVG logo when collapsed', () => {
@@ -305,8 +261,9 @@ describe('SideNavigation collapsed mode', () => {
           items={[iconLink('Page', '#/page')]}
         />
       );
-      const logoWrapper = container.querySelector('[data-testid="svg-logo"]')!.parentElement!;
-      expect(logoWrapper.className).toContain('header-logo--stretched');
+      expect(container.querySelector('[data-testid="svg-logo"]')!.parentElement!.className).toContain(
+        'header-logo--stretched'
+      );
     });
 
     it('stretches SVG logo when no text is provided', () => {
@@ -316,8 +273,9 @@ describe('SideNavigation collapsed mode', () => {
           items={[plainLink('Page', '#/page')]}
         />
       );
-      const logoWrapper = container.querySelector('[data-testid="svg-logo"]')!.parentElement!;
-      expect(logoWrapper.className).toContain('header-logo--stretched');
+      expect(container.querySelector('[data-testid="svg-logo"]')!.parentElement!.className).toContain(
+        'header-logo--stretched'
+      );
     });
 
     it('stretches img logo when no text is provided', () => {
@@ -327,8 +285,7 @@ describe('SideNavigation collapsed mode', () => {
           items={[plainLink('Page', '#/page')]}
         />
       );
-      const logo = container.querySelector('img')!;
-      expect(logo.className).toContain('header-logo--stretched');
+      expect(container.querySelector('img')!.className).toContain('header-logo--stretched');
     });
 
     it('does not stretch logo when text is provided and not collapsed', () => {
@@ -338,94 +295,35 @@ describe('SideNavigation collapsed mode', () => {
           items={[plainLink('Page', '#/page')]}
         />
       );
-      const logo = container.querySelector('img')!;
-      expect(logo.className).not.toContain('header-logo--stretched');
+      expect(container.querySelector('img')!.className).not.toContain('header-logo--stretched');
     });
   });
 
   describe('tooltip on collapsed items', () => {
-    it('shows tooltip on focus of a collapsed link', () => {
-      const { container } = render(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const link = container.querySelector('a')!;
+    it('shows and hides tooltip on focus/blur of a collapsed link', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Dashboard', '#/dashboard')],
+      });
+      const link = wrapper.findLinkByHref('#/dashboard')!.getElement();
+      expect(createWrapper().findTooltip()).toBeNull();
       fireEvent.focus(link);
-      expect(document.body.querySelector('[role="tooltip"]')).toBeTruthy();
-    });
-
-    it('hides tooltip on blur of a collapsed link', () => {
-      const { container } = render(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const link = container.querySelector('a')!;
-      fireEvent.focus(link);
+      expect(createWrapper().findTooltip()).not.toBeNull();
       fireEvent.blur(link);
-      expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
+      expect(createWrapper().findTooltip()).toBeNull();
     });
 
-    it('shows tooltip on mouseenter of a collapsed link', () => {
-      const { container } = render(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const link = container.querySelector('a')!;
+    it('shows and hides tooltip on mouseenter/mouseleave of a collapsed link', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Dashboard', '#/dashboard')],
+      });
+      const link = wrapper.findLinkByHref('#/dashboard')!.getElement();
+      expect(createWrapper().findTooltip()).toBeNull();
       fireEvent.mouseEnter(link);
-      expect(document.body.querySelector('[role="tooltip"]')).toBeTruthy();
-    });
-
-    it('hides tooltip on mouseleave of a collapsed link', () => {
-      const { container } = render(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const link = container.querySelector('a')!;
-      fireEvent.mouseEnter(link);
+      expect(createWrapper().findTooltip()).not.toBeNull();
       fireEvent.mouseLeave(link);
-      expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
-    });
-  });
-
-  describe('collapsed sections with icons', () => {
-    it('renders section icon in collapsed mode', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Group',
-              href: '#/group',
-              icon: <Icon name="folder" />,
-              items: [
-                {
-                  type: 'section',
-                  text: 'Nested',
-                  icon: <Icon name="settings" />,
-                  items: [iconLink('Child', '#/child')],
-                },
-              ],
-            },
-          ]}
-        />
-      );
-      const icons = container.querySelectorAll('[class*="item-icon"]');
-      expect(icons.length).toBeGreaterThan(0);
-    });
-
-    it('renders section-group icon in collapsed mode', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Group',
-              href: '#/group',
-              icon: <Icon name="folder" />,
-              items: [
-                {
-                  type: 'section-group',
-                  title: 'Nested Group',
-                  icon: <Icon name="settings" />,
-                  items: [iconLink('Child', '#/child')],
-                },
-              ],
-            },
-          ]}
-        />
-      );
-      const icons = container.querySelectorAll('[class*="item-icon"]');
-      expect(icons.length).toBeGreaterThan(0);
+      expect(createWrapper().findTooltip()).toBeNull();
     });
   });
 });

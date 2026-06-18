@@ -107,7 +107,7 @@ export default function SideNavigationCollapsedPage() {
           {/* Toggle button at top */}
           <div
             style={{
-              padding: collapsed ? '12px' : '12px 8px 8px 24px',
+              padding: collapsed ? '12px' : `12px 12px 4px 24px`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: collapsed ? 'center' : 'space-between',

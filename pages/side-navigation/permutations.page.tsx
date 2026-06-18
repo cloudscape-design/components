@@ -455,7 +455,11 @@ const permutations = createPermutations<SideNavigationProps>([
     ],
   },
   {
-    header: [{ text: 'With icons', href: '#/' }],
+    header: [
+      { text: 'With icons', href: '#/' },
+      { text: 'With icons + img logo', href: '#/', logo: { src: logoSmall, alt: 'logo' } },
+      { href: '#/', logo: { src: logoSmall, alt: 'logo' } },
+    ],
     collapsed: [false, true],
     activeHref: ['#/calendar'],
     items: [
@@ -466,7 +470,6 @@ const permutations = createPermutations<SideNavigationProps>([
         {
           type: 'section',
           text: 'Resources',
-          icon: <Icon name="folder" />,
           items: [
             { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="group" /> },
             { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="share" /> },
