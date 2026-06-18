@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../../../types/base-component';
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
 /**
  * @awsuiSystem core
  */

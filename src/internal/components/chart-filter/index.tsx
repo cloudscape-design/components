@@ -8,8 +8,8 @@ import { useInternalI18n } from '../../../i18n/context';
 import { MultiselectProps } from '../../../multiselect/interfaces';
 import InternalMultiselect from '../../../multiselect/internal';
 import { BaseComponentProps } from '../../../types/base-component';
+import { NonCancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { NonCancelableEventHandler } from '../../events';
 
 import styles from './styles.css.js';
 

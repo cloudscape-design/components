@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { renderHook } from '../../../../__tests__/render-hook';
 import { InputProps } from '../../../../input/interfaces';
-import { BaseKeyDetail } from '../../../events';
+import { BaseKeyDetail } from '../../../../types/events';
 import { KeyCode } from '../../../keycode';
 import useMask, { UseMaskProps } from '../use-mask';
 import MaskFormat from '../utils/mask-format';

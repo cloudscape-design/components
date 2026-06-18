@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { InputAutoCorrect } from '../input/interfaces';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface TextFilterProps extends BaseComponentProps, FormFieldControlProps, InputAutoCorrect {
   /**

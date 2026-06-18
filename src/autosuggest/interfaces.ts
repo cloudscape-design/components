@@ -7,8 +7,8 @@ import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, Inpu
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface AutosuggestProps
   extends BaseComponentProps,

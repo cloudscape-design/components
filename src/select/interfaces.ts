@@ -6,8 +6,8 @@ import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } f
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,

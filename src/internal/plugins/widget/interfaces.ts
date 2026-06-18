@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
 
 interface Message<Type, Payload> {
   type: Type;

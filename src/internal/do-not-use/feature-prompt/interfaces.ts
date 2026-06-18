@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PopoverProps } from '../../../popover/interfaces';
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
 
 export interface FeaturePromptProps {
   /**

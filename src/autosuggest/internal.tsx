@@ -13,15 +13,11 @@ import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import {
-  BaseKeyDetail,
-  fireCancelableEvent,
-  fireNonCancelableEvent,
-  NonCancelableCustomEvent,
-} from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
+import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { useAutosuggestItems } from './options-controller';

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 
 export interface SideNavigationProps extends BaseComponentProps {
   /**

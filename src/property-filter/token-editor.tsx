@@ -13,9 +13,9 @@ import InternalButtonDropdown from '../button-dropdown/internal.js';
 import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
-import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { NonCancelableEventHandler } from '../types/events';
 import {
   GeneratedAnalyticsMetadataPropertyEditCancel,
   GeneratedAnalyticsMetadataPropertyEditConfirm,

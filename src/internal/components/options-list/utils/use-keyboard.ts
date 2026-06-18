@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
+import { BaseKeyDetail, CancelableEventHandler } from '../../../../types/events';
 import { KeyCode } from '../../../keycode';
 
 const HOME = 36;

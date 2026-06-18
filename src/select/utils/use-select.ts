@@ -15,9 +15,10 @@ import { useHighlightedOption } from '../../internal/components/options-list/uti
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { NonCancelableEventHandler } from '../../types/events';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';

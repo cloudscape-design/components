@@ -4,7 +4,8 @@ import React from 'react';
 
 import InternalLink from '../../../link/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { fireNonCancelableEvent } from '../../events';
 import { usePrevious } from '../../hooks/use-previous';
 import { DropdownStatusProps } from './interfaces';
 

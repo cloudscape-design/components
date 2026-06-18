@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../types/events';
 
 export interface BaseButtonProps {
   /**

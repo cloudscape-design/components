@@ -4,7 +4,7 @@
 import { ReactNode } from 'react';
 
 import { SortableAreaProps } from '../internal/components/sortable-area';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface ListProps<T = any> {
   /**

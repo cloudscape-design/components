@@ -4,8 +4,8 @@ import React from 'react';
 
 import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
   /**

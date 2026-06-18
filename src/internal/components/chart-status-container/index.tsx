@@ -7,7 +7,8 @@ import InternalLink from '../../../link/internal';
 import InternalLiveRegion from '../../../live-region/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import { BaseComponentProps } from '../../../types/base-component';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { fireNonCancelableEvent } from '../../events';
 
 import styles from './styles.css.js';
 

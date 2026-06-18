@@ -8,12 +8,12 @@ import {
   InputSpellcheck,
 } from '../input/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { BaseKeyDetail } from '../internal/events';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 import { BaseComponentProps } from '../types/base-component';
+import { BaseKeyDetail } from '../types/events';
 
 export interface TextareaProps
   extends Omit<BaseInputProps, 'nativeInputAttributes'>,

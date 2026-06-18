@@ -4,9 +4,9 @@ import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
 import { FlowType } from '../internal/analytics/interfaces';
-import { NonCancelableEventHandler } from '../internal/events';
 import { SomeRequired } from '../internal/types';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface BaseLayoutProps extends BaseComponentProps {
   /**

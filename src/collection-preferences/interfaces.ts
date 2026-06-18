@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { SortableAreaProps } from '../internal/components/sortable-area';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseModalProps } from '../modal/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps, BaseModalProps {
   /**

@@ -3,8 +3,8 @@
 import { ButtonProps } from '../button/interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { CancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { CancelableEventHandler } from '../types/events';
 
 export interface TopNavigationProps extends BaseComponentProps {
   /**

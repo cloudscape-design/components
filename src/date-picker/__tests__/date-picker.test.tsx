@@ -7,9 +7,9 @@ import { fireEvent, render } from '@testing-library/react';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import { NonCancelableEventHandler } from '../../types/events';
 
 const defaultProps: DatePickerProps = {
   todayAriaLabel: 'Today',

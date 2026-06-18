@@ -22,8 +22,8 @@ import {
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
-import { NonCancelableCustomEvent } from '~components/internal/events';
 import { applyTheme, Theme } from '~components/theming';
+import { NonCancelableCustomEvent } from '~components/types/events';
 
 import ScreenshotArea from '../utils/screenshot-area';
 

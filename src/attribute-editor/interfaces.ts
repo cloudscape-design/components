@@ -4,8 +4,8 @@ import React from 'react';
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 /*
  * HACK: Cast the component to a named parametrized interface.

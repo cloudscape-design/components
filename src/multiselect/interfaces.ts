@@ -4,8 +4,8 @@ import { ReactNode } from 'react';
 
 import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface MultiselectProps extends BaseSelectProps {
   /**
