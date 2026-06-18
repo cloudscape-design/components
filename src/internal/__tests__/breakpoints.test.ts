@@ -1,6 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { getBreakpointValue, getMatchingBreakpoint, matchBreakpointMapping } from '../breakpoints';
+import { browserScrollbarSize } from '../utils/browser-scrollbar-size';
+
+jest.mock('../utils/browser-scrollbar-size', () => ({
+  browserScrollbarSize: jest.fn(() => ({ width: 0 })),
+}));
 
 describe('getMatchingBreakpoint', () => {
   it('returns the correct breakpoint value', () => {
@@ -28,7 +33,15 @@ describe('getMatchingBreakpoint', () => {
   });
 
   describe('previousBreakpoint', () => {
-    // xs boundary is 688px. The dead-band is +/- 20px around it: [668, 708].
+    beforeEach(() => {
+      jest.mocked(browserScrollbarSize).mockReturnValue({ width: 20, height: -1 });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    // xs boundary is 688px. Assuming a dead-band of +/- 20px: [668, 708].
     it('does not switch down when the width shrinks slightly below the boundary', () => {
       // Width drops to 680 (e.g. a 17px scrollbar appeared) but we were already at "xs".
       expect(getMatchingBreakpoint(680, undefined, 'xs')).toBe('xs');
