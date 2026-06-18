@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
-import { BaseComponentProps } from '../types/base-component';
-import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface BaseInputProps {
   /**

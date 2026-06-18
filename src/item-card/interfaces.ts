@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../types/base-component';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
-import { BaseComponentProps } from '../types/base-component';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ItemCardProps extends BaseComponentProps {
   /**

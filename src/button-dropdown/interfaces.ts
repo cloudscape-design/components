@@ -8,12 +8,12 @@ import { ButtonProps } from '../button/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
-import { BaseComponentProps } from '../types/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**

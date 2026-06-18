@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
 import { BaseComponentProps } from '../types/base-component';
 import { CancelableEventHandler } from '../types/events';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ActionCardProps extends BaseComponentProps {
   /**

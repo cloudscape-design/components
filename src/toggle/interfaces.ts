@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { BaseCheckboxProps } from '../checkbox/base-checkbox';
+import { NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
-import { NonCancelableEventHandler } from '../types/events';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ToggleProps extends BaseCheckboxProps {
   /**

@@ -7,7 +7,7 @@ import { NonCancelableEventHandler } from '../../../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../../utils/with-native-attributes';
+import { NativeAttributes } from '../../../types/native-attributes';
 
 export interface RadioButtonProps extends BaseComponentProps {
   /**
