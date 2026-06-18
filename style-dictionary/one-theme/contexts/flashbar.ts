@@ -6,8 +6,8 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorTextButtonNormalDefault: '{colorNeutralGrey100}',
-  colorBorderButtonNormalDefault: '{colorNeutralGrey100}',
+  colorTextButtonNormalDefault: '{colorNeutral100}',
+  colorBorderButtonNormalDefault: '{colorNeutral100}',
   colorBackgroundButtonNormalDefault: 'transparent',
   colorTextButtonNormalHover: '{colorWhite}',
   colorBorderButtonNormalHover: '{colorWhite}',
@@ -15,21 +15,21 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalActive: '{colorWhite}',
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
-  colorBorderItemFocused: '{colorNeutralGrey100}',
-  colorTextExpandableSectionDefault: '{colorNeutralGrey100}',
+  colorBorderItemFocused: '{colorNeutral100}',
+  colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
-  colorTextBodyDefault: '{colorNeutralGrey100}',
-  colorTextBodySecondary: '{colorNeutralGrey100}',
-  colorTextHeadingSecondary: '{colorNeutralGrey100}',
-  colorBorderDividerDefault: '{colorNeutralGrey100}',
-  colorTextTutorialHotspotDefault: '{colorNeutralGrey300}',
-  colorTextTutorialHotspotHover: '{colorNeutralGrey100}',
+  colorTextBodyDefault: '{colorNeutral100}',
+  colorTextBodySecondary: '{colorNeutral100}',
+  colorTextHeadingSecondary: '{colorNeutral100}',
+  colorBorderDividerDefault: '{colorNeutral100}',
+  colorTextTutorialHotspotDefault: '{colorNeutral300}',
+  colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
   // Key-value pairs
-  colorTextLabel: '{colorNeutralGrey100}',
+  colorTextLabel: '{colorNeutral100}',
 
   // Info links
-  colorTextLinkDefault: '{colorNeutralGrey100}',
+  colorTextLinkDefault: '{colorNeutral100}',
   colorTextLinkHover: '{colorWhite}',
 
   // Progress Bar

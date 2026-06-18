@@ -15,7 +15,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBackgroundButtonNormalDefault: { light: 'transparent', dark: 'transparent' },
-  colorBorderDividerDefault: { light: '{colorNeutralGrey350}', dark: '{colorNeutralGrey600}' },
+  colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
