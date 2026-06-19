@@ -21,12 +21,17 @@ import styles from './styles.css.js';
 
 type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
+function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavigationProps.VisualContext) {
+  return visualContext === 'none' ? content : <VisualContext contextName={visualContext}>{content}</VisualContext>;
+}
+
 export default function InternalTopNavigation({
   __internalRootRef,
   identity,
   i18nStrings,
   utilities,
   search,
+  visualContext = 'top-navigation',
   ...restProps
 }: InternalTopNavigationProps) {
   checkSafeUrl('TopNavigation', identity.href);
@@ -222,30 +227,34 @@ export default function InternalTopNavigation({
     );
   };
 
+  const structuredContent = (
+    <>
+      {/* Render virtual content first to ensure React refs for content will be assigned on the actual nodes. */}
+      {content(true)}
+
+      {content(false)}
+
+      {menuTriggerVisible && overflowMenuOpen && (
+        <div className={styles['overflow-menu-drawer']}>
+          <OverflowMenu
+            headerText={i18nStrings?.overflowMenuTitleText}
+            dismissIconAriaLabel={i18nStrings?.overflowMenuDismissIconAriaLabel}
+            backIconAriaLabel={i18nStrings?.overflowMenuBackIconAriaLabel}
+            items={utilities.filter(
+              (utility, i) =>
+                (!responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) !== -1) &&
+                !utility.disableUtilityCollapse
+            )}
+            onClose={toggleOverflowMenu}
+          />
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div {...baseProps} ref={__internalRootRef}>
-      <VisualContext contextName="top-navigation">
-        {/* Render virtual content first to ensure React refs for content will be assigned on the actual nodes. */}
-        {content(true)}
-
-        {content(false)}
-
-        {menuTriggerVisible && overflowMenuOpen && (
-          <div className={styles['overflow-menu-drawer']}>
-            <OverflowMenu
-              headerText={i18nStrings?.overflowMenuTitleText}
-              dismissIconAriaLabel={i18nStrings?.overflowMenuDismissIconAriaLabel}
-              backIconAriaLabel={i18nStrings?.overflowMenuBackIconAriaLabel}
-              items={utilities.filter(
-                (utility, i) =>
-                  (!responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) !== -1) &&
-                  !utility.disableUtilityCollapse
-              )}
-              onClose={toggleOverflowMenu}
-            />
-          </div>
-        )}
-      </VisualContext>
+      {wrapWithVisualContext(structuredContent, visualContext)}
     </div>
   );
 }

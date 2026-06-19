@@ -32691,6 +32691,22 @@ The following properties are supported across all utility types:
       "optional": true,
       "type": "ReadonlyArray<TopNavigationProps.Utility>",
     },
+    {
+      "description": "Visual context applied to the navigation bar.
+- "top-navigation": Applies the top-navigation visual context. The component maintains a dark appearance regardless of the page's light/dark mode setting. Child components automatically adapt their colors to work on this dark background.
+- "none": No visual context applied. The component and its children use the same colors as the rest of the page and respond to the global light/dark mode normally.",
+      "inlineType": {
+        "name": "TopNavigationProps.VisualContext",
+        "type": "union",
+        "values": [
+          "none",
+          "top-navigation",
+        ],
+      },
+      "name": "visualContext",
+      "optional": true,
+      "type": "string",
+    },
   ],
   "regions": [
     {

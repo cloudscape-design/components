@@ -18,6 +18,13 @@ export interface TopNavigationProps extends BaseComponentProps {
   identity: TopNavigationProps.Identity;
 
   /**
+   * Visual context applied to the navigation bar.
+   * - "top-navigation": Applies the top-navigation visual context. The component maintains a dark appearance regardless of the page's light/dark mode setting. Child components automatically adapt their colors to work on this dark background.
+   * - "none": No visual context applied. The component and its children use the same colors as the rest of the page and respond to the global light/dark mode normally.
+   */
+  visualContext?: TopNavigationProps.VisualContext;
+
+  /**
    * Use with an input or autosuggest control for a global search query.
    */
   search?: React.ReactNode;
@@ -126,4 +133,6 @@ export namespace TopNavigationProps {
     overflowMenuTriggerText?: string;
     overflowMenuTitleText?: string;
   }
+
+  export type VisualContext = 'top-navigation' | 'none';
 }
