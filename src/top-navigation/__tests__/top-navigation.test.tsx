@@ -11,9 +11,10 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
 } from '../../../lib/components/test-utils/dom/top-navigation';
-import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
+import TopNavigation from '../../../lib/components/top-navigation';
 import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
 import { useTopNavigation } from '../../../lib/components/top-navigation/use-top-navigation';
+import { renderTopNavigation } from './common';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -39,22 +40,6 @@ afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });
 
-const I18N_STRINGS: TopNavigationProps.I18nStrings = {
-  searchIconAriaLabel: 'Search',
-  searchDismissIconAriaLabel: 'Close search',
-  overflowMenuTriggerText: 'More',
-  overflowMenuTitleText: 'All',
-  overflowMenuBackIconAriaLabel: 'Back',
-  overflowMenuDismissIconAriaLabel: 'Close',
-};
-
-type PickPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
-const renderTopNavigation = (props: PickPartial<TopNavigationProps, 'i18nStrings'>) => {
-  const { container } = render(<TopNavigation i18nStrings={I18N_STRINGS} {...props} />);
-  return createWrapper(container).findTopNavigation()!;
-};
-
 describe('TopNavigation Component', () => {
   test('has title', () => {
     const topNavigation = renderTopNavigation({ identity: { href: '#', title: 'Application Title' } });
@@ -69,7 +54,7 @@ describe('TopNavigation Component', () => {
 
   test('has a link', () => {
     const topNavigation = renderTopNavigation({ identity: { href: '#', title: 'Application Title' } });
-    expect(topNavigation.findIdentityLink().getElement()).toHaveAttribute('href', '#');
+    expect(topNavigation.findIdentityLink()!.getElement()).toHaveAttribute('href', '#');
   });
 
   test('fires follow event when the title is clicked', () => {
@@ -82,9 +67,28 @@ describe('TopNavigation Component', () => {
         onFollow: event => onFollowSpy(event.detail),
       },
     });
-    const identityLink = topNavigation.findIdentityLink().getElement();
+    const identityLink = topNavigation.findIdentityLink()!.getElement();
     identityLink.click();
     expect(onFollowSpy).toHaveBeenCalledWith({});
+  });
+
+  test('does not throw when the identity is clicked without an onFollow handler', () => {
+    const topNavigation = renderTopNavigation({
+      identity: { href: '#', title: 'Application Title' },
+    });
+    expect(() => topNavigation.findIdentityLink()!.click()).not.toThrow();
+  });
+
+  test('renders the structured variant without an identity', () => {
+    const wrapper = renderTopNavigation({
+      search: <Input value="" onChange={() => {}} />,
+      utilities: [{ type: 'button', text: 'Help' }],
+    });
+    expect(wrapper.findIdentityLink()).toBeNull();
+    expect(wrapper.findTitle()).toBeNull();
+    expect(wrapper.findLogo()).toBeNull();
+    expect(wrapper.findUtilities()).toHaveLength(1);
+    expect(warnOnce).not.toHaveBeenCalled();
   });
 
   test('does not fire a follow event when the item is clicked with a modifier', () => {
@@ -97,7 +101,7 @@ describe('TopNavigation Component', () => {
         onFollow: event => onFollowSpy(event.detail),
       },
     });
-    const identityLink = topNavigation.findIdentityLink();
+    const identityLink = topNavigation.findIdentityLink()!;
     identityLink.click({ ctrlKey: true });
     identityLink.click({ altKey: true });
     identityLink.click({ shiftKey: true });
@@ -269,7 +273,7 @@ describe('URL sanitization', () => {
   describe('for the identity', () => {
     test('does not throw an error when a safe javascript: URL is passed', () => {
       const element = renderTopNavigation({ identity: { href: 'javascript:void(0)' } });
-      expect((element.findIdentityLink().getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
+      expect((element.findIdentityLink()!.getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
 
       expect(warnOnce).toHaveBeenCalledTimes(0);
     });
@@ -424,18 +428,33 @@ describe('URL sanitization', () => {
 
 describe('visualContext', () => {
   test('defaults to top-navigation visual context', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' } });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+    const { container } = render(
+      <>
+        <TopNavigation identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation>custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(2);
   });
 
   test('uses top-navigation visual context explicitly', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'top-navigation' });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(1);
+    const { container } = render(
+      <>
+        <TopNavigation visualContext="top-navigation" identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation visualContext="top-navigation">custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(2);
   });
 
   test('uses no visual context', () => {
-    renderTopNavigation({ identity: { href: '#', title: 'Structured' }, visualContext: 'none' });
-    expect(createWrapper().findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
+    const { container } = render(
+      <>
+        <TopNavigation visualContext="none" identity={{ href: '#', title: 'Structured' }} />
+        <TopNavigation visualContext="none">custom</TopNavigation>
+      </>
+    );
+    expect(createWrapper(container).findAll('[class*="awsui-context-top-navigation"]')).toHaveLength(0);
   });
 });
 

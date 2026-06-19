@@ -4,6 +4,7 @@ import { TopNavigationProps } from '../../../lib/components/top-navigation/inter
 import {
   determineBestResponsiveState,
   generateResponsiveStateKeys,
+  getOptionalElementWidth,
   TopNavigationSizeConfiguration,
 } from '../../../lib/components/top-navigation/use-top-navigation';
 
@@ -187,5 +188,22 @@ describe('TopNavigation responsiveness', () => {
 
     expect(possibleStates).toEqual([{}, { hideTitle: true, hideUtilityText: true }]);
     expect(responsiveState).toEqual({});
+  });
+});
+
+describe('getOptionalElementWidth', () => {
+  it('returns 0 when the element is not present', () => {
+    const parent = document.createElement('div');
+    expect(getOptionalElementWidth(parent, '.missing')).toBe(0);
+  });
+
+  it('returns the element width when present', () => {
+    const parent = document.createElement('div');
+    const child = document.createElement('div');
+    child.className = 'present';
+    jest.spyOn(child, 'getBoundingClientRect').mockReturnValue({ width: 123 } as DOMRect);
+    parent.appendChild(child);
+
+    expect(getOptionalElementWidth(parent, '.present')).toBe(123);
   });
 });

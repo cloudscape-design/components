@@ -14,9 +14,9 @@ class TopNavigationPage extends BasePageObject {
   }
 }
 
-const setupTest = (pageWidth: number, testFn: (page: TopNavigationPage) => Promise<void>) => {
+const setupTest = (pageWidth: number, testFn: (page: TopNavigationPage) => Promise<void>, urlParams = '') => {
   return useBrowser(async browser => {
-    await browser.url('#/light/top-navigation/integ');
+    await browser.url(`#/light/top-navigation/integ${urlParams}`);
     const page = new TopNavigationPage(browser);
     await page.setWindowSize({ width: pageWidth, height: 600 });
     await page.waitForVisible(wrapper.toSelector());
@@ -232,4 +232,37 @@ describe('Top navigation', () => {
       await expect(page.isFocused(searchInputSelector)).resolves.toBe(true);
     })
   );
+
+  describe('without identity', () => {
+    const urlParams = '?hideIdentity=true';
+
+    test(
+      'displays all utilities and the search slot when there is enough space',
+      setupTest(
+        1100,
+        async page => {
+          await expect(page.isExisting(wrapper.findIdentityLink().toSelector())).resolves.toBe(false);
+          await expect(page.isExisting(wrapper.findTitle().toSelector())).resolves.toBe(false);
+          await expect(page.isExisting(wrapper.findSearch().findInput().toSelector())).resolves.toBe(true);
+          await expect(page.getText(wrapper.findUtility(1).toSelector())).resolves.toBe('New thing');
+        },
+        urlParams
+      )
+    );
+
+    test(
+      'collapses the search slot and moves utilities into the overflow menu at a narrow viewport',
+      setupTest(
+        300,
+        async page => {
+          // The inline search slot collapses into a search utility button.
+          await expect(page.isExisting(wrapper.findSearch().findInput().toSelector())).resolves.toBe(false);
+          await expect(page.isExisting(wrapper.findSearchButton().toSelector())).resolves.toBe(true);
+          // Utilities move into the overflow menu.
+          await expect(page.getText(wrapper.findOverflowMenuButton().toSelector())).resolves.toBe('More');
+        },
+        urlParams
+      )
+    );
+  });
 });

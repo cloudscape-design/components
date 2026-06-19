@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { ButtonTrigger } from '../internal/components/menu-dropdown';
@@ -18,8 +20,10 @@ import Utility from './parts/utility';
 import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
+type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities' | 'visualContext'> &
+  InternalBaseComponentProps;
 
 function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavigationProps.VisualContext) {
   return visualContext === 'none' ? content : <VisualContext contextName={visualContext}>{content}</VisualContext>;
@@ -27,15 +31,65 @@ function wrapWithVisualContext(content: React.ReactNode, visualContext: TopNavig
 
 export default function InternalTopNavigation({
   __internalRootRef,
+  children,
+  visualContext,
+  ...restProps
+}: InternalTopNavigationProps) {
+  if (children !== undefined) {
+    return (
+      <CustomContentTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps}>
+        {children}
+      </CustomContentTopNavigation>
+    );
+  }
+
+  return <StructuredTopNavigation __internalRootRef={__internalRootRef} visualContext={visualContext} {...restProps} />;
+}
+
+function CustomContentTopNavigation({
+  __internalRootRef,
+  children,
+  visualContext,
+  ...restProps
+}: InternalTopNavigationProps) {
+  const baseProps = getBaseProps(restProps);
+
+  const { identity, search, utilities } = restProps;
+  if (identity || search || (utilities && utilities.length > 0)) {
+    warnOnce(
+      'TopNavigation',
+      'When children is set, the structured props (identity, search, and utilities) are ignored'
+    );
+  }
+
+  return (
+    <div {...baseProps} ref={__internalRootRef}>
+      {wrapWithVisualContext(
+        <header className={styles['top-navigation']}>
+          <div className={testUtilStyles['custom-content']}>{children}</div>
+        </header>,
+        visualContext
+      )}
+    </div>
+  );
+}
+
+type StructuredTopNavigationProps = Omit<InternalTopNavigationProps, 'children'>;
+
+function StructuredTopNavigation({
+  __internalRootRef,
   identity,
   i18nStrings,
   utilities,
   search,
-  visualContext = 'top-navigation',
+  visualContext,
   ...restProps
-}: InternalTopNavigationProps) {
-  checkSafeUrl('TopNavigation', identity.href);
+}: StructuredTopNavigationProps) {
+  if (identity) {
+    checkSafeUrl('TopNavigation', identity.href);
+  }
   const baseProps = getBaseProps(restProps);
+
   const { mainRef, virtualRef, breakpoint, responsiveState, isSearchExpanded, onSearchUtilityClick } = useTopNavigation(
     { identity, search, utilities }
   );
@@ -45,16 +99,6 @@ export default function InternalTopNavigation({
   const isMediumViewport = breakpoint === 'xxs';
   const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
-
-  const onIdentityClick = (event: React.MouseEvent) => {
-    if (isPlainLeftClick(event)) {
-      fireCancelableEvent(identity.onFollow, {}, event);
-    }
-  };
-
-  const toggleOverflowMenu = () => {
-    setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
-  };
 
   const menuTriggerVisible = !isSearchExpanded && responsiveState.hideUtilities;
 
@@ -68,12 +112,22 @@ export default function InternalTopNavigation({
     }
   }, [overflowMenuOpen]);
 
+  const onIdentityClick = (event: React.MouseEvent) => {
+    if (isPlainLeftClick(event)) {
+      fireCancelableEvent(identity?.onFollow, {}, event);
+    }
+  };
+
+  const toggleOverflowMenu = () => {
+    setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
+  };
+
   // Render the top nav twice; once as the top nav that users can see, and another
   // "virtual" top nav used just for calculations. The virtual top nav doesn't react to
   // layout changes and renders two sets of utilities: one with labels and one without.
   const content = (isVirtual: boolean) => {
     const Wrapper = isVirtual ? 'div' : 'header';
-    const showIdentity = isVirtual || !isSearchExpanded;
+    const showIdentity = !!identity && (isVirtual || !isSearchExpanded);
     const showTitle = isVirtual || !responsiveState.hideTitle;
     const showSearchSlot = search && (isVirtual || !responsiveState.hideSearch || isSearchExpanded);
     const showSearchUtility = isVirtual || (search && responsiveState.hideSearch);
@@ -92,14 +146,14 @@ export default function InternalTopNavigation({
         })}
       >
         <div className={styles['padding-box']}>
-          {showIdentity && (
+          {showIdentity && identity && (
             <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
               <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
                 {identity.logo && (
                   <img
                     role="img"
-                    src={identity.logo?.src}
-                    alt={identity.logo?.alt}
+                    src={identity.logo.src}
+                    alt={identity.logo.alt}
                     className={clsx(styles.logo, {
                       [styles.narrow]: isNarrowViewport,
                     })}
