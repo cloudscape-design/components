@@ -6,6 +6,8 @@ import Input from '~components/input';
 import TopNavigation, { TopNavigationProps } from '~components/top-navigation';
 
 import { SimplePage } from '../app/templates';
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
 import { I18N_STRINGS } from './common';
 import logo from './logos/simple-logo.svg';
 
@@ -32,62 +34,38 @@ const identity: TopNavigationProps['identity'] = {
 
 const search = <Input type="search" placeholder="Search..." value="" onChange={() => {}} ariaLabel="Search" />;
 
-interface Permutation {
-  label: string;
-  props: TopNavigationProps;
-}
+const contentPermutations: Record<string, TopNavigationProps> = {
+  'Identity + search + utilities': { identity, search, utilities, i18nStrings: I18N_STRINGS },
+  'Identity + utilities (no search)': { identity, utilities, i18nStrings: I18N_STRINGS },
+  'Identity + search (no utilities)': { identity, search, i18nStrings: I18N_STRINGS },
+  'Identity only': { identity, i18nStrings: I18N_STRINGS },
+  'Utilities only (no identity)': { utilities, i18nStrings: I18N_STRINGS },
+  'Search + utilities (no identity)': { search, utilities, i18nStrings: I18N_STRINGS },
+  'Search only (no identity, no utilities)': { search, i18nStrings: I18N_STRINGS },
+  'Empty (no identity, no search, no utilities)': { i18nStrings: I18N_STRINGS },
+};
 
-const permutations: Permutation[] = [
+const permutations = createPermutations<{ visualContext: TopNavigationProps['visualContext']; label: string }>([
   {
-    label: 'Identity + search + utilities',
-    props: { identity, search, utilities, i18nStrings: I18N_STRINGS },
+    visualContext: ['top-navigation', 'none'],
+    label: Object.keys(contentPermutations),
   },
-  {
-    label: 'Identity + utilities (no search)',
-    props: { identity, utilities, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Identity + search (no utilities)',
-    props: { identity, search, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Identity only',
-    props: { identity, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Utilities only (no identity)',
-    props: { utilities, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Search + utilities (no identity)',
-    props: { search, utilities, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Search only (no identity, no utilities)',
-    props: { search, i18nStrings: I18N_STRINGS },
-  },
-  {
-    label: 'Empty (no identity, no search, no utilities)',
-    props: { i18nStrings: I18N_STRINGS },
-  },
-];
-
-const visualContexts: Array<TopNavigationProps['visualContext']> = ['top-navigation', 'none'];
+]);
 
 export default function OptionalPropsPermutations() {
   return (
     <SimplePage title="TopNavigation optional props permutations" screenshotArea={{}}>
-      {visualContexts.map(visualContext => (
-        <div key={visualContext} style={{ marginBottom: 32 }}>
-          <h2>visualContext=&quot;{visualContext}&quot;</h2>
-          {permutations.map(({ label, props }) => (
-            <div key={label} style={{ marginBottom: 16 }}>
-              <h3>{label}</h3>
-              <TopNavigation {...props} visualContext={visualContext} />
-            </div>
-          ))}
-        </div>
-      ))}
+      <PermutationsView
+        permutations={permutations}
+        render={({ visualContext, label }) => (
+          <div style={{ marginBottom: 16 }}>
+            <h2>
+              visualContext=&quot;{visualContext}&quot; — {label}
+            </h2>
+            <TopNavigation {...contentPermutations[label]} visualContext={visualContext} />
+          </div>
+        )}
+      />
     </SimplePage>
   );
 }
