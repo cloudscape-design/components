@@ -63,7 +63,7 @@ const InternalLink = React.forwardRef(
     const isButton = !href;
     const { defaultVariant } = useContext(LinkDefaultVariantContext);
     const variant = providedVariant || defaultVariant;
-    const specialStyles = ['top-navigation', 'link', 'recovery'];
+    const specialStyles = ['top-navigation', 'link', 'recovery', 'info'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
     const i18n = useInternalI18n('link');
