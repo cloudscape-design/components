@@ -175,7 +175,7 @@ function getContentBoxWidth(element: Element): number {
  * Measures the width of an optional element, returning 0 when it is not rendered
  * (e.g. there is no `identity`, `title` or `search`).
  */
-function getOptionalElementWidth(parent: Element, selector: string): number {
+export function getOptionalElementWidth(parent: Element, selector: string): number {
   return parent.querySelector(selector)?.getBoundingClientRect().width ?? 0;
 }
 
