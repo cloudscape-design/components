@@ -20,67 +20,71 @@
 
   > .styled-box {
     fill: var(
-      --awsui-internal-style-color-background-control-default,
-      var(--awsui-internal-style-color-background-control, #{awsui.$color-background-control-default})
+      --awsui-internal-style-color-background-default,
+      var(--awsui-internal-style-color-background, #{awsui.$color-background-control-default})
     );
     stroke: var(
-      --awsui-internal-style-color-border-control-default,
-      var(--awsui-internal-style-color-border-control, #{awsui.$color-border-control-default})
+      --awsui-internal-style-color-border-default,
+      var(--awsui-internal-style-color-border, #{awsui.$color-border-control-default})
     );
-    stroke-width: var(--awsui-internal-style-border-width-control, #{awsui.$border-width-field});
+    stroke-width: var(--awsui-internal-style-border-width, #{awsui.$border-width-field});
 
     @include styles.with-motion {
+      // Box fill (background) + border animate on the "background" aspect token.
       transition:
-        fill var(--awsui-internal-style-transition-duration, #{awsui.$motion-duration-transition-quick})
-          var(--awsui-internal-style-transition-easing, #{awsui.$motion-easing-transition-quick}),
-        stroke var(--awsui-internal-style-transition-duration, #{awsui.$motion-duration-transition-quick})
-          var(--awsui-internal-style-transition-easing, #{awsui.$motion-easing-transition-quick});
+        fill var(--awsui-internal-style-transition-color-background, 0s),
+        stroke var(--awsui-internal-style-transition-color-background, 0s);
     }
 
     &-checked,
     &-indeterminate {
       fill: var(
-        --awsui-internal-style-color-background-control-checked,
-        var(--awsui-internal-style-color-background-control, #{awsui.$color-background-control-checked})
+        --awsui-internal-style-color-background-checked,
+        var(--awsui-internal-style-color-background, #{awsui.$color-background-control-checked})
       );
       stroke: var(
-        --awsui-internal-style-color-border-control-checked,
-        var(--awsui-internal-style-color-border-control, #{awsui.$color-border-control-checked})
+        --awsui-internal-style-color-border-checked,
+        var(--awsui-internal-style-color-border, #{awsui.$color-border-control-checked})
       );
     }
 
     &-disabled,
     &-readonly {
       fill: var(
-        --awsui-internal-style-color-background-control-disabled,
-        var(--awsui-internal-style-color-background-control, #{awsui.$color-background-control-disabled})
+        --awsui-internal-style-color-background-disabled,
+        var(--awsui-internal-style-color-background, #{awsui.$color-background-control-disabled})
       );
       stroke: var(
-        --awsui-internal-style-color-border-control-disabled,
-        var(--awsui-internal-style-color-border-control, #{awsui.$color-border-control-disabled})
+        --awsui-internal-style-color-border-disabled,
+        var(--awsui-internal-style-color-border, #{awsui.$color-border-control-disabled})
       );
     }
   }
 
   > .styled-line {
     stroke: var(
-      --awsui-internal-style-color-foreground-control-default,
-      var(--awsui-internal-style-color-foreground-control, #{awsui.$color-foreground-control-default})
+      --awsui-internal-style-color-foreground-default,
+      var(--awsui-internal-style-color-foreground, #{awsui.$color-foreground-control-default})
     );
-    stroke-width: var(--awsui-internal-style-stroke-width-control, 2);
+    stroke-width: var(--awsui-internal-style-stroke-width, 2);
     fill: none;
+
+    @include styles.with-motion {
+      // The checkmark stroke animates on the "foreground" aspect token.
+      transition: stroke var(--awsui-internal-style-transition-color-foreground, 0s);
+    }
 
     &-disabled {
       stroke: var(
-        --awsui-internal-style-color-foreground-control-disabled,
-        var(--awsui-internal-style-color-foreground-control, #{awsui.$color-foreground-control-disabled})
+        --awsui-internal-style-color-foreground-disabled,
+        var(--awsui-internal-style-color-foreground, #{awsui.$color-foreground-control-disabled})
       );
     }
 
     &-readonly {
       stroke: var(
-        --awsui-internal-style-color-foreground-control-readonly,
-        var(--awsui-internal-style-color-foreground-control, #{awsui.$color-foreground-control-read-only})
+        --awsui-internal-style-color-foreground-readonly,
+        var(--awsui-internal-style-color-foreground, #{awsui.$color-foreground-control-read-only})
       );
     }
   }

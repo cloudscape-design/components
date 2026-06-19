@@ -104,6 +104,8 @@ export namespace ContainerProps {
 
   export interface ClassNames {
     root?: string;
+    header?: string;
+    footer?: string;
   }
   export interface Media {
     /**

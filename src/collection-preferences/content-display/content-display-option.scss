@@ -6,6 +6,8 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
+/* stylelint-disable custom-property-pattern */
+
 .content-display-option-toggle {
   /* used in test-utils */
 }
@@ -16,10 +18,12 @@
   align-items: flex-start;
   padding-block: awsui.$space-scaled-xs;
   padding-inline-end: awsui.$space-xs;
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
+  // Sortable-item background + corner radius, themeable via the reorderList slot.
+  background: var(--awsui-internal-style-color-background, transparent);
+  border-start-start-radius: var(--awsui-internal-style-border-radius, #{awsui.$border-radius-item});
+  border-start-end-radius: var(--awsui-internal-style-border-radius, #{awsui.$border-radius-item});
+  border-end-start-radius: var(--awsui-internal-style-border-radius, #{awsui.$border-radius-item});
+  border-end-end-radius: var(--awsui-internal-style-border-radius, #{awsui.$border-radius-item});
 }
 
 .content-display-option-label {

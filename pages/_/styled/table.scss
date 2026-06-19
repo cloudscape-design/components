@@ -1,0 +1,42 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+@use './palette' as palette;
+
+.container {
+  --awsui-style-color-background: #{palette.$surface};
+  --awsui-style-color-divider: #{palette.$border};
+  --awsui-style-box-shadow-sticky: 0px 1px 4px -2px #{palette.$border};
+  --awsui-style-border-radius: 4px;
+}
+
+.table {
+  --awsui-style-color-border: #{palette.$border};
+  --awsui-style-color-divider: #{palette.$divider};
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}
+
+.row {
+  --awsui-style-color-border-selected: #{palette.$accent};
+  --awsui-style-color-background-selected: #{palette.$accent-muted};
+
+  &-stripe {
+    --awsui-style-color-background: #{palette.$surface-alt};
+  }
+}
+
+.cell-empty {
+  --awsui-style-color-background: #{palette.$empty-surface};
+}
+
+.selection-checkbox {
+  --awsui-style-color-background-checked: #{palette.$accent};
+  --awsui-style-color-border: #{palette.$accent};
+  --awsui-style-color-border-disabled: #{palette.$control-disabled};
+  --awsui-style-color-foreground: #{palette.$on-accent};
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}

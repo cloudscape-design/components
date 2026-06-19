@@ -22,7 +22,7 @@ $props: style-api.combine(
     border-width-top,
     color-border-top,
     box-shadow,
-    color-background-header,
+    box-shadow-sticky,
     padding-block-header,
     padding-inline-header,
     padding-block-content,
@@ -157,9 +157,12 @@ $tokens: style-api.resolve($props);
 }
 
 .header {
+  // The `header` slot themes the header background via --awsui-style-color-background. Re-anchor it
+  // into a distinct carrier so that, unset, the header inherits the container's root color-background.
+  --awsui-internal-style-color-background-header: var(--awsui-style-color-background);
   background-color: var(
-    #{style-api.name($tokens, color-background-header)},
-    #{awsui.$color-background-container-header}
+    --awsui-internal-style-color-background-header,
+    var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-header})
   );
   border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
   border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
@@ -204,7 +207,7 @@ $tokens: style-api.resolve($props);
       border-inline: 0;
     }
     &:not(.header-variant-cards) {
-      box-shadow: awsui.$shadow-sticky-embedded;
+      box-shadow: var(#{style-api.name($tokens, box-shadow-sticky)}, #{awsui.$shadow-sticky-embedded});
     }
   }
 
@@ -279,7 +282,7 @@ $tokens: style-api.resolve($props);
         position: absolute;
         inset: 0;
 
-        box-shadow: awsui.$shadow-sticky;
+        box-shadow: var(#{style-api.name($tokens, box-shadow-sticky)}, #{awsui.$shadow-sticky});
         // This polygon only shows the part of the shadow that is lower than the element itself.
         clip-path: polygon(-999% 100%, 999% 100%, 999% 999%, -999% 999%);
       }
@@ -309,6 +312,13 @@ $tokens: style-api.resolve($props);
 }
 
 .footer {
+  // The `footer` slot themes the footer background via --awsui-style-color-background. Re-anchor it
+  // into a distinct carrier so that, unset, the footer inherits the container's root color-background.
+  --awsui-internal-style-color-background-footer: var(--awsui-style-color-background);
+  background-color: var(
+    --awsui-internal-style-color-background-footer,
+    var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-content})
+  );
   &.with-paddings {
     padding-block: var(#{style-api.name($tokens, padding-block-footer)}, #{awsui.$space-scaled-s});
     padding-inline: var(#{style-api.name($tokens, padding-inline-footer)}, #{awsui.$space-container-horizontal});

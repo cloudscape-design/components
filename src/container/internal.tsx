@@ -169,6 +169,7 @@ export default function InternalContainer({
                     styles.header,
                     analyticsSelectors.header,
                     styles[`header-variant-${variant}`],
+                    classNames?.header,
                     {
                       [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
                       [styles['header-sticky-enabled']]: isSticky,
@@ -214,7 +215,7 @@ export default function InternalContainer({
           </div>
           {footer && (
             <div
-              className={clsx(styles.footer, {
+              className={clsx(styles.footer, classNames?.footer, {
                 [styles['with-divider']]: !__disableFooterDivider,
                 [styles['with-paddings']]: !disableFooterPaddings,
               })}

@@ -1,0 +1,77 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Local palette for the Style API v2 demo. Organized into semantic layers — surfaces, accent, text,
+// status, plus per-notification-type colors — so components reference a role, not another
+// component's color. Every value uses light-dark() for both color schemes.
+
+$transition: 0.3s ease;
+
+// ── Surfaces ──────────────────────────────────────────────────────────────────────────────────
+$surface: light-dark(hsl(48, 85%, 93%), hsl(48, 40%, 12%));
+$surface-alt: light-dark(hsl(45, 56%, 84%), hsl(45, 16%, 21%));
+$border: light-dark(hsl(35, 35%, 38%), hsl(35, 28%, 34%));
+$divider: light-dark(hsl(35, 30%, 52%), hsl(35, 22%, 44%));
+// A light-red surface used only for the empty-table body cell.
+$empty-surface: light-dark(hsl(1, 75%, 91%), hsl(1, 45%, 22%));
+
+// ── Accent ────────────────────────────────────────────────────────────────────────────────────
+$accent: light-dark(hsl(230, 45%, 30%), hsl(230, 52%, 56%));
+$accent-hover: light-dark(hsl(230, 45%, 37%), hsl(230, 52%, 63%));
+$accent-active: light-dark(hsl(230, 55%, 44%), hsl(230, 52%, 68%));
+$accent-fill: light-dark(hsl(230, 45%, 30%), hsl(230, 40%, 26%));
+$accent-fill-hover: light-dark(hsl(230, 45%, 37%), hsl(230, 40%, 33%));
+$on-accent: light-dark(hsl(230, 45%, 95%), hsl(230, 40%, 92%));
+$accent-muted: light-dark(hsl(230, 50%, 90%), hsl(230, 35%, 24%));
+$accent-subtle: light-dark(hsl(230, 55%, 82%), hsl(230, 45%, 64%));
+
+// Disabled control accent (muted indigo-grey): -fg is the disabled toggle handle.
+$control-disabled: light-dark(hsl(230, 14%, 70%), hsl(230, 12%, 42%));
+$control-disabled-fg: light-dark(hsl(230, 20%, 92%), hsl(230, 12%, 60%));
+
+// Muted secondary text (warm, matches the surface family) — used for themed description text.
+$text-muted: light-dark(hsl(35, 38%, 38%), hsl(45, 22%, 72%));
+
+// ── Links ─────────────────────────────────────────────────────────────────────────────────────
+$link: light-dark(hsl(230, 45%, 30%), hsl(230, 55%, 80%));
+$link-hover: light-dark(hsl(230, 45%, 37%), hsl(230, 62%, 88%));
+$link-active: light-dark(hsl(230, 76%, 40%), hsl(230, 66%, 92%));
+
+// ── Status ────────────────────────────────────────────────────────────────────────────────────
+$status-success: light-dark(hsl(105, 60%, 25%), hsl(105, 52%, 62%));
+$status-error: light-dark(hsl(1, 80%, 38%), hsl(1, 85%, 72%));
+$status-stopped: light-dark(hsl(196, 28%, 30%), hsl(196, 25%, 70%));
+
+// ── Notification types ────────────────────────────────────────────────────────────────────────
+
+// Error
+$error-surface: light-dark(hsl(1, 68%, 87%), hsl(1, 45%, 18%));
+$error-text: light-dark(hsl(1, 65%, 32%), hsl(1, 70%, 84%));
+$error-dismiss: light-dark(hsl(1, 60%, 38%), hsl(1, 65%, 80%));
+$error-dismiss-hover: light-dark(hsl(1, 72%, 26%), hsl(1, 80%, 92%));
+$error-dismiss-active: light-dark(hsl(1, 75%, 20%), hsl(1, 85%, 96%));
+
+// Gen-AI
+$genai-surface: light-dark(hsl(270, 55%, 86%), hsl(270, 35%, 17%));
+$genai-text: light-dark(hsl(270, 60%, 38%), hsl(270, 65%, 84%));
+$genai-accent: light-dark(hsl(270, 70%, 55%), hsl(270, 70%, 62%));
+$genai-border: light-dark(hsl(270, 55%, 55%), hsl(270, 50%, 66%));
+$genai-check: light-dark(hsl(0, 0%, 100%), hsl(270, 40%, 12%));
+$genai-dismiss: light-dark(hsl(270, 55%, 45%), hsl(270, 60%, 82%));
+$genai-dismiss-hover: light-dark(hsl(270, 68%, 30%), hsl(270, 70%, 92%));
+$genai-dismiss-active: light-dark(hsl(270, 72%, 24%), hsl(270, 72%, 96%));
+
+// Rejected Gen-AI
+$grey-surface: light-dark(hsl(220, 8%, 80%), hsl(220, 8%, 30%));
+$grey-text: light-dark(hsl(220, 10%, 38%), hsl(220, 8%, 72%));
+$grey-accent: light-dark(hsl(220, 8%, 52%), hsl(220, 8%, 58%));
+$grey-border: light-dark(hsl(220, 8%, 55%), hsl(220, 8%, 58%));
+$grey-check: light-dark(hsl(0, 0%, 100%), hsl(220, 10%, 14%));
+$grey-dismiss: light-dark(hsl(220, 8%, 42%), hsl(220, 8%, 72%));
+$grey-dismiss-hover: light-dark(hsl(220, 12%, 28%), hsl(0, 0%, 100%));
+$grey-dismiss-active: light-dark(hsl(220, 14%, 20%), hsl(0, 0%, 100%));
+
+// Modal overlay
+$modal-overlay: rgba(24, 20, 151, 0.5);

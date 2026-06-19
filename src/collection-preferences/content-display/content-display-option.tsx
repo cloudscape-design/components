@@ -4,6 +4,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { ToggleProps } from '../../toggle/interfaces';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
 
@@ -15,10 +16,11 @@ export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix
 interface ContentDisplayOptionProps {
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
+  toggleClassNames?: ToggleProps.ClassNames;
 }
 
 const ContentDisplayOption = forwardRef(
-  ({ onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
+  ({ onToggle, option, toggleClassNames }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
@@ -32,6 +34,7 @@ const ContentDisplayOption = forwardRef(
             onChange={() => onToggle && onToggle(option)}
             disabled={option.alwaysVisible === true}
             controlId={controlId}
+            classNames={toggleClassNames}
           />
         </div>
       </div>

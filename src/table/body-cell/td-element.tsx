@@ -59,6 +59,7 @@ export interface TableTdElementProps {
   hasSuccessIcon?: boolean;
   tableVariant?: string;
   counter?: React.ReactNode;
+  cellClassName?: string;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -100,6 +101,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSuccessIcon,
       tableVariant,
       counter,
+      cellClassName,
       ...rest
     },
     ref
@@ -147,7 +149,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           level !== undefined && !isEditingActive && styles['body-cell-expandable'],
           level !== undefined && !isEditingActive && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           tableVariant && styles[`table-variant-${tableVariant}`],
-          stickyStyles.className
+          stickyStyles.className,
+          cellClassName
         )}
         onClick={onClick}
         onFocus={onFocus}

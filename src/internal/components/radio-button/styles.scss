@@ -6,13 +6,41 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '../../styles/foundation' as foundation;
+@use '../../styles/style-api' as style-api;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 /* stylelint-disable custom-property-pattern */
 
 $radio-size: awsui.$size-control;
 
+// Control-box tokens re-anchored on the `.radio-control` element (mirroring the checkbox control
+// slot), so a per-radio-button consumer class (classNames.radioButton, applied here as the control
+// class) themes that button's circle via --awsui-style-*. The group root also re-anchors these (for
+// group-wide theming via classNames.root); the closest carrier wins.
+$control-carriers: (
+  color-background,
+  color-background-default,
+  color-background-checked,
+  color-background-disabled,
+  color-border,
+  color-border-default,
+  color-border-checked,
+  color-border-disabled,
+  color-foreground,
+  color-foreground-default,
+  color-foreground-disabled,
+  color-foreground-readonly,
+  border-width,
+  stroke-width,
+  transition-color-background,
+  transition-color-foreground,
+  color-focus-outline,
+  focus-outline-width,
+  focus-outline-radius
+);
+
 .radio-control {
+  @include style-api.carriers($control-carriers);
   @include styles.make-control-size($radio-size);
 }
 
@@ -38,18 +66,18 @@ $radio-size: awsui.$size-control;
 }
 
 .styled-circle-border {
-  stroke: var(--awsui-internal-style-color-border-control-default, #{awsui.$color-border-control-default});
-  fill: var(--awsui-internal-style-color-background-control-default, #{awsui.$color-background-control-default});
+  stroke: var(--awsui-internal-style-color-border-default, #{awsui.$color-border-control-default});
+  fill: var(--awsui-internal-style-color-background-default, #{awsui.$color-background-control-default});
   &.styled-circle-disabled,
   &.styled-circle-readonly {
-    fill: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
-    stroke: var(--awsui-internal-style-color-border-control-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-background-disabled, #{awsui.$color-background-control-disabled});
+    stroke: var(--awsui-internal-style-color-border-disabled, #{awsui.$color-background-control-disabled});
   }
 }
 
 .styled-circle-fill {
-  stroke: var(--awsui-internal-style-color-background-control-checked, #{awsui.$color-background-control-checked});
-  fill: var(--awsui-internal-style-color-foreground-control-default, #{awsui.$color-foreground-control-default});
+  stroke: var(--awsui-internal-style-color-background-checked, #{awsui.$color-background-control-checked});
+  fill: var(--awsui-internal-style-color-foreground-default, #{awsui.$color-foreground-control-default});
   opacity: 0;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
@@ -58,11 +86,11 @@ $radio-size: awsui.$size-control;
     opacity: 1;
   }
   &.styled-circle-disabled {
-    fill: var(--awsui-internal-style-color-foreground-control-disabled, #{awsui.$color-foreground-control-disabled});
-    stroke: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-foreground-disabled, #{awsui.$color-foreground-control-disabled});
+    stroke: var(--awsui-internal-style-color-background-disabled, #{awsui.$color-background-control-disabled});
   }
   &.styled-circle-readonly {
-    fill: var(--awsui-internal-style-color-foreground-control-readonly, #{awsui.$color-foreground-control-read-only});
-    stroke: var(--awsui-internal-style-color-background-control-disabled, #{awsui.$color-background-control-disabled});
+    fill: var(--awsui-internal-style-color-foreground-readonly, #{awsui.$color-foreground-control-read-only});
+    stroke: var(--awsui-internal-style-color-background-disabled, #{awsui.$color-background-control-disabled});
   }
 }

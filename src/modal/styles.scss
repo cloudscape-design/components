@@ -9,11 +9,13 @@
 @use './motion';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
 
 /* stylelint-disable custom-property-pattern */
 
-// Register public Style API tokens as @property.
-$props: (color-background, border-radius, color-background-header, color-background-overlay);
+// Register public Style API tokens as @property. Includes the focus-outline group so the focus ring
+// of focusable content inside the modal (e.g. reorder drag handles) is themeable.
+$props: style-api.combine((color-background, backdrop-filter, border-radius, color-divider), focus-outline.$props);
 $tokens: style-api.resolve($props);
 
 @include style-api.register($props);
@@ -21,9 +23,16 @@ $tokens: style-api.resolve($props);
 $modal-z-index: 5000;
 
 .root {
-  @include style-api.carriers($props);
   @include styles.styles-reset;
-  background-color: var(#{style-api.name($tokens, color-background-overlay)}, #{awsui.$color-background-modal-overlay});
+  // `.root` is the overlay/backdrop and carries the `overlay` slot. Its background is themed via the
+  // generic color-background (re-anchored here), defaulting to the dimmed overlay colour. The dialog
+  // tokens are re-anchored on `.dialog` instead, so theming the overlay doesn't affect the content.
+  --awsui-internal-style-color-background: var(--awsui-style-color-background);
+  background-color: var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-modal-overlay});
+  // The `overlay` slot can also apply a backdrop-filter (e.g. blur) behind the dialog. Unset, the
+  // var is invalid so no filter is applied.
+  --awsui-internal-style-backdrop-filter: var(--awsui-style-backdrop-filter);
+  backdrop-filter: var(#{style-api.name($tokens, backdrop-filter)});
 
   display: flex;
   align-items: center;
@@ -60,6 +69,10 @@ $modal-z-index: 5000;
 }
 
 .dialog {
+  // `.dialog` carries the `dialog` slot. Re-anchoring the dialog tokens here means setting
+  // color-background on the dialog slot themes the content, header and footer (which read it),
+  // independently of the overlay backdrop on `.root`.
+  @include style-api.carriers($props);
   position: static;
   inset-block-start: 0;
   transform: translate(0, 0);
@@ -149,11 +162,14 @@ $modal-z-index: 5000;
   padding-block-start: awsui.$space-container-header-top;
   padding-block-end: awsui.$space-container-header-bottom;
   padding-inline: awsui.$space-modal-horizontal;
+  // The `header` slot themes the header background via --awsui-style-color-background. Re-anchor it
+  // into a distinct carrier so that, unset, the header inherits the modal's root color-background.
+  --awsui-internal-style-color-background-header: var(--awsui-style-color-background);
   background-color: var(
-    #{style-api.name($tokens, color-background-header)},
-    #{awsui.$color-background-container-header}
+    --awsui-internal-style-color-background-header,
+    var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-header})
   );
-  border-block-end: 1px solid awsui.$color-border-container-divider;
+  border-block-end: 1px solid var(#{style-api.name($tokens, color-divider)}, #{awsui.$color-border-container-divider});
   border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
   border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{awsui.$border-radius-container});
   border-end-start-radius: 0;
@@ -165,10 +181,17 @@ $modal-z-index: 5000;
 }
 
 .footer {
-  @include container.divider;
+  border-block-start: awsui.$border-divider-section-width solid
+    var(#{style-api.name($tokens, color-divider)}, #{awsui.$color-border-divider-default});
   padding-block: awsui.$space-scaled-s;
   padding-inline: awsui.$space-container-horizontal;
-  background-color: awsui.$color-background-container-content;
+  // The `footer` slot themes the footer background via --awsui-style-color-background. Re-anchor it
+  // into a distinct carrier so that, unset, the footer inherits the modal's root color-background.
+  --awsui-internal-style-color-background-footer: var(--awsui-style-color-background);
+  background-color: var(
+    --awsui-internal-style-color-background-footer,
+    var(#{style-api.name($tokens, color-background)}, #{awsui.$color-background-container-content})
+  );
 
   // Make sure that the footer is always visible
   position: sticky;

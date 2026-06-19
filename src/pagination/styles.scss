@@ -5,9 +5,19 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-tokens' as style-tokens;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
+// Public Style API tokens.
+@include style-api.register(style-tokens.$props);
+
 .root {
+  // The pagination root is the styling boundary: tokens (incl. the focus-outline group, read by the
+  // button focus ring) re-anchor here and are themed via classNames.root.
+  @include style-api.carriers(style-tokens.$props);
   @include styles.styles-reset;
   display: flex;
   flex-direction: row;
@@ -47,40 +57,47 @@
 
   &-disabled {
     cursor: default;
-    color: awsui.$color-text-interactive-disabled;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-disabled)}, #{awsui.$color-text-interactive-disabled});
   }
 }
 
 .arrow {
-  color: awsui.$color-text-interactive-default;
+  color: var(#{style-api.name(style-tokens.$tokens, color-text-default)}, #{awsui.$color-text-interactive-default});
   &:not(.button-disabled):hover {
-    color: awsui.$color-text-interactive-hover;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-hover)}, #{awsui.$color-text-interactive-hover});
   }
   &.button-disabled {
-    color: awsui.$color-text-interactive-disabled;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-disabled)}, #{awsui.$color-text-interactive-disabled});
   }
 }
 
 .page-number {
-  color: awsui.$color-text-pagination-page-number-default;
+  color: var(
+    #{style-api.name(style-tokens.$tokens, color-text-default)},
+    #{awsui.$color-text-pagination-page-number-default}
+  );
   &:not(.button-disabled):hover {
-    color: awsui.$color-text-interactive-hover;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-hover)}, #{awsui.$color-text-interactive-hover});
   }
   &.button-current {
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
-    color: awsui.$color-text-interactive-active;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-active)}, #{awsui.$color-text-interactive-active});
     &.button-disabled {
-      color: awsui.$color-text-pagination-page-number-active-disabled;
+      color: var(
+        #{style-api.name(style-tokens.$tokens, color-text-disabled)},
+        #{awsui.$color-text-pagination-page-number-active-disabled}
+      );
     }
   }
   &.button-disabled {
-    color: awsui.$color-text-interactive-disabled;
+    color: var(#{style-api.name(style-tokens.$tokens, color-text-disabled)}, #{awsui.$color-text-interactive-disabled});
   }
 }
 
 .jump-to-page {
-  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-inline-start: awsui.$border-divider-section-width solid
+    var(#{style-api.name(style-tokens.$tokens, color-divider)}, #{awsui.$color-border-divider-default});
   box-sizing: border-box;
   margin-inline-start: awsui.$space-xs;
   padding-inline-start: awsui.$space-xs;
@@ -95,7 +112,7 @@
 }
 
 .dots {
-  color: awsui.$color-text-interactive-default;
+  color: var(#{style-api.name(style-tokens.$tokens, color-text-default)}, #{awsui.$color-text-interactive-default});
 }
 
 .page-item,
@@ -115,5 +132,5 @@
 }
 
 .root-disabled > .dots {
-  color: awsui.$color-text-interactive-disabled;
+  color: var(#{style-api.name(style-tokens.$tokens, color-text-disabled)}, #{awsui.$color-text-interactive-disabled});
 }

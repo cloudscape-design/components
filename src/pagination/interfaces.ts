@@ -76,6 +76,14 @@ export interface PaginationProps {
    * Jump to page configuration
    */
   jumpToPage?: PaginationProps.JumpToPageProps;
+
+  /**
+   * An object that maps the pagination's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The pagination's root element.
+   * @awsuiSystem core
+   */
+  classNames?: PaginationProps.ClassNames;
 }
 
 export namespace PaginationProps {
@@ -117,5 +125,9 @@ export namespace PaginationProps {
      * Set error state for jump to page. Component will auto-clear when user types or navigates.
      */
     setError: (hasError: boolean) => void;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 }

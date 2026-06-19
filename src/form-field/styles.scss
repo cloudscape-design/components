@@ -5,9 +5,20 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './motion';
+
+/* stylelint-disable custom-property-pattern */
+
+// Form field exposes `root`, `label` and `description` slots. The label/description text colours
+// re-anchor `color-text` on their own elements, so each can be themed via `--awsui-style-color-text`
+// (set on the root, it themes both).
+$props: (color-text);
+$tokens: style-api.resolve($props);
+
+@include style-api.register($props);
 
 .root {
   @include styles.styles-reset;
@@ -16,7 +27,8 @@
 
 .label {
   box-sizing: border-box;
-  color: awsui.$color-text-form-label;
+  @include style-api.carriers($props);
+  color: var(#{style-api.name($tokens, color-text)}, #{awsui.$color-text-form-label});
   // We display label inline to achieve the proper line-wrapping with info links
   display: inline;
   @include styles.font-smoothing;
@@ -30,7 +42,12 @@
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
-.description,
+.description {
+  @include styles.form-control-description;
+  @include style-api.carriers($props);
+  color: var(#{style-api.name($tokens, color-text)}, #{awsui.$color-text-form-secondary});
+}
+
 .constraint {
   @include styles.form-control-description;
 }

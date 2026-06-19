@@ -27,6 +27,7 @@ export default function SortableArea<Item>({
   onItemsChange,
   disableReorder,
   i18nStrings,
+  overlayClassName,
 }: SortableAreaProps<Item>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors, isKeyboard } =
     useDragAndDropReorder({
@@ -84,7 +85,11 @@ export default function SortableArea<Item>({
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
         <DragOverlay
-          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`])}
+          className={clsx(
+            styles['drag-overlay'],
+            styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`],
+            overlayClassName
+          )}
           dropAnimation={null}
           style={{ zIndex: 5000 }}
           transition={isKeyboard.current ? 'transform 250ms' : ''}

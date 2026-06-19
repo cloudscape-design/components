@@ -121,7 +121,7 @@ export interface LinkProps extends BaseComponentProps {
   /**
    * An object that maps the link's slots to CSS class names for custom styling.
    * Use these classes to scope `--awsui-style-*` custom properties.
-   * * `root` - The link's root element.
+   * * `anchor` - The link's anchor (`<a>`/`<button>`) element.
    * @awsuiSystem core
    */
   classNames?: LinkProps.ClassNames;
@@ -179,6 +179,6 @@ export namespace LinkProps {
   }
 
   export interface ClassNames {
-    root?: string;
+    anchor?: string;
   }
 }

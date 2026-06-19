@@ -4,14 +4,34 @@
 */
 
 @use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
 
 // Table's public Style API tokens (read in styles.scss and the body-cell/header-cell sub-files).
-$props: (
-  color-border,
-  color-background-header,
-  color-text-header,
-  color-background-selected,
-  color-border-selected,
-  color-icon-sort
+// Includes the focus-outline group so a consumer can theme the focus ring of everything inside the
+// table (cells, keyboard navigation, resize handles) via --awsui-style-color-focus-outline.
+$props: style-api.combine(
+  (
+    color-border,
+    color-divider,
+    color-text-header,
+    color-background,
+    color-background-selected,
+    color-border-selected,
+    color-icon-sort
+  ),
+  focus-outline.$props
 );
 $tokens: style-api.resolve($props);
+
+// Table-level tokens re-anchor on the table boundary (`.root` — the common ancestor of the
+// `<table>` and its sticky-header copy, both of which read them). The `table` + `container` slots
+// land here; the focus-outline tokens re-anchor here so descendants' focus rings can read them.
+$table-carriers: style-api.combine(
+  (color-border, color-divider, color-text-header, color-icon-sort),
+  focus-outline.$props
+);
+
+// Per-row tokens re-anchor on each row (the `row` slot), so they reach only that row's cells. The
+// selected tokens style selection. The row background (color-background) is re-anchored separately
+// in styles.scss into a distinct carrier, so a non-striped row doesn't shadow the table surface.
+$row-carriers: (color-background-selected, color-border-selected);

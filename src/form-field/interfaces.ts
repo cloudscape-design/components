@@ -8,6 +8,16 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 export interface FormFieldProps extends BaseComponentProps {
   /**
+   * An object that maps the form field's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The form field's root element.
+   * * `label` - The form field's label.
+   * * `description` - The form field's description.
+   * @awsuiSystem core
+   */
+  classNames?: FormFieldProps.ClassNames;
+
+  /**
    * The ID of the primary form control. You can use this to set the
    * `for` attribute of a label for accessibility.
    *
@@ -97,6 +107,12 @@ export interface FormFieldProps extends BaseComponentProps {
 }
 
 export namespace FormFieldProps {
+  export interface ClassNames {
+    root?: string;
+    label?: string;
+    description?: string;
+  }
+
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     errorContext?: ErrorContext;

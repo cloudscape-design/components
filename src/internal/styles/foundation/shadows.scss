@@ -6,12 +6,18 @@
 @use '../utils/theming' as theming;
 @use '../tokens' as awsui;
 
+/* stylelint-disable custom-property-pattern */
+
 $box-shadow-focused-width: 2px;
 
-// focus for clickable elements, like buttons
-$box-shadow-focused: 0 0 0 $box-shadow-focused-width awsui.$color-border-item-focused;
-// focus for form input elements, excluding buttons
-$box-shadow-focused-light: 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+// focus for clickable elements, like buttons. The ring color reads the v2 color-focus-outline token
+// (defaulting to the design token), so consumers theme focus rings via --awsui-style-color-focus-outline.
+$box-shadow-focused: 0 0 0 $box-shadow-focused-width
+  var(--awsui-internal-style-color-focus-outline, #{awsui.$color-border-item-focused});
+// focus for form input elements, excluding buttons. The ring color reads the v2 color-focus-outline
+// token (defaulting to the design token) so it matches the focus-outline border on the same element.
+$box-shadow-focused-light: 0 0 0 awsui.$border-control-focus-ring-shadow-spread
+  var(--awsui-internal-style-color-focus-outline, #{awsui.$color-border-item-focused});
 // focus for form input elements, excluding buttons
 $box-shadow-focused-light-invalid: 0 0 0 awsui.$border-control-invalid-focus-ring-shadow-spread
   awsui.$color-border-item-focused;

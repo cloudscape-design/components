@@ -19,18 +19,18 @@
 $props: style-api.combine(
   focus-outline.$props,
   (
-    color-background-control-default,
-    color-background-control-checked,
-    color-background-control-disabled,
-    color-background-control-readonly,
+    color-background-default,
+    color-background-checked,
+    color-background-disabled,
+    color-background-readonly,
     color-handle-default,
     color-handle-checked,
     color-handle-disabled,
     color-handle-readonly,
     border-radius,
-    color-text-label,
-    color-text-label-disabled,
-    color-text-label-readonly,
+    color-text,
+    color-text-disabled,
+    color-text-readonly,
     space-label,
     transition-duration,
     transition-easing
@@ -78,37 +78,25 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   // background colors in high-contrast/forced-color mode
   forced-color-adjust: none;
   @include styles.make-control-size($toggle-height, $toggle-width);
-  background: var(
-    #{style-api.name($tokens, color-background-control-default)},
-    #{awsui.$color-background-toggle-default}
-  );
+  background: var(#{style-api.name($tokens, color-background-default)}, #{awsui.$color-background-toggle-default});
   border-start-start-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
   border-start-end-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
   border-end-start-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
   border-end-end-radius: var(#{style-api.name($tokens, border-radius)}, #{0.8 * styles.$base-size});
   &-checked {
-    background: var(
-      #{style-api.name($tokens, color-background-control-checked)},
-      #{awsui.$color-background-control-checked}
-    );
+    background: var(#{style-api.name($tokens, color-background-checked)}, #{awsui.$color-background-control-checked});
   }
   &-disabled {
-    background: var(
-      #{style-api.name($tokens, color-background-control-disabled)},
-      #{awsui.$color-background-control-disabled}
-    );
+    background: var(#{style-api.name($tokens, color-background-disabled)}, #{awsui.$color-background-control-disabled});
     &.toggle-control-checked {
       background: var(
-        #{style-api.name($tokens, color-background-control-disabled)},
+        #{style-api.name($tokens, color-background-disabled)},
         #{awsui.$color-background-toggle-checked-disabled}
       );
     }
   }
   &-readonly {
-    background: var(
-      #{style-api.name($tokens, color-background-control-readonly)},
-      #{awsui.$color-background-control-disabled}
-    );
+    background: var(#{style-api.name($tokens, color-background-readonly)}, #{awsui.$color-background-control-disabled});
   }
 }
 

@@ -1,0 +1,93 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern,  @cloudscape-design/no-implicit-descendant, selector-combinator-disallowed-list */
+
+@use './palette' as palette;
+
+.item {
+  --awsui-style-padding-block: 4px;
+  --awsui-style-padding-inline: 8px;
+  --awsui-style-border-radius: 4px;
+  --awsui-style-transition: background-color #{palette.$transition}, color #{palette.$transition};
+
+  &-error {
+    --awsui-style-color-background: #{palette.$error-surface};
+    --awsui-style-color-text: #{palette.$error-text};
+  }
+
+  &-genai {
+    --awsui-style-color-background: #{palette.$genai-surface};
+    --awsui-style-color-text: #{palette.$genai-text};
+
+    &-hide {
+      --awsui-style-color-background: #{palette.$grey-surface};
+      --awsui-style-color-text: #{palette.$grey-text};
+    }
+  }
+}
+
+.dismiss {
+  --awsui-style-transition: color #{palette.$transition};
+}
+
+.checkbox {
+  &-control {
+    --awsui-style-transition-color-background: 300ms ease;
+    --awsui-style-transition-color-foreground: 300ms ease;
+  }
+
+  &-label {
+    --awsui-style-transition-color-text: 300ms ease;
+  }
+}
+
+.item-error .dismiss {
+  --awsui-style-color-text-default: #{palette.$error-dismiss};
+  --awsui-style-color-text-hover: #{palette.$error-dismiss-hover};
+  --awsui-style-color-text-active: #{palette.$error-dismiss-active};
+}
+
+.item-genai .dismiss {
+  --awsui-style-color-text-default: #{palette.$genai-dismiss};
+  --awsui-style-color-text-hover: #{palette.$genai-dismiss-hover};
+  --awsui-style-color-text-active: #{palette.$genai-dismiss-active};
+}
+
+.item-genai .checkbox-control {
+  --awsui-style-color-background-checked: #{palette.$genai-accent};
+  --awsui-style-color-border: #{palette.$genai-border};
+  --awsui-style-color-foreground: #{palette.$genai-check};
+}
+
+.item-genai .checkbox-label {
+  --awsui-style-color-text: #{palette.$genai-text};
+}
+
+.item-genai-hide .dismiss {
+  --awsui-style-color-text-default: #{palette.$grey-dismiss};
+  --awsui-style-color-text-hover: #{palette.$grey-dismiss-hover};
+  --awsui-style-color-text-active: #{palette.$grey-dismiss-active};
+}
+
+.item-genai-hide .checkbox-control {
+  --awsui-style-color-background-checked: #{palette.$grey-accent};
+  --awsui-style-color-border: #{palette.$grey-border};
+  --awsui-style-color-foreground: #{palette.$grey-check};
+}
+
+.item-genai-hide .checkbox-label {
+  --awsui-style-color-text: #{palette.$grey-text};
+}
+
+.notification-bar {
+  --awsui-style-color-background-default: #{palette.$accent-fill};
+  --awsui-style-color-background-hover: #{palette.$accent-fill-hover};
+  --awsui-style-color-background-active: #{palette.$accent-fill-hover};
+  --awsui-style-color-text-default: #{palette.$on-accent};
+  --awsui-style-color-text-hover: #{palette.$on-accent};
+  --awsui-style-color-text-active: #{palette.$on-accent};
+  --awsui-style-border-radius: 4px;
+}

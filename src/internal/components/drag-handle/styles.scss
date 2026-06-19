@@ -5,9 +5,16 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/style-api' as style-api;
+@use '../../styles/style-groups/focus-outline' as focus-outline;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+// Expose the focus-outline group so the handle's focus ring is themeable (e.g. via a list's
+// dragHandle slot). The focus-highlight below reads color-focus-outline through the carrier.
+@include style-api.register(focus-outline.$props);
+
 .handle {
+  @include style-api.carriers(focus-outline.$props);
   appearance: none;
   color: awsui.$color-text-interactive-default;
   background: transparent;

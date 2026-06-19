@@ -5,7 +5,11 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/foundation' as foundation;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+/* stylelint-disable custom-property-pattern */
 
 @mixin animated {
   @include styles.with-motion {
@@ -19,12 +23,25 @@
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  @include styles.focus-highlight(0px, $border-radius);
+  // The dragged item's ring colour is themeable via color-border (falls back to the focused-item
+  // design token), so it matches the list instead of the default blue.
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0 #{foundation.$box-shadow-focused-width}
+    var(--awsui-internal-style-color-border, #{awsui.$color-border-item-focused});
+  @include styles.focus-highlight(
+    $gutter: 0px,
+    $border-radius: $border-radius,
+    $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+  );
 }
 
 .drag-overlay {
+  // Re-anchor color-background + color-border here (the overlay is portaled, so it can't inherit
+  // them from the list). A consumer class on the overlay (overlayClassName) themes the overlay, the
+  // item inside, and the dragged-item ring.
+  --awsui-internal-style-color-background: var(--awsui-style-color-background);
+  --awsui-internal-style-color-border: var(--awsui-style-color-border);
   box-shadow: awsui.$shadow-container-active;
-  background-color: awsui.$color-background-container-content;
+  background-color: var(--awsui-internal-style-color-background, #{awsui.$color-background-container-content});
 
   &-item {
     @include drag-overlay-with-radius(awsui.$border-radius-item);
@@ -44,7 +61,9 @@
     content: ' ';
     position: absolute;
     inset: 0;
-    background: awsui.$color-drag-placeholder-hover;
+    // Themeable via color-background-selected (falls back to the default drag-placeholder colour),
+    // so the drop placeholder is a lighter highlight, distinct from the dragged item's ring.
+    background: var(--awsui-internal-style-color-background-selected, #{awsui.$color-drag-placeholder-hover});
   }
   &-item {
     &:after {

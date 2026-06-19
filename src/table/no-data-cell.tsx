@@ -18,6 +18,7 @@ interface NoDataCellProps {
   empty?: React.ReactNode;
   tableRef: React.RefObject<HTMLTableElement>;
   containerRef: React.RefObject<HTMLElement>;
+  cellClassName?: string;
 }
 
 export function NoDataCell({
@@ -28,6 +29,7 @@ export function NoDataCell({
   empty,
   tableRef,
   containerRef,
+  cellClassName,
 }: NoDataCellProps) {
   const cellContentRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +43,10 @@ export function NoDataCell({
   });
 
   return (
-    <td colSpan={totalColumnsCount} className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}>
+    <td
+      colSpan={totalColumnsCount}
+      className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'], cellClassName)}
+    >
       <div ref={cellContentRef} className={styles['cell-merged-content']} data-awsui-table-suppress-navigation={true}>
         {loading ? (
           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>

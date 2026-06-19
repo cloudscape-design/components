@@ -135,7 +135,8 @@ $cell-negative-space-vertical: 2px;
 .body-cell {
   box-sizing: border-box;
   border-block-start: awsui.$border-divider-list-width solid transparent;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+  border-block-end: awsui.$border-divider-list-width solid
+    var(#{style-api.name(style-tokens.$tokens, color-divider)}, #{awsui.$color-border-divider-secondary});
   word-wrap: break-word;
   font-weight: inherit;
   text-align: start;
@@ -263,7 +264,21 @@ $cell-negative-space-vertical: 2px;
 
   &.sticky-cell {
     position: sticky;
-    background: awsui.$color-background-container-content;
+    // Sticky cells need an opaque background to occlude scrolling columns. Resolve, in priority
+    // order: a cell-level color-background (set on this cell), then the row colour, then the table
+    // colour (the `table` slot), then the table surface (inherited from the container), then the
+    // design default — each level only contributes when its slot set --awsui-style-color-background.
+    --awsui-internal-style-color-background-cell: var(--awsui-style-color-background);
+    background: var(
+      --awsui-internal-style-color-background-cell,
+      var(
+        --awsui-internal-style-color-background-row,
+        var(
+          --awsui-internal-style-color-background-table,
+          var(#{style-api.name(style-tokens.$tokens, color-background)}, #{awsui.$color-background-container-content})
+        )
+      )
+    );
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
     @include styles.with-motion {
       transition-property: padding;

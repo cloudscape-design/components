@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo, useState } from 'react';
+import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -12,9 +13,11 @@ import {
   formatDndItemReordered,
   formatDndStarted,
 } from '../../internal/components/sortable-area/use-live-announcements';
+import { ListProps } from '../../list/interfaces';
 import InternalList from '../../list/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
+import { ToggleProps } from '../../toggle/interfaces';
 import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
@@ -29,6 +32,8 @@ const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
   value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
+  toggleClassNames?: ToggleProps.ClassNames;
+  listClassNames?: ListProps.ClassNames;
 }
 
 export default function ContentDisplayPreference({
@@ -48,6 +53,8 @@ export default function ContentDisplayPreference({
   dragHandleAriaLabel,
   enableColumnFiltering = false,
   i18nStrings,
+  toggleClassNames,
+  listClassNames,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
@@ -73,7 +80,7 @@ export default function ContentDisplayPreference({
       role="group"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      className={styles[componentPrefix]}
+      className={clsx(styles[componentPrefix], listClassNames?.root)}
       {...getAnalyticsInnerContextAttribute('contentDisplay')}
     >
       <h3 className={getClassName('title')} id={titleId}>
@@ -134,9 +141,11 @@ export default function ContentDisplayPreference({
 
       <InternalList
         items={sortedAndFilteredOptions}
+        overlayClassName={listClassNames?.root}
+        classNames={{ dragHandle: listClassNames?.dragHandle }}
         renderItem={item => ({
           id: item.id,
-          content: <ContentDisplayOption option={item} onToggle={onToggle} />,
+          content: <ContentDisplayOption option={item} onToggle={onToggle} toggleClassNames={toggleClassNames} />,
           announcementLabel: item.label,
         })}
         disableItemPaddings={true}

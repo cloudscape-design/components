@@ -4,36 +4,37 @@
 */
 
 @mixin checkbox-theme($accent, $accent-hover, $background) {
-  --awsui-style-color-background-control: #{$background};
-  --awsui-style-color-background-control-checked: #{$accent};
-  --awsui-style-color-border-control: #{$accent};
-  --awsui-style-color-text-label: #{$accent};
+  --awsui-style-color-background: #{$background};
+  --awsui-style-color-background-checked: #{$accent};
+  --awsui-style-color-border: #{$accent};
+  --awsui-style-color-text: #{$accent};
 
   &:hover,
   &[data-highlighted] {
-    --awsui-style-color-border-control: #{$accent-hover};
-    --awsui-style-color-background-control-checked: #{$accent-hover};
-    --awsui-style-color-text-label: #{$accent-hover};
+    --awsui-style-color-border: #{$accent-hover};
+    --awsui-style-color-background-checked: #{$accent-hover};
+    --awsui-style-color-text: #{$accent-hover};
   }
 }
 
 .styled-checkbox {
   @include checkbox-theme($accent: #ff5544, $accent-hover: #cc2200, $background: #ffee88);
-  --awsui-style-color-background-control-disabled: #cccccc;
-  --awsui-style-color-border-control-disabled: #cccccc;
-  --awsui-style-border-width-control: 2px;
-  --awsui-style-color-foreground-control: #ffffff;
-  --awsui-style-color-foreground-control-disabled: #999999;
-  --awsui-style-color-foreground-control-readonly: #777799;
-  --awsui-style-stroke-width-control: 2;
-  --awsui-style-color-text-label-disabled: #999999;
-  --awsui-style-color-text-label-readonly: #777799;
+  --awsui-style-color-background-disabled: #cccccc;
+  --awsui-style-color-border-disabled: #cccccc;
+  --awsui-style-border-width: 2px;
+  --awsui-style-color-foreground: #ffffff;
+  --awsui-style-color-foreground-disabled: #999999;
+  --awsui-style-color-foreground-readonly: #777799;
+  --awsui-style-stroke-width: 2;
+  --awsui-style-color-text-disabled: #999999;
+  --awsui-style-color-text-readonly: #777799;
   --awsui-style-space-label: 12px;
   --awsui-style-color-focus-outline: #ff5544;
   --awsui-style-focus-outline-radius: 4px;
   --awsui-style-focus-outline-width: 3px;
-  --awsui-style-transition-duration: 200ms;
-  --awsui-style-transition-easing: ease-in-out;
+  --awsui-style-transition-color-background: 200ms ease-in-out;
+  --awsui-style-transition-color-foreground: 200ms ease-in-out;
+  --awsui-style-transition-color-text: 200ms ease-in-out;
 }
 
 .styled-checkbox-one {

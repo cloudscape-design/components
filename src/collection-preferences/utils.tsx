@@ -3,11 +3,14 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { CheckboxProps } from '../checkbox/interfaces';
 import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
+import { FormFieldProps } from '../form-field/interfaces';
 import InternalFormField from '../form-field/internal';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { RadioGroupProps } from '../radio-group/interfaces';
 import InternalRadioGroup from '../radio-group/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
@@ -83,9 +86,18 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
 interface PageSizePreferenceProps extends CollectionPreferencesProps.PageSizePreference {
   onChange: (value: number) => void;
   value?: number;
+  formFieldClassNames?: FormFieldProps.ClassNames;
+  radioGroupClassNames?: RadioGroupProps.ClassNames;
 }
 
-export const PageSizePreference = ({ title, options, value, onChange }: PageSizePreferenceProps) => {
+export const PageSizePreference = ({
+  title,
+  options,
+  value,
+  onChange,
+  formFieldClassNames,
+  radioGroupClassNames,
+}: PageSizePreferenceProps) => {
   const i18n = useInternalI18n('collection-preferences');
   return (
     <div className={styles['page-size']} {...getAnalyticsInnerContextAttribute('pageSize')}>
@@ -93,9 +105,11 @@ export const PageSizePreference = ({ title, options, value, onChange }: PageSize
         label={i18n('pageSizePreference.title', title)}
         stretch={true}
         className={styles['page-size-form-field']}
+        classNames={formFieldClassNames}
       >
         <InternalRadioGroup
           className={styles['page-size-radio-group']}
+          classNames={radioGroupClassNames}
           value={`${value}`}
           items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
           onChange={({ detail }) => onChange(parseInt(detail.value, 10))}
@@ -108,9 +122,16 @@ export const PageSizePreference = ({ title, options, value, onChange }: PageSize
 interface WrapLinesPreferenceProps extends CollectionPreferencesProps.WrapLinesPreference {
   onChange: (value: boolean) => void;
   value?: boolean;
+  checkboxClassNames?: CheckboxProps.ClassNames;
 }
 
-export const WrapLinesPreference = ({ label, description, value, onChange }: WrapLinesPreferenceProps) => {
+export const WrapLinesPreference = ({
+  label,
+  description,
+  value,
+  onChange,
+  checkboxClassNames,
+}: WrapLinesPreferenceProps) => {
   const i18n = useInternalI18n('collection-preferences');
   return (
     <div {...getAnalyticsInnerContextAttribute('wrapLines')}>
@@ -119,6 +140,7 @@ export const WrapLinesPreference = ({ label, description, value, onChange }: Wra
         description={i18n('wrapLinesPreference.description', description)}
         onChange={({ detail }) => onChange(detail.checked)}
         className={styles['wrap-lines']}
+        classNames={checkboxClassNames}
       >
         {i18n('wrapLinesPreference.label', label)}
       </InternalCheckbox>
@@ -129,9 +151,16 @@ export const WrapLinesPreference = ({ label, description, value, onChange }: Wra
 interface StripedRowsPreferenceProps extends CollectionPreferencesProps.StripedRowsPreference {
   onChange: (value: boolean) => void;
   value?: boolean;
+  checkboxClassNames?: CheckboxProps.ClassNames;
 }
 
-export function StripedRowsPreference({ label, description, value, onChange }: StripedRowsPreferenceProps) {
+export function StripedRowsPreference({
+  label,
+  description,
+  value,
+  onChange,
+  checkboxClassNames,
+}: StripedRowsPreferenceProps) {
   const i18n = useInternalI18n('collection-preferences');
   return (
     <div {...getAnalyticsInnerContextAttribute('stripedRows')}>
@@ -140,6 +169,7 @@ export function StripedRowsPreference({ label, description, value, onChange }: S
         description={i18n('stripedRowsPreference.description', description)}
         onChange={({ detail }) => onChange(detail.checked)}
         className={styles['striped-rows']}
+        classNames={checkboxClassNames}
       >
         {i18n('stripedRowsPreference.label', label)}
       </InternalCheckbox>
@@ -150,9 +180,16 @@ export function StripedRowsPreference({ label, description, value, onChange }: S
 interface ContentDensityPreferenceProps extends CollectionPreferencesProps.ContentDensityPreference {
   onChange: (value: 'comfortable' | 'compact') => void;
   value?: 'comfortable' | 'compact';
+  checkboxClassNames?: CheckboxProps.ClassNames;
 }
 
-export const ContentDensityPreference = ({ label, description, value, onChange }: ContentDensityPreferenceProps) => {
+export const ContentDensityPreference = ({
+  label,
+  description,
+  value,
+  onChange,
+  checkboxClassNames,
+}: ContentDensityPreferenceProps) => {
   const i18n = useInternalI18n('collection-preferences');
   return (
     <div {...getAnalyticsInnerContextAttribute('contentDensity')}>
@@ -161,6 +198,7 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
         description={i18n('contentDensityPreference.description', description)}
         onChange={({ detail }) => onChange(detail.checked ? 'compact' : 'comfortable')}
         className={styles['content-density']}
+        classNames={checkboxClassNames}
       >
         {i18n('contentDensityPreference.label', label)}
       </InternalCheckbox>
@@ -171,6 +209,8 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
 interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
   onChange: (value?: { first?: number; last?: number }) => void;
   value?: { first?: number; last?: number };
+  formFieldClassNames?: FormFieldProps.ClassNames;
+  radioGroupClassNames?: RadioGroupProps.ClassNames;
 }
 interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
   onChange: (value: number) => void;
@@ -184,15 +224,30 @@ interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPrefe
   };
   value?: number;
   firstOrLast: 'first' | 'last';
+  formFieldClassNames?: FormFieldProps.ClassNames;
+  radioGroupClassNames?: RadioGroupProps.ClassNames;
 }
 
-const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPreference) => {
+const StickyPreference = ({
+  firstOrLast,
+  preference,
+  value,
+  onChange,
+  formFieldClassNames,
+  radioGroupClassNames,
+}: StickyPreference) => {
   const { title, description, options } = preference;
   return (
     <div className={styles[`sticky-columns-${firstOrLast}`]} {...getAnalyticsInnerContextAttribute('stickyColumns')}>
-      <InternalFormField className={styles['sticky-columns-form-field']} label={title} description={description}>
+      <InternalFormField
+        className={styles['sticky-columns-form-field']}
+        classNames={formFieldClassNames}
+        label={title}
+        description={description}
+      >
         <InternalRadioGroup
           className={styles['sticky-columns-radio-group']}
+          classNames={radioGroupClassNames}
           value={typeof value !== 'undefined' ? `${value}` : null}
           items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
           onChange={({ detail }) => onChange(Number(detail.value))}
@@ -207,6 +262,8 @@ export const StickyColumnsPreference = ({
   lastColumns,
   onChange,
   value,
+  formFieldClassNames,
+  radioGroupClassNames,
 }: StickyColumnsPreferenceProps) => {
   return (
     <InternalSpaceBetween className={styles['sticky-columns']} size="l">
@@ -215,6 +272,8 @@ export const StickyColumnsPreference = ({
           firstOrLast="first"
           preference={firstColumns}
           value={value?.first}
+          formFieldClassNames={formFieldClassNames}
+          radioGroupClassNames={radioGroupClassNames}
           onChange={newValue => onChange({ ...value, first: newValue })}
         />
       )}
@@ -223,6 +282,8 @@ export const StickyColumnsPreference = ({
           firstOrLast="last"
           preference={lastColumns}
           value={value?.last}
+          formFieldClassNames={formFieldClassNames}
+          radioGroupClassNames={radioGroupClassNames}
           onChange={newValue => onChange({ ...value, last: newValue })}
         />
       )}

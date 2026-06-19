@@ -40,8 +40,9 @@ export default function TableStyleV2Page() {
     <SimplePage title="Table with Style API v2" screenshotArea={{}}>
       <Table
         classNames={{
-          root: styles['styled-table'],
-          selection: ({ item }) => {
+          table: styles['styled-table'],
+          row: () => styles['styled-table-row'],
+          selectionCheckbox: ({ item }) => {
             if (!item) {
               return styles['selection-header'];
             }

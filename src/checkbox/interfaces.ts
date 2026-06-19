@@ -43,7 +43,9 @@ export interface CheckboxProps extends BaseCheckboxProps {
   /**
    * An object that maps the checkbox's slots to CSS class names for custom styling.
    * Use these classes to scope `--awsui-style-*` custom properties.
-   * * `root` - The checkbox's root element.
+   * * `control` - The checkbox's control (the box and its checkmark).
+   * * `label` - The checkbox's label text.
+   * * `description` - The checkbox's description text.
    * @awsuiSystem core
    */
   classNames?: CheckboxProps.ClassNames;
@@ -70,7 +72,9 @@ export namespace CheckboxProps {
   }
 
   export interface ClassNames {
-    root?: string;
+    control?: string;
+    label?: string;
+    description?: string;
   }
 
   export interface ChangeDetail {

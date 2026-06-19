@@ -60,8 +60,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   border-block-end: awsui.$border-divider-section-width solid
     var(#{style-api.name(style-tokens.$tokens, color-border)}, #{awsui.$color-border-divider-default});
   background: var(
-    #{style-api.name(style-tokens.$tokens, color-background-header)},
-    #{awsui.$color-background-table-header}
+    --awsui-internal-style-color-background-thead,
+    var(
+      --awsui-internal-style-color-background-table,
+      var(#{style-api.name(style-tokens.$tokens, color-background)}, #{awsui.$color-background-table-header})
+    )
   );
   color: var(#{style-api.name(style-tokens.$tokens, color-text-header)}, #{awsui.$color-text-column-header});
   font-weight: awsui.$font-weight-heading-s;
@@ -72,7 +75,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-table-sticky-width solid
+      var(#{style-api.name(style-tokens.$tokens, color-border)}, #{awsui.$color-border-divider-default});
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
@@ -95,8 +99,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &.sticky-cell {
     position: sticky;
     background: var(
-      #{style-api.name(style-tokens.$tokens, color-background-header)},
-      #{awsui.$color-background-table-header}
+      --awsui-internal-style-color-background-thead,
+      var(
+        --awsui-internal-style-color-background-table,
+        var(#{style-api.name(style-tokens.$tokens, color-background)}, #{awsui.$color-background-table-header})
+      )
     );
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
     @include styles.with-motion {

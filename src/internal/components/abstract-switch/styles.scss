@@ -19,10 +19,9 @@
 // internal propagation vars set on the host root. Hosts own the public `--awsui-style-{host}-*`
 // tokens; abstract-switch only reads the resolved internal vars, falling back to design tokens.
 .label {
-  color: var(--awsui-internal-style-color-text-label, #{awsui.$color-text-form-default});
+  color: var(--awsui-internal-style-color-text, #{awsui.$color-text-form-default});
   @include styles.with-motion {
-    transition: color var(--awsui-internal-style-transition-duration, 0s)
-      var(--awsui-internal-style-transition-easing, ease);
+    transition: color var(--awsui-internal-style-transition-color-text, 0s);
   }
 }
 
@@ -70,10 +69,10 @@
 .description {
   padding-inline-start: var(--awsui-internal-style-space-label, #{awsui.$space-xs});
   &-disabled {
-    color: var(--awsui-internal-style-color-text-label-disabled, #{awsui.$color-text-control-disabled});
+    color: var(--awsui-internal-style-color-text-disabled, #{awsui.$color-text-control-disabled});
   }
   &-readonly {
-    color: var(--awsui-internal-style-color-text-label-readonly, #{awsui.$color-text-form-default});
+    color: var(--awsui-internal-style-color-text-readonly, #{awsui.$color-text-form-default});
   }
 }
 

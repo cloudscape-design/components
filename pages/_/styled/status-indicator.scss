@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+@use './palette' as palette;
+
+.root {
+  &-success {
+    --awsui-style-color-text: #{palette.$status-success};
+  }
+
+  &-error {
+    --awsui-style-color-text: #{palette.$status-error};
+  }
+
+  &-stopped {
+    --awsui-style-color-text: #{palette.$status-stopped};
+  }
+}

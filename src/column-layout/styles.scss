@@ -9,9 +9,14 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+/* stylelint-disable custom-property-pattern */
+
 $grid-columns: 12;
 $grid-gutter-width: awsui.$space-grid-gutter;
-$column-layout-border: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+// The divider color reads an inherited color-divider carrier when an ancestor (e.g. a themed modal)
+// sets one, otherwise the design default — so themed surfaces can color the column separators.
+$column-layout-border: awsui.$border-divider-section-width solid
+  var(--awsui-internal-style-color-divider, #{awsui.$color-border-divider-default});
 $column-breakpoint-spans: (
   '1': (
     'xxs': 12,

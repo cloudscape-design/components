@@ -108,7 +108,11 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
    * An object that maps the modal's slots to CSS class names for custom styling.
    * Use these classes to scope `--awsui-style-*` custom properties.
-   * * `root` - The modal's root element.
+   * * `overlay` - The dimmed overlay (root) behind the dialog. Setting `color-background` themes the overlay backdrop, and `backdrop-filter` applies an effect (e.g. blur) behind it.
+   * * `dialog` - The dialog box. Setting `color-background` themes the dialog content, header, and footer.
+   * * `header` - The modal header. Overrides the dialog background for the header region (inherits it by default).
+   * * `footer` - The modal footer. Overrides the dialog background for the footer region (inherits it by default).
+   * * `dismissButton` - The header dismiss (close) button.
    * @awsuiSystem core
    */
   classNames?: ModalProps.ClassNames;
@@ -119,7 +123,11 @@ export namespace ModalProps {
   export type Position = 'center' | 'top';
 
   export interface ClassNames {
-    root?: string;
+    overlay?: string;
+    dialog?: string;
+    header?: string;
+    footer?: string;
+    dismissButton?: string;
   }
 
   export interface DismissDetail {

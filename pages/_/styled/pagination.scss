@@ -1,0 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+@use './palette' as palette;
+
+.root {
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}

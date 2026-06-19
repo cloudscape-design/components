@@ -18,6 +18,8 @@ import styles from './styles.css.js';
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
   controlId?: string;
   controlClassName: string;
+  labelClassName?: string;
+  descriptionClassName?: string;
   outlineClassName: string;
   showOutline?: boolean;
   disabled?: boolean;
@@ -57,6 +59,8 @@ function joinString(values: (string | undefined)[]) {
 export default function AbstractSwitch({
   controlId,
   controlClassName,
+  labelClassName,
+  descriptionClassName,
   outlineClassName,
   showOutline,
   disabled,
@@ -146,7 +150,7 @@ export default function AbstractSwitch({
           {label && (
             <span
               id={labelId}
-              className={clsx(styles.label, analyticsSelectors.label, {
+              className={clsx(styles.label, labelClassName, analyticsSelectors.label, {
                 [styles['label-disabled']]: disabled,
                 [styles['label-readonly']]: readOnly && !disabled,
               })}
@@ -158,7 +162,7 @@ export default function AbstractSwitch({
           {description && (
             <span
               id={descriptionId}
-              className={clsx(styles.description, {
+              className={clsx(styles.description, descriptionClassName, {
                 [styles['description-disabled']]: disabled,
                 [styles['description-bottom-padding']]: descriptionBottomPadding,
               })}

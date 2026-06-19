@@ -40,9 +40,21 @@ export interface StatusIndicatorProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+
+  /**
+   * An object that maps the status indicator's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The status indicator's root element.
+   * @awsuiSystem core
+   */
+  classNames?: StatusIndicatorProps.ClassNames;
 }
 
 export namespace StatusIndicatorProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   // Why not enums? Explained there
   // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
   export type Type =

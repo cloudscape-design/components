@@ -110,6 +110,7 @@ export function ConstraintTextRegion({
 
 export default function InternalFormField({
   controlId,
+  classNames,
   stretch = false,
   label,
   info,
@@ -232,7 +233,7 @@ export default function InternalFormField({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, classNames?.root)}
       style={__style}
       ref={ref}
       {...analyticsAttributes}
@@ -241,7 +242,7 @@ export default function InternalFormField({
       <div className={clsx(styles['label-wrapper'], __hideLabel && styles['visually-hidden'])}>
         {label && (
           <label
-            className={clsx(styles.label, analyticsSelectors.label)}
+            className={clsx(styles.label, analyticsSelectors.label, classNames?.label)}
             id={slotIds.label}
             htmlFor={generatedControlId}
           >
@@ -254,7 +255,7 @@ export default function InternalFormField({
       </div>
 
       {description && (
-        <div className={styles.description} id={slotIds.description}>
+        <div className={clsx(styles.description, classNames?.description)} id={slotIds.description}>
           {description}
         </div>
       )}

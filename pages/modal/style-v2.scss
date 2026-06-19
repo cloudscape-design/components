@@ -5,10 +5,16 @@
 
 @use '../app/themes/style-v2-palette' as palette;
 
-.styled-modal {
-  --awsui-style-color-background-header: #{palette.$info-surface};
+.styled-modal-dialog {
   --awsui-style-border-radius: 20px;
-  --awsui-style-color-background-overlay: hsl(220 120% 15% / 75%);
+}
+
+.styled-modal-header {
+  --awsui-style-color-background: #{palette.$info-surface};
+}
+
+.styled-modal-overlay {
+  --awsui-style-color-background: hsl(220 120% 15% / 75%);
 }
 
 .styled-button-primary {

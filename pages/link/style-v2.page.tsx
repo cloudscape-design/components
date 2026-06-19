@@ -12,16 +12,16 @@ import styles from './style-v2.scss';
 export default function StyleV2LinkPage() {
   return (
     <SimplePage title="Link with Style API v2" screenshotArea={{}}>
-      <Link href="#" variant="primary" classNames={{ root: styles['styled-link'] }}>
+      <Link href="#" variant="primary" classNames={{ anchor: styles['styled-link'] }}>
         Primary link
       </Link>
-      <Link href="#" variant="secondary" classNames={{ root: styles['styled-link'] }}>
+      <Link href="#" variant="secondary" classNames={{ anchor: styles['styled-link'] }}>
         Secondary link
       </Link>
-      <Link href="#" external={true} classNames={{ root: styles['styled-link'] }}>
+      <Link href="#" external={true} classNames={{ anchor: styles['styled-link'] }}>
         External link with icon
       </Link>
-      <Link href="#" variant="info" classNames={{ root: styles['styled-link'] }}>
+      <Link href="#" variant="info" classNames={{ anchor: styles['styled-link'] }}>
         Info link
       </Link>
     </SimplePage>

@@ -351,7 +351,8 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
             transitioning && styles['animation-running'],
             visibleItems.length === 2 && styles['short-list'],
-            getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
+            getVisualContextClassname('flashbar'), // Visual context is needed for focus ring to be white
+            restProps.classNames?.notificationBar
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}

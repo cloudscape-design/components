@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/style-groups/focus-outline' as focus-outline;
+
+// Pagination's public Style API tokens: the page-number/arrow text colors per state, the
+// jump-to-page divider, and the shared focus-outline group.
+$props: style-api.combine(
+  (color-text-default, color-text-hover, color-text-active, color-text-disabled, color-divider),
+  focus-outline.$props
+);
+$tokens: style-api.resolve($props);

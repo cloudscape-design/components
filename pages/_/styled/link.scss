@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+@use './palette' as palette;
+
+.anchor {
+  --awsui-style-color-text-default: #{palette.$link};
+  --awsui-style-color-text-hover: #{palette.$link-hover};
+  --awsui-style-color-text-active: #{palette.$link-active};
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}

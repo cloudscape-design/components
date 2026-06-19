@@ -80,6 +80,7 @@ export default function StatusIndicator({
   colorOverride,
   wrapText = true,
   nativeAttributes,
+  classNames,
   __animate = false,
   __internalRootRef,
   __size = 'normal',
@@ -99,6 +100,7 @@ export default function StatusIndicator({
         {
           [styles[`color-override-${colorOverride}`]]: colorOverride,
         },
+        classNames?.root,
         baseProps.className
       )}
       ref={__internalRootRef}

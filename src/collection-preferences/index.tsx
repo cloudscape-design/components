@@ -63,6 +63,7 @@ export default function CollectionPreferences({
   getModalRoot,
   removeModalRoot,
   contentBefore,
+  classNames,
   ...rest
 }: CollectionPreferencesProps) {
   const parentMetadata = useContext(CollectionPreferencesMetadata);
@@ -166,6 +167,7 @@ export default function CollectionPreferences({
         <InternalButton
           ref={triggerRef}
           className={clsx(styles['trigger-button'], analyticsSelectors['trigger-button'])}
+          classNames={{ root: classNames?.trigger }}
           disabled={disabled}
           ariaLabel={i18n('title', title)}
           onClick={() => {
@@ -180,6 +182,7 @@ export default function CollectionPreferences({
         {!disabled && modalVisible && (
           <InternalModal
             className={styles['modal-root']}
+            classNames={classNames?.modal}
             visible={true}
             getModalRoot={getModalRoot}
             removeModalRoot={removeModalRoot}
@@ -190,6 +193,7 @@ export default function CollectionPreferences({
                 <InternalSpaceBetween direction="horizontal" size="xs">
                   <InternalButton
                     className={styles['cancel-button']}
+                    classNames={{ root: classNames?.cancelButton }}
                     variant="link"
                     formAction="none"
                     onClick={onCancelListener}
@@ -199,6 +203,7 @@ export default function CollectionPreferences({
                   </InternalButton>
                   <InternalButton
                     className={styles['confirm-button']}
+                    classNames={{ root: classNames?.confirmButton }}
                     variant="primary"
                     formAction="none"
                     onClick={onConfirmListener}
@@ -223,6 +228,8 @@ export default function CollectionPreferences({
                   <InternalSpaceBetween size="l">
                     {pageSizePreference && (
                       <PageSizePreference
+                        formFieldClassNames={classNames?.formField}
+                        radioGroupClassNames={classNames?.radioGroup}
                         value={temporaryPreferences.pageSize}
                         {...pageSizePreference}
                         onChange={pageSize => onChange({ pageSize })}
@@ -230,6 +237,7 @@ export default function CollectionPreferences({
                     )}
                     {wrapLinesPreference && (
                       <WrapLinesPreference
+                        checkboxClassNames={classNames?.checkbox}
                         value={temporaryPreferences.wrapLines}
                         {...wrapLinesPreference}
                         onChange={wrapLines => onChange({ wrapLines })}
@@ -237,6 +245,7 @@ export default function CollectionPreferences({
                     )}
                     {stripedRowsPreference && (
                       <StripedRowsPreference
+                        checkboxClassNames={classNames?.checkbox}
                         value={temporaryPreferences.stripedRows}
                         {...stripedRowsPreference}
                         onChange={stripedRows => onChange({ stripedRows })}
@@ -244,6 +253,7 @@ export default function CollectionPreferences({
                     )}
                     {contentDensityPreference && (
                       <ContentDensityPreference
+                        checkboxClassNames={classNames?.checkbox}
                         value={temporaryPreferences.contentDensity}
                         {...contentDensityPreference}
                         onChange={contentDensity => onChange({ contentDensity })}
@@ -251,6 +261,8 @@ export default function CollectionPreferences({
                     )}
                     {stickyColumnsPreference && (
                       <StickyColumnsPreference
+                        formFieldClassNames={classNames?.formField}
+                        radioGroupClassNames={classNames?.radioGroup}
                         value={temporaryPreferences.stickyColumns}
                         {...stickyColumnsPreference}
                         onChange={stickyColumns => onChange({ stickyColumns })}
@@ -269,6 +281,8 @@ export default function CollectionPreferences({
               right={
                 contentDisplayPreference ? (
                   <ContentDisplayPreference
+                    toggleClassNames={classNames?.toggle}
+                    listClassNames={classNames?.list}
                     {...contentDisplayPreference}
                     value={temporaryPreferences.contentDisplay}
                     onChange={contentDisplay => onChange({ contentDisplay })}
@@ -276,6 +290,7 @@ export default function CollectionPreferences({
                 ) : (
                   visibleContentPreference && (
                     <VisibleContentPreference
+                      toggleClassNames={classNames?.toggle}
                       value={temporaryPreferences.visibleContent}
                       {...visibleContentPreference}
                       onChange={visibleItems => onChange({ visibleContent: visibleItems })}

@@ -1,0 +1,94 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern */
+
+@use './palette' as palette;
+
+.trigger {
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}
+
+.modal {
+  &-dialog {
+    --awsui-style-color-background: #{palette.$surface};
+    --awsui-style-color-divider: #{palette.$surface-alt};
+    --awsui-style-color-focus-outline: #{palette.$accent};
+    --awsui-style-border-radius: 4px;
+  }
+
+  &-header {
+    --awsui-style-color-background: #{palette.$surface-alt};
+  }
+
+  &-overlay {
+    --awsui-style-color-background: #{palette.$modal-overlay};
+    --awsui-style-backdrop-filter: blur(3px);
+  }
+
+  &-dismiss {
+    --awsui-style-color-focus-outline: #{palette.$accent};
+  }
+}
+
+.button {
+  --awsui-style-border-radius: 4px;
+  --awsui-style-color-focus-outline: #{palette.$accent};
+
+  &-confirm {
+    --awsui-style-color-background: #{palette.$accent-fill};
+    --awsui-style-color-background-hover: #{palette.$accent-fill-hover};
+    --awsui-style-color-background-active: #{palette.$accent-fill-hover};
+    --awsui-style-color-border: #{palette.$accent-fill};
+    --awsui-style-color-border-hover: #{palette.$accent-fill-hover};
+    --awsui-style-color-border-active: #{palette.$accent-fill-hover};
+    --awsui-style-color-text: #{palette.$on-accent};
+    --awsui-style-color-text-hover: #{palette.$on-accent};
+    --awsui-style-color-text-active: #{palette.$on-accent};
+
+    &:focus {
+      --awsui-style-color-background: #{palette.$accent-fill-hover};
+      --awsui-style-color-border: #{palette.$accent-fill-hover};
+    }
+  }
+
+  &-cancel {
+    --awsui-style-color-text-default: #{palette.$accent};
+    --awsui-style-color-text-hover: #{palette.$accent-hover};
+    --awsui-style-color-text-active: #{palette.$accent-active};
+    --awsui-style-color-background-hover: #{palette.$on-accent};
+    --awsui-style-color-background-active: #{palette.$on-accent};
+    --awsui-style-color-border-hover: #{palette.$on-accent};
+    --awsui-style-color-border-active: #{palette.$on-accent};
+
+    &:focus {
+      --awsui-style-color-background: #{palette.$on-accent};
+      --awsui-style-color-border: #{palette.$on-accent};
+    }
+  }
+}
+
+.control {
+  --awsui-style-color-border: #{palette.$accent};
+  --awsui-style-color-foreground: #{palette.$on-accent};
+  --awsui-style-color-background-checked: #{palette.$accent};
+  --awsui-style-color-background-disabled: #{palette.$control-disabled};
+  --awsui-style-color-handle-disabled: #{palette.$control-disabled-fg};
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}
+
+.list {
+  &-root {
+    --awsui-style-color-divider: #{palette.$divider};
+    --awsui-style-color-background: #{palette.$surface};
+    --awsui-style-color-border: #{palette.$accent};
+    --awsui-style-color-background-selected: #{palette.$surface-alt};
+    --awsui-style-border-radius: 4px;
+  }
+
+  &-drag-handle {
+    --awsui-style-color-focus-outline: #{palette.$accent};
+  }
+}

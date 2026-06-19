@@ -155,9 +155,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * An object that maps the table's slots to CSS class names for custom styling.
    * Use these classes to scope `--awsui-style-*` custom properties.
-   * * `root` - The table's root element.
-   * * `selection` - Each selection cell. A string is applied to all; a function receiving
-   *   `{ item }` enables row-level customization (`item` is `undefined` for the header "select all" control).
+   * * `container` - The table's container.
+   * * `table` - The `<table>` element.
+   * * `thead` - The `<thead>` element. Theme the header background via `--awsui-style-color-background`.
+   * * `cell` - Each body cell, including the merged cell shown in the empty/loading state.
+   * * `row` - Each row. A string is applied to all; a function receiving `{ item, index }` enables row-level customization.
+   * * `selectionCheckbox` / `selectionRadio` - Each selection cell. A string is applied to all; a function
+   *   receiving `{ item }` enables row-level customization (`item` is `undefined` for the header "select all" control).
    * @awsuiSystem core
    */
   classNames?: TableProps.ClassNames<T>;
@@ -451,8 +455,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
 export namespace TableProps {
   export interface ClassNames<T = any> {
-    root?: string;
-    selection?: string | ((props: { item: T | undefined }) => string);
+    container?: string;
+    table?: string;
+    thead?: string;
+    cell?: string;
+    row?: string | ((props: { item: T; index: number }) => string);
+    selectionCheckbox?: string | ((props: { item: T | undefined }) => string);
+    selectionRadio?: string | ((props: { item: T | undefined }) => string);
   }
 
   export interface AnalyticsMetadata {

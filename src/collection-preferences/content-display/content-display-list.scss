@@ -5,8 +5,22 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/style-api' as style-api;
 
 @use './content-display-option';
+
+/* stylelint-disable custom-property-pattern */
+
+// Reorder-list styling, themeable via the collection-preferences reorderList slot:
+// color-divider (row dividers, on the list items), color-background + border-radius (the rows),
+// color-border (the dragged item's ring), color-background-selected (the drop placeholder fill).
+@include style-api.register((color-divider, color-background, border-radius, color-border, color-background-selected));
+
+.content-display {
+  @include style-api.carriers(
+    (color-divider, color-background, border-radius, color-border, color-background-selected)
+  );
+}
 
 .content-display,
 .content-display-text-filter,

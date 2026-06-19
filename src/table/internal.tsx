@@ -161,8 +161,11 @@ const InternalTable = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
 
-    // `classNames.selection` supersedes the deprecated `selectionClassName` prop.
-    const selectionClassName = classNames?.selection ?? selectionClassNameProp;
+    // `classNames.selectionCheckbox`/`selectionRadio` supersede the deprecated `selectionClassName`
+    // prop; single-select uses the radio slot, multi/group use the checkbox slot.
+    const selectionClassName =
+      (externalSelectionType === 'single' ? classNames?.selectionRadio : classNames?.selectionCheckbox) ??
+      selectionClassNameProp;
 
     const prevStickyHeader = usePrevious(stickyHeader);
     if (prevStickyHeader !== undefined && !!stickyHeader !== !!prevStickyHeader) {
@@ -400,6 +403,7 @@ const InternalTable = React.forwardRef(
       getSelectAllProps: selection.getSelectAllProps,
       selectionClassName:
         typeof selectionClassName === 'function' ? selectionClassName({ item: undefined }) : selectionClassName,
+      theadClassName: classNames?.thead,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       tableVariant: computedVariant,
@@ -472,7 +476,8 @@ const InternalTable = React.forwardRef(
               {...baseProps}
               {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
-              className={clsx(baseProps.className, classNames?.root, styles.root)}
+              classNames={{ root: classNames?.container }}
+              className={clsx(baseProps.className, classNames?.table, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
               header={
@@ -594,6 +599,7 @@ const InternalTable = React.forwardRef(
                             empty={empty}
                             tableRef={tableRefObject}
                             containerRef={wrapperMeasureRefObject}
+                            cellClassName={classNames?.cell}
                           />
                         </tr>
                       ) : (
@@ -622,13 +628,20 @@ const InternalTable = React.forwardRef(
                             hasFooter,
                             stickyState,
                             tableRole,
+                            cellClassName: classNames?.cell,
                           };
                           if (row.type === 'data') {
                             const rowId = `${getTableItemKey(row.item)}`;
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                className={clsx(
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected'],
+                                  typeof classNames?.row === 'function'
+                                    ? classNames.row({ item: row.item, index: rowIndex })
+                                    : classNames?.row
+                                )}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click

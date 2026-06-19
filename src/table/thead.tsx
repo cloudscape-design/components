@@ -21,6 +21,7 @@ export interface TheadProps {
   selectionType: undefined | InternalSelectionType;
   getSelectAllProps?: () => ItemSelectionProps;
   selectionClassName?: string;
+  theadClassName?: string;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;
@@ -54,6 +55,7 @@ const Thead = React.forwardRef(
       selectionType,
       getSelectAllProps,
       selectionClassName,
+      theadClassName,
       columnDefinitions,
       sortingColumn,
       sortingDisabled,
@@ -96,7 +98,7 @@ const Thead = React.forwardRef(
     };
 
     return (
-      <thead className={clsx(!hidden && styles['thead-active'])}>
+      <thead className={clsx(styles.thead, !hidden && styles['thead-active'], theadClassName)}>
         <tr
           {...focusMarkers.all}
           ref={outerRef}

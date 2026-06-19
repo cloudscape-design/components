@@ -87,7 +87,7 @@ export default function FlashbarStyleV2Page() {
         classNames={
           useCustom
             ? {
-                root: styles['styled-flashbar'],
+                notificationBar: styles['styled-notification-bar'],
                 item: ({ item }) => itemClassNames[item.type ?? 'info'],
                 dismissButton: () => styles.dismiss,
               }

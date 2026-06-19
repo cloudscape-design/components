@@ -40,7 +40,11 @@ export default function ModalStyleV2Page() {
               </SpaceBetween>
             </Box>
           }
-          classNames={{ root: styles['styled-modal'] }}
+          classNames={{
+            dialog: styles['styled-modal-dialog'],
+            header: styles['styled-modal-header'],
+            overlay: styles['styled-modal-overlay'],
+          }}
         >
           <SpaceBetween size="s">
             <Box>Are you sure you want to proceed with this action? This will update the resource configuration.</Box>

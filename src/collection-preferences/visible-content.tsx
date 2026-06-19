@@ -5,6 +5,7 @@ import React from 'react';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalSpaceBetween from '../space-between/internal';
+import { ToggleProps } from '../toggle/interfaces';
 import InternalToggle from '../toggle/internal';
 import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
 import { CollectionPreferencesProps } from './interfaces';
@@ -23,6 +24,7 @@ const className = (suffix: string): ClassNameProps => ({
 interface VisibleContentPreferenceProps extends CollectionPreferencesProps.VisibleContentPreference {
   onChange: (value: ReadonlyArray<string>) => void;
   value?: ReadonlyArray<string>;
+  toggleClassNames?: ToggleProps.ClassNames;
 }
 
 export default function VisibleContentPreference({
@@ -30,6 +32,7 @@ export default function VisibleContentPreference({
   options,
   value = [],
   onChange,
+  toggleClassNames,
 }: VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
 
@@ -62,6 +65,7 @@ export default function VisibleContentPreference({
             onChange={() => onToggle(option.id)}
             disabled={option.editable === false}
             controlId={labelId}
+            classNames={toggleClassNames}
           />
         </div>
       </div>

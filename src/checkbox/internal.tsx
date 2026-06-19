@@ -87,8 +87,10 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className, classNames?.root)}
-        controlClassName={styles['checkbox-control']}
+        className={clsx(styles.root, baseProps.className)}
+        controlClassName={clsx(styles['checkbox-control'], classNames?.control)}
+        labelClassName={clsx(styles['checkbox-label'], classNames?.label)}
+        descriptionClassName={clsx(styles['checkbox-description'], classNames?.description)}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}

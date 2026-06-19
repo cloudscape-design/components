@@ -163,7 +163,7 @@ export namespace FlashbarProps {
   export type AriaRole = 'alert' | 'status';
 
   export interface ClassNames {
-    root?: string;
+    notificationBar?: string;
     item?: string | ((args: { item: FlashbarProps.MessageDefinition }) => string);
     dismissButton?: string | ((args: { item: FlashbarProps.MessageDefinition }) => string);
   }

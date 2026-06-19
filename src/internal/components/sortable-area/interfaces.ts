@@ -10,6 +10,9 @@ export interface SortableAreaProps<Item> {
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
   onItemsChange?: NonCancelableEventHandler<SortableAreaProps.ItemsChangeDetail<Item>>;
   i18nStrings?: SortableAreaProps.DndAreaI18nStrings;
+  // Class applied to the (portaled) drag overlay, so a consumer can theme the dragged item the same
+  // way as the list (the overlay lives outside the list subtree and can't inherit its styling).
+  overlayClassName?: string;
   disableReorder?: boolean;
 }
 

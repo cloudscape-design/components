@@ -6,26 +6,27 @@
 @use '../internal/styles/style-groups/surface' as surface;
 @use '../internal/styles/style-groups/focus-outline' as focus-outline;
 
-// Flashbar's tokens: the shared surface + focus-outline groups (for the flash items) plus its own
-// notification-bar tokens, including a separately-targetable notification-bar focus ring.
-// Flash-item tokens re-anchor per-item on each .flash (themed via classNames.item); the
-// notification-bar tokens re-anchor on the flashbar shell root (themed via classNames.root).
-$flash-props: style-api.combine(surface.$props, focus-outline.$props);
+// Flashbar's tokens: the shared surface + focus-outline groups (for the flash items) plus the
+// collapsed notification bar's tokens. Flash-item tokens re-anchor per-item on each .flash (themed
+// via classNames.item). The notification-bar tokens re-anchor on the bar element (themed via the
+// dedicated classNames.notificationBar slot), so they use generic names — the slot already scopes
+// them to the bar, making a "-notification-bar" suffix redundant.
+$flash-props: style-api.combine(surface.$props, focus-outline.$props, (padding-block, padding-inline, transition));
 $nb-props: (
-  color-background-notification-bar-default,
-  color-background-notification-bar-hover,
-  color-background-notification-bar-active,
-  color-border-notification-bar-default,
-  color-border-notification-bar-hover,
-  color-border-notification-bar-active,
-  border-radius-notification-bar,
-  border-width-notification-bar,
-  color-text-notification-bar-default,
-  color-text-notification-bar-hover,
-  color-text-notification-bar-active,
-  color-focus-outline-notification-bar,
-  focus-outline-radius-notification-bar,
-  focus-outline-width-notification-bar
+  color-background-default,
+  color-background-hover,
+  color-background-active,
+  color-border-default,
+  color-border-hover,
+  color-border-active,
+  border-radius,
+  border-width,
+  color-text-default,
+  color-text-hover,
+  color-text-active,
+  color-focus-outline,
+  focus-outline-radius,
+  focus-outline-width
 );
 $props: style-api.combine($flash-props, $nb-props);
 $tokens: style-api.resolve($props);

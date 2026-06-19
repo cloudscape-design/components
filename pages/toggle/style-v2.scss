@@ -6,19 +6,19 @@
 @use '../app/themes/style-v2-palette' as palette;
 
 @mixin toggle-theme($checked-bg, $hover-bg) {
-  --awsui-style-color-background-control-default: #{palette.$border};
-  --awsui-style-color-background-control-checked: #{$checked-bg};
-  --awsui-style-color-background-control-disabled: #{palette.$control-bg-disabled};
+  --awsui-style-color-background-default: #{palette.$border};
+  --awsui-style-color-background-checked: #{$checked-bg};
+  --awsui-style-color-background-disabled: #{palette.$control-bg-disabled};
   --awsui-style-color-handle-default: #{palette.$control-bg};
   --awsui-style-color-handle-checked: #{palette.$control-bg};
   --awsui-style-color-handle-disabled: #{palette.$control-foreground-disabled};
-  --awsui-style-color-text-label: #{palette.$text};
-  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
+  --awsui-style-color-text: #{palette.$text};
+  --awsui-style-color-text-disabled: #{palette.$text-disabled};
   --awsui-style-border-radius: 4px;
-  --awsui-style-transition-duration: 200ms;
+  --awsui-style-transition-color-text: 200ms;
 
   &:hover {
-    --awsui-style-color-background-control-default: #{$hover-bg};
+    --awsui-style-color-background-default: #{$hover-bg};
   }
 }
 

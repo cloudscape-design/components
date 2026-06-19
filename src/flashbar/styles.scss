@@ -17,11 +17,7 @@
 
 // Flashbar's public Style API tokens: the flash items and the collapsed notification bar.
 @include style-api.register(style-tokens.$props);
-
 .flashbar {
-  // Shell-level tokens: the collapsed notification bar lives in the flashbar's own subtree, so its
-  // tokens re-anchor here on the root (themed via classNames.root, the flashbar shell).
-  @include style-api.carriers(style-tokens.$nb-props);
   position: relative;
   /* stylelint-disable-next-line selector-max-type */
   > li + li {
@@ -43,8 +39,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-block: awsui.$space-flashbar-vertical;
-  padding-inline: awsui.$space-flashbar-horizontal;
+  padding-block: var(#{style-api.name(style-tokens.$tokens, padding-block)}, #{awsui.$space-flashbar-vertical});
+  padding-inline: var(#{style-api.name(style-tokens.$tokens, padding-inline)}, #{awsui.$space-flashbar-horizontal});
   border-start-start-radius: var(
     #{style-api.name(style-tokens.$tokens, border-radius)},
     #{awsui.$border-radius-flashbar}
@@ -67,6 +63,11 @@
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
 
+  // Consumer-controlled transition: the whole shorthand (properties + timing) comes from the token,
+  // so a consumer can animate whatever changes they style (e.g. background-color, color). Defaults
+  // to a no-op (`all 0s`) and respects reduced motion. Placed last so no plain declaration follows
+  // this nested rule (avoids the Sass mixed-declarations deprecation).
+
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(
       #{style-api.name(style-tokens.$tokens, focus-outline-width)},
@@ -76,6 +77,10 @@
       #{style-api.name(style-tokens.$tokens, color-focus-outline)},
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
+
+  @include styles.with-motion {
+    transition: var(#{style-api.name(style-tokens.$tokens, transition)}, all 0s);
+  }
 }
 
 .initial-hidden {

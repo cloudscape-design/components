@@ -247,7 +247,7 @@ function PortaledModal({
               styles.root,
               { [styles.hidden]: !visible },
               baseProps.className,
-              classNames?.root,
+              classNames?.overlay,
               isRefresh && styles.refresh
             )}
             role="dialog"
@@ -267,6 +267,7 @@ function PortaledModal({
               <div
                 className={clsx(
                   styles.dialog,
+                  classNames?.dialog,
                   !hasCustomWidth && styles[size],
                   styles[`breakpoint-${breakpoint}`],
                   isRefresh && styles.refresh,
@@ -278,7 +279,7 @@ function PortaledModal({
                 {...metadataAttribute}
               >
                 <div className={clsx(styles.container, hasCustomHeight && styles['custom-height-container'])}>
-                  <div ref={headerRef} className={clsx(styles.header, analyticsSelectors.header)}>
+                  <div ref={headerRef} className={clsx(styles.header, analyticsSelectors.header, classNames?.header)}>
                     <InternalHeader
                       variant="h2"
                       __disableActionsWrapping={true}
@@ -291,6 +292,7 @@ function PortaledModal({
                           <InternalButton
                             ariaLabel={closeAriaLabel}
                             className={styles['dismiss-control']}
+                            classNames={{ root: classNames?.dismissButton }}
                             variant="modal-dismiss"
                             iconName="close"
                             formAction="none"
@@ -328,7 +330,11 @@ function PortaledModal({
                       <ButtonContext.Provider value={{ onClick: onButtonClick }}>
                         <div
                           ref={footerRef}
-                          className={clsx(styles.footer, (footerStuck || hasCustomHeight) && styles['footer--rounded'])}
+                          className={clsx(
+                            styles.footer,
+                            (footerStuck || hasCustomHeight) && styles['footer--rounded'],
+                            classNames?.footer
+                          )}
                         >
                           {footer}
                         </div>

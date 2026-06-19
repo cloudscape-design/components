@@ -1,9 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import { CheckboxProps } from '../checkbox/interfaces';
+import { FormFieldProps } from '../form-field/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { SortableAreaProps } from '../internal/components/sortable-area';
 import { NonCancelableEventHandler } from '../internal/events';
-import { BaseModalProps } from '../modal/interfaces';
+import { ListProps } from '../list/interfaces';
+import { BaseModalProps, ModalProps } from '../modal/interfaces';
+import { RadioGroupProps } from '../radio-group/interfaces';
+import { ToggleProps } from '../toggle/interfaces';
 
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps, BaseModalProps {
   /**
@@ -211,9 +217,37 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Content displayed before the preferences. Use it to display additional information relating to the preferences.
    */
   contentBefore?: React.ReactNode;
+
+  /**
+   * An object that maps the collection preferences' slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `trigger` - The trigger button that opens the preferences modal.
+   * * `modal` - The preferences modal dialog.
+   * * `confirmButton` - The confirm button.
+   * * `cancelButton` - The cancel button.
+   * * `checkbox` - The checkboxes (for example, wrap lines), as `CheckboxProps.ClassNames`.
+   * * `radioGroup` - The radio groups (for example, page size), as `RadioGroupProps.ClassNames`.
+   * * `formField` - The form fields wrapping the preferences, as `FormFieldProps.ClassNames`.
+   * * `toggle` - The toggles (for example, content visibility), as `ToggleProps.ClassNames`.
+   * * `list` - The reorderable content display list, as `ListProps.ClassNames`.
+   * @awsuiSystem core
+   */
+  classNames?: CollectionPreferencesProps.ClassNames;
 }
 
 export namespace CollectionPreferencesProps {
+  export interface ClassNames {
+    trigger?: string;
+    modal?: ModalProps.ClassNames;
+    confirmButton?: string;
+    cancelButton?: string;
+    checkbox?: CheckboxProps.ClassNames;
+    radioGroup?: RadioGroupProps.ClassNames;
+    formField?: FormFieldProps.ClassNames;
+    toggle?: ToggleProps.ClassNames;
+    list?: ListProps.ClassNames;
+  }
+
   export interface Preferences<CustomPreferenceType = any> {
     pageSize?: number;
     wrapLines?: boolean;

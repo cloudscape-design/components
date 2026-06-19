@@ -16,23 +16,64 @@ $checkbox-size: awsui.$size-control;
 
 /* stylelint-disable custom-property-pattern */
 
-// Checkbox uses the shared control + focus-outline groups. The internal checkbox-icon and
-// abstract-switch read the control/label/transition tokens through the carriers re-anchored on
-// .root.root; the focus ring on checkbox's own .outline reads the focus-outline tokens.
+// Checkbox uses the shared control + focus-outline groups, but exposes three slots — `control` (the
+// box), `label` (the text) and `description` (the secondary text) — instead of a single root. The
+// control-box tokens (colors, widths, box/checkmark transitions and the focus ring) re-anchor on the
+// control element; the label/description text tokens re-anchor on their respective elements. No root slot.
 $props: style-api.combine(control.$props, focus-outline.$props);
 $tokens: style-api.resolve($props);
+
+// Tokens re-anchored on the `control` slot (the box, its checkmark and the focus ring).
+$control-carriers: (
+  color-background,
+  color-background-default,
+  color-background-checked,
+  color-background-disabled,
+  color-border,
+  color-border-default,
+  color-border-checked,
+  color-border-disabled,
+  color-foreground,
+  color-foreground-default,
+  color-foreground-disabled,
+  color-foreground-readonly,
+  border-width,
+  stroke-width,
+  transition-color-background,
+  transition-color-foreground,
+  color-focus-outline,
+  focus-outline-width,
+  focus-outline-radius
+);
+
+// Tokens re-anchored on the `label` slot (the text).
+$label-carriers: (color-text, color-text-disabled, color-text-readonly, space-label, transition-color-text);
+
+// Tokens re-anchored on the `description` slot (the secondary text under the label).
+$description-carriers: (color-text, transition-color-text);
 
 @include style-api.register($props);
 
 // double selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
 .root.root {
   @include styles.styles-reset;
-  @include style-api.carriers($props);
   display: flex;
 }
 
 .checkbox-control {
+  @include style-api.carriers($control-carriers);
   @include styles.make-control-size($checkbox-size);
+}
+
+.checkbox-label {
+  @include style-api.carriers($label-carriers);
+}
+
+// Double selector bumps specificity above the abstract-switch `.description` color so the `color-text`
+// carrier wins; defaults to the standard secondary description colour when the slot isn't themed.
+.checkbox-description.checkbox-description {
+  @include style-api.carriers($description-carriers);
+  color: var(#{style-api.name($tokens, color-text)}, #{awsui.$color-text-form-secondary});
 }
 
 .outline {

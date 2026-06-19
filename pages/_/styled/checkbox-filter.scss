@@ -1,0 +1,28 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable custom-property-pattern, property-disallowed-list */
+
+@use './palette' as palette;
+
+.pill {
+  display: inline-block;
+  background-color: #{palette.$genai-surface};
+  border: 1px solid #{palette.$genai-surface};
+  border-radius: 4px;
+  padding-block: 4px;
+  padding-inline: 8px;
+}
+
+.checkbox-control {
+  --awsui-style-color-border: #{palette.$accent};
+  --awsui-style-color-foreground: #{palette.$on-accent};
+  --awsui-style-color-background-checked: #{palette.$accent};
+  --awsui-style-color-focus-outline: #{palette.$accent};
+}
+
+.checkbox-label {
+  --awsui-style-color-text: #{palette.$genai-text};
+}

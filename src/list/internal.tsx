@@ -34,6 +34,8 @@ export default function InternalList<T = any>({
   renderItem,
   sortable = false,
   sortDisabled = false,
+  overlayClassName,
+  classNames,
   tagOverride: Tag = sortable ? 'ol' : 'ul',
   ariaLabel,
   ariaLabelledby,
@@ -54,6 +56,7 @@ export default function InternalList<T = any>({
       <SortableArea
         items={items}
         disableReorder={sortDisabled}
+        overlayClassName={overlayClassName}
         itemDefinition={{
           id: item => renderItem(item).id,
           label: item => {
@@ -95,7 +98,7 @@ export default function InternalList<T = any>({
 
           const content = (
             <>
-              <InternalDragHandle {...dragHandleProps} />
+              <InternalDragHandle {...dragHandleProps} className={classNames?.dragHandle} />
               <InternalStructuredItem {...structuredItemProps} disablePaddings={disableItemPaddings} />
             </>
           );
@@ -139,7 +142,7 @@ export default function InternalList<T = any>({
     <Tag
       ref={__internalRootRef}
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, testClasses.root)}
+      className={clsx(baseProps.className, styles.root, testClasses.root, classNames?.root)}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}

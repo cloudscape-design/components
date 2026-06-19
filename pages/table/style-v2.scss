@@ -10,33 +10,36 @@
   --awsui-style-color-text-header: #{palette.$text-on-accent};
   --awsui-style-color-icon-sort: #{palette.$text-on-accent};
   --awsui-style-color-border: #{palette.$border-accent};
+}
+
+.styled-table-row {
   --awsui-style-color-background-selected: #{palette.$info-surface};
   --awsui-style-color-border-selected: #{palette.$accent};
 }
 
 .selection-base {
-  --awsui-style-color-background-control: #{palette.$control-bg};
-  --awsui-style-color-background-control-checked: #{palette.$accent};
-  --awsui-style-color-border-control: #{palette.$control-border};
-  --awsui-style-color-foreground-control: #{palette.$control-foreground};
-  --awsui-style-border-width-control: 2px;
+  --awsui-style-color-background: #{palette.$control-bg};
+  --awsui-style-color-background-checked: #{palette.$accent};
+  --awsui-style-color-border: #{palette.$control-border};
+  --awsui-style-color-foreground: #{palette.$control-foreground};
+  --awsui-style-border-width: 2px;
 }
 
 .selection-header {
-  --awsui-style-color-background-control: #{palette.$surface};
-  --awsui-style-color-background-control-checked: #{palette.$text-on-accent};
-  --awsui-style-color-border-control: #{palette.$text-on-accent};
-  --awsui-style-color-foreground-control: #{palette.$accent};
+  --awsui-style-color-background: #{palette.$surface};
+  --awsui-style-color-background-checked: #{palette.$text-on-accent};
+  --awsui-style-color-border: #{palette.$text-on-accent};
+  --awsui-style-color-foreground: #{palette.$accent};
 }
 
 .selection-green {
-  --awsui-style-color-background-control-checked: #{palette.$success};
-  --awsui-style-color-border-control: #{palette.$success};
+  --awsui-style-color-background-checked: #{palette.$success};
+  --awsui-style-color-border: #{palette.$success};
 }
 
 .selection-blue {
-  --awsui-style-color-background-control-checked: #{palette.$info};
-  --awsui-style-color-border-control: #{palette.$info};
+  --awsui-style-color-background-checked: #{palette.$info};
+  --awsui-style-color-border: #{palette.$info};
 }
 
 .styled-filter {

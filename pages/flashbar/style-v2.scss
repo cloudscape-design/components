@@ -5,15 +5,15 @@
 
 @use '../app/themes/style-v2-palette' as palette;
 
-// classNames.root themes the flashbar SHELL, not individual items. The collapsed-stack
-// "notification bar" is the shell's own element, so we theme it here. Each flash (including the
-// peeking stacked cards) is themed per-type through classNames.item below.
-.styled-flashbar {
-  --awsui-style-color-background-notification-bar-default: #{palette.$surface-alt};
-  --awsui-style-color-background-notification-bar-hover: #{palette.$info-surface};
-  --awsui-style-color-text-notification-bar-default: #{palette.$text};
-  --awsui-style-color-text-notification-bar-hover: #{palette.$text};
-  --awsui-style-border-radius-notification-bar: 12px;
+// The collapsed-stack "notification bar" is themed via its dedicated classNames.notificationBar
+// slot, so its tokens use generic names. Each flash (including the peeking stacked cards) is themed
+// per-type through classNames.item below.
+.styled-notification-bar {
+  --awsui-style-color-background-default: #{palette.$surface-alt};
+  --awsui-style-color-background-hover: #{palette.$info-surface};
+  --awsui-style-color-text-default: #{palette.$text};
+  --awsui-style-color-text-hover: #{palette.$text};
+  --awsui-style-border-radius: 12px;
 }
 
 // Per-type item overrides, applied via classNames.item to every flash — the flat/expanded items

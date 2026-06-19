@@ -7,6 +7,8 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
 //stylelint-disable-next-line selector-combinator-disallowed-list,selector-max-universal
 .resize-active:not(.resize-active-with-focus) * {
   cursor: col-resize;
@@ -46,12 +48,13 @@ th:not(:last-child) > .divider,
   max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
-  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  border-inline-start: awsui.$border-item-width solid
+    var(--awsui-internal-style-color-border, #{awsui.$color-border-divider-interactive-default});
   box-sizing: border-box;
 }
 
 th:not(:last-child) > .divider-disabled {
-  border-inline-start-color: awsui.$color-border-divider-default;
+  border-inline-start-color: var(--awsui-internal-style-color-border, #{awsui.$color-border-divider-default});
 }
 
 .divider-interactive {

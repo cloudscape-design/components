@@ -96,7 +96,7 @@ export function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
-      classNames={{ root: selectionClassName }}
+      classNames={{ control: selectionClassName }}
       onChange={onChange}
       showOutline={focusedComponent === 'selection-control'}
       controlId={controlId}

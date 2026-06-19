@@ -114,6 +114,7 @@ const InternalPagination = React.forwardRef(
       onPreviousPageClick,
       __internalRootRef,
       jumpToPage,
+      classNames,
       ...rest
     }: InternalPaginationProps,
     ref: React.Ref<PaginationProps.Ref>
@@ -224,7 +225,7 @@ const InternalPagination = React.forwardRef(
       <ul
         aria-label={paginationLabel}
         {...baseProps}
-        className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
+        className={clsx(baseProps.className, styles.root, classNames?.root, disabled && styles['root-disabled'])}
         ref={__internalRootRef}
       >
         <PageButton

@@ -7,24 +7,28 @@
 // transition shared by Checkbox, Radio and (label/transition + background) Toggle. State reads are
 // state -> stateless-base -> design-token, so a consumer can theme all states with the base token.
 $props: (
-  color-background-control,
-  color-background-control-default,
-  color-background-control-checked,
-  color-background-control-disabled,
-  color-border-control,
-  color-border-control-default,
-  color-border-control-checked,
-  color-border-control-disabled,
-  color-foreground-control,
-  color-foreground-control-default,
-  color-foreground-control-disabled,
-  color-foreground-control-readonly,
-  border-width-control,
-  stroke-width-control,
-  color-text-label,
-  color-text-label-disabled,
-  color-text-label-readonly,
+  color-background,
+  color-background-default,
+  color-background-checked,
+  color-background-disabled,
+  color-border,
+  color-border-default,
+  color-border-checked,
+  color-border-disabled,
+  color-foreground,
+  color-foreground-default,
+  color-foreground-disabled,
+  color-foreground-readonly,
+  border-width,
+  stroke-width,
+  color-text,
+  color-text-disabled,
+  color-text-readonly,
   space-label,
-  transition-duration,
-  transition-easing
+  /* Per-aspect color transitions: the consumer sets the full timing (e.g. `300ms ease`) per color*/
+    /* aspect and the component owns which CSS property each maps to (box fill/border, checkmark, label*/
+    /* text). Defaults to 0s (no animation), so internal property names never leak to the consumer.*/
+    transition-color-background,
+  transition-color-foreground,
+  transition-color-text
 );

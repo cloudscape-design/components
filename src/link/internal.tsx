@@ -173,7 +173,7 @@ const InternalLink = React.forwardRef(
       className: clsx(
         styles.link,
         baseProps.className,
-        classNames?.root,
+        classNames?.anchor,
         applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],

@@ -6,8 +6,18 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
 
 @use './motion';
+
+/* stylelint-disable custom-property-pattern */
+
+// Status indicator exposes a generic color-text token. A specific status is themed by applying
+// classNames.root to that instance (status types are variants, selected per instance).
+$props: (color-text);
+$tokens: style-api.resolve($props);
+
+@include style-api.register($props);
 
 $_status-colors: (
   'error': awsui.$color-text-status-error,
@@ -43,14 +53,15 @@ $_status-backgrounds: (
 
 .root {
   @include styles.default-text-style;
+  @include style-api.carriers($props);
   @each $status in map.keys($_status-colors) {
     &.status-#{$status} {
-      color: #{map.get($_status-colors, $status)};
+      color: var(#{style-api.name($tokens, color-text)}, #{map.get($_status-colors, $status)});
     }
   }
   @each $color in map.keys($_color-overrides) {
     &.color-override-#{$color} {
-      color: #{map.get($_color-overrides, $color)};
+      color: var(#{style-api.name($tokens, color-text)}, #{map.get($_color-overrides, $color)});
     }
   }
   @each $status in map.keys($_status-backgrounds) {

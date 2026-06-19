@@ -53,6 +53,17 @@ export interface ListProps<T = any> {
    */
   sortable?: boolean;
   /**
+   * Class applied to the (portaled) drag overlay of a sortable list, so the dragged item can be
+   * themed the same way as the list (the overlay renders outside the list subtree).
+   */
+  overlayClassName?: string;
+  /**
+   * An object that maps the list's slots to CSS class names for custom styling.
+   * * `root` - The list's root element.
+   * * `dragHandle` - The drag handle of each sortable item (and the dragged item in the overlay).
+   */
+  classNames?: ListProps.ClassNames;
+  /**
    * Disables sorting drag handles. Use this to temporarily prevent users from reordering the list.
    */
   sortDisabled?: boolean;
@@ -89,4 +100,9 @@ export namespace ListProps {
   }
 
   export type I18nStrings = SortableAreaProps.DndAreaI18nStrings;
+
+  export interface ClassNames {
+    root?: string;
+    dragHandle?: string;
+  }
 }

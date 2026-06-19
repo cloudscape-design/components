@@ -15,7 +15,11 @@ export default function CheckboxStyleV2() {
   const [readOnly, setReadOnly] = useState(false);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
-  const shared = { disabled, readOnly, classNames: { root: styles['styled-checkbox'] } };
+  const shared = {
+    disabled,
+    readOnly,
+    classNames: { control: styles['styled-checkbox'], label: styles['styled-checkbox'] },
+  };
 
   const multiselectOptions: MultiselectProps.Options = [
     { value: '1', label: 'First option', disabled },
@@ -91,7 +95,7 @@ export default function CheckboxStyleV2() {
             enableKeyboardNavigation={true}
             isItemDisabled={() => disabled}
             classNames={{
-              selection: ({ item }) => {
+              selectionCheckbox: ({ item }) => {
                 switch (item?.text) {
                   case 'One':
                     return clsx(styles['styled-checkbox'], styles['styled-checkbox-one']);
