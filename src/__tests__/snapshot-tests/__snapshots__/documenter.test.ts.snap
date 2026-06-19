@@ -32713,7 +32713,7 @@ The following properties are supported across all utility types:
     {
       "description": "Specifies custom navigation content.
 When provided, replaces all structured content (identity, search, utilities are ignored).",
-      "displayName": "custom content",
+      "displayName": "customContent",
       "isDefault": true,
       "name": "children",
     },
