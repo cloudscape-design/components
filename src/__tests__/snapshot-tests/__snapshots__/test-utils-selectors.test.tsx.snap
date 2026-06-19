@@ -722,6 +722,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1u26h",
   ],
   "top-navigation": [
+    "awsui_custom-content_1oq04",
     "awsui_hidden_k5dlb",
     "awsui_identity_k5dlb",
     "awsui_logo_k5dlb",

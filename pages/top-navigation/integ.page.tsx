@@ -6,10 +6,14 @@ import { NonCancelableCustomEvent } from '~components';
 import Input, { InputProps } from '~components/input';
 import TopNavigation from '~components/top-navigation';
 
+import { useAppContext } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { I18N_STRINGS } from './common';
 
 export default function () {
+  const {
+    urlParams: { hideIdentity },
+  } = useAppContext<'hideIdentity'>();
   const inputRef = useRef<InputProps.Ref>(null);
   const [inputValue, setInputValue] = useState<string>('');
   const [events, setEvents] = useState<string[]>([]);
@@ -22,10 +26,14 @@ export default function () {
       <ScreenshotArea>
         <TopNavigation
           i18nStrings={I18N_STRINGS}
-          identity={{
-            href: '#',
-            title: 'Title with an href',
-          }}
+          identity={
+            hideIdentity
+              ? undefined
+              : {
+                  href: '#',
+                  title: 'Title with an href',
+                }
+          }
           search={
             <Input
               ref={inputRef}
