@@ -97,7 +97,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkSecondaryDefault: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
   colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkInfoHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutral650}', dark: '{colorNeutral600}' },
 
