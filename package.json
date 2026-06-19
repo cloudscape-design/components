@@ -51,7 +51,7 @@
     "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
+    "@babel/core": "^7.29.6",
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@cloudscape-design/browser-test-tools": "^3.0.0",
     "@cloudscape-design/build-tools": "github:cloudscape-design/build-tools#main",
