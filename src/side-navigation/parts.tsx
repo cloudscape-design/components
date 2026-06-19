@@ -492,7 +492,7 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
         ref={collapsed ? collapsedTooltip.triggerRef : undefined}
         href={definition.href}
         className={clsx(styles.link, {
-          [styles['link--active']]: isActive,
+          [styles['link-active']]: isActive,
           [styles['link--collapsed']]: collapsed,
         })}
         target={definition.external ? '_blank' : undefined}

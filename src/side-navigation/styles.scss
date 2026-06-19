@@ -301,7 +301,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
       color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
   }
 
-  &--active {
+  &-active {
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
     color: awsui.$color-text-side-navigation-item-active;

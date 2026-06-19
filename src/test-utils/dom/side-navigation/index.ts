@@ -27,7 +27,7 @@ export default class SideNavigationWrapper extends ComponentWrapper {
   }
 
   findActiveLink(): ElementWrapper<HTMLAnchorElement> | null {
-    return this.findByClassName(styles['link--active']);
+    return this.findByClassName(styles['link-active']);
   }
 
   findItemByIndex(index: number): SideNavigationItemWrapper | null {
