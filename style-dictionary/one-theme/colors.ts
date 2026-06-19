@@ -162,6 +162,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Tile ─────────────────────────────────────────────────────────────────
   colorBackgroundTilesDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
 
+  // ── Side Nav ─────────────────────────────────────────────────────────────────
+  colorTextSideNavigationItemActive: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorBackgroundSideNavigationItemActive: { light: '{colorPrimary50}', dark: 'rgba(0, 153, 255, 0.13)' },
+
   // ── Dropzone ──────────────────────────────────────────────────────────────
   colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
   colorDropzoneBackgroundHover: { light: '{colorPrimary50}', dark: '{colorPrimary1000}' },

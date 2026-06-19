@@ -578,6 +578,7 @@ export type ColorsTokenName =
   | 'colorBackgroundInputDefault'
   | 'colorBackgroundInputDisabled'
   | 'colorBackgroundItemSelected'
+  | 'colorBackgroundSideNavigationItemActive'
   | 'colorBackgroundLayoutMain'
   | 'colorBackgroundDrawer'
   | 'colorBackgroundDrawerBackdrop'
@@ -849,6 +850,7 @@ export type ColorsTokenName =
   | 'colorDropzoneBorderHover'
   | 'colorGapGlobalDrawer'
   | 'colorItemSelected'
+  | 'colorTextSideNavigationItemActive'
   | 'colorBackgroundActionCardDefault'
   | 'colorBackgroundActionCardHover'
   | 'colorBackgroundActionCardActive'
@@ -1066,7 +1068,8 @@ export type SizesTokenName =
   | 'sizeIconNormal'
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
-  | 'sizeVerticalPanelIconOffset';
+  | 'sizeVerticalPanelIconOffset'
+  | 'sizeSideNavigationItemHeight';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'
@@ -1139,6 +1142,8 @@ export type SpacingTokenName =
   | 'spaceTableHorizontal'
   | 'spaceTileGutter'
   | 'spaceTreeViewIndentation'
+  | 'spaceSideNavigationItemGap'
+  | 'spaceSideNavigationItemCollapsedGap'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'

@@ -165,6 +165,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundSideNavigationItemActive: {
+    description: 'The background color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundLayoutMain: {
     description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
@@ -470,6 +475,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorItemSelected: {
     description:
       'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActive: {
+    description: 'The text color of an active (highlighted) side navigation item.',
     public: true,
     themeable: true,
   },
