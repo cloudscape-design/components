@@ -16,8 +16,8 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 /** Props for the token-mode contentEditable input and its associated menu dropdown. */
 interface TokenModeProps {
-  /** Ref to the contentEditable div */
-  editableElementRef: React.RefObject<HTMLDivElement>;
+  /** Ref to the contentEditable div (callback ref so the parent can track mount state) */
+  editableElementRef: React.Ref<HTMLDivElement>;
   /** Ref to the active trigger element, used to anchor the dropdown */
   triggerWrapperRef: React.MutableRefObject<HTMLElement | null>;
 

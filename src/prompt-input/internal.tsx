@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -141,6 +141,14 @@ const InternalPromptInput = React.forwardRef(
     const editableElementRef = useRef<HTMLDivElement>(null);
     const caretControllerRef = useRef<CaretController | null>(null);
 
+    // Track the contentEditable node in state (in addition to the ref) so that
+    // token-mode effects which wire up listeners re-run when the element mounts
+    // or unmounts. The element only exists in token mode, so switching modes
+    // after mount mounts/unmounts it. A plain ref's identity never changes, so
+    // effects depending on it alone never re-initialize on a mode switch.
+    const [editableElement, setEditableElement] = useState<HTMLDivElement | null>(null);
+    const editableElementMergedRef = useMergeRefs(editableElementRef, setEditableElement);
+
     const isRefresh = useVisualRefresh();
     const textareaDensityMode = useDensityMode(textareaRef);
     const editableDensityMode = useDensityMode(editableElementRef);
@@ -211,6 +219,7 @@ const InternalPromptInput = React.forwardRef(
 
     const tokenMode = useTokenMode({
       editableElementRef,
+      editableElement,
       caretControllerRef,
       tokens,
       tokensToText,
@@ -426,7 +435,7 @@ const InternalPromptInput = React.forwardRef(
         <div className={styles['textarea-wrapper']}>
           {isTokenMode ? (
             <TokenMode
-              editableElementRef={editableElementRef}
+              editableElementRef={editableElementMergedRef}
               triggerWrapperRef={tokenMode.triggerWrapperRef}
               controlId={controlId}
               menuListId={tokenMode.menuListId}

@@ -168,6 +168,12 @@ function findTriggerTokenById(
 /** Configuration for the useTokenMode hook — all props needed to drive token-mode behavior. */
 export interface UseTokenModeConfig {
   editableElementRef: React.RefObject<HTMLDivElement>;
+  /**
+   * The resolved contentEditable node, tracked in state by the parent. Used as
+   * an effect dependency so listener/controller initialization re-runs when the
+   * element mounts or unmounts (e.g. switching modes after the initial mount).
+   */
+  editableElement: HTMLDivElement | null;
   caretControllerRef: React.MutableRefObject<CaretController | null>;
 
   tokens?: readonly PromptInputProps.InputToken[];
@@ -354,6 +360,7 @@ function useTokenProcessor(config: ProcessorConfig) {
 export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const {
     editableElementRef,
+    editableElement,
     caretControllerRef,
     tokens,
     tokensToText,
@@ -509,10 +516,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   );
 
   useLayoutEffect(() => {
-    if (editableElementRef.current && !caretControllerRef.current) {
-      caretControllerRef.current = new CaretController(editableElementRef.current);
+    if (editableElement) {
+      // (Re)build the controller whenever the contentEditable element mounts.
+      // This effect only re-runs when `editableElement` identity changes, so this
+      // covers switching into token mode after the component already mounted, when
+      // the element was absent on the first render.
+      caretControllerRef.current = new CaretController(editableElement);
+    } else {
+      // Element unmounted (e.g. switched back to textarea mode) — drop the stale
+      // controller so a new one is built if token mode is entered again.
+      caretControllerRef.current = null;
     }
-  }, [editableElementRef, caretControllerRef]);
+  }, [editableElement, caretControllerRef]);
 
   const editableState = useRef(createEditableState()).current;
 
@@ -889,8 +904,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       element?.removeEventListener('mousedown', handleMouseDown);
       element?.removeEventListener('mouseup', handleMouseUp);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only needs to run on mount
-  }, []);
+    // Re-run when the editable element mounts/unmounts so listeners attach to the
+    // current node — required when switching into token mode after the initial mount.
+  }, [editableElement]); // eslint-disable-line react-hooks/exhaustive-deps -- editableElementRef stays in sync with editableElement
 
   const handleMenuSelect = useStableCallback((option: MenuItem) => {
     if (!activeMenu || !activeTriggerToken || !tokens) {
@@ -991,12 +1007,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   });
 
   useEffect(() => {
-    if (autoFocus && editableElementRef.current) {
-      editableElementRef.current.focus();
+    if (autoFocus && editableElement) {
+      editableElement.focus();
     }
-    // Intentionally run only on mount — autoFocus should fire once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Re-runs when the editable element mounts so autoFocus also applies when token
+    // mode is entered after the initial mount (the element doesn't exist before then).
+  }, [autoFocus, editableElement]);
 
   const menuLoadMoreResult = useMenuLoadMore({
     menu: activeMenu ?? { id: '', trigger: '', options: [] },

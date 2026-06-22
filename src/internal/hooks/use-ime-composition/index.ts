@@ -67,7 +67,11 @@ export function useIMEComposition(
       element.removeEventListener('compositionstart', handleCompositionStart);
       element.removeEventListener('compositionend', handleCompositionEnd);
     };
-  }, [elementRef]);
+    // Depend on the resolved node, not the ref object, so listeners re-attach when
+    // the element mounts after the initial render (e.g. a contentEditable that only
+    // appears once the consumer switches into a mode that renders it).
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- elementRef.current is the intended re-init signal
+  }, [elementRef.current]);
 
   const isComposing = () => wasComposingRef.current;
 
