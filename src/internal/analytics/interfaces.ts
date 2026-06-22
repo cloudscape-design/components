@@ -210,3 +210,6 @@ export interface ModalPerformanceDataProps {
 }
 
 type ModalPerformanceDataMethod = (props: ModalPerformanceDataProps) => void;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { AnalyticsMetadata, ErrorContext, FlowType } from '../../types/analytics';

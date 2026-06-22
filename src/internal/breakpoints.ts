@@ -73,3 +73,6 @@ export function getMatchingBreakpoint<T extends readonly Breakpoint[]>(
 export function getBreakpointValue(breakpoint: Breakpoint): number {
   return BREAKPOINT_MAPPING.find(bp => bp[0] === breakpoint)![1];
 }
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { Breakpoint } from '../types/breakpoint';

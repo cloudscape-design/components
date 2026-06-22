@@ -30,3 +30,6 @@ export interface OptionProps extends BaseComponentProps {
   labelId?: string;
   customContent?: ReactNode;
 }
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { OptionDefinition, OptionGroup } from '../../../types/option';

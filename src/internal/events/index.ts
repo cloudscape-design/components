@@ -4,6 +4,16 @@ import React from 'react';
 
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../../types/events';
 
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type {
+  BaseKeyDetail,
+  BaseNavigationDetail,
+  CancelableEventHandler,
+  ClickDetail,
+  NonCancelableCustomEvent,
+  NonCancelableEventHandler,
+} from '../../types/events';
+
 class CustomEventStub<T> {
   defaultPrevented = false;
   cancelBubble = false;

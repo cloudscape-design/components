@@ -76,3 +76,6 @@ export default React.forwardRef(
     );
   }
 ) as ForwardRefType;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { NativeAttributes } from '../../types/native-attributes';

@@ -36,3 +36,6 @@ export function getAnalyticsMetadataProps<T extends BasePropsWithAnalyticsMetada
 ): NonNullable<T['analyticsMetadata'] & T['__analyticsMetadata']> {
   return { ...props?.analyticsMetadata, ...props?.__analyticsMetadata };
 }
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { BaseComponentProps } from '../../types/base-component';

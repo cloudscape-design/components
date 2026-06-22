@@ -113,3 +113,6 @@ export const useDropdownStatus: UseDropdownStatus = ({
 };
 
 export default DropdownStatus;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export type { DropdownStatusProps } from '../../../types/dropdown-status';
