@@ -38,4 +38,4 @@ export function getAnalyticsMetadataProps<T extends BasePropsWithAnalyticsMetada
 }
 
 // Backward-compatibility re-export for consumers importing this public type from the internal path.
-export type { BaseComponentProps } from '../../types/base-component';
+export { BaseComponentProps } from '../../types/base-component';

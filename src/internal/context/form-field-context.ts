@@ -20,7 +20,7 @@ export function useFormFieldContext(props: FormFieldValidationControlProps) {
 }
 
 // Backward-compatibility re-export for consumers importing this public type from the internal path.
-export type {
+export {
   FormFieldCommonValidationControlProps,
   FormFieldControlProps,
   FormFieldValidationControlProps,

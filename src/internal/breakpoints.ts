@@ -75,4 +75,4 @@ export function getBreakpointValue(breakpoint: Breakpoint): number {
 }
 
 // Backward-compatibility re-export for consumers importing this public type from the internal path.
-export type { Breakpoint } from '../types/breakpoint';
+export { Breakpoint } from '../types/breakpoint';

@@ -32,4 +32,4 @@ export interface OptionProps extends BaseComponentProps {
 }
 
 // Backward-compatibility re-export for consumers importing this public type from the internal path.
-export type { OptionDefinition, OptionGroup } from '../../../types/option';
+export { OptionDefinition, OptionGroup } from '../../../types/option';

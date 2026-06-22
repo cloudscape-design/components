@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { BaseComponentProps } from '../types/base-component';
 /**
  * @awsuiSystem core
  */
-import { BaseComponentProps } from '../types/base-component';
 import { NativeAttributes } from '../types/native-attributes';
 
 export interface StatusIndicatorProps extends BaseComponentProps {

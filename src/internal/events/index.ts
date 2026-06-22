@@ -5,7 +5,7 @@ import React from 'react';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../../types/events';
 
 // Backward-compatibility re-export for consumers importing this public type from the internal path.
-export type {
+export {
   BaseKeyDetail,
   BaseNavigationDetail,
   CancelableEventHandler,
