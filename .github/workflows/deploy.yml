@@ -16,7 +16,7 @@ jobs:
   # Produces the artifact consumed by deploy, allowing it to start
   # before the full build+test job finishes.
   quick-build:
-    name: quick-build${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
+    name: quick-build$ {{format('(React {0})', matrix.react)}}
     # skip this job for external contributions
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     strategy:
@@ -62,7 +62,7 @@ jobs:
 
   deploy:
     needs: quick-build
-    name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
+    name: deploy$ {{format('(React {0})', matrix.react)}}
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     strategy:
       matrix:
