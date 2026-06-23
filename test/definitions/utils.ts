@@ -21,7 +21,7 @@ function buildUrl(host: string, path: string, queryParams?: Record<string, strin
   const params = new URLSearchParams(queryParams);
   const qs = params.toString();
   console.log({ host });
-  return `${host}/#/${path}${qs ? `?${qs}` : ''}`;
+  return `${host}#/${path}${qs ? `?${qs}` : ''}`;
 }
 
 function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinition {
