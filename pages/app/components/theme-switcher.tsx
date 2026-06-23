@@ -7,15 +7,15 @@ import { Density, Mode } from '@cloudscape-design/global-styles';
 import { ALWAYS_VISUAL_REFRESH, INCLUDE_ONE_THEME } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
-import AppContext from '../app-context';
+import AppContext, { Theme } from '../app-context';
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
+  function activateTheme(selected: 'visualRefresh' | 'oneTheme' | 'classic') {
     setUrlParams({
-      visualRefresh: theme === 'visualRefresh',
-      oneTheme: theme === 'oneTheme',
+      visualRefresh: selected === 'visualRefresh',
+      theme: selected === 'oneTheme' ? Theme.OneTheme : Theme.Default,
     });
     window.location.reload();
   }
@@ -29,7 +29,7 @@ export default function ThemeSwitcher() {
     vrSwitchProps.checked = true;
     vrSwitchProps.readOnly = true;
   } else {
-    vrSwitchProps.checked = urlParams.visualRefresh && !urlParams.oneTheme;
+    vrSwitchProps.checked = urlParams.visualRefresh && urlParams.theme !== Theme.OneTheme;
     vrSwitchProps.onChange = event => activateTheme(event.target.checked ? 'visualRefresh' : 'classic');
   }
 
@@ -44,7 +44,7 @@ export default function ThemeSwitcher() {
           <input
             id="one-theme-toggle"
             type="checkbox"
-            checked={urlParams.oneTheme}
+            checked={urlParams.theme === Theme.OneTheme}
             onChange={event => activateTheme(event.target.checked ? 'oneTheme' : 'classic')}
           />
           One theme
