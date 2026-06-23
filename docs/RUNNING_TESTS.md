@@ -66,9 +66,9 @@ They compare permutation pages between the PR build and a baseline build of `mai
 
 ### How it works
 
-1. The PR pages are built and served on port 8080.
-2. A git worktree of `origin/main` is created, its dependencies installed, and its pages built and served on port 8081.
-3. The single test runner (`test/visual.test.ts`) iterates over all test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
+1. The visual regression job waits for the deployment job —the deployment URL is used as the host containing the changes in the PR.
+2. A git worktree of `origin/main` is created, its dependencies installed, and its pages built and served on port 8080.
+3. Each of the test runners under `test/visual` imports their corresponding test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
 
 ### Running locally
 
@@ -82,7 +82,7 @@ This handles the full build and comparison in one command. If both outputs are a
 NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
 ```
 
-(Requires both servers to be running — start the PR build with `npm run start:integ` on port 8080 and the baseline build on port 8081, or set `NEW_HOST` / `OLD_HOST` env vars to point at different hosts.)
+(Requires both servers to be running — start the PR build with `npm run start:integ` on port 8080 and the baseline build on port 8080, or set `NEW_HOST` / `OLD_HOST` env vars to point at different hosts.)
 
 ### Adding tests for a new component
 

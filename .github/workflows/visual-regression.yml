@@ -138,7 +138,6 @@ jobs:
             NEW_URL=$(gh api \
               "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
               --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
-            NEW_URL="${NEW_URL%index.html}"
             echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
           fi
           if [ -z "$NEW_URL" ]; then
@@ -150,11 +149,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
 
-      - name: Start baseline server (port 8081)
-        run: npx --yes serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
+      - name: Start baseline server (port 8080)
+        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-visual-baseline &
 
       - name: Wait for baseline server
-        run: node_modules/.bin/wait-on http://localhost:8081
+        run: node_modules/.bin/wait-on http://localhost:8080
 
       - name: Run visual regression tests
         run: |
@@ -165,7 +164,7 @@ jobs:
           TZ: UTC
           SHARD: ${{ matrix.shard }}
           NEW_HOST: ${{ steps.hosts.outputs.new }}
-          OLD_HOST: http://localhost:8081
+          OLD_HOST: http://localhost:8080
 
       - name: Upload diff artifacts
         if: failure()
