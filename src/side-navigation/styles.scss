@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 // ==========================================================================
@@ -156,6 +157,11 @@ $expandable-icon-negative-margin: awsui.$space-l;
   list-style: none;
   @include styles.with-motion {
     transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+  }
+  @include theming.one-theme-only {
+    &:not(.list-item--collapsed):not(:has(> .section)):not(:has(> .expandable-link-group)) {
+      padding-inline-start: calc(#{$item-padding-inline} - 3px);
+    }
   }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {

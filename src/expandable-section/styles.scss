@@ -57,16 +57,13 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     margin-inline-end: $icon-margin-right-medium;
     @include theming.one-theme-only {
       margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
-      inset-block-start: $icon-offset-block;
-      > .icon {
-        inset-block-start: calc(#{$icon-offset-block} * 3); // Double-check
-      }
+      inset-block-start: calc($icon-offset-block + 1px);
     }
   }
   @include theming.one-theme-only {
     display: inline-flex;
     align-items: flex-start;
-    margin-inline-end: calc(#{$icon-margin-right-normal} + #{$icon-offset-inline});
+    margin-inline-end: $icon-margin-right-normal;
     > .icon {
       inset-block-start: $icon-offset-block;
     }
