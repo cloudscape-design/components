@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { attachment } from 'allure-js-commons';
+import { attachment, step } from 'allure-js-commons';
 
 import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -172,18 +172,21 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
 
       expect(newPerms.length).toBe(oldPerms.length);
 
-      // Compare each permutation individually and attach results.
-      const permFailures: number[] = [];
-      const attachmentPromises: Promise<void>[] = [];
+      // Compare each permutation individually, wrapping each in an Allure step.
+      let failures = 0;
       for (let i = 0; i < newPerms.length; i++) {
-        const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
-        attachmentPromises.push(attachDiffImages(permResult, `Permutation #${i.toString().padStart(3, '0')}`));
-        if (permResult.diffPixels > tolerance) {
-          permFailures.push(i);
-        }
+        const id = newPerms[i].id || '';
+        const index = `#${(i + 1).toString().padStart(3, '0')}`;
+        await step(`Permutation ${index}`, async () => {
+          const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
+          await attachDiffImages(permResult, index);
+          if (permResult.diffPixels > tolerance) {
+            failures++;
+            throw new Error(`Permutation ${index} differs by ${permResult.diffPixels} pixels\n${id}`);
+          }
+        });
       }
-      await Promise.all(attachmentPromises);
-      expect(permFailures).toEqual([]);
+      expect(failures).toBe(0);
       return;
     }
 
