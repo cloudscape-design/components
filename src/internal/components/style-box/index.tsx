@@ -10,6 +10,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getVisualContextClassname } from '../visual-context/index.js';
+
 import styles from './styles.css.js';
 
 export type StyleBoxVariant = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'mint' | 'lime' | 'grey';
@@ -32,16 +34,17 @@ export interface StyleBoxProps {
    * Each variant renders the same padding (unless `shape="circle"`). Background and content
    * colors are drawn from the corresponding Cloudscape core color palette:
    *
-   * | Variant    | Light bg (`50`) | Dark bg (`1000`) | Text/icon (`600`/`400`) |
-   * |------------|-----------------|------------------|-------------------------|
-   * | `red`      | `colorRed50`    | `colorRed1000`   | `colorRed600/400`       |
-   * | `yellow`   | `colorYellow50` | `colorYellow1000`| `colorYellow600/400`    |
-   * | `indigo`   | `colorIndigo50` | `colorIndigo1000`| `colorIndigo600/400`    |
-   * | `green`    | `colorGreen50`  | `colorGreen1000` | `colorGreen600/400`     |
-   * | `orange`   | `colorOrange50` | `colorOrange1000`| `colorOrange600/400`    |
-   * | `purple`   | `colorPurple50` | `colorPurple1000`| `colorPurple600/400`    |
-   * | `mint`     | `colorMint50`   | `colorMint1000`  | `colorMint600/400`      |
-   * | `lime`     | `colorLime50`   | `colorLime1000`  | `colorLime600/400`      |
+   * | Variant    | Light bg (`50`) | Dark bg (`950`@80%) | Text/icon (`600`/`200`) |
+   * |------------|-----------------|---------------------|-------------------------|
+   * | `red`      | `colorRed50`    | `colorRed950`       | `colorRed600/200`       |
+   * | `yellow`   | `colorYellow50` | `colorYellow950`    | `colorYellow600/200`    |
+   * | `indigo`   | `colorIndigo50` | `colorIndigo950`    | `colorIndigo600/200`    |
+   * | `green`    | `colorGreen50`  | `colorGreen950`     | `colorGreen600/200`     |
+   * | `orange`   | `colorOrange50` | `colorOrange950`    | `colorOrange600/200`    |
+   * | `purple`   | `colorPurple50` | `colorPurple950`    | `colorPurple600/200`    |
+   * | `mint`     | `colorMint50`   | `colorMint950`      | `colorMint600/200`      |
+   * | `lime`     | `colorLime50`   | `colorLime950`      | `colorLime600/200`      |
+   * | `grey`     | `colorNeutralGrey100` | `colorNeutralGrey750` | `colorNeutralGrey800/100` |
    *
    * @experimental
    */
@@ -70,7 +73,7 @@ export interface StyleBoxProps {
   children: React.ReactNode;
 }
 
-const VARIANT_CLASS: Record<StyleBoxVariant, string> = {
+const VARIANT_BACKGROUND_CLASS: Record<StyleBoxVariant, string> = {
   red: styles['variant-red'],
   yellow: styles['variant-yellow'],
   indigo: styles['variant-indigo'],
@@ -91,8 +94,24 @@ const SHAPE_CLASS: Record<StyleBoxShape, string> = {
  * StyleBox wraps content in a color-tinted container. Background, content text
  * color, and shape are all controlled through props.
  *
+ * Content colors are applied via the Cloudscape visual context pattern: each
+ * variant adds an `awsui-context-style-box-{variant}` class to the wrapper,
+ * which scopes the token overrides defined in
+ * `style-dictionary/one-theme/contexts/style-box-*.ts`.
+ *
  * @experimental
  */
 export function StyleBox({ variant, shape = 'sharp', as: Tag = 'div', className, children }: StyleBoxProps) {
-  return <Tag className={clsx(VARIANT_CLASS[variant], SHAPE_CLASS[shape], className)}>{children}</Tag>;
+  return (
+    <Tag
+      className={clsx(
+        VARIANT_BACKGROUND_CLASS[variant],
+        SHAPE_CLASS[shape],
+        getVisualContextClassname(`style-box-${variant}`),
+        className
+      )}
+    >
+      {children}
+    </Tag>
+  );
 }

@@ -4,35 +4,31 @@
 */
 
 @use '../../styles/tokens' as awsui;
-@use '../../styles/utils/theming';
 
 /*
  * StyleBox applies one of the predefined color-tinted style treatments to a wrapper element.
  *
+ * Color styling is provided by the Cloudscape visual context pattern:
+ *   - Each variant class sets the background-color via a semantic token
+ *     (e.g. awsui.$color-background-style-box-red).
+ *   - The corresponding awsui-context-style-box-{variant} class on the element
+ *     activates token overrides defined in
+ *     style-dictionary/one-theme/contexts/style-box-*.ts, which re-scope
+ *     colorTextBodyDefault, colorTextHeadingDefault, colorTextIconSubtle, etc.
+ *     under the context selector. No CSS custom property hash overrides are needed.
+ *
  * Shape modifiers control border-radius and geometry:
- *   rounded → token-based soft corners + standard padding (default)
- *   sharp   → 2px corners + standard padding
- *   circle  → 50% radius, no padding, equal width/height (perfect circle)
+ *   sharp  → 2px corners + standard padding (default)
+ *   circle → 50% radius, fixed square dimensions (perfect circle)
  *
- * Padding is intentionally NOT in %style-box-base so that .shape-circle
- * does not need to fight specificity to remove it.
- *
- * Background colors — Cloudscape core color palette:
- *   light mode → 50-level tints  |  dark mode → 1000-level shades
- *
- * Content color overrides re-scope the CSS custom properties consumed by Box text
- * variants and Icon (subtle variant).
- *   light mode → 600-level  |  dark mode → 400-level
- *
- * Source of truth: style-dictionary/core/color-palette.ts
+ * Padding is NOT in %style-box-base so .shape-circle does not need to
+ * fight specificity to remove it.
  *
  * NOTE: This component is experimental. Do not rely on these class names or
  * the specific values here remaining stable across releases.
  */
 
 // ─── Shared layout ────────────────────────────────────────────────────────────
-// Only display is shared. Padding lives in the shape classes, not here,
-// so .shape-circle never needs to override it.
 
 %style-box-base {
   display: inline-flex;
@@ -40,132 +36,7 @@
 
 // ─── Shape modifiers ──────────────────────────────────────────────────────────
 
-// ─── Color palette ────────────────────────────────────────────────────────────
-// Source: style-dictionary/core/color-palette.ts
-
-$red-50: #fff5f5;
-$red-100: #ffe0e0;
-$red-200: #ffc2c2;
-$red-300: #ff9e9e;
-$red-400: #ff7a7a;
-$red-500: #ff3d3d;
-$red-600: #db0000;
-$red-700: #c20000;
-$red-800: #990000;
-$red-900: #700000;
-$red-950: #520000;
-$red-1000: #1f0000;
-
-$yellow-50: #fffef0;
-$yellow-100: #fffbbd;
-$yellow-200: #fef571;
-$yellow-300: #ffed4d;
-$yellow-400: #ffe347;
-$yellow-500: #fbd332;
-$yellow-600: #f2b100;
-$yellow-700: #db9200;
-$yellow-800: #9e6900;
-$yellow-900: #855900;
-$yellow-950: #573a00;
-$yellow-1000: #191100;
-
-$indigo-50: #f5f7ff;
-$indigo-100: #dbe4ff;
-$indigo-200: #c2d1ff;
-$indigo-300: #94afff;
-$indigo-400: #7598ff;
-$indigo-500: #5c7fff;
-$indigo-600: #295eff;
-$indigo-700: #003efa;
-$indigo-800: #0033cc;
-$indigo-900: #001a99;
-$indigo-950: #001475;
-$indigo-1000: #000833;
-
-$green-50: #effff1;
-$green-100: #d9ffd6;
-$green-200: #aeffa8;
-$green-300: #62ff57;
-$green-400: #00e500;
-$green-500: #2bb534;
-$green-600: #00802f;
-$green-700: #007029;
-$green-800: #005c26;
-$green-900: #00471e;
-$green-950: #003311;
-$green-1000: #001401;
-
-$orange-50: #fff7f5;
-$orange-100: #ffe0d6;
-$orange-200: #ffc0ad;
-$orange-300: #ff997a;
-$orange-400: #ff6a3d;
-$orange-500: #ff4b14;
-$orange-600: #db3300;
-$orange-700: #a82700;
-$orange-800: #8a2000;
-$orange-900: #661800;
-$orange-950: #471100;
-$orange-1000: #1f0700;
-
-$purple-50: #faf5ff;
-$purple-100: #f2e5ff;
-$purple-200: #e8d1ff;
-$purple-300: #d4a8ff;
-$purple-400: #bf80ff;
-$purple-500: #ad5cff;
-$purple-600: #962eff;
-$purple-700: #7300e5;
-$purple-800: #5900b2;
-$purple-900: #45008a;
-$purple-950: #300061;
-$purple-1000: #1a0033;
-
-$mint-50: #ebfff6;
-$mint-100: #ccffe9;
-$mint-200: #8fffce;
-$mint-300: #3dff9e;
-$mint-400: #00e582;
-$mint-500: #00bd6b;
-$mint-600: #008559;
-$mint-700: #006b48;
-$mint-800: #005237;
-$mint-900: #00422c;
-$mint-950: #003322;
-$mint-1000: #00140e;
-
-$lime-50: #f7ffeb;
-$lime-100: #ebffcc;
-$lime-200: #d1ff8a;
-$lime-300: #acff2e;
-$lime-400: #7ae500;
-$lime-500: #31b800;
-$lime-600: #008a00;
-$lime-700: #007000;
-$lime-800: #005700;
-$lime-900: #003d00;
-$lime-950: #002e00;
-$lime-1000: #001400;
-
-$grey-50: #fcfcfc;
-$grey-100: #f9f9f9;
-$grey-200: #f5f5f5;
-$grey-300: #e1e1e1;
-$grey-400: #b7b7b7;
-$grey-500: #909090;
-$grey-600: #6b6b6b;
-$grey-700: #3b3b3b;
-$grey-750: #2d2d2d;
-$grey-800: #242424;
-$grey-850: #1e1e1e;
-$grey-900: #1a1a1a;
-$grey-950: #151515;
-$grey-1000: #080808;
-
-// Opacity applied to all dark mode background-colors
-$dark-bg-opacity: 0.8;
-
-// sharp: 2px corners with compact padding (tighter than circle)
+// sharp: 2px corners with compact padding
 .shape-sharp {
   padding-block: 0px;
   padding-inline: awsui.$space-xxxs;
@@ -175,12 +46,9 @@ $dark-bg-opacity: 0.8;
   border-end-end-radius: 2px;
 }
 
-// circle: uniform padding on all sides, forced square, fully rounded.
-// padding is equal on all sides so the total dimension is symmetric.
 // circle: fixed square dimensions regardless of content, fully rounded.
 // Both inline-size and block-size are explicitly set to the same computed value
-// (padding on both sides + medium icon size) so the circle is always perfectly square.
-// Content is centered and cannot stretch the container.
+// so the circle is always perfectly square. Content is centered.
 .shape-circle {
   inline-size: calc(awsui.$space-scaled-xs * 2 + awsui.$size-icon-medium);
   block-size: calc(awsui.$space-scaled-xs * 2 + awsui.$size-icon-medium);
@@ -193,124 +61,52 @@ $dark-bg-opacity: 0.8;
   border-end-end-radius: 50%;
 }
 
-// ─── Content color override mixin ────────────────────────────────────────────
-// Targets the CSS custom properties consumed by:
-//   Box  → colorTextBodyDefault, colorTextHeadingDefault, colorTextBodySecondary,
-//           colorTextHeadingSecondary, colorTextSmall
-//   Icon → colorTextIconSubtle (variant="subtle")
-//
-// $light: 600-level hex value  |  $dark: 400-level hex value
-
-@mixin content-colors($light, $dark) {
-  /* stylelint-disable custom-property-pattern */
-  --color-text-body-default-a7br70: #{$light};
-  --color-text-heading-default-5p4ugs: #{$light};
-  --color-text-body-secondary-6zl7e0: #{$light};
-  --color-text-heading-secondary-c1zwy4: #{$light};
-  --color-text-icon-subtle-xnb03v: #{$light};
-  --color-text-small-ldm4or: #{$light};
-
-  @include theming.dark-mode-only {
-    --color-text-body-default-a7br70: #{$dark};
-    --color-text-heading-default-5p4ugs: #{$dark};
-    --color-text-body-secondary-6zl7e0: #{$dark};
-    --color-text-heading-secondary-c1zwy4: #{$dark};
-    --color-text-icon-subtle-xnb03v: #{$dark};
-    --color-text-small-ldm4or: #{$dark};
-  }
-  /* stylelint-enable custom-property-pattern */
-}
-
 // ─── Variants ─────────────────────────────────────────────────────────────────
-// Background: colorXxx50 (light) / colorXxx1000 (dark)
-// Content:    colorXxx600 (light) / colorXxx400 (dark)
+// Background color is set here via a semantic token.
+// Content (text/icon) colors come from the visual context token overrides
+// registered in style-dictionary/one-theme/contexts/style-box-*.ts.
 
 .variant-red {
   @extend %style-box-base;
-  background-color: $red-50;
-  @include content-colors($red-600, $red-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($red-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-red;
 }
 
 .variant-yellow {
   @extend %style-box-base;
-  background-color: $yellow-50;
-  @include content-colors($yellow-600, $yellow-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($yellow-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-yellow;
 }
 
 .variant-indigo {
   @extend %style-box-base;
-  background-color: $indigo-50;
-  @include content-colors($indigo-600, $indigo-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($indigo-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-indigo;
 }
 
 .variant-green {
   @extend %style-box-base;
-  background-color: $green-50;
-  @include content-colors($green-600, $green-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($green-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-green;
 }
 
 .variant-orange {
   @extend %style-box-base;
-  background-color: $orange-50;
-  @include content-colors($orange-600, $orange-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($orange-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-orange;
 }
 
 .variant-purple {
   @extend %style-box-base;
-  background-color: $purple-50;
-  @include content-colors($purple-600, $purple-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($purple-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-purple;
 }
 
 .variant-mint {
   @extend %style-box-base;
-  background-color: $mint-50;
-  @include content-colors($mint-600, $mint-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($mint-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-mint;
 }
 
 .variant-lime {
   @extend %style-box-base;
-  background-color: $lime-50;
-  @include content-colors($lime-600, $lime-200);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($lime-950, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-lime;
 }
 
 .variant-grey {
   @extend %style-box-base;
-  background-color: $grey-100;
-  @include content-colors($grey-800, $grey-100);
-
-  @include theming.dark-mode-only {
-    background-color: rgba($grey-750, $dark-bg-opacity);
-  }
+  background-color: awsui.$color-background-style-box-grey;
 }

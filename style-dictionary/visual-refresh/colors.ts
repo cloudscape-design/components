@@ -355,6 +355,19 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeBlue: '{colorTextNotificationDefault}',
   colorTextBadgeRed: '{colorTextNotificationDefault}',
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
+
+  // StyleBox variant backgrounds — defined here so the SCSS variable is always available.
+  // One Theme overrides these with palette token references in one-theme/colors.ts.
+  // Visual Refresh has no StyleBox component; these are effectively no-ops outside one-theme.
+  colorBackgroundStyleBoxRed: 'transparent',
+  colorBackgroundStyleBoxYellow: 'transparent',
+  colorBackgroundStyleBoxIndigo: 'transparent',
+  colorBackgroundStyleBoxGreen: 'transparent',
+  colorBackgroundStyleBoxOrange: 'transparent',
+  colorBackgroundStyleBoxPurple: 'transparent',
+  colorBackgroundStyleBoxMint: 'transparent',
+  colorBackgroundStyleBoxLime: 'transparent',
+  colorBackgroundStyleBoxGrey: 'transparent',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

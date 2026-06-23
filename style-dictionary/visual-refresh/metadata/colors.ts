@@ -1205,6 +1205,15 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundStyleBoxRed: { description: 'StyleBox red variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxYellow: { description: 'StyleBox yellow variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxIndigo: { description: 'StyleBox indigo variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxGreen: { description: 'StyleBox green variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxOrange: { description: 'StyleBox orange variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxPurple: { description: 'StyleBox purple variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxMint: { description: 'StyleBox mint variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxLime: { description: 'StyleBox lime variant background (One Theme only).', public: false },
+  colorBackgroundStyleBoxGrey: { description: 'StyleBox grey variant background (One Theme only).', public: false },
 };
 
 export default metadata;
