@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundBackdrop: {
+    description: 'The background color of the backdrop shown behind overlay surfaces such as modals and drawers.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonNormalActive: {
     description: 'The background color of normal buttons in active state.',
     themeable: true,

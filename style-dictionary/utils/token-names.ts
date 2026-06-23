@@ -533,6 +533,7 @@ export type ColorsTokenName =
   | 'colorGreyTransparent'
   | 'colorGreyTransparentHeavy'
   | 'colorGreyTransparentLight'
+  | 'colorBackgroundBackdrop'
   | 'colorBackgroundBadgeIcon'
   | 'colorBackgroundButtonLinkDefault'
   | 'colorBackgroundButtonLinkActive'
