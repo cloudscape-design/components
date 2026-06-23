@@ -163,10 +163,6 @@ jobs:
             fi
           fi
 
-          # Strip trailing index.html if present — buildUrl adds /#/path
-          NEW_URL="${NEW_URL%index.html}"
-          OLD_URL="${OLD_URL%index.html}"
-
           echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
           echo "old=${OLD_URL}" >> "$GITHUB_OUTPUT"
           echo ""

@@ -20,6 +20,7 @@ const wrapper = createWrapper();
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams(queryParams);
   const qs = params.toString();
+  console.log({ host });
   return `${host}/#/${path}${qs ? `?${qs}` : ''}`;
 }
 
