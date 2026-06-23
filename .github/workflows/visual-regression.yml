@@ -163,6 +163,10 @@ jobs:
             fi
           fi
 
+          # Strip trailing index.html if present — buildUrl adds /#/path
+          NEW_URL="${NEW_URL%index.html}"
+          OLD_URL="${OLD_URL%index.html}"
+
           echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
           echo "old=${OLD_URL}" >> "$GITHUB_OUTPUT"
           echo ""
@@ -179,7 +183,14 @@ jobs:
           REPO: ${{ github.repository }}
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
+        run: |
+          echo "NEW_HOST=${NEW_HOST}"
+          echo "OLD_HOST=${OLD_HOST}"
+          echo "Testing NEW_HOST accessibility..."
+          curl -sI "${NEW_HOST}" | head -5 || echo "Failed to reach NEW_HOST"
+          echo "Testing OLD_HOST accessibility..."
+          curl -sI "${OLD_HOST}" | head -5 || echo "Failed to reach OLD_HOST"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
         env:
           TZ: UTC
           SHARD: ${{ matrix.shard }}
