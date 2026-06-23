@@ -125,19 +125,47 @@ jobs:
 
       # ── Run tests ─────────────────────────────────────────────────────────
 
-      - name: Start test server (port 8080)
-        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
+      - name: Resolve PR deployment URL
+        id: hosts
+        run: |
+          DEPLOY_ENV="dev-pages-react18"
+          echo "Looking for deployment with environment '${DEPLOY_ENV}'..."
+          DEPLOY_ID=$(gh api \
+            "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
+            --jq '.[0].id // empty' 2>/dev/null || true)
+          NEW_URL=""
+          if [ -n "$DEPLOY_ID" ]; then
+            NEW_URL=$(gh api \
+              "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
+              --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            NEW_URL="${NEW_URL%index.html}"
+            echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
+          fi
+          if [ -z "$NEW_URL" ]; then
+            echo "::error::Could not resolve PR deployment URL"
+            exit 1
+          fi
+          echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
 
       - name: Start baseline server (port 8081)
         run: npx --yes serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
 
-      - name: Wait for servers to be ready
-        run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
+      - name: Wait for baseline server
+        run: node_modules/.bin/wait-on http://localhost:8081
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/40
+        run: |
+          echo "NEW_HOST=${NEW_HOST}"
+          echo "OLD_HOST=${OLD_HOST}"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/40"
         env:
           TZ: UTC
+          SHARD: ${{ matrix.shard }}
+          NEW_HOST: ${{ steps.hosts.outputs.new }}
+          OLD_HOST: http://localhost:8081
 
       - name: Upload diff artifacts
         if: failure()
