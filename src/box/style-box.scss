@@ -1,0 +1,102 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// ─── Base accent variant ─────────────────────────────────────────────────────
+.accent-variant {
+  display: inline-flex;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xs;
+  border-start-start-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-start-radius: 2px;
+  border-end-end-radius: 2px;
+  color: inherit;
+}
+
+// ─── Accent colors ──────────────────────────────────────────────────────────────
+
+.accent-red {
+  background-color: #fff5f5;
+  color: #db0000;
+  @include theming.dark-mode-only {
+    background-color: rgba(82, 0, 0, 0.8);
+    color: #ff7a7a;
+  }
+}
+
+.accent-yellow {
+  background-color: #fffef0;
+  color: #f2b100;
+  @include theming.dark-mode-only {
+    background-color: rgba(87, 58, 0, 0.8);
+    color: #ffe347;
+  }
+}
+
+.accent-indigo {
+  background-color: #f5f7ff;
+  color: #295eff;
+  @include theming.dark-mode-only {
+    background-color: rgba(0, 20, 117, 0.8);
+    color: #7598ff;
+  }
+}
+
+.accent-green {
+  background-color: #effff1;
+  color: #00802f;
+  @include theming.dark-mode-only {
+    background-color: rgba(0, 51, 17, 0.8);
+    color: #00e500;
+  }
+}
+
+.accent-orange {
+  background-color: #fff7f5;
+  color: #db3300;
+  @include theming.dark-mode-only {
+    background-color: rgba(71, 17, 0, 0.8);
+    color: #ff6a3d;
+  }
+}
+
+.accent-purple {
+  background-color: #faf5ff;
+  color: #962eff;
+  @include theming.dark-mode-only {
+    background-color: rgba(48, 0, 97, 0.8);
+    color: #bf80ff;
+  }
+}
+
+.accent-mint {
+  background-color: #ebfff6;
+  color: #008559;
+  @include theming.dark-mode-only {
+    background-color: rgba(0, 51, 34, 0.8);
+    color: #00e582;
+  }
+}
+
+.accent-lime {
+  background-color: #f7ffeb;
+  color: #008a00;
+  @include theming.dark-mode-only {
+    background-color: rgba(0, 46, 0, 0.8);
+    color: #7ae500;
+  }
+}
+
+.accent-grey {
+  background-color: #fcfcfc;
+  color: #6b6b6b;
+  @include theming.dark-mode-only {
+    background-color: rgba(21, 21, 21, 0.8);
+    color: #b7b7b7;
+  }
+}

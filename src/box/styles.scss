@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use './text';
 @use './layout';
+@use './style-box';
 
 .root {
   @include styles.default-text-style;

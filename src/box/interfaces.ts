@@ -19,10 +19,18 @@ export interface BoxProps extends BaseComponentProps {
    *   styled using "Display large light" typography.
    * - If you set it to `awsui-inline-code`, the component will render a `code` element,
    *   styled with a background and padding for inline code snippets.
+   * - If you set it to `awsui-accent`, the component will render a `span`,
+   *   styled as a visual accent container with background and content color combinations.
+   *   Use with the `accentColor` prop to select a color variant.
    *
    * Override the HTML tag by using property `tagOverride`.
    */
   variant?: BoxProps.Variant;
+  /**
+   * Defines the accent color for the `awsui-style-box` variant.
+   * Only applies when `variant` is set to `awsui-style-box`.
+   */
+  accentColor?: BoxProps.AccentColor;
   /**
    * Overrides the default HTML tag provided by the variant.
    */
@@ -154,7 +162,10 @@ export namespace BoxProps {
     | 'awsui-key-label'
     | 'awsui-gen-ai-label'
     | 'awsui-value-large'
-    | 'awsui-inline-code';
+    | 'awsui-inline-code'
+    | 'awsui-accent';
+
+  export type AccentColor = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'mint' | 'lime' | 'grey';
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';
   export type TextAlign = 'left' | 'center' | 'right';
