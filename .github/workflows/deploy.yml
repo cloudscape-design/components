@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy and visual regression
 
 on:
   pull_request:
@@ -73,13 +73,54 @@ jobs:
       artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
 
+  build-baseline:
+    name: Build baseline pages
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm i
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+          retention-days: 1
+
   visual:
     name: Visual regression
-    needs: quick-build
+    needs: [deploy, build-baseline]
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     uses: ./.github/workflows/visual-regression.yml
     secrets: inherit
     with:
-      pr-artifact-name: dev-pages-react18
       test-utils-artifact-name: test-utils-selectors
+      baseline-artifact-name: visual-baseline-pages
       caller-run-id: ${{ github.run_id }}
