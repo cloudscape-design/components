@@ -33,7 +33,7 @@ interface CropAndCompareResult {
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams({ motionDisabled: 'true', ...queryParams });
   const qs = params.toString();
-  return `${host}/#/${path}${qs ? `?${qs}` : ''}`;
+  return `${host}#/${path}${qs ? `?${qs}` : ''}`;
 }
 
 function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinition {
