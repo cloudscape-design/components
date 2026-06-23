@@ -803,6 +803,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextExpandableSectionDefault: {
+    description: 'The default color of the expandable section header text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionHover: {
+    description: 'The color of the expandable section header text in hover state.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionNavigationIconDefault: {
+    description: 'The default color of the expand icon in the navigation variant of the expandable section.',
+    public: true,
+    themeable: true,
+  },
   colorTextFormDefault: {
     description:
       'The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.',

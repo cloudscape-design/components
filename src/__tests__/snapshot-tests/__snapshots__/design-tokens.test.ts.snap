@@ -2594,6 +2594,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -6071,6 +6092,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#687078",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
           },
         },
         "color-text-form-default": {
@@ -9552,6 +9594,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -13029,6 +13092,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#687078",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
           },
         },
         "color-text-form-default": {
@@ -16510,6 +16594,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -19989,6 +20094,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -23466,6 +23592,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#d5dbdb",
         "light": "#687078",
+      },
+    },
+    "color-text-expandable-section-default": {
+      "$description": "The default color of the expandable section header text.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-expandable-section-hover": {
+      "$description": "The color of the expandable section header text in hover state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
+    "color-text-expandable-section-navigation-icon-default": {
+      "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+      "$value": {
+        "dark": "#95a5a6",
+        "light": "#879596",
       },
     },
     "color-text-form-default": {
@@ -26952,6 +27099,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -30426,6 +30594,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -33910,6 +34099,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -37387,6 +37597,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#656871",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
           },
         },
         "color-text-form-default": {
@@ -40868,6 +41099,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -44347,6 +44599,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -47821,6 +48094,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -51305,6 +51599,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -54782,6 +55097,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#dedee3",
         "light": "#656871",
+      },
+    },
+    "color-text-expandable-section-default": {
+      "$description": "The default color of the expandable section header text.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-expandable-section-hover": {
+      "$description": "The color of the expandable section header text in hover state.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-expandable-section-navigation-icon-default": {
+      "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#424650",
       },
     },
     "color-text-form-default": {
