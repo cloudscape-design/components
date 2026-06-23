@@ -14,7 +14,7 @@ const defaultWindowSize = { width: 1200, height: 800 };
 
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
-const oldHost = process.env.OLD_HOST || 'http://localhost:8081';
+const oldHost = process.env.OLD_HOST || 'http://localhost:8080';
 
 const wrapper = createWrapper();
 
