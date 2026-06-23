@@ -162,6 +162,8 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
+    console.log({ newUrl, oldUrl });
+
     if (testDef.screenshotType === 'permutations') {
       // Capture permutations as raw (no PNG decode)
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
