@@ -14,20 +14,22 @@ interface TooltipProps {
   content?: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
+  show?: boolean;
 }
 
 const DEFAULT_OPEN_TIMEOUT_IN_MS = 120;
 
-export default function Tooltip({ children, content, position = 'right', className }: TooltipProps) {
+export default function Tooltip({ children, content, position = 'right', className, show }: TooltipProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const isReducedMotion = useReducedMotion(ref);
   const { open, triggerProps } = useTooltipOpen(isReducedMotion ? 0 : DEFAULT_OPEN_TIMEOUT_IN_MS);
+  const isOpen = open || !!show;
   const portalClasses = usePortalModeClasses(ref);
 
   return (
     <span ref={ref} {...triggerProps} className={className}>
       {children}
-      {open && (
+      {isOpen && (
         <Portal>
           <span className={portalClasses}>
             <PopoverContainer
@@ -94,6 +96,8 @@ function useTooltipOpen(timeout: number) {
 
   const onFocus = openDelayed;
   const onBlur = close;
+  const onMouseEnter = openDelayed;
+  const onMouseLeave = close;
 
   return {
     open: isOpen,
@@ -101,6 +105,8 @@ function useTooltipOpen(timeout: number) {
       onBlur,
       onFocus,
       onKeyDown,
+      onMouseEnter,
+      onMouseLeave,
     },
   };
 }

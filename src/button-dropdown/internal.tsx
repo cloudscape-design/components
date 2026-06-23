@@ -13,6 +13,8 @@ import Dropdown from '../dropdown/internal';
 import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
+import DropdownFooter from '../internal/components/dropdown-footer';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
@@ -23,6 +25,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
+import ButtonDropdownFilter from './filter';
 import { ButtonDropdownProps } from './interfaces';
 import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
@@ -65,12 +68,19 @@ const InternalButtonDropdown = React.forwardRef(
       nativeMainActionAttributes,
       nativeTriggerAttributes,
       renderItem,
+      filteringType,
+      filteringPlaceholder,
+      filteringAriaLabel,
+      filteringClearAriaLabel,
+      noMatch,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const isInRestrictedView = useMobile();
     const dropdownId = useUniqueId('dropdown');
+    const menuId = useUniqueId('button-dropdown-menu');
+    const hasFiltering = filteringType === 'auto';
     for (const item of items) {
       if (isLinkItem(item)) {
         checkSafeUrl('ButtonDropdown', item.href);
@@ -105,19 +115,35 @@ const InternalButtonDropdown = React.forwardRef(
       onKeyUp,
       onItemActivate,
       onGroupToggle,
+      onDropdownBlur,
       toggleDropdown,
       closeDropdown,
       setIsUsingMouse,
+      filteringValue,
+      setFilteringValue,
+      filteredItems,
+      effectiveHasExpandableGroups,
     } = useButtonDropdown({
       items,
       onItemClick,
       onItemFollow,
-      // Scroll is unnecessary when moving focus back to the dropdown trigger.
       onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
+      hasFiltering,
     });
+
+    const filterRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (isOpen && hasFiltering) {
+        // Delay to allow dropdown to render before focusing
+        requestAnimationFrame(() => {
+          filterRef.current?.focus();
+        });
+      }
+    }, [isOpen, hasFiltering]);
 
     const handleMouseEvent = () => {
       setIsUsingMouse(true);
@@ -187,7 +213,7 @@ const InternalButtonDropdown = React.forwardRef(
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
       formAction: 'none',
-      ariaHaspopup: true,
+      ariaHaspopup: hasFiltering ? 'dialog' : true,
       nativeButtonAttributes: nativeTriggerAttributes,
     };
 
@@ -344,8 +370,34 @@ const InternalButtonDropdown = React.forwardRef(
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
+    const footerId = useUniqueId('awsui-button-dropdown__footer');
+
+    const isNoMatch = hasFiltering && !!filteringValue && filteredItems.length === 0;
+    const dropdownStatus = useDropdownStatus({
+      statusType: 'finished',
+      isNoMatch,
+      noMatch,
+    });
 
     const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
+
+    const highlightedItemId = targetItem && targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+
+    const filterElement = hasFiltering ? (
+      <ButtonDropdownFilter
+        ref={filterRef}
+        value={filteringValue}
+        onChange={event => setFilteringValue(event.detail.value)}
+        placeholder={filteringPlaceholder}
+        ariaLabel={filteringAriaLabel}
+        clearAriaLabel={filteringClearAriaLabel}
+        nativeInputAttributes={{
+          'aria-activedescendant': highlightedItemId ?? '',
+          'aria-owns': menuId,
+          'aria-controls': menuId,
+        }}
+      />
+    ) : null;
 
     const { loadingButtonCount } = useFunnel();
     useEffect(() => {
@@ -382,8 +434,19 @@ const InternalButtonDropdown = React.forwardRef(
           expandToViewport={expandToViewport}
           preferredAlignment={preferCenter ? 'center' : 'start'}
           onOutsideClick={() => toggleDropdown()}
+          // In filtering mode the dropdown is a dialog with several focusable elements, so we
+          // close it once focus leaves the trigger and the dropdown content rather than on Tab.
+          onBlur={hasFiltering ? onDropdownBlur : undefined}
           trigger={trigger}
           dropdownId={dropdownId}
+          header={filterElement}
+          ariaRole={hasFiltering ? 'dialog' : undefined}
+          ariaLabel={hasFiltering ? ariaLabel : undefined}
+          footer={
+            dropdownStatus.content ? (
+              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={!isNoMatch} />
+            ) : null
+          }
           content={
             <>
               {hasHeader && (
@@ -412,17 +475,19 @@ const InternalButtonDropdown = React.forwardRef(
                 open={canBeOpened && isOpen}
                 position="static"
                 role="menu"
+                nativeAttributes={{ id: menuId }}
                 tagOverride="ul"
                 decreaseBlockMargin={true}
                 ariaLabel={ariaLabel}
                 ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
+                ariaDescribedby={dropdownStatus.content ? footerId : undefined}
                 statusType="finished"
               >
                 <ItemsList
-                  items={items}
+                  items={filteredItems}
                   onItemActivate={onItemActivate}
                   onGroupToggle={onGroupToggle}
-                  hasExpandableGroups={expandableGroups}
+                  hasExpandableGroups={effectiveHasExpandableGroups}
                   targetItem={targetItem}
                   isHighlighted={isHighlighted}
                   isKeyboardHighlight={isKeyboardHighlight}
@@ -435,6 +500,9 @@ const InternalButtonDropdown = React.forwardRef(
                   linkStyle={linkStyle}
                   position={position}
                   renderItem={renderItem}
+                  filteringText={filteringValue}
+                  filteringEnabled={hasFiltering}
+                  menuId={hasFiltering ? menuId : undefined}
                 />
               </OptionsList>
             </>

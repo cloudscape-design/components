@@ -40,6 +40,19 @@ describe('ButtonDropdown renderItem', () => {
     expect(elementWrapper).toHaveTextContent('Custom');
   });
 
+  test('renders custom item content for link items', () => {
+    const renderItem = jest.fn(() => <div>Custom link</div>);
+    const wrapper = renderButtonDropdown({
+      items: [{ id: 'link1', text: 'Docs', href: '#docs' }],
+      renderItem,
+    });
+    wrapper.openDropdown();
+    const element = wrapper.findItemById('link1')!.getElement();
+    // The custom rendered content replaces the default content inside the anchor element.
+    expect(element.querySelector('a')).not.toBeNull();
+    expect(element).toHaveTextContent('Custom link');
+  });
+
   test('receives correct item properties for action item', () => {
     const renderItem = jest.fn(() => <div>Custom</div>);
     const actionItem = { id: 'test-action', text: 'Test Action' };
