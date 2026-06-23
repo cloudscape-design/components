@@ -3,9 +3,10 @@
 import { attachment } from 'allure-js-commons';
 
 import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
-import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
+import { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../lib/components/test-utils/selectors';
+import { OptimizedPageObject, RawScreenshot } from './optimized-page-object';
 import { TestDefinition, TestSuite } from './types';
 
 const screenshotAreaSelector = '.screenshot-area';
@@ -25,19 +26,6 @@ interface CropAndCompareResult {
   diffImage: Buffer | null;
   isEqual: boolean;
   diffPixels: number;
-}
-
-/**
- * A raw screenshot that defers PNG decoding until needed.
- * Allows fast byte-equality comparison on the compressed data.
- */
-interface RawScreenshot {
-  rawBase64: string;
-  offset: { top: number; left: number };
-  width: number;
-  height: number;
-  pixelRatio?: number;
-  id?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -91,32 +79,13 @@ async function preparePage(
 
 /**
  * Captures a raw screenshot (base64 + metadata) WITHOUT decoding the PNG.
- * This enables fast comparison on the compressed bytes.
+ * Uses takeElementScreenshot for the screenshot area to avoid full-page capture.
  */
-async function captureRaw(
-  browser: WebdriverIO.Browser,
-  page: ScreenshotPageObject,
-  testDef: TestDefinition
-): Promise<RawScreenshot> {
+function captureRaw(page: OptimizedPageObject, testDef: TestDefinition): Promise<RawScreenshot> {
   if (testDef.screenshotType === 'viewport') {
-    const { height, width } = await page.getViewportSize();
-    const rawBase64 = await browser.takeScreenshot();
-    return { rawBase64, offset: { top: 0, left: 0 }, width, height };
+    return page.captureViewportRaw();
   }
-
-  // screenshotArea or permutations: full-page screenshot with offset
-  const { pixelRatio } = await page.getViewportSize();
-  const box = await page.getBoundingBox(screenshotAreaSelector);
-  const rawBase64 = await page.fullPageScreenshot();
-  return { rawBase64, offset: { top: box.top, left: box.left }, width: box.width, height: box.height, pixelRatio };
-}
-
-/**
- * Decodes a RawScreenshot into a ScreenshotWithOffset for cropAndCompare.
- */
-async function decodeRaw(raw: RawScreenshot): Promise<ScreenshotWithOffset> {
-  const image = await parsePng(raw.rawBase64);
-  return { image, offset: raw.offset, width: raw.width, height: raw.height, pixelRatio: raw.pixelRatio };
+  return page.captureSelectorRaw(screenshotAreaSelector);
 }
 
 /**
@@ -130,47 +99,26 @@ async function compareScreenshots(newRaw: RawScreenshot, oldRaw: RawScreenshot):
     return { firstImage: imageBuffer, secondImage: imageBuffer, diffImage: null, isEqual: true, diffPixels: 0 };
   }
 
-  // For element screenshots (taken via takeElementScreenshot with offset 0,0 and width 0),
-  // the PNG is already cropped — no decode/crop/re-encode needed. Just report the diff.
-  if (newRaw.width === 0 && newRaw.offset.top === 0 && newRaw.offset.left === 0) {
-    const firstImage = Buffer.from(newRaw.rawBase64, 'base64');
-    const secondImage = Buffer.from(oldRaw.rawBase64, 'base64');
-    return { firstImage, secondImage, diffImage: null, isEqual: false, diffPixels: 1 };
-  }
+  // Images differ — decode and run pixelmatch to produce a diff image for the Allure report.
+  // This only runs for failing tests, so the cost is acceptable.
+  const firstPng = await parsePng(newRaw.rawBase64);
+  const secondPng = await parsePng(oldRaw.rawBase64);
 
-  // Slow path: decode and do full pixel comparison.
-  const [newScreenshot, oldScreenshot] = await Promise.all([decodeRaw(newRaw), decodeRaw(oldRaw)]);
-  return cropAndCompare(newScreenshot, oldScreenshot);
-}
+  // No cropping needed since takeElementScreenshot already produces cropped images.
+  const firstScreenshot = {
+    image: firstPng,
+    offset: { top: 0, left: 0 },
+    width: firstPng.width,
+    height: firstPng.height,
+  };
 
-/**
- * Captures each permutation element individually using takeElementScreenshot.
- * Returns one raw base64 PNG per permutation — no decode, no crop, no re-encode.
- */
-async function capturePermutationsRaw(
-  browser: WebdriverIO.Browser,
-  page: ScreenshotPageObject
-): Promise<RawScreenshot[]> {
-  await page.windowScrollTo({ top: 0, left: 0 });
-
-  // Find all permutation elements
-  const elements = await browser.$$('[data-permutation]');
-
-  if ((await elements.length) === 0) {
-    throw new Error('No permutations found on current page.');
-  }
-
-  // Take a screenshot of each permutation element directly via WebDriver.
-  // This returns a pre-cropped PNG for each element — no parsePng/packPng needed.
-  const results: RawScreenshot[] = [];
-  for (const element of elements) {
-    const id = (await element.getAttribute('data-permutation')) || '';
-    const rawBase64 = await browser.takeElementScreenshot(element.elementId);
-    // offset/width/height are irrelevant since the screenshot is already cropped
-    results.push({ rawBase64, offset: { top: 0, left: 0 }, width: 0, height: 0, id });
-  }
-
-  return results;
+  const secondScreenshot = {
+    image: secondPng,
+    offset: { top: 0, left: 0 },
+    width: secondPng.width,
+    height: secondPng.height,
+  };
+  return cropAndCompare(firstScreenshot, secondScreenshot);
 }
 
 // ─── Test runner ─────────────────────────────────────────────────────────────
@@ -209,7 +157,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
   test(testDef.description, async () => {
     const tolerance = testDef.pixelDiffTolerance ?? 0;
     const browser = getBrowser();
-    const page = new ScreenshotPageObject(browser);
+    const page = new OptimizedPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
@@ -217,10 +165,10 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     if (testDef.screenshotType === 'permutations') {
       // Capture permutations as raw (no PNG decode)
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-      const newPerms = await capturePermutationsRaw(browser, page);
+      const newPerms = await page.capturePermutationsRaw();
 
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-      const oldPerms = await capturePermutationsRaw(browser, page);
+      const oldPerms = await page.capturePermutationsRaw();
 
       expect(newPerms.length).toBe(oldPerms.length);
 
@@ -241,10 +189,10 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
 
     // Non-permutation: single screenshot comparison
     await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-    const newRaw = await captureRaw(browser, page, testDef);
+    const newRaw = await captureRaw(page, testDef);
 
     await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-    const oldRaw = await captureRaw(browser, page, testDef);
+    const oldRaw = await captureRaw(page, testDef);
 
     const result = await compareScreenshots(newRaw, oldRaw);
     await attachDiffImages(result, testDef.description);
