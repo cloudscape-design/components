@@ -121,6 +121,8 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
+    console.log({ newUrl, oldUrl });
+
     await preparePage(browser, page, newUrl, testDef, testDef.configuration);
     const newScreenshot = await capture(page, testDef);
 
