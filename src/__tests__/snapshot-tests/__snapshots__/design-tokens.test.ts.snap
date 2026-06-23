@@ -655,6 +655,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -2846,6 +2853,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -3186,6 +3200,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -3365,6 +3386,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -4106,6 +4134,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -6297,6 +6332,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -6637,6 +6679,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -6816,6 +6865,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -7557,6 +7613,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -9748,6 +9811,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -10088,6 +10158,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -10265,6 +10342,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "space-scaled-xxxs": {
           "$description": "The XXXS spacing unit which scales between modes.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
@@ -11008,6 +11092,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -13199,6 +13290,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -13539,6 +13637,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -13718,6 +13823,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -14457,6 +14569,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -16650,6 +16769,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -16990,6 +17116,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -17169,6 +17302,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -17908,6 +18048,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#232f3e",
             "light": "#232f3e",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -20101,6 +20248,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -20441,6 +20595,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -20620,6 +20781,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -21359,6 +21527,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
+      },
+    },
+    "color-background-side-navigation-item-active": {
+      "$description": "The background color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-slider-handle-active": {
@@ -23552,6 +23727,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-text-side-navigation-item-active": {
+      "$description": "The text color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0073bb",
+      },
+    },
     "color-text-status-error": {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": {
@@ -23892,6 +24074,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "size-side-navigation-item-height": {
+      "$description": "The minimum height of side navigation items.",
+      "$value": {
+        "comfortable": "28px",
+        "compact": "24px",
+      },
+    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -24071,6 +24260,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The XXXS spacing unit which scales between modes.",
       "$value": {
         "comfortable": "2px",
+        "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-gap": {
+      "$description": "The vertical gap between side navigation items.",
+      "$value": {
+        "comfortable": "0px",
         "compact": "0px",
       },
     },
@@ -24817,6 +25013,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -27008,6 +27211,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -27348,6 +27558,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -27527,6 +27744,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -28266,6 +28490,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -30459,6 +30690,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -30799,6 +31037,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -30978,6 +31223,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -31719,6 +31971,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -33910,6 +34169,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#002b66",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -34250,6 +34516,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -34429,6 +34702,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -35170,6 +35450,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -37361,6 +37648,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#002b66",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -37701,6 +37995,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -37878,6 +38179,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "space-scaled-xxxs": {
           "$description": "The XXXS spacing unit which scales between modes.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
@@ -38621,6 +38929,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -40812,6 +41127,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -41152,6 +41474,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -41331,6 +41660,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -42070,6 +42406,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -44263,6 +44606,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -44603,6 +44953,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -44782,6 +45139,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -45523,6 +45887,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -47714,6 +48085,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#75cfff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -48054,6 +48432,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -48233,6 +48618,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -48974,6 +49366,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#161d26",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -51165,6 +51564,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#75cfff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -51505,6 +51911,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -51684,6 +52097,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -52423,6 +52843,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
+      },
+    },
+    "color-background-side-navigation-item-active": {
+      "$description": "The background color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-slider-handle-active": {
@@ -54616,6 +55043,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#002b66",
       },
     },
+    "color-text-side-navigation-item-active": {
+      "$description": "The text color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
     "color-text-status-error": {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": {
@@ -54956,6 +55390,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },
+    "size-side-navigation-item-height": {
+      "$description": "The minimum height of side navigation items.",
+      "$value": {
+        "comfortable": "28px",
+        "compact": "24px",
+      },
+    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -55135,6 +55576,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The XXXS spacing unit which scales between modes.",
       "$value": {
         "comfortable": "2px",
+        "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-gap": {
+      "$description": "The vertical gap between side navigation items.",
+      "$value": {
+        "comfortable": "0px",
         "compact": "0px",
       },
     },

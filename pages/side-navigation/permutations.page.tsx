@@ -3,6 +3,7 @@
 import React from 'react';
 
 import Badge from '~components/badge';
+import Icon from '~components/icon';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 
 import createPermutations from '../utils/permutations';
@@ -449,6 +450,57 @@ const permutations = createPermutations<SideNavigationProps>([
               ],
             },
           ],
+        },
+      ],
+    ],
+  },
+  {
+    header: [
+      { text: 'With icons', href: '#/' },
+      { text: 'With icons + img logo', href: '#/', logo: { src: logoSmall, alt: 'logo' } },
+      { href: '#/', logo: { src: logoSmall, alt: 'logo' } },
+    ],
+    collapsed: [false, true],
+    activeHref: ['#/calendar'],
+    items: [
+      [
+        { type: 'link', text: 'Calendar', href: '#/calendar', icon: <Icon name="calendar" /> },
+        { type: 'link', text: 'Settings', href: '#/settings', icon: <Icon name="settings" /> },
+        { type: 'divider' },
+        {
+          type: 'section',
+          text: 'Resources',
+          items: [
+            { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="group" /> },
+            { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="share" /> },
+          ],
+        },
+        {
+          type: 'expandable-link-group',
+          text: 'Projects',
+          href: '#/projects',
+          icon: <Icon name="folder" />,
+          items: [
+            { type: 'link', text: 'Project 1', href: '#/project-1', icon: <Icon name="folder-open" /> },
+            { type: 'link', text: 'Project 2', href: '#/project-2', icon: <Icon name="folder-open" /> },
+          ],
+        },
+        {
+          type: 'expandable-link-group',
+          text: 'Folders',
+          href: '#/Folders',
+          items: [
+            { type: 'link', text: 'Folder 1', href: '#/folder-1', icon: <Icon name="folder-open" /> },
+            { type: 'link', text: 'Folder 2', href: '#/folder-2', icon: <Icon name="folder-open" /> },
+          ],
+        },
+        {
+          type: 'link',
+          text: 'dshjfjshfjshbdkfjbdsnfkjsdkfhjskdjhfkjsbdkfjskdfjksdbfkjsdhjf',
+          href: '#/gibberish',
+          icon: <Icon name="external" />,
+          external: true,
+          info: <Badge color="blue">10</Badge>,
         },
       ],
     ],
