@@ -25,6 +25,9 @@ export interface CategoryProps extends HighlightProps {
   variant?: ItemListProps['variant'];
   position?: string;
   renderItem?: ButtonDropdownProps.ItemRenderer;
+  filteringText?: string;
+  filteringEnabled?: boolean;
+  menuId?: string;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -42,6 +45,9 @@ export interface ItemListProps extends HighlightProps {
   linkStyle?: boolean;
   renderItem?: ButtonDropdownProps.ItemRenderer;
   parentProps?: ButtonDropdownProps.GroupRenderItem;
+  filteringText?: string;
+  filteringEnabled?: boolean;
+  menuId?: string;
 }
 
 export interface ItemProps {
@@ -60,6 +66,9 @@ export interface ItemProps {
   linkStyle?: boolean;
   renderItem?: ButtonDropdownProps.ItemRenderer;
   parentProps?: ButtonDropdownProps.GroupRenderItem;
+  filteringText?: string;
+  filteringEnabled?: boolean;
+  menuId?: string;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

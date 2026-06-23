@@ -25,6 +25,9 @@ const CategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const groupProps: ButtonDropdownProps.GroupRenderItem = {
@@ -35,6 +38,7 @@ const CategoryElement = ({
     highlighted: !!highlighted,
     expanded: true,
     expandDirection: 'vertical',
+    filterText: filteringText,
   };
   const renderResult = renderItem?.({ item: groupProps }) ?? null;
 
@@ -85,6 +89,9 @@ const CategoryElement = ({
             position={position}
             renderItem={renderItem}
             parentProps={groupProps}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
           />
         )}
       </ul>
