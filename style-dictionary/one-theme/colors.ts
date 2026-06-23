@@ -97,7 +97,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkSecondaryDefault: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
   colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkInfoHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkDecorationDefault: { light: '{colorNeutral650}', dark: '{colorNeutral600}' },
 
@@ -161,6 +161,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Tile ─────────────────────────────────────────────────────────────────
   colorBackgroundTilesDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
+
+  // ── Side Nav ─────────────────────────────────────────────────────────────────
+  colorTextSideNavigationItemActive: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorBackgroundSideNavigationItemActive: { light: '{colorPrimary50}', dark: 'rgba(0, 153, 255, 0.13)' },
 
   // ── Dropzone ──────────────────────────────────────────────────────────────
   colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },

@@ -7,9 +7,9 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusInfo: { light: '{colorInfo50}', dark: '#161a2d' },
-  colorBackgroundStatusWarning: { light: '{colorWarning50}', dark: '#fbd33210' },
-  colorBackgroundStatusError: { light: '{colorError50}', dark: '#ff7a7a10' },
-  colorBackgroundStatusSuccess: { light: '{colorSuccess50}', dark: '#2bb53410' },
+  colorBackgroundStatusWarning: { light: '{colorWarning50}', dark: '#191100' },
+  colorBackgroundStatusError: { light: '{colorError50}', dark: '#1f0000' },
+  colorBackgroundStatusSuccess: { light: '{colorSuccess50}', dark: '#001401' },
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
   colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },

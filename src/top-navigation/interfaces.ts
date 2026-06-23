@@ -15,7 +15,14 @@ export interface TopNavigationProps extends BaseComponentProps {
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
    */
-  identity: TopNavigationProps.Identity;
+  identity?: TopNavigationProps.Identity;
+
+  /**
+   * Specifies custom navigation content.
+   * When provided, replaces all structured content (identity, search, utilities are ignored).
+   * @displayname customContent
+   */
+  children?: React.ReactNode;
 
   /**
    * Visual context applied to the navigation bar.
