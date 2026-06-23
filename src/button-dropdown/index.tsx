@@ -41,12 +41,17 @@ const ButtonDropdown = React.forwardRef(
       nativeMainActionAttributes,
       nativeTriggerAttributes,
       renderItem,
+      filteringType = 'none',
+      filteringPlaceholder,
+      filteringAriaLabel,
+      filteringClearAriaLabel,
+      noMatch,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('ButtonDropdown', {
-      props: { expandToViewport, expandableGroups, variant, iconName },
+      props: { expandToViewport, expandableGroups, variant, iconName, filteringType },
       metadata: {
         mainAction: !!mainAction,
         checkboxItems: hasCheckboxItems(items),
@@ -88,6 +93,11 @@ const ButtonDropdown = React.forwardRef(
         fullWidth={fullWidth}
         nativeMainActionAttributes={nativeMainActionAttributes}
         nativeTriggerAttributes={nativeTriggerAttributes}
+        filteringType={filteringType}
+        filteringPlaceholder={filteringPlaceholder}
+        filteringAriaLabel={filteringAriaLabel}
+        filteringClearAriaLabel={filteringClearAriaLabel}
+        noMatch={noMatch}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}
