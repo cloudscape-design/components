@@ -51,6 +51,15 @@ const itemPermutations = createPermutations<ButtonGroupProps.Item>([
       </StatusIndicator>,
     ],
   },
+  // Link (href)
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['external'],
+    text: ['Open in a new tab'],
+    href: ['#'],
+    target: ['_blank'],
+  },
   // Toggle button
   {
     type: ['icon-toggle-button'],
