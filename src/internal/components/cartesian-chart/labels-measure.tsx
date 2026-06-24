@@ -33,7 +33,7 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth 
     }
     const observer = new ResizeObserver(entries => {
       const newWidth = entries[0]?.contentBoxSize?.[0]?.inlineSize ?? entries[0]?.contentRect?.width ?? 0;
-      if (Math.abs(newWidth - prevWidthRef.current) >= 1) {
+      if (Math.abs(newWidth - prevWidthRef.current) >= 20) {
         prevWidthRef.current = newWidth;
         autoWidth(newWidth);
       }
