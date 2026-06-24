@@ -149,7 +149,7 @@
     "wait-on": "^8.0.2",
     "webpack": "^5.105.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.2.4"
+    "webpack-dev-server": "^5.2.5"
   },
   "overrides": {
     "@types/react-dom": "^16.9.14",
@@ -177,7 +177,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "1285 kB",
+      "limit": "1300 kB",
       "ignore": "react-dom"
     }
   ],

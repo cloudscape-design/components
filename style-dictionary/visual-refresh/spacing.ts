@@ -74,6 +74,8 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderToolsFullPageBottom: '4px',
   spaceTableHorizontal: '{spaceContainerHorizontal}',
   spaceTreeViewIndentation: '{spaceXl}',
+  spaceSideNavigationItemGap: '0px',
+  spaceSideNavigationItemCollapsedGap: '{spaceXs}',
   spaceTileGutter: { comfortable: '{spaceXl}', compact: '{spaceM}' },
   spaceActionCardHorizontalDefault: '{spaceCardHorizontalDefault}',
   spaceActionCardHorizontalEmbedded: '{spaceCardHorizontalEmbedded}',

@@ -235,6 +235,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(242, 243, 243, 0.9)",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
@@ -653,6 +660,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -2587,6 +2601,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -2844,6 +2879,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#16191f",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": {
@@ -3186,6 +3228,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -3365,6 +3414,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -3686,6 +3742,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(242, 243, 243, 0.9)",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
@@ -4104,6 +4167,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -6038,6 +6108,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -6295,6 +6386,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#16191f",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": {
@@ -6637,6 +6735,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -6816,6 +6921,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -7137,6 +7249,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(242, 243, 243, 0.9)",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
@@ -7555,6 +7674,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -9489,6 +9615,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -9746,6 +9893,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#16191f",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": {
@@ -10088,6 +10242,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -10265,6 +10426,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "space-scaled-xxxs": {
           "$description": "The XXXS spacing unit which scales between modes.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
@@ -10586,6 +10754,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(242, 243, 243, 0.9)",
           },
         },
         "color-background-badge-icon": {
@@ -11008,6 +11183,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -12940,6 +13122,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -13197,6 +13400,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": {
@@ -13539,6 +13749,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -13718,6 +13935,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -14037,6 +14261,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(242, 243, 243, 0.9)",
           },
         },
         "color-background-badge-icon": {
@@ -14457,6 +14688,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -16391,6 +16629,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#879596",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -16648,6 +16907,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": {
@@ -16990,6 +17256,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -17169,6 +17442,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -17488,6 +17768,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(22, 25, 31, 0.8)",
+            "light": "rgba(22, 25, 31, 0.8)",
           },
         },
         "color-background-badge-icon": {
@@ -17908,6 +18195,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#232f3e",
             "light": "#232f3e",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -19842,6 +20136,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -20099,6 +20414,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
           },
         },
         "color-text-status-error": {
@@ -20441,6 +20763,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -20620,6 +20949,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -20939,6 +21275,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+      },
+    },
+    "color-background-backdrop": {
+      "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+      "$value": {
+        "dark": "rgba(22, 25, 31, 0.8)",
+        "light": "rgba(242, 243, 243, 0.9)",
       },
     },
     "color-background-badge-icon": {
@@ -21359,6 +21702,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
+      },
+    },
+    "color-background-side-navigation-item-active": {
+      "$description": "The background color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-slider-handle-active": {
@@ -23293,6 +23643,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#687078",
       },
     },
+    "color-text-expandable-section-default": {
+      "$description": "The default color of the expandable section header text.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-expandable-section-hover": {
+      "$description": "The color of the expandable section header text in hover state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
+    "color-text-expandable-section-navigation-icon-default": {
+      "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+      "$value": {
+        "dark": "#95a5a6",
+        "light": "#879596",
+      },
+    },
     "color-text-form-default": {
       "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
       "$value": {
@@ -23550,6 +23921,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#fafafa",
         "light": "#16191f",
+      },
+    },
+    "color-text-side-navigation-item-active": {
+      "$description": "The text color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0073bb",
       },
     },
     "color-text-status-error": {
@@ -23892,6 +24270,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "size-side-navigation-item-height": {
+      "$description": "The minimum height of side navigation items.",
+      "$value": {
+        "comfortable": "28px",
+        "compact": "24px",
+      },
+    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -24071,6 +24456,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The XXXS spacing unit which scales between modes.",
       "$value": {
         "comfortable": "2px",
+        "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-gap": {
+      "$description": "The vertical gap between side navigation items.",
+      "$value": {
+        "comfortable": "0px",
         "compact": "0px",
       },
     },
@@ -24395,6 +24787,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(35, 43, 55, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -24815,6 +25214,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -26749,6 +27155,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -27006,6 +27433,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#0f141a",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-status-error": {
@@ -27348,6 +27782,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -27527,6 +27968,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -27846,6 +28294,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(15, 20, 26, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -28268,6 +28723,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#161d26",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -30200,6 +30662,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -30457,6 +30940,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-status-error": {
@@ -30799,6 +31289,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -30978,6 +31475,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -31297,6 +31801,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(35, 43, 55, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -31719,6 +32230,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -33651,6 +34169,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -33908,6 +34447,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-status-error": {
@@ -34250,6 +34796,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -34429,6 +34982,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -34748,6 +35308,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(35, 43, 55, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -35170,6 +35737,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -37102,6 +37676,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -37359,6 +37954,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-status-error": {
@@ -37701,6 +38303,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -37878,6 +38487,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "space-scaled-xxxs": {
           "$description": "The XXXS spacing unit which scales between modes.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
@@ -38199,6 +38815,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(35, 43, 55, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -38621,6 +39244,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -40553,6 +41183,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -40810,6 +41461,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-status-error": {
@@ -41152,6 +41810,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -41331,6 +41996,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -41650,6 +42322,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(35, 43, 55, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -42070,6 +42749,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -44004,6 +44690,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -44261,6 +44968,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-status-error": {
@@ -44603,6 +45317,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -44782,6 +45503,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -45101,6 +45829,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(15, 20, 26, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -45521,6 +46256,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -47455,6 +48197,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -47712,6 +48475,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-status-error": {
@@ -48054,6 +48824,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -48233,6 +49010,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -48552,6 +49336,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(15, 20, 26, 0.7)",
           },
         },
         "color-background-badge-icon": {
@@ -48972,6 +49763,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-slider-handle-active": {
@@ -50906,6 +51704,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "color-text-form-default": {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": {
@@ -51163,6 +51982,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-status-error": {
@@ -51505,6 +52331,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -51684,6 +52517,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
@@ -52003,6 +52843,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
         "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+      },
+    },
+    "color-background-backdrop": {
+      "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+      "$value": {
+        "dark": "rgba(15, 20, 26, 0.7)",
+        "light": "rgba(35, 43, 55, 0.7)",
       },
     },
     "color-background-badge-icon": {
@@ -52423,6 +53270,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
+      },
+    },
+    "color-background-side-navigation-item-active": {
+      "$description": "The background color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-slider-handle-active": {
@@ -54357,6 +55211,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#656871",
       },
     },
+    "color-text-expandable-section-default": {
+      "$description": "The default color of the expandable section header text.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-expandable-section-hover": {
+      "$description": "The color of the expandable section header text in hover state.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-expandable-section-navigation-icon-default": {
+      "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#424650",
+      },
+    },
     "color-text-form-default": {
       "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
       "$value": {
@@ -54614,6 +55489,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#75cfff",
         "light": "#002b66",
+      },
+    },
+    "color-text-side-navigation-item-active": {
+      "$description": "The text color of an active (highlighted) side navigation item.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-text-status-error": {
@@ -54956,6 +55838,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },
+    "size-side-navigation-item-height": {
+      "$description": "The minimum height of side navigation items.",
+      "$value": {
+        "comfortable": "28px",
+        "compact": "24px",
+      },
+    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -55135,6 +56024,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The XXXS spacing unit which scales between modes.",
       "$value": {
         "comfortable": "2px",
+        "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-gap": {
+      "$description": "The vertical gap between side navigation items.",
+      "$value": {
+        "comfortable": "0px",
         "compact": "0px",
       },
     },

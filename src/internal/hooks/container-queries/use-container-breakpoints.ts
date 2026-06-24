@@ -16,9 +16,9 @@ import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
 export function useContainerBreakpoints<T extends readonly Breakpoint[], E extends Element = any>(triggers?: T) {
   // triggers.join() gives us a stable value to use for the dependencies argument
   const triggersDep = triggers?.join();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]) as [
-    'default' | T[number] | null,
-    React.Ref<E>,
-  ];
+  return useContainerQuery(
+    (rect, previousBreakpoint) => getMatchingBreakpoint(rect.contentBoxWidth, triggers, previousBreakpoint),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [triggersDep]
+  ) as ['default' | T[number] | null, React.Ref<E>];
 }
