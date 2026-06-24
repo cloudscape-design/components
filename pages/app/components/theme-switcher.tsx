@@ -12,10 +12,10 @@ import AppContext, { Theme } from '../app-context';
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  function activateTheme(selected: 'visualRefresh' | 'oneTheme' | 'classic') {
+  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
     setUrlParams({
-      visualRefresh: selected === 'visualRefresh',
-      theme: selected === 'oneTheme' ? Theme.OneTheme : Theme.Default,
+      visualRefresh: theme === 'visualRefresh',
+      theme: theme === 'oneTheme' ? Theme.OneTheme : Theme.Default,
     });
     window.location.reload();
   }

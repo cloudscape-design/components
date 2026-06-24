@@ -74,17 +74,17 @@ export function parseQuery(query: string) {
   const urlParams = new URLSearchParams(query);
   urlParams.forEach((value, key) => (queryParams[key] = value));
 
-  const parsed = mapValues(queryParams, value => {
+  const themeValues = Object.values(Theme) as string[];
+
+  return mapValues(queryParams, (value, key) => {
+    if (key === 'theme') {
+      return themeValues.includes(value) ? value : Theme.Default;
+    }
     if (value === 'true' || value === 'false') {
       return value === 'true';
     }
     return value;
   });
-
-  const themeValues = Object.values(Theme) as string[];
-  parsed.theme = themeValues.includes(parsed.theme) ? parsed.theme : Theme.Default;
-
-  return parsed;
 }
 
 function formatQuery(params: AppUrlParams) {
