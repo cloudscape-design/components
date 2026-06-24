@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ErrorContext, FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
+import { ErrorContext, FlowType } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
 
 export namespace FormProps {
   export interface AnalyticsMetadata {

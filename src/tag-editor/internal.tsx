@@ -5,9 +5,9 @@ import React, { useRef, useState } from 'react';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalAutosuggest from '../autosuggest/internal';
 import { InputProps } from '../input/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { KeyCode } from '../internal/keycode';
 import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises';
+import { DropdownStatusProps } from '../types/dropdown-status';
 
 import styles from './styles.css.js';
 

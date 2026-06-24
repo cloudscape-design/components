@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { OptionDefinition } from '~components/internal/components/option/interfaces';
 import { SelectProps } from '~components/select';
+import { OptionDefinition } from '~components/types/option';
 
 const labels = ['monitor', 'speakers', 'keyboard', 'mouse', 'computer'];
 const descriptions = ['Description', 'Short description', 'This is a long description'];

@@ -3,10 +3,10 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
 import { SomeRequired } from '../internal/types';
+import { FlowType } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface BaseLayoutProps extends BaseComponentProps {
   /**

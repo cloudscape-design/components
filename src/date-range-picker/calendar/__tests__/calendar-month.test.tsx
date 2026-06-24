@@ -5,11 +5,11 @@ import { fireEvent, render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
-import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
 import { SomeRequired } from '../../../internal/types';
+import { NonCancelableEventHandler } from '../../../types/events';
 import { changeMode } from '../../__tests__/change-mode';
 import { i18nStrings } from '../../__tests__/i18n-strings';
 import { isValidRange } from '../../__tests__/is-valid-range';

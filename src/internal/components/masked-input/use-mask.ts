@@ -5,7 +5,7 @@ import { RefObject } from 'react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { InputProps } from '../../../input/interfaces';
-import { CancelableEventHandler, NonCancelableEventHandler } from '../../events';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../../../types/events';
 import { KeyCode } from '../../keycode';
 import { backspaceHandler, enterHandler, HandlerResult, keyHandler } from './keyboard-handler';
 import { isCommand, isDigit } from './utils/keys';

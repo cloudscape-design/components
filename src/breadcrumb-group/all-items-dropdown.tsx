@@ -7,8 +7,8 @@ import { CustomTriggerProps } from '../button-dropdown/interfaces';
 import InternalButtonDropdown from '../button-dropdown/internal';
 import InternalIcon from '../icon/internal';
 import { DATA_ATTR_FUNNEL_KEY, DATA_ATTR_RESOURCE_TYPE, FUNNEL_KEY_FUNNEL_NAME } from '../internal/analytics/selectors';
-import { CancelableEventHandler } from '../internal/events';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
+import { CancelableEventHandler } from '../types/events';
 import { BreadcrumbGroupProps } from './interfaces';
 
 import styles from './styles.css.js';

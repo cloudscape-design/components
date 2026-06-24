@@ -9,8 +9,9 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { useInternalI18n } from '../i18n/context';
-import { Breakpoint } from '../internal/breakpoints';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { Breakpoint } from '../types/breakpoint';
+import { NonCancelableEventHandler } from '../types/events';
 import { AttributeEditorProps } from './interfaces';
 import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils';
 

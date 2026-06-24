@@ -4,11 +4,11 @@
 import React from 'react';
 
 import InternalAutosuggest from '../autosuggest/internal.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
-import { NonCancelableEventHandler } from '../internal/events/index.js';
 import InternalMultiselect from '../multiselect/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
 import { getAllowedFreeTextOperators, getAllowedOperators, getPropertySuggestions } from './controller.js';
 import { I18nStringsInternal, operatorToDescription } from './i18n-utils.js';
 import {

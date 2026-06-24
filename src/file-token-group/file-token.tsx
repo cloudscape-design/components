@@ -8,12 +8,12 @@ import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-too
 
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
-import { BaseComponentProps } from '../internal/base-component/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
 import InternalToken from '../token/internal.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import Tooltip from '../tooltip/internal.js';
+import { BaseComponentProps } from '../types/base-component';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 
