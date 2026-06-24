@@ -12,7 +12,8 @@ import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './anal
 import { useFlashbar, useFlashbarVisibility } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
-import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import { isRefObject } from './utils';
 
 import styles from './styles.css.js';

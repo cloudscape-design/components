@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { InternalChartSeries, MixedLineBarChartProps, ScaleType } from './interfaces';
+import { MixedLineBarChartProps, ScaleType } from './interfaces';
+import { InternalChartSeries } from './internal-interfaces';
 import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 
 export function computeDomainX<T>(series: readonly InternalChartSeries<T>[], xScaleType: ScaleType) {

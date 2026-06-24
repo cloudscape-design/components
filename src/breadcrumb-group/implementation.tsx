@@ -26,7 +26,8 @@ import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
+import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
+import { InternalBreadcrumbGroupProps } from './internal-interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
 import { getEventDetail, getItemsDisplayProperties } from './utils';

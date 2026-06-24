@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { ButtonProps } from '../button/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
 
@@ -223,5 +222,3 @@ export interface FlashbarProps extends BaseComponentProps {
    */
   style?: FlashbarProps.Style;
 }
-
-export type InternalFlashbarProps = FlashbarProps & InternalBaseComponentProps;

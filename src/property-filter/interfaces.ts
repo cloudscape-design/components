@@ -15,7 +15,6 @@ import {
   PropertyFilterQuery,
   PropertyFilterToken,
   PropertyFilterTokenGroup,
-  PropertyFilterTokenType,
 } from '@cloudscape-design/collection-hooks';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
@@ -377,52 +376,3 @@ export type I18nStrings = PropertyFilterProps.I18nStrings;
 export type GroupText = PropertyFilterProps.GroupText;
 export type FormattedToken = PropertyFilterProps.FormattedToken;
 export type Ref = PropertyFilterProps.Ref;
-
-// Utility types
-
-export interface InternalFilteringProperty<TokenValue = any> {
-  propertyKey: string;
-  propertyLabel: string;
-  groupValuesLabel: string;
-  propertyGroup?: string;
-  operators: readonly PropertyFilterOperator[];
-  defaultOperator: PropertyFilterOperator;
-  getTokenType: (operator?: PropertyFilterOperator) => PropertyFilterTokenType;
-  getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
-  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
-  // Original property used in callbacks.
-  externalProperty: PropertyFilterProperty;
-}
-
-export interface InternalFilteringOption {
-  property: null | InternalFilteringProperty;
-  value: string;
-  label: string;
-  tags?: ReadonlyArray<string>;
-  filteringTags?: ReadonlyArray<string>;
-}
-
-export interface InternalFreeTextFiltering {
-  disabled: boolean;
-  operators: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
-  defaultOperator: PropertyFilterOperator;
-}
-
-export interface InternalToken<TokenValue = any> {
-  standaloneIndex?: number;
-  property: null | InternalFilteringProperty<TokenValue>;
-  operator: PropertyFilterOperator;
-  value: TokenValue;
-}
-
-export interface InternalTokenGroup<TokenValue = any> {
-  operation: PropertyFilterOperation;
-  tokens: readonly (InternalToken<TokenValue> | InternalTokenGroup<TokenValue>)[];
-}
-
-export type InternalQuery = InternalTokenGroup;
-
-export type ParsedText =
-  | { step: 'property'; property: InternalFilteringProperty; operator: ComparisonOperator; value: string }
-  | { step: 'operator'; property: InternalFilteringProperty; operatorPrefix: string }
-  | { step: 'free-text'; operator?: ComparisonOperator; value: string };

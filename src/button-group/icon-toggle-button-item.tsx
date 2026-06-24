@@ -11,7 +11,8 @@ import InternalLiveRegion from '../live-region/internal.js';
 import { InternalToggleButton } from '../toggle-button/internal.js';
 import Tooltip from '../tooltip/internal.js';
 import { CancelableEventHandler } from '../types/events';
-import { ButtonGroupProps, InternalIconToggleButton } from './interfaces.js';
+import { ButtonGroupProps } from './interfaces.js';
+import { InternalIconToggleButton } from './internal-interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

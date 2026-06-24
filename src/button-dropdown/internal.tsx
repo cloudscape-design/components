@@ -23,7 +23,8 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps, InternalItem } from './interfaces';
+import { ButtonDropdownProps } from './interfaces';
+import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';

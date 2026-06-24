@@ -13,7 +13,8 @@ import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
   GeneratedAnalyticsMetadataExpandableSectionExpand,
 } from './analytics-metadata/interfaces';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
+import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 import {
   variantRequiresActionsDivider,
   variantSupportsActions,

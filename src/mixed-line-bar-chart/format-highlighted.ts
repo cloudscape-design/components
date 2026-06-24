@@ -4,7 +4,8 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
 import { CartesianChartProps } from '../types/cartesian-chart';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { InternalChartSeries } from './internal-interfaces';
 import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 
 export interface HighlightDetails {
