@@ -5,7 +5,7 @@ import * as React from 'react';
 import Box from '~components/box';
 import ButtonTrigger, { ButtonTriggerProps } from '~components/internal/components/button-trigger';
 import Option from '~components/internal/components/option';
-import { OptionDefinition } from '~components/internal/components/option/interfaces';
+import { OptionDefinition } from '~components/types/option';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

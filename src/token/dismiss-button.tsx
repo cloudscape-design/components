@@ -7,7 +7,8 @@ import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/inter
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../icon/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
 
 import legacyTestingStyles from '../token-group/styles.css.js';

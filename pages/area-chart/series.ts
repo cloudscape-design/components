@@ -3,7 +3,7 @@
 import range from 'lodash/range';
 
 import { AreaChartProps } from '~components/area-chart';
-import { XScaleType, YScaleType } from '~components/internal/components/cartesian-chart/interfaces';
+import { XScaleType, YScaleType } from '~components/types/cartesian-chart';
 
 import pseudoRandom from '../utils/pseudo-random';
 import { numberFormatter } from './example';

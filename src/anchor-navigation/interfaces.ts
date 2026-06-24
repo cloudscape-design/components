@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../internal/base-component';
-import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 
 export interface AnchorNavigationProps extends BaseComponentProps {
   /**

@@ -3,8 +3,9 @@
 import React, { useCallback } from 'react';
 
 import InternalIcon from '../icon/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import InternalLink from '../link/internal';
+import { NonCancelableEventHandler } from '../types/events';
 
 import styles from './styles.css.js';
 
