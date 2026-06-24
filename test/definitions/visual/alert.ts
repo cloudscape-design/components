@@ -21,11 +21,13 @@ const suite: TestSuite = {
       description: `width ${width}px`,
       tests: [
         {
+          configuration: { width },
           description: 'permutations',
           path: 'alert/permutations',
           screenshotType: 'permutations' as const,
         },
         {
+          configuration: { width },
           description: 'custom types',
           path: 'alert/style-custom-types',
           screenshotType: 'screenshotArea' as const,
