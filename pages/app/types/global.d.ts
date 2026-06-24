@@ -5,6 +5,11 @@ declare module '*.scss' {
   export default styles;
 }
 
+declare module '*.css.js' {
+  const styles: Record<string, string>;
+  export default styles;
+}
+
 declare module '*.png' {
   const image: string;
   export default image;

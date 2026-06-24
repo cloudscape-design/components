@@ -176,6 +176,20 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Code view ─────────────────────────────────────────────────────────────
   colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral700}' },
+
+  // ── StyleBox variant backgrounds ──────────────────────────────────────────
+  // Light: 50-level tint; Dark: 950-level shade at 80% opacity.
+  // Palette tokens (colorRedNNN etc.) are global scope and cannot be referenced
+  // in ColorsDictionary values, so literal hex values are used here.
+  colorBackgroundStyleBoxRed: { light: '#fff5f5', dark: 'rgba(82, 0, 0, 0.8)' },
+  colorBackgroundStyleBoxYellow: { light: '#fffef0', dark: 'rgba(87, 58, 0, 0.8)' },
+  colorBackgroundStyleBoxIndigo: { light: '#f5f7ff', dark: 'rgba(0, 20, 117, 0.8)' },
+  colorBackgroundStyleBoxGreen: { light: '#effff1', dark: 'rgba(0, 51, 17, 0.8)' },
+  colorBackgroundStyleBoxOrange: { light: '#fff7f5', dark: 'rgba(71, 17, 0, 0.8)' },
+  colorBackgroundStyleBoxPurple: { light: '#faf5ff', dark: 'rgba(48, 0, 97, 0.8)' },
+  colorBackgroundStyleBoxMint: { light: '#ebfff6', dark: 'rgba(0, 51, 34, 0.8)' },
+  colorBackgroundStyleBoxLime: { light: '#f7ffeb', dark: 'rgba(0, 46, 0, 0.8)' },
+  colorBackgroundStyleBoxGrey: { light: '#f9f9f9', dark: 'rgba(45, 45, 45, 0.8)' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(

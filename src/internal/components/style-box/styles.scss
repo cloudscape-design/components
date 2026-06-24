@@ -1,0 +1,112 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/tokens' as awsui;
+
+/*
+ * StyleBox applies one of the predefined color-tinted style treatments to a wrapper element.
+ *
+ * Color styling is provided by the Cloudscape visual context pattern:
+ *   - Each variant class sets the background-color via a semantic token
+ *     (e.g. awsui.$color-background-style-box-red).
+ *   - The corresponding awsui-context-style-box-{variant} class on the element
+ *     activates token overrides defined in
+ *     style-dictionary/one-theme/contexts/style-box-*.ts, which re-scope
+ *     colorTextBodyDefault, colorTextHeadingDefault, colorTextIconSubtle, etc.
+ *     under the context selector. No CSS custom property hash overrides are needed.
+ *
+ * Shape modifiers control border-radius and geometry:
+ *   sharp  → 2px corners + standard padding (default)
+ *   circle → 50% radius, fixed square dimensions (perfect circle)
+ *
+ * Padding is NOT in %style-box-base so .shape-circle does not need to
+ * fight specificity to remove it.
+ *
+ * NOTE: This component is experimental. Do not rely on these class names or
+ * the specific values here remaining stable across releases.
+ */
+
+// ─── Shared layout ────────────────────────────────────────────────────────────
+
+%style-box-base {
+  display: inline-flex;
+}
+
+// ─── Shape modifiers ──────────────────────────────────────────────────────────
+
+// sharp: 2px corners with compact padding
+.shape-sharp {
+  padding-block: 0px;
+  padding-inline: awsui.$space-xxxs;
+  border-start-start-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-start-radius: 2px;
+  border-end-end-radius: 2px;
+}
+
+// circle: fixed square dimensions regardless of content, fully rounded.
+// Both inline-size and block-size are explicitly set to the same computed value
+// so the circle is always perfectly square. Content is centered.
+.shape-circle {
+  inline-size: calc(awsui.$space-scaled-xs * 2 + awsui.$size-icon-medium);
+  block-size: calc(awsui.$space-scaled-xs * 2 + awsui.$size-icon-medium);
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+}
+
+// ─── Variants ─────────────────────────────────────────────────────────────────
+// Background color is set here via a semantic token.
+// Content (text/icon) colors come from the visual context token overrides
+// registered in style-dictionary/one-theme/contexts/style-box-*.ts.
+
+.variant-red {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-red;
+}
+
+.variant-yellow {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-yellow;
+}
+
+.variant-indigo {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-indigo;
+}
+
+.variant-green {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-green;
+}
+
+.variant-orange {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-orange;
+}
+
+.variant-purple {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-purple;
+}
+
+.variant-mint {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-mint;
+}
+
+.variant-lime {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-lime;
+}
+
+.variant-grey {
+  @extend %style-box-base;
+  background-color: awsui.$color-background-style-box-grey;
+}

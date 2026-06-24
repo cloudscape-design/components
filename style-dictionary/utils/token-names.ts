@@ -874,7 +874,16 @@ export type ColorsTokenName =
   | 'colorTextBadgeBlue'
   | 'colorTextBadgeRed'
   | 'colorBorderBadge'
-  | 'colorBackgroundCodeView';
+  | 'colorBackgroundCodeView'
+  | 'colorBackgroundStyleBoxRed'
+  | 'colorBackgroundStyleBoxYellow'
+  | 'colorBackgroundStyleBoxIndigo'
+  | 'colorBackgroundStyleBoxGreen'
+  | 'colorBackgroundStyleBoxOrange'
+  | 'colorBackgroundStyleBoxPurple'
+  | 'colorBackgroundStyleBoxMint'
+  | 'colorBackgroundStyleBoxLime'
+  | 'colorBackgroundStyleBoxGrey';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

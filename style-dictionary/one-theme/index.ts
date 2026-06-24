@@ -13,6 +13,15 @@ import {
   createFlashbarWarningContext,
   createHeaderAlertContext,
   createHeaderContext,
+  createStyleBoxGreenContext,
+  createStyleBoxGreyContext,
+  createStyleBoxIndigoContext,
+  createStyleBoxLimeContext,
+  createStyleBoxMintContext,
+  createStyleBoxOrangeContext,
+  createStyleBoxPurpleContext,
+  createStyleBoxRedContext,
+  createStyleBoxYellowContext,
   createTopNavigationContext,
 } from '../utils/contexts.js';
 import { StyleDictionary } from '../utils/interfaces.js';
@@ -55,6 +64,17 @@ builder.addContext(createHeaderContext((await import('./contexts/header.js')).to
 builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
 builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
 builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
+
+const styleBoxContexts = await import('./contexts/style-box.js');
+builder.addContext(createStyleBoxRedContext(styleBoxContexts.redTokens));
+builder.addContext(createStyleBoxYellowContext(styleBoxContexts.yellowTokens));
+builder.addContext(createStyleBoxIndigoContext(styleBoxContexts.indigoTokens));
+builder.addContext(createStyleBoxGreenContext(styleBoxContexts.greenTokens));
+builder.addContext(createStyleBoxOrangeContext(styleBoxContexts.orangeTokens));
+builder.addContext(createStyleBoxPurpleContext(styleBoxContexts.purpleTokens));
+builder.addContext(createStyleBoxMintContext(styleBoxContexts.mintTokens));
+builder.addContext(createStyleBoxLimeContext(styleBoxContexts.limeTokens));
+builder.addContext(createStyleBoxGreyContext(styleBoxContexts.greyTokens));
 
 const theme = builder.build();
 export default theme;

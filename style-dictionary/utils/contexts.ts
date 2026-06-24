@@ -75,3 +75,39 @@ export const createAppLayoutToolbarContext = (tokens: TokenCategory<string, Glob
     tokens,
   };
 };
+
+export const createStyleBoxRedContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-red', selector: '.awsui-context-style-box-red', tokens };
+};
+
+export const createStyleBoxYellowContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-yellow', selector: '.awsui-context-style-box-yellow', tokens };
+};
+
+export const createStyleBoxIndigoContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-indigo', selector: '.awsui-context-style-box-indigo', tokens };
+};
+
+export const createStyleBoxGreenContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-green', selector: '.awsui-context-style-box-green', tokens };
+};
+
+export const createStyleBoxOrangeContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-orange', selector: '.awsui-context-style-box-orange', tokens };
+};
+
+export const createStyleBoxPurpleContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-purple', selector: '.awsui-context-style-box-purple', tokens };
+};
+
+export const createStyleBoxMintContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-mint', selector: '.awsui-context-style-box-mint', tokens };
+};
+
+export const createStyleBoxLimeContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-lime', selector: '.awsui-context-style-box-lime', tokens };
+};
+
+export const createStyleBoxGreyContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return { id: 'style-box-grey', selector: '.awsui-context-style-box-grey', tokens };
+};
