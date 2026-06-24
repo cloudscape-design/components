@@ -3,8 +3,8 @@
 import React from 'react';
 import range from 'lodash/range';
 
-import { DropdownStatusProps } from '~components/internal/components/dropdown-status';
 import Select, { SelectProps } from '~components/select';
+import { DropdownStatusProps } from '~components/types/dropdown-status';
 
 interface APIResponse {
   items: NonNullable<SelectProps['options']>;

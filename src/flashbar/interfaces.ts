@@ -3,9 +3,9 @@
 import React from 'react';
 
 import { ButtonProps } from '../button/interfaces';
-import { ErrorContext } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ErrorContext } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
 
 export namespace FlashbarProps {
   export interface MessageDefinition {

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker';
+import { XDomain, YDomain } from '../../types/cartesian-chart';
 import { ReadonlyAsyncStore } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 

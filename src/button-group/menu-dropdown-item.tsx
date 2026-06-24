@@ -8,8 +8,9 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalButton from '../button/internal';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import ButtonDropdown from '../button-dropdown/internal';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
+import { fireCancelableEvent } from '../internal/events';
 import Tooltip from '../tooltip/internal.js';
+import { CancelableEventHandler } from '../types/events';
 import { ButtonGroupProps } from './interfaces';
 
 import testUtilStyles from './test-classes/styles.css.js';

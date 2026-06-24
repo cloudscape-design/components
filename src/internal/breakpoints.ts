@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { Breakpoint } from '../types/breakpoint';
 import { browserScrollbarSize } from './utils/browser-scrollbar-size';
-
-export type Breakpoint = 'default' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
 const BREAKPOINT_MAPPING: [Breakpoint, number][] = [
   ['xl', 1840],
@@ -74,3 +73,6 @@ export function getMatchingBreakpoint<T extends readonly Breakpoint[]>(
 export function getBreakpointValue(breakpoint: Breakpoint): number {
   return BREAKPOINT_MAPPING.find(bp => bp[0] === breakpoint)![1];
 }
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export { Breakpoint } from '../types/breakpoint';

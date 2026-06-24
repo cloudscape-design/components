@@ -4,7 +4,7 @@
 import { ReactNode } from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 // Why not enums? Explained there
 // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum

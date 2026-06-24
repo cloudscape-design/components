@@ -3,9 +3,9 @@
 import React, { useContext, useState } from 'react';
 
 import Box from '~components/box';
-import { OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SpaceBetween from '~components/space-between';
+import { OptionGroup } from '~components/types/option';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';

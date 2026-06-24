@@ -6,7 +6,8 @@ import clsx from 'clsx';
 
 import InternalBox from '../../../box/internal.js';
 import InternalSpaceBetween from '../../../space-between/internal.js';
-import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component/index.js';
 
 import styles from './styles.css.js';
 

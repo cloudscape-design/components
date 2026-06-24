@@ -10,7 +10,6 @@ import { CartesianChartContainer } from '../internal/components/cartesian-chart/
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
 import InlineStartLabels from '../internal/components/cartesian-chart/inline-start-labels';
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import { createXTicks, createYTicks, getXTickCount, getYTickCount } from '../internal/components/cartesian-chart/ticks';
@@ -22,6 +21,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isElement } from '../internal/utils/dom';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import useContainerWidth from '../internal/utils/use-container-width';
+import { CartesianChartProps } from '../types/cartesian-chart';
 import BarGroups from './bar-groups';
 import MixedChartPopover from './chart-popover';
 import DataSeries from './data-series';

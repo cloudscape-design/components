@@ -5,7 +5,8 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { getGroupColumnIds, getGroupSplit } from './column-groups/split-utils';
 import { ColumnGroupsLayout } from './column-groups/utils';
 import { TableHeaderCell } from './header-cell';

@@ -12,7 +12,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
 import TabTrap from '../internal/components/tab-trap/index.js';
 import { Transition, TransitionStatus } from '../internal/components/transition';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -20,6 +20,7 @@ import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { NonCancelableEventHandler } from '../types/events';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,

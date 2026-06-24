@@ -11,13 +11,13 @@ import { useAppLayoutPlacement } from '../app-layout/utils/use-app-layout-placem
 import AppLayoutToolbarInternal from '../app-layout/visual-refresh-toolbar';
 import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { getBaseProps } from '../internal/base-component';
-import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { NonCancelableCustomEvent } from '../types/events';
 import { AppLayoutToolbarProps } from './interfaces';
 
 export { AppLayoutToolbarProps };

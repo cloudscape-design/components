@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ChartDataTypes, ChartDomain, ScaleRange, ScaleType } from '../../../types/cartesian-chart';
 import {
   ScaleBand,
   scaleBand,
@@ -9,7 +10,6 @@ import {
   ScaleTime,
   scaleTime,
 } from '../../vendor/d3-scale';
-import { ChartDataTypes, ChartDomain, ScaleRange, ScaleType } from './interfaces';
 
 interface NumericD3Scale {
   type: 'numeric';
