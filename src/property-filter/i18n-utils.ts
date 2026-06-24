@@ -198,7 +198,7 @@ export function operatorToDescription(
   property?: InternalFilteringProperty
 ) {
   const customDescription = property?.getOperatorDescription(operator);
-  if (customDescription !== undefined) {
+  if (customDescription) {
     return customDescription;
   }
 

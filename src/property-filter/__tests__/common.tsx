@@ -146,7 +146,7 @@ export function toInternalProperties(properties: FilteringProperty[]): InternalF
       getValueFormatter: () => null,
       getValueFormRenderer: () => null,
       getOperatorDescription: (operator?: string) =>
-        operator ? extendedOperators.get(operator)?.description ?? null : null,
+        operator ? (extendedOperators.get(operator)?.description ?? null) : null,
       externalProperty: property,
     };
   });

@@ -91,20 +91,20 @@ export const getQueryActions = ({
 
 const knownOperatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
 
+function orderOperators(operatorSet: Set<ComparisonOperator>): ComparisonOperator[] {
+  const knownOperators = knownOperatorOrder.filter(op => operatorSet.has(op));
+  const customOperators = [...operatorSet].filter(op => !(knownOperatorOrder as readonly string[]).includes(op));
+  return [...knownOperators, ...customOperators];
+}
+
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
-  const operatorSet = new Set([defaultOperator, ...operators]);
-  const knownOperators = knownOperatorOrder.filter(op => operatorSet.has(op));
-  const customOperators = operators.filter(op => !(knownOperatorOrder as readonly string[]).includes(op));
-  return [...knownOperators, ...customOperators];
+  return orderOperators(new Set([defaultOperator, ...operators]));
 };
 
 export const getAllowedFreeTextOperators = (freeText: InternalFreeTextFiltering): ComparisonOperator[] => {
   const operators = freeText.operators.map(op => (typeof op === 'string' ? op : op.operator));
-  const operatorSet = new Set(operators);
-  const knownOperators = knownOperatorOrder.filter(op => operatorSet.has(op));
-  const customOperators = operators.filter(op => !(knownOperatorOrder as readonly string[]).includes(op));
-  return [...knownOperators, ...customOperators];
+  return orderOperators(new Set(operators));
 };
 
 /*
