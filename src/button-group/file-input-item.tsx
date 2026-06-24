@@ -4,8 +4,9 @@ import React, { forwardRef, useState } from 'react';
 
 import { FileInputProps } from '../file-input/interfaces.js';
 import InternalFileInput from '../file-input/internal.js';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import { fireCancelableEvent } from '../internal/events/index.js';
 import Tooltip from '../tooltip/internal.js';
+import { CancelableEventHandler } from '../types/events';
 import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';

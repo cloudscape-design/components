@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 

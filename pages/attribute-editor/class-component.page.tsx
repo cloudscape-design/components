@@ -5,8 +5,8 @@ import React from 'react';
 import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
 import Box from '~components/box';
 import Input, { InputProps } from '~components/input';
-import { NonCancelableEventHandler } from '~components/internal/events';
 import Link from '~components/link';
+import { NonCancelableEventHandler } from '~components/types/events';
 
 interface Item {
   key?: string;

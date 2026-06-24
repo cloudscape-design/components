@@ -18222,7 +18222,7 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
       "i18nTag": true,
       "inlineType": {
-        "name": "SortableAreaProps.DndAreaI18nStrings",
+        "name": "DndAreaI18nStrings",
         "properties": [
           {
             "name": "dragHandleAriaDescription",
@@ -18312,7 +18312,7 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "SortableAreaProps.DndAreaI18nStrings",
+      "type": "DndAreaI18nStrings",
     },
     {
       "description": "The items to display in the list.",

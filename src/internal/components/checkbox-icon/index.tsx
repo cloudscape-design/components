@@ -3,7 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
 import { useOneTheme, useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import styles from './styles.css.js';

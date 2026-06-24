@@ -4,9 +4,9 @@ import React from 'react';
 
 import { PortalProps } from '@cloudscape-design/component-toolkit/internal';
 
-import { FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { FlowType } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface BaseModalProps {
   /**

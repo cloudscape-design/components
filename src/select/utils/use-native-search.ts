@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 
-import type { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import type { DropdownOption } from '../../internal/components/option/interfaces';
 import {
   filterOptions,
   isGroup,
@@ -10,6 +10,7 @@ import {
   isInteractive,
 } from '../../internal/components/option/utils/filter-options';
 import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback';
+import type { OptionDefinition, OptionGroup } from '../../types/option';
 
 const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 

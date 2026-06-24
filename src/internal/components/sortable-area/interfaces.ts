@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { DndAreaI18nStrings as SharedDndAreaI18nStrings } from '../../../types/sortable-area';
 import { DragHandleProps } from '../drag-handle/interfaces';
 
 export interface SortableAreaProps<Item> {
@@ -39,12 +40,5 @@ export namespace SortableAreaProps {
     movedItem: Item;
   }
 
-  export interface DndAreaI18nStrings {
-    liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
-    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
-    liveAnnouncementDndDiscarded?: string;
-    dragHandleAriaLabel?: string;
-    dragHandleAriaDescription?: string;
-  }
+  export type DndAreaI18nStrings = SharedDndAreaI18nStrings;
 }

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { OptionDefinition } from '../../internal/components/option/interfaces';
+import { OptionDefinition } from '../../types/option';
 import { filterOptions } from '../filter-options';
 
 const createOption = (overrides: Partial<OptionDefinition> = {}): OptionDefinition => ({

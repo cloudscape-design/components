@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface SkeletonProps extends BaseComponentProps {
   /**

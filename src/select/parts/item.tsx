@@ -9,11 +9,12 @@ import InternalIcon from '../../icon/internal.js';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import Tooltip from '../../tooltip/internal.js';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces.js';
 
 import styles from './styles.css.js';

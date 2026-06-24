@@ -5,8 +5,9 @@ import { createRef } from 'react';
 import { act, renderHook } from '../../__tests__/render-hook';
 import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { BaseKeyDetail, createCustomEvent } from '../../internal/events';
+import { createCustomEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import { BaseKeyDetail } from '../../types/events';
 import { useSelect } from '../utils/use-select';
 
 const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
