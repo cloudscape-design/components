@@ -14,6 +14,7 @@ import Header from './components/header';
 import IndexPage from './components/index-page';
 import PageView from './components/page-view';
 import StrictModeWrapper from './components/strict-mode-wrapper';
+import { includedThemes, resolveActiveTheme } from './theme-config';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
@@ -95,12 +96,12 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
-  history.location.search
-);
+const query = parseQuery(history.location.search);
+const { direction, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = query;
 
-// The VR class needs to be set before any React rendering occurs.
-window[awsuiVisualRefreshFlag] = () => visualRefresh && !oneTheme;
+const activeTheme = resolveActiveTheme(query.theme, Boolean(query.visualRefresh));
+
+window[awsuiVisualRefreshFlag] = () => activeTheme?.id === 'visual-refresh';
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
@@ -111,10 +112,10 @@ window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 
-// Visual Refresh and One Theme are mutually exclusive — manage both classes here so they never coexist.
-// useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
-document.body.classList.toggle('awsui-one-theme', oneTheme);
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh && !oneTheme);
+// Apply only the active theme's body class so themes don't coexist.
+for (const theme of includedThemes) {
+  document.body.classList.toggle(theme.bodyClass, theme.id === activeTheme?.id);
+}
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
