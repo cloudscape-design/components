@@ -51,6 +51,10 @@ const IconButtonItem = forwardRef(
           iconSvg={item.iconSvg}
           iconAlt={item.text}
           ariaLabel={item.text}
+          href={item.href}
+          target={item.target}
+          rel={item.rel}
+          download={item.download}
           onClick={event => fireCancelableEvent(onItemClick, { id: item.id }, event)}
           ref={ref}
           data-testid={item.id}
