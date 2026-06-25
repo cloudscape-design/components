@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+        shard: [1, 2]
     steps:
       - uses: actions/checkout@v4
 
@@ -103,7 +103,7 @@ jobs:
         run: |
           echo "NEW_HOST=${NEW_HOST}"
           echo "OLD_HOST=${OLD_HOST}"
-          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/40"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
         env:
           TZ: UTC
           SHARD: ${{ matrix.shard }}
