@@ -14,14 +14,8 @@ import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import { filterOptions } from './filter-options';
 import { I18nStringsInternal } from './i18n-utils';
-import {
-  ComparisonOperator,
-  ExtendedOperatorForm,
-  InternalFilteringOption,
-  InternalFilteringProperty,
-  InternalToken,
-  LoadItemsDetail,
-} from './interfaces';
+import { ComparisonOperator, ExtendedOperatorForm, LoadItemsDetail } from './interfaces';
+import { InternalFilteringOption, InternalFilteringProperty, InternalToken } from './internal-interfaces';
 import { useLoadItems } from './use-load-items';
 
 import styles from './styles.css.js';

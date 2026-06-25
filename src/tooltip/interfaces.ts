@@ -30,14 +30,3 @@ export namespace TooltipProps {
    */
   export type Position = PopoverProps.Position;
 }
-
-/**
- * Internal tooltip props - includes props not exposed in public API.
- * Note: position defaults to 'top' in both index.tsx and internal.tsx
- */
-export interface InternalTooltipProps extends TooltipProps {
-  /**
-   * Additional CSS class for the tooltip container.
-   */
-  className?: string;
-}

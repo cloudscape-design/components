@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
+import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/internal-interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { isItemGroup, isLinkItem } from '../utils/utils';
 

@@ -725,5 +725,3 @@ interface TableLoaderRow<T> {
   status: TableProps.LoadingStatus;
   from: number;
 }
-
-export type InternalSelectionType = TableProps.SelectionType | 'group';

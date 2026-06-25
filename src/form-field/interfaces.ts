@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { AnalyticsMetadata, ErrorContext } from '../types/analytics';
+import { ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
 
 export interface FormFieldProps extends BaseComponentProps {
@@ -113,18 +112,4 @@ export namespace FormFieldProps {
      */
     warningIconAriaLabel?: string;
   }
-}
-
-export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComponentProps {
-  /**
-   * Visually hide the label.
-   */
-  __hideLabel?: boolean;
-
-  /**
-   * Disable the gutter applied by default.
-   */
-  __disableGutters?: boolean;
-  __analyticsMetadata?: AnalyticsMetadata;
-  __style?: CSSProperties;
 }

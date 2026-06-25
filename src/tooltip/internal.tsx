@@ -12,7 +12,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
-import { InternalTooltipProps } from './interfaces';
+import { InternalTooltipProps } from './internal-interfaces';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

@@ -12,7 +12,7 @@ import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analyti
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces';
-import { InternalVariant } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 

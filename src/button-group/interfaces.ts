@@ -3,8 +3,6 @@
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 
@@ -115,13 +113,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
   style?: ButtonGroupProps.Style;
 }
 
-export interface InternalIconButton extends ButtonGroupProps.IconButton {
-  analyticsAction?: string;
-}
-export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleButton {
-  analyticsAction?: string;
-}
-
 export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback'> {
   iconSvg?: string;
 }
@@ -142,20 +133,6 @@ export type ItemRuntime =
   | IconToggleButtonRuntime
   | ButtonGroupProps.IconFileInput
   | MenuDropdownRuntime;
-
-export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
-export type InternalItem =
-  | InternalIconButton
-  | InternalIconToggleButton
-  | ButtonGroupProps.IconFileInput
-  | ButtonGroupProps.MenuDropdown;
-
-export interface InternalButtonGroupProps
-  extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
-    InternalBaseComponentProps {
-  style?: ButtonGroupProps.Style;
-  items: ReadonlyArray<InternalItemOrGroup>;
-}
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';

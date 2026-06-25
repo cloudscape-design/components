@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { BaseComponentProps } from '../types/base-component';
-import { ColumnLayoutBreakpoint } from './internal';
 
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**
@@ -47,12 +45,4 @@ export interface ColumnLayoutProps extends BaseComponentProps {
 export namespace ColumnLayoutProps {
   export type Variant = 'default' | 'text-grid';
   export type Borders = 'none' | 'vertical' | 'horizontal' | 'all';
-}
-
-export interface InternalColumnLayoutProps extends ColumnLayoutProps, InternalBaseComponentProps {
-  __breakpoint?: ColumnLayoutBreakpoint;
-  /**
-   * Overrides the default wrapper HTML tag.
-   */
-  __tagOverride?: 'dl';
 }

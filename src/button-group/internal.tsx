@@ -8,7 +8,8 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ButtonProps } from '../button/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import InternalNavigableGroup from '../navigable-group/internal';
-import { ButtonGroupProps, InternalButtonGroupProps } from './interfaces';
+import { ButtonGroupProps } from './interfaces';
+import { InternalButtonGroupProps } from './internal-interfaces';
 import ItemElement from './item-element.js';
 import { getButtonGroupStyles } from './style';
 

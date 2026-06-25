@@ -12,7 +12,8 @@ import {
   getFirstScrollableParent,
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
-import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces';
+import { BoundingBox, Offset, PopoverProps, Rect } from './interfaces';
+import { InternalPosition } from './internal-interfaces';
 import { calculatePosition, clampRect, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
 
 export default function usePopoverPosition({

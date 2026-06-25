@@ -4,7 +4,8 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { InternalSelectionType, TableProps } from './interfaces';
+import { TableProps } from './interfaces';
+import { InternalSelectionType } from './internal-interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
