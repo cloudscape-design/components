@@ -14,7 +14,7 @@ $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
 $icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
-$icon-margin-right-small: awsui.$space-xxs;
+$icon-margin-right-small: calc(awsui.$space-xs - 2px);
 $icon-margin-right-medium: awsui.$space-xs;
 $icon-offset-inline: awsui.$space-xxs;
 $icon-offset-block: awsui.$space-xxxs;
@@ -65,7 +65,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   @include theming.one-theme-only {
     display: inline-flex;
     align-items: flex-start;
-    margin-inline-end: $icon-margin-right-small;
+    margin-inline: 0 $icon-margin-right-small;
     > .icon {
       inset-block-start: $icon-offset-block;
     }

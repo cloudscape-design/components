@@ -159,12 +159,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   @include styles.with-motion {
     transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
   }
-  @include theming.one-theme-only {
-    // Applies only to leaf list items (links and link-groups, which have no expandable children).
-    &--link {
-      padding-inline-start: calc(#{$item-padding-inline} - #{expandable-section.$icon-margin-right-small});
-    }
-  }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
