@@ -2,12 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import {
-  ButtonDropdownProps,
-  InternalButtonDropdownProps,
-  InternalItemOrGroup,
-} from '../../button-dropdown/interfaces';
+import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../button-dropdown/internal';
+import { InternalButtonDropdownProps, InternalItemOrGroup } from '../../button-dropdown/internal-interfaces';
 import { CancelableEventHandler } from '../../types/events';
 import { AppLayoutProps } from '../interfaces';
 

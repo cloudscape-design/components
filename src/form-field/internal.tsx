@@ -25,7 +25,7 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { joinStrings } from '../internal/utils/strings';
 import InternalLiveRegion from '../live-region/internal';
-import { InternalFormFieldProps } from './interfaces';
+import { InternalFormFieldProps } from './internal-interfaces';
 import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';

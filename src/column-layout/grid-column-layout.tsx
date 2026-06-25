@@ -7,8 +7,8 @@ import { GridProps } from '../grid/interfaces';
 import InternalGrid from '../grid/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { flattenChildren } from '../internal/utils/flatten-children';
-import { InternalColumnLayoutProps } from './interfaces';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
+import { InternalColumnLayoutProps } from './internal-interfaces';
 import { repeat } from './util';
 
 import styles from './styles.css.js';

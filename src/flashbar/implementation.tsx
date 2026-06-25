@@ -4,7 +4,7 @@ import React from 'react';
 
 import { createWidgetizedComponent } from '../internal/widgets';
 import CollapsibleFlashbar from './collapsible-flashbar';
-import { InternalFlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
 export function FlashbarImplementation(props: InternalFlashbarProps) {

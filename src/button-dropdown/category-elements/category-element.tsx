@@ -4,7 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 
 import styles from './styles.css.js';

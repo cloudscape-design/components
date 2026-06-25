@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { LinkItem } from '../button-dropdown/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { BaseComponentProps } from '../types/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
 
@@ -54,12 +53,6 @@ export namespace BreadcrumbGroupProps {
     href: string;
   }
 }
-
-export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
-  BreadcrumbGroupProps<T> &
-    InternalBaseComponentProps & {
-      __injectAnalyticsComponentMetadata?: boolean;
-    };
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;

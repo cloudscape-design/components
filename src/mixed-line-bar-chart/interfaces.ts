@@ -8,12 +8,6 @@ export type ChartDataTypes = number | string | Date;
 
 export type ScaleType = 'linear' | 'log' | 'time' | 'categorical';
 
-export interface InternalChartSeries<T> {
-  index: number;
-  color: string;
-  series: MixedLineBarChartProps.ChartSeries<T>;
-}
-
 // Properties that are shared as is (including API doc comments) by mixed, line and bar charts.
 export interface CommonMixedChartProps<T extends ChartDataTypes>
   extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {
