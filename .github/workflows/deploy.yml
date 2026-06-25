@@ -62,7 +62,7 @@ jobs:
 
   deploy:
     needs: quick-build
-    name: deploy $({{format('React {0}', matrix.react)}})
+    name: deploy (${{format('React {0}', matrix.react)}})
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     strategy:
       matrix:
