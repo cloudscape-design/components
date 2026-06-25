@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Browser } from 'webdriverio';
 
-import type { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import type { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import type createWrapper from '../../lib/components/test-utils/selectors';
 
@@ -24,7 +24,7 @@ export interface TestDefinition {
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
   pixelDiffTolerance?: number;
-  setup?: ({ page, wrapper, browser }: { page: ScreenshotPageObject; wrapper: Wrapper; browser: Browser }) => void;
+  setup?: ({ page, wrapper, browser }: { page: BasePageObject; wrapper: Wrapper; browser: Browser }) => void;
 }
 
 export interface TestSuite {

@@ -3,12 +3,10 @@
 import { attachment, step } from 'allure-js-commons';
 
 import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
-import { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../lib/components/test-utils/selectors';
-import { OptimizedPageObject, RawScreenshot } from './optimized-page-object';
+import { RawScreenshot, RawScreenshotPageObject } from './raw-screenshot-page-object';
 import { TestDefinition, TestSuite } from './types';
-
 const screenshotAreaSelector = '.screenshot-area';
 const defaultWindowSize = { width: 1200, height: 800 };
 
@@ -60,7 +58,7 @@ async function attachDiffImages(result: CropAndCompareResult, testName: string):
  */
 async function preparePage(
   browser: WebdriverIO.Browser,
-  page: ScreenshotPageObject,
+  page: RawScreenshotPageObject,
   url: string,
   testDef: TestDefinition,
   windowSize?: { width?: number; height?: number }
@@ -81,11 +79,11 @@ async function preparePage(
  * Captures a raw screenshot (base64 + metadata) WITHOUT decoding the PNG.
  * Uses takeElementScreenshot for the screenshot area to avoid full-page capture.
  */
-function captureRaw(page: OptimizedPageObject, testDef: TestDefinition): Promise<RawScreenshot> {
+function captureRaw(page: RawScreenshotPageObject, testDef: TestDefinition): Promise<RawScreenshot> {
   if (testDef.screenshotType === 'viewport') {
-    return page.captureViewportRaw();
+    return page.captureViewport();
   }
-  return page.captureSelectorRaw(screenshotAreaSelector);
+  return page.captureBySelector(screenshotAreaSelector);
 }
 
 /**
@@ -157,7 +155,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
   test(testDef.description, async () => {
     const tolerance = testDef.pixelDiffTolerance ?? 0;
     const browser = getBrowser();
-    const page = new OptimizedPageObject(browser);
+    const page = new RawScreenshotPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
@@ -165,10 +163,10 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     if (testDef.screenshotType === 'permutations') {
       // Capture permutations as raw (no PNG decode)
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-      const newPerms = await page.capturePermutationsRaw();
+      const newPerms = await page.capturePermutations();
 
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-      const oldPerms = await page.capturePermutationsRaw();
+      const oldPerms = await page.capturePermutations();
 
       expect(newPerms.length).toBe(oldPerms.length);
 
