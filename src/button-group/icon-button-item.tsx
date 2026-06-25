@@ -11,7 +11,8 @@ import { fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import Tooltip from '../tooltip/internal.js';
 import { CancelableEventHandler } from '../types/events';
-import { ButtonGroupProps, InternalIconButton } from './interfaces.js';
+import { ButtonGroupProps } from './interfaces.js';
+import { InternalIconButton } from './internal-interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

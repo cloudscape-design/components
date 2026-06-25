@@ -80,21 +80,6 @@ export interface PopoverProps extends BaseComponentProps {
   renderWithPortal?: boolean;
 }
 
-/**
- * The position the popover is actually in, given space constraints.
- */
-export type InternalPosition =
-  | 'right-top'
-  | 'right-bottom'
-  | 'left-top'
-  | 'left-bottom'
-  | 'top-center'
-  | 'top-right'
-  | 'top-left'
-  | 'bottom-center'
-  | 'bottom-right'
-  | 'bottom-left';
-
 export interface Offset {
   insetInlineStart: number;
   insetBlockStart: number;

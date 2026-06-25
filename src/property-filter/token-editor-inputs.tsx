@@ -11,14 +11,12 @@ import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
 import { getAllowedFreeTextOperators, getAllowedOperators, getPropertySuggestions } from './controller.js';
 import { I18nStringsInternal, operatorToDescription } from './i18n-utils.js';
+import { ComparisonOperator, GroupText, LoadItemsDetail } from './interfaces.js';
 import {
-  ComparisonOperator,
-  GroupText,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
-  LoadItemsDetail,
-} from './interfaces.js';
+} from './internal-interfaces.js';
 import { useLoadItems } from './use-load-items.js';
 
 import styles from './styles.css.js';

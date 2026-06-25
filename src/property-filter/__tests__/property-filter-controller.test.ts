@@ -2,14 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAllowedOperators, getAutosuggestOptions, parseText } from '../controller';
-import {
-  ComparisonOperator,
-  FilteringProperty,
-  GroupText,
-  InternalFilteringProperty,
-  InternalFreeTextFiltering,
-  ParsedText,
-} from '../interfaces';
+import { ComparisonOperator, FilteringProperty, GroupText } from '../interfaces';
+import { InternalFilteringProperty, InternalFreeTextFiltering, ParsedText } from '../internal-interfaces';
 import { i18nStrings, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([

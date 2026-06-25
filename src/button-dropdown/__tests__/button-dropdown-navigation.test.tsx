@@ -4,8 +4,9 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import ButtonDropdown from '../../../lib/components/button-dropdown';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
+import { ButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
+import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/internal-interfaces';
 import createWrapper, { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 

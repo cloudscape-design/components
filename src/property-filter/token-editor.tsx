@@ -22,15 +22,13 @@ import {
 } from './analytics-metadata/interfaces';
 import { getAllowedFreeTextOperators, getAllowedOperators } from './controller.js';
 import { I18nStringsInternal } from './i18n-utils.js';
+import { ComparisonOperator, GroupText, LoadItemsDetail } from './interfaces.js';
 import {
-  ComparisonOperator,
-  GroupText,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalToken,
-  LoadItemsDetail,
-} from './interfaces.js';
+} from './internal-interfaces.js';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.js';
 
 import styles from './styles.css.js';

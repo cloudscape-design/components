@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useInternalI18n } from '../i18n/context';
-import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken, InternalTokenGroup } from './interfaces';
+import { ComparisonOperator, FormattedToken, I18nStrings } from './interfaces';
+import { InternalToken, InternalTokenGroup } from './internal-interfaces';
 import { tokenGroupToTokens } from './utils';
 
 export type I18nStringsOperators = Pick<
