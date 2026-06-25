@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.integ.json",
-  "include": ["test/definitions/utils.ts", "test/visual/**/*.test.ts", "types"]
+  "include": ["test/definitions/**/*.ts", "test/visual/**/*.test.ts", "types"]
 }
