@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../expandable-section/styles' as expandable-section;
 
 // ==========================================================================
 // Item sizing — single source of truth for navigation density.
@@ -159,8 +160,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
     transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
   }
   @include theming.one-theme-only {
+    // Applies only to terminal list items (items without children). Excludes collapsed states, section headers,
+    // and expandable link group headers, which use different layouts and do not require this alignment adjustment.
     &:not(.list-item--collapsed):not(:has(> .section)):not(:has(> .expandable-link-group)) {
-      padding-inline-start: calc(#{$item-padding-inline} - 3px);
+      padding-inline-start: calc(#{$item-padding-inline} - #{expandable-section.$icon-margin-right-small});
     }
   }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
