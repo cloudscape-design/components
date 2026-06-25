@@ -6,7 +6,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import AbstractSwitchWrapper from '../../../lib/components/test-utils/dom/internal/abstract-switch';
-import { BaseCheckboxProps } from '../base-checkbox';
+import { BaseCheckboxProps } from '../../types/base-checkbox';
 
 export function createCommonTests(Component: React.ComponentType<BaseCheckboxProps>) {
   function renderComponent(jsx: React.ReactElement) {
