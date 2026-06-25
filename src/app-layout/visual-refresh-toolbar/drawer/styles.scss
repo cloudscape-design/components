@@ -285,6 +285,10 @@ $ai-drawer-heider-height: 42px;
       grid-column: 1 / span 1;
       background-color: awsui.$color-background-layout-panel-content;
 
+      @include theming.one-theme-only {
+        border-start-end-radius: 0;
+      }
+
       @include desktop-only {
         border-start-end-radius: awsui.$space-xxs;
       }
@@ -325,6 +329,14 @@ $ai-drawer-heider-height: 42px;
               }
             }
 
+            @include theming.dark-mode-only('.awsui-one-theme') {
+              @include desktop-only {
+                &:has(+ .drawer-back-to-console-slot) {
+                  border-start-end-radius: 0;
+                }
+              }
+            }
+
             > .drawer-actions {
               display: flex;
             }
@@ -356,6 +368,11 @@ $ai-drawer-heider-height: 42px;
 
             &:after {
               background-color: awsui.$color-background-layout-panel-content;
+
+              @include theming.one-theme-only {
+                border-start-end-radius: 0;
+              }
+
               border-start-end-radius: awsui.$space-xxs;
             }
 
@@ -406,6 +423,10 @@ $ai-drawer-heider-height: 42px;
 
     &:not(.drawer-expanded) {
       > .drawer-content-container {
+        @include theming.one-theme-only {
+          clip-path: none;
+        }
+
         @include desktop-only {
           clip-path: inset(0 0 -9999px 0 round 0 awsui.$space-xxs 0 0);
 

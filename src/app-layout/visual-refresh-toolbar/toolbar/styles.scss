@@ -25,6 +25,10 @@ $toolbar-height: 42px;
   &.with-ai-drawer:not(:has(.universal-toolbar-ai-custom)) {
     &:before,
     &:after {
+      @include theming.one-theme-only {
+        border-start-start-radius: 0;
+      }
+
       content: '';
       position: absolute;
       inset-block-start: 0;
@@ -54,6 +58,10 @@ $toolbar-height: 42px;
     &:after {
       background-color: awsui.$color-background-layout-toolbar;
       border-start-start-radius: awsui.$space-xxs;
+
+      @include theming.one-theme-only {
+        border-start-start-radius: 0;
+      }
 
       @include theming.dark-mode-only {
         display: none;
@@ -125,6 +133,12 @@ $toolbar-height: 42px;
       &.with-ai-drawer {
         border-start-start-radius: awsui.$space-xxs;
         border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+
+    @include theming.dark-mode-only('.awsui-one-theme') {
+      &.with-ai-drawer {
+        border-start-start-radius: 0;
       }
     }
 
