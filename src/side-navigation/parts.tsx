@@ -228,6 +228,7 @@ export function NavigationItemsList({
               data-itemid={`item-${itemid}`}
               className={clsx(
                 styles['list-item'],
+                !collapsed && styles['list-item--link'],
                 collapsed && styles['list-item--collapsed'],
                 item.info && styles['list-item--info']
               )}
@@ -296,6 +297,7 @@ export function NavigationItemsList({
               data-itemid={`item-${itemid}`}
               className={clsx(
                 styles['list-item'],
+                !collapsed && styles['list-item--link'],
                 collapsed && styles['list-item--collapsed'],
                 item.info && styles['list-item--info']
               )}

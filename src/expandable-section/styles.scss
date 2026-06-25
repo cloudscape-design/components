@@ -58,7 +58,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-container {
     margin-inline-end: $icon-margin-right-medium;
     @include theming.one-theme-only {
-      // One Theme specific space adjustment
       margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
       inset-block-start: $icon-offset-container;
     }

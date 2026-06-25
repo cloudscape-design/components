@@ -160,9 +160,8 @@ $expandable-icon-negative-margin: awsui.$space-l;
     transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
   }
   @include theming.one-theme-only {
-    // Applies only to terminal list items (items without children). Excludes collapsed states, section headers,
-    // and expandable link group headers, which use different layouts and do not require this alignment adjustment.
-    &:not(.list-item--collapsed):not(:has(> .section)):not(:has(> .expandable-link-group)) {
+    // Applies only to leaf list items (links and link-groups, which have no expandable children).
+    &--link {
       padding-inline-start: calc(#{$item-padding-inline} - #{expandable-section.$icon-margin-right-small});
     }
   }
