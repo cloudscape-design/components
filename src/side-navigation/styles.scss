@@ -5,9 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-@use '../expandable-section/styles' as expandable-section;
 
 // ==========================================================================
 // Item sizing — single source of truth for navigation density.
