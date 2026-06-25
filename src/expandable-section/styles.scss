@@ -18,6 +18,7 @@ $icon-margin-right-small: awsui.$space-xxs;
 $icon-margin-right-medium: awsui.$space-xs;
 $icon-offset-inline: awsui.$space-xxs;
 $icon-offset-block: awsui.$space-xxxs;
+$icon-offset-container: 3px;
 
 // Total space occupied by the expand icon on the left and its margins.
 // Useful to keep elements correctly aligned.
@@ -58,7 +59,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     margin-inline-end: $icon-margin-right-medium;
     @include theming.one-theme-only {
       margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
-      inset-block-start: calc($icon-offset-block + 1px);
+      inset-block-start: $icon-offset-container;
     }
   }
   @include theming.one-theme-only {
