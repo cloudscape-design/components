@@ -854,7 +854,6 @@ export type ColorsTokenName =
   | 'colorItemSelected'
   | 'colorTextSideNavigationItemActive'
   | 'colorTextSideNavigationItemActiveCollapsed'
-  | 'colorTextSideNavigationItemActiveCollapsedHover'
   | 'colorTextSideNavigationItemDefault'
   | 'colorBackgroundActionCardDefault'
   | 'colorBackgroundActionCardHover'

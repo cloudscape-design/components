@@ -498,11 +498,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
-  colorTextSideNavigationItemActiveCollapsedHover: {
-    description: 'The hover text (and icon) color of an active side navigation item while the navigation is collapsed.',
-    public: false,
-    themeable: true,
-  },
   colorTextSideNavigationItemDefault: {
     description: 'The text (and icon) color of a non-active side navigation item.',
     public: false,

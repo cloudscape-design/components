@@ -151,7 +151,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextSideNavigationItemActive: '{colorTextAccent}',
   colorTextSideNavigationItemActiveCollapsed: '{colorTextSideNavigationItemActive}',
-  colorTextSideNavigationItemActiveCollapsedHover: '{colorTextSideNavigationItemActiveCollapsed}',
   colorTextSideNavigationItemDefault: '{colorTextBodySecondary}',
   colorBorderCalendarGrid: 'transparent',
   colorBorderCalendarGridSelectedFocusRing: { light: '{colorNeutral100}', dark: '{colorNeutral850}' },

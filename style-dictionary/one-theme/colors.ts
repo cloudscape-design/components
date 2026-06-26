@@ -165,7 +165,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Side Nav ─────────────────────────────────────────────────────────────────
   colorTextSideNavigationItemActive: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
   colorTextSideNavigationItemActiveCollapsed: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
-  colorTextSideNavigationItemActiveCollapsedHover: { light: '{colorNeutral300}', dark: '{colorNeutral800}' },
   colorTextSideNavigationItemDefault: { light: '{colorTextBodyDefault}', dark: '{colorTextBodyDefault}' },
   colorBackgroundSideNavigationItemActive: { light: 'transparent', dark: 'transparent' },
   colorBackgroundSideNavigationItemActiveCollapsed: { light: '{colorPrimary500}', dark: '{colorPrimary500}' },
