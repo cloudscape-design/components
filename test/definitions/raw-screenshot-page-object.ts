@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Local copy of RawScreenshotPageObject from browser-test-tools
-// (dev-v3-jotresse-optimized-screenshots branch). Once that branch is merged,
-// this file can be replaced with a direct import from browser-test-tools.
+// (https://github.com/cloudscape-design/browser-test-tools/pull/237).
+// Once that PR is merged and released, this file can be replaced with
+// a direct import from browser-test-tools.
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 

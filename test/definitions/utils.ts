@@ -13,6 +13,8 @@ import {
 import { TestDefinition, TestSuite } from './types';
 const defaultWindowSize = { width: 1200, height: 800 };
 
+const tolerance = 0;
+
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8080';
@@ -22,16 +24,14 @@ const wrapper = createWrapper();
 function buildUrl(host: string, path: string, queryParams?: Record<string, string>): string {
   const params = new URLSearchParams({ motionDisabled: 'true', ...queryParams });
   const qs = params.toString();
-  return `${host}#/${path}${qs ? `?${qs}` : ''}`;
+  return `${host}#/${path}?${qs}`;
 }
 
 function isTestDefinition(item: TestDefinition | TestSuite): item is TestDefinition {
   return (item as TestDefinition).path !== undefined;
 }
 
-/**
- * Attaches a visual comparison to the Allure report.
- */
+// Attaches a visual comparison to the Allure report.
 async function attachDiffImages(result: CropAndCompareResult, testName: string): Promise<void> {
   const diffPayload = JSON.stringify({
     expected: `data:image/png;base64,${result.secondImage.toString('base64')}`,
@@ -42,9 +42,6 @@ async function attachDiffImages(result: CropAndCompareResult, testName: string):
   await attachment(testName, diffPayload, 'application/vnd.allure.image.diff');
 }
 
-/**
- * Navigates to a URL, waits for the screenshot area, and runs setup.
- */
 async function preparePage(
   browser: WebdriverIO.Browser,
   page: RawScreenshotPageObject,
@@ -96,7 +93,6 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
-    const tolerance = testDef.pixelDiffTolerance ?? 0;
     const browser = getBrowser();
     const page = new RawScreenshotPageObject(browser);
 
@@ -104,22 +100,21 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
     if (testDef.screenshotType === 'permutations') {
-      // Capture permutations as raw (no PNG decode)
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-      const newPerms = await page.capturePermutations();
+      const newPermutations = await page.capturePermutations();
 
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-      const oldPerms = await page.capturePermutations();
+      const oldPermutations = await page.capturePermutations();
 
-      expect(newPerms.length).toBe(oldPerms.length);
+      expect(newPermutations.length).toBe(oldPermutations.length);
 
       // Compare each permutation individually, wrapping each in an Allure step.
       let failures = 0;
-      for (let i = 0; i < newPerms.length; i++) {
-        const id = newPerms[i].id || '';
+      for (let i = 0; i < newPermutations.length; i++) {
+        const id = newPermutations[i].id || '';
         const index = `#${(i + 1).toString().padStart(3, '0')}`;
         await step(`Permutation ${index}`, async () => {
-          const permResult = await compareScreenshots(newPerms[i], oldPerms[i]);
+          const permResult = await compareScreenshots(newPermutations[i], oldPermutations[i]);
           await attachDiffImages(permResult, index);
           if (permResult.diffPixels > tolerance) {
             failures++;
