@@ -24,7 +24,7 @@ export interface TestDefinition {
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
   pixelDiffTolerance?: number;
-  setup?: ({ page, wrapper, browser }: { page: BasePageObject; wrapper: Wrapper; browser: Browser }) => void;
+  setup?: ({ page, wrapper, browser }: { page: BasePageObject; wrapper: Wrapper; browser?: Browser }) => void;
 }
 
 export interface TestSuite {
