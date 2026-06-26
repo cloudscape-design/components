@@ -123,7 +123,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the filtering input rendered inside the open dropdown when `filteringType` is set.
+   * Finds the filtering input rendered inside the open dropdown when filtering is enabled.
    * Returns null if there is no open dropdown or filtering is not enabled.
    *
    * This utility does not open the dropdown. To find the filtering input, call `openDropdown()` first.
@@ -133,7 +133,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the footer region rendered at the bottom of the open dropdown. When `filteringType` is set and there
+   * Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
    * are no matching items, this contains the `noMatch` content. Returns null if there is no open dropdown or the
    * footer is not displayed.
    *

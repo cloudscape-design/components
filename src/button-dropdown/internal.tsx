@@ -115,18 +115,19 @@ const InternalButtonDropdown = React.forwardRef(
       onKeyUp,
       onItemActivate,
       onGroupToggle,
-      onDropdownBlur,
+      onDropdownFocusLeave,
       toggleDropdown,
       closeDropdown,
       setIsUsingMouse,
       filteringValue,
       setFilteringValue,
       filteredItems,
-      effectiveHasExpandableGroups,
+      showExpandableGroups,
     } = useButtonDropdown({
       items,
       onItemClick,
       onItemFollow,
+      // Scroll is unnecessary when moving focus back to the dropdown trigger.
       onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
@@ -137,11 +138,9 @@ const InternalButtonDropdown = React.forwardRef(
     const filterRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+      // Focus the filter input when it opens.
       if (isOpen && hasFiltering) {
-        // Delay to allow dropdown to render before focusing
-        requestAnimationFrame(() => {
-          filterRef.current?.focus();
-        });
+        filterRef.current?.focus();
       }
     }, [isOpen, hasFiltering]);
 
@@ -434,9 +433,7 @@ const InternalButtonDropdown = React.forwardRef(
           expandToViewport={expandToViewport}
           preferredAlignment={preferCenter ? 'center' : 'start'}
           onOutsideClick={() => toggleDropdown()}
-          // In filtering mode the dropdown is a dialog with several focusable elements, so we
-          // close it once focus leaves the trigger and the dropdown content rather than on Tab.
-          onBlur={hasFiltering ? onDropdownBlur : undefined}
+          onFocusLeave={onDropdownFocusLeave}
           trigger={trigger}
           dropdownId={dropdownId}
           header={filterElement}
@@ -487,7 +484,7 @@ const InternalButtonDropdown = React.forwardRef(
                   items={filteredItems}
                   onItemActivate={onItemActivate}
                   onGroupToggle={onGroupToggle}
-                  hasExpandableGroups={effectiveHasExpandableGroups}
+                  hasExpandableGroups={showExpandableGroups}
                   targetItem={targetItem}
                   isHighlighted={isHighlighted}
                   isKeyboardHighlight={isKeyboardHighlight}

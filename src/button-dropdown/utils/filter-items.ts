@@ -3,11 +3,11 @@
 import { ButtonDropdownProps } from '../interfaces';
 import { isItemGroup } from './utils';
 
-function matchesString(value: string | undefined, searchText: string): boolean {
+function matchesString(value: string | undefined, lowerCaseSearchText: string): boolean {
   if (!value) {
     return false;
   }
-  return value.toLowerCase().indexOf(searchText) > -1;
+  return value.toLowerCase().indexOf(lowerCaseSearchText) > -1;
 }
 
 function matchesItem(item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem, searchText: string): boolean {
@@ -19,15 +19,11 @@ function matchesItem(item: ButtonDropdownProps.Item | ButtonDropdownProps.Checkb
 }
 
 export function filterItems(items: ButtonDropdownProps.Items, filterText: string): ButtonDropdownProps.Items {
-  if (!filterText) {
-    return items;
-  }
-
-  const searchText = filterText.toLowerCase();
+  const lowerCaseSearchText = filterText.toLowerCase();
 
   return items.reduce<ButtonDropdownProps.ItemOrGroup[]>((acc, item) => {
     if (!isItemGroup(item)) {
-      if (matchesItem(item, searchText)) {
+      if (matchesItem(item, lowerCaseSearchText)) {
         acc.push(item);
       }
       return acc;
@@ -36,7 +32,7 @@ export function filterItems(items: ButtonDropdownProps.Items, filterText: string
     // Filtered results are rendered as a collapsed (flat) list, so nested
     // groups would otherwise render a header per level. Flatten all matching
     // descendants into the top-most group and keep only its header.
-    const matchingChildren = collectMatchingLeaves(item.items, searchText);
+    const matchingChildren = collectMatchingLeaves(item.items, lowerCaseSearchText);
 
     if (matchingChildren.length > 0) {
       acc.push({ ...item, items: matchingChildren });

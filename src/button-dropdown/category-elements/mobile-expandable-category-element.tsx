@@ -86,6 +86,11 @@ const MobileExpandableCategoryElement = ({
         [styles.disabled]: disabled,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
+      // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+      // the `id` of the item to select it. When filtering is disabled, we are using the roving
+      // tabindex technique to manage the focus state of the dropdown. The current element will
+      // have tabindex=0 which means that it can be tabbed to, while all other items have
+      // tabindex=-1 so we can focus them when necessary.
       tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, disabled, expanded })}

@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 
+import { Checkbox } from '~components';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
+
+import { SimplePage } from '../app/templates';
 
 import styles from './styles.scss';
 
@@ -153,23 +156,32 @@ const withCheckboxItems: ButtonDropdownProps['items'] = [
 ];
 
 export default function ButtonDropdownFilteringPage() {
-  const [checkboxItems, setCheckboxItems] = React.useState(withCheckboxItems);
+  const [expandToViewport, setExpandToViewport] = useState(false);
+
+  const [checkboxItems, setCheckboxItems] = useState(withCheckboxItems);
   const onItemClick = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log(event.detail);
 
   return (
-    <article>
-      <h1>Button Dropdown with Filtering</h1>
-
+    <SimplePage title="Button dropdown with filtering">
       <SpaceBetween size="xl">
+        <Checkbox
+          checked={expandToViewport}
+          onChange={event => setExpandToViewport(event.detail.checked)}
+          data-testid="expand-to-viewport"
+        >
+          Expand to viewport
+        </Checkbox>
+
         <div className={styles.container}>
           <h2>Flat items</h2>
           <ButtonDropdown
             id="filtering-flat"
+            data-testid="filtering-flat"
             items={flatItems}
             filteringType="auto"
             filteringPlaceholder="Search actions"
             filteringAriaLabel="Filter actions"
-            ariaLabel="Editor actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Actions
@@ -179,12 +191,12 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>Grouped items (non-expandable)</h2>
           <ButtonDropdown
-            id="filtering-grouped"
+            data-testid="filtering-grouped"
             items={groupedItems}
             filteringType="auto"
             filteringPlaceholder="Search menu"
             filteringAriaLabel="Filter menu items"
-            ariaLabel="Application menu"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Menu
@@ -194,13 +206,13 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>Expandable groups (collapse to flat when searching)</h2>
           <ButtonDropdown
-            id="filtering-expandable"
+            data-testid="filtering-expandable"
             items={expandableGroupedItems}
             expandableGroups={true}
             filteringType="auto"
             filteringPlaceholder="Search instance actions"
             filteringAriaLabel="Filter instance actions"
-            ariaLabel="Instance actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Instance actions
@@ -210,13 +222,13 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>Expandable groups containing regular (nested) groups</h2>
           <ButtonDropdown
-            id="filtering-expandable-with-groups"
+            data-testid="filtering-expandable-with-groups"
             items={expandableWithRegularGroups}
             expandableGroups={true}
             filteringType="auto"
             filteringPlaceholder="Search instance actions"
             filteringAriaLabel="Filter instance actions"
-            ariaLabel="Instance actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Instance actions
@@ -226,12 +238,12 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>With disabled items and disabled reasons</h2>
           <ButtonDropdown
-            id="filtering-disabled"
+            data-testid="filtering-disabled"
             items={withDisabledItems}
             filteringType="auto"
             filteringPlaceholder="Search actions"
             filteringAriaLabel="Filter actions"
-            ariaLabel="Resource actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Resource actions
@@ -241,12 +253,12 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>With checkbox items</h2>
           <ButtonDropdown
-            id="filtering-checkboxes"
+            data-testid="filtering-checkboxes"
             items={checkboxItems}
             filteringType="auto"
             filteringPlaceholder="Search"
             filteringAriaLabel="Filter items"
-            ariaLabel="Pipeline actions"
+            expandToViewport={expandToViewport}
             onItemClick={event => {
               onItemClick(event);
               if (event.detail.checked !== undefined) {
@@ -263,13 +275,13 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>Custom empty state</h2>
           <ButtonDropdown
-            id="filtering-custom-empty"
+            data-testid="filtering-custom-empty"
             items={flatItems}
             filteringType="auto"
             filteringPlaceholder="Search actions"
             filteringAriaLabel="Filter actions"
             noMatch={<span>No actions match your search. Try a different keyword.</span>}
-            ariaLabel="Editor actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           >
             Actions (custom empty)
@@ -279,7 +291,7 @@ export default function ButtonDropdownFilteringPage() {
         <div className={styles.container}>
           <h2>Split button (with main action) and filtering</h2>
           <ButtonDropdown
-            id="filtering-split-button"
+            data-testid="filtering-split-button"
             items={expandableGroupedItems}
             expandableGroups={true}
             variant="primary"
@@ -288,10 +300,11 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search instance actions"
             filteringAriaLabel="Filter instance actions"
             ariaLabel="Instance actions"
+            expandToViewport={expandToViewport}
             onItemClick={onItemClick}
           />
         </div>
       </SpaceBetween>
-    </article>
+    </SimplePage>
   );
 }
