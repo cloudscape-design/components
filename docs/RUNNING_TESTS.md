@@ -18,6 +18,7 @@ The npm scripts use gulp tasks that handle env vars (`TZ=UTC`, `NODE_OPTIONS=--e
 - **Integration tests** — test against real browser behavior on Chrome, with motion disabled.
 - **Motion tests** — run a specific set of tests on Chrome, with motion enabled.
 - **Accessibility tests** — run on all test pages across themes and color modes (`src/__a11y__/`).
+- **Visual regression tests** — compare screenshots between a PR and `main` to detect unintended visual changes. CI-only (see below).
 
 ## Targeting Specific Files
 
@@ -46,7 +47,7 @@ npm i -g chromedriver
 
 ## Updating Snapshots
 
-When component APIs change, you may need to update test snapshots. When design tokens are touched, you must also run integration tests to update their snapshots Before updating, run a full build (`npm run build`) so that documenter docs are generated. Use the `-u` flag to update:
+When component APIs change, you may need to update test snapshots. When design tokens are touched, you must also run integration tests to update their snapshots. Before updating, run a full build (`npm run build`) so that documenter docs are generated. Use the `-u` flag to update:
 
 ```
 # Unit snapshots
@@ -58,62 +59,33 @@ NODE_OPTIONS=--experimental-vm-modules npx jest -u -c jest.integ.config.js src/_
 # Snapshots inside components, e.g. when custom-css-properties.js changes (runs all unit tests)
 TZ=UTC npx jest -u -c jest.unit.config.js src/
 ```
+
 ## Visual Regression Tests
 
-Visual regression tests run automatically when opening a pull request in GitHub (see `.github/workflows/visual-regression.yml`).
+Visual regression tests run automatically on pull requests via the CI pipeline (`.github/workflows/deploy.yml` and `.github/workflows/visual-regression.yml`). They cannot be run locally at the moment.
 
-They compare permutation pages between the PR build and a baseline build of `main`, both served locally in the same CI job. Each side installs from its own `package-lock.json` via a git worktree, so dependency changes in the PR are handled correctly and unpinned updates in sister repositories affect both sides equally.
+### How it works (CI)
 
-### How it works
+The deploy workflow (`.github/workflows/deploy.yml`) orchestrates the full pipeline:
 
-1. The visual regression job waits for the deployment job —the deployment URL is used as the host containing the changes in the PR.
-2. A git worktree of `origin/main` is created, its dependencies installed, and its pages built and served on port 8080.
-3. Each of the test runners under `test/visual` imports their corresponding test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
+1. **Quick build** — builds dev pages for React 16 and React 18 in parallel using the `.github/actions/quick-build` composite action.
+2. **Deploy** — deploys the React 18 pages to a preview environment (the PR deployment URL).
+3. **Build baseline** — creates a git worktree of `origin/main`, installs its dependencies, and builds its pages.
+4. **Visual regression** — once deploy and baseline are ready, calls the reusable `visual-regression.yml` workflow.
 
-### Running locally
+The visual regression workflow (`.github/workflows/visual-regression.yml`):
 
-```
-npm run test:visual
-```
-
-This handles the full build and comparison in one command. If both outputs are already built, skip the build step:
-
-```
-NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
-```
-
-(Requires both servers to be running — start the PR build with `npm run start:integ` on port 8080 and the baseline build on port 8080, or set `NEW_HOST` / `OLD_HOST` env vars to point at different hosts.)
-
-### Adding tests for a new component
-
-Create `test/definitions/visual/<component>.ts`:
-
-```ts
-import { TestSuite } from '../types';
-
-const suite: TestSuite = {
-  description: 'my-component',
-  tests: [
-    {
-      description: 'permutations',
-      path: 'my-component/permutations',
-    },
-  ],
-};
-
-export default suite;
-```
-
-Then run the generation script to pick it up automatically:
-
-```bash
-node build-tools/visual/generate-tests.js
-```
-
-This generates both the test runner (`test/visual/my-component.test.ts`) and updates `test/definitions/index.ts`. No manual imports needed.
+1. Resolves the PR deployment URL from the GitHub Deployments API.
+2. Serves the baseline pages locally.
+3. Runs the test suite sharded across multiple runners. Each test navigates to a page on both hosts, captures screenshots, and compares them pixel-by-pixel.
+4. Produces an Allure report with image diffs for any failures, deployed to a preview environment.
 
 ### Reviewing failures
 
-If the CI job fails, download the `visual-regression-diffs` artifact from the Actions summary.
+When the CI job fails, check the deployed Allure report (linked from the GitHub deployment). It shows expected vs actual vs diff images for each failing test. If the diff is expected (intentional visual change), note it in your PR description.
 
-If the diff is expected (intentional visual change), note it in your PR description.
+### Adding tests for a new component
+
+1. Create `test/definitions/visual/<component>.ts` exporting a `TestSuite`.
+2. Create `test/visual/<component>.test.ts` that imports and runs the suite.
+3. Add the import to `test/definitions/index.ts`.
