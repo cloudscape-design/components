@@ -175,6 +175,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundSideNavigationItemActiveCollapsed: {
+    description: 'The background color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
   colorBackgroundLayoutMain: {
     description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
@@ -486,6 +491,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextSideNavigationItemActive: {
     description: 'The text color of an active (highlighted) side navigation item.',
     public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActiveCollapsed: {
+    description: 'The text (and icon) color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActiveCollapsedHover: {
+    description: 'The hover text (and icon) color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorTextSideNavigationItemDefault: {
+    description: 'The text (and icon) color of a non-active side navigation item.',
+    public: false,
     themeable: true,
   },
   colorBorderCard: {

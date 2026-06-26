@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
-import { Box, Button, Icon, SpaceBetween, Toggle } from '~components';
+import { Box, Button, Icon, SpaceBetween } from '~components';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
-import { applyTheme } from '~components/theming';
 import { colorBorderDividerDefault } from '~design-tokens';
 
 const items: SideNavigationProps.Item[] = [
@@ -24,7 +23,6 @@ const items: SideNavigationProps.Item[] = [
     ],
   },
   { type: 'link', text: 'Settings', href: '#/settings', icon: <Icon name="settings" /> },
-  { type: 'divider' },
   {
     type: 'section',
     text: 'Resources',
@@ -34,7 +32,6 @@ const items: SideNavigationProps.Item[] = [
       { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="share" /> },
     ],
   },
-  { type: 'divider' },
   { type: 'link', text: 'Documentation', href: '#/docs', external: true },
 ];
 
@@ -44,35 +41,10 @@ const EXPANDED_WIDTH = 220;
 export default function SideNavigationCollapsedPage() {
   const [activeHref, setActiveHref] = useState('#/calendar');
   const [collapsed, setCollapsed] = useState(false);
-  const [highlighted, setHighlighted] = useState(true);
-
-  useEffect(() => {
-    handleHighlightedChange(true);
-  }, []);
   const [panelWidth, setPanelWidth] = useState(EXPANDED_WIDTH);
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const reducedMotion = useReducedMotion(navRef);
-
-  const resetThemeRef = useRef<(() => void) | null>(null);
-
-  function handleHighlightedChange(value: boolean) {
-    setHighlighted(value);
-    if (value) {
-      const { reset } = applyTheme({
-        theme: {
-          tokens: {
-            colorBackgroundSideNavigationItemActive: { light: '{colorPrimary50}', dark: '#0099FF20' },
-            colorTextSideNavigationItemActive: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
-          },
-        },
-      });
-      resetThemeRef.current = reset;
-    } else {
-      resetThemeRef.current?.();
-      resetThemeRef.current = null;
-    }
-  }
 
   function handleToggle() {
     const willCollapse = !collapsed;
@@ -107,7 +79,7 @@ export default function SideNavigationCollapsedPage() {
           {/* Toggle button at top */}
           <div
             style={{
-              padding: collapsed ? '12px' : `12px 12px 4px 24px`,
+              padding: '12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: collapsed ? 'center' : 'space-between',
@@ -141,12 +113,9 @@ export default function SideNavigationCollapsedPage() {
         <SpaceBetween size="m">
           <Box variant="h1">Collapsed state demo</Box>
           <Box>Active: {activeHref}</Box>
-          <Toggle checked={highlighted} onChange={({ detail }) => handleHighlightedChange(detail.checked)}>
-            Background highlight
-          </Toggle>
           <Box color="text-status-inactive">
             Toggle the navigation panel using the button. Items without icons are hidden in collapsed mode. Sections
-            show their icon-bearing children as a flat list.
+            show their icon-bearing children as a flat list, and the section title becomes a divider in its place.
           </Box>
         </SpaceBetween>
       </div>

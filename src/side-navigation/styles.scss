@@ -154,9 +154,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-block: 0;
   padding-inline: $item-padding-inline;
   list-style: none;
-  @include styles.with-motion {
-    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
-  }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
@@ -168,9 +165,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
     justify-content: center;
     padding-block: 0;
     padding-inline: 0;
-    @include styles.with-motion {
-      transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
-    }
   }
 
   &--group {
@@ -284,8 +278,8 @@ $expandable-icon-negative-margin: awsui.$space-l;
 // ==========================================================================
 .link {
   @include styles.font-body-m;
-  color: awsui.$color-text-body-secondary;
-  display: inline-flex;
+  color: awsui.$color-text-side-navigation-item-default;
+  display: flex;
   padding-block: $item-padding-block;
   min-inline-size: awsui.$size-side-navigation-item-height;
   padding-inline: $item-padding-inline;
@@ -295,17 +289,23 @@ $expandable-icon-negative-margin: awsui.$space-l;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  @include styles.with-motion {
-    transition:
-      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
-      color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
-  }
 
   &-active {
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
     color: awsui.$color-text-side-navigation-item-active;
     background-color: awsui.$color-background-side-navigation-item-active;
+
+    // Collapsed mode hides the item text, so the active item gets a dedicated
+    // fill and text color (high-contrast indigo in one theme). The tokens carry
+    // the per-theme values, so no theme-specific override is needed.
+    &.link--collapsed {
+      color: awsui.$color-text-side-navigation-item-active-collapsed;
+      background-color: awsui.$color-background-side-navigation-item-active-collapsed;
+      &:hover {
+        color: awsui.$color-text-side-navigation-item-active-collapsed-hover;
+      }
+    }
   }
 
   &--collapsed {

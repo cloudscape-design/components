@@ -135,13 +135,38 @@ export function NavigationItemsList({
     const itemid = index + 1;
     const itemPosition = `${position ? `${position},` : ''}${itemid}`;
 
+    // Emits a divider as its own list segment (dividers break the <ul> grouping).
+    function pushDivider() {
+      lists[lists.length] = {
+        listVariant: variant,
+        element: (
+          <div data-itemid={`item-${itemid}`}>
+            <Divider variant="default" collapsed={collapsed} />
+          </div>
+        ),
+      };
+      currentListIndex = lists.length;
+      lists[currentListIndex] = {
+        listVariant: variant,
+        items: [],
+      };
+    }
+
     // Renders icon-bearing children of a container item as a collapsed group.
     // The inner <ul> carries the group label so list semantics are preserved
     // for screen readers even when the visual header is hidden.
-    function pushCollapsedGroup(children: ReadonlyArray<SideNavigationProps.Item>, label: string) {
+    function pushCollapsedGroup(
+      children: ReadonlyArray<SideNavigationProps.Item>,
+      label: string,
+      { leadingDivider = false }: { leadingDivider?: boolean } = {}
+    ) {
       const iconChildren = children.filter(child => (child as SideNavigationProps.Link).icon);
       if (iconChildren.length === 0) {
         return;
+      }
+      // A section's title is hidden when collapsed; render a divider in its place
+      if (leadingDivider) {
+        pushDivider();
       }
       const groupElements = iconChildren.map((child, childIndex) => {
         const childPosition = `${position ? `${position},` : ''}${itemid},${childIndex + 1}`;
@@ -166,7 +191,7 @@ export function NavigationItemsList({
             key={`group-${itemid}`}
             className={clsx(
               styles['list-item--group'],
-              prevItem?.type === 'divider' && styles['list-item--group-no-padding-start'],
+              (leadingDivider || prevItem?.type === 'divider') && styles['list-item--group-no-padding-start'],
               nextItem?.type === 'divider' && styles['list-item--group-no-padding-end']
             )}
           >
@@ -196,7 +221,7 @@ export function NavigationItemsList({
           : (item as SideNavigationProps.SectionGroup).items.flatMap(child =>
               child.type === 'section' ? (child as SideNavigationProps.Section).items : [child]
             );
-      pushCollapsedGroup(childItems, sectionLabel);
+      pushCollapsedGroup(childItems, sectionLabel, { leadingDivider: true });
       return;
     }
     if (collapsed && item.type !== 'divider' && !(item as SideNavigationProps.Link).icon) {
@@ -204,20 +229,7 @@ export function NavigationItemsList({
     }
     switch (item.type) {
       case 'divider': {
-        const dividerIndex = lists.length;
-        lists[dividerIndex] = {
-          listVariant: variant,
-          element: (
-            <div data-itemid={`item-${itemid}`}>
-              <Divider variant="default" collapsed={collapsed} />
-            </div>
-          ),
-        };
-        currentListIndex = lists.length;
-        lists[currentListIndex] = {
-          listVariant: variant,
-          items: [],
-        };
+        pushDivider();
         return;
       }
       case 'link': {
