@@ -296,9 +296,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
     color: awsui.$color-text-side-navigation-item-active;
     background-color: awsui.$color-background-side-navigation-item-active;
 
-    // Collapsed mode hides the item text, so the active item gets a dedicated
-    // fill and text color (high-contrast indigo in one theme). The tokens carry
-    // the per-theme values, so no theme-specific override is needed.
     &.link--collapsed {
       color: awsui.$color-text-side-navigation-item-active-collapsed;
       background-color: awsui.$color-background-side-navigation-item-active-collapsed;
