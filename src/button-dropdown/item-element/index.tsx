@@ -241,7 +241,7 @@ function MenuItem({
       content={item.disabledReason}
       position={tooltipPosition}
       className={styles['item-tooltip-wrapper']}
-      show={highlighted && filteringEnabled}
+      controlledOpen={filteringEnabled ? highlighted : undefined}
     >
       {menuItem}
       {descriptionEl}

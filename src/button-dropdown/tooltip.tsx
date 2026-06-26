@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
@@ -14,22 +14,21 @@ interface TooltipProps {
   content?: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
-  show?: boolean;
+  controlledOpen?: boolean;
 }
 
 const DEFAULT_OPEN_TIMEOUT_IN_MS = 120;
 
-export default function Tooltip({ children, content, position = 'right', className, show }: TooltipProps) {
+export default function Tooltip({ children, content, position = 'right', className, controlledOpen }: TooltipProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const isReducedMotion = useReducedMotion(ref);
-  const { open, triggerProps } = useTooltipOpen(isReducedMotion ? 0 : DEFAULT_OPEN_TIMEOUT_IN_MS);
-  const isOpen = open || !!show;
+  const { open, triggerProps } = useTooltipOpen(controlledOpen, isReducedMotion ? 0 : DEFAULT_OPEN_TIMEOUT_IN_MS);
   const portalClasses = usePortalModeClasses(ref);
 
   return (
     <span ref={ref} {...triggerProps} className={className}>
       {children}
-      {isOpen && (
+      {open && (
         <Portal>
           <span className={portalClasses}>
             <PopoverContainer
@@ -60,7 +59,7 @@ export default function Tooltip({ children, content, position = 'right', classNa
   );
 }
 
-function useTooltipOpen(timeout: number) {
+function useTooltipOpen(controlledOpen: boolean | undefined, timeout: number) {
   const [isOpen, setIsOpen] = useState(false);
 
   // The delayed effect is aborted in case the component unmounts. We cannot use the conventional clearTimeout()
@@ -74,30 +73,40 @@ function useTooltipOpen(timeout: number) {
     };
   }, []);
 
-  const close = () => {
+  const close = useCallback(() => {
     clearTimeout(timeoutRef.current);
     setIsOpen(false);
-  };
-  const open = () => {
+  }, []);
+
+  const open = useCallback(() => {
     if (!timeoutAbortRef.current) {
       setIsOpen(true);
     }
-  };
-  const openDelayed = () => {
+  }, []);
+
+  const openDelayed = useCallback(() => {
     timeoutRef.current = setTimeout(open, timeout);
-  };
-  const onKeyDown: KeyboardEventHandler = e => {
-    if (isOpen && isEscape(e.key)) {
-      e.preventDefault();
-      e.stopPropagation();
+  }, [open, timeout]);
+
+  useEffect(() => {
+    if (controlledOpen === true) {
+      openDelayed();
+    }
+    if (controlledOpen === false) {
+      close();
+    }
+  }, [controlledOpen, openDelayed, close]);
+
+  const onKeyDown: KeyboardEventHandler = event => {
+    if (isOpen && isEscape(event.key)) {
+      event.preventDefault();
+      event.stopPropagation();
       close();
     }
   };
 
   const onFocus = openDelayed;
   const onBlur = close;
-  const onMouseEnter = openDelayed;
-  const onMouseLeave = close;
 
   return {
     open: isOpen,
@@ -105,8 +114,6 @@ function useTooltipOpen(timeout: number) {
       onBlur,
       onFocus,
       onKeyDown,
-      onMouseEnter,
-      onMouseLeave,
     },
   };
 }

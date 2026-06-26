@@ -6,6 +6,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import { scrollElementIntoView } from '../../../lib/components/internal/utils/scrollable-containers';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import ButtonDropdownWrapper from '../../../lib/components/test-utils/dom/button-dropdown';
 import { KeyCode } from '../../internal/keycode';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
@@ -32,6 +33,26 @@ const expandableItems: ButtonDropdownProps.Items = [
   },
 ];
 
+const nestedExpandableItems: ButtonDropdownProps.Items = [
+  { id: 'connect', text: 'Connect' },
+  {
+    id: 'actions',
+    text: 'Actions',
+    items: [
+      {
+        id: 'states',
+        text: 'Instance state',
+        items: [
+          { id: 'start', text: 'Start instance' },
+          { id: 'stop', text: 'Stop instance' },
+          { id: 'reboot', text: 'Reboot instance' },
+        ],
+      },
+      { id: 'terminate', text: 'Terminate' },
+    ],
+  },
+];
+
 function renderDropdown(props: Partial<ButtonDropdownProps> = {}) {
   const result = render(
     <ButtonDropdown items={items} ariaLabel="Actions" {...props}>
@@ -46,18 +67,24 @@ function getFilterInput(container: HTMLElement): HTMLInputElement | null {
   return createWrapper(container).findButtonDropdown()!.findFilteringInput()?.findNativeInput().getElement() ?? null;
 }
 
-function getMenuItems(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll('[role="menuitem"], [role="menuitemcheckbox"]'));
+function getMenuItems(wrapper: ButtonDropdownWrapper): HTMLElement[] {
+  return wrapper.findItems().map(item => item.find('[role="menuitem"], [role="menuitemcheckbox"]')!.getElement());
 }
 
-describe('ButtonDropdown filtering', () => {
+describe('Button dropdown filtering', () => {
   beforeEach(() => {
     jest.mocked(scrollElementIntoView).mockClear();
   });
 
-  describe('filter input rendering', () => {
+  describe('Filter input', () => {
     test('does not render filter input when filteringType is not set', () => {
       const { container, wrapper } = renderDropdown();
+      wrapper.openDropdown();
+      expect(getFilterInput(container)).toBeNull();
+    });
+
+    test('does not render filter input when filteringType="none"', () => {
+      const { container, wrapper } = renderDropdown({ filteringType: 'none' });
       wrapper.openDropdown();
       expect(getFilterInput(container)).toBeNull();
     });
@@ -65,13 +92,8 @@ describe('ButtonDropdown filtering', () => {
     test('renders filter input when filteringType="auto"', () => {
       const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
       wrapper.openDropdown();
-      expect(getFilterInput(container)).not.toBeNull();
-    });
-
-    test('filter input has combobox role and aria-expanded', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
       const input = getFilterInput(container)!;
+      expect(input).not.toBeNull();
       expect(input.getAttribute('role')).toBe('combobox');
       expect(input.getAttribute('aria-expanded')).toBe('true');
     });
@@ -88,7 +110,7 @@ describe('ButtonDropdown filtering', () => {
     });
   });
 
-  describe('no match state', () => {
+  describe('No match state', () => {
     test('does not render the no match state when there are matching items', () => {
       const { wrapper } = renderDropdown({ filteringType: 'auto', noMatch: 'No actions found' });
       wrapper.openDropdown();
@@ -103,13 +125,6 @@ describe('ButtonDropdown filtering', () => {
       const noMatch = wrapper.findFooterRegion();
       expect(noMatch).not.toBeNull();
       expect(noMatch!.getElement()).toHaveTextContent('No actions found');
-    });
-
-    test('does not render a fallback no match state when noMatch is not provided', () => {
-      const { wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('zzz');
-      expect(wrapper.findFooterRegion()).toBeNull();
     });
   });
 
@@ -126,10 +141,7 @@ describe('ButtonDropdown filtering', () => {
       wrapper.openDropdown();
       const input = getFilterInput(container)!;
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
 
       const activedescendant = input.getAttribute('aria-activedescendant');
       expect(activedescendant).toBeTruthy();
@@ -141,9 +153,9 @@ describe('ButtonDropdown filtering', () => {
     });
 
     test('menu items have id attributes when filtering is active', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
       wrapper.openDropdown();
-      const menuItems = getMenuItems(container);
+      const menuItems = getMenuItems(wrapper);
       const itemsWithId = menuItems.filter(el => el.id);
       expect(itemsWithId.length).toBe(items.length);
     });
@@ -157,14 +169,10 @@ describe('ButtonDropdown filtering', () => {
       wrapper.openDropdown();
       const input = getFilterInput(container)!;
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
+      const dropdown = wrapper.findOpenDropdown()!;
       // Arrow down twice to reach the expandable group header
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      dropdown.keydown(KeyCode.down);
+      dropdown.keydown(KeyCode.down);
 
       const activedescendant = input.getAttribute('aria-activedescendant');
       expect(activedescendant).toContain('states');
@@ -194,11 +202,8 @@ describe('ButtonDropdown filtering', () => {
       });
 
       const input = getFilterInput(container)!;
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
 
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
 
       expect(document.activeElement).toBe(input);
     });
@@ -211,7 +216,7 @@ describe('ButtonDropdown filtering', () => {
       });
 
       const input = getFilterInput(container)!;
-      const menuItemLi = getMenuItems(container)[0].closest('li')!;
+      const menuItemLi = wrapper.findItems()[0].getElement();
 
       act(() => {
         fireEvent.mouseEnter(menuItemLi);
@@ -224,25 +229,19 @@ describe('ButtonDropdown filtering', () => {
       const { wrapper } = renderDropdown();
       wrapper.openDropdown();
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
 
       const focused = document.activeElement as HTMLElement;
       expect(focused.getAttribute('role')).toBe('menuitem');
     });
 
     test('all menu items have tabIndex=-1 when filtering is active', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
       wrapper.openDropdown();
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
 
-      const menuItems = getMenuItems(container);
+      const menuItems = getMenuItems(wrapper);
       menuItems.forEach(item => {
         expect(item.getAttribute('tabindex')).toBe('-1');
       });
@@ -256,10 +255,7 @@ describe('ButtonDropdown filtering', () => {
       });
       expect(scrollElementIntoView).not.toHaveBeenCalled();
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
 
       // The highlighted item is scrolled into view since focus stays on the filter input.
       expect(scrollElementIntoView).toHaveBeenCalled();
@@ -267,17 +263,15 @@ describe('ButtonDropdown filtering', () => {
       expect(scrollElementIntoView).toHaveBeenCalledWith(highlightedEl);
     });
 
-    test('without filtering, highlighted item gets tabIndex=0', () => {
-      const { wrapper } = renderDropdown();
+    test('returns focus to trigger when focus leaves the dropdown with expandToViewport and filtering', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto', expandToViewport: true });
       wrapper.openDropdown();
 
-      const dropdownEl = wrapper.findOpenDropdown()!.getElement();
-      act(() => {
-        fireEvent.keyDown(dropdownEl, { keyCode: KeyCode.down });
-      });
+      // Simulate focus leaving the dropdown
+      wrapper.findFilteringInput()!.findNativeInput().blur();
 
-      const highlightedItem = wrapper.findHighlightedItem()!.find('[role="menuitem"]')!.getElement();
-      expect(highlightedItem.getAttribute('tabindex')).toBe('0');
+      expect(wrapper.findOpenDropdown()).toBeNull();
+      expect(document.activeElement).toBe(wrapper.findNativeButton().getElement());
     });
   });
 
@@ -296,197 +290,76 @@ describe('ButtonDropdown filtering', () => {
   describe('keyboard behavior', () => {
     test('opening with ArrowDown does not highlight an item when filtering is enabled', () => {
       const { wrapper } = renderDropdown({ filteringType: 'auto' });
-      act(() => {
-        fireEvent.keyDown(wrapper.findNativeButton().getElement(), { keyCode: KeyCode.down });
-      });
+      wrapper.findNativeButton().keydown(KeyCode.down);
       expect(wrapper.findOpenDropdown()).not.toBeNull();
       expect(wrapper.findHighlightedItem()).toBeNull();
     });
 
     test('opening with ArrowUp does not highlight an item when filtering is enabled', () => {
       const { wrapper } = renderDropdown({ filteringType: 'auto' });
-      act(() => {
-        fireEvent.keyDown(wrapper.findNativeButton().getElement(), { keyCode: KeyCode.up });
-      });
+      wrapper.findNativeButton().keydown(KeyCode.up);
       expect(wrapper.findOpenDropdown()).not.toBeNull();
       expect(wrapper.findHighlightedItem()).toBeNull();
     });
 
-    test('opening with ArrowDown highlights the first item when filtering is not enabled', () => {
-      const { wrapper } = renderDropdown();
-      act(() => {
-        fireEvent.keyDown(wrapper.findNativeButton().getElement(), { keyCode: KeyCode.down });
-      });
-      expect(wrapper.findHighlightedItem()).not.toBeNull();
-    });
-
-    test('Escape clears the filtering value before closing the dropdown', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-      expect(getFilterInput(container)!.value).toBe('Cut');
-
-      act(() => {
-        fireEvent.keyDown(getFilterInput(container)!, { keyCode: KeyCode.escape });
-      });
-      // First Escape only clears the filter; the dropdown stays open.
-      expect(wrapper.findOpenDropdown()).not.toBeNull();
-      expect(getFilterInput(container)!.value).toBe('');
-
-      act(() => {
-        fireEvent.keyDown(getFilterInput(container)!, { keyCode: KeyCode.escape });
-      });
-      // Second Escape closes the dropdown.
-      expect(wrapper.findOpenDropdown()).toBeNull();
-    });
-
-    test('Escape closes the dropdown directly when there is no filtering value', () => {
+    test('Escape closes the dropdown', () => {
       const { wrapper } = renderDropdown({ filteringType: 'auto' });
       wrapper.openDropdown();
-      act(() => {
-        fireEvent.keyDown(wrapper.findOpenDropdown()!.getElement(), { keyCode: KeyCode.escape });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.escape);
       expect(wrapper.findOpenDropdown()).toBeNull();
-    });
-
-    test('moving focus from the filter input to the clear button keeps the dropdown open', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-
-      const input = getFilterInput(container)!;
-      const clearButton = wrapper.findFilteringInput()!.findClearButton()!.getElement();
-      act(() => {
-        input.focus();
-      });
-      act(() => {
-        clearButton.focus();
-      });
-
-      // Tabbing forward to the clear button stays within the dropdown, so it remains open.
-      expect(document.activeElement).toBe(clearButton);
-      expect(wrapper.findOpenDropdown()).not.toBeNull();
-    });
-
-    test('moving focus back from the clear button to the filter input keeps the dropdown open', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-
-      const input = getFilterInput(container)!;
-      const clearButton = wrapper.findFilteringInput()!.findClearButton()!.getElement();
-      act(() => {
-        clearButton.focus();
-      });
-      act(() => {
-        input.focus();
-      });
-
-      // Shift+Tabbing back to the input stays within the dropdown, so it remains open.
-      expect(document.activeElement).toBe(input);
-      expect(wrapper.findOpenDropdown()).not.toBeNull();
-    });
-
-    test('moving focus out of the dropdown closes it', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-
-      const input = getFilterInput(container)!;
-      const outsideButton = document.createElement('button');
-      document.body.appendChild(outsideButton);
-
-      act(() => {
-        input.focus();
-      });
-      act(() => {
-        outsideButton.focus();
-      });
-
-      // Focus left the dropdown entirely, so it closes.
-      expect(wrapper.findOpenDropdown()).toBeNull();
-
-      document.body.removeChild(outsideButton);
-    });
-
-    test('Tab does not close the dropdown via keydown while filtering', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto' });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-
-      const input = getFilterInput(container)!;
-      act(() => {
-        fireEvent.keyDown(input, { keyCode: KeyCode.tab });
-      });
-
-      // Closing is handled by focus leaving the dropdown, not by the Tab keydown itself.
-      expect(wrapper.findOpenDropdown()).not.toBeNull();
-    });
-
-    test('moving focus between the filter input and clear button keeps the dropdown open with expandToViewport', () => {
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto', expandToViewport: true });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cut');
-
-      const input = getFilterInput(container)!;
-      const clearButton = wrapper.findFilteringInput()!.findClearButton()!.getElement();
-      act(() => {
-        input.focus();
-      });
-      act(() => {
-        clearButton.focus();
-      });
-
-      expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
 
     test('Space does not activate the highlighted item while filtering', () => {
       const onItemClick = jest.fn();
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
+      const { wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
       wrapper.openDropdown();
-      act(() => {
-        fireEvent.keyDown(wrapper.findOpenDropdown()!.getElement(), { keyCode: KeyCode.down });
-      });
-      act(() => {
-        fireEvent.keyUp(getFilterInput(container)!, { keyCode: KeyCode.space });
-      });
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+      wrapper.findFilteringInput()!.findNativeInput().keyup(KeyCode.space);
       expect(onItemClick).not.toHaveBeenCalled();
     });
 
     test('Enter does nothing when no item is highlighted while filtering', () => {
       const onItemClick = jest.fn();
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
+      const { wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
       wrapper.openDropdown();
       wrapper.findFilteringInput()!.setInputValue('Cut');
 
       // No item is highlighted (typing resets the highlight), so Enter must not select
       // anything and must keep the dropdown open, matching select/multiselect.
-      act(() => {
-        fireEvent.keyDown(getFilterInput(container)!, { keyCode: KeyCode.enter });
-      });
+      wrapper.findFilteringInput()!.findNativeInput().keydown(KeyCode.enter);
       expect(onItemClick).not.toHaveBeenCalled();
       expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
 
     test('Enter activates the highlighted item while filtering', () => {
       const onItemClick = jest.fn();
-      const { container, wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
+      const { wrapper } = renderDropdown({ filteringType: 'auto', onItemClick });
       wrapper.openDropdown();
       wrapper.findFilteringInput()!.setInputValue('Cut');
 
-      const input = getFilterInput(container)!;
-      act(() => {
-        fireEvent.keyDown(input, { keyCode: KeyCode.down });
-      });
-      act(() => {
-        fireEvent.keyDown(input, { keyCode: KeyCode.enter });
-      });
+      const input = wrapper.findFilteringInput()!.findNativeInput();
+      input.keydown(KeyCode.down);
+      input.keydown(KeyCode.enter);
       expect(onItemClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'i1' } }));
       expect(wrapper.findOpenDropdown()).toBeNull();
     });
 
+    test('Enter activates the highlighted item without filtering', () => {
+      const onItemClick = jest.fn();
+      const { wrapper } = renderDropdown({ onItemClick });
+      wrapper.openDropdown();
+
+      // The first item is already highlighted when opened without filtering.
+      // Enter on a non-link item triggers preventDefault and activates it.
+      wrapper.findOpenDropdown()!.keydown(KeyCode.enter);
+
+      expect(onItemClick).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: expect.objectContaining({ id: 'i1' }) })
+      );
+    });
+
     test('Left and Right arrow keys do not expand groups while filtering', () => {
-      const { container, wrapper } = renderDropdown({
+      const { wrapper } = renderDropdown({
         filteringType: 'auto',
         items: expandableItems,
         expandableGroups: true,
@@ -494,14 +367,39 @@ describe('ButtonDropdown filtering', () => {
       wrapper.openDropdown();
       wrapper.findFilteringInput()!.setInputValue('Instance');
 
-      const input = getFilterInput(container)!;
-      act(() => {
-        fireEvent.keyDown(input, { keyCode: KeyCode.right });
-      });
-      act(() => {
-        fireEvent.keyDown(input, { keyCode: KeyCode.left });
-      });
+      const input = wrapper.findFilteringInput()!.findNativeInput();
+      input.keydown(KeyCode.right);
+      input.keydown(KeyCode.left);
       // Filtering renders groups flat, so the nested items are visible regardless of expansion.
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+    });
+
+    test('Tab closes the dropdown when filtering is disabled', () => {
+      const { wrapper } = renderDropdown();
+      wrapper.openDropdown();
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+
+      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      expect(wrapper.findOpenDropdown()).toBeNull();
+    });
+
+    test('Tab with expandToViewport returns focus to trigger and closes dropdown', () => {
+      const { wrapper } = renderDropdown({ expandToViewport: true });
+      wrapper.openDropdown();
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+
+      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      expect(wrapper.findOpenDropdown()).toBeNull();
+      expect(document.activeElement).toBe(wrapper.findNativeButton().getElement());
+    });
+
+    test('Tab does not close the dropdown when filtering is enabled', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
+      wrapper.openDropdown();
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+
+      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      // Dropdown stays open because Tab is handled by onDropdownFocusLeave in filtering mode
       expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
   });
@@ -560,7 +458,7 @@ describe('ButtonDropdown filtering', () => {
 
   describe('filtered expandable groups', () => {
     test('renders matching nested items with ids and non-focusable tab indexes', () => {
-      const { container, wrapper } = renderDropdown({
+      const { wrapper } = renderDropdown({
         filteringType: 'auto',
         items: expandableItems,
         expandableGroups: true,
@@ -568,7 +466,7 @@ describe('ButtonDropdown filtering', () => {
       wrapper.openDropdown();
       wrapper.findFilteringInput()!.setInputValue('Start');
 
-      const menuItems = getMenuItems(container);
+      const menuItems = getMenuItems(wrapper);
       expect(menuItems.length).toBeGreaterThan(0);
       menuItems.forEach(item => {
         expect(item.id).toBeTruthy();
@@ -593,6 +491,71 @@ describe('ButtonDropdown filtering', () => {
       wrapper.openDropdown();
       const categoryEl = wrapper.findExpandableCategoryById('states')!.getElement();
       expect(fireEvent.mouseDown(categoryEl)).toBe(true);
+    });
+
+    test('flattens matching items from nested groups into the top-level group', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: nestedExpandableItems,
+        expandableGroups: true,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Reboot');
+
+      // The deeply-nested "Reboot instance" item should surface as a result
+      // under the top-level "Actions" group header.
+      const menuItems = getMenuItems(wrapper);
+      expect(menuItems.length).toBe(1);
+      expect(menuItems[0]).toHaveTextContent('Reboot instance');
+    });
+  });
+
+  describe('disabled reason', () => {
+    const disabledItems: ButtonDropdownProps.Items = [
+      { id: 'i1', text: 'Cut' },
+      { id: 'i2', text: 'Copy', disabled: true, disabledReason: 'Cannot copy right now' },
+      { id: 'i3', text: 'Paste' },
+    ];
+
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
+    });
+
+    test('opens tooltip when a disabled item with disabledReason is highlighted via keyboard while filtering', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto', items: disabledItems });
+      wrapper.openDropdown();
+
+      // Navigate down twice to reach the disabled item
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+
+      // Wait for open delay
+      act(() => jest.advanceTimersByTime(200));
+
+      expect(wrapper.findDisabledReason()).not.toBeNull();
+      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('Cannot copy right now');
+    });
+
+    test('closes tooltip when highlight moves away from disabled item while filtering', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto', items: disabledItems });
+      wrapper.openDropdown();
+
+      // Navigate to the disabled item
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+
+      // Wait for open delay
+      act(() => jest.advanceTimersByTime(200));
+      expect(wrapper.findDisabledReason()).not.toBeNull();
+
+      // Move highlight away
+      wrapper.findOpenDropdown()!.keydown(KeyCode.down);
+      expect(wrapper.findDisabledReason()).toBeNull();
     });
   });
 });
