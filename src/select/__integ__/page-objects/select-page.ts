@@ -36,7 +36,7 @@ export default class SelectPageObject<
   async selectOptionUsingDrag(optionNumber: number) {
     const triggerSelector = this.wrapper.findTrigger().toSelector();
     // actions API does not work when element is not in the viewport
-    await this.browser.$(triggerSelector).scrollIntoView();
+    await (await this.browser.$(triggerSelector)).scrollIntoView();
 
     await this.buttonDownOnElement(triggerSelector);
     const { left, width, top, height } = await this.getBoundingBox(
