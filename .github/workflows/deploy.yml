@@ -53,6 +53,7 @@ jobs:
           name: dev-pages-react${{ matrix.react }}
           path: pages/lib/static-default
 
+      # Make the integration test utils available to the visual regression tests
       - name: Upload test utils selectors artifact
         if: matrix.react == 18
         uses: actions/upload-artifact@v4
@@ -73,6 +74,7 @@ jobs:
       artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
 
+  # Pages to be served locally as mainline reference for visual regression tests
   build-baseline:
     name: Build baseline pages
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
