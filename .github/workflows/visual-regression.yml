@@ -100,13 +100,11 @@ jobs:
       - name: Run visual regression tests
         run: |
           echo "NEW_HOST=${NEW_HOST}"
-          echo "OLD_HOST=${OLD_HOST}"
           NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
         env:
           TZ: UTC
           SHARD: ${{ matrix.shard }}
           NEW_HOST: ${{ steps.hosts.outputs.new }}
-          OLD_HOST: http://localhost:8080
 
       - name: Upload Allure results
         if: always()
