@@ -5,36 +5,30 @@ import merge from 'lodash/merge.js';
 import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
+// One-theme flashbar adopts the same subtle treatment as the alert component:
+// light status backgrounds (set via colorBackgroundFlashbar* in colors.ts) with
+// dark body text, status-colored accents, and transparent normal buttons.
+// These overrides mirror the alert context (contexts/alert.ts).
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorTextButtonNormalDefault: '{colorNeutral100}',
-  colorBorderButtonNormalDefault: '{colorNeutral100}',
-  colorBackgroundButtonNormalDefault: 'transparent',
-  colorTextButtonNormalHover: '{colorWhite}',
-  colorBorderButtonNormalHover: '{colorWhite}',
-  colorBackgroundButtonNormalHover: 'rgba(0, 7, 22, 0.15)',
-  colorTextButtonNormalActive: '{colorWhite}',
-  colorBorderButtonNormalActive: '{colorWhite}',
-  colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
-  colorBorderItemFocused: '{colorNeutral100}',
-  colorTextExpandableSectionDefault: '{colorNeutral100}',
-  colorTextExpandableSectionHover: '{colorWhite}',
-  colorTextBodyDefault: '{colorNeutral100}',
-  colorTextBodySecondary: '{colorNeutral100}',
-  colorTextHeadingSecondary: '{colorNeutral100}',
-  colorBorderDividerDefault: '{colorNeutral100}',
-  colorTextTutorialHotspotDefault: '{colorNeutral300}',
-  colorTextTutorialHotspotHover: '{colorNeutral100}',
-  colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
-  // Key-value pairs
-  colorTextLabel: '{colorNeutral100}',
+  colorBackgroundStatusInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
+  colorBackgroundStatusWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
+  colorBackgroundStatusError: { light: '{colorError100}', dark: '{colorError950}' },
+  colorBackgroundStatusSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
 
-  // Info links
-  colorTextLinkDefault: '{colorNeutral100}',
-  colorTextLinkHover: '{colorWhite}',
+  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
+  colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
+  colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
+  colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
+  colorBackgroundButtonNormalDefault: { light: 'transparent', dark: 'transparent' },
+  colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.05)',
+  colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.07)',
+  colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
 
+  colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
+  colorTextNotificationDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   // Progress Bar
   colorBackgroundProgressBarValueDefault: '{colorWhite}',
-  colorBackgroundProgressBarDefault: '{colorGreyOpaque25}',
+  colorBackgroundProgressBarDefault: '{colorGreyOpaque10}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));

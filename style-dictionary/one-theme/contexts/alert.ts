@@ -6,16 +6,23 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorBackgroundStatusInfo: { light: '{colorInfo50}', dark: '#161a2d' },
-  colorBackgroundStatusWarning: { light: '{colorWarning50}', dark: '#191100' },
-  colorBackgroundStatusError: { light: '{colorError50}', dark: '#1f0000' },
-  colorBackgroundStatusSuccess: { light: '{colorSuccess50}', dark: '#001401' },
+  colorBackgroundStatusInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
+  colorBackgroundStatusWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
+  colorBackgroundStatusError: { light: '{colorError100}', dark: '{colorError950}' },
+  colorBackgroundStatusSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
+
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
   colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBackgroundButtonNormalDefault: { light: 'transparent', dark: 'transparent' },
+  colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.1)',
+  colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.2)',
   colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
+
+  // Expandable section divider fails contrast on the dark-mode background, so
+  // bump it two steps lighter in dark mode only (light mode unchanged).
+  colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
