@@ -256,12 +256,12 @@
   flex: 1;
   &-fit-height {
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr;
   }
 }
 .content-inner {
-  flex: 1;
+  min-block-size: 0;
 
   &.with-paddings {
     padding-block: awsui.$space-scaled-l;
