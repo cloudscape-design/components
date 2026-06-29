@@ -91,6 +91,34 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationStackBar: '{colorNeutral750}',
   colorBackgroundNotificationStackBarActive: '{colorNeutral750}',
   colorBackgroundNotificationStackBarHover: '{colorNeutral650}',
+
+  // ── Accent (Box `awsui-accent` variant) ───────────────────────────────────
+  // A decorative ornament palette, not semantic status colors. Each accent uses a
+  // tinted background and a matching content color: light mode uses the 50/600 palette
+  // steps, dark mode uses 950/400. These specific steps aren't exposed by the semantic
+  // reference scales (e.g. colorError has no 950, colorSuccess no 400/950, colorWarning
+  // no 600/950), so the palette tokens are referenced directly and no-legacy-tokens is
+  // intentionally disabled for this block.
+  /* eslint-disable @cloudscape-design/components/no-legacy-tokens */
+  colorBackgroundAccentRed: { light: '{colorRed50}', dark: '{colorRed950}' },
+  colorBackgroundAccentYellow: { light: '{colorYellow50}', dark: '{colorYellow950}' },
+  colorBackgroundAccentIndigo: { light: '{colorIndigo50}', dark: '{colorIndigo950}' },
+  colorBackgroundAccentGreen: { light: '{colorGreen50}', dark: '{colorGreen950}' },
+  colorBackgroundAccentOrange: { light: '{colorOrange50}', dark: '{colorOrange950}' },
+  colorBackgroundAccentPurple: { light: '{colorPurple50}', dark: '{colorPurple950}' },
+  colorBackgroundAccentMint: { light: '{colorMint50}', dark: '{colorMint950}' },
+  colorBackgroundAccentLime: { light: '{colorLime50}', dark: '{colorLime950}' },
+  colorBackgroundAccentGrey: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey950}' },
+  colorTextAccentRed: { light: '{colorRed600}', dark: '{colorRed400}' },
+  colorTextAccentYellow: { light: '{colorYellow600}', dark: '{colorYellow400}' },
+  colorTextAccentIndigo: { light: '{colorIndigo600}', dark: '{colorIndigo400}' },
+  colorTextAccentGreen: { light: '{colorGreen600}', dark: '{colorGreen400}' },
+  colorTextAccentOrange: { light: '{colorOrange600}', dark: '{colorOrange400}' },
+  colorTextAccentPurple: { light: '{colorPurple600}', dark: '{colorPurple400}' },
+  colorTextAccentMint: { light: '{colorMint600}', dark: '{colorMint400}' },
+  colorTextAccentLime: { light: '{colorLime600}', dark: '{colorLime400}' },
+  colorTextAccentGrey: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey400}' },
+  /* eslint-enable @cloudscape-design/components/no-legacy-tokens */
   colorBackgroundPopover: { light: '{colorWhite}', dark: '{colorNeutral800}' },
   colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorBackgroundProgressBarDefault: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
