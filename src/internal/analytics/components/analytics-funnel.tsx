@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { AnalyticsMetadata } from '../../../types/analytics';
 import { PACKAGE_VERSION, THEME } from '../../environment';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
@@ -20,7 +21,6 @@ import {
 import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
 import { FunnelMetrics, PerformanceMetrics } from '../index';
 import {
-  AnalyticsMetadata,
   FunnelStartProps,
   FunnelStepProps,
   StepConfiguration,

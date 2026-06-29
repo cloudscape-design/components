@@ -2,24 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
+import { ComparisonOperator, GroupText, I18nStrings, JoinOperation, Query, Token, TokenGroup } from './interfaces';
 import {
-  ComparisonOperator,
-  GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
   InternalTokenGroup,
-  JoinOperation,
   ParsedText,
-  Query,
-  Token,
-  TokenGroup,
-} from './interfaces';
+} from './internal-interfaces';
 import {
   isInternalToken,
   matchFilteringProperty,

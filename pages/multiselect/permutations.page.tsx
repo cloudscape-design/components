@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+import { OptionDefinition, OptionGroup } from '~components/types/option';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

@@ -7,7 +7,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../../i18n/context';
 import InternalIcon from '../../../icon/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { fireNonCancelableEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataTokenListShowLess,
   GeneratedAnalyticsMetadataTokenListShowMore,

@@ -5,6 +5,7 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
+import { SomeRequired } from '../../../internal/types';
 import Arrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
@@ -12,7 +13,6 @@ import { getBaseProps } from '../../base-component';
 import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
-import { SomeRequired } from '../../types';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { FeaturePromptProps } from './interfaces';
 

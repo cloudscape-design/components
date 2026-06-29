@@ -6,22 +6,19 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { NonCancelableEventHandler } from '../internal/events';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
 import { I18nStringsInternal } from './i18n-utils';
+import { FormattedToken, GroupText, JoinOperation, LoadItemsDetail } from './interfaces';
 import {
-  FormattedToken,
-  GroupText,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
   InternalTokenGroup,
-  JoinOperation,
-  LoadItemsDetail,
-} from './interfaces';
+} from './internal-interfaces';
 import { TokenEditor } from './token-editor';
 import { isInternalToken, isInternalTokenGroup, tokenGroupToTokens } from './utils';
 

@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Ace } from 'ace-builds';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import { BaseModalProps } from '../modal/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
+// eslint-disable-next-line @cloudscape-design/components/no-internal-in-public-interfaces -- runtime constant; the available Ace modes are the single source of truth for the derived public language types.
 import { AceModes } from './ace-modes';
+// eslint-disable-next-line @cloudscape-design/components/no-internal-in-public-interfaces -- runtime constants; the available Ace themes are the single source of truth for the derived public theme types.
 import { DarkThemes, LightThemes } from './ace-themes';
 
 export interface CodeEditorProps extends BaseComponentProps, FormFieldControlProps, BaseModalProps {

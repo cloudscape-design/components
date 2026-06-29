@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundBackdrop: {
+    description: 'The background color of the backdrop shown behind overlay surfaces such as modals and drawers.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonNormalActive: {
     description: 'The background color of normal buttons in active state.',
     themeable: true,
@@ -800,6 +805,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextEmpty: {
     description:
       'The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionDefault: {
+    description: 'The default color of the expandable section header text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionHover: {
+    description: 'The color of the expandable section header text in hover state.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionNavigationIconDefault: {
+    description: 'The default color of the expand icon in the navigation variant of the expandable section.',
     public: true,
     themeable: true,
   },

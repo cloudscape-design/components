@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseCheckboxProps } from '../checkbox/base-checkbox';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseCheckboxProps } from '../types/base-checkbox';
+import { NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ToggleProps extends BaseCheckboxProps {
   /**

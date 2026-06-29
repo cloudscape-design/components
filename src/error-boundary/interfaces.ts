@@ -3,7 +3,7 @@
 
 import { ErrorInfo } from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ErrorBoundaryProps extends BaseComponentProps {
   /**
