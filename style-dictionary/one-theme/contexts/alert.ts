@@ -16,12 +16,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBackgroundButtonNormalDefault: { light: 'transparent', dark: 'transparent' },
-  colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.1)',
-  colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.2)',
+  colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.05)',
+  colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.07)',
   colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
 
-  // Expandable section divider fails contrast on the dark-mode background, so
-  // bump it two steps lighter in dark mode only (light mode unchanged).
   colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
 };
 

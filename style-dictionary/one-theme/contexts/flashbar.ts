@@ -5,10 +5,6 @@ import merge from 'lodash/merge.js';
 import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
-// One-theme flashbar adopts the same subtle treatment as the alert component:
-// light status backgrounds (set via colorBackgroundFlashbar* in colors.ts) with
-// dark body text, status-colored accents, and transparent normal buttons.
-// These overrides mirror the alert context (contexts/alert.ts).
 const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
   colorBackgroundStatusWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
@@ -26,7 +22,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
   colorTextNotificationDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
-  // Progress Bar
+
   colorBackgroundProgressBarValueDefault: { light: '{colorNeutral800}', dark: '{colorWhite}' },
   colorBackgroundProgressBarDefault: { light: '{colorGreyOpaque10}', dark: '{colorGreyOpaque25}' },
 };
