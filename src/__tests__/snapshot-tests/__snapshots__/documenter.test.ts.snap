@@ -26986,6 +26986,7 @@ exports[`Components definition for space-between matches the snapshot: space-bet
           "center",
           "end",
           "start",
+          "stretch",
         ],
       },
       "name": "alignItems",

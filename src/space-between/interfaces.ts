@@ -45,5 +45,5 @@ export namespace SpaceBetweenProps {
 
   export type Size = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
 
-  export type AlignItems = 'center' | 'start' | 'end';
+  export type AlignItems = 'center' | 'start' | 'end' | 'stretch';
 }

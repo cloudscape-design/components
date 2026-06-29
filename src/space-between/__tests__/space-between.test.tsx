@@ -85,6 +85,29 @@ describe('SpaceBetween', () => {
     expect(content[0].getElement()).toHaveAttribute('id', 'button-one');
     expect(content[1].getElement()).toHaveAttribute('id', 'button-two');
   });
+
+  it.each(['center', 'start', 'end', 'stretch'] as const)('applies align-%s class', alignItems => {
+    const { container } = render(
+      <SpaceBetween size="s" alignItems={alignItems}>
+        <button />
+        <button />
+      </SpaceBetween>
+    );
+    expect(container.firstChild).toHaveClass(styles[`align-${alignItems}`]);
+  });
+
+  it('does not apply an alignment class when alignItems is undefined', () => {
+    const { container } = render(
+      <SpaceBetween size="s">
+        <button />
+        <button />
+      </SpaceBetween>
+    );
+    expect(container.firstChild).not.toHaveClass(styles['align-center']);
+    expect(container.firstChild).not.toHaveClass(styles['align-start']);
+    expect(container.firstChild).not.toHaveClass(styles['align-end']);
+    expect(container.firstChild).not.toHaveClass(styles['align-stretch']);
+  });
 });
 
 describe('native attributes', () => {
