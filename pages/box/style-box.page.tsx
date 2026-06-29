@@ -69,7 +69,9 @@ export default function StyleBoxPage() {
           <SpaceBetween size="m" direction="horizontal">
             {ALL_VARIANTS.map(color => (
               <Box key={color} variant="awsui-accent" accentColor={color}>
-                <Box variant={variant}>{content}</Box>
+                <Box variant={variant} color="inherit">
+                  {content}
+                </Box>
               </Box>
             ))}
           </SpaceBetween>
@@ -83,7 +85,7 @@ export default function StyleBoxPage() {
       <SpaceBetween size="m" direction="horizontal">
         {ALL_VARIANTS.map(color => (
           <Box key={color} variant="awsui-accent" accentColor={color}>
-            <Icon name="check" size="medium" variant="subtle" />
+            <Icon name="check" size="medium" />
           </Box>
         ))}
       </SpaceBetween>
@@ -103,7 +105,9 @@ export default function StyleBoxPage() {
             label: 'Distribution ID',
             value: (
               <Box variant="awsui-accent" accentColor="indigo">
-                <Box variant="p">E1WG1ZNPRXT0D4</Box>
+                <Box variant="p" color="inherit">
+                  E1WG1ZNPRXT0D4
+                </Box>
               </Box>
             ),
             info: (
@@ -144,7 +148,9 @@ export default function StyleBoxPage() {
             label: 'Price class',
             value: (
               <Box variant="awsui-accent" accentColor="green">
-                <Box variant="p">Use only US, Canada, Europe</Box>
+                <Box variant="p" color="inherit">
+                  Use only US, Canada, Europe
+                </Box>
               </Box>
             ),
           },
@@ -169,7 +175,7 @@ export default function StyleBoxPage() {
           id: item.id,
           content: item.content,
           icon: (
-            <Box variant="awsui-accent" accentColor={item.color} color="inherit">
+            <Box variant="awsui-accent" accentColor={item.color}>
               <Icon name={item.icon as any} size="medium" />
             </Box>
           ),
