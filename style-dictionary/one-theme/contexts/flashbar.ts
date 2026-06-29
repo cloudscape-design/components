@@ -13,8 +13,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
 
   // Status text and borders
-  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
-  colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
+  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
 
