@@ -27,8 +27,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
   colorTextNotificationDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   // Progress Bar
-  colorBackgroundProgressBarValueDefault: '{colorWhite}',
-  colorBackgroundProgressBarDefault: '{colorGreyOpaque25}',
+  colorBackgroundProgressBarValueDefault: { light: '{colorNeutral800}', dark: '{colorWhite}' },
+  colorBackgroundProgressBarDefault: { light: '{colorGreyOpaque10}', dark: '{colorGreyOpaque25}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
