@@ -37744,6 +37744,42 @@ Returns the current value of the input.",
             "name": "boolean",
           },
         },
+        {
+          "description": "Returns whether the "next page" button is disabled.",
+          "name": "isNextPageButtonDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Returns whether the page number for a given index is disabled.",
+          "name": "isPageNumberByIndexDisabled",
+          "parameters": [
+            {
+              "description": "1-based index of the page number to check.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Returns whether the "previous page" button is disabled.",
+          "name": "isPreviousPageButtonDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
       ],
       "name": "PaginationWrapper",
     },
@@ -48878,6 +48914,42 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns whether the "next page" button is disabled.",
+          "name": "isNextPageButtonDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Returns whether the page number for a given index is disabled.",
+          "name": "isPageNumberByIndexDisabled",
+          "parameters": [
+            {
+              "description": "1-based index of the page number to check.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Returns whether the "previous page" button is disabled.",
+          "name": "isPreviousPageButtonDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
           },
         },
       ],

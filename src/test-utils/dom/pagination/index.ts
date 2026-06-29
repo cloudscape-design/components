@@ -39,6 +39,31 @@ export default class PaginationWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns whether the "previous page" button is disabled.
+   */
+  isPreviousPageButtonDisabled(): boolean {
+    return this.find(`li:first-child .${styles.button}[aria-disabled="true"]`) !== null;
+  }
+
+  /**
+   * Returns whether the "next page" button is disabled.
+   */
+  isNextPageButtonDisabled(): boolean {
+    return this.find(`li:last-child .${styles.button}[aria-disabled="true"]`) !== null;
+  }
+
+  /**
+   * Returns whether the page number for a given index is disabled.
+   *
+   * @param index 1-based index of the page number to check.
+   */
+  isPageNumberByIndexDisabled(index: number): boolean {
+    // we need to skip the "previous page" button
+    const pageIndex = index + 1;
+    return this.find(`li:nth-child(${pageIndex}) .${styles.button}[aria-disabled="true"]`) !== null;
+  }
+
+  /**
    * Returns the jump to page input field.
    */
   findJumpToPageInput(): InputWrapper | null {
