@@ -28,7 +28,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextNotificationDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   // Progress Bar
   colorBackgroundProgressBarValueDefault: '{colorWhite}',
-  colorBackgroundProgressBarDefault: '{colorGreyOpaque10}',
+  colorBackgroundProgressBarDefault: '{colorGreyOpaque25}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
