@@ -68,7 +68,12 @@ export default function StyleBoxPage() {
           </Box>
           <SpaceBetween size="m" direction="horizontal">
             {ALL_VARIANTS.map(color => (
-              <Box key={color} variant="awsui-accent" accentColor={color}>
+              <Box
+                key={color}
+                variant="awsui-accent"
+                accentColor={color}
+                padding={{ horizontal: 'xxxs', vertical: 'n' }}
+              >
                 <Box variant={variant} color="inherit">
                   {content}
                 </Box>
@@ -84,7 +89,7 @@ export default function StyleBoxPage() {
       </Box>
       <SpaceBetween size="m" direction="horizontal">
         {ALL_VARIANTS.map(color => (
-          <Box key={color} variant="awsui-accent" accentColor={color}>
+          <Box key={color} variant="awsui-accent" accentColor={color} accentShape="circle">
             <Icon name="check" size="medium" />
           </Box>
         ))}
