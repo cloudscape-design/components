@@ -27,6 +27,11 @@ function Inputs() {
       </div>
 
       <div>
+        <Input ariaLabel="input" placeholder="Enter something" value="" disabled={true} onChange={() => {}} />
+        <Select placeholder="Enter something" selectedOption={null} disabled={true} onChange={() => {}} />
+      </div>
+
+      <div>
         <Input ariaLabel="input" value="Something" disabled={true} onChange={() => {}} />
         <Select selectedOption={{ label: 'Label', value: 'value' }} disabled={true} onChange={() => {}} />
       </div>
