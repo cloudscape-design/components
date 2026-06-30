@@ -279,7 +279,15 @@
     "ariaLabels.submittingEditText": "การส่งแก้ไข",
     "ariaLabels.successfulEditLabel": "แก้ไขเรียบร้อยแล้ว",
     "columnDefinitions.editConfig.errorIconAriaLabel": "ข้อผิดพลาด",
-    "columnDefinitions.editConfig.editIconAriaLabel": "ที่สามารถแก้ไขได้"
+    "columnDefinitions.editConfig.editIconAriaLabel": "ที่สามารถแก้ไขได้",
+    "i18nStrings.sortDropdown.sortAscending": "เรียงจากน้อยไปมาก",
+    "i18nStrings.sortDropdown.sortDescending": "เรียงจากมากไปน้อย",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "การเรียงหลายคอลัมน์ (Shift + คลิก)",
+    "i18nStrings.sortDropdown.addToSortAscending": "เพิ่มในการเรียง (น้อยไปมาก)",
+    "i18nStrings.sortDropdown.addToSortDescending": "เพิ่มในการเรียง (มากไปน้อย)",
+    "i18nStrings.sortDropdown.removeFromSort": "ลบออกจากการเรียง",
+    "i18nStrings.clearSort": "ล้างการเรียง",
+    "ariaLabels.sortMenuTriggerLabel": "ตัวเลือกการเรียง"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "เลื่อนไปทางซ้าย",

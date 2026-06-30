@@ -408,7 +408,15 @@
     "ariaLabels.expandButtonLabel": "توسيع",
     "ariaLabels.collapseButtonLabel": "تحجيم",
     "columnDefinitions.editConfig.errorIconAriaLabel": "خطأ",
-    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل"
+    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل",
+    "i18nStrings.sortDropdown.sortAscending": "الترتيب تصاعديًّا",
+    "i18nStrings.sortDropdown.sortDescending": "الترتيب تنازليًّا",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "ترتيب متعدد الأعمدة (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "إضافة إلى الترتيب (تصاعديًا)",
+    "i18nStrings.sortDropdown.addToSortDescending": "إضافة إلى الترتيب (تنازليًّا)",
+    "i18nStrings.sortDropdown.removeFromSort": "إزالة من الترتيب",
+    "i18nStrings.clearSort": "مسح الترتيب",
+    "ariaLabels.sortMenuTriggerLabel": "خيارات الترتيب"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "التمرير إلى اليسار",
