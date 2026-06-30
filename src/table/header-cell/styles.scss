@@ -155,18 +155,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   display: contents;
 }
 
-.header-cell-main-with-menu {
-  display: flex;
-  align-items: center;
-  & > .header-cell-content {
-    flex-grow: 1;
-    min-inline-size: 0;
-    /* The absolutely-positioned sort icon already lives close to the right edge,
-       so shrink the content's trailing padding to keep the kebab tight to it. */
-    padding-inline-end: awsui.$space-xs;
-  }
-}
-
 .sort-priority-badge {
   display: inline-flex;
   align-items: center;
@@ -197,15 +185,16 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     padding-block: awsui.$space-xxxs;
   }
 
-  .header-cell-sortable > & {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
-  }
   &:focus {
     outline: none;
     text-decoration: none;
   }
 
   @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
+
+  .header-cell-sortable > .header-cell-main > & {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
 
   .header-cell-disabled.header-cell-sorted > & {
     & > .sorting-icon {
@@ -214,11 +203,21 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 }
 
+.header-cell-main-with-menu {
+  display: flex;
+  align-items: center;
+  // stylelint-disable-next-line no-descending-specificity
+  & > .header-cell-content {
+    flex-grow: 1;
+    min-inline-size: 0;
+  }
+}
+
 .header-cell-spans-rows {
   block-size: 100%;
   vertical-align: bottom;
 
-  .header-cell-content {
+  > .header-cell-main > .header-cell-content {
     block-size: 100%;
     box-sizing: border-box;
     display: flex;
@@ -236,8 +235,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
 .header-cell-sortable:not(.header-cell-disabled) {
   cursor: pointer;
-  & .header-cell-content:hover,
-  &.header-cell-sorted .header-cell-content {
+  & > .header-cell-main > .header-cell-content:hover,
+  &.header-cell-sorted > .header-cell-main > .header-cell-content {
     color: awsui.$color-text-interactive-active;
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;
