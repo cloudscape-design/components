@@ -8,12 +8,40 @@
 // ─── Base accent variant ─────────────────────────────────────────────────────
 .accent-variant {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding-block: awsui.$space-xxs;
   padding-inline: awsui.$space-xs;
+}
+
+// ─── Accent shapes ───────────────────────────────────────────────────────────
+// `sharp` — small border-radius for badge/tag-like appearance (default).
+// `circle` — fully circular with equal dimensions, suitable for icon wrapping.
+
+.accent-shape-sharp {
   border-start-start-radius: 2px;
   border-start-end-radius: 2px;
   border-end-start-radius: 2px;
   border-end-end-radius: 2px;
+  padding-block: awsui.$space-xxxs;
+  padding-inline: awsui.$space-xxxs;
+}
+
+.accent-shape-circle {
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  // Equal padding on all sides.
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-xs;
+  // Force the element to be a square regardless of content dimensions.
+  // The width is constrained to match the height (content + padding).
+  aspect-ratio: 1 / 1;
+  // Prevent content from stretching the box wider than tall.
+  overflow: hidden;
+  // Let the box shrink-wrap to its height, width follows via aspect-ratio.
+  inline-size: fit-content;
 }
 
 // ─── Accent colors ──────────────────────────────────────────────────────────────

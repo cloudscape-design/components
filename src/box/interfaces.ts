@@ -27,10 +27,18 @@ export interface BoxProps extends BaseComponentProps {
    */
   variant?: BoxProps.Variant;
   /**
-   * Defines the accent color for the `awsui-style-box` variant.
-   * Only applies when `variant` is set to `awsui-style-box`.
+   * Defines the accent color for the `awsui-accent` variant.
+   * Only applies when `variant` is set to `awsui-accent`.
    */
   accentColor?: BoxProps.AccentColor;
+  /**
+   * Controls the border-radius shape of the accent container.
+   * Only applies when `variant` is set to `awsui-accent`.
+   *
+   * - `sharp` (default) — applies a small border-radius (2px).
+   * - `circle` — applies a fully circular shape with equal width and height, suitable for wrapping icons.
+   */
+  accentShape?: BoxProps.AccentShape;
   /**
    * Overrides the default HTML tag provided by the variant.
    */
@@ -166,6 +174,8 @@ export namespace BoxProps {
     | 'awsui-accent';
 
   export type AccentColor = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'mint' | 'lime' | 'grey';
+
+  export type AccentShape = 'sharp' | 'circle';
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';
   export type TextAlign = 'left' | 'center' | 'right';

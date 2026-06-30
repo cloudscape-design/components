@@ -174,4 +174,61 @@ describe('Box', () => {
       expect(container.firstChild).toHaveClass('additional-class');
     });
   });
+
+  describe('awsui-accent variant', () => {
+    test('uses span as tag name', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-accent' });
+      expect(boxWrapper.getElement().tagName).toBe('SPAN');
+    });
+
+    test('applies the accent-variant class', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-accent' });
+      expect(boxWrapper.getElement()).toHaveClass(styles['accent-variant']);
+    });
+
+    test('applies the correct accentColor class', () => {
+      const colors: Array<BoxProps.AccentColor> = [
+        'red',
+        'yellow',
+        'indigo',
+        'green',
+        'orange',
+        'purple',
+        'mint',
+        'lime',
+        'grey',
+      ];
+      colors.forEach(color => {
+        const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: color });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`accent-${color}`]);
+      });
+    });
+
+    test('does not apply accentColor class when accentColor is not set', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-accent' });
+      const element = boxWrapper.getElement();
+      expect(element.className).not.toMatch(
+        /accent-red|accent-yellow|accent-indigo|accent-green|accent-orange|accent-purple|accent-mint|accent-lime|accent-grey/
+      );
+    });
+
+    test('applies the correct accentShape class', () => {
+      const shapes: Array<BoxProps.AccentShape> = ['sharp', 'circle'];
+      shapes.forEach(shape => {
+        const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: 'indigo', accentShape: shape });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`accent-shape-${shape}`]);
+      });
+    });
+
+    test('does not apply accentShape class when accentShape is not set', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: 'indigo' });
+      const element = boxWrapper.getElement();
+      expect(element.className).not.toMatch(/accent-shape-sharp|accent-shape-circle/);
+    });
+
+    test('tagOverride works with accent variant', () => {
+      const boxWrapper = renderBox({ variant: 'awsui-accent', tagOverride: 'div' });
+      expect(boxWrapper.getElement().tagName).toBe('DIV');
+    });
+  });
 });
