@@ -37,6 +37,7 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
+import { ClearSortButton } from './clear-sort';
 import { TableColGroup } from './column-groups/col-group';
 import { useColumnGroups } from './column-groups/use-column-groups';
 import { checkColumnWidths } from './column-widths-utils';
@@ -356,6 +357,12 @@ const InternalTable = React.forwardRef(
       if (sortingColumn?.sortingComparator) {
         checkSortingState(columnDefinitions, sortingColumn.sortingComparator);
       }
+      if (multiColumnSort && (sortingColumn || sortingDescending !== undefined || onSortingChange)) {
+        warnOnce(
+          'Table',
+          'The `multiColumnSort` prop is mutually exclusive with `sortingColumn`, `sortingDescending`, and `onSortingChange`. When both are provided, the single-column sorting props are ignored.'
+        );
+      }
     }
 
     const isVisualRefresh = useVisualRefresh();
@@ -364,7 +371,8 @@ const InternalTable = React.forwardRef(
       : ['embedded', 'full-page'].indexOf(variant) > -1
         ? 'container'
         : variant;
-    const hasHeader = !!(header || filter || pagination || preferences);
+    const hasActiveMultiSort = !!multiColumnSort && multiColumnSort.sortingColumns.length > 0;
+    const hasHeader = !!(header || filter || pagination || preferences || hasActiveMultiSort);
     const hasSelection = !!selectionType;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
@@ -505,6 +513,11 @@ const InternalTable = React.forwardRef(
                           <ToolsHeader
                             header={header}
                             filter={filter}
+                            clearSort={
+                              hasActiveMultiSort && multiColumnSort ? (
+                                <ClearSortButton multiColumnSort={multiColumnSort} i18nStrings={i18nStrings} />
+                              ) : undefined
+                            }
                             pagination={pagination}
                             preferences={preferences}
                             setLastUserAction={setLastUserAction}

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../button-dropdown/internal';
+import { useInternalI18n } from '../../i18n/context';
 import { TableProps } from '../interfaces';
 
 import styles from './styles.css.js';
@@ -34,36 +35,37 @@ export function SortMenu<T>({
   onAction,
 }: SortMenuProps<T>) {
   const strings = i18nStrings?.sortDropdown;
+  const i18n = useInternalI18n('table');
 
   const items: ButtonDropdownProps.ItemOrGroup[] = [
     {
       id: 'sort-ascending',
-      text: strings?.sortAscending ?? 'Sort ascending',
+      text: i18n('i18nStrings.sortDropdown.sortAscending', strings?.sortAscending) ?? '',
       disabled: isSortedAscending,
     },
     {
       id: 'sort-descending',
-      text: strings?.sortDescending ?? 'Sort descending',
+      text: i18n('i18nStrings.sortDropdown.sortDescending', strings?.sortDescending) ?? '',
       disabled: isSortedDescending,
     },
     {
       id: 'multi-column-sort-group',
       itemType: 'group',
-      text: strings?.multiColumnSortGroup ?? 'Multi-column sort',
+      text: i18n('i18nStrings.sortDropdown.multiColumnSortGroup', strings?.multiColumnSortGroup) ?? '',
       items: [
         {
           id: 'add-to-sort-ascending',
-          text: strings?.addToSortAscending ?? 'Add to sort (ascending)',
+          text: i18n('i18nStrings.sortDropdown.addToSortAscending', strings?.addToSortAscending) ?? '',
           disabled: inSort,
         },
         {
           id: 'add-to-sort-descending',
-          text: strings?.addToSortDescending ?? 'Add to sort (descending)',
+          text: i18n('i18nStrings.sortDropdown.addToSortDescending', strings?.addToSortDescending) ?? '',
           disabled: inSort,
         },
         {
           id: 'remove-from-sort',
-          text: strings?.removeFromSort ?? 'Remove from sort',
+          text: i18n('i18nStrings.sortDropdown.removeFromSort', strings?.removeFromSort) ?? '',
           disabled: !inSort,
         },
       ],
@@ -75,7 +77,7 @@ export function SortMenu<T>({
       <InternalButtonDropdown
         items={items}
         variant="inline-icon"
-        ariaLabel={ariaLabel ?? 'Sort options'}
+        ariaLabel={i18n('ariaLabels.sortMenuTriggerLabel', ariaLabel) ?? ''}
         onItemClick={({ detail }) => onAction(detail.id as SortMenuAction)}
       />
     </span>

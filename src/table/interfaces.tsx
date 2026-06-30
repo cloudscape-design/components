@@ -248,14 +248,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Enables multi-column sorting on the table. The object contains:
    *
-   * * `sortingColumns` (ReadonlyArray<TableProps.SortingState<T>>): The current
-   *   state of multi-column sorting. Position in the array determines sort priority.
-   * * `onChange` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>):
-   *   Fired when the multi-column sort state changes.
+   * * `sortingColumns` (ReadonlyArray<TableProps.SortingState<T>>) - The current multi-column
+   *   sort state. The first entry has the highest sort priority, and subsequent entries act as
+   *   tiebreakers.
+   * * `onChange` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>) - Called
+   *   when the user changes the sort state.
    *
-   * Mutually exclusive with `sortingColumn` / `sortingDescending` / `onSortingChange`.
-   * When both sets of props are passed, the component warns in development and prefers
-   * `multiColumnSort` at runtime.
+   * Use either this property or `sortingColumn` / `sortingDescending` / `onSortingChange`, but not both.
    */
   multiColumnSort?: TableProps.MultiColumnSort<T>;
 

@@ -28468,14 +28468,13 @@ In skeleton-loading mode this will be used as a label for screenreaders.",
     {
       "description": "Enables multi-column sorting on the table. The object contains:
 
-* \`sortingColumns\` (ReadonlyArray<TableProps.SortingState<T>>): The current
-  state of multi-column sorting. Position in the array determines sort priority.
-* \`onChange\` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>):
-  Fired when the multi-column sort state changes.
+* \`sortingColumns\` (ReadonlyArray<TableProps.SortingState<T>>) - The current multi-column
+  sort state. The first entry has the highest sort priority, and subsequent entries act as
+  tiebreakers.
+* \`onChange\` (NonCancelableEventHandler<TableProps.MultiColumnSortChangeDetail<T>>) - Called
+  when the user changes the sort state.
 
-Mutually exclusive with \`sortingColumn\` / \`sortingDescending\` / \`onSortingChange\`.
-When both sets of props are passed, the component warns in development and prefers
-\`multiColumnSort\` at runtime.",
+Use either this property or \`sortingColumn\` / \`sortingDescending\` / \`onSortingChange\`, but not both.",
       "inlineType": {
         "name": "TableProps.MultiColumnSort<T>",
         "properties": [
@@ -43662,6 +43661,17 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the "Clear sort" button rendered in the table header tools area.
+The button is auto-rendered only when multi-column sorting is enabled and at
+least one column is sorted. Returns \`null\` otherwise.",
+          "name": "findClearSort",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -43729,6 +43739,50 @@ For tables with column grouping this excludes group header cells.",
                 "isOptional": false,
               },
               "name": "colIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the per-column sort menu (kebab dropdown) for the column header at the
+given index. Only present on tables that opt in to multi-column sorting.",
+          "name": "findColumnSortMenu",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TableColumnSortMenuWrapper",
+          },
+        },
+        {
+          "description": "Returns the sort priority badge on the column header at the given index.
+The badge is only rendered when two or more columns participate in a
+multi-column sort. Returns \`null\` otherwise.",
+          "name": "findColumnSortPriorityBadge",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
               "typeName": "number",
             },
           ],
@@ -44087,6 +44141,360 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
       ],
       "name": "TableWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the "Add to sort (ascending)" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findAddToSortAscendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the "Add to sort (descending)" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findAddToSortDescendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the disabled reason tooltip for a dropdown item. Returns null if no disabled item with \`disabledReason\` is highlighted.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findDisabledReason",
+          },
+          "name": "findDisabledReason",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryById",
+          },
+          "name": "findExpandableCategoryById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findHighlightedItem",
+          },
+          "name": "findHighlightedItem",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findItemById",
+          },
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds \`checked\` value of item in the open dropdown by item id. Returns null if there is no open dropdown or the item is not a checkbox item.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findItemCheckedById",
+          },
+          "name": "findItemCheckedById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "string",
+          },
+        },
+        {
+          "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findItems",
+          },
+          "name": "findItems",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findMainAction",
+          },
+          "name": "findMainAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findNativeButton",
+          },
+          "name": "findNativeButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLButtonElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findOpenDropdown",
+          },
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the "Remove from sort" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findRemoveFromSortItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the "Sort ascending" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findSortAscendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the "Sort descending" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findSortDescendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findTriggerButton",
+          },
+          "name": "findTriggerButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.openDropdown",
+          },
+          "name": "openDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+      ],
+      "name": "TableColumnSortMenuWrapper",
     },
     {
       "methods": [
@@ -53080,6 +53488,17 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the "Clear sort" button rendered in the table header tools area.
+The button is auto-rendered only when multi-column sorting is enabled and at
+least one column is sorted. Returns \`null\` otherwise.",
+          "name": "findClearSort",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -53142,6 +53561,45 @@ For tables with column grouping this excludes group header cells.",
                 "isOptional": false,
               },
               "name": "colIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the per-column sort menu (kebab dropdown) for the column header at the
+given index. Only present on tables that opt in to multi-column sorting.",
+          "name": "findColumnSortMenu",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TableColumnSortMenuWrapper",
+          },
+        },
+        {
+          "description": "Returns the sort priority badge on the column header at the given index.
+The badge is only rendered when two or more columns participate in a
+multi-column sort. Returns \`null\` otherwise.",
+          "name": "findColumnSortPriorityBadge",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
               "typeName": "number",
             },
           ],
@@ -53392,6 +53850,272 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
       ],
       "name": "TableWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the "Add to sort (ascending)" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findAddToSortAscendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the "Add to sort (descending)" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findAddToSortDescendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the disabled reason tooltip for a dropdown item. Returns null if no disabled item with \`disabledReason\` is highlighted.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findDisabledReason",
+          },
+          "name": "findDisabledReason",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryById",
+          },
+          "name": "findExpandableCategoryById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findHighlightedItem",
+          },
+          "name": "findHighlightedItem",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findItemById",
+          },
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
+
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findItems",
+          },
+          "name": "findItems",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findMainAction",
+          },
+          "name": "findMainAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findNativeButton",
+          },
+          "name": "findNativeButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findOpenDropdown",
+          },
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the "Remove from sort" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findRemoveFromSortItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the "Sort ascending" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findSortAscendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the "Sort descending" menu item.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+          "name": "findSortDescendingItem",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findTriggerButton",
+          },
+          "name": "findTriggerButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+      ],
+      "name": "TableColumnSortMenuWrapper",
     },
     {
       "methods": [

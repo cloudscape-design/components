@@ -101,13 +101,10 @@ export function TableHeaderCell<ItemType>({
   const inMultiSort = multiSortIndex !== null;
   const isPrimaryMultiSort = multiSortIndex === 1;
   // Priority badges are only meaningful when 2+ columns are sorted; with a single column, the position number adds no information.
-  const showPriorityBadge =
-    !!multiColumnSort && multiColumnSort.sortingColumns.length >= 2 && multiSortIndex !== null;
+  const showPriorityBadge = !!multiColumnSort && multiColumnSort.sortingColumns.length >= 2 && multiSortIndex !== null;
 
   // For multi-sort, derive sorted/descending from the matching entry; otherwise fall back to single-sort props.
-  const sorted = multiColumnSort
-    ? inMultiSort
-    : !!activeSortingColumn && isSorted(column, activeSortingColumn);
+  const sorted = multiColumnSort ? inMultiSort : !!activeSortingColumn && isSorted(column, activeSortingColumn);
   const descending = multiColumnSort ? !!multiSortEntry?.isDescending : !!sortingDescending;
   const sortingStatus = getSortingStatus(sortable, sorted, descending, !!sortingDisabled);
   // In multi-sort, only the primary column declares aria-sort (ARIA only allows one column sorted at a time).
@@ -217,7 +214,7 @@ export function TableHeaderCell<ItemType>({
               position: `${colIndex + 1}`,
               columnId: column.id ? `${column.id}` : '',
               label: `.${analyticsSelectors['header-cell-text']}`,
-              sortingDescending: `${!sortingDescending}`,
+              sortingDescending: `${!descending}`,
             },
           } as GeneratedAnalyticsMetadataTableSort))}
     >
@@ -235,7 +232,7 @@ export function TableHeaderCell<ItemType>({
                   sorted: sorted,
                   descending: sorted && descending,
                   disabled: !!sortingDisabled,
-                  sortIndex: multiSortIndex ?? undefined
+                  sortIndex: multiSortIndex ?? undefined,
                 })
               : undefined
           }
@@ -267,7 +264,10 @@ export function TableHeaderCell<ItemType>({
               <span className={styles['edit-icon']}>
                 <InternalIcon
                   name="edit"
-                  ariaLabel={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
+                  ariaLabel={i18n(
+                    'columnDefinitions.editConfig.editIconAriaLabel',
+                    column.editConfig?.editIconAriaLabel
+                  )}
                 />
               </span>
             ) : null}
