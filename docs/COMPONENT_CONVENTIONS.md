@@ -43,6 +43,7 @@ Use the same behavior as built-in React components:
 2. If `value` is provided → controlled (with or without `onChange`; without `onChange` it's read-only)
 
 Implementation:
+
 1. Create a controlled component first
 2. Use `useControllable` to wrap customer-provided properties — gives you a `[value, setValue]` pair
 3. If `value` is provided without `onChange`, `useControllable` emits a console warning
@@ -50,6 +51,25 @@ Implementation:
 ## I18n
 
 Centralize all translatable strings under a skippable property (e.g. `i18nStrings`). Internationalization code lives in `src/i18n/`. The `useInternalI18n` hook is what components use to resolve translated strings.
+
+**Never hardcode an English fallback for a translatable string.** Default text is supplied by the i18n provider (sourced from the `AWS-UI-Components-I18n` package), not from the component. Resolve every translatable string through the `useInternalI18n` hook and let the provider supply the default:
+
+```tsx
+const i18n = useInternalI18n('table');
+// Correct: consumer value, else provider default. The `?? ''` is only for type-safety
+// on required string props — it is NOT an English fallback.
+const label = i18n('i18nStrings.clearSort', i18nStrings?.clearSort) ?? '';
+
+// Wrong: hardcoded English fallback. This bypasses the i18n provider and ships an
+// untranslated string when no provider/consumer value is present.
+const label = i18nStrings?.clearSort ?? 'Clear sort';
+```
+
+When you add a new `@i18n` string:
+
+1. Add the English source string (and a translator `note`) to `AWS-UI-Components-I18n` (`i18n/<component>/en.json`).
+2. Run that package's build (`npm run build`) and copy the generated `output/` into this repo's `src/i18n/` (`messages/all.<locale>.json` bundles + `messages-types.ts`). The message key path (e.g. `i18nStrings.sortDropdown.sortAscending`) is what `useInternalI18n` looks up, so it must match the interface.
+3. Consume it via `useInternalI18n` as shown above — no hardcoded fallback.
 
 ## Dependencies
 
