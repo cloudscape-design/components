@@ -16,9 +16,10 @@ import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/o
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
+import { useIMEComposition } from '../../internal/hooks/use-ime-composition';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { DropdownStatusProps } from '../../types/dropdown-status';
-import { NonCancelableEventHandler } from '../../types/events';
+import { BaseKeyDetail, NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition, OptionGroup } from '../../types/option';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
@@ -75,6 +76,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { isComposing } = useIMEComposition(filterRef);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
@@ -214,7 +216,16 @@ export function useSelect({
 
     return {
       ref: filterRef,
-      onKeyDown: activeKeyDownHandler,
+      onKeyDown: (event: CustomEvent<BaseKeyDetail>) => {
+        // Ignore keystrokes that are part of an IME composition, as well as the spurious
+        // Enter that some browsers fire right after the composition ends. Otherwise pressing
+        // Enter to commit a composition candidate would select the highlighted option and
+        // close the dropdown. Matches the autosuggest and prompt input handling.
+        if (event.detail.isComposing || isComposing()) {
+          return;
+        }
+        activeKeyDownHandler(event);
+      },
       onChange: event => {
         setFilteringValue(event.detail.value);
         resetHighlightWithKeyboard();
