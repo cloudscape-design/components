@@ -105,6 +105,7 @@ export default function InternalContainer({
     __fullPage && isRefresh && !isMobile
   );
   const contentId = useUniqueId();
+  const headerId = useUniqueId('awsui-container-header-');
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
 
@@ -162,6 +163,7 @@ export default function InternalContainer({
             <ContainerHeaderContextProvider>
               <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
                 <div
+                  id={headerId}
                   className={clsx(
                     isRefresh && styles.refresh,
                     styles.header,
@@ -190,7 +192,14 @@ export default function InternalContainer({
               </StickyHeaderContext.Provider>
             </ContainerHeaderContextProvider>
           )}
-          <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
+          {/* tabIndex={0} makes the scrollable region keyboard-reachable (axe: scrollable-region-focusable).
+              role="region" + aria-labelledby is conditional on header presence because an unnamed region
+              (no accessible name) is worse than no landmark at all. */}
+          <div
+            className={clsx(styles.content, fitHeight && styles['content-fit-height'])}
+            {...(fitHeight && { tabIndex: 0 })}
+            {...(fitHeight && header && { role: 'region', 'aria-labelledby': headerId })}
+          >
             <div
               className={clsx(styles['content-inner'], testStyles['content-inner'], {
                 [styles['with-paddings']]: !disableContentPaddings,

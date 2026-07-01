@@ -258,10 +258,13 @@
     overflow: auto;
     display: grid;
     grid-template-rows: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 .content-inner {
+  block-size: 100%;
   min-block-size: 0;
+  min-inline-size: 0;
 
   &.with-paddings {
     padding-block: awsui.$space-scaled-l;
