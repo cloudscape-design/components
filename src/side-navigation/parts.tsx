@@ -481,40 +481,44 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
 
   const showInfo = !collapsed && definition.info;
 
-  const content = (
-    <>
-      <a
-        ref={collapsed ? collapsedTooltip.triggerRef : undefined}
-        href={definition.href}
-        className={clsx(styles.link, {
-          [styles['link-active']]: isActive,
-          [styles['link--collapsed']]: collapsed,
-        })}
-        target={definition.external ? '_blank' : undefined}
-        rel={definition.external ? 'noopener noreferrer' : undefined}
-        aria-current={definition.href === activeHref ? 'page' : undefined}
-        aria-label={collapsed ? definition.text : undefined}
-        onClick={onClick}
-        {...(collapsed ? collapsedTooltip.triggerProps : {})}
-        {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
-      >
-        <ItemIcon icon={definition.icon} collapsed={collapsed} aria-hidden={collapsed ? true : undefined} />
-        {!collapsed && (
-          <span className={styles['link-text-wrapper']}>
-            <span className={analyticsSelectors['link-text']}>{definition.text}</span>
-            {definition.external && (
-              <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
-                <InternalIcon name="external" className={styles['external-icon']} />
-              </span>
-            )}
-          </span>
-        )}
-        {collapsed && collapsedTooltip.tooltip}
-      </a>
-      {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
-    </>
+  const internalLink = (
+    <a
+      ref={collapsed ? collapsedTooltip.triggerRef : undefined}
+      href={definition.href}
+      className={clsx(styles.link, {
+        [styles['link-active']]: isActive,
+        [styles['link--collapsed']]: collapsed,
+      })}
+      target={definition.external ? '_blank' : undefined}
+      rel={definition.external ? 'noopener noreferrer' : undefined}
+      aria-current={definition.href === activeHref ? 'page' : undefined}
+      aria-label={collapsed ? definition.text : undefined}
+      onClick={onClick}
+      {...(collapsed ? collapsedTooltip.triggerProps : {})}
+      {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
+    >
+      <ItemIcon icon={definition.icon} collapsed={collapsed} aria-hidden={collapsed ? true : undefined} />
+      {!collapsed && (
+        <span className={styles['link-text-wrapper']}>
+          <span className={analyticsSelectors['link-text']}>{definition.text}</span>
+          {definition.external && (
+            <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
+              <InternalIcon name="external" className={styles['external-icon']} />
+            </span>
+          )}
+        </span>
+      )}
+      {collapsed && collapsedTooltip.tooltip}
+    </a>
   );
-  return showInfo ? <div className={styles['list-item--link-with-info']}>{content}</div> : content;
+  return showInfo ? (
+    <div className={styles['list-item--link-with-info']}>
+      {internalLink}
+      <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+    </div>
+  ) : (
+    internalLink
+  );
 }
 
 interface SectionProps extends BaseItemComponentProps {
