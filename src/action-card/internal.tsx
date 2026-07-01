@@ -117,37 +117,38 @@ const InternalActionCard = React.forwardRef(
       download,
     };
 
+    const renderInteractiveElement = (props: Record<string, unknown>, children?: React.ReactNode) =>
+      isAnchor ? (
+        <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+          {...props}
+          {...anchorProps}
+          tag="a"
+          componentName="ActionCard"
+          nativeAttributes={nativeAnchorAttributes}
+          ref={buttonRef as React.Ref<HTMLAnchorElement>}
+        >
+          {children}
+        </WithNativeAttributes>
+      ) : (
+        <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          {...props}
+          type="button"
+          tag="button"
+          componentName="ActionCard"
+          nativeAttributes={nativeButtonAttributes}
+          ref={buttonRef as React.Ref<HTMLButtonElement>}
+        >
+          {children}
+        </WithNativeAttributes>
+      );
+
     const headerSection = !headerRowEmpty ? (
       <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
         <InternalStructuredItem
           content={
             header && (
               <div className={clsx(styles['header-inner'], testStyles.header, disabled && styles.disabled)}>
-                {isAnchor ? (
-                  <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
-                    {...interactiveProps}
-                    {...anchorProps}
-                    tag="a"
-                    componentName="ActionCard"
-                    nativeAttributes={nativeAnchorAttributes}
-                    ref={buttonRef as React.Ref<HTMLAnchorElement>}
-                    id={headerId}
-                  >
-                    {header}
-                  </WithNativeAttributes>
-                ) : (
-                  <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
-                    {...interactiveProps}
-                    type="button"
-                    tag="button"
-                    componentName="ActionCard"
-                    nativeAttributes={nativeButtonAttributes}
-                    ref={buttonRef as React.Ref<HTMLButtonElement>}
-                    id={headerId}
-                  >
-                    {header}
-                  </WithNativeAttributes>
-                )}
+                {renderInteractiveElement({ ...interactiveProps, id: headerId }, header)}
               </div>
             )
           }
@@ -196,27 +197,7 @@ const InternalActionCard = React.forwardRef(
       'aria-labelledby': standaloneButtonLabelledBy,
     };
 
-    const standaloneButton = !header ? (
-      isAnchor ? (
-        <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
-          {...standaloneOverlayProps}
-          {...anchorProps}
-          tag="a"
-          componentName="ActionCard"
-          nativeAttributes={nativeAnchorAttributes}
-          ref={buttonRef as React.Ref<HTMLAnchorElement>}
-        />
-      ) : (
-        <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
-          {...standaloneOverlayProps}
-          type="button"
-          tag="button"
-          componentName="ActionCard"
-          nativeAttributes={nativeButtonAttributes}
-          ref={buttonRef as React.Ref<HTMLButtonElement>}
-        />
-      )
-    ) : null;
+    const standaloneButton = !header ? renderInteractiveElement(standaloneOverlayProps) : null;
 
     const contentElement = (
       <div className={styles['inner-card']}>
