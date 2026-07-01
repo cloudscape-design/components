@@ -16,15 +16,9 @@ const baseTokens: StyleDictionary.ColorsDictionary = {
   // Focus outline matches the text color to align with other flashbar types and to ensure color contrast.
   colorBorderItemFocused: '{colorTextNotificationYellow}',
 
-  // Status icon color: flashbar now drives its status icon color from
-  // colorTextStatus*. Classic/visual refresh keep the legacy warning icon color
-  // (matching the surrounding text); only one-theme opts into the status color.
-  colorTextStatusWarning: '{colorTextNotificationYellow}',
-
-  // Dismiss button (flashbar-icon variant) now reads colorTextInteractive*.
-  // The warning flash is light in both modes, so pin to dark values for contrast.
-  colorTextInteractiveDefault: '{colorNeutral650}',
-  colorTextInteractiveHover: '{colorNeutral950}',
+  // Dismiss button
+  colorTextInteractiveInvertedDefault: '{colorNeutral650}',
+  colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
   // Progress bars
   colorBackgroundProgressBarValueDefault: '{colorNeutral950}',

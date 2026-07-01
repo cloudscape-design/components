@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ButtonProps } from '../button/interfaces';
@@ -85,7 +85,6 @@ const PopoverBody = React.forwardRef(
           variant="icon"
           formAction="none"
           iconName="close"
-          __iconSize={isThemeActive(Theme.OneTheme) ? 'x-small' : undefined}
           className={styles['dismiss-control']}
           ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
           onClick={() => onDismiss?.('close-button')}

@@ -6,45 +6,16 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  // Status backgrounds
-  colorBackgroundStatusInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
-  colorBackgroundStatusWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
-  colorBackgroundStatusError: { light: '{colorError100}', dark: '{colorError950}' },
-  colorBackgroundStatusSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
-
-  // Status text and borders
-  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
-  colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorBackgroundStatusInfo: { light: '{colorInfo50}', dark: '#161a2d' },
+  colorBackgroundStatusWarning: { light: '{colorWarning50}', dark: '#191100' },
+  colorBackgroundStatusError: { light: '{colorError50}', dark: '#1f0000' },
+  colorBackgroundStatusSuccess: { light: '{colorSuccess50}', dark: '#001401' },
+  colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
+  colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo500}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
-
-  // Buttons
-  colorTextButtonNormalDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorTextButtonNormalHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
-  colorTextButtonNormalActive: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorBorderButtonNormalDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorBorderButtonNormalHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
-  colorBorderButtonNormalActive: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
   colorBackgroundButtonNormalDefault: { light: 'transparent', dark: 'transparent' },
-  colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.05)',
-  colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.1)',
-
-  // Link
-  colorTextLinkDefault: { light: '{colorNeutral900}', dark: '{colorNeutral50}' },
-  colorTextLinkHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
-
-  // Dividers
   colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
-
-  // Alert text
-  colorTextBodyDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-
-  // Expandable section
-  colorTextExpandableSectionHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
-  colorBorderExpandableSectionDefault: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
-
-  // Focus ring
-  colorBorderItemFocused: { light: '{colorNeutral800}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
