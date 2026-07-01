@@ -163,11 +163,13 @@
     @include mixins.apply-state-styles('disabled');
   }
 
-  &:not(.disabled):has(button:hover) {
+  &:not(.disabled):has(.header-button:hover),
+  &:not(.disabled):has(.overlay-button:hover) {
     @include mixins.apply-state-styles('hover');
   }
 
-  &:not(.disabled):has(button:active) {
+  &:not(.disabled):has(.header-button:active),
+  &:not(.disabled):has(.overlay-button:active) {
     @include mixins.apply-state-styles('active');
   }
 
