@@ -95,6 +95,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .items-control,
 .list-container {
   margin-block-start: calc(#{awsui.$space-panel-content-top} - #{$item-padding-block});
+  .root--collapsed > & {
+    margin-block-start: awsui.$space-xs;
+  }
+
   // Toolbar removes margin and item padding for whatever comes first after the header
   .with-toolbar > .divider-header + & {
     margin-block-start: calc(-1 * #{$item-padding-block});

@@ -130,7 +130,7 @@ $toolbar-height: 42px;
 
     > .universal-toolbar-nav {
       grid-column: 2;
-      padding-inline-start: awsui.$space-m;
+      padding-inline-start: awsui.$space-s;
       padding-inline-end: awsui.$space-static-xxs;
     }
 
@@ -158,7 +158,7 @@ $toolbar-height: 42px;
 .drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
-  padding-inline: awsui.$space-m;
+  padding-inline: awsui.$space-s;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
