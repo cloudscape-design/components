@@ -4723,6 +4723,46 @@ exports[`Components definition for box matches the snapshot: box 1`] = `
   "name": "Box",
   "properties": [
     {
+      "description": "Defines the accent color for the \`awsui-accent\` variant.
+Only applies when \`variant\` is set to \`awsui-accent\`.",
+      "inlineType": {
+        "name": "BoxProps.AccentColor",
+        "type": "union",
+        "values": [
+          "green",
+          "grey",
+          "indigo",
+          "lime",
+          "orange",
+          "purple",
+          "red",
+          "yellow",
+          "mint",
+        ],
+      },
+      "name": "accentColor",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Controls the border-radius shape of the accent container.
+Only applies when \`variant\` is set to \`awsui-accent\`.
+
+- \`sharp\` (default) — applies a small border-radius (2px).
+- \`circle\` — applies a fully circular shape with equal width and height, suitable for wrapping icons.",
+      "inlineType": {
+        "name": "BoxProps.AccentShape",
+        "type": "union",
+        "values": [
+          "circle",
+          "sharp",
+        ],
+      },
+      "name": "accentShape",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -4986,6 +5026,9 @@ Sizes are automatically scaled down in compact mode.
   styled using "Display large light" typography.
 - If you set it to \`awsui-inline-code\`, the component will render a \`code\` element,
   styled with a background and padding for inline code snippets.
+- If you set it to \`awsui-accent\`, the component will render a \`span\`,
+  styled as a visual accent container with background and content color combinations.
+  Use with the \`accentColor\` prop to select a color variant.
 
 Override the HTML tag by using property \`tagOverride\`.",
       "inlineType": {
@@ -5009,6 +5052,7 @@ Override the HTML tag by using property \`tagOverride\`.",
           "awsui-key-label",
           "awsui-gen-ai-label",
           "awsui-inline-code",
+          "awsui-accent",
         ],
       },
       "name": "variant",
