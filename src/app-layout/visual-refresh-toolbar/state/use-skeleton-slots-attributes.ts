@@ -29,14 +29,22 @@ export const useSkeletonSlotsAttributes = (
     activeAiDrawer,
     activeGlobalBottomDrawerId,
   } = appLayoutState.widgetizedState ?? {};
-  const { contentType, placement, maxContentWidth, navigationWidth, minContentWidth, disableContentPaddings } =
-    appLayoutProps;
+  const {
+    contentType,
+    placement,
+    maxContentWidth,
+    navigationWidth,
+    navigationCollapsedWidth,
+    navigationCollapsed,
+    minContentWidth,
+    disableContentPaddings,
+  } = appLayoutProps;
   const isMobile = useMobile();
   const toolsOpen = !!activeDrawer;
   const drawerExpandedMode = !!expandedDrawerId;
   const aiDrawerExpandedMode = expandedDrawerId === activeAiDrawer?.id;
   const bottomDrawerExpandedMode = expandedDrawerId === activeGlobalBottomDrawerId;
-  const anyPanelOpen = navigationOpen || toolsOpen;
+  const anyPanelOpen = (navigationOpen && !navigationCollapsed) || toolsOpen;
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
 
   const wrapperElAttributes = {
@@ -51,6 +59,7 @@ export const useSkeletonSlotsAttributes = (
       minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
       [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
       [customCssProps.navigationWidth]: `${navigationWidth}px`,
+      [customCssProps.navigationCollapsedWidth]: `${navigationCollapsedWidth}px`,
       [customCssProps.toolsWidth]: `${activeDrawerSize}px`,
     },
   };

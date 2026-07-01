@@ -218,15 +218,13 @@ describe('SideNavigation collapsed mode', () => {
   });
 
   describe('header', () => {
-    it('hides header text in collapsed mode', () => {
+    it('does not render header when collapsed without logo', () => {
       const wrapper = renderSideNavigation({
         collapsed: true,
         header: { href: '#/', text: 'Service name' },
         items: [iconLink('Page', '#/page')],
       });
-      const headerLink = wrapper.findHeaderLink()!.getElement();
-      expect(headerLink).toHaveAttribute('aria-label', 'Service name');
-      expect(headerLink.textContent).not.toContain('Service name');
+      expect(wrapper.findHeaderLink()).toBeNull();
     });
   });
 

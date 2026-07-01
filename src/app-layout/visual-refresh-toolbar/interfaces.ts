@@ -39,6 +39,8 @@ export interface AppLayoutInternals {
   headerVariant: AppLayoutPropsWithDefaults['headerVariant'];
   placement: AppLayoutPropsWithDefaults['placement'];
   navigationOpen: AppLayoutPropsWithDefaults['navigationOpen'];
+  navigationCollapsed: boolean;
+  navigationCollapsedWidth: number;
   navigationFocusControl: FocusControlState;
   navigation: React.ReactNode;
   splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];

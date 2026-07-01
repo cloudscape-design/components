@@ -39,6 +39,8 @@ export const useAppLayout = (
     ariaLabels,
     navigationOpen,
     navigationWidth,
+    navigationCollapsed,
+    navigationCollapsedWidth,
     navigation,
     navigationHide,
     onNavigationChange,
@@ -402,6 +404,8 @@ export const useAppLayout = (
     minContentWidth,
     navigationOpen: resolvedNavigationOpen,
     navigationWidth,
+    navigationCollapsed: !!navigationCollapsed && !navigationHide,
+    navigationCollapsedWidth: navigationCollapsedWidth,
     placement,
     splitPanelOpen,
     splitPanelPosition: splitPanelPreferences?.position,
@@ -448,6 +452,8 @@ export const useAppLayout = (
     discoveredBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
+    navigationCollapsed: !!navigationCollapsed && !navigationHide,
+    navigationCollapsedWidth: navigationCollapsedWidth,
     navigation: resolvedNavigation,
     navigationFocusControl,
     activeDrawer,
@@ -577,7 +583,12 @@ export const useAppLayout = (
       return;
     }
 
-    const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
+    const activeNavigationWidth =
+      !navigationHide && navigationOpen
+        ? navigationWidth
+        : !navigationHide && navigationCollapsed
+          ? navigationCollapsedWidth
+          : 0;
     const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
     const hasHorizontalScroll = scrollWidth > placement.inlineSize;
     if (hasHorizontalScroll) {
@@ -592,6 +603,8 @@ export const useAppLayout = (
     totalActiveDrawersMinSize,
     closeFirstDrawer,
     isMobile,
+    navigationCollapsed,
+    navigationCollapsedWidth,
     navigationHide,
     navigationOpen,
     navigationWidth,
