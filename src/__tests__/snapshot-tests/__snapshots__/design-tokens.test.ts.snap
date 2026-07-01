@@ -157,6 +157,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -436,6 +440,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#f1faff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -3680,6 +3712,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -3959,6 +3995,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#f1faff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -7203,6 +7267,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -7482,6 +7550,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#f1faff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -10726,6 +10822,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -11005,6 +11105,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#f1faff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -12999,7 +13127,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of inline button icons.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-text-button-inline-icon-disabled": {
@@ -13013,7 +13141,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of inline button icons in hover state.",
           "$value": {
             "dark": "#fafafa",
-            "light": "#16191f",
+            "light": "#fafafa",
           },
         },
         "color-text-button-link-active": {
@@ -13272,7 +13400,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of clickable elements in their default state. *For example: expandable sections, tabs, and icons.*",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#d5dbdb",
           },
         },
         "color-text-interactive-disabled": {
@@ -13286,7 +13414,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": {
             "dark": "#fafafa",
-            "light": "#16191f",
+            "light": "#fafafa",
           },
         },
         "color-text-interactive-inverted-default": {
@@ -13460,8 +13588,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
-            "dark": "#ff5d64",
-            "light": "#d13212",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-status-inactive": {
@@ -13474,15 +13602,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-status-info": {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-status-success": {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": {
-            "dark": "#6aaf35",
-            "light": "#1d8102",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-status-warning": {
@@ -14249,6 +14377,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -14528,6 +14660,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#f1faff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -16521,7 +16681,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-inline-icon-default": {
           "$description": "The default color of inline button icons.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -16535,7 +16695,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-inline-icon-hover": {
           "$description": "The color of inline button icons in hover state.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -16794,7 +16954,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-interactive-default": {
           "$description": "The color of clickable elements in their default state. *For example: expandable sections, tabs, and icons.*",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -16808,22 +16968,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-interactive-hover": {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
         "color-text-interactive-inverted-default": {
           "$description": "The default color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": {
-            "dark": "#545b64",
-            "light": "#545b64",
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
           },
         },
         "color-text-interactive-inverted-hover": {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-label": {
@@ -17011,8 +17171,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-status-warning": {
           "$description": "The color of warning icons.",
           "$value": {
-            "dark": "#fbd332",
-            "light": "#906806",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-toggle-button-icon-pressed": {
@@ -17772,6 +17932,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -18051,6 +18215,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#12293b",
             "light": "#12293b",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -21295,6 +21487,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
+    "border-width-flashbar-inline-start": {
+      "$description": "The inline-start border width of flash messages in flashbars.",
+      "$value": "0px",
+    },
     "border-width-icon-big": {
       "$description": "The visual stroke width of big icons.",
       "$value": "3px",
@@ -21574,6 +21770,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#12293b",
         "light": "#f1faff",
+      },
+    },
+    "color-background-flashbar-error": {
+      "$description": "The background color of error flash messages.",
+      "$value": {
+        "dark": "#d13212",
+        "light": "#d13212",
+      },
+    },
+    "color-background-flashbar-info": {
+      "$description": "The background color of info and in-progress flash messages.",
+      "$value": {
+        "dark": "#0073bb",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-flashbar-success": {
+      "$description": "The background color of success flash messages.",
+      "$value": {
+        "dark": "#1d8102",
+        "light": "#1d8102",
+      },
+    },
+    "color-background-flashbar-warning": {
+      "$description": "The background color of warning flash messages.",
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
       },
     },
     "color-background-home-header": {
@@ -24823,6 +25047,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -25102,6 +25330,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -28346,6 +28602,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -28625,6 +28885,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#001129",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -31869,6 +32157,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -32148,6 +32440,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -35392,6 +35712,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -35671,6 +35995,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -38915,6 +39267,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -39194,6 +39550,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -41377,7 +41761,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
           "$value": {
             "dark": "#dedee3",
-            "light": "#424650",
+            "light": "#dedee3",
           },
         },
         "color-text-form-default": {
@@ -41461,7 +41845,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of clickable elements in their default state. *For example: expandable sections, tabs, and icons.*",
           "$value": {
             "dark": "#dedee3",
-            "light": "#424650",
+            "light": "#dedee3",
           },
         },
         "color-text-interactive-disabled": {
@@ -41475,7 +41859,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": {
             "dark": "#f9f9fa",
-            "light": "#0f141a",
+            "light": "#f9f9fa",
           },
         },
         "color-text-interactive-inverted-default": {
@@ -41649,8 +42033,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
-            "dark": "#ff7a7a",
-            "light": "#db0000",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-status-inactive": {
@@ -41663,15 +42047,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-status-info": {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-status-success": {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": {
-            "dark": "#2bb534",
-            "light": "#00802f",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-status-warning": {
@@ -42438,6 +42822,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -42717,6 +43105,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -44899,7 +45315,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-expandable-section-navigation-icon-default": {
           "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
           "$value": {
-            "dark": "#dedee3",
+            "dark": "#424650",
             "light": "#424650",
           },
         },
@@ -44983,7 +45399,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-interactive-default": {
           "$description": "The color of clickable elements in their default state. *For example: expandable sections, tabs, and icons.*",
           "$value": {
-            "dark": "#dedee3",
+            "dark": "#424650",
             "light": "#424650",
           },
         },
@@ -44997,22 +45413,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-interactive-hover": {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": {
-            "dark": "#f9f9fa",
+            "dark": "#0f141a",
             "light": "#0f141a",
           },
         },
         "color-text-interactive-inverted-default": {
           "$description": "The default color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": {
-            "dark": "#424650",
-            "light": "#424650",
+            "dark": "#dedee3",
+            "light": "#dedee3",
           },
         },
         "color-text-interactive-inverted-hover": {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-label": {
@@ -45200,8 +45616,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-status-warning": {
           "$description": "The color of warning icons.",
           "$value": {
-            "dark": "#fbd332",
-            "light": "#855900",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-toggle-button-icon-pressed": {
@@ -45961,6 +46377,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -46240,6 +46660,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#001129",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -49484,6 +49932,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
+        },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
           "$value": "3px",
@@ -49763,6 +50215,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#001129",
             "light": "#001129",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-home-header": {
@@ -53007,6 +53487,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
+    "border-width-flashbar-inline-start": {
+      "$description": "The inline-start border width of flash messages in flashbars.",
+      "$value": "0px",
+    },
     "border-width-icon-big": {
       "$description": "The visual stroke width of big icons.",
       "$value": "3px",
@@ -53286,6 +53770,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#001129",
         "light": "#f0fbff",
+      },
+    },
+    "color-background-flashbar-error": {
+      "$description": "The background color of error flash messages.",
+      "$value": {
+        "dark": "#db0000",
+        "light": "#db0000",
+      },
+    },
+    "color-background-flashbar-info": {
+      "$description": "The background color of info and in-progress flash messages.",
+      "$value": {
+        "dark": "#006ce0",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-flashbar-success": {
+      "$description": "The background color of success flash messages.",
+      "$value": {
+        "dark": "#00802f",
+        "light": "#00802f",
+      },
+    },
+    "color-background-flashbar-warning": {
+      "$description": "The background color of warning flash messages.",
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
       },
     },
     "color-background-home-header": {
