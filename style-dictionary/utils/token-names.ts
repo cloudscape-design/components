@@ -982,6 +982,8 @@ export type BordersTokenName =
   | 'borderRadiusFlashbar'
   | 'borderRadiusInput'
   | 'borderRadiusItem'
+  | 'borderRadiusSideNavigationItem'
+  | 'borderRadiusSideNavigationItemCollapsed'
   | 'borderRadiusPopover'
   | 'borderRadiusSkeleton'
   | 'borderRadiusTabsFocusRing'

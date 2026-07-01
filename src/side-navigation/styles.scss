@@ -18,11 +18,11 @@ $item-padding-inline: awsui.$space-xs;
 $item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: awsui.$space-l;
 
-@mixin item-radius {
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
+@mixin item-radius($radius: awsui.$border-radius-item) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
 }
 
 .root {
@@ -285,7 +285,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-inline: $item-padding-inline;
   margin-inline: calc(-1 * #{$item-padding-inline});
   align-items: flex-start;
-  @include item-radius;
+  @include item-radius(awsui.$border-radius-side-navigation-item);
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -310,6 +310,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
     margin-inline: 0;
     justify-content: center;
     align-items: center;
+    @include item-radius(awsui.$border-radius-side-navigation-item-collapsed);
   }
 }
 

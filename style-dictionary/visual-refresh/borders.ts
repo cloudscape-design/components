@@ -39,6 +39,8 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusFlashbar: '12px',
   borderRadiusInput: '8px',
   borderRadiusItem: '8px',
+  borderRadiusSideNavigationItem: '{borderRadiusItem}',
+  borderRadiusSideNavigationItemCollapsed: '50%',
   borderRadiusItemCardDefault: '{borderRadiusCardDefault}',
   borderRadiusItemCardEmbedded: '{borderRadiusCardEmbedded}',
   borderRadiusPopover: '{borderRadiusInput}',
