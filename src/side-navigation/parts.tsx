@@ -137,19 +137,19 @@ export function NavigationItemsList({
 
     // Emits a divider as its own list segment (dividers break the <ul> grouping).
     function pushDivider() {
-      lists[lists.length] = {
+      lists.push({
         listVariant: variant,
         element: (
           <div data-itemid={`item-${itemid}`}>
             <Divider variant="default" collapsed={collapsed} />
           </div>
         ),
-      };
-      currentListIndex = lists.length;
-      lists[currentListIndex] = {
-        listVariant: variant,
-        items: [],
-      };
+      });
+      currentListIndex =
+        lists.push({
+          listVariant: variant,
+          items: [],
+        }) - 1;
     }
 
     // Renders icon-bearing children of a container item as a collapsed group.
