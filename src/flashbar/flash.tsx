@@ -30,7 +30,7 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
-import { getDismissButtonStyles, getFlashStyles } from './style';
+import { getDismissButtonStyles, getFlashIconStyles, getFlashStyles } from './style';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -238,7 +238,11 @@ export const Flash = React.forwardRef(
             role="group"
             aria-labelledby={`${flashIconId} ${flashMessageId}`}
           >
-            <div className={clsx(styles['flash-icon'], styles['flash-text'])} id={flashIconId}>
+            <div
+              className={clsx(styles['flash-icon'], styles['flash-text'])}
+              id={flashIconId}
+              style={getFlashIconStyles(style, effectiveType)}
+            >
               {icon}
             </div>
             <div className={clsx(styles['flash-message'], styles['flash-text'])} id={flashMessageId}>
