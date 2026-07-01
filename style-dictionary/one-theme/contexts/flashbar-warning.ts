@@ -32,9 +32,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // Link
   colorTextLinkInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
-  // Dismiss button
-  colorTextInteractiveDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorTextInteractiveHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
+  // Dismiss button (flashbar-icon variant reads colorTextInteractiveInverted*)
+  colorTextInteractiveInvertedDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
   // Dividers
   colorBorderDividerDefault: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },

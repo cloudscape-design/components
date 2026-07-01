@@ -21,10 +21,10 @@ const baseTokens: StyleDictionary.ColorsDictionary = {
   // (matching the surrounding text); only one-theme opts into the status color.
   colorTextStatusWarning: '{colorTextNotificationYellow}',
 
-  // Dismiss button (flashbar-icon variant) now reads colorTextInteractive*.
+  // Dismiss button (flashbar-icon variant) reads colorTextInteractiveInverted*.
   // The warning flash is light in both modes, so pin to dark values for contrast.
-  colorTextInteractiveDefault: '{colorNeutral650}',
-  colorTextInteractiveHover: '{colorNeutral950}',
+  colorTextInteractiveInvertedDefault: '{colorNeutral650}',
+  colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
   // Progress bars
   colorBackgroundProgressBarValueDefault: '{colorNeutral950}',

@@ -18,11 +18,6 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
   colorBorderItemFocused: '{colorNeutral100}',
-  // The flashbar-icon (dismiss) button reads colorTextInteractive*. On the
-  // saturated classic/visual-refresh backgrounds, keep it inverted so the icon
-  // stays legible (one-theme uses the regular non-inverted values).
-  colorTextInteractiveDefault: '{colorTextInteractiveInvertedDefault}',
-  colorTextInteractiveHover: '{colorTextInteractiveInvertedHover}',
   colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorNeutral100}',
