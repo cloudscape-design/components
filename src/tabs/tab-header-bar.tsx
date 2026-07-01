@@ -111,7 +111,15 @@ export function TabHeaderBar({
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
   const documentRefCallback = (node: null | Element) => (documentRef.current = node?.ownerDocument ?? document);
-  const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const [widthChange, containerMeasureRef] = useContainerQuery<number>((rect, prev) => {
+    if (prev === null) {
+      return rect.contentBoxWidth;
+    }
+    // Suppress oscillation: pagination buttons appearing/disappearing cause a ~73px
+    // layout shift that would flip the overflow state again, creating an infinite loop.
+    // Only propagate the measurement when the change is large enough to be a genuine resize.
+    return Math.abs(prev - rect.contentBoxWidth) >= 2 ? rect.contentBoxWidth : prev;
+  });
   const containerRef = useMergeRefs(containerObjectRef, containerMeasureRef, documentRefCallback);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
