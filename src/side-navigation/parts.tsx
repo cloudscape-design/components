@@ -514,7 +514,7 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
       {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
     </>
   );
-  return showInfo ? <div className={styles['list-item--info']}>{content}</div> : content;
+  return showInfo ? <div className={styles['list-item--link-with-info']}>{content}</div> : content;
 }
 
 interface SectionProps extends BaseItemComponentProps {
