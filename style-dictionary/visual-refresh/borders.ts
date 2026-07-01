@@ -59,7 +59,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthAlertBlockStart: '{borderWidthAlert}',
   borderWidthAlertInlineEnd: '{borderWidthAlert}',
   borderWidthAlertInlineStart: '{borderWidthAlert}',
-  borderWidthFlashbarInlineStart: '0px',
   borderWidthButton: '2px',
   borderWidthCard: '{borderDividerSectionWidth}',
   borderWidthCardSelected: '{borderItemWidth}',

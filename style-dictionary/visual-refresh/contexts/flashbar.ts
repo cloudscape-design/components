@@ -18,11 +18,6 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
   colorBorderItemFocused: '{colorNeutral100}',
-  // The flashbar-icon (dismiss) button reads colorTextInteractive*. On the
-  // saturated classic/visual-refresh backgrounds, keep it inverted so the icon
-  // stays legible (one-theme uses the regular non-inverted values).
-  colorTextInteractiveDefault: '{colorTextInteractiveInvertedDefault}',
-  colorTextInteractiveHover: '{colorTextInteractiveInvertedHover}',
   colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorNeutral100}',
@@ -32,13 +27,6 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextTutorialHotspotDefault: '{colorNeutral300}',
   colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
-  // Status icon colors: flashbar now drives its status icon color from
-  // colorTextStatus*, but classic/visual refresh keep the legacy uniform icon
-  // color (matching the surrounding notification text on the saturated
-  // background). Only one-theme opts into per-status icon colors.
-  colorTextStatusSuccess: '{colorTextNotificationDefault}',
-  colorTextStatusError: '{colorTextNotificationDefault}',
-  colorTextStatusInfo: '{colorTextNotificationDefault}',
   // Key-value pairs
   colorTextLabel: '{colorNeutral100}',
 
