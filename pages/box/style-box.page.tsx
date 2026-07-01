@@ -28,7 +28,6 @@ const ALL_VARIANTS: BoxProps.AccentColor[] = [
 ];
 
 const BOX_VARIANTS: { variant: BoxProps['variant']; label: string; content: string }[] = [
-  { variant: 'h3', label: 'h3', content: 'Heading 3' },
   { variant: 'h4', label: 'h4', content: 'Heading 4' },
   { variant: 'p', label: 'p', content: 'Body paragraph text' },
 ];
