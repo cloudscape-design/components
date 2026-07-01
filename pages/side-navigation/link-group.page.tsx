@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import Popover from '~components/popover';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 const items: SideNavigationProps.Item[] = [
   {
@@ -48,16 +48,13 @@ export default function SideNavigationLinkGroupInfoPage() {
   }, []);
 
   return (
-    <>
-      <h1>Side navigation — Link group</h1>
-      <ScreenshotArea style={{ maxWidth: 300 }}>
-        <SideNavigation
-          activeHref={activeHref}
-          header={{ href: '#/', text: 'Service name' }}
-          items={items}
-          onFollow={onFollow}
-        />
-      </ScreenshotArea>
-    </>
+    <SimplePage title="Side navigation — Link group" screenshotArea={{ style: { maxWidth: 300 } }}>
+      <SideNavigation
+        activeHref={activeHref}
+        header={{ href: '#/', text: 'Service name' }}
+        items={items}
+        onFollow={onFollow}
+      />
+    </SimplePage>
   );
 }
