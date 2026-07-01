@@ -9,6 +9,34 @@ exports[`Components definition for action-card matches the snapshot: action-card
       "description": "Called when the user clicks on the action card.",
       "name": "onClick",
     },
+    {
+      "cancelable": true,
+      "description": "Called when the user clicks on the action card with the left mouse button without pressing
+modifier keys (that is, CTRL, ALT, SHIFT, META), and the action card has an \`href\` set.",
+      "detailInlineType": {
+        "name": "BaseNavigationDetail",
+        "properties": [
+          {
+            "name": "external",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "BaseNavigationDetail",
+      "name": "onFollow",
+    },
   ],
   "functions": [
     {
@@ -61,6 +89,30 @@ exports[`Components definition for action-card matches the snapshot: action-card
       "type": "boolean",
     },
     {
+      "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
+You can specify a string value that will be suggested as the name of the downloaded file.
+This property only applies when an \`href\` is provided.",
+      "inlineType": {
+        "name": "string | boolean",
+        "type": "union",
+        "values": [
+          "string",
+          "false",
+          "true",
+        ],
+      },
+      "name": "download",
+      "optional": true,
+      "type": "string | boolean",
+    },
+    {
+      "description": "Turns the action card into a link, pointing to the given URL. The card is rendered using an \`a\` element instead of a \`button\`.
+For example, use this property if selecting the card should navigate the user to another page.",
+      "name": "href",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "'top'",
       "description": "Specifies the vertical alignment of the icon.",
       "inlineType": {
@@ -85,6 +137,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAnchorAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Attributes to add to the native button element.
 Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
@@ -105,6 +179,21 @@ We do not support using this attribute to apply custom styling.",
         "core",
       ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
+If the \`rel\` property is provided, it overrides the default behavior.
+This property only applies when an \`href\` is provided.",
+      "name": "rel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
+This property only applies when an \`href\` is provided.",
+      "name": "target",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "'default'",
