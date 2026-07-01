@@ -226,11 +226,7 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(
-                styles['list-item'],
-                collapsed && styles['list-item--collapsed'],
-                item.info && styles['list-item--info']
-              )}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
             >
               <Link
                 definition={item}
@@ -294,11 +290,7 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(
-                styles['list-item'],
-                collapsed && styles['list-item--collapsed'],
-                item.info && styles['list-item--info']
-              )}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
             >
               <LinkGroup
                 definition={item}
@@ -487,7 +479,9 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
 
   const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', definition.externalIconAriaLabel);
 
-  return (
+  const showInfo = !collapsed && definition.info;
+
+  const content = (
     <>
       <a
         ref={collapsed ? collapsedTooltip.triggerRef : undefined}
@@ -517,11 +511,10 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
         )}
         {collapsed && collapsedTooltip.tooltip}
       </a>
-      {!collapsed && definition.info && (
-        <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
-      )}
+      {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
     </>
   );
+  return showInfo ? <div className={styles['list-item--info']}>{content}</div> : content;
 }
 
 interface SectionProps extends BaseItemComponentProps {
