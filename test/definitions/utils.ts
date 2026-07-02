@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment, step } from 'allure-js-commons';
 
+import { RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+
 import createWrapper from '../../lib/components/test-utils/selectors';
-import { RawScreenshotPageObject } from './raw-screenshot-page-object';
 import {
   captureSingleScreenshot,
   compareScreenshots,

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { cropAndCompare, parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
+import { RawScreenshot, RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import { RawScreenshot, RawScreenshotPageObject } from './raw-screenshot-page-object';
 import { TestDefinition } from './types';
 
 export const screenshotAreaSelector = '.screenshot-area';
