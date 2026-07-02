@@ -65,41 +65,40 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
 
   return (
     <>
-      <h2 className={clsx(styles.header, collapsed && styles['header--collapsed'])}>
-        <a
-          href={definition.href}
-          className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
-          aria-current={definition.href === activeHref ? 'page' : undefined}
-          aria-label={collapsed ? definition.text : undefined}
-          onClick={onClick}
-          {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
-        >
-          {definition.logo &&
-            (definition.logo.svg ? (
-              <span
-                className={clsx(styles['header-logo'], {
-                  [styles['header-logo--stretched']]: !definition.text || collapsed,
-                })}
-              >
-                {definition.logo.svg}
-              </span>
-            ) : (
-              <img
-                className={clsx(styles['header-logo'], {
-                  [styles['header-logo--stretched']]: !definition.text || collapsed,
-                })}
-                src={definition.logo.src}
-                alt={definition.logo.alt}
-              />
-            ))}
-          {!collapsed && (
+      {!collapsed && (
+        <h2 className={styles.header}>
+          <a
+            href={definition.href}
+            className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
+            aria-current={definition.href === activeHref ? 'page' : undefined}
+            onClick={onClick}
+            {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
+          >
+            {definition.logo &&
+              (definition.logo.svg ? (
+                <span
+                  className={clsx(styles['header-logo'], {
+                    [styles['header-logo--stretched']]: !definition.text,
+                  })}
+                >
+                  {definition.logo.svg}
+                </span>
+              ) : (
+                <img
+                  className={clsx(styles['header-logo'], {
+                    [styles['header-logo--stretched']]: !definition.text,
+                  })}
+                  src={definition.logo.src}
+                  alt={definition.logo.alt}
+                />
+              ))}
             <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
               {definition.text}
             </span>
-          )}
-        </a>
-      </h2>
-      <Divider isPresentational={true} variant="header" />
+          </a>
+        </h2>
+      )}
+      {!collapsed && <Divider isPresentational={true} variant="header" />}
     </>
   );
 }

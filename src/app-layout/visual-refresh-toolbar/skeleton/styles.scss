@@ -152,6 +152,12 @@
   @include mobile-only {
     z-index: constants.$drawer-z-index-mobile;
   }
+
+  &.navigation-collapsed {
+    @include desktop-only {
+      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+    }
+  }
 }
 
 .tools {

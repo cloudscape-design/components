@@ -28,6 +28,7 @@ const AppLayout = React.forwardRef(
       headerSelector = '#b #h',
       footerSelector = '#b #f',
       navigationWidth = 280,
+      navigationCollapsedWidth = 54,
       toolsWidth = 290,
       maxContentWidth,
       minContentWidth,
@@ -96,6 +97,7 @@ const AppLayout = React.forwardRef(
     const props = {
       contentType,
       navigationWidth,
+      navigationCollapsedWidth,
       toolsWidth,
       navigationOpen,
       onNavigationChange,

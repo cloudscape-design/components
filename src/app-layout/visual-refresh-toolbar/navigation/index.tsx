@@ -27,6 +27,7 @@ export function AppLayoutNavigationImplementation({
     onNavigationToggle,
     isMobile,
     navigationOpen,
+    navigationCollapsed,
     navigation,
     navigationFocusControl,
     placement,
@@ -39,6 +40,8 @@ export function AppLayoutNavigationImplementation({
     placement,
     isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
+
+  const isCollapsedState = navigationCollapsed && !navigationOpen && !isMobile;
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -55,6 +58,7 @@ export function AppLayoutNavigationImplementation({
     <div
       className={clsx(styles['navigation-container'], sharedStyles['with-motion-horizontal'], {
         [styles['is-navigation-open']]: navigationOpen,
+        [styles['is-navigation-collapsed']]: isCollapsedState,
       })}
       style={{
         blockSize: drawerHeight,
@@ -70,19 +74,28 @@ export function AppLayoutNavigationImplementation({
           },
           testutilStyles.navigation
         )}
-        aria-hidden={!navigationOpen}
+        aria-hidden={!navigationOpen && !isCollapsedState}
         onClick={onNavigationClick}
       >
-        <div className={clsx(styles['hide-navigation'])}>
+        <div
+          className={clsx(styles['hide-navigation'], {
+            [styles['show-navigation-toggle']]: isCollapsedState,
+          })}
+        >
           <InternalButton
-            ariaLabel={ariaLabels?.navigationClose ?? undefined}
-            iconName={isMobile ? 'close' : 'angle-left'}
-            onClick={() => onNavigationToggle(false)}
+            ariaLabel={
+              isCollapsedState
+                ? (ariaLabels?.navigationToggle ?? undefined)
+                : (ariaLabels?.navigationClose ?? undefined)
+            }
+            ariaExpanded={navigationCollapsed && !isMobile ? navigationOpen : undefined}
+            iconName={isCollapsedState ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
+            onClick={() => onNavigationToggle(!navigationOpen)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}
             ref={navigationFocusControl.refs.close}
-            analyticsAction="close"
+            analyticsAction={isCollapsedState ? 'open' : 'close'}
           />
         </div>
         {navigation}

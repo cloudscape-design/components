@@ -90,6 +90,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -192,6 +194,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
+      "navigationCollapsed": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -288,6 +291,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -443,6 +448,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -635,6 +642,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -790,6 +799,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -949,6 +960,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1051,6 +1064,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
+      "navigationCollapsed": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -1147,6 +1161,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1302,6 +1318,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1493,6 +1511,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1648,6 +1668,8 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
+      "navigationCollapsed": false,
+      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {

@@ -34,6 +34,7 @@ export const BeforeMainSlotImplementationInternal = ({
   const {
     activeDrawer,
     navigationOpen,
+    navigationCollapsed,
     navigation,
     expandedDrawerId,
     setExpandedDrawerId,
@@ -117,7 +118,8 @@ export const BeforeMainSlotImplementationInternal = ({
         <div
           className={clsx(
             styles.navigation,
-            !navigationOpen && styles['panel-hidden'],
+            !navigationOpen && (!navigationCollapsed || isMobile) && styles['panel-hidden'],
+            !navigationOpen && navigationCollapsed && !isMobile && styles['navigation-collapsed'],
             toolsOpen && styles['unfocusable-mobile'],
             !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden

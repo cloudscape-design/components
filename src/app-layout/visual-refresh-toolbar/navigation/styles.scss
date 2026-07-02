@@ -8,6 +8,12 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
+.hide-navigation {
+  position: absolute;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
+}
+
 // This wrapper clips the actual navigation content during the enter animation.
 .navigation-container {
   position: sticky;
@@ -19,13 +25,6 @@
   pointer-events: auto;
   display: flex;
   flex-direction: column;
-
-  // All content is hidden by the overflow-x property
-  &:not(.is-navigation-open) {
-    inline-size: 0px;
-    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
-    display: none;
-  }
 
   & > .navigation {
     flex-grow: 1;
@@ -39,15 +38,42 @@
     position: relative;
   }
 
+  // All content is hidden by the overflow-x property
+  &:not(.is-navigation-open) {
+    inline-size: 0px;
+    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
+    display: none;
+  }
+
+  &:not(.is-navigation-open).is-navigation-collapsed {
+    display: flex;
+    inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+    align-items: center;
+
+    & > .navigation {
+      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+      overflow-x: hidden;
+    }
+
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    & > .navigation > .hide-navigation {
+      display: none;
+
+      &.show-navigation-toggle {
+        display: flex;
+        position: static;
+        align-items: center;
+        justify-content: center;
+        padding-block: awsui.$space-s;
+        inset-inline-end: unset;
+        inset-block-start: unset;
+      }
+    }
+  }
+
   // The Navigation drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$navigationWidth}: 100vw;
     z-index: constants.$drawer-z-index-mobile;
   }
-}
-
-.hide-navigation {
-  position: absolute;
-  inset-inline-end: awsui.$space-m;
-  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
 }

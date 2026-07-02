@@ -218,15 +218,13 @@ describe('SideNavigation collapsed mode', () => {
   });
 
   describe('header', () => {
-    it('hides header text in collapsed mode', () => {
+    it('does not render header when collapsed without logo', () => {
       const wrapper = renderSideNavigation({
         collapsed: true,
         header: { href: '#/', text: 'Service name' },
         items: [iconLink('Page', '#/page')],
       });
-      const headerLink = wrapper.findHeaderLink()!.getElement();
-      expect(headerLink).toHaveAttribute('aria-label', 'Service name');
-      expect(headerLink.textContent).not.toContain('Service name');
+      expect(wrapper.findHeaderLink()).toBeNull();
     });
   });
 
@@ -266,7 +264,7 @@ describe('SideNavigation collapsed mode', () => {
   });
 
   describe('header logo', () => {
-    it('stretches img logo when collapsed', () => {
+    it('hides header with img logo when collapsed', () => {
       const { container } = render(
         <SideNavigation
           collapsed={true}
@@ -274,10 +272,10 @@ describe('SideNavigation collapsed mode', () => {
           items={[iconLink('Page', '#/page')]}
         />
       );
-      expect(container.querySelector('img')!.className).toContain('header-logo--stretched');
+      expect(container.querySelector('img')).toBeNull();
     });
 
-    it('stretches SVG logo when collapsed', () => {
+    it('hides header with SVG logo when collapsed', () => {
       const { container } = render(
         <SideNavigation
           collapsed={true}
@@ -285,9 +283,7 @@ describe('SideNavigation collapsed mode', () => {
           items={[iconLink('Page', '#/page')]}
         />
       );
-      expect(container.querySelector('[data-testid="svg-logo"]')!.parentElement!.className).toContain(
-        'header-logo--stretched'
-      );
+      expect(container.querySelector('[data-testid="svg-logo"]')).toBeNull();
     });
 
     it('stretches SVG logo when no text is provided', () => {

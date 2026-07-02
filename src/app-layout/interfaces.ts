@@ -75,6 +75,19 @@ export interface BaseLayoutProps extends BaseComponentProps {
   navigationWidth?: number;
 
   /**
+   * If `true`, the navigation panel shows a collapsed rail at `navigationCollapsedWidth`
+   * when `navigationOpen` is `false`, instead of being completely hidden.
+   */
+  navigationCollapsed?: boolean;
+
+  /**
+   * Width of the collapsed navigation rail in pixels.
+   * Only applies when `navigationCollapsed` is `true` and `navigationOpen` is `false`.
+   * @default 54
+   */
+  navigationCollapsedWidth?: number;
+
+  /**
    * If `true`, the navigation drawer is not displayed at all.
    */
   navigationHide?: boolean;
@@ -361,7 +374,13 @@ export namespace AppLayoutProps {
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
   Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
-  'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
+  | 'contentType'
+  | 'navigationWidth'
+  | 'navigationCollapsedWidth'
+  | 'toolsWidth'
+  | 'minContentWidth'
+  | 'navigationOpen'
+  | 'onNavigationChange'
 > & {
   placement: {
     insetBlockStart: number;

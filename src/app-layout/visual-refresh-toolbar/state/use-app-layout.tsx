@@ -39,6 +39,8 @@ export const useAppLayout = (
     ariaLabels,
     navigationOpen,
     navigationWidth,
+    navigationCollapsed,
+    navigationCollapsedWidth,
     navigation,
     navigationHide,
     onNavigationChange,
@@ -65,6 +67,9 @@ export const useAppLayout = (
   forwardRef: ForwardedRef<AppLayoutProps.Ref>
 ): AppLayoutState => {
   const isMobile = useMobile();
+  // On mobile, always show the nav trigger when collapsed mode is enabled,
+  // because the collapsed rail (which provides the toggle on desktop) is not shown on mobile.
+  const resolvedNavigationTriggerHide = isMobile && navigationCollapsed ? false : navigationTriggerHide;
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
   const [toolbarHeight, setToolbarHeight] = useState(0);
@@ -365,7 +370,7 @@ export const useAppLayout = (
     true,
     activeGlobalBottomDrawerId
   );
-  const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
+  const navigationFocusControl = useAsyncFocusControl(navigationOpen, resolvedNavigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
   const onNavigationToggle = useStableCallback(({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {
@@ -402,6 +407,8 @@ export const useAppLayout = (
     minContentWidth,
     navigationOpen: resolvedNavigationOpen,
     navigationWidth,
+    navigationCollapsed: !!navigationCollapsed && !navigationHide,
+    navigationCollapsedWidth: navigationCollapsedWidth,
     placement,
     splitPanelOpen,
     splitPanelPosition: splitPanelPreferences?.position,
@@ -448,6 +455,8 @@ export const useAppLayout = (
     discoveredBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
+    navigationCollapsed: !!navigationCollapsed && !navigationHide,
+    navigationCollapsedWidth: navigationCollapsedWidth,
     navigation: resolvedNavigation,
     navigationFocusControl,
     activeDrawer,
@@ -577,7 +586,12 @@ export const useAppLayout = (
       return;
     }
 
-    const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
+    const activeNavigationWidth =
+      !navigationHide && navigationOpen
+        ? navigationWidth
+        : !navigationHide && navigationCollapsed
+          ? navigationCollapsedWidth
+          : 0;
     const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
     const hasHorizontalScroll = scrollWidth > placement.inlineSize;
     if (hasHorizontalScroll) {
@@ -592,6 +606,8 @@ export const useAppLayout = (
     totalActiveDrawersMinSize,
     closeFirstDrawer,
     isMobile,
+    navigationCollapsed,
+    navigationCollapsedWidth,
     navigationHide,
     navigationOpen,
     navigationWidth,
