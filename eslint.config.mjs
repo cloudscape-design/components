@@ -226,7 +226,7 @@ export default tsEslint.config(
     },
   },
   {
-    files: ['**/__integ__/**', '**/__motion__/**', '**/__a11y__/**'],
+    files: ['**/__integ__/**', '**/__motion__/**', '**/__a11y__/**', 'test/definitions/**'],
     rules: {
       // useBrowser is not a hook
       'react-hooks/rules-of-hooks': 'off',
