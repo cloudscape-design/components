@@ -33,6 +33,9 @@ const MobileExpandableCategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -40,10 +43,10 @@ const MobileExpandableCategoryElement = ({
   const triggerRef = React.useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (triggerRef.current && highlighted && !expanded) {
+    if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
       triggerRef.current.focus();
     }
-  }, [expanded, highlighted]);
+  }, [expanded, highlighted, filteringEnabled]);
 
   const onClick = (e: React.MouseEvent) => {
     if (!disabled) {
@@ -69,11 +72,13 @@ const MobileExpandableCategoryElement = ({
     highlighted: !!highlighted,
     expanded: expanded,
     expandDirection: 'vertical',
+    filterText: filteringText,
   };
   const renderResult = renderItem?.({ item: groupProps }) ?? null;
 
   const trigger = item.text && (
     <span
+      id={menuId && item.id ? `${menuId}-${item.id}` : undefined}
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.highlighted]: highlighted,
         [styles['rolled-down']]: expanded,
@@ -81,10 +86,12 @@ const MobileExpandableCategoryElement = ({
         [styles.disabled]: disabled,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
-      // We are using the roving tabindex technique to manage the focus state of the dropdown.
-      // The current element will always have tabindex=0 which means that it can be tabbed to,
-      // while all other items have tabindex=-1 so we can focus them when necessary.
-      tabIndex={highlighted ? 0 : -1}
+      // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+      // the `id` of the item to select it. When filtering is disabled, we are using the roving
+      // tabindex technique to manage the focus state of the dropdown. The current element will
+      // have tabindex=0 which means that it can be tabbed to, while all other items have
+      // tabindex=-1 so we can focus them when necessary.
+      tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, disabled, expanded })}
       {...(isDisabledWithReason ? targetProps : {})}
@@ -158,6 +165,9 @@ const MobileExpandableCategoryElement = ({
               position={position}
               renderItem={renderItem}
               parentProps={groupProps}
+              filteringText={filteringText}
+              filteringEnabled={filteringEnabled}
+              menuId={menuId}
             />
           </ul>
         )}

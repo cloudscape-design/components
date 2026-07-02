@@ -4,12 +4,15 @@ import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloud
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import ButtonWrapper from '../button/index.js';
+import InputWrapper from '../input/index.js';
 
 import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import inputStyles from '../../../input/styles.selectors.js';
+import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -117,6 +120,27 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    */
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
+  }
+
+  /**
+   * Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+   * Returns null if there is no open dropdown or filtering is not enabled.
+   *
+   * This utility does not open the dropdown. To find the filtering input, call `openDropdown()` first.
+   */
+  findFilteringInput(): InputWrapper | null {
+    return this.findOpenDropdown()?.findComponent(`.${inputStyles['input-container']}`, InputWrapper) ?? null;
+  }
+
+  /**
+   * Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
+   * are no matching items, this contains the `noMatch` content. Returns null if there is no open dropdown or the
+   * footer is not displayed.
+   *
+   * This utility does not open the dropdown. To find the footer region, call `openDropdown()` first.
+   */
+  findFooterRegion(): ElementWrapper | null {
+    return this.findOpenDropdown()?.findByClassName(footerStyles.root) ?? null;
   }
 
   @usesDom
