@@ -27528,10 +27528,11 @@ The function is called for each step and should return an object with the follow
       "description": "An array of individual steps
 
 Each step definition has the following properties:
- * \`status\` (string) - Status of the step corresponding to a status indicator.
- * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
+ * \`status\` (string) - (Optional) Status of the step corresponding to a status indicator. If not set, the step renders a neutral dot instead of a status icon.
+ * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon or neutral dot.
  * \`header\` (ReactNode) - Summary corresponding to the step.
- * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.",
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
+ * \`headerStart\` (ReactNode) - (Optional) Content rendered in a fixed-width column at the start of the step, before the icon. Typically a timestamp in a timeline view. Applies to the default \`vertical\` orientation and is ignored when \`orientation="horizontal"\`.",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
@@ -44344,6 +44345,21 @@ Returns the current value of the input.",
             ],
           },
         },
+        {
+          "description": "Finds the fixed-width leading content (e.g. a timestamp) rendered at the start of a step.
+Returns null when the step has no \`headerStart\`.",
+          "name": "findHeaderStart",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
       ],
       "name": "StepWrapper",
     },
@@ -53505,6 +53521,16 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         {
           "description": "Finds the header of a step",
           "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the fixed-width leading content (e.g. a timestamp) rendered at the start of a step.
+Returns null when the step has no \`headerStart\`.",
+          "name": "findHeaderStart",
           "parameters": [],
           "returnType": {
             "isNullable": false,

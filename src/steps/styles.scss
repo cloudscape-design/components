@@ -59,6 +59,19 @@
     }
   }
 }
+// Leading column (e.g. a timestamp), rendered before the icon in vertical orientation. The column
+// auto-sizes to the widest value across steps (see `.with-header-start` below); values are aligned
+// to the start (left in LTR) so shorter values line up under the longest one.
+.header-start {
+  min-inline-size: 0;
+  color: awsui.$color-text-status-inactive;
+  text-align: start;
+  // Gap between the leading column (e.g. timestamp) and the icon. Included in the shared column
+  // width, so every icon stays aligned.
+  padding-inline-end: awsui.$space-m;
+  // Long values wrap inside the column rather than expanding it.
+  overflow-wrap: break-word;
+}
 
 .horizontal {
   > .list {
@@ -154,4 +167,39 @@
 
 .root > .list > .container.custom-vertical:last-of-type > .rail > .connector {
   display: none;
+}
+
+// Timeline leading column. Defined last so its higher-specificity selectors follow the base and
+// custom-vertical rules (satisfies `no-descending-specificity`). The list becomes a grid that owns
+// the columns and each step adopts them via `grid-template-columns: subgrid`, so a single leading
+// column (sized to the widest `headerStart` via `max-content`) is shared across all steps. Every
+// vertical step in a timeline uses the `.custom-vertical` rail structure, so the connector stays
+// continuous and the header never crosses into the connector column.
+.root > .list.with-header-start {
+  display: grid;
+  grid-template-columns: max-content awsui.$space-static-l 1fr;
+
+  > .container {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  > .container.custom-vertical {
+    > .header-start {
+      grid-row: 1;
+      grid-column: 1;
+      // Keep the value aligned to the first line so a taller row does not float the dot/icon to the
+      // vertical middle.
+      align-self: start;
+    }
+
+    > .rail {
+      grid-column: 2;
+    }
+
+    > .content {
+      grid-column: 3;
+    }
+  }
 }

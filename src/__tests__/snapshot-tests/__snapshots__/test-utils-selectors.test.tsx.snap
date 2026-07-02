@@ -641,6 +641,7 @@ exports[`test-utils selectors 1`] = `
   "steps": [
     "awsui_container_gxp9y",
     "awsui_details_gxp9y",
+    "awsui_header-start_gxp9y",
     "awsui_header_gxp9y",
     "awsui_root_gxp9y",
   ],

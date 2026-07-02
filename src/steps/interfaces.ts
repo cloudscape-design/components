@@ -8,10 +8,11 @@ export interface StepsProps extends BaseComponentProps {
    * An array of individual steps
    *
    * Each step definition has the following properties:
-   *  * `status` (string) - Status of the step corresponding to a status indicator.
-   *  * `statusIconAriaLabel` - (string) - (Optional) Alternative text for the status icon.
+   *  * `status` (string) - (Optional) Status of the step corresponding to a status indicator. If not set, the step renders a neutral dot instead of a status icon.
+   *  * `statusIconAriaLabel` - (string) - (Optional) Alternative text for the status icon or neutral dot.
    *  * `header` (ReactNode) - Summary corresponding to the step.
    *  * `details` (ReactNode) - (Optional) Additional information corresponding to the step.
+   *  * `headerStart` (ReactNode) - (Optional) Content rendered in a fixed-width column at the start of the step, before the icon. Typically a timestamp in a timeline view. Applies to the default `vertical` orientation and is ignored when `orientation="horizontal"`.
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
@@ -52,10 +53,11 @@ export namespace StepsProps {
   export type Status = StatusIndicatorProps.Type;
 
   export interface Step {
-    status: Status;
+    status?: Status;
     statusIconAriaLabel?: string;
     header: React.ReactNode;
     details?: React.ReactNode;
+    headerStart?: React.ReactNode;
   }
 
   export type Orientation = 'vertical' | 'horizontal';
