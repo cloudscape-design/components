@@ -35,6 +35,7 @@ const nameProperty: InternalFilteringProperty = {
   getTokenType: () => 'value',
   getValueFormatter: () => null,
   getValueFormRenderer: () => null,
+  getOperatorDescription: () => null,
   externalProperty,
 };
 
@@ -47,6 +48,7 @@ const stateProperty: InternalFilteringProperty = {
   getTokenType: () => 'enum',
   getValueFormatter: () => null,
   getValueFormRenderer: () => null,
+  getOperatorDescription: () => null,
   externalProperty,
 };
 
@@ -65,6 +67,7 @@ const dateProperty: InternalFilteringProperty = {
         <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
       </FormField>
     ),
+  getOperatorDescription: () => null,
   externalProperty,
 };
 
@@ -88,6 +91,7 @@ const dateTimeProperty: InternalFilteringProperty = {
         </FormField>
       </div>
     ),
+  getOperatorDescription: () => null,
   externalProperty,
 };
 
