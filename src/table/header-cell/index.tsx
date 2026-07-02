@@ -130,6 +130,9 @@ export function TableHeaderCell<ItemType>({
   };
 
   const handleSortMenuAction = (action: SortMenuAction) => {
+    // The sort menu is only rendered when `multiColumnSort` is set (see render below), so this guard
+    // exists purely to narrow the type for the accesses that follow and is unreachable at runtime.
+    /* istanbul ignore next */
     if (!multiColumnSort) {
       return;
     }

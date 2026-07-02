@@ -92,6 +92,24 @@ describe('header click / keyboard', () => {
       { field: 'b', desc: false },
     ]);
   });
+
+  test('Shift+click on a column already in the sort toggles it in place (does not duplicate)', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    clickHeader(wrapper, COL_A, true);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+  });
+
+  test('Shift+mousedown prevents default to avoid extending the text selection', () => {
+    const { wrapper } = renderTable([]);
+    // fireEvent returns false when the event's default action was prevented.
+    const notPreventedWithShift = fireEvent.mouseDown(wrapper.findColumnSortingArea(COL_A)!.getElement(), {
+      shiftKey: true,
+    });
+    expect(notPreventedWithShift).toBe(false);
+    // A plain mousedown must not prevent default.
+    const notPreventedPlain = fireEvent.mouseDown(wrapper.findColumnSortingArea(COL_A)!.getElement());
+    expect(notPreventedPlain).toBe(true);
+  });
 });
 
 describe('sort menu dropdown actions', () => {
@@ -127,6 +145,33 @@ describe('sort menu dropdown actions', () => {
     const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: false }]);
     openAndClick(wrapper, COL_A, menu => menu!.findSortDescendingItem()!.click());
     expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+  });
+
+  test('"Sort ascending" on a column not in the sort replaces the whole sort', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: true }]);
+    openAndClick(wrapper, COL_A, menu => menu!.findSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('"Sort ascending" on a column already in the sort sets its direction and keeps the others', () => {
+    const { wrapper, onChange } = renderTable([
+      { sortingColumn: { sortingField: 'a' }, isDescending: true },
+      { sortingColumn: { sortingField: 'b' }, isDescending: true },
+    ]);
+    openAndClick(wrapper, COL_A, menu => menu!.findSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: true },
+    ]);
+  });
+
+  test('"Add to sort (ascending)" appends the column ascending', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    openAndClick(wrapper, COL_B, menu => menu!.findAddToSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
   });
 });
 
