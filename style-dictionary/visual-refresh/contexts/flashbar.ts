@@ -18,6 +18,8 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
   colorBorderItemFocused: '{colorNeutral100}',
+  colorTextInteractiveDefault: '{colorTextInteractiveInvertedDefault}',
+  colorTextInteractiveHover: '{colorTextInteractiveInvertedHover}',
   colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorNeutral100}',
@@ -27,6 +29,9 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextTutorialHotspotDefault: '{colorNeutral300}',
   colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
+  colorTextStatusSuccess: '{colorTextNotificationDefault}',
+  colorTextStatusError: '{colorTextNotificationDefault}',
+  colorTextStatusInfo: '{colorTextNotificationDefault}',
   // Key-value pairs
   colorTextLabel: '{colorNeutral100}',
 
