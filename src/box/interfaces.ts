@@ -19,10 +19,26 @@ export interface BoxProps extends BaseComponentProps {
    *   styled using "Display large light" typography.
    * - If you set it to `awsui-inline-code`, the component will render a `code` element,
    *   styled with a background and padding for inline code snippets.
+   * - If you set it to `awsui-accent`, the component will render a `span`,
+   *   styled as a visual accent container with background and content color combinations.
+   *   Use with the `accentColor` prop to select a color variant.
    *
    * Override the HTML tag by using property `tagOverride`.
    */
   variant?: BoxProps.Variant;
+  /**
+   * Defines the accent color for the `awsui-accent` variant.
+   * Only applies when `variant` is set to `awsui-accent`.
+   */
+  accentColor?: BoxProps.AccentColor;
+  /**
+   * Controls the border-radius shape of the accent container.
+   * Only applies when `variant` is set to `awsui-accent`.
+   *
+   * - `sharp` (default) — applies a small border-radius (2px).
+   * - `circle` — applies a fully circular shape with equal width and height, suitable for wrapping icons.
+   */
+  accentShape?: BoxProps.AccentShape;
   /**
    * Overrides the default HTML tag provided by the variant.
    */
@@ -154,7 +170,12 @@ export namespace BoxProps {
     | 'awsui-key-label'
     | 'awsui-gen-ai-label'
     | 'awsui-value-large'
-    | 'awsui-inline-code';
+    | 'awsui-inline-code'
+    | 'awsui-accent';
+
+  export type AccentColor = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'mint' | 'lime' | 'grey';
+
+  export type AccentShape = 'sharp' | 'circle';
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';
   export type TextAlign = 'left' | 'center' | 'right';

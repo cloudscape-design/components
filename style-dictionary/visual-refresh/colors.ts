@@ -358,6 +358,26 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeBlue: '{colorTextNotificationDefault}',
   colorTextBadgeRed: '{colorTextNotificationDefault}',
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
+
+  // ── Accent (Box `awsui-accent` variant) ───────────────────────────────────
+  colorBackgroundAccentRed: { light: '{colorError50}', dark: '{colorError950}' },
+  colorBackgroundAccentYellow: { light: '{colorWarning50}', dark: '{colorWarning950}' },
+  colorBackgroundAccentIndigo: { light: '{colorInfo50}', dark: '{colorInfo950}' },
+  colorBackgroundAccentGreen: { light: '{colorSuccess50}', dark: '{colorSuccess950}' },
+  colorBackgroundAccentOrange: { light: '{colorOrange50}', dark: '{colorOrange950}' },
+  colorBackgroundAccentPurple: { light: '{colorPurple50}', dark: '{colorPurple950}' },
+  colorBackgroundAccentMint: { light: '{colorMint50}', dark: '{colorMint950}' },
+  colorBackgroundAccentLime: { light: '{colorLime50}', dark: '{colorLime950}' },
+  colorBackgroundAccentGrey: { light: '{colorNeutral100}', dark: '{colorNeutral750}' },
+  colorTextAccentRed: { light: '{colorError600}', dark: '{colorError400}' },
+  colorTextAccentYellow: { light: '{colorWarning800}', dark: '{colorWarning400}' },
+  colorTextAccentIndigo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextAccentGreen: { light: '{colorSuccess600}', dark: '{colorSuccess400}' },
+  colorTextAccentOrange: { light: '{colorOrange600}', dark: '{colorOrange400}' },
+  colorTextAccentPurple: { light: '{colorPurple600}', dark: '{colorPurple400}' },
+  colorTextAccentMint: { light: '{colorMint600}', dark: '{colorMint400}' },
+  colorTextAccentLime: { light: '{colorLime600}', dark: '{colorLime400}' },
+  colorTextAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

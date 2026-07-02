@@ -23,6 +23,8 @@ export default function InternalBox({
   fontSize,
   fontWeight,
   color,
+  accentColor,
+  accentShape,
   children,
   nativeAttributes,
   __internalRootRef,
@@ -37,6 +39,8 @@ export default function InternalBox({
     styles.root,
     styles.box,
     styles[`${variant.replace(/^awsui-/, '')}-variant`],
+    accentColor && styles[`accent-${accentColor}`],
+    accentShape && styles[`accent-shape-${accentShape}`],
     marginsClassNamesSuffices.map(suffix => styles[`m-${suffix}`]),
     paddingsClassNamesSuffices.map(suffix => styles[`p-${suffix}`]),
     styles[`d-${display}`],
@@ -88,6 +92,10 @@ const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride'])
 
   if (variant === 'awsui-inline-code') {
     return 'code';
+  }
+
+  if (variant === 'awsui-accent') {
+    return 'span';
   }
 
   return variant;
