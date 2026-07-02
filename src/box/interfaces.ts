@@ -167,7 +167,8 @@ export namespace BoxProps {
     | 'heading-m'
     | 'heading-l'
     | 'heading-xl'
-    | 'display-l';
+    | 'display-l'
+    | 'display-xl';
   export type FontWeight = 'light' | 'normal' | 'bold' | 'heavy';
   export type Color =
     | 'inherit'
