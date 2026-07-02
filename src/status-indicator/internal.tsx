@@ -20,8 +20,14 @@ import { StatusIndicatorProps } from './interfaces';
 import styles from './styles.css.js';
 
 export interface InternalStatusIndicatorProps
-  extends SomeRequired<StatusIndicatorProps, 'type'>,
+  extends Omit<SomeRequired<StatusIndicatorProps, 'type'>, 'type'>,
     InternalBaseComponentProps {
+  /**
+   * Status type. The internal `'neutral'` value renders a plain dot (used by Steps for events that
+   * have no status); it is intentionally not exposed on the public `StatusIndicatorProps.Type`.
+   */
+  type: StatusIndicatorProps.Type | 'neutral';
+
   /**
    * Play an animation on the error icon when first rendered
    */
@@ -69,7 +75,7 @@ export function InternalStatusIcon({
       aria-label={iconAriaLabel}
       role={iconAriaLabel ? 'img' : undefined}
     >
-      {typeToIcon(size)[type]}
+      {type === 'neutral' ? <InternalIcon name="dot" size={size} /> : typeToIcon(size)[type]}
       {display === 'inline' && <>&nbsp;</>}
     </span>
   );

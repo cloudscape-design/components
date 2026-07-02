@@ -232,4 +232,105 @@ describe('Steps', () => {
       expect(wrapper.findItems()[0].findHeader()?.findStatusIndicator()).toBeNull();
     });
   });
+
+  describe('neutral status (optional status)', () => {
+    test('renders a neutral status indicator when status is omitted', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event' }] });
+      const indicator = wrapper.findItems()[0].findHeader()!.findStatusIndicator();
+
+      expect(indicator).not.toBeNull();
+      expect(indicator!.getElement()).toHaveClass(statusIconStyles['status-neutral']);
+    });
+
+    test('does not use the neutral status when status is set', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+      const indicator = wrapper.findItems()[0].findHeader()!.findStatusIndicator()!.getElement();
+
+      expect(indicator).not.toHaveClass(statusIconStyles['status-neutral']);
+      expect(indicator).toHaveClass(statusIconStyles['status-success']);
+    });
+
+    test('neutral status icon has no accessible name by default', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event' }] });
+      const icon = wrapper.findItems()[0].findHeader()!.findByClassName(statusIconStyles.icon)!.getElement();
+
+      expect(icon).not.toHaveAttribute('role', 'img');
+    });
+
+    test('neutral status icon uses statusIconAriaLabel as accessible name when provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', statusIconAriaLabel: 'Event marker' }] });
+      const icon = wrapper.findItems()[0].findHeader()!.findByClassName(statusIconStyles.icon)!.getElement();
+
+      expect(icon).toHaveAccessibleName('Event marker');
+    });
+
+    test('renders a status icon in horizontal orientation when status is omitted', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event' }], orientation: 'horizontal' });
+
+      expect(wrapper.findItems()[0].findHeader()!.findByClassName(statusIconStyles.icon)).not.toBeNull();
+    });
+  });
+
+  describe('headerStart', () => {
+    test('renders headerStart content', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', headerStart: '10:30' }] });
+
+      expect(wrapper.findItems()[0].findHeaderStart()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('findHeaderStart returns null when headerStart is not provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+
+      expect(wrapper.findItems()[0].findHeaderStart()).toBeNull();
+    });
+
+    test('reserves the leading column for steps without headerStart when any step has one', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'First', headerStart: '10:30' }, { header: 'Second' }],
+      });
+
+      // Every step gets a (possibly empty) leading cell so the columns align.
+      expect(wrapper.findItems()[0].findHeaderStart()).not.toBeNull();
+      expect(wrapper.findItems()[1].findHeaderStart()).not.toBeNull();
+    });
+
+    test('is ignored in horizontal orientation', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', headerStart: '10:30' }],
+        orientation: 'horizontal',
+      });
+
+      expect(wrapper.findItems()[0].findHeaderStart()).toBeNull();
+    });
+
+    test('renders headerStart for custom-rendered steps', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', headerStart: '10:30' }],
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findHeaderStart()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders headerStart values of different lengths in the shared fixed-width column', () => {
+      const shortValue = '9:00 AM';
+      const longValue = 'December 31, 2024, 11:59:59 PM (UTC+14:00)';
+      const wrapper = renderSteps({
+        steps: [
+          { header: 'Short timestamp', headerStart: shortValue },
+          { header: 'Long timestamp', headerStart: longValue },
+        ],
+      });
+
+      // Both steps allocate a leading cell (the column is shared/fixed-width across rows) and each
+      // renders its full value regardless of length — long values wrap rather than truncate.
+      const first = wrapper.findItems()[0].findHeaderStart()!.getElement();
+      const second = wrapper.findItems()[1].findHeaderStart()!.getElement();
+
+      expect(first).toHaveTextContent(shortValue);
+      expect(second).toHaveTextContent(longValue);
+      // No truncation/ellipsis mechanics: the full long value is present in the DOM.
+      expect(second.textContent).toBe(longValue);
+    });
+  });
 });
