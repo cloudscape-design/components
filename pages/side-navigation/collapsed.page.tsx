@@ -11,17 +11,6 @@ import { colorBorderDividerDefault } from '~design-tokens';
 
 const items: SideNavigationProps.Item[] = [
   { type: 'link', text: 'Calendar', href: '#/calendar', icon: <Icon name="calendar" /> },
-  {
-    type: 'expandable-link-group',
-    text: 'Projects',
-    href: '#/projects',
-    icon: <Icon name="folder" />,
-    items: [
-      { type: 'link', text: 'Project 1', href: '#/projects/project-1' },
-      { type: 'link', text: 'Project 2', href: '#/projects/project-2' },
-      { type: 'link', text: 'Project 3', href: '#/projects/project-3' },
-    ],
-  },
   { type: 'link', text: 'Settings', href: '#/settings', icon: <Icon name="settings" /> },
   {
     type: 'section',
