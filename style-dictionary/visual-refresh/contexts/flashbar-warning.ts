@@ -20,8 +20,8 @@ const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusWarning: '{colorTextNotificationYellow}',
 
   // Dismiss button
-  colorTextInteractiveDefault: '{colorNeutral650}',
-  colorTextInteractiveHover: '{colorNeutral950}',
+  colorTextInteractiveInvertedDefault: '{colorNeutral650}',
+  colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
   // Progress bars
   colorBackgroundProgressBarValueDefault: '{colorNeutral950}',

@@ -18,8 +18,6 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorBorderButtonNormalActive: '{colorWhite}',
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
   colorBorderItemFocused: '{colorNeutral100}',
-  colorTextInteractiveDefault: '{colorTextInteractiveInvertedDefault}',
-  colorTextInteractiveHover: '{colorTextInteractiveInvertedHover}',
   colorTextExpandableSectionDefault: '{colorNeutral100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorNeutral100}',
