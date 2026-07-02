@@ -228,6 +228,7 @@ export function TableHeaderCell<ItemType>({
           className={clsx(styles['header-cell-content'], {
             [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
             [styles['header-cell-content-expandable']]: isExpandable,
+            [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
           })}
           aria-label={
             column.ariaLabel

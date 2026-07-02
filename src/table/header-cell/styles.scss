@@ -196,6 +196,13 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
 
+  // The multi-sort priority badge renders alongside the sort arrow inside the
+  // absolutely-positioned sort icon. Reserve extra inline-end space for it so it
+  // does not overlap long, non-truncated header text (e.g. resizable columns off).
+  .header-cell-sortable > .header-cell-main > &.header-cell-content-multi-sorted {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs} + #{awsui.$space-m});
+  }
+
   .header-cell-disabled.header-cell-sorted > & {
     & > .sorting-icon {
       color: awsui.$color-text-interactive-disabled;
