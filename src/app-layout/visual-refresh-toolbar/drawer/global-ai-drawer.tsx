@@ -133,7 +133,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
   }
 
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="left-drawer">
       <Transition nodeRef={drawerRef} in={show} appear={show} mountOnEnter={true} timeout={250}>
         {drawerTransitionState => {
           return (
@@ -194,7 +194,10 @@ export function AppLayoutGlobalAiDrawerImplementation({
                       <div className={styles['drawer-content']}>
                         <header className={styles['drawer-content-header']}>
                           <div className={styles['drawer-content-header-content']}>
-                            <AppLayoutBuiltInErrorBoundary renderFallback={() => <div />}>
+                            <AppLayoutBuiltInErrorBoundary
+                              renderFallback={() => <div />}
+                              appLayoutPart="left-drawer-header"
+                            >
                               {activeAiDrawer?.header ?? <div />}
                             </AppLayoutBuiltInErrorBoundary>
                             <div className={styles['drawer-actions']}>
@@ -250,7 +253,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
                             </div>
                           )}
                         </header>
-                        <AppLayoutBuiltInErrorBoundary>
+                        <AppLayoutBuiltInErrorBoundary appLayoutPart="left-drawer-content">
                           <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
                         </AppLayoutBuiltInErrorBoundary>
                       </div>

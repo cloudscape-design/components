@@ -112,7 +112,7 @@ function AppLayoutGlobalDrawerImplementation({
   }
 
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="global-drawer">
       <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
         {state => {
           return (

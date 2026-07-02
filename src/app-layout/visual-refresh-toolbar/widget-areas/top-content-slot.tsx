@@ -36,7 +36,7 @@ export const TopContentSlotImplementationInternal = ({ appLayoutProps, appLayout
 };
 
 export const TopContentSlotImplementation = (props: SkeletonPartProps) => (
-  <AppLayoutBuiltInErrorBoundary>
+  <AppLayoutBuiltInErrorBoundary appLayoutPart="top-content-slot">
     <TopContentSlotImplementationInternal {...props} />
   </AppLayoutBuiltInErrorBoundary>
 );
