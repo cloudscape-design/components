@@ -155,6 +155,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthFlashbarInlineStart: {
+    description: 'The inline-start border width of flash messages in flashbars.',
+    public: true,
+    themeable: true,
+  },
   borderWidthAlertInlineEnd: {
     description: 'The inline-end border width of alerts.',
     public: true,

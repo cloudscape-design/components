@@ -36,6 +36,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightButton: '500',
   fontWeightTabs: '500',
   fontSizeTabs: '14px',
+  fontWayfindingLinkActiveWeight: '500',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',

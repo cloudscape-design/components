@@ -251,6 +251,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundFlashbarSuccess: {
+    description: 'The background color of success flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarError: {
+    description: 'The background color of error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarInfo: {
+    description: 'The background color of info and in-progress flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarWarning: {
+    description: 'The background color of warning flash messages.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundNotificationGrey: {
     description: 'Background color for grey notifications. For example: grey badges.',
     public: true,

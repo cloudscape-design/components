@@ -130,6 +130,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning900}' },
   colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
 
+  // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
+  colorBackgroundFlashbarSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
+  colorBackgroundFlashbarError: { light: '{colorError100}', dark: '{colorError950}' },
+  colorBackgroundFlashbarInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
+  colorBackgroundFlashbarWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
+
   // ── Status text ───────────────────────────────────────────────────────────
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
