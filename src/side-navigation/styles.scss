@@ -18,11 +18,11 @@ $item-padding-inline: awsui.$space-xs;
 $item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: awsui.$space-l;
 
-@mixin item-radius {
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
+@mixin item-radius($radius: awsui.$border-radius-item) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
 }
 
 .root {
@@ -154,9 +154,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-block: 0;
   padding-inline: $item-padding-inline;
   list-style: none;
-  @include styles.with-motion {
-    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
-  }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
@@ -168,9 +165,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
     justify-content: center;
     padding-block: 0;
     padding-inline: 0;
-    @include styles.with-motion {
-      transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
-    }
   }
 
   &--group {
@@ -280,28 +274,31 @@ $expandable-icon-negative-margin: awsui.$space-l;
 // ==========================================================================
 .link {
   @include styles.font-body-m;
-  color: awsui.$color-text-body-secondary;
-  display: inline-flex;
+  color: awsui.$color-text-side-navigation-item-default;
+  display: flex;
   padding-block: $item-padding-block;
   min-inline-size: awsui.$size-side-navigation-item-height;
   padding-inline: $item-padding-inline;
   margin-inline: calc(-1 * #{$item-padding-inline});
   align-items: flex-start;
-  @include item-radius;
+  @include item-radius(awsui.$border-radius-side-navigation-item);
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  @include styles.with-motion {
-    transition:
-      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
-      color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
-  }
 
   &-active {
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
     color: awsui.$color-text-side-navigation-item-active;
     background-color: awsui.$color-background-side-navigation-item-active;
+
+    &.link--collapsed {
+      color: awsui.$color-text-side-navigation-item-active-collapsed;
+      background-color: awsui.$color-background-side-navigation-item-active-collapsed;
+      &:hover {
+        color: awsui.$color-text-side-navigation-item-active-collapsed;
+      }
+    }
   }
 
   &--collapsed {
@@ -309,6 +306,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
     margin-inline: 0;
     justify-content: center;
     align-items: center;
+    @include item-radius(awsui.$border-radius-side-navigation-item-collapsed);
   }
 }
 

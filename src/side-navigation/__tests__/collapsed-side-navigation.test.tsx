@@ -137,6 +137,30 @@ describe('SideNavigation collapsed mode', () => {
       const wrapper = renderSideNavigation({ collapsed: true, items });
       expect(wrapper.findAll('a')).toHaveLength(0);
     });
+
+    it('renders a divider in place of the section title when collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          iconLink('Top', '#/top'),
+          {
+            type: 'section',
+            text: 'Resources',
+            items: [iconLink('Compute', '#/compute'), iconLink('Storage', '#/storage')],
+          },
+        ],
+      });
+      expect(wrapper.findAll('hr')).toHaveLength(1);
+      expect(wrapper.find('ul[aria-label="Resources"]')).not.toBeNull();
+    });
+
+    it('does not render a section divider when the section has no icon-bearing children', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Top', '#/top'), { type: 'section', text: 'Empty', items: [plainLink('A', '#/a')] }],
+      });
+      expect(wrapper.findAll('hr')).toHaveLength(0);
+    });
   });
 
   describe('expandable link groups', () => {

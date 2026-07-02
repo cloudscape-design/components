@@ -32,14 +32,15 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusDropdown: '2px',
   borderRadiusDropzone: '4px',
   borderRadiusFlashbar: '2px',
-  borderRadiusItem: '2px',
   borderRadiusInput: '2px',
+  borderRadiusItem: '2px',
   borderRadiusPopover: '4px',
+  borderRadiusSideNavigationItemCollapsed: '{borderRadiusItem}',
+  borderRadiusStatusIndicator: '2px',
   borderRadiusTabsFocusRing: '4px',
   borderRadiusToken: '2px',
   borderRadiusTokenInline: '{borderRadiusToken}',
   borderRadiusTutorialPanelItem: '4px',
-  borderRadiusStatusIndicator: '2px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);

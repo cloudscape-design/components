@@ -84,6 +84,17 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusSideNavigationItem: {
+    description: 'The border radius of a side navigation item in the default (expanded) state.',
+    public: false,
+    themeable: true,
+  },
+  borderRadiusSideNavigationItemCollapsed: {
+    description:
+      'The border radius of a side navigation item while the navigation is collapsed, including its active background.',
+    public: false,
+    themeable: true,
+  },
   borderRadiusInput: {
     description: 'The border radius of form controls. For example: input, select.',
     public: true,
