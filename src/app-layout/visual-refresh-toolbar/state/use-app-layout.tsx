@@ -67,6 +67,9 @@ export const useAppLayout = (
   forwardRef: ForwardedRef<AppLayoutProps.Ref>
 ): AppLayoutState => {
   const isMobile = useMobile();
+  // On mobile, always show the nav trigger when collapsed mode is enabled,
+  // because the collapsed rail (which provides the toggle on desktop) is not shown on mobile.
+  const resolvedNavigationTriggerHide = isMobile && navigationCollapsed ? false : navigationTriggerHide;
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
   const [toolbarHeight, setToolbarHeight] = useState(0);
@@ -367,7 +370,7 @@ export const useAppLayout = (
     true,
     activeGlobalBottomDrawerId
   );
-  const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
+  const navigationFocusControl = useAsyncFocusControl(navigationOpen, resolvedNavigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
   const onNavigationToggle = useStableCallback(({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {

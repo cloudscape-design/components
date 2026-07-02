@@ -45,13 +45,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-
-  &--collapsed {
-    padding-inline: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .header-link {

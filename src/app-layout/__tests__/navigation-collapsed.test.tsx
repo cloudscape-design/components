@@ -131,52 +131,37 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
-  describe('mobile overlay', () => {
-    test('renders backdrop when navigationCollapsed=true and navigationOpen=true', () => {
-      const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
-      );
-      expect(wrapper.findByClassName(skeletonStyles['mobile-backdrop'])).not.toBeNull();
-    });
-
-    test('does not render backdrop when navigationOpen=false', () => {
+  describe('mobile standard behavior (collapsed is desktop-only)', () => {
+    test('navigation uses panel-hidden when closed on mobile, even with navigationCollapsed', () => {
       const { wrapper } = renderComponent(
         <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
-      expect(wrapper.findByClassName(skeletonStyles['mobile-backdrop'])).toBeNull();
+      const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
+      expect(navContainer).toHaveClass(skeletonStyles['panel-hidden']);
     });
 
-    test('does not render backdrop without navigationCollapsed', () => {
-      const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={false} navigationOpen={true} navigation={<>Nav content</>} />
-      );
-      expect(wrapper.findByClassName(skeletonStyles['mobile-backdrop'])).toBeNull();
-    });
-  });
-
-  describe('toggle behavior on mobile', () => {
-    test('close button has aria-expanded=true when navigation open on mobile', () => {
-      const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
-      );
-      expect(wrapper.findNavigationClose().getElement()).toHaveAttribute('aria-expanded', 'true');
-    });
-
-    test('close button has aria-expanded=false when collapsed on mobile', () => {
+    test('navigation does not use navigation-collapsed class on mobile', () => {
       const { wrapper } = renderComponent(
         <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
-      expect(wrapper.findNavigationClose().getElement()).toHaveAttribute('aria-expanded', 'false');
+      const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
+      expect(navContainer).not.toHaveClass(skeletonStyles['navigation-collapsed']);
     });
-  });
 
-  describe('navigation collapsed state', () => {
-    test('navigation panel has is-navigation-collapsed class on mobile', () => {
+    test('navigation-container does not have is-navigation-collapsed class on mobile', () => {
       const { wrapper } = renderComponent(
         <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const nav = wrapper.findNavigation().getElement().closest(`.${navStyles['navigation-container']}`);
-      expect(nav).toHaveClass(navStyles['is-navigation-collapsed']);
+      expect(nav).not.toHaveClass(navStyles['is-navigation-collapsed']);
+    });
+
+    test('navigation opens full width on mobile with standard behavior', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
+      );
+      const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
+      expect(navContainer).not.toHaveClass(skeletonStyles['panel-hidden']);
     });
   });
 });

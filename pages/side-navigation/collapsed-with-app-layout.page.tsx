@@ -4,8 +4,12 @@ import React, { useState } from 'react';
 
 import { AppLayoutToolbar, Icon } from '~components';
 import Box from '~components/box';
+import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Header from '~components/header';
+// Consumers will use: import { useMobile } from '@cloudscape-design/component-toolkit/internal/use-mobile';
+// Draft started on https://github.com/cloudscape-design/component-toolkit/pull/174
+import { useMobile } from '~components/internal/hooks/use-mobile';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
@@ -58,6 +62,7 @@ export default function CollapsedWithAppLayoutPage() {
   const [hideTools, setHideTools] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
   const [headerIcon, setHeaderIcon] = useState(true);
+  const isMobile = useMobile();
 
   const header = { text: 'Project 3', href: '#/projects/3' };
   const headerWithIcon = { ...header, logo: { svg: AwsSvg } };
@@ -70,6 +75,17 @@ export default function CollapsedWithAppLayoutPage() {
       navigationCollapsed={collapsedEnabled}
       onNavigationChange={({ detail }) => setNavOpen(detail.open)}
       ariaLabels={labels}
+      breadcrumbs={
+        isMobile ? (
+          <BreadcrumbGroup
+            items={[
+              { text: 'Home', href: '#/' },
+              { text: 'Projects', href: '#/projects' },
+              { text: 'Project 3', href: '#/projects/3' },
+            ]}
+          />
+        ) : undefined
+      }
       navigation={
         <SideNavigation
           header={showHeader ? (!headerIcon ? header : headerWithIcon) : undefined}
