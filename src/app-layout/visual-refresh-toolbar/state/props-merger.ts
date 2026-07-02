@@ -89,10 +89,13 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
 
 export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: AppLayoutPendingState): SharedProps => {
   const state = appLayoutState.widgetizedState;
+  // On mobile, always show nav trigger when collapsed mode is enabled (rail not available on mobile)
+  const resolvedNavigationTriggerHide =
+    state?.isMobile && props.navigationCollapsed ? false : props.navigationTriggerHide;
   return {
     breadcrumbs: props.breadcrumbs,
     ariaLabels: state ? state.ariaLabels : props.ariaLabels,
-    navigation: !props.navigationTriggerHide && !props.navigationHide,
+    navigation: !resolvedNavigationTriggerHide && !props.navigationHide,
     navigationOpen: state ? state.navigationOpen : props.navigationOpen,
     navigationCollapsed: state ? state.navigationCollapsed : !!props.navigationCollapsed,
     onNavigationToggle: state?.onNavigationToggle,

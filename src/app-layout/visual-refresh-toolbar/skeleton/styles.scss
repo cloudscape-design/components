@@ -33,18 +33,16 @@
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
   background-color: awsui.$color-background-layout-main;
-  position: relative;
 
   #{custom-props.$maxContentWidth}: 100%;
   display: grid;
 
   // mobile grid
   grid-template-areas:
-    'navigation toolbar         toolbar      toolbar'
-    'navigation .            notifications   .'
-    'navigation .                main        .';
+    'toolbar    toolbar     toolbar'
+    '.       notifications  .'
+    '.           main       .';
   grid-template-columns:
-    min-content
     awsui.$space-layout-content-horizontal
     minmax(0, 1fr)
     awsui.$space-layout-content-horizontal;
@@ -144,24 +142,19 @@
 
 .navigation {
   z-index: constants.$drawer-z-index;
-  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
 
   @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
 
   @include mobile-only {
-    grid-area: navigation;
     z-index: constants.$drawer-z-index-mobile;
   }
 
   &.navigation-collapsed {
     @include desktop-only {
-      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
-    }
-
-    @include mobile-only {
       inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
     }
   }
@@ -333,25 +326,4 @@
 // backward compatibility before this commit: f3bdaa292ae849b74404f32ef067c9fd6d2e8d7c
 .breadcrumbs-own:not(:empty) + .breadcrumbs-discovered {
   display: none;
-}
-
-.mobile-backdrop {
-  grid-row: 1 / -1;
-  grid-column: 1 / -1;
-  background-color: awsui.$color-background-modal-overlay;
-  z-index: calc(constants.$drawer-z-index-mobile - 1);
-  pointer-events: auto;
-
-  @include styles.with-motion {
-    animation: backdrop-fade-in awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-responsive;
-  }
-}
-
-@keyframes backdrop-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }

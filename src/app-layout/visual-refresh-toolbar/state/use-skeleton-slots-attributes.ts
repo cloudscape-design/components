@@ -35,7 +35,6 @@ export const useSkeletonSlotsAttributes = (
     maxContentWidth,
     navigationWidth,
     navigationCollapsedWidth,
-    navigationCollapsed,
     minContentWidth,
     disableContentPaddings,
   } = appLayoutProps;
@@ -44,7 +43,7 @@ export const useSkeletonSlotsAttributes = (
   const drawerExpandedMode = !!expandedDrawerId;
   const aiDrawerExpandedMode = expandedDrawerId === activeAiDrawer?.id;
   const bottomDrawerExpandedMode = expandedDrawerId === activeGlobalBottomDrawerId;
-  const anyPanelOpen = (navigationOpen && !navigationCollapsed) || toolsOpen;
+  const anyPanelOpen = navigationOpen || toolsOpen;
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
 
   const wrapperElAttributes = {

@@ -66,12 +66,11 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
   return (
     <>
       {!collapsed && (
-        <h2 className={clsx(styles.header, collapsed && styles['header--collapsed'])}>
+        <h2 className={styles.header}>
           <a
             href={definition.href}
             className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
             aria-current={definition.href === activeHref ? 'page' : undefined}
-            aria-label={collapsed ? definition.text : undefined}
             onClick={onClick}
             {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
           >
@@ -79,7 +78,7 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
               (definition.logo.svg ? (
                 <span
                   className={clsx(styles['header-logo'], {
-                    [styles['header-logo--stretched']]: !definition.text || collapsed,
+                    [styles['header-logo--stretched']]: !definition.text,
                   })}
                 >
                   {definition.logo.svg}
@@ -87,17 +86,15 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
               ) : (
                 <img
                   className={clsx(styles['header-logo'], {
-                    [styles['header-logo--stretched']]: !definition.text || collapsed,
+                    [styles['header-logo--stretched']]: !definition.text,
                   })}
                   src={definition.logo.src}
                   alt={definition.logo.alt}
                 />
               ))}
-            {!collapsed && (
-              <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
-                {definition.text}
-              </span>
-            )}
+            <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
+              {definition.text}
+            </span>
           </a>
         </h2>
       )}

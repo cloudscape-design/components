@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
-import FocusLock from '../../../internal/components/focus-lock';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
@@ -119,32 +118,20 @@ export const BeforeMainSlotImplementationInternal = ({
         <div
           className={clsx(
             styles.navigation,
-            !navigationOpen && !navigationCollapsed && styles['panel-hidden'],
-            !navigationOpen && navigationCollapsed && styles['navigation-collapsed'],
+            !navigationOpen && (!navigationCollapsed || isMobile) && styles['panel-hidden'],
+            !navigationOpen && navigationCollapsed && !isMobile && styles['navigation-collapsed'],
             toolsOpen && styles['unfocusable-mobile'],
             !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <FocusLock
-            disabled={!(isMobile && navigationCollapsed && navigationOpen)}
-            autoFocus={true}
-            restoreFocus={true}
-          >
-            <AppLayoutBuiltInErrorBoundary>
-              <AppLayoutNavigation
-                appLayoutInternals={appLayoutState.appLayoutInternals}
-                bottomDrawerReportedSize={bottomDrawerReportedSize}
-              />
-            </AppLayoutBuiltInErrorBoundary>
-          </FocusLock>
+          <AppLayoutBuiltInErrorBoundary>
+            <AppLayoutNavigation
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={bottomDrawerReportedSize}
+            />
+          </AppLayoutBuiltInErrorBoundary>
         </div>
-      )}
-      {isMobile && navigationCollapsed && navigationOpen && (
-        <div
-          className={styles['mobile-backdrop']}
-          onClick={() => appLayoutState.widgetizedState.onNavigationToggle(false)}
-        />
       )}
     </>
   );

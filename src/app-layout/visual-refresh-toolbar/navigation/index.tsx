@@ -41,11 +41,7 @@ export function AppLayoutNavigationImplementation({
     isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
 
-  const isCollapsedState = navigationCollapsed && !navigationOpen;
-  // Always show the expand toggle in the collapsed rail
-  const showToggleInCollapsedState = isCollapsedState;
-  // On mobile with collapsed nav, use fixed overlay with backdrop when open
-  const useMobileOverlay = isMobile && navigationCollapsed;
+  const isCollapsedState = navigationCollapsed && !navigationOpen && !isMobile;
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -62,17 +58,12 @@ export function AppLayoutNavigationImplementation({
     <div
       className={clsx(styles['navigation-container'], sharedStyles['with-motion-horizontal'], {
         [styles['is-navigation-open']]: navigationOpen,
-        [styles['is-navigation-collapsed']]: navigationCollapsed && !navigationOpen,
-        [styles['navigation-container-mobile-overlay']]: useMobileOverlay,
+        [styles['is-navigation-collapsed']]: isCollapsedState,
       })}
-      style={
-        useMobileOverlay && navigationOpen
-          ? undefined
-          : {
-              blockSize: drawerHeight,
-              insetBlockStart: drawerTopOffset,
-            }
-      }
+      style={{
+        blockSize: drawerHeight,
+        insetBlockStart: drawerTopOffset,
+      }}
     >
       <nav
         aria-label={ariaLabels?.navigation ?? undefined}
@@ -83,12 +74,12 @@ export function AppLayoutNavigationImplementation({
           },
           testutilStyles.navigation
         )}
-        aria-hidden={!navigationOpen && !navigationCollapsed}
+        aria-hidden={!navigationOpen && !isCollapsedState}
         onClick={onNavigationClick}
       >
         <div
           className={clsx(styles['hide-navigation'], {
-            [styles['show-navigation-toggle']]: showToggleInCollapsedState,
+            [styles['show-navigation-toggle']]: isCollapsedState,
           })}
         >
           <InternalButton
@@ -97,7 +88,7 @@ export function AppLayoutNavigationImplementation({
                 ? (ariaLabels?.navigationToggle ?? undefined)
                 : (ariaLabels?.navigationClose ?? undefined)
             }
-            ariaExpanded={navigationCollapsed ? navigationOpen : undefined}
+            ariaExpanded={navigationCollapsed && !isMobile ? navigationOpen : undefined}
             iconName={isCollapsedState ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
             onClick={() => onNavigationToggle(!navigationOpen)}
             variant="icon"

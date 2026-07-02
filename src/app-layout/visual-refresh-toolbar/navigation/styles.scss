@@ -77,33 +77,3 @@
     z-index: constants.$drawer-z-index-mobile;
   }
 }
-
-// Mobile overlay mode for collapsed navigation
-.navigation-container-mobile-overlay {
-  &.is-navigation-open {
-    position: absolute;
-    inset-inline-start: 0;
-    inset-block-start: 0;
-    block-size: 100%;
-    z-index: constants.$drawer-z-index-mobile;
-    // Override the 100vw mobile breakpoint — overlay should be panel-width, not full screen
-    #{custom-props.$navigationWidth}: 280px;
-    inline-size: var(#{custom-props.$navigationWidth}, 280px);
-    box-shadow: awsui.$shadow-panel;
-
-    @include styles.with-motion {
-      transition: inline-size awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-responsive;
-    }
-
-    // stylelint-disable-next-line no-descending-specificity
-    & > .navigation {
-      inline-size: var(#{custom-props.$navigationWidth}, 280px);
-    }
-  }
-
-  &.is-navigation-collapsed {
-    @include styles.with-motion {
-      transition: inline-size awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-responsive;
-    }
-  }
-}
