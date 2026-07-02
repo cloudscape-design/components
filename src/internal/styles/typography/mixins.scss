@@ -110,6 +110,19 @@
   }
 }
 
+@mixin font-display-xl($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-display;
+  }
+  font-size: awsui.$font-size-display-xl;
+  line-height: awsui.$line-height-display-xl;
+  letter-spacing: awsui.$letter-spacing-display-xl;
+  @if $weight {
+    font-weight: awsui.$font-weight-display-xl;
+    @include font-smoothing;
+  }
+}
+
 @mixin font-inherit {
   font-size: inherit;
   line-height: inherit;
@@ -173,6 +186,9 @@
   }
   @if $font-size == display-l {
     @include font-display-l($weight: false, $family: false);
+  }
+  @if $font-size == display-xl {
+    @include font-display-xl($weight: false, $family: false);
   }
   @if $font-size == inherit {
     @include font-inherit;

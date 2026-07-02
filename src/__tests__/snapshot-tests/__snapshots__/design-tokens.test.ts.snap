@@ -3105,6 +3105,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -3144,6 +3148,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -3193,6 +3201,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -3224,6 +3236,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -6738,6 +6754,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -6777,6 +6797,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -6826,6 +6850,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -6857,6 +6885,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -10371,6 +10403,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -10410,6 +10446,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -10459,6 +10499,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -10490,6 +10534,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -14004,6 +14052,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -14043,6 +14095,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -14092,6 +14148,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -14123,6 +14183,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -17637,6 +17701,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -17676,6 +17744,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -17725,6 +17797,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -17756,6 +17832,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -21270,6 +21350,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for large display text.",
           "$value": "44px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "18px",
@@ -21309,6 +21393,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -21358,6 +21446,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "normal",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "normal",
@@ -21389,6 +21481,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "56px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -24903,6 +24999,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font size for large display text.",
       "$value": "44px",
     },
+    "font-size-display-xl": {
+      "$description": "The default font size for extra large display text.",
+      "$value": "64px",
+    },
     "font-size-heading-l": {
       "$description": "The default font size for h2s.",
       "$value": "18px",
@@ -24942,6 +25042,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-display-l": {
       "$description": "The default font weight for large display text.",
       "$value": "700",
+    },
+    "font-weight-display-xl": {
+      "$description": "The default font weight for extra large display text.",
+      "$value": "400",
     },
     "font-weight-flashbar-header": {
       "$description": "The default font weight for flashbar header text.",
@@ -24991,6 +25095,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default letter spacing for large display text.",
       "$value": "normal",
     },
+    "letter-spacing-display-xl": {
+      "$description": "The default letter spacing for extra large display text.",
+      "$value": "normal",
+    },
     "letter-spacing-heading-l": {
       "$description": "The default letter spacing for h2s.",
       "$value": "normal",
@@ -25022,6 +25130,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "line-height-display-l": {
       "$description": "The default line height for large display text.",
       "$value": "56px",
+    },
+    "line-height-display-xl": {
+      "$description": "The default line height for extra large display text.",
+      "$value": "72px",
     },
     "line-height-heading-l": {
       "$description": "The default line height for h2s.",
@@ -28541,6 +28653,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -28580,6 +28696,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -28629,6 +28749,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -28660,6 +28784,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -32174,6 +32302,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -32213,6 +32345,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -32262,6 +32398,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -32293,6 +32433,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -35807,6 +35951,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -35846,6 +35994,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -35895,6 +36047,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -35926,6 +36082,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -39440,6 +39600,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -39479,6 +39643,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -39528,6 +39696,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -39559,6 +39731,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -43073,6 +43249,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -43112,6 +43292,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -43161,6 +43345,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -43192,6 +43380,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -46706,6 +46898,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -46745,6 +46941,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -46794,6 +46994,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -46825,6 +47029,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -50339,6 +50547,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -50378,6 +50590,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -50427,6 +50643,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -50458,6 +50678,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -53972,6 +54196,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -54011,6 +54239,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -54060,6 +54292,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -54091,6 +54327,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -57605,6 +57845,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font size for large display text.",
       "$value": "42px",
     },
+    "font-size-display-xl": {
+      "$description": "The default font size for extra large display text.",
+      "$value": "64px",
+    },
     "font-size-heading-l": {
       "$description": "The default font size for h2s.",
       "$value": "20px",
@@ -57644,6 +57888,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-display-l": {
       "$description": "The default font weight for large display text.",
       "$value": "700",
+    },
+    "font-weight-display-xl": {
+      "$description": "The default font weight for extra large display text.",
+      "$value": "400",
     },
     "font-weight-flashbar-header": {
       "$description": "The default font weight for flashbar header text.",
@@ -57693,6 +57941,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default letter spacing for large display text.",
       "$value": "-0.03em",
     },
+    "letter-spacing-display-xl": {
+      "$description": "The default letter spacing for extra large display text.",
+      "$value": "-0.03em",
+    },
     "letter-spacing-heading-l": {
       "$description": "The default letter spacing for h2s.",
       "$value": "-0.015em",
@@ -57724,6 +57976,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "line-height-display-l": {
       "$description": "The default line height for large display text.",
       "$value": "48px",
+    },
+    "line-height-display-xl": {
+      "$description": "The default line height for extra large display text.",
+      "$value": "72px",
     },
     "line-height-heading-l": {
       "$description": "The default line height for h2s.",

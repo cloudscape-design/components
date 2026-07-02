@@ -187,14 +187,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
     }
   }
 
-  &--info {
+  &--link-with-info {
     display: flex;
     align-items: baseline;
   }
-}
-
-.list-item--info > .list {
-  inline-size: 100%;
 }
 
 .list--collapsed-group {
