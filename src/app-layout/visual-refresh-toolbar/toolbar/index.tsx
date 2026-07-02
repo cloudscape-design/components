@@ -159,7 +159,7 @@ export function AppLayoutToolbarImplementation({
         insetBlockStart: verticalOffsets.toolbar,
       }}
     >
-      <AppLayoutBuiltInErrorBoundary>
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="left-drawer-trigger">
         <Transition
           in={!!(aiDrawer?.trigger && !activeAiDrawerId)}
           timeout={{ enter: 0, exit: 165 }}
