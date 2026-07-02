@@ -536,6 +536,14 @@ export interface I18nFormatArgTypes {
     'ariaLabels.collapseButtonLabel': never;
     'columnDefinitions.editConfig.errorIconAriaLabel': never;
     'columnDefinitions.editConfig.editIconAriaLabel': never;
+    'i18nStrings.sortDropdown.sortAscending': never;
+    'i18nStrings.sortDropdown.sortDescending': never;
+    'i18nStrings.sortDropdown.multiColumnSortGroup': never;
+    'i18nStrings.sortDropdown.addToSortAscending': never;
+    'i18nStrings.sortDropdown.addToSortDescending': never;
+    'i18nStrings.sortDropdown.removeFromSort': never;
+    'i18nStrings.clearSort': never;
+    'ariaLabels.sortMenuTriggerLabel': never;
   };
   tabs: {
     'i18nStrings.scrollLeftAriaLabel': never;

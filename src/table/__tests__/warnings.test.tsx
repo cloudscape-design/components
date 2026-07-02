@@ -114,3 +114,33 @@ describe('Sticky header validation', () => {
     expect(warnOnce).toHaveBeenCalledTimes(2);
   });
 });
+
+describe('Multi-column sort validation', () => {
+  const baseColumns = [
+    { header: 'id', cell: () => 'id', sortingField: 'id' },
+    { header: 'name', cell: () => 'name', sortingField: 'name' },
+  ];
+
+  test('prints a warning when multiColumnSort is combined with single-column sorting props', () => {
+    renderTable(
+      <Table
+        items={[]}
+        columnDefinitions={baseColumns}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+        sortingColumn={{ sortingField: 'name' }}
+        onSortingChange={() => {}}
+      />
+    );
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Table',
+      expect.stringMatching(/`multiColumnSort` prop is mutually exclusive/)
+    );
+  });
+
+  test('does not print a warning when only multiColumnSort is provided', () => {
+    renderTable(
+      <Table items={[]} columnDefinitions={baseColumns} multiColumnSort={{ sortingColumns: [], onChange: () => {} }} />
+    );
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+});
