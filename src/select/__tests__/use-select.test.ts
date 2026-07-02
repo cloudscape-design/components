@@ -10,7 +10,7 @@ import { KeyCode } from '../../internal/keycode';
 import { BaseKeyDetail } from '../../types/events';
 import { useSelect } from '../utils/use-select';
 
-const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
+const createTestEvent = (keyCode: KeyCode, isComposing = false): CustomEvent<BaseKeyDetail> =>
   createCustomEvent({
     cancelable: true,
     detail: {
@@ -20,7 +20,7 @@ const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
       shiftKey: false,
       altKey: false,
       metaKey: false,
-      isComposing: false,
+      isComposing,
     },
   });
 
@@ -375,6 +375,27 @@ describe('useSelect', () => {
       label: 'Child 1',
       value: 'child1',
     });
+  });
+
+  test('should not select the highlighted option on enter that ends an IME composition', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, keepOpen: true },
+    });
+
+    const { getTriggerProps } = hook.result.current;
+    const triggerProps = getTriggerProps();
+    act(() => triggerProps.onKeyDown && triggerProps.onKeyDown(createTestEvent(KeyCode.down)));
+    const { getFilterProps } = hook.result.current;
+    updateSelectedOption.mockClear();
+
+    // Pressing enter to commit a composition candidate must not select the highlighted option.
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter, true)));
+    expect(updateSelectedOption).not.toHaveBeenCalled();
+    expect(hook.result.current.isOpen).toBe(true);
+
+    // A regular enter (not part of a composition) still selects the highlighted option.
+    act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter, false)));
+    expect(updateSelectedOption).toHaveBeenCalledWith({ label: 'Child 1', value: 'child1' });
   });
 
   test('should open and navigate to the second disabled option', () => {
