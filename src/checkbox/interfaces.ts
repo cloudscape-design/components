@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { BaseCheckboxProps } from '../types/base-checkbox';
 import { NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../types/native-attributes';
-import { BaseCheckboxProps } from './base-checkbox';
 
 export interface CheckboxProps extends BaseCheckboxProps {
   /**

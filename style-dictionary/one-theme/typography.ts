@@ -30,6 +30,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightHeadingXs: '500',
 
   fontWeightDisplayL: '500',
+  fontWeightDisplayXl: '400',
 
   // ── Interactive elements ──────────────────────────────────────────────────
   fontWeightButton: '500',
