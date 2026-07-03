@@ -178,6 +178,8 @@ const customCssPropertiesList = [
   'tokenStyleDismissColorDisabled',
   'tokenStyleDismissColorHover',
   'tokenStyleDismissColorReadOnly',
+  // Box visual accent properties
+  'boxVisualAccentBorderRadius',
   // Item card specific style properties
   'styleItemCardBackgroundDefault',
   'styleItemCardBorderColorDefault',

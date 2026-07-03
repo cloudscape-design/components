@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Box, { BoxProps } from '../../../lib/components/box';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import BoxWrapper from '../../../lib/components/test-utils/dom/box';
 
 import styles from '../../../lib/components/box/styles.css.js';
@@ -175,19 +176,19 @@ describe('Box', () => {
     });
   });
 
-  describe('awsui-accent variant', () => {
-    test('uses span as tag name', () => {
-      const boxWrapper = renderBox({ variant: 'awsui-accent' });
+  describe('visualAccent property', () => {
+    test('renders a span by default', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
       expect(boxWrapper.getElement().tagName).toBe('SPAN');
     });
 
-    test('applies the accent-variant class', () => {
-      const boxWrapper = renderBox({ variant: 'awsui-accent' });
-      expect(boxWrapper.getElement()).toHaveClass(styles['accent-variant']);
+    test('applies the base visual-accent class', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement()).toHaveClass(styles['visual-accent']);
     });
 
-    test('applies the correct accentColor class', () => {
-      const colors: Array<BoxProps.AccentColor> = [
+    test('applies the correct color class', () => {
+      const colors: Array<BoxProps.VisualAccent.Color> = [
         'red',
         'yellow',
         'indigo',
@@ -199,35 +200,76 @@ describe('Box', () => {
         'grey',
       ];
       colors.forEach(color => {
-        const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: color });
-        expect(boxWrapper.getElement()).toHaveClass(styles[`accent-${color}`]);
+        const boxWrapper = renderBox({ visualAccent: { color } });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-${color}`]);
       });
     });
 
-    test('does not apply accentColor class when accentColor is not set', () => {
-      const boxWrapper = renderBox({ variant: 'awsui-accent' });
+    test('does not apply any accent class when visualAccent is not set', () => {
+      const boxWrapper = renderBox({});
       const element = boxWrapper.getElement();
-      expect(element.className).not.toMatch(
-        /accent-red|accent-yellow|accent-indigo|accent-green|accent-orange|accent-purple|accent-mint|accent-lime|accent-grey/
-      );
+      expect(element.className).not.toMatch(/visual-accent/);
+      expect(element.tagName).toBe('DIV');
     });
 
-    test('applies the correct accentShape class', () => {
-      const shapes: Array<BoxProps.AccentShape> = ['sharp', 'circle'];
-      shapes.forEach(shape => {
-        const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: 'indigo', accentShape: shape });
-        expect(boxWrapper.getElement()).toHaveClass(styles[`accent-shape-${shape}`]);
+    test('defaults to the auto aspect ratio', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement()).toHaveClass(styles['visual-accent-aspect-auto']);
+    });
+
+    test('applies the correct aspect ratio class', () => {
+      const aspectRatios: Array<BoxProps.VisualAccent.AspectRatio> = ['auto', 'equal'];
+      aspectRatios.forEach(aspectRatio => {
+        const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio } });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-aspect-${aspectRatio}`]);
       });
     });
 
-    test('does not apply accentShape class when accentShape is not set', () => {
-      const boxWrapper = renderBox({ variant: 'awsui-accent', accentColor: 'indigo' });
-      const element = boxWrapper.getElement();
-      expect(element.className).not.toMatch(/accent-shape-sharp|accent-shape-circle/);
+    test('applies the correct class for each t-shirt size borderRadius keyword', () => {
+      const keywords: Array<BoxProps.VisualAccent.BorderRadius> = [
+        'n',
+        'xxxs',
+        'xxs',
+        'xs',
+        's',
+        'm',
+        'l',
+        'xl',
+        'xxl',
+        'xxxl',
+      ];
+      keywords.forEach(borderRadius => {
+        const boxWrapper = renderBox({ visualAccent: { color: 'indigo', borderRadius } });
+        const element = boxWrapper.getElement();
+        expect(element).toHaveClass(styles[`visual-accent-radius-${borderRadius}`]);
+        // Keyword radii are applied via class, not the custom property.
+        expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('');
+      });
     });
 
-    test('tagOverride works with accent variant', () => {
-      const boxWrapper = renderBox({ variant: 'awsui-accent', tagOverride: 'div' });
+    test('applies an arbitrary CSS borderRadius value through the custom property', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', borderRadius: '13px' } });
+      const element = boxWrapper.getElement();
+      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('13px');
+      expect(element.className).not.toMatch(/visual-accent-radius-/);
+    });
+
+    test('does not set the borderRadius custom property or class when borderRadius is not set', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      const element = boxWrapper.getElement();
+      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('');
+      expect(element.className).not.toMatch(/visual-accent-radius-/);
+    });
+
+    test('renders a circle when combining equal aspect ratio and 50% borderRadius', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio: 'equal', borderRadius: '50%' } });
+      const element = boxWrapper.getElement();
+      expect(element).toHaveClass(styles['visual-accent-aspect-equal']);
+      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('50%');
+    });
+
+    test('tagOverride works with visualAccent', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' }, tagOverride: 'div' });
       expect(boxWrapper.getElement().tagName).toBe('DIV');
     });
   });
