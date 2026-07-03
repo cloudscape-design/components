@@ -207,15 +207,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#2a2e33",
+            "light": "#fafafa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f1faff",
           },
         },
         "color-background-accent-lime": {
@@ -2454,15 +2454,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#fafafa",
+            "light": "#21252c",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-accent-lime": {
@@ -2504,7 +2504,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -3937,15 +3937,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#2a2e33",
+            "light": "#fafafa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f1faff",
           },
         },
         "color-background-accent-lime": {
@@ -6184,15 +6184,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#fafafa",
+            "light": "#21252c",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-accent-lime": {
@@ -6234,7 +6234,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -7667,15 +7667,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#2a2e33",
+            "light": "#fafafa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f1faff",
           },
         },
         "color-background-accent-lime": {
@@ -9914,15 +9914,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#fafafa",
+            "light": "#21252c",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-accent-lime": {
@@ -9964,7 +9964,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -11397,15 +11397,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#2a2e33",
+            "light": "#fafafa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f1faff",
           },
         },
         "color-background-accent-lime": {
@@ -13644,15 +13644,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#fafafa",
+            "light": "#21252c",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-accent-lime": {
@@ -13694,7 +13694,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -15127,15 +15127,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#2a2e33",
+            "light": "#fafafa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f1faff",
           },
         },
         "color-background-accent-lime": {
@@ -17374,15 +17374,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#fafafa",
+            "light": "#21252c",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-accent-lime": {
@@ -17424,7 +17424,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -18857,15 +18857,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#151515",
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#001475",
+            "dark": "#00204d",
+            "light": "#00204d",
           },
         },
         "color-background-accent-lime": {
@@ -21104,15 +21104,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#b7b7b7",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#7598ff",
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-text-accent-lime": {
@@ -22587,15 +22587,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-accent-grey": {
       "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#151515",
-        "light": "#fcfcfc",
+        "dark": "#2a2e33",
+        "light": "#fafafa",
       },
     },
     "color-background-accent-indigo": {
       "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#001475",
-        "light": "#f5f7ff",
+        "dark": "#00204d",
+        "light": "#f1faff",
       },
     },
     "color-background-accent-lime": {
@@ -24834,15 +24834,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-text-accent-grey": {
       "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#b7b7b7",
-        "light": "#6b6b6b",
+        "dark": "#fafafa",
+        "light": "#21252c",
       },
     },
     "color-text-accent-indigo": {
       "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#7598ff",
-        "light": "#295eff",
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-text-accent-lime": {
@@ -24884,7 +24884,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
       "$value": {
         "dark": "#ffe347",
-        "light": "#f2b100",
+        "light": "#9e6900",
       },
     },
     "color-text-action-card-disabled": {
@@ -26322,15 +26322,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#232b37",
+            "light": "#f9f9fa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f0fbff",
           },
         },
         "color-background-accent-lime": {
@@ -28569,15 +28569,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#f9f9fa",
+            "light": "#1b232d",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent-lime": {
@@ -28619,7 +28619,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -30052,15 +30052,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#151515",
+            "dark": "#232b37",
+            "light": "#232b37",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#001475",
+            "dark": "#00204d",
+            "light": "#00204d",
           },
         },
         "color-background-accent-lime": {
@@ -32299,15 +32299,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#b7b7b7",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#7598ff",
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent-lime": {
@@ -33782,15 +33782,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#232b37",
+            "light": "#f9f9fa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f0fbff",
           },
         },
         "color-background-accent-lime": {
@@ -36029,15 +36029,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#f9f9fa",
+            "light": "#1b232d",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent-lime": {
@@ -36079,7 +36079,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -37512,15 +37512,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#232b37",
+            "light": "#f9f9fa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f0fbff",
           },
         },
         "color-background-accent-lime": {
@@ -39759,15 +39759,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#f9f9fa",
+            "light": "#1b232d",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent-lime": {
@@ -39809,7 +39809,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -41242,15 +41242,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#232b37",
+            "light": "#f9f9fa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f0fbff",
           },
         },
         "color-background-accent-lime": {
@@ -43489,15 +43489,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#f9f9fa",
+            "light": "#1b232d",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent-lime": {
@@ -43539,7 +43539,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -44972,15 +44972,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#fcfcfc",
+            "dark": "#232b37",
+            "light": "#f9f9fa",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#f5f7ff",
+            "dark": "#00204d",
+            "light": "#f0fbff",
           },
         },
         "color-background-accent-lime": {
@@ -47219,15 +47219,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#6b6b6b",
+            "dark": "#f9f9fa",
+            "light": "#1b232d",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#295eff",
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-text-accent-lime": {
@@ -47269,7 +47269,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#ffe347",
-            "light": "#f2b100",
+            "light": "#9e6900",
           },
         },
         "color-text-action-card-disabled": {
@@ -48702,15 +48702,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#151515",
+            "dark": "#232b37",
+            "light": "#232b37",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#001475",
+            "dark": "#00204d",
+            "light": "#00204d",
           },
         },
         "color-background-accent-lime": {
@@ -50949,15 +50949,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#b7b7b7",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#7598ff",
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent-lime": {
@@ -52432,15 +52432,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-accent-grey": {
           "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#151515",
-            "light": "#151515",
+            "dark": "#232b37",
+            "light": "#232b37",
           },
         },
         "color-background-accent-indigo": {
           "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#001475",
-            "light": "#001475",
+            "dark": "#00204d",
+            "light": "#00204d",
           },
         },
         "color-background-accent-lime": {
@@ -54679,15 +54679,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-accent-grey": {
           "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#b7b7b7",
-            "light": "#b7b7b7",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-accent-indigo": {
           "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
           "$value": {
-            "dark": "#7598ff",
-            "light": "#7598ff",
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-text-accent-lime": {
@@ -56162,15 +56162,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-accent-grey": {
       "$description": "The background color of the grey accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#151515",
-        "light": "#fcfcfc",
+        "dark": "#232b37",
+        "light": "#f9f9fa",
       },
     },
     "color-background-accent-indigo": {
       "$description": "The background color of the indigo accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#001475",
-        "light": "#f5f7ff",
+        "dark": "#00204d",
+        "light": "#f0fbff",
       },
     },
     "color-background-accent-lime": {
@@ -58409,15 +58409,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-text-accent-grey": {
       "$description": "The content color of the grey accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#b7b7b7",
-        "light": "#6b6b6b",
+        "dark": "#f9f9fa",
+        "light": "#1b232d",
       },
     },
     "color-text-accent-indigo": {
       "$description": "The content color of the indigo accent in the Box \`awsui-accent\` variant.",
       "$value": {
-        "dark": "#7598ff",
-        "light": "#295eff",
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-text-accent-lime": {
@@ -58459,7 +58459,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The content color of the yellow accent in the Box \`awsui-accent\` variant.",
       "$value": {
         "dark": "#ffe347",
-        "light": "#f2b100",
+        "light": "#9e6900",
       },
     },
     "color-text-action-card-disabled": {
