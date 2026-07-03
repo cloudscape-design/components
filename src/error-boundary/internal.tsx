@@ -6,6 +6,7 @@ import React, { Component, createContext, useContext, useState } from 'react';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { metrics } from '../internal/metrics';
 import { SomeRequired } from '../internal/types';
 import { ErrorBoundaryFallback } from './fallback';
 import { AppLayoutBuiltInErrorBoundaryProps, BuiltInErrorBoundaryProps, ErrorBoundaryProps } from './interfaces';
@@ -92,6 +93,7 @@ export function AppLayoutBuiltInErrorBoundary({
   suppressNested = false,
   children,
   renderFallback = () => <></>,
+  appLayoutPart,
 }: AppLayoutBuiltInErrorBoundaryProps) {
   const context = useContext(ErrorBoundariesContext);
   const thisSuppressed = context.suppressed === true || context.suppressed === RootSuppressed;
@@ -104,7 +106,10 @@ export function AppLayoutBuiltInErrorBoundary({
       className={styles['app-layout-part-fallback']}
       onError={error => {
         context?.onError?.(error);
-        // TODO Implement cloudscape error reporting
+        metrics.sendOpsMetricObject('awsui-app-layout-error-boundary-fired', {
+          errorMessage: error?.error?.message ?? '',
+          appLayoutPart: appLayoutPart ?? '',
+        });
       }}
     >
       <ErrorBoundariesContext.Provider value={{ ...context, suppressed: nextSuppressed, renderFallback }}>

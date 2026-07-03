@@ -189,7 +189,7 @@ export function DrawerTriggers({
           const selected = !expandedDrawerId && item.id === activeDrawerId;
           const isFeatureNotificationsDrawer = featureNotificationsProps?.drawer?.id === item.id;
           return (
-            <AppLayoutBuiltInErrorBoundary key={item.id}>
+            <AppLayoutBuiltInErrorBoundary key={item.id} appLayoutPart="toolbar-trigger-drawer">
               <TriggerButton
                 ariaLabel={item.ariaLabels?.triggerButton}
                 ariaExpanded={selected}
@@ -243,7 +243,7 @@ export function DrawerTriggers({
           }
 
           return (
-            <AppLayoutBuiltInErrorBoundary key={item.id}>
+            <AppLayoutBuiltInErrorBoundary key={item.id} appLayoutPart="toolbar-trigger-drawer">
               <TriggerButton
                 ariaLabel={item.ariaLabels?.triggerButton}
                 ariaExpanded={selected}
@@ -282,7 +282,7 @@ export function DrawerTriggers({
           );
         })}
         {overflowItems.length > 0 && (
-          <AppLayoutBuiltInErrorBoundary>
+          <AppLayoutBuiltInErrorBoundary appLayoutPart="toolbar-trigger-overflow-menu">
             <OverflowMenu
               items={overflowItems.map(item => {
                 const isBottom = item?.position === 'bottom';

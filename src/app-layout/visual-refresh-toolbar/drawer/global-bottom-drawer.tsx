@@ -192,7 +192,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
   }, [reportBottomDrawerSize, size]);
 
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="bottom-drawer">
       <Transition
         nodeRef={drawerRef}
         in={show || isExpanded}

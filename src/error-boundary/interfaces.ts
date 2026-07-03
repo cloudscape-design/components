@@ -112,4 +112,5 @@ export interface BuiltInErrorBoundaryProps {
 
 export interface AppLayoutBuiltInErrorBoundaryProps extends BuiltInErrorBoundaryProps {
   renderFallback?: ErrorBoundaryProps['renderFallback'];
+  appLayoutPart?: string;
 }
