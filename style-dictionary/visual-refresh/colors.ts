@@ -371,7 +371,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeRed: '{colorTextNotificationDefault}',
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
 
-  // ── Accent (Box `awsui-accent` variant) ───────────────────────────────────
+  // ── Visual accent ───────────────────────────────────
   colorBackgroundAccentRed: { light: '{colorError50}', dark: '{colorError950}' },
   colorBackgroundAccentYellow: { light: '{colorWarning50}', dark: '{colorWarning950}' },
   colorBackgroundAccentIndigo: { light: '{colorInfo50}', dark: '{colorInfo950}' },
@@ -383,13 +383,13 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundAccentGrey: { light: '{colorNeutral100}', dark: '{colorNeutral750}' },
   colorTextAccentRed: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextAccentYellow: { light: '{colorWarning800}', dark: '{colorWarning400}' },
-  colorTextAccentIndigo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextAccentIndigo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextAccentGreen: { light: '{colorSuccess600}', dark: '{colorSuccess400}' },
-  colorTextAccentOrange: { light: '{colorOrange600}', dark: '{colorOrange400}' },
-  colorTextAccentPurple: { light: '{colorPurple600}', dark: '{colorPurple400}' },
-  colorTextAccentMint: { light: '{colorMint600}', dark: '{colorMint400}' },
-  colorTextAccentLime: { light: '{colorLime600}', dark: '{colorLime400}' },
-  colorTextAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextAccentOrange: { light: '{colorOrange700}', dark: '{colorOrange400}' },
+  colorTextAccentPurple: { light: '{colorPurple700}', dark: '{colorPurple400}' },
+  colorTextAccentMint: { light: '{colorMint700}', dark: '{colorMint400}' },
+  colorTextAccentLime: { light: '{colorLime700}', dark: '{colorLime400}' },
+  colorTextAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral200}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
