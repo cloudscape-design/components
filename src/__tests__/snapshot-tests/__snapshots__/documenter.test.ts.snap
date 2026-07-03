@@ -4724,46 +4724,6 @@ exports[`Components definition for box matches the snapshot: box 1`] = `
   "name": "Box",
   "properties": [
     {
-      "description": "Defines the accent color for the \`awsui-accent\` variant.
-Only applies when \`variant\` is set to \`awsui-accent\`.",
-      "inlineType": {
-        "name": "BoxProps.AccentColor",
-        "type": "union",
-        "values": [
-          "green",
-          "grey",
-          "indigo",
-          "lime",
-          "orange",
-          "purple",
-          "red",
-          "yellow",
-          "mint",
-        ],
-      },
-      "name": "accentColor",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Controls the border-radius shape of the accent container.
-Only applies when \`variant\` is set to \`awsui-accent\`.
-
-- \`sharp\` (default) — applies a small border-radius (2px).
-- \`circle\` — applies a fully circular shape with equal width and height, suitable for wrapping icons.",
-      "inlineType": {
-        "name": "BoxProps.AccentShape",
-        "type": "union",
-        "values": [
-          "circle",
-          "sharp",
-        ],
-      },
-      "name": "accentShape",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -5028,9 +4988,6 @@ Sizes are automatically scaled down in compact mode.
   styled using "Display large light" typography.
 - If you set it to \`awsui-inline-code\`, the component will render a \`code\` element,
   styled with a background and padding for inline code snippets.
-- If you set it to \`awsui-accent\`, the component will render a \`span\`,
-  styled as a visual accent container with background and content color combinations.
-  Use with the \`accentColor\` prop to select a color variant.
 
 Override the HTML tag by using property \`tagOverride\`.",
       "inlineType": {
@@ -5054,12 +5011,96 @@ Override the HTML tag by using property \`tagOverride\`.",
           "awsui-key-label",
           "awsui-gen-ai-label",
           "awsui-inline-code",
-          "awsui-accent",
         ],
       },
       "name": "variant",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Renders the box as a visual accent container to emphasize its content.
+
+Setting this property activates the accent styling: the component renders a \`span\`
+with a coordinated background and content color combination that works in both light
+and dark modes. A \`variant\` is not required to activate the accent.
+
+The object accepts the following fields:
+- \`color\` (required) — the coordinated background and foreground color pair. The foreground
+  color is applied as the container's CSS \`color\`, so it only affects content that inherits
+  the current color (for example an \`Icon\`, or a nested \`Box\` with \`color="inherit"\`).
+  Content that sets its own color is not overridden.
+- \`aspectRatio\` — \`auto\` (default) lets the container's width follow its content;
+  \`equal\` forces equal width and height, suitable for wrapping icons.
+- \`borderRadius\` — the corner rounding applied to the container. Accepts a t-shirt size keyword
+  from the Box spacing scale (\`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`) or
+  any valid CSS \`border-radius\` value such as \`'13px'\`. Set it to \`'50%'\` together with
+  \`aspectRatio: 'equal'\` to render a circle.
+
+Composes with existing Box props such as \`padding\` and \`margin\`.",
+      "inlineType": {
+        "name": "BoxProps.VisualAccent",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.AspectRatio",
+              "type": "union",
+              "values": [
+                "auto",
+                "equal",
+              ],
+            },
+            "name": "aspectRatio",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.BorderRadius",
+              "type": "union",
+              "values": [
+                ""s"",
+                ""m"",
+                "string & {}",
+                ""n"",
+                ""xxxs"",
+                ""xxs"",
+                ""xs"",
+                ""l"",
+                ""xl"",
+                ""xxl"",
+                ""xxxl"",
+              ],
+            },
+            "name": "borderRadius",
+            "optional": true,
+            "type": "BoxProps.VisualAccent.BorderRadius",
+          },
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.Color",
+              "type": "union",
+              "values": [
+                "green",
+                "grey",
+                "indigo",
+                "lime",
+                "orange",
+                "purple",
+                "red",
+                "yellow",
+                "mint",
+              ],
+            },
+            "name": "color",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "visualAccent",
+      "optional": true,
+      "type": "BoxProps.VisualAccent",
     },
   ],
   "regions": [
