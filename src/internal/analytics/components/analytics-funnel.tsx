@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -121,7 +121,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
   const formSubmitStartTime = useRef<number>(0);
   const activeValidationTimerId = useRef<ReturnType<typeof setTimeout>>();
-  // This useEffect hook is run once on component mount to initiate the funnel analytics.
+  // This effect is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
   // about the funnel, and receives a unique interaction id.
   // This unique interaction id is then stored in the state for further use.
@@ -129,9 +129,14 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   // On component unmount, it checks whether the funnel was successfully completed.
   // Based on this, it either calls 'funnelComplete' or 'funnelCancelled' method from FunnelMetrics.
   //
+  // We use a layout effect (rather than a passive effect) so that the cleanup runs during the
+  // synchronous commit phase, before React detaches the funnel's DOM subtree. This keeps the
+  // funnel state transition ordered before the funnel step cleanup (parent-before-child), which
+  // the step relies on to decide whether to emit `funnelStepComplete`. See AWSUI-61222.
+  //
   // The eslint-disable is required as we deliberately want this effect to run only once on mount and unmount,
   // hence we do not provide any dependencies.
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!mounted) {
       return;
     }
@@ -454,11 +459,17 @@ const InnerAnalyticsFunnelStep = ({
     mounted,
   ]);
 
-  // This useEffect hook is used to track the start and completion of interaction with the step.
+  // This effect is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
   // to record the beginning of the interaction with the current step.
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
-  useEffect(() => {
+  //
+  // We use a layout effect (rather than a passive effect) so that the cleanup runs synchronously
+  // during the commit phase, while the step content is still attached to the document. The
+  // analytics client re-resolves `stepNameSelector`/`subStepAllSelector` against the live DOM when
+  // `funnelStepComplete` is emitted; in React 18 a passive-effect cleanup would run only after the
+  // content has been detached, so those selectors would resolve to nothing. See AWSUI-61222.
+  useLayoutEffect(() => {
     if (!funnelInteractionId) {
       // This step is not inside an active funnel.
       return;

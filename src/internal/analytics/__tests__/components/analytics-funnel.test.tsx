@@ -412,6 +412,37 @@ describe('AnalyticsFunnelStep', () => {
     });
   });
 
+  test('resolves the step DOM selectors while emitting funnelStepComplete when the step unmounts', () => {
+    // Regression test for AWSUI-61222. The analytics client re-resolves
+    // `stepNameSelector`/`subStepAllSelector` against the live DOM at the moment
+    // `funnelStepComplete` is emitted. In React 18, a passive `useEffect` cleanup
+    // runs *after* the step content has been detached from the document, so those
+    // selectors would resolve to nothing. Emitting from a layout-effect cleanup
+    // keeps the content attached while the event is dispatched, matching React 16.
+    const stepNumber = 1;
+    const stepNameSelector = '.step-name-selector';
+
+    let stepNameResolvableAtEmit: boolean | undefined;
+    (FunnelMetrics.funnelStepComplete as jest.Mock).mockImplementation(({ stepNameSelector }) => {
+      stepNameResolvableAtEmit = document.querySelector(stepNameSelector) !== null;
+    });
+
+    const { rerender } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
+          <div className="step-name-selector">My funnel step</div>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    rerender(<AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />);
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
+    expect(stepNameResolvableAtEmit).toBe(true);
+  });
+
   test('treats container-like tables as their own substep', () => {
     render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
