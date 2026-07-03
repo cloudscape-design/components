@@ -279,7 +279,12 @@
     "ariaLabels.submittingEditText": "การส่งแก้ไข",
     "ariaLabels.successfulEditLabel": "แก้ไขเรียบร้อยแล้ว",
     "columnDefinitions.editConfig.errorIconAriaLabel": "ข้อผิดพลาด",
-    "columnDefinitions.editConfig.editIconAriaLabel": "ที่สามารถแก้ไขได้"
+    "columnDefinitions.editConfig.editIconAriaLabel": "ที่สามารถแก้ไขได้",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "This column is not sorted",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} descending} other {{columnLabel} ascending}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Sorting cleared"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "เลื่อนไปทางซ้าย",

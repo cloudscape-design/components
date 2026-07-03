@@ -416,7 +416,12 @@
     "i18nStrings.sortDropdown.addToSortDescending": "정렬에 추가 (내림차순)",
     "i18nStrings.sortDropdown.removeFromSort": "정렬에서 제거",
     "i18nStrings.clearSort": "정렬 지우기",
-    "ariaLabels.sortMenuTriggerLabel": "정렬 옵션"
+    "ariaLabels.sortMenuTriggerLabel": "정렬 옵션",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "This column is not sorted",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} descending} other {{columnLabel} ascending}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Sorting cleared"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "왼쪽으로 스크롤",

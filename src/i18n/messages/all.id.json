@@ -416,7 +416,12 @@
     "i18nStrings.sortDropdown.addToSortDescending": "Tambahkan untuk mengurutkan (turun)",
     "i18nStrings.sortDropdown.removeFromSort": "Hapus dari urutan",
     "i18nStrings.clearSort": "Hapus urutan",
-    "ariaLabels.sortMenuTriggerLabel": "Opsi urutan"
+    "ariaLabels.sortMenuTriggerLabel": "Opsi urutan",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "This column is not sorted",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} descending} other {{columnLabel} ascending}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Sorting cleared"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",
