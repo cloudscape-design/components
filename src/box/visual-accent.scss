@@ -78,51 +78,56 @@ $accent-radii: (
 
 // ─── Accent colors ──────────────────────────────────────────────────────────────
 // Light/dark values are resolved by the design tokens, so no explicit dark-mode
-// overrides are needed here. The `.box` prefix raises specificity to (0,2,0) so the
-// accent content color wins over `.root`'s default-text-style color (0,1,0), which is
-// emitted later in `styles.scss`. Descendants (nested Box, Icon) inherit this color.
+// overrides are needed here.
+//
+// The selectors chain the `.visual-accent` base class with the `.visual-accent-{color}`
+// modifier (both are always applied together whenever `visualAccent` is set) to reach a
+// specificity of (0,3,0). This intentionally beats the `color` prop's `.box.color-*`
+// selector (0,2,0) so the accent's coordinated foreground color always wins, regardless of
+// stylesheet source order. Winning here preserves the guaranteed background/foreground color
+// contrast of the accent pair. Descendants (nested Box, Icon) inherit this color.
 
-.box.visual-accent-red {
+.box.visual-accent.visual-accent-red {
   background-color: awsui.$color-background-accent-red;
   color: awsui.$color-text-accent-red;
 }
 
-.box.visual-accent-yellow {
+.box.visual-accent.visual-accent-yellow {
   background-color: awsui.$color-background-accent-yellow;
   color: awsui.$color-text-accent-yellow;
 }
 
-.box.visual-accent-indigo {
+.box.visual-accent.visual-accent-indigo {
   background-color: awsui.$color-background-accent-indigo;
   color: awsui.$color-text-accent-indigo;
 }
 
-.box.visual-accent-green {
+.box.visual-accent.visual-accent-green {
   background-color: awsui.$color-background-accent-green;
   color: awsui.$color-text-accent-green;
 }
 
-.box.visual-accent-orange {
+.box.visual-accent.visual-accent-orange {
   background-color: awsui.$color-background-accent-orange;
   color: awsui.$color-text-accent-orange;
 }
 
-.box.visual-accent-purple {
+.box.visual-accent.visual-accent-purple {
   background-color: awsui.$color-background-accent-purple;
   color: awsui.$color-text-accent-purple;
 }
 
-.box.visual-accent-mint {
+.box.visual-accent.visual-accent-mint {
   background-color: awsui.$color-background-accent-mint;
   color: awsui.$color-text-accent-mint;
 }
 
-.box.visual-accent-lime {
+.box.visual-accent.visual-accent-lime {
   background-color: awsui.$color-background-accent-lime;
   color: awsui.$color-text-accent-lime;
 }
 
-.box.visual-accent-grey {
+.box.visual-accent.visual-accent-grey {
   background-color: awsui.$color-background-accent-grey;
   color: awsui.$color-text-accent-grey;
 }
