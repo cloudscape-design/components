@@ -24,7 +24,7 @@ export interface BoxProps extends BaseComponentProps {
    */
   variant?: BoxProps.Variant;
   /**
-   * Renders the box as a visual accent container to emphasize its content.
+   * Renders the box as a visual accent wrapper to emphasize its content.
    *
    * Setting this property activates the accent styling: the component renders a `span`
    * with a coordinated background and content color combination that works in both light
@@ -32,12 +32,12 @@ export interface BoxProps extends BaseComponentProps {
    *
    * The object accepts the following fields:
    * - `color` (required) — the coordinated background and foreground color pair. The foreground
-   *   color is applied as the container's CSS `color`, so it only affects content that inherits
+   *   color is applied as the wrapper's CSS `color`, so it only affects content that inherits
    *   the current color (for example an `Icon`, or a nested `Box` with `color="inherit"`).
    *   Content that sets its own color is not overridden.
-   * - `aspectRatio` — `auto` (default) lets the container's width follow its content;
+   * - `aspectRatio` — `auto` (default) lets the wrapper's width follow its content;
    *   `equal` forces equal width and height, suitable for wrapping icons.
-   * - `borderRadius` — the corner rounding applied to the container. Accepts a t-shirt size keyword
+   * - `borderRadius` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
    *   from the Box spacing scale (`n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`) or
    *   any valid CSS `border-radius` value such as `'13px'`. Set it to `'50%'` together with
    *   `aspectRatio: 'equal'` to render a circle.
@@ -180,27 +180,27 @@ export namespace BoxProps {
 
   export interface VisualAccent {
     /**
-     * The coordinated background and foreground color pair applied to the accent container.
+     * The coordinated background and foreground color pair applied to the accent wrapper.
      * Each color works in both light and dark modes.
      *
-     * The background color is applied directly to the container. The foreground color is applied
-     * as the container's CSS `color` and is therefore only picked up by content that inherits the
+     * The background color is applied directly to the wrapper. The foreground color is applied
+     * as the wrapper's CSS `color` and is therefore only picked up by content that inherits the
      * current color, such as an `Icon` or a nested `Box` with `color="inherit"`. Content that
      * defines its own color (for example a `Box` with an explicit `color`, or a `Link`) keeps that
      * color and is not recolored by the accent.
      */
     color: BoxProps.VisualAccent.Color;
     /**
-     * Controls the aspect ratio of the accent container.
+     * Controls the aspect ratio of the accent wrapper.
      *
-     * - `auto` (default) — the container's width follows its content.
-     * - `equal` — the container has equal width and height, suitable for wrapping icons.
+     * - `auto` (default) — the wrapper's width follows its content.
+     * - `equal` — the wrapper has equal width and height, suitable for wrapping icons.
      *
      * Combine `aspectRatio: 'equal'` with `borderRadius: '50%'` to render a circle.
      */
     aspectRatio?: BoxProps.VisualAccent.AspectRatio;
     /**
-     * The corner rounding applied to the accent container.
+     * The corner rounding applied to the accent wrapper.
      *
      * You can use one of the curated t-shirt size keywords, which map to the same spacing scale
      * used by `padding` and `margin`: `n` (none), `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`,
