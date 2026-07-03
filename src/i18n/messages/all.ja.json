@@ -408,7 +408,15 @@
     "ariaLabels.expandButtonLabel": "展開する",
     "ariaLabels.collapseButtonLabel": "折りたたむ",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
-    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
+    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能",
+    "i18nStrings.sortDropdown.sortAscending": "昇順にソート",
+    "i18nStrings.sortDropdown.sortDescending": "降順にソート",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "複数列ソート (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "ソートに追加 (昇順)",
+    "i18nStrings.sortDropdown.addToSortDescending": "ソートに追加 (降順)",
+    "i18nStrings.sortDropdown.removeFromSort": "ソートから削除",
+    "i18nStrings.clearSort": "ソートをクリア",
+    "ariaLabels.sortMenuTriggerLabel": "ソートオプション"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",

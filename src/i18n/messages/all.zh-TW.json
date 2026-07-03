@@ -408,7 +408,15 @@
     "ariaLabels.expandButtonLabel": "展開",
     "ariaLabels.collapseButtonLabel": "摺疊",
     "columnDefinitions.editConfig.errorIconAriaLabel": "錯誤",
-    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯"
+    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯",
+    "i18nStrings.sortDropdown.sortAscending": "遞增排序",
+    "i18nStrings.sortDropdown.sortDescending": "遞減排序",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "多欄排序 (Shift + 按一下)",
+    "i18nStrings.sortDropdown.addToSortAscending": "新增至排序 (遞增)",
+    "i18nStrings.sortDropdown.addToSortDescending": "新增至排序 (遞減)",
+    "i18nStrings.sortDropdown.removeFromSort": "從排序中移除",
+    "i18nStrings.clearSort": "清除排序",
+    "ariaLabels.sortMenuTriggerLabel": "排序選項"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "向左捲動",

@@ -408,7 +408,15 @@
     "ariaLabels.expandButtonLabel": "Élargir",
     "ariaLabels.collapseButtonLabel": "Réduire",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erreur",
-    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable",
+    "i18nStrings.sortDropdown.sortAscending": "Trier par ordre croissant",
+    "i18nStrings.sortDropdown.sortDescending": "Trier par ordre décroissant",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Tri sur plusieurs colonnes (Maj + clic)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Ajouter au tri (par ordre croissant)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Ajouter au tri (par ordre décroissant)",
+    "i18nStrings.sortDropdown.removeFromSort": "Supprimer du tri",
+    "i18nStrings.clearSort": "Effacer le tri",
+    "ariaLabels.sortMenuTriggerLabel": "Options de tri"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Faire défiler vers la gauche",
