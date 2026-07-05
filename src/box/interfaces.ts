@@ -214,7 +214,25 @@ export namespace BoxProps {
   }
 
   export namespace VisualAccent {
-    export type Color = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'mint' | 'lime' | 'grey';
+    export type Color =
+      | 'red'
+      | 'yellow'
+      | 'indigo'
+      | 'green'
+      | 'orange'
+      | 'purple'
+      | 'mint'
+      | 'lime'
+      | 'grey'
+      | 'teal'
+      | 'cyan'
+      | 'blue'
+      | 'violet'
+      | 'fuchsia'
+      | 'magenta'
+      | 'pink'
+      | 'rose'
+      | 'amber';
     export type AspectRatio = 'auto' | 'equal';
     /**
      * A curated t-shirt size keyword aligned to the Box spacing scale
