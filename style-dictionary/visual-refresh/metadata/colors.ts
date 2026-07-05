@@ -321,6 +321,51 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundAccentTeal: {
+    description: 'The background color of the teal accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentCyan: {
+    description: 'The background color of the cyan accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentBlue: {
+    description: 'The background color of the blue accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentViolet: {
+    description: 'The background color of the violet accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentFuchsia: {
+    description: 'The background color of the fuchsia accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentMagenta: {
+    description: 'The background color of the magenta accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentPink: {
+    description: 'The background color of the pink accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentRose: {
+    description: 'The background color of the rose accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAccentAmber: {
+    description: 'The background color of the amber accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
   colorTextAccentRed: {
     description: 'The content color of the red accent in the Box `awsui-accent` variant.',
     public: true,
@@ -363,6 +408,51 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextAccentGrey: {
     description: 'The content color of the grey accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentTeal: {
+    description: 'The content color of the teal accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentCyan: {
+    description: 'The content color of the cyan accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentBlue: {
+    description: 'The content color of the blue accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentViolet: {
+    description: 'The content color of the violet accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentFuchsia: {
+    description: 'The content color of the fuchsia accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentMagenta: {
+    description: 'The content color of the magenta accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentPink: {
+    description: 'The content color of the pink accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentRose: {
+    description: 'The content color of the rose accent in the Box `awsui-accent` variant.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccentAmber: {
+    description: 'The content color of the amber accent in the Box `awsui-accent` variant.',
     public: true,
     themeable: true,
   },

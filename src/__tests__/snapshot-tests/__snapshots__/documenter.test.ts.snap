@@ -5018,7 +5018,7 @@ Override the HTML tag by using property \`tagOverride\`.",
       "type": "string",
     },
     {
-      "description": "Renders the box as a visual accent container to emphasize its content.
+      "description": "Renders the box as a visual accent wrapper to emphasize its content.
 
 Setting this property activates the accent styling: the component renders a \`span\`
 with a coordinated background and content color combination that works in both light
@@ -5026,12 +5026,12 @@ and dark modes. A \`variant\` is not required to activate the accent.
 
 The object accepts the following fields:
 - \`color\` (required) — the coordinated background and foreground color pair. The foreground
-  color is applied as the container's CSS \`color\`, so it only affects content that inherits
+  color is applied as the wrapper's CSS \`color\`, so it only affects content that inherits
   the current color (for example an \`Icon\`, or a nested \`Box\` with \`color="inherit"\`).
   Content that sets its own color is not overridden.
-- \`aspectRatio\` — \`auto\` (default) lets the container's width follow its content;
+- \`aspectRatio\` — \`auto\` (default) lets the wrapper's width follow its content;
   \`equal\` forces equal width and height, suitable for wrapping icons.
-- \`borderRadius\` — the corner rounding applied to the container. Accepts a t-shirt size keyword
+- \`borderRadius\` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
   from the Box spacing scale (\`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`) or
   any valid CSS \`border-radius\` value such as \`'13px'\`. Set it to \`'50%'\` together with
   \`aspectRatio: 'equal'\` to render a circle.
@@ -5080,15 +5080,24 @@ Composes with existing Box props such as \`padding\` and \`margin\`.",
               "name": "BoxProps.VisualAccent.Color",
               "type": "union",
               "values": [
+                "blue",
+                "cyan",
+                "fuchsia",
                 "green",
                 "grey",
                 "indigo",
                 "lime",
+                "magenta",
                 "orange",
+                "pink",
                 "purple",
                 "red",
+                "teal",
+                "violet",
                 "yellow",
                 "mint",
+                "rose",
+                "amber",
               ],
             },
             "name": "color",
