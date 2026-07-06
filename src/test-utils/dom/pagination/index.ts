@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
 import InputWrapper from '../input';
@@ -11,12 +11,14 @@ import styles from '../../../pagination/styles.selectors.js';
 export default class PaginationWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
 
-  findCurrentPage(): ElementWrapper {
-    return this.findByClassName(styles['button-current'])!;
+  findCurrentPage(): ButtonWrapper {
+    return this.findComponent(`.${styles['button-current']}`, ButtonWrapper)!;
   }
 
-  findPageNumbers(): Array<ElementWrapper> {
-    return this.findAllByClassName(styles['page-number']);
+  findPageNumbers(): Array<ButtonWrapper> {
+    return this.findAllByClassName<HTMLButtonElement>(styles['page-number']).map(
+      wrapper => new ButtonWrapper(wrapper.getElement())
+    );
   }
 
   /**
@@ -24,18 +26,18 @@ export default class PaginationWrapper extends ComponentWrapper {
    *
    * @param index 1-based index of the page number to return.
    */
-  findPageNumberByIndex(index: number): ElementWrapper | null {
+  findPageNumberByIndex(index: number): ButtonWrapper | null {
     // we need to skip the "previous page" button
     const pageIndex = index + 1;
-    return this.find(`li:nth-child(${pageIndex}) .${styles.button}`);
+    return this.findComponent(`li:nth-child(${pageIndex}) .${styles.button}`, ButtonWrapper);
   }
 
-  findPreviousPageButton(): ElementWrapper {
-    return this.find(`li:first-child .${styles.button}`)!;
+  findPreviousPageButton(): ButtonWrapper {
+    return this.findComponent(`li:first-child .${styles.button}`, ButtonWrapper)!;
   }
 
-  findNextPageButton(): ElementWrapper {
-    return this.find(`li:last-child .${styles.button}`)!;
+  findNextPageButton(): ButtonWrapper {
+    return this.findComponent(`li:last-child .${styles.button}`, ButtonWrapper)!;
   }
 
   /**
