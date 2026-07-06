@@ -901,7 +901,6 @@ export type TypographyTokenName =
   | 'fontDecorationStyleLink'
   | 'fontPanelHeaderLineHeight'
   | 'fontPanelHeaderSize'
-  | 'fontSideNavigationSectionGroupTitleSize'
   | 'fontSideNavigationSectionHeaderSize'
   | 'fontSideNavigationSectionHeaderWeight'
   | 'fontSizeBodyM'
