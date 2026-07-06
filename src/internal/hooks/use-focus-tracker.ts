@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, useEffect, useRef } from 'react';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../events';
+import { NonCancelableEventHandler } from '../../types/events';
+import { fireNonCancelableEvent } from '../events';
 import FocusTracker from '../focus-tracker';
 
 interface UseFocusTracker {

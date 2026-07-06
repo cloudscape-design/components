@@ -23,6 +23,7 @@ module.exports = ({
   globalStylesIndex = 'index',
   moduleReplacements,
   react18,
+  contentHash = isProd,
 } = {}) => {
   const mode = process.env.NODE_ENV;
   return {
@@ -37,7 +38,8 @@ module.exports = ({
     output: {
       path: path.resolve(outputPath),
       publicPath: './',
-      chunkFilename: 'chunks/[name].js',
+      filename: contentHash ? '[name].[contenthash].js' : '[name].js',
+      chunkFilename: contentHash ? 'chunks/[name].[contenthash].js' : 'chunks/[name].js',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -164,8 +166,8 @@ module.exports = ({
     plugins: [
       new MiniCssExtractPlugin({
         ignoreOrder: true,
-        filename: '[name].css',
-        chunkFilename: 'chunks/[id].css',
+        filename: contentHash ? '[name].[contenthash].css' : '[name].css',
+        chunkFilename: contentHash ? 'chunks/[id].[contenthash].css' : 'chunks/[id].css',
       }),
       new CopyWebpackPlugin({
         patterns: [

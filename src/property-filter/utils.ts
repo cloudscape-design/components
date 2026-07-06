@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { ComparisonOperator, Token } from './interfaces';
 import {
-  ComparisonOperator,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalToken,
   InternalTokenGroup,
-  Token,
-} from './interfaces';
+} from './internal-interfaces';
 
 export function isInternalToken(tokenOrGroup: InternalToken | InternalTokenGroup): tokenOrGroup is InternalToken {
   const key: keyof InternalToken = 'operator';

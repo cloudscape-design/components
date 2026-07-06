@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { InternalItemOrGroup } from '../../../button-group/internal-interfaces';
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -192,7 +192,7 @@ function AppLayoutGlobalBottomDrawerImplementation({
   }, [reportBottomDrawerSize, size]);
 
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="bottom-drawer">
       <Transition
         nodeRef={drawerRef}
         in={show || isExpanded}

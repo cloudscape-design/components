@@ -4,7 +4,7 @@ import { KeyboardEvent } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { InternalSelectionType } from '../interfaces';
+import { InternalSelectionType } from '../internal-interfaces';
 import { SELECTION_ITEM } from './utils';
 
 import selectionStyles from './styles.css.js';

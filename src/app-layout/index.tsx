@@ -6,13 +6,13 @@ import React from 'react';
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { NonCancelableCustomEvent } from '../types/events';
 import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { AppLayoutInternal } from './internal';

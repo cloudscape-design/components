@@ -3208,6 +3208,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "closed-caption",
                       "closed-caption-unavailable",
                       "command-prompt",
+                      "convert-code",
                       "delete-marker",
                       "drag-indicator",
                       "edit-gen-ai",
@@ -3249,6 +3250,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "send",
                       "share",
                       "shrink",
+                      "side-bar",
                       "slash",
                       "slash-divider",
                       "star-filled",
@@ -4810,6 +4812,7 @@ Note: If you don't set it, the display depends on the variant.",
           "heading-l",
           "heading-xl",
           "display-l",
+          "display-xl",
         ],
       },
       "name": "fontSize",
@@ -5509,6 +5512,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -5550,6 +5554,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -6183,6 +6188,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -6224,6 +6230,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -6475,6 +6482,7 @@ The main action also supports the following properties of the [button](/componen
                 "closed-caption",
                 "closed-caption-unavailable",
                 "command-prompt",
+                "convert-code",
                 "delete-marker",
                 "drag-indicator",
                 "edit-gen-ai",
@@ -6516,6 +6524,7 @@ The main action also supports the following properties of the [button](/componen
                 "send",
                 "share",
                 "shrink",
+                "side-bar",
                 "slash",
                 "slash-divider",
                 "star-filled",
@@ -6928,6 +6937,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`iconAlt\` (optional, string) - Specifies alternate text for the icon when using \`iconUrl\`.
 * \`iconUrl\` (optional, string) - Specifies the URL of a custom icon.
 * \`iconSvg\` (optional, ReactNode) - Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+* \`href\` (optional, string) - Renders the button as a link with the specified URL. Use for actions that navigate, such as opening a page in a new browser tab.
+* \`target\` (optional, string) - Specifies where to open the linked URL (for example, \`_blank\` to open in a new tab). This property only applies when \`href\` is set.
+* \`rel\` (optional, string) - Adds a \`rel\` attribute to the link. By default, the component sets \`rel\` to "noopener noreferrer" when \`target\` is \`"_blank"\`. This property only applies when \`href\` is set.
+* \`download\` (optional, boolean | string) - Specifies whether the linked URL, when selected, prompts the user to download instead of navigate. You can provide a string to suggest a file name. This property only applies when \`href\` is set.
 * \`popoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
 
 ### icon-toggle-button
@@ -12180,6 +12193,7 @@ Do not use this property when using drawers inside app layout.",
                 "closed-caption",
                 "closed-caption-unavailable",
                 "command-prompt",
+                "convert-code",
                 "delete-marker",
                 "drag-indicator",
                 "edit-gen-ai",
@@ -12221,6 +12235,7 @@ Do not use this property when using drawers inside app layout.",
                 "send",
                 "share",
                 "shrink",
+                "side-bar",
                 "slash",
                 "slash-divider",
                 "star-filled",
@@ -15389,6 +15404,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -15430,6 +15446,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -15779,6 +15796,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "convert-code",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "copy",
             "optional": true,
             "type": "React.ReactNode",
@@ -16085,6 +16107,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "shrink",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "side-bar",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -18222,7 +18249,7 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
 - \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.",
       "i18nTag": true,
       "inlineType": {
-        "name": "SortableAreaProps.DndAreaI18nStrings",
+        "name": "DndAreaI18nStrings",
         "properties": [
           {
             "name": "dragHandleAriaDescription",
@@ -18312,7 +18339,7 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "SortableAreaProps.DndAreaI18nStrings",
+      "type": "DndAreaI18nStrings",
     },
     {
       "description": "The items to display in the list.",
@@ -21439,6 +21466,7 @@ Requires React 18.",
                       "closed-caption",
                       "closed-caption-unavailable",
                       "command-prompt",
+                      "convert-code",
                       "delete-marker",
                       "drag-indicator",
                       "edit-gen-ai",
@@ -21480,6 +21508,7 @@ Requires React 18.",
                       "send",
                       "share",
                       "shrink",
+                      "side-bar",
                       "slash",
                       "slash-divider",
                       "star-filled",
@@ -21805,6 +21834,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -21846,6 +21876,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -25381,6 +25412,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "closed-caption",
                       "closed-caption-unavailable",
                       "command-prompt",
+                      "convert-code",
                       "delete-marker",
                       "drag-indicator",
                       "edit-gen-ai",
@@ -25422,6 +25454,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "send",
                       "share",
                       "shrink",
+                      "side-bar",
                       "slash",
                       "slash-divider",
                       "star-filled",
@@ -25997,6 +26030,7 @@ If you want to clear the selection, use \`null\`.",
                 "closed-caption",
                 "closed-caption-unavailable",
                 "command-prompt",
+                "convert-code",
                 "delete-marker",
                 "drag-indicator",
                 "edit-gen-ai",
@@ -26038,6 +26072,7 @@ If you want to clear the selection, use \`null\`.",
                 "send",
                 "share",
                 "shrink",
+                "side-bar",
                 "slash",
                 "slash-divider",
                 "star-filled",
@@ -26344,6 +26379,19 @@ property explicitly set to \`false\`.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "If true, the navigation is rendered in a compact, icon-only state:
+- Item text labels and the header title are hidden.
+- Section, \`Section group\`, \`Link group\`, and \`Expandable link group\`
+  children are not rendered.
+- \`Items control\` is not rendered.
+- Items without an \`icon\` are not rendered. Provide an icon for any
+  item that should remain visible while collapsed.",
+      "name": "collapsed",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Controls the header that appears at the top of the navigation component.
 
 It contains the following:
@@ -26369,8 +26417,13 @@ It contains the following:
                 },
                 {
                   "name": "src",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
+                },
+                {
+                  "name": "svg",
+                  "optional": true,
+                  "type": "React.ReactNode",
                 },
               ],
               "type": "object",
@@ -26422,6 +26475,7 @@ Links are rendered as \`<a>\` tags.
 - \`externalIconAriaLabel\` (string) - Adds an aria-label to the external icon.
 - \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
     our UX guidelines allow only to add a Badge and/or a "New" label.
+- \`icon\` (ReactNode) - Optional content rendered before the link text. Accepts any React node (for example, an \`<Icon />\` component or a custom \`<svg>\`).
 
 #### Divider
 Object that represents a horizontal divider between navigation content.
@@ -26453,6 +26507,7 @@ Object that represents a group of links.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the link group text. Accepts any React node.
 
 #### ExpandableLinkGroup
 
@@ -26464,7 +26519,8 @@ Object that represents an expandable group of links.
    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
-    our UX recommendation is to use only one level.",
+    our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the expandable link group text. Accepts any React node.",
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<SideNavigationProps.Item>",
@@ -31643,6 +31699,7 @@ If an href is provided, it opens the link in a new tab.",
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -31684,6 +31741,7 @@ If an href is provided, it opens the link in a new tab.",
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -31854,6 +31912,7 @@ We do not support using this attribute to apply custom styling.",
           "closed-caption",
           "closed-caption-unavailable",
           "command-prompt",
+          "convert-code",
           "delete-marker",
           "drag-indicator",
           "edit-gen-ai",
@@ -31895,6 +31954,7 @@ We do not support using this attribute to apply custom styling.",
           "send",
           "share",
           "shrink",
+          "side-bar",
           "slash",
           "slash-divider",
           "star-filled",
@@ -32647,7 +32707,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
         "type": "object",
       },
       "name": "identity",
-      "optional": false,
+      "optional": true,
       "type": "TopNavigationProps.Identity",
     },
     {
@@ -32691,8 +32751,32 @@ The following properties are supported across all utility types:
       "optional": true,
       "type": "ReadonlyArray<TopNavigationProps.Utility>",
     },
+    {
+      "defaultValue": "'top-navigation'",
+      "description": "Visual context applied to the navigation bar.
+- "top-navigation": Applies the top-navigation visual context. The component maintains a dark appearance regardless of the page's light/dark mode setting. Child components automatically adapt their colors to work on this dark background.
+- "none": No visual context applied. The component and its children use the same colors as the rest of the page and respond to the global light/dark mode normally.",
+      "inlineType": {
+        "name": "TopNavigationProps.VisualContext",
+        "type": "union",
+        "values": [
+          "none",
+          "top-navigation",
+        ],
+      },
+      "name": "visualContext",
+      "optional": true,
+      "type": "string",
+    },
   ],
   "regions": [
+    {
+      "description": "Specifies custom navigation content.
+When provided, replaces all structured content (identity, search, utilities are ignored).",
+      "displayName": "customContent",
+      "isDefault": true,
+      "name": "children",
+    },
     {
       "description": "Use with an input or autosuggest control for a global search query.",
       "isDefault": false,
@@ -45017,10 +45101,23 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
     {
       "methods": [
         {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findIdentityLink",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
+            "isNullable": true,
             "name": "ElementWrapper",
             "typeArguments": [
               {
@@ -53963,6 +54060,14 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
     },
     {
       "methods": [
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findIdentityLink",
           "parameters": [],

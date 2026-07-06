@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface TooltipProps {
   /**
@@ -29,15 +29,4 @@ export namespace TooltipProps {
    * Position of the tooltip relative to the tracked element.
    */
   export type Position = PopoverProps.Position;
-}
-
-/**
- * Internal tooltip props - includes props not exposed in public API.
- * Note: position defaults to 'top' in both index.tsx and internal.tsx
- */
-export interface InternalTooltipProps extends TooltipProps {
-  /**
-   * Additional CSS class for the tooltip container.
-   */
-  className?: string;
 }

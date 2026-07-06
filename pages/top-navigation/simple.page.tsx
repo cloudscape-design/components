@@ -63,6 +63,16 @@ export default function TopNavigationPage() {
           title: 'Tall logo, resized to fit',
         }}
       />
+      <br />
+      <TopNavigation
+        visualContext="none"
+        i18nStrings={I18N_STRINGS}
+        identity={{
+          href: '#',
+          title: 'Light mode with logo',
+          logo: { src: logo, alt: 'Logo' },
+        }}
+      />
     </article>
   );
 }

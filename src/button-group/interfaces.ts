@@ -3,10 +3,8 @@
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { SomeRequired } from '../internal/types';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /**
@@ -48,6 +46,10 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * * `href` (optional, string) - Renders the button as a link with the specified URL. Use for actions that navigate, such as opening a page in a new browser tab.
+   * * `target` (optional, string) - Specifies where to open the linked URL (for example, `_blank` to open in a new tab). This property only applies when `href` is set.
+   * * `rel` (optional, string) - Adds a `rel` attribute to the link. By default, the component sets `rel` to "noopener noreferrer" when `target` is `"_blank"`. This property only applies when `href` is set.
+   * * `download` (optional, boolean | string) - Specifies whether the linked URL, when selected, prompts the user to download instead of navigate. You can provide a string to suggest a file name. This property only applies when `href` is set.
    * * `popoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
    *
    * ### icon-toggle-button
@@ -111,13 +113,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
   style?: ButtonGroupProps.Style;
 }
 
-export interface InternalIconButton extends ButtonGroupProps.IconButton {
-  analyticsAction?: string;
-}
-export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleButton {
-  analyticsAction?: string;
-}
-
 export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback'> {
   iconSvg?: string;
 }
@@ -139,20 +134,6 @@ export type ItemRuntime =
   | ButtonGroupProps.IconFileInput
   | MenuDropdownRuntime;
 
-export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
-export type InternalItem =
-  | InternalIconButton
-  | InternalIconToggleButton
-  | ButtonGroupProps.IconFileInput
-  | ButtonGroupProps.MenuDropdown;
-
-export interface InternalButtonGroupProps
-  extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
-    InternalBaseComponentProps {
-  style?: ButtonGroupProps.Style;
-  items: ReadonlyArray<InternalItemOrGroup>;
-}
-
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
@@ -171,6 +152,10 @@ export namespace ButtonGroupProps {
     iconAlt?: string;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    href?: string;
+    target?: string;
+    rel?: string;
+    download?: boolean | string;
     popoverFeedback?: React.ReactNode;
   }
 

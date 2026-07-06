@@ -8050,4 +8050,113 @@ describe('tokens takes precedence over value', () => {
       rafSpy.mockRestore();
     }
   });
+  describe('switching between textarea mode and token mode after mount', () => {
+    test('initializes token-mode editing when switching from value to tokens after mount', () => {
+      const onChange = jest.fn();
+      const ref = React.createRef<PromptInputProps.Ref>();
+
+      // Mount in textarea (non-token) mode — no contentEditable element exists yet.
+      const { container, rerender } = render(
+        <PromptInput
+          value="hello"
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+          ref={ref}
+        />
+      );
+      expect(createWrapper(container).findPromptInput()!.findContentEditableElement()).toBeNull();
+
+      // Switch to token mode after mount.
+      act(() => {
+        rerender(
+          <PromptInput
+            tokens={[{ type: 'text', value: 'hello' }]}
+            menus={defaultMenus}
+            actionButtonIconName="send"
+            i18nStrings={defaultI18nStrings}
+            ariaLabel="Chat input"
+            onChange={onChange}
+            ref={ref}
+          />
+        );
+      });
+
+      const wrapper = createWrapper(container).findPromptInput()!;
+      expect(wrapper.findContentEditableElement()).not.toBeNull();
+
+      onChange.mockClear();
+
+      // insertText is a no-op unless the CaretController was built. Before the fix it
+      // was never constructed on a post-mount switch, so this stayed silent.
+      act(() => {
+        ref.current!.focus();
+      });
+      act(() => {
+        ref.current!.insertText(' world');
+      });
+
+      expect(onChange).toHaveBeenCalled();
+      const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+      const text = lastTokens
+        .filter((t: any) => t.type === 'text')
+        .map((t: any) => t.value)
+        .join('');
+      expect(text).toContain('world');
+    });
+
+    test('re-initializes editing when toggling token mode off and back on', () => {
+      const onChange = jest.fn();
+      const ref = React.createRef<PromptInputProps.Ref>();
+
+      const tokenModeElement = (
+        <PromptInput
+          tokens={[]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+          ref={ref}
+        />
+      );
+      const textareaModeElement = (
+        <PromptInput
+          value=""
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+          ref={ref}
+        />
+      );
+
+      // Start in token mode.
+      const { container, rerender } = render(tokenModeElement);
+      expect(createWrapper(container).findPromptInput()!.findContentEditableElement()).not.toBeNull();
+
+      // Switch to textarea mode — contentEditable unmounts and its controller is dropped.
+      act(() => {
+        rerender(textareaModeElement);
+      });
+      expect(createWrapper(container).findPromptInput()!.findContentEditableElement()).toBeNull();
+
+      // Switch back to token mode — a fresh controller and listeners must be built.
+      act(() => {
+        rerender(tokenModeElement);
+      });
+      const wrapper = createWrapper(container).findPromptInput()!;
+      expect(wrapper.findContentEditableElement()).not.toBeNull();
+
+      onChange.mockClear();
+      act(() => {
+        ref.current!.focus();
+      });
+      act(() => {
+        ref.current!.insertText('again');
+      });
+      expect(onChange).toHaveBeenCalled();
+    });
+  });
 });

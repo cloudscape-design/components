@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ErrorContext } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { ErrorContext } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export namespace AlertProps {
   export type Type = 'success' | 'error' | 'warning' | 'info';

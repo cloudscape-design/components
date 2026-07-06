@@ -7,7 +7,8 @@ import { SelectionTree, useUniqueId } from '@cloudscape-design/component-toolkit
 import { fireNonCancelableEvent } from '../../internal/events';
 import { joinStrings } from '../../internal/utils/strings';
 import { InternalExpandableRowsProps } from '../expandable-rows/expandable-rows-utils';
-import { InternalSelectionType, TableProps } from '../interfaces';
+import { TableProps } from '../interfaces';
+import { InternalSelectionType } from '../internal-interfaces';
 import { getTrackableValue } from '../utils';
 import { SelectionProps } from './interfaces';
 

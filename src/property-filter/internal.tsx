@@ -28,6 +28,12 @@ import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
+  PropertyFilterProps,
+  Ref,
+  Token,
+  TokenGroup,
+} from './interfaces';
+import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -35,11 +41,7 @@ import {
   InternalToken,
   InternalTokenGroup,
   ParsedText,
-  PropertyFilterProps,
-  Ref,
-  Token,
-  TokenGroup,
-} from './interfaces';
+} from './internal-interfaces';
 import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';

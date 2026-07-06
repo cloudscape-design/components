@@ -35,6 +35,16 @@ export function getCollapsibleFlashStyles(style: FlashbarProps['style'], type: s
   };
 }
 
+export function getFlashIconStyles(style: FlashbarProps['style'] | undefined, type: string = 'info') {
+  if (SYSTEM !== 'core' || !style) {
+    return undefined;
+  }
+  const styleKey = getStylePropertyKey(type as FlashbarProps.Type);
+  const color = style?.item?.root?.color && style?.item?.root?.color[styleKey as keyof typeof style.item.root.color];
+
+  return color ? { color } : undefined;
+}
+
 export function getFlashStyles(style: FlashbarProps['style'] | undefined, type: string = 'info') {
   if (SYSTEM !== 'core' || !style) {
     return undefined;

@@ -4,13 +4,12 @@ import React from 'react';
 
 import InternalLink from '../../../link/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { DropdownStatusProps } from '../../../types/dropdown-status';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { fireNonCancelableEvent } from '../../events';
 import { usePrevious } from '../../hooks/use-previous';
-import { DropdownStatusProps } from './interfaces';
 
 import styles from './styles.css.js';
-
-export { DropdownStatusProps };
 
 export interface DropdownStatusPropsExtended extends DropdownStatusProps {
   isEmpty?: boolean;
@@ -114,3 +113,6 @@ export const useDropdownStatus: UseDropdownStatus = ({
 };
 
 export default DropdownStatus;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export { DropdownStatusProps } from '../../../types/dropdown-status';

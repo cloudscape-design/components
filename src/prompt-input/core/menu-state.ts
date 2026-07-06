@@ -4,14 +4,14 @@
 import { useMemo, useRef } from 'react';
 
 import { filterOptions } from '../../autosuggest/utils/utils';
-import { DropdownStatusProps } from '../../internal/components/dropdown-status/interfaces';
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { generateTestIndexes } from '../../internal/components/options-list/utils/test-indexes';
 import {
   HighlightedOptionHandlers,
   HighlightedOptionState,
   useHighlightedOption,
 } from '../../internal/components/options-list/utils/use-highlight-option';
+import { DropdownStatusProps } from '../../types/dropdown-status';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { PromptInputProps } from '../interfaces';
 import { calculateTokenPosition } from './caret-controller';
 import { generateTokenId } from './dom-utils';

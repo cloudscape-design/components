@@ -28,10 +28,25 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTokenProps = TokenProps &
+type InternalTokenProps = Omit<TokenProps, 'label'> &
   InternalBaseComponentProps & {
+    /** Token label. Required unless `__customContent` replaces the option layout entirely. */
+    label?: React.ReactNode;
+    /**
+     * Overrides the default `role="group"` on the token root. Set to `"presentation"` when a
+     * parent element provides grouping semantics; this also strips ARIA attributes
+     * (aria-label, aria-labelledby, aria-disabled), focus/mouse handlers, and the tab stop so the
+     * token doesn't expose a redundant nested group to assistive tech.
+     */
     role?: string;
     disableInnerPadding?: boolean;
+    /** Extra class on the token-box element */
+    __tokenBoxClassName?: string;
+    /**
+     * Renders content inside the token-box, replacing the standard option layout
+     * (label, labelTag, description, tags). The dismiss button is still rendered as a sibling.
+     */
+    __customContent?: React.ReactNode;
   };
 
 function InternalToken({
@@ -52,6 +67,8 @@ function InternalToken({
   // Internal
   role,
   disableInnerPadding,
+  __tokenBoxClassName,
+  __customContent,
 
   // Base
   __internalRootRef,
@@ -65,6 +82,9 @@ function InternalToken({
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
   const isOneTheme = isThemeActive(Theme.OneTheme);
+  // Consumers with their own grouping semantics can pass role="presentation" to treat the root
+  // as a pure styling wrapper (strips ARIA and focus/mouse handlers).
+  const isPresentation = role === 'presentation';
   const ariaLabelledbyId = useUniqueId();
 
   const isLabelOverflowing = () => {
@@ -131,31 +151,40 @@ function InternalToken({
           analyticsSelectors.token,
           baseProps.className
         )}
-        aria-label={ariaLabel}
-        aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
-        aria-disabled={!!disabled}
+        aria-label={isPresentation ? undefined : ariaLabel}
+        aria-labelledby={isPresentation || ariaLabel ? undefined : ariaLabelledbyId}
+        aria-disabled={isPresentation ? undefined : !!disabled}
         role={role ?? 'group'}
         onFocus={() => {
-          setShowTooltip(true);
+          if (!isPresentation) {
+            setShowTooltip(true);
+          }
         }}
         onBlur={() => {
-          setShowTooltip(false);
+          if (!isPresentation) {
+            setShowTooltip(false);
+          }
         }}
         onMouseEnter={() => {
-          setShowTooltip(true);
+          if (!isPresentation) {
+            setShowTooltip(true);
+          }
         }}
         onMouseLeave={() => {
-          setShowTooltip(false);
+          if (!isPresentation) {
+            setShowTooltip(false);
+          }
         }}
-        tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
+        tabIndex={!isPresentation && !!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       >
         <SpanOrDivTag
           className={clsx(
             !isInline ? styles['token-box'] : styles['token-box-inline'],
             disabled && styles['token-box-disabled'],
             readOnly && styles['token-box-readonly'],
-            !isInline && !onDismiss && styles['token-box-without-dismiss'],
-            disableInnerPadding && styles['disable-padding']
+            !isInline && !onDismiss && !__customContent && styles['token-box-without-dismiss'],
+            disableInnerPadding && styles['disable-padding'],
+            __tokenBoxClassName
           )}
           style={tokenRootStyleProps}
         >
@@ -167,6 +196,7 @@ function InternalToken({
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
             labelId={ariaLabelledbyId}
+            customContent={__customContent}
           />
           {onDismiss && (
             <DismissButton

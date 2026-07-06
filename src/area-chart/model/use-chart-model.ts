@@ -5,7 +5,6 @@ import React, { MouseEvent, RefObject, useEffect, useMemo, useRef } from 'react'
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
 import { KeyCode } from '../../internal/keycode';
@@ -13,6 +12,7 @@ import { circleIndex } from '../../internal/utils/circle-index';
 import handleKey from '../../internal/utils/handle-key';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { throttle } from '../../internal/utils/throttle';
+import { XDomain, XScaleType, YDomain, YScaleType } from '../../types/cartesian-chart';
 import { useReaction } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import computeChartProps from './compute-chart-props';

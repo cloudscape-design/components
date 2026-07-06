@@ -9,7 +9,7 @@ import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/globa
 
 import { mount } from '~mount';
 
-import AppContext, { AppContextProvider, parseQuery } from './app-context';
+import AppContext, { AppContextProvider, applyThemeClass, parseQuery, Theme } from './app-context';
 import Header from './components/header';
 import IndexPage from './components/index-page';
 import PageView from './components/page-view';
@@ -23,6 +23,7 @@ import styles from './styles.scss';
 interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
+  oneTheme?: boolean;
 }
 // used for local dev / testing
 interface CustomFlags {
@@ -95,9 +96,10 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, visualRefresh, theme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
   history.location.search
 );
+const oneTheme = theme === Theme.OneTheme;
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh && !oneTheme;
@@ -110,10 +112,11 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
+window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
 
-// Visual Refresh and One Theme are mutually exclusive — manage both classes here so they never coexist.
+// Apply the active theme's body class (extensible via the Theme enum).
+applyThemeClass(theme);
 // useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
-document.body.classList.toggle('awsui-one-theme', oneTheme);
 document.body.classList.toggle('awsui-visual-refresh', visualRefresh && !oneTheme);
 
 // Apply the direction value to the HTML element dir attribute

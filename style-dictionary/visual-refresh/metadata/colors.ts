@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundBackdrop: {
+    description: 'The background color of the backdrop shown behind overlay surfaces such as modals and drawers.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonNormalActive: {
     description: 'The background color of normal buttons in active state.',
     themeable: true,
@@ -165,6 +170,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundSideNavigationItemActive: {
+    description: 'The background color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSideNavigationItemActiveCollapsed: {
+    description: 'The background color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
   colorBackgroundLayoutMain: {
     description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
@@ -233,6 +248,26 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundNotificationYellow: {
     description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarSuccess: {
+    description: 'The background color of success flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarError: {
+    description: 'The background color of error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarInfo: {
+    description: 'The background color of info and in-progress flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarWarning: {
+    description: 'The background color of warning flash messages.',
     public: true,
     themeable: true,
   },
@@ -471,6 +506,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
     public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActive: {
+    description: 'The text color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActiveCollapsed: {
+    description: 'The text (and icon) color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorTextSideNavigationItemDefault: {
+    description: 'The text (and icon) color of a non-active side navigation item.',
+    public: false,
     themeable: true,
   },
   colorBorderCard: {
@@ -790,6 +840,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextEmpty: {
     description:
       'The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionDefault: {
+    description: 'The default color of the expandable section header text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionHover: {
+    description: 'The color of the expandable section header text in hover state.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionNavigationIconDefault: {
+    description: 'The default color of the expand icon in the navigation variant of the expandable section.',
     public: true,
     themeable: true,
   },
