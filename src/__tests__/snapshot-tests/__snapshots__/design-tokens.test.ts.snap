@@ -2518,7 +2518,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#00a1c9",
-            "light": "#0a4a74",
+            "light": "#004a9e",
           },
         },
         "color-text-accent-cyan": {
@@ -6374,7 +6374,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#00a1c9",
-            "light": "#0a4a74",
+            "light": "#004a9e",
           },
         },
         "color-text-accent-cyan": {
@@ -10230,7 +10230,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#00a1c9",
-            "light": "#0a4a74",
+            "light": "#004a9e",
           },
         },
         "color-text-accent-cyan": {
@@ -14086,7 +14086,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#00a1c9",
-            "light": "#0a4a74",
+            "light": "#004a9e",
           },
         },
         "color-text-accent-cyan": {
@@ -17942,7 +17942,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
           "$value": {
             "dark": "#00a1c9",
-            "light": "#0a4a74",
+            "light": "#004a9e",
           },
         },
         "color-text-accent-cyan": {
@@ -25654,7 +25654,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The content color of the blue accent in the Box \`awsui-accent\` variant.",
       "$value": {
         "dark": "#00a1c9",
-        "light": "#0a4a74",
+        "light": "#004a9e",
       },
     },
     "color-text-accent-cyan": {

@@ -206,6 +206,7 @@ const referenceTokens: ReferenceTokens = {
       300: brand.colorBlue300,
       400: brand.colorBlue400,
       600: brand.colorBlue600,
+      700: brand.colorBlue700,
       950: brand.colorBlue950,
       1000: brand.colorBlue1000,
     },
