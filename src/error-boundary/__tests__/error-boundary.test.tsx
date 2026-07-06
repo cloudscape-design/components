@@ -717,7 +717,6 @@ describe('component misuse', () => {
 
 describe('app layout error boundary detection', () => {
   let hooksEl: HTMLElement;
-  let panoramaSpy: jest.SpyInstance;
 
   beforeEach(() => {
     // The detection hooks are attached to the app layout root element; here we attach them to a
@@ -725,12 +724,10 @@ describe('app layout error boundary detection', () => {
     hooksEl = document.createElement('div');
     attachAppLayoutErrorBoundaryTestHooks(hooksEl);
     hooksEl.__awsui__!.clearAppLayoutErrors!();
-    panoramaSpy = jest.spyOn(metrics, 'sendPanoramaMetric').mockImplementation(() => {});
   });
 
   afterEach(() => {
     hooksEl.__awsui__!.clearAppLayoutErrors!();
-    panoramaSpy.mockRestore();
   });
 
   test('records a caught error and exposes it via getAppLayoutErrors', () => {
@@ -745,18 +742,18 @@ describe('app layout error boundary detection', () => {
     expect(errors[0].message).toEqual(expect.any(String));
   });
 
-  test('reports each catch to Panorama with the app layout part', () => {
+  test('reports each catch to the ops metric with the app layout part', () => {
+    const opsSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
     render(
       <AppLayoutBuiltInErrorBoundary appLayoutPart="tools">
         <div>{{}}</div>
       </AppLayoutBuiltInErrorBoundary>
     );
-    expect(panoramaSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        eventContext: 'awsui-app-layout-error-boundary-fired',
-        eventDetail: expect.objectContaining({ appLayoutPart: 'tools' }),
-      })
+    expect(opsSpy).toHaveBeenCalledWith(
+      'awsui-app-layout-error-boundary-fired',
+      expect.objectContaining({ appLayoutPart: 'tools' })
     );
+    opsSpy.mockRestore();
   });
 
   test('throwInAppLayoutPart triggers a real, recorded boundary catch', () => {

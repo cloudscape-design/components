@@ -178,13 +178,9 @@ export function AppLayoutBuiltInErrorBoundary({
       onError={error => {
         context?.onError?.(error);
         recordAppLayoutError({ appLayoutPart: appLayoutPart ?? '', message: error?.error?.message ?? '' });
-        metrics.sendPanoramaMetric({
-          eventContext: 'awsui-app-layout-error-boundary-fired',
-          eventDetail: {
-            errorMessage: error?.error?.message ?? '',
-            appLayoutPart: appLayoutPart ?? '',
-          },
-          eventValue: '1',
+        metrics.sendOpsMetricObject('awsui-app-layout-error-boundary-fired', {
+          errorMessage: error?.error?.message ?? '',
+          appLayoutPart: appLayoutPart ?? '',
         });
       }}
     >
