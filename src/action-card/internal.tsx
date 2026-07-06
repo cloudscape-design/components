@@ -47,14 +47,14 @@ const InternalActionCard = React.forwardRef(
     ref: React.Ref<ActionCardProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
-    const buttonRef = useRef<HTMLElement>(null);
+    const containerRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     const headerId = useUniqueId('action-card-header-');
     const standaloneButtonId = useUniqueId('action-card-button-');
     const descriptionId = useUniqueId('action-card-description-');
     const bodyId = useUniqueId('action-card-body-');
 
-    useForwardFocus(ref, buttonRef);
+    useForwardFocus(ref, containerRef);
 
     checkSafeUrl('ActionCard', href);
     const isAnchor = Boolean(href);
@@ -66,7 +66,7 @@ const InternalActionCard = React.forwardRef(
       );
     }
 
-    const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
       if (disabled) {
         return event.preventDefault();
       }
@@ -125,7 +125,7 @@ const InternalActionCard = React.forwardRef(
           tag="a"
           componentName="ActionCard"
           nativeAttributes={nativeAnchorAttributes}
-          ref={buttonRef as React.Ref<HTMLAnchorElement>}
+          ref={containerRef as React.Ref<HTMLAnchorElement>}
         >
           {children}
         </WithNativeAttributes>
@@ -136,7 +136,7 @@ const InternalActionCard = React.forwardRef(
           tag="button"
           componentName="ActionCard"
           nativeAttributes={nativeButtonAttributes}
-          ref={buttonRef as React.Ref<HTMLButtonElement>}
+          ref={containerRef as React.Ref<HTMLButtonElement>}
         >
           {children}
         </WithNativeAttributes>
