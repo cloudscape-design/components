@@ -8,16 +8,23 @@ import PopoverWrapper from '../popover';
 
 import styles from '../../../pagination/styles.selectors.js';
 
+export class PaginationButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
+  @usesDom
+  isDisabled(): boolean {
+    return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';
+  }
+}
+
 export default class PaginationWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
 
-  findCurrentPage(): ButtonWrapper {
-    return this.findComponent(`.${styles['button-current']}`, ButtonWrapper)!;
+  findCurrentPage(): PaginationButtonWrapper {
+    return this.findComponent(`.${styles['button-current']}`, PaginationButtonWrapper)!;
   }
 
-  findPageNumbers(): Array<ButtonWrapper> {
+  findPageNumbers(): Array<PaginationButtonWrapper> {
     return this.findAllByClassName<HTMLButtonElement>(styles['page-number']).map(
-      wrapper => new ButtonWrapper(wrapper.getElement())
+      wrapper => new PaginationButtonWrapper(wrapper.getElement())
     );
   }
 
@@ -26,18 +33,18 @@ export default class PaginationWrapper extends ComponentWrapper {
    *
    * @param index 1-based index of the page number to return.
    */
-  findPageNumberByIndex(index: number): ButtonWrapper | null {
+  findPageNumberByIndex(index: number): PaginationButtonWrapper | null {
     // we need to skip the "previous page" button
     const pageIndex = index + 1;
-    return this.findComponent(`li:nth-child(${pageIndex}) .${styles.button}`, ButtonWrapper);
+    return this.findComponent(`li:nth-child(${pageIndex}) .${styles.button}`, PaginationButtonWrapper);
   }
 
-  findPreviousPageButton(): ButtonWrapper {
-    return this.findComponent(`li:first-child .${styles.button}`, ButtonWrapper)!;
+  findPreviousPageButton(): PaginationButtonWrapper {
+    return this.findComponent(`li:first-child .${styles.button}`, PaginationButtonWrapper)!;
   }
 
-  findNextPageButton(): ButtonWrapper {
-    return this.findComponent(`li:last-child .${styles.button}`, ButtonWrapper)!;
+  findNextPageButton(): PaginationButtonWrapper {
+    return this.findComponent(`li:last-child .${styles.button}`, PaginationButtonWrapper)!;
   }
 
   /**
