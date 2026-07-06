@@ -24,25 +24,25 @@
   color: awsui.$color-text-notification-default;
 
   &.badge-color-grey {
-    background-color: awsui.$color-background-notification-grey;
+    background-color: awsui.$color-background-badge-grey;
     border-color: awsui.$color-border-badge-grey;
     color: awsui.$color-text-badge-grey;
   }
 
   &.badge-color-green {
-    background-color: awsui.$color-background-notification-green;
+    background-color: awsui.$color-background-badge-green;
     border-color: awsui.$color-border-badge-green;
     color: awsui.$color-text-badge-green;
   }
 
   &.badge-color-blue {
-    background-color: awsui.$color-background-notification-blue;
+    background-color: awsui.$color-background-badge-blue;
     border-color: awsui.$color-border-badge-blue;
     color: awsui.$color-text-badge-blue;
   }
 
   &.badge-color-red {
-    background-color: awsui.$color-background-notification-red;
+    background-color: awsui.$color-background-badge-red;
     border-color: awsui.$color-border-badge-red;
     color: awsui.$color-text-badge-red;
   }

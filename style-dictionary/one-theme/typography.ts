@@ -34,9 +34,10 @@ const tokens: StyleDictionary.TypographyDictionary = {
 
   // ── Interactive elements ──────────────────────────────────────────────────
   fontWeightButton: '500',
-  fontWeightTabs: '500',
+  fontWeightTabs: '600',
   fontSizeTabs: '14px',
-  fontWayfindingLinkActiveWeight: '500',
+  fontWayfindingLinkActiveWeight: '600',
+  fontWeightLinkSecondary: '500',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',
@@ -45,7 +46,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   // ── Form labels ───────────────────────────────────────────────────────────
   fontSizeFormLabel: '14px',
   lineHeightFormLabel: '20px',
-  fontWeightFormLabel: '500',
+  fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
   fontWeightBold: '500',
 
