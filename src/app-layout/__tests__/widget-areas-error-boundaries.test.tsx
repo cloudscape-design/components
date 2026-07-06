@@ -66,7 +66,7 @@ beforeEach(() => {
   // masked the exact appLayoutPart values asserted below.
   awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
   awsuiWidgetInternal.clearInitialMessages();
-  sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
+  sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendPanoramaMetric').mockImplementation(() => {});
 });
 
 describe('AppLayout error boundaries: errors in different areas does not crash the entire app layout', () => {
@@ -100,14 +100,18 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
           }
           expect(consoleSpy).toHaveBeenCalled();
           for (const appLayoutPart of appLayoutParts) {
-            expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-app-layout-error-boundary-fired', {
-              appLayoutPart,
-              errorMessage: expect.any(String),
+            expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
+              eventContext: 'awsui-app-layout-error-boundary-fired',
+              eventDetail: {
+                appLayoutPart,
+                errorMessage: expect.any(String),
+              },
+              eventValue: '1',
             });
           }
           const reportedParts = sendPanoramaMetricSpy.mock.calls
-            .filter(call => call[0] === 'awsui-app-layout-error-boundary-fired')
-            .map(call => call[1].appLayoutPart);
+            .filter(call => call[0]?.eventContext === 'awsui-app-layout-error-boundary-fired')
+            .map(call => call[0].eventDetail.appLayoutPart);
           expect(reportedParts).toEqual(appLayoutParts);
         };
 
@@ -324,8 +328,7 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
             expect(errorBoundaryWrapper.getElement()).toBeInTheDocument();
             expect(errorBoundaryWrapper.findHeader()).toBeTruthy();
             expect(sendPanoramaMetricSpy).not.toHaveBeenCalledWith(
-              'awsui-app-layout-error-boundary-fired',
-              expect.anything()
+              expect.objectContaining({ eventContext: 'awsui-app-layout-error-boundary-fired' })
             );
             expect(consoleSpy).toHaveBeenCalled();
             expect(onError).toHaveBeenCalled();

@@ -2,12 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import ErrorBoundary, { ErrorBoundaryProps } from '../../../lib/components/error-boundary';
 import { BuiltInErrorBoundaryProps } from '../../../lib/components/error-boundary/interfaces';
-import { BuiltInErrorBoundary } from '../../../lib/components/error-boundary/internal';
+import {
+  AppLayoutBuiltInErrorBoundary,
+  attachAppLayoutErrorBoundaryTestHooks,
+  BuiltInErrorBoundary,
+} from '../../../lib/components/error-boundary/internal';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { metrics } from '../../../lib/components/internal/metrics';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 type RenderProps = Omit<
@@ -707,5 +712,78 @@ describe('component misuse', () => {
     const ErrorBoundaryCustom = ErrorBoundary as React.ComponentType<Omit<ErrorBoundaryProps, 'onError'>>;
     render(<ErrorBoundaryCustom i18nStrings={{ headerText: 'Ooops!' }}>{{}}</ErrorBoundaryCustom>);
     expect(findHeader()!.getElement().textContent).toBe('Ooops!');
+  });
+});
+
+describe('app layout error boundary detection', () => {
+  let hooksEl: HTMLElement;
+  let panoramaSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    // The detection hooks are attached to the app layout root element; here we attach them to a
+    // standalone element to exercise the same registry that the app layout root would expose.
+    hooksEl = document.createElement('div');
+    attachAppLayoutErrorBoundaryTestHooks(hooksEl);
+    hooksEl.__awsui__!.clearAppLayoutErrors!();
+    panoramaSpy = jest.spyOn(metrics, 'sendPanoramaMetric').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    hooksEl.__awsui__!.clearAppLayoutErrors!();
+    panoramaSpy.mockRestore();
+  });
+
+  test('records a caught error and exposes it via getAppLayoutErrors', () => {
+    render(
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">
+        <div>{{}}</div>
+      </AppLayoutBuiltInErrorBoundary>
+    );
+    const errors = hooksEl.__awsui__!.getAppLayoutErrors!();
+    expect(errors).toHaveLength(1);
+    expect(errors[0].appLayoutPart).toBe('nav');
+    expect(errors[0].message).toEqual(expect.any(String));
+  });
+
+  test('reports each catch to Panorama with the app layout part', () => {
+    render(
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="tools">
+        <div>{{}}</div>
+      </AppLayoutBuiltInErrorBoundary>
+    );
+    expect(panoramaSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        eventContext: 'awsui-app-layout-error-boundary-fired',
+        eventDetail: expect.objectContaining({ appLayoutPart: 'tools' }),
+      })
+    );
+  });
+
+  test('throwInAppLayoutPart triggers a real, recorded boundary catch', () => {
+    render(
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="drawer">
+        <div id="al-content">ok</div>
+      </AppLayoutBuiltInErrorBoundary>
+    );
+    expect(createWrapper().find('#al-content')).not.toBe(null);
+    expect(hooksEl.__awsui__!.getAppLayoutErrors!()).toHaveLength(0);
+
+    act(() => hooksEl.__awsui__!.throwInAppLayoutPart!('drawer'));
+
+    expect(createWrapper().find('#al-content')).toBe(null);
+    const errors = hooksEl.__awsui__!.getAppLayoutErrors!();
+    expect(errors).toHaveLength(1);
+    expect(errors[0].appLayoutPart).toBe('drawer');
+  });
+
+  test('clearAppLayoutErrors empties the registry', () => {
+    render(
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">
+        <div>{{}}</div>
+      </AppLayoutBuiltInErrorBoundary>
+    );
+    expect(hooksEl.__awsui__!.getAppLayoutErrors!().length).toBeGreaterThan(0);
+    hooksEl.__awsui__!.clearAppLayoutErrors!();
+    expect(hooksEl.__awsui__!.getAppLayoutErrors!()).toHaveLength(0);
   });
 });

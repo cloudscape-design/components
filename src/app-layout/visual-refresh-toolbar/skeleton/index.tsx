@@ -3,10 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
-import { BuiltInErrorBoundary } from '../../../error-boundary/internal';
+import { attachAppLayoutErrorBoundaryTestHooks, BuiltInErrorBoundary } from '../../../error-boundary/internal';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { AppLayoutInternalProps, AppLayoutPendingState } from '../interfaces';
@@ -64,11 +65,16 @@ export const SkeletonLayout = ({
 
   const isWidgetLoaded = isWidgetReady(appLayoutState);
 
+  const rootRef = useMergeRefs(
+    appLayoutState.rootRef as React.Ref<HTMLDivElement>,
+    attachAppLayoutErrorBoundaryTestHooks
+  );
+
   return (
     <VisualContext contextName="app-layout-toolbar">
       <div
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
-        ref={appLayoutState.rootRef as React.Ref<HTMLDivElement>}
+        ref={rootRef}
         data-awsui-app-layout-widget-loaded={isWidgetLoaded}
         {...wrapperElAttributes}
         className={
