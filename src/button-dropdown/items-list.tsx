@@ -33,6 +33,7 @@ export default function ItemsList({
   filteringText,
   filteringEnabled,
   menuId,
+  filteringDescriptionId,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -61,6 +62,7 @@ export default function ItemsList({
           filteringText={filteringText}
           filteringEnabled={filteringEnabled}
           menuId={menuId}
+          filteringDescriptionId={filteringDescriptionId}
         />
       );
     }
@@ -86,6 +88,7 @@ export default function ItemsList({
             filteringText={filteringText}
             filteringEnabled={filteringEnabled}
             menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         ) : (
           <ExpandableCategoryElement
@@ -108,6 +111,7 @@ export default function ItemsList({
             filteringText={filteringText}
             filteringEnabled={filteringEnabled}
             menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         )
       ) : null;
@@ -132,6 +136,7 @@ export default function ItemsList({
         filteringText={filteringText}
         filteringEnabled={filteringEnabled}
         menuId={menuId}
+        filteringDescriptionId={filteringDescriptionId}
       />
     );
   });

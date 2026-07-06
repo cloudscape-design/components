@@ -159,6 +159,7 @@ export default function ButtonDropdownFilteringPage() {
   const [expandToViewport, setExpandToViewport] = useState(false);
 
   const [checkboxItems, setCheckboxItems] = useState(withCheckboxItems);
+  const filteringResultsText = (matches: number, total: number) => `${matches} out of ${total} matches`;
   const onItemClick = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log(event.detail);
 
   return (
@@ -182,6 +183,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search actions"
             filteringAriaLabel="Filter actions"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Actions
@@ -197,6 +199,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search menu"
             filteringAriaLabel="Filter menu items"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Menu
@@ -213,6 +216,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search instance actions"
             filteringAriaLabel="Filter instance actions"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Instance actions
@@ -229,6 +233,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search instance actions"
             filteringAriaLabel="Filter instance actions"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Instance actions
@@ -244,6 +249,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search actions"
             filteringAriaLabel="Filter actions"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Resource actions
@@ -259,6 +265,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringPlaceholder="Search"
             filteringAriaLabel="Filter items"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={event => {
               onItemClick(event);
               if (event.detail.checked !== undefined) {
@@ -282,6 +289,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringAriaLabel="Filter actions"
             noMatch={<span>No actions match your search. Try a different keyword.</span>}
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           >
             Actions (custom empty)
@@ -301,6 +309,7 @@ export default function ButtonDropdownFilteringPage() {
             filteringAriaLabel="Filter instance actions"
             ariaLabel="Instance actions"
             expandToViewport={expandToViewport}
+            filteringResultsText={filteringResultsText}
             onItemClick={onItemClick}
           />
         </div>

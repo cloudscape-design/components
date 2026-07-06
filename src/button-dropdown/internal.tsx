@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -16,6 +16,7 @@ import { getBaseProps } from '../internal/base-component';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
@@ -29,6 +30,7 @@ import ButtonDropdownFilter from './filter';
 import { ButtonDropdownProps } from './interfaces';
 import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
+import { countLeafItems } from './utils/filter-items';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';
 
@@ -72,7 +74,9 @@ const InternalButtonDropdown = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       noMatch,
+      i18nStrings,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -372,11 +376,25 @@ const InternalButtonDropdown = React.forwardRef(
     const footerId = useUniqueId('awsui-button-dropdown__footer');
 
     const isNoMatch = hasFiltering && !!filteringValue && filteredItems.length === 0;
+    const isFiltered = hasFiltering && !!filteringValue && filteredItems.length > 0;
+
+    const totalCount = useMemo(() => countLeafItems(items), [items]);
+    const matchesCount = useMemo(() => countLeafItems(filteredItems), [filteredItems]);
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
+
     const dropdownStatus = useDropdownStatus({
       statusType: 'finished',
       isNoMatch,
       noMatch,
+      filteringResultsText: filteredText,
     });
+
+    // Only create a filteringDescription element if filtering is actually enabled,
+    // not just if the string is provided.
+    const filteringItemDescription = hasFiltering ? i18nStrings?.filteringItemAriaDescription : undefined;
+    const { descriptionEl: filteringDescriptionEl, descriptionId: filteringDescriptionId } = useHiddenDescription(
+      hasFiltering ? i18nStrings?.filteringItemAriaDescription : undefined
+    );
 
     const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
 
@@ -500,8 +518,10 @@ const InternalButtonDropdown = React.forwardRef(
                   filteringText={filteringValue}
                   filteringEnabled={hasFiltering}
                   menuId={hasFiltering ? menuId : undefined}
+                  filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
                 />
               </OptionsList>
+              {filteringDescriptionEl}
             </>
           }
         />

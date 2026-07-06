@@ -45,7 +45,9 @@ const ButtonDropdown = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       noMatch,
+      i18nStrings,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -97,7 +99,9 @@ const ButtonDropdown = React.forwardRef(
         filteringPlaceholder={filteringPlaceholder}
         filteringAriaLabel={filteringAriaLabel}
         filteringClearAriaLabel={filteringClearAriaLabel}
+        filteringResultsText={filteringResultsText}
         noMatch={noMatch}
+        i18nStrings={i18nStrings}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}

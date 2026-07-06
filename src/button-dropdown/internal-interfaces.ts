@@ -28,6 +28,7 @@ export interface CategoryProps extends HighlightProps {
   filteringText?: string;
   filteringEnabled?: boolean;
   menuId?: string;
+  filteringDescriptionId?: string;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -48,6 +49,7 @@ export interface ItemListProps extends HighlightProps {
   filteringText?: string;
   filteringEnabled?: boolean;
   menuId?: string;
+  filteringDescriptionId?: string;
 }
 
 export interface ItemProps {
@@ -69,6 +71,7 @@ export interface ItemProps {
   filteringText?: string;
   filteringEnabled?: boolean;
   menuId?: string;
+  filteringDescriptionId?: string;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

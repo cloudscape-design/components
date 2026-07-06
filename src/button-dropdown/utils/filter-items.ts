@@ -55,3 +55,15 @@ function collectMatchingLeaves(
     return acc;
   }, []);
 }
+
+export function countLeafItems(items: ButtonDropdownProps.Items): number {
+  let count = 0;
+  for (const item of items) {
+    if (isItemGroup(item)) {
+      count += countLeafItems(item.items);
+    } else {
+      count++;
+    }
+  }
+  return count;
+}

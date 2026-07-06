@@ -15,6 +15,7 @@ import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { getDataAttributes } from '../../internal/utils/data-attributes';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { joinStrings } from '../../internal/utils/strings';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
 import { ButtonDropdownProps, LinkItem } from '../interfaces';
 import { InternalCheckboxItem, InternalItem, ItemProps } from '../internal-interfaces';
@@ -45,6 +46,7 @@ const ItemElement = ({
   filteringText,
   filteringEnabled,
   menuId,
+  filteringDescriptionId,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -109,6 +111,7 @@ const ItemElement = ({
         filteringText={filteringText}
         filteringEnabled={filteringEnabled}
         menuId={menuId}
+        filteringDescriptionId={filteringDescriptionId}
       />
     </li>
   );
@@ -125,6 +128,7 @@ interface MenuItemProps {
   filteringText?: string;
   filteringEnabled?: boolean;
   menuId?: string;
+  filteringDescriptionId?: string;
 }
 
 function MenuItem({
@@ -138,6 +142,7 @@ function MenuItem({
   filteringText,
   filteringEnabled,
   menuId,
+  filteringDescriptionId,
 }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
@@ -155,7 +160,7 @@ function MenuItem({
     }
   }, [highlighted, filteringEnabled]);
 
-  let itemProps: { item: ButtonDropdownProps.RenderItem };
+  let itemProps: { item: ButtonDropdownProps.RenderItem; filterText?: string };
 
   if (isCheckbox) {
     itemProps = {
@@ -167,8 +172,8 @@ function MenuItem({
         highlighted: highlighted,
         checked: item.checked,
         parent: parentProps ?? null,
-        filterText: filteringText,
       },
+      filterText: filteringText,
     };
   } else {
     itemProps = {
@@ -179,8 +184,8 @@ function MenuItem({
         disabled: disabled,
         highlighted: highlighted,
         parent: parentProps ?? null,
-        filterText: filteringText,
       },
+      filterText: filteringText,
     };
   }
 
@@ -189,9 +194,14 @@ function MenuItem({
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const itemDomId = menuId && item.id ? `${menuId}-${item.id}` : undefined;
+  const ariaDescribedby = joinStrings(
+    isDisabledWithReason ? targetProps['aria-describedby'] : undefined,
+    filteringDescriptionId
+  );
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     id: itemDomId,
     'aria-label': item.ariaLabel,
+    'aria-describedby': ariaDescribedby,
     className: clsx(
       styles['menu-item'],
       !!renderResult && styles['no-content-styling'],
@@ -207,7 +217,6 @@ function MenuItem({
     // and we use aria-activedescendant. All items get tabIndex=-1.
     tabIndex: filteringEnabled ? -1 : highlighted ? 0 : -1,
     ...(isCheckbox ? getMenuItemCheckboxProps({ disabled, checked: item.checked }) : getMenuItemProps({ disabled })),
-    ...(isDisabledWithReason ? targetProps : {}),
   };
 
   const menuItem = isLinkItem(item) ? (

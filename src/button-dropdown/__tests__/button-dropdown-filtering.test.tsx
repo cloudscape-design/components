@@ -510,6 +510,112 @@ describe('Button dropdown filtering', () => {
     });
   });
 
+  describe('filtering results text', () => {
+    test('does not render filtering results text by default', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('C');
+      expect(wrapper.findFooterRegion()).toBeNull();
+    });
+
+    test('does not render filtering results text when filter input is empty', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount} of ${totalCount} items`,
+      });
+      wrapper.openDropdown();
+      expect(wrapper.findFooterRegion()).toBeNull();
+    });
+
+    test('renders filtering results text with correct counts when filtering produces matches', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount} of ${totalCount} items`,
+      });
+      wrapper.openDropdown();
+      // "Co" matches "Copy" => 1 of 4 items
+      wrapper.findFilteringInput()!.setInputValue('Co');
+      const footer = wrapper.findFooterRegion();
+      expect(footer).not.toBeNull();
+      expect(footer!.getElement()).toHaveTextContent('1 of 4 items');
+    });
+
+    test('does not render filtering results text when there are no matches', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount} of ${totalCount} items`,
+        noMatch: 'No items found',
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('zzz');
+      const footer = wrapper.findFooterRegion();
+      // The noMatch content is shown, not the filteringResultsText
+      expect(footer).not.toBeNull();
+      expect(footer!.getElement()).toHaveTextContent('No items found');
+    });
+
+    test('counts leaf items in groups for totalCount', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: expandableItems,
+        expandableGroups: true,
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount} of ${totalCount} items`,
+      });
+      wrapper.openDropdown();
+      // "St" matches "Start" and "Stop" (2 leaf items), expandableItems has 3 leaf items total
+      wrapper.findFilteringInput()!.setInputValue('St');
+      const footer = wrapper.findFooterRegion();
+      expect(footer).not.toBeNull();
+      expect(footer!.getElement()).toHaveTextContent('2 of 3 items');
+    });
+  });
+
+  describe('i18nStrings.filteringItemAriaDescription', () => {
+    test('menu items do not have an accessible description when i18nStrings is not provided', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('C');
+      const menuItems = getMenuItems(wrapper);
+      menuItems.forEach(menuItem => {
+        expect(menuItem).not.toHaveAccessibleDescription();
+      });
+    });
+
+    test('menu items have the filtering description as their accessible description', () => {
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        i18nStrings: { filteringItemAriaDescription: 'Continue typing to further filter the list' },
+      });
+      wrapper.openDropdown();
+      const menuItems = getMenuItems(wrapper);
+      menuItems.forEach(menuItem => {
+        expect(menuItem).toHaveAccessibleDescription('Continue typing to further filter the list');
+      });
+    });
+
+    test('disabled item with disabledReason includes both descriptions', () => {
+      const disabledItems: ButtonDropdownProps.Items = [
+        { id: 'i1', text: 'Cut', disabled: true, disabledReason: 'Not available' },
+        { id: 'i2', text: 'Copy' },
+      ];
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: disabledItems,
+        i18nStrings: { filteringItemAriaDescription: 'Continue typing to further filter the list' },
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('C');
+
+      // The disabled item should have both descriptions combined
+      const disabledMenuItem = wrapper.findItemById('i1')!.find('[role="menuitem"]')!.getElement();
+      expect(disabledMenuItem).toHaveAccessibleDescription('Not available Continue typing to further filter the list');
+
+      // The non-disabled item should only have the filtering description
+      const enabledMenuItem = wrapper.findItemById('i2')!.find('[role="menuitem"]')!.getElement();
+      expect(enabledMenuItem).toHaveAccessibleDescription('Continue typing to further filter the list');
+    });
+  });
+
   describe('disabled reason', () => {
     const disabledItems: ButtonDropdownProps.Items = [
       { id: 'i1', text: 'Cut' },
@@ -556,6 +662,66 @@ describe('Button dropdown filtering', () => {
       // Move highlight away
       wrapper.findOpenDropdown()!.keydown(KeyCode.down);
       expect(wrapper.findDisabledReason()).toBeNull();
+    });
+  });
+
+  describe('renderItem filterText', () => {
+    test('passes filterText to renderItem for action items', () => {
+      const renderItem = jest.fn(() => null);
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: [{ id: 'i1', text: 'Cut' }],
+        renderItem,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Cu');
+
+      expect(renderItem).toHaveBeenCalledWith(
+        expect.objectContaining({
+          item: expect.objectContaining({ type: 'action' }),
+          filterText: 'Cu',
+        })
+      );
+    });
+
+    test('passes filterText to renderItem for checkbox items', () => {
+      const renderItem = jest.fn(() => null);
+      const checkboxItems: ButtonDropdownProps.Items = [
+        { id: 'c1', itemType: 'checkbox', text: 'Toggle feature', checked: true },
+      ];
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: checkboxItems,
+        renderItem,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Toggle');
+
+      expect(renderItem).toHaveBeenCalledWith(
+        expect.objectContaining({
+          item: expect.objectContaining({ type: 'checkbox' }),
+          filterText: 'Toggle',
+        })
+      );
+    });
+
+    test('passes filterText to renderItem for group items', () => {
+      const renderItem = jest.fn(() => null);
+      const { wrapper } = renderDropdown({
+        filteringType: 'auto',
+        items: expandableItems,
+        expandableGroups: true,
+        renderItem,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Start');
+
+      expect(renderItem).toHaveBeenCalledWith(
+        expect.objectContaining({
+          item: expect.objectContaining({ type: 'group' }),
+          filterText: 'Start',
+        })
+      );
     });
   });
 });

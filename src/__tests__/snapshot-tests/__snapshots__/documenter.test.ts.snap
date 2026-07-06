@@ -6134,6 +6134,27 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "string",
     },
     {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "inlineType": {
+        "name": "(matchesCount: number, totalCount: number) => string",
+        "parameters": [
+          {
+            "name": "matchesCount",
+            "type": "number",
+          },
+          {
+            "name": "totalCount",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "((matchesCount: number, totalCount: number) => string)",
+    },
+    {
       "defaultValue": "'none'",
       "description": "Enables filtering of the dropdown items.
 
@@ -6157,6 +6178,23 @@ types. Items are matched client-side using a case-insensitive substring match ag
       "name": "fullWidth",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.I18nStrings",
+        "properties": [
+          {
+            "name": "filteringItemAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonDropdownProps.I18nStrings",
     },
     {
       "description": "Specifies alternate text for a custom icon, for use with \`iconUrl\`. Applies to the \`icon\` and \`inline-icon\` variants only.",
@@ -6806,7 +6844,7 @@ When returning \`null\`, the default styling will be applied.",
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: ButtonDropdownProps.RenderItem; }",
+            "type": "{ item: ButtonDropdownProps.RenderItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",

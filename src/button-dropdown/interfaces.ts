@@ -221,9 +221,19 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   filteringClearAriaLabel?: string;
 
   /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
+
+  /**
    * Displayed when filtering is enabled and there are no matches for the filtering input.
    */
   noMatch?: React.ReactNode;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: ButtonDropdownProps.I18nStrings;
 
   /**
    * Attributes to add to the native `button` element.
@@ -261,6 +271,10 @@ export namespace ButtonDropdownProps {
   export type ItemType = 'action' | 'group';
   export type FilteringType = 'auto' | 'none';
 
+  export interface I18nStrings {
+    filteringItemAriaDescription?: string;
+  }
+
   export interface ActionRenderItem {
     type: 'action';
     index: number;
@@ -268,7 +282,6 @@ export namespace ButtonDropdownProps {
     highlighted: boolean;
     disabled: boolean;
     parent: GroupRenderItem | null;
-    filterText?: string;
   }
   export interface CheckboxRenderItem {
     type: 'checkbox';
@@ -278,7 +291,6 @@ export namespace ButtonDropdownProps {
     highlighted: boolean;
     checked: boolean;
     parent: GroupRenderItem | null;
-    filterText?: string;
   }
   export interface GroupRenderItem {
     type: 'group';
@@ -288,11 +300,10 @@ export namespace ButtonDropdownProps {
     highlighted: boolean;
     expanded: boolean;
     expandDirection: 'vertical' | 'horizontal';
-    filterText?: string;
   }
 
   export type RenderItem = ActionRenderItem | CheckboxRenderItem | GroupRenderItem;
-  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem }) => ReactNode | null;
+  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem; filterText?: string }) => ReactNode | null;
 
   export interface MainAction {
     text?: string;

@@ -41,6 +41,7 @@ const ExpandableCategoryElement = ({
   filteringText,
   filteringEnabled,
   menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -89,9 +90,8 @@ const ExpandableCategoryElement = ({
     highlighted: !!highlighted,
     expanded: expanded,
     expandDirection: 'horizontal',
-    filterText: filteringText,
   };
-  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
 
   const trigger = item.text && (
     <span
@@ -190,6 +190,7 @@ const ExpandableCategoryElement = ({
                 filteringText={filteringText}
                 filteringEnabled={filteringEnabled}
                 menuId={menuId}
+                filteringDescriptionId={filteringDescriptionId}
               />
             </ul>
           ) : undefined
