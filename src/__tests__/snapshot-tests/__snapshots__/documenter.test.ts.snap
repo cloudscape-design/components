@@ -33979,10 +33979,19 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
-          "description": "Performs a click by triggering a mouse event on the internal button.
+          "description": "Performs a click by triggering a mouse event on the internal button or link.
 Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
           "name": "click",
-          "parameters": [],
+          "parameters": [
+            {
+              "description": "optional mouse event properties, for example modifier keys (\`ctrlKey\`, \`metaKey\`) or the mouse \`button\`.",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "params",
+              "typeName": "MouseEventInit",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "void",
