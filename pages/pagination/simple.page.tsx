@@ -19,11 +19,14 @@ const i18nStrings: PaginationProps.I18nStrings = {
   jumpToPageInputLabel: 'Page number',
   jumpToPageError: 'Enter a valid page number',
   jumpToPageLoadingText: 'Loading page',
+  compactPageCounterText: (currentPageIndex, pagesCount) => `${currentPageIndex} / ${pagesCount}`,
 };
 
 export default function PaginationSimplePage() {
   const [basicPageIndex, setBasicPageIndex] = useState(1);
   const [jumpPageIndex, setJumpPageIndex] = useState(1);
+  const [compactPageIndex, setCompactPageIndex] = useState(1);
+  const [compactJumpPageIndex, setCompactJumpPageIndex] = useState(1);
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -45,6 +48,26 @@ export default function PaginationSimplePage() {
           i18nStrings={i18nStrings}
           jumpToPage={{}}
           onChange={event => setJumpPageIndex(event.detail.currentPageIndex)}
+        />
+
+        <h2>Compact pagination with 20 pages (default &quot;# of #&quot; format)</h2>
+        <Pagination
+          variant="compact"
+          currentPageIndex={compactPageIndex}
+          pagesCount={20}
+          ariaLabels={paginationLabels}
+          onChange={event => setCompactPageIndex(event.detail.currentPageIndex)}
+        />
+
+        <h2>Compact pagination with jump to page (custom &quot;# / #&quot; format)</h2>
+        <Pagination
+          variant="compact"
+          currentPageIndex={compactJumpPageIndex}
+          pagesCount={20}
+          ariaLabels={paginationLabels}
+          i18nStrings={i18nStrings}
+          jumpToPage={{}}
+          onChange={event => setCompactJumpPageIndex(event.detail.currentPageIndex)}
         />
       </ScreenshotArea>
     </I18nProvider>

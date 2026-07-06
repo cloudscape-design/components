@@ -20424,10 +20424,56 @@ from changing page before items are loaded.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the necessary localized strings required by the component:
+* \`jumpToPageInputLabel\` (string) - Accessible label for the jump-to-page number input.
+* \`jumpToPageError\` (string) - Error message displayed when the entered page number is invalid.
+* \`jumpToPageLoadingText\` (string) - Loading text displayed while the jump-to-page action is in progress.
+* \`compactPageCounterText\` ((currentPageIndex: number, pagesCount: number) => string) - Visible text of the page counter in the \`compact\` variant, for example \`3 of 12\`.
+* \`compactPageCounterAriaLabel\` ((currentPageIndex: number, pagesCount: number) => string) - Screen-reader name of the page counter in the \`compact\` variant, for example \`Page 3 of 12\`.",
       "i18nTag": true,
       "inlineType": {
         "name": "PaginationProps.I18nStrings",
         "properties": [
+          {
+            "inlineType": {
+              "name": "(currentPageIndex: number, pagesCount: number) => string",
+              "parameters": [
+                {
+                  "name": "currentPageIndex",
+                  "type": "number",
+                },
+                {
+                  "name": "pagesCount",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "compactPageCounterAriaLabel",
+            "optional": true,
+            "type": "((currentPageIndex: number, pagesCount: number) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(currentPageIndex: number, pagesCount: number) => string",
+              "parameters": [
+                {
+                  "name": "currentPageIndex",
+                  "type": "number",
+                },
+                {
+                  "name": "pagesCount",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "compactPageCounterText",
+            "optional": true,
+            "type": "((currentPageIndex: number, pagesCount: number) => string)",
+          },
           {
             "name": "jumpToPageError",
             "optional": true,
@@ -20482,6 +20528,23 @@ never disabled. When the user clicks on it but there are no more items to show, 
       "name": "pagesCount",
       "optional": false,
       "type": "number",
+    },
+    {
+      "description": "Specifies the visual variant of the pagination:
+* \`default\` - Displays a button for each page.
+* \`compact\` - Displays the current page and total page count between the previous and next arrows
+  (for example, \`3 of 12\`). When \`jumpToPage\` is set, the jump-to-page control is displayed next to it.",
+      "inlineType": {
+        "name": "PaginationProps.Variant",
+        "type": "union",
+        "values": [
+          "default",
+          "compact",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": [],
@@ -38188,6 +38251,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Returns the page number buttons. Only the \`default\` variant renders these;
+in the \`compact\` variant this returns an empty array.",
           "name": "findPageNumbers",
           "parameters": [],
           "returnType": {
@@ -49423,6 +49488,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Returns the page number buttons. Only the \`default\` variant renders these;
+in the \`compact\` variant this returns an empty array.",
           "name": "findPageNumbers",
           "parameters": [],
           "returnType": {

@@ -335,6 +335,14 @@ export interface I18nFormatArgTypes {
     'i18nStrings.jumpToPageInputLabel': never;
     'i18nStrings.jumpToPageError': never;
     'i18nStrings.jumpToPageLoadingText': never;
+    'i18nStrings.compactPageCounterText': {
+      currentPageIndex: string | number;
+      pagesCount: string | number;
+    };
+    'i18nStrings.compactPageCounterAriaLabel': {
+      currentPageIndex: string | number;
+      pagesCount: string | number;
+    };
   };
   'panel-resize-handle': {
     'i18nStrings.resizeHandleAriaLabel': never;

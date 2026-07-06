@@ -7,6 +7,7 @@ import InputWrapper from '../input';
 import PopoverWrapper from '../popover';
 
 import styles from '../../../pagination/styles.selectors.js';
+import paginationTestUtilsStyles from '../../../pagination/test-classes/styles.selectors.js';
 
 export class PaginationButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   @usesDom
@@ -45,6 +46,17 @@ export default class PaginationWrapper extends ComponentWrapper {
 
   findNextPageButton(): PaginationButtonWrapper {
     return this.findComponent(`li:last-child .${styles.button}`, PaginationButtonWrapper)!;
+  }
+
+  /**
+   * Returns the visible text element of the compact page counter (for example, `3 of 12`),
+   * or `null` when the component is not rendered with `variant="compact"`.
+   *
+   * The returned element excludes the visually hidden screen reader name, so
+   * `getElement().textContent` reflects only the on-screen counter text.
+   */
+  findCompactPageCounter(): ElementWrapper | null {
+    return this.findByClassName(paginationTestUtilsStyles['compact-page-counter-text']);
   }
 
   /**

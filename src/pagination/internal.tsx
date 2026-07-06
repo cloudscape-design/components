@@ -14,6 +14,7 @@ import InternalIcon from '../icon/internal';
 import { BaseChangeDetail } from '../input/interfaces';
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -26,6 +27,7 @@ import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface PageButtonProps {
   className?: string;
@@ -114,6 +116,7 @@ const InternalPagination = React.forwardRef(
       i18nStrings,
       pagesCount,
       disabled,
+      variant = 'default',
       onChange,
       onNextPageClick,
       onPreviousPageClick,
@@ -150,6 +153,24 @@ const InternalPagination = React.forwardRef(
     const pageNumberLabelFn =
       i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
       ((pageNumber: number) => `${pageNumber}`);
+
+    // Visible counter. The worded "N of M" default comes from the i18n catalog; the neutral `# / #`
+    // fallback (no translatable words) only applies when no i18n provider is present.
+    const compactPageCounterText =
+      i18n(
+        'i18nStrings.compactPageCounterText',
+        i18nStrings?.compactPageCounterText,
+        format => (currentPageIndex, pagesCount) => format({ currentPageIndex, pagesCount })
+      ) ?? ((current: number, total: number) => `${current} / ${total}`);
+
+    // Accessible (screen reader) name — "Page N of M" from the catalog. Falls back to the visible counter
+    // when unavailable, so no English is hardcoded.
+    const compactPageCounterAriaLabel =
+      i18n(
+        'i18nStrings.compactPageCounterAriaLabel',
+        i18nStrings?.compactPageCounterAriaLabel,
+        format => (currentPageIndex, pagesCount) => format({ currentPageIndex, pagesCount })
+      ) ?? compactPageCounterText;
 
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
@@ -248,33 +269,44 @@ const InternalPagination = React.forwardRef(
         >
           <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
         </PageButton>
-        <PageNumber
-          pageIndex={1}
-          isCurrent={currentPageIndex === 1}
-          disabled={disabled}
-          ariaLabel={pageNumberLabelFn(1)}
-          onClick={handlePageClick}
-        />
-        {leftDots && <li className={styles.dots}>...</li>}
-        {range(leftIndex, rightIndex).map(pageIndex => (
-          <PageNumber
-            key={pageIndex}
-            isCurrent={currentPageIndex === pageIndex}
-            pageIndex={pageIndex}
-            disabled={disabled}
-            ariaLabel={pageNumberLabelFn(pageIndex)}
-            onClick={handlePageClick}
-          />
-        ))}
-        {rightDots && <li className={styles.dots}>...</li>}
-        {!openEnd && pagesCount > 1 && (
-          <PageNumber
-            isCurrent={currentPageIndex === pagesCount}
-            pageIndex={pagesCount}
-            disabled={disabled}
-            ariaLabel={pageNumberLabelFn(pagesCount)}
-            onClick={handlePageClick}
-          />
+        {variant === 'compact' ? (
+          <li className={styles['compact-page-counter']}>
+            <span className={testUtilStyles['compact-page-counter-text']} aria-hidden="true">
+              {compactPageCounterText(currentPageIndex, pagesCount)}
+            </span>
+            <ScreenreaderOnly>{compactPageCounterAriaLabel(currentPageIndex, pagesCount)}</ScreenreaderOnly>
+          </li>
+        ) : (
+          <>
+            <PageNumber
+              pageIndex={1}
+              isCurrent={currentPageIndex === 1}
+              disabled={disabled}
+              ariaLabel={pageNumberLabelFn(1)}
+              onClick={handlePageClick}
+            />
+            {leftDots && <li className={styles.dots}>...</li>}
+            {range(leftIndex, rightIndex).map(pageIndex => (
+              <PageNumber
+                key={pageIndex}
+                isCurrent={currentPageIndex === pageIndex}
+                pageIndex={pageIndex}
+                disabled={disabled}
+                ariaLabel={pageNumberLabelFn(pageIndex)}
+                onClick={handlePageClick}
+              />
+            ))}
+            {rightDots && <li className={styles.dots}>...</li>}
+            {!openEnd && pagesCount > 1 && (
+              <PageNumber
+                isCurrent={currentPageIndex === pagesCount}
+                pageIndex={pagesCount}
+                disabled={disabled}
+                ariaLabel={pageNumberLabelFn(pagesCount)}
+                onClick={handlePageClick}
+              />
+            )}
+          </>
         )}
         <PageButton
           className={styles.arrow}

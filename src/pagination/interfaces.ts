@@ -23,6 +23,16 @@ export interface PaginationProps {
   openEnd?: boolean;
 
   /**
+   * Specifies the visual variant of the pagination:
+   * * `default` - Displays a button for each page.
+   * * `compact` - Displays the current page and total page count between the previous and next arrows
+   *   (for example, `3 of 12`). When `jumpToPage` is set, the jump-to-page control is displayed next to it.
+   *
+   * @default 'default'
+   */
+  variant?: PaginationProps.Variant;
+
+  /**
    * If set to `true`, the pagination links will be disabled. Use it, for example, if you want to prevent the user
    * from changing page before items are loaded.
    */
@@ -49,6 +59,12 @@ export interface PaginationProps {
    */
   ariaLabels?: PaginationProps.Labels;
   /**
+   * An object containing all the necessary localized strings required by the component:
+   * * `jumpToPageInputLabel` (string) - Accessible label for the jump-to-page number input.
+   * * `jumpToPageError` (string) - Error message displayed when the entered page number is invalid.
+   * * `jumpToPageLoadingText` (string) - Loading text displayed while the jump-to-page action is in progress.
+   * * `compactPageCounterText` ((currentPageIndex: number, pagesCount: number) => string) - Visible text of the page counter in the `compact` variant, for example `3 of 12`.
+   * * `compactPageCounterAriaLabel` ((currentPageIndex: number, pagesCount: number) => string) - Screen-reader name of the page counter in the `compact` variant, for example `Page 3 of 12`.
    * @i18n
    */
   i18nStrings?: PaginationProps.I18nStrings;
@@ -79,6 +95,8 @@ export interface PaginationProps {
 }
 
 export namespace PaginationProps {
+  export type Variant = 'default' | 'compact';
+
   export interface Labels {
     nextPageLabel?: string;
     paginationLabel?: string;
@@ -88,12 +106,11 @@ export namespace PaginationProps {
   }
 
   export interface I18nStrings {
-    /** @i18n */
     jumpToPageInputLabel?: string;
-    /** @i18n */
     jumpToPageError?: string;
-    /** @i18n */
     jumpToPageLoadingText?: string;
+    compactPageCounterText?: (currentPageIndex: number, pagesCount: number) => string;
+    compactPageCounterAriaLabel?: (currentPageIndex: number, pagesCount: number) => string;
   }
 
   export interface ChangeDetail {

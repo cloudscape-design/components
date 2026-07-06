@@ -98,8 +98,14 @@
   color: awsui.$color-text-interactive-default;
 }
 
+.compact-page-counter {
+  color: awsui.$color-text-pagination-page-number-default;
+  white-space: nowrap;
+}
+
 .page-item,
-.dots {
+.dots,
+.compact-page-counter {
   margin-block: styles.$control-padding-vertical;
   margin-inline: awsui.$space-xxs;
   text-align: center;
@@ -114,6 +120,7 @@
   }
 }
 
-.root-disabled > .dots {
+.root-disabled > .dots,
+.root-disabled > .compact-page-counter {
   color: awsui.$color-text-interactive-disabled;
 }
