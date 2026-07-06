@@ -250,6 +250,12 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 }
 
+.section-header {
+  display: contents;
+  font-size: awsui.$font-side-navigation-section-header-size;
+  font-weight: awsui.$font-side-navigation-section-header-weight;
+}
+
 // ==========================================================================
 // Section groups
 // ==========================================================================
@@ -267,6 +273,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
   display: flex;
   align-items: center;
   margin-block: 0;
+}
+
+.section-group > .section-group-title.section-group-title.section-group-title {
+  font-size: awsui.$font-side-navigation-section-group-title-size;
 }
 
 // ==========================================================================

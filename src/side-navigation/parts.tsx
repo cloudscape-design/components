@@ -570,7 +570,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         isInSectionGroup && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
-      headerText={definition.text}
+      headerText={<span className={styles['section-header']}>{definition.text}</span>}
     >
       <NavigationItemsList
         variant="section"
