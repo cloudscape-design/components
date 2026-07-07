@@ -270,7 +270,7 @@ const InternalPagination = React.forwardRef(
           <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
         </PageButton>
         {variant === 'compact' ? (
-          <li className={styles['compact-page-counter']}>
+          <li aria-disabled={disabled} className={styles['compact-page-counter']}>
             <span className={testUtilStyles['compact-page-counter-text']} aria-hidden="true">
               {compactPageCounterText(currentPageIndex, pagesCount)}
             </span>
