@@ -228,7 +228,6 @@ const InternalPagination = React.forwardRef(
     return (
       <ul
         aria-label={paginationLabel}
-        aria-disabled={disabled}
         {...baseProps}
         className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
         ref={__internalRootRef}
