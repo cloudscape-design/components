@@ -43,6 +43,8 @@ export interface BoxProps extends BaseComponentProps {
    *   `aspectRatio: 'equal'` to render a circle.
    *
    * Composes with existing Box props such as `padding` and `margin`.
+   *
+   * @awsuiSystem one-theme
    */
   visualAccent?: BoxProps.VisualAccent;
   /**
