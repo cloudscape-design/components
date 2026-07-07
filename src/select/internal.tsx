@@ -11,7 +11,6 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -20,6 +19,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
+import { OptionGroup } from '../types/option';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
 import PlainList, { SelectListProps } from './parts/plain-list';

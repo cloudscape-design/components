@@ -62,6 +62,7 @@ export default function ProgressBar({
 
   useEffect(() => {
     throttledAssertion(value);
+    return () => throttledAssertion.cancel();
   }, [throttledAssertion, value]);
 
   if (isInFlash && resultButtonText) {

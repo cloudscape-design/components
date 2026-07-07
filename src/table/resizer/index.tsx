@@ -31,6 +31,7 @@ interface ResizerProps {
   tooltipText?: string;
   isBorderless: boolean;
   isLast?: boolean;
+  isGrouped?: boolean;
   dividerPosition?: DividerPosition;
 }
 
@@ -41,12 +42,21 @@ const AUTO_GROW_INCREMENT = 5;
 
 export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
 
-export function Divider({ className, position }: { className?: string; position?: DividerPosition }) {
+export function Divider({
+  className,
+  position,
+  isGrouped,
+}: {
+  className?: string;
+  position?: DividerPosition;
+  isGrouped?: boolean;
+}) {
   return (
     <span
       className={clsx(
         styles.divider,
         position && position !== 'default' && styles[`divider-position-${position}`],
+        isGrouped && styles['divider-grouped'],
         className
       )}
     />
@@ -65,6 +75,7 @@ export function Resizer({
   tooltipText,
   isBorderless,
   isLast,
+  isGrouped,
   dividerPosition,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
@@ -429,6 +440,7 @@ export function Resizer({
           className={clsx(
             styles['divider-interactive'],
             (isPointerDown || isDragging) && styles['divider-active'],
+            isGrouped && styles['divider-grouped'],
             dividerPosition && dividerPosition !== 'default' && styles[`divider-position-${dividerPosition}`]
           )}
           data-awsui-table-suppress-navigation={true}

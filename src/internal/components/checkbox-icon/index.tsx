@@ -3,8 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
+import { useOneTheme, useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import styles from './styles.css.js';
 
@@ -33,7 +34,7 @@ interface Dimension {
 }
 
 // Can't use css variables for svg attributes
-const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimension> = {
+const dimensionsByTheme: Record<NonNullable<'default' | 'refresh' | 'one'>, Dimension> = {
   default: {
     viewBox: '0 0 14 14',
     indeterminate: '2.5,7 11.5,7',
@@ -50,6 +51,14 @@ const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimension> =
     r: 3,
     size: 15,
   },
+  one: {
+    viewBox: '0 0 16 16',
+    indeterminate: '3.5,8 12.5,8',
+    checked: '3.5,8 7,11 12,4',
+    xy: 0.5,
+    r: 2,
+    size: 15,
+  },
 };
 
 const CheckboxIcon = ({
@@ -61,7 +70,8 @@ const CheckboxIcon = ({
   ...restProps
 }: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
-  const theme = useVisualRefresh() ? 'refresh' : 'default';
+  const oneTheme = useOneTheme();
+  const theme = useVisualRefresh() ? (oneTheme ? 'one' : 'refresh') : 'default';
   const dimensions = dimensionsByTheme[theme];
 
   return (

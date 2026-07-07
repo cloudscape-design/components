@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
+import { fireNonCancelableEvent } from '../internal/events/index';
+import { NonCancelableEventHandler } from '../types/events';
 import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces';
 
 /**

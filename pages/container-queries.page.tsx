@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { SegmentedControl } from '~components';
-import { Breakpoint } from '~components/internal/breakpoints';
 import { useContainerBreakpoints } from '~components/internal/hooks/container-queries';
+import { Breakpoint } from '~components/types/breakpoint';
 import { colorBackgroundContainerHeader } from '~design-tokens';
 
 const boxStyles: React.CSSProperties = {

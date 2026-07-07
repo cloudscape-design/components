@@ -10,6 +10,20 @@ import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/progress-bar/styles.css.js';
 
+// Wrap throttle's inner callback with a spy so tests can assert when it runs.
+const mockThrottledCallbacks: jest.Mock[] = [];
+jest.mock('../../../lib/components/internal/utils/throttle', () => {
+  const actual = jest.requireActual('../../../lib/components/internal/utils/throttle');
+  return {
+    ...actual,
+    throttle: (fn: (...args: unknown[]) => unknown, delay: number, opts?: unknown) => {
+      const spy = jest.fn(fn);
+      mockThrottledCallbacks.push(spy);
+      return actual.throttle(spy, delay, opts);
+    },
+  };
+});
+
 const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standalone', 'key-value'];
 const allVariants: Array<ProgressBarProps.Variant> = [...standaloneAndKeyvalueVariants, 'flash'];
 const statuses: Array<ProgressBarProps.Status> = ['success', 'error'];
@@ -248,8 +262,16 @@ standaloneAndKeyvalueVariants.forEach(variant => {
 });
 
 describe('Progress updates', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    mockThrottledCallbacks.length = 0;
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   test('Announced progress value changes not more often then given interval', () => {
-    jest.useFakeTimers(); // Mock timers
     const label = 'progress';
     const { container, rerender } = render(<ProgressBar label={label} value={0} />);
     const wrapper = createWrapper(container).findProgressBar()!;
@@ -285,5 +307,19 @@ describe('Progress updates', () => {
     const wrapper = renderProgressBar({ additionalInfo: 'additional info' });
 
     expect(wrapper.findAdditionalInfo()!.getElement().textContent).toBe('additional info');
+  });
+
+  test('does not invoke the throttled callback after the component is unmounted', () => {
+    const { rerender, unmount } = render(<ProgressBar label="progress" value={0} />);
+    const callback = mockThrottledCallbacks[0];
+    // Drop the leading invocation that runs synchronously on mount.
+    callback.mockClear();
+
+    // Schedule a trailing invocation, then unmount before it fires.
+    rerender(<ProgressBar label="progress" value={42} />);
+    unmount();
+    act(() => jest.advanceTimersByTime(6000));
+
+    expect(callback).not.toHaveBeenCalled();
   });
 });

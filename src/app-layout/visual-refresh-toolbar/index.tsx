@@ -105,7 +105,7 @@ function AppLayoutVisualRefreshToolbarWithI18n({
           <AppLayoutVisibilityContext.Provider value={appLayoutState.isIntersecting}>
             {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
             {(embeddedViewMode || !toolbarProps) && appLayoutPropsWithI18n.breadcrumbs ? (
-              <AppLayoutBuiltInErrorBoundary>
+              <AppLayoutBuiltInErrorBoundary appLayoutPart="screenreader-only-breadcrumbs">
                 <ScreenreaderOnly>{appLayoutPropsWithI18n.breadcrumbs}</ScreenreaderOnly>
               </AppLayoutBuiltInErrorBoundary>
             ) : null}

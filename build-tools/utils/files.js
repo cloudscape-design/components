@@ -16,6 +16,7 @@ function listPublicItems(baseDir) {
         !elem.startsWith('__') &&
         !elem.startsWith('.') &&
         elem !== 'internal' &&
+        elem !== 'types' &&
         elem !== 'index.tsx' &&
         elem !== 'index.ts' &&
         elem !== 'interfaces.ts' &&

@@ -8,11 +8,31 @@ import { Density, Mode } from '@cloudscape-design/global-styles';
 
 import { THEME } from '~components/internal/environment';
 
+// `visualRefresh` is kept as a separate flag; this enum covers the additional, mutually
+// exclusive themes that map to a single body class.
+export enum Theme {
+  Default = 'default',
+  OneTheme = 'one-theme',
+}
+
+const themeClassNames: Record<Theme, string> = {
+  [Theme.Default]: '',
+  [Theme.OneTheme]: 'awsui-one-theme',
+};
+
+export function applyThemeClass(activeTheme: Theme) {
+  for (const [theme, className] of Object.entries(themeClassNames)) {
+    if (className) {
+      document.body.classList.toggle(className, theme === activeTheme);
+    }
+  }
+}
+
 interface AppUrlParams {
   density: Density;
   direction: 'ltr' | 'rtl';
   visualRefresh: boolean;
-  oneTheme: boolean;
+  theme: Theme;
   motionDisabled: boolean;
   appLayoutWidget: boolean;
   mode?: Mode;
@@ -33,7 +53,7 @@ const appContextDefaults: AppContextType = {
     density: Density.Comfortable,
     direction: 'ltr',
     visualRefresh: THEME === 'default',
-    oneTheme: false,
+    theme: Theme.Default,
     motionDisabled: false,
     appLayoutWidget: false,
   },
@@ -54,7 +74,12 @@ export function parseQuery(query: string) {
   const urlParams = new URLSearchParams(query);
   urlParams.forEach((value, key) => (queryParams[key] = value));
 
-  return mapValues(queryParams, value => {
+  const themeValues = Object.values(Theme) as string[];
+
+  return mapValues(queryParams, (value, key) => {
+    if (key === 'theme') {
+      return themeValues.includes(value) ? value : Theme.Default;
+    }
     if (value === 'true' || value === 'false') {
       return value === 'true';
     }

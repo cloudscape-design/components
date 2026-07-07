@@ -15,11 +15,12 @@ import { BaseChangeDetail } from '../input/interfaces';
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
-import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePrevious } from '../internal/hooks/use-previous';
 import InternalPopover from '../popover/internal';
 import InternalSpaceBetween from '../space-between/internal';
+import { NonCancelableCustomEvent } from '../types/events';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
 import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
@@ -220,7 +221,7 @@ const InternalPagination = React.forwardRef(
         loadingText={jumpToPageLoadingText}
         ariaLabel={jumpToPage?.loading ? jumpToPageLoadingText : jumpToPageButtonLabel}
         onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
-        disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
+        disabled={disabled || !jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
       />
     );
 
@@ -299,6 +300,7 @@ const InternalPagination = React.forwardRef(
                   ref={jumpToPageInputRef}
                   type="number"
                   value={jumpToPageValue}
+                  disabled={disabled}
                   __inlineLabelText={jumpToPageLabel || undefined}
                   __fullWidth={true}
                   ariaLabel={jumpToPageLabel || undefined}

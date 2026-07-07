@@ -7,8 +7,10 @@ import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/inter
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { BaseComponentProps } from '../../../types/base-component';
+import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
+import { getBaseProps } from '../../base-component';
+import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
@@ -130,7 +132,7 @@ const ButtonTrigger = (
     >
       {children}
       {!hideCaret && (
-        <span className={clsx(styles.arrow, isThemeActive(Theme.OneTheme) && styles['one-theme'])}>
+        <span className={styles.arrow}>
           <InternalIcon
             name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
             size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}

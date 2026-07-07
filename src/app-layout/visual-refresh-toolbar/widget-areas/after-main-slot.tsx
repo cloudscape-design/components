@@ -64,7 +64,7 @@ export const AfterMainSlotImplementationInternal = ({ appLayoutState, appLayoutP
           </AppLayoutSplitPanelSide>
         </div>
       )}
-      <AppLayoutBuiltInErrorBoundary>
+      <AppLayoutBuiltInErrorBoundary appLayoutPart="tools">
         <div
           className={clsx(
             styles.tools,
@@ -93,7 +93,7 @@ export const AfterMainSlotImplementationInternal = ({ appLayoutState, appLayoutP
 };
 
 export const AfterMainSlotImplementation = (props: SkeletonPartProps) => (
-  <AppLayoutBuiltInErrorBoundary>
+  <AppLayoutBuiltInErrorBoundary appLayoutPart="after-main-slot">
     <AfterMainSlotImplementationInternal {...props} />
   </AppLayoutBuiltInErrorBoundary>
 );

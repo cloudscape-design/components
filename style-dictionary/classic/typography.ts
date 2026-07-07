@@ -38,6 +38,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightHeavy: '700',
   letterSpacingBodyS: 'normal',
   letterSpacingDisplayL: 'normal',
+  letterSpacingDisplayXl: 'normal',
   letterSpacingHeadingXl: 'normal',
   letterSpacingHeadingL: 'normal',
   letterSpacingHeadingM: 'normal',

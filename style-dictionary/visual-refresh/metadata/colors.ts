@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundBackdrop: {
+    description: 'The background color of the backdrop shown behind overlay surfaces such as modals and drawers.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonNormalActive: {
     description: 'The background color of normal buttons in active state.',
     themeable: true,
@@ -50,6 +55,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundToggleButtonNormalDefault: {
     description: 'The default background color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleButtonNormalHover: {
+    description: 'The background color of normal toggle buttons in hover state.',
     themeable: true,
     public: true,
   },
@@ -160,10 +170,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundSideNavigationItemActive: {
+    description: 'The background color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSideNavigationItemActiveCollapsed: {
+    description: 'The background color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
   colorBackgroundLayoutMain: {
     description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
+  },
+  colorBackgroundLayoutPanel: {
+    description:
+      'The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundLayoutPanelContent: {
     description:
@@ -222,6 +248,26 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundNotificationYellow: {
     description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarSuccess: {
+    description: 'The background color of success flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarError: {
+    description: 'The background color of error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarInfo: {
+    description: 'The background color of info and in-progress flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarWarning: {
+    description: 'The background color of warning flash messages.',
     public: true,
     themeable: true,
   },
@@ -335,6 +381,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundTilesDisabled: {
+    description: 'The background color of disabled tiles.',
+    themeable: true,
+    public: true,
+  },
+  colorShadowToggleHandle: {
+    description: 'The color of the drop shadow under the toggle handle.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundAvatarDefault: {
     description: 'The default background color of avatars.',
     themeable: false,
@@ -391,6 +447,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBorderToggleButtonNormalDefault: {
+    description: 'The default border color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderToggleButtonNormalHover: {
+    description: 'The border color of normal toggle buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDisabled: {
     description: 'The border color of normal buttons in disabled state.',
     themeable: true,
@@ -440,6 +506,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
     public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActive: {
+    description: 'The text color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActiveCollapsed: {
+    description: 'The text (and icon) color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorTextSideNavigationItemDefault: {
+    description: 'The text (and icon) color of a non-active side navigation item.',
+    public: false,
     themeable: true,
   },
   colorBorderCard: {
@@ -538,6 +619,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderSegmentHover: {
     description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentWrapper: {
+    description: 'The border color of the segmented control wrapper.',
     public: true,
     themeable: true,
   },
@@ -754,6 +840,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextEmpty: {
     description:
       'The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionDefault: {
+    description: 'The default color of the expandable section header text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionHover: {
+    description: 'The color of the expandable section header text in hover state.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionNavigationIconDefault: {
+    description: 'The default color of the expand icon in the navigation variant of the expandable section.',
     public: true,
     themeable: true,
   },
@@ -1119,6 +1220,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: false,
   },
+  colorBackgroundBadgeGreen: {
+    description: 'The background color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeBlue: {
+    description: 'The background color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeRed: {
+    description: 'The background color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeYellow: {
+    description: 'The background color of yellow badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeGrey: {
+    description: 'The background color of grey badges.',
+    themeable: true,
+    public: true,
+  },
   colorBorderBadge: {
     description: 'The default border color of badges.',
     themeable: true,
@@ -1161,6 +1287,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextBadgeRed: {
     description: 'The text color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundCodeView: {
+    description: 'The background color of the code view component.',
     themeable: true,
     public: true,
   },

@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface SegmentedControlProps extends BaseComponentProps {
   /**

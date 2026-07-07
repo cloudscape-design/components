@@ -63,7 +63,7 @@ $link-variants: (
     'text-color-default': awsui.$color-text-link-secondary-default,
     'text-color-hover': awsui.$color-text-link-secondary-hover,
     'text-color-active': awsui.$color-text-link-secondary-hover,
-    'font-weight': inherit,
+    'font-weight': awsui.$font-weight-link-secondary,
     'decoration-line': none,
     'decoration-color': transparent,
     'decoration-color-hover': currentColor,

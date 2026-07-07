@@ -42,10 +42,10 @@
   display: flex;
   align-items: center;
   background: var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background);
-  border-start-start-radius: awsui.$space-scaled-xxs;
-  border-start-end-radius: awsui.$space-scaled-xxs;
-  border-end-start-radius: awsui.$space-scaled-xxs;
-  border-end-end-radius: awsui.$space-scaled-xxs;
+  border-start-start-radius: awsui.$border-radius-token-inline;
+  border-start-end-radius: awsui.$border-radius-token-inline;
+  border-end-start-radius: awsui.$border-radius-token-inline;
+  border-end-end-radius: awsui.$border-radius-token-inline;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
   max-inline-size: 100%;

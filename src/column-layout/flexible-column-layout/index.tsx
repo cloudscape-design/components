@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { flattenChildren } from '../../internal/utils/flatten-children';
-import { InternalColumnLayoutProps } from '../interfaces';
+import { InternalColumnLayoutProps } from '../internal-interfaces';
 
 import styles from './styles.css.js';
 

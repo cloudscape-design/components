@@ -28,7 +28,8 @@ import {
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar, useFlashbarVisibility } from './common';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
 import {
   counterTypes,

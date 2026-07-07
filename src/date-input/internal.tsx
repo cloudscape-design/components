@@ -7,12 +7,13 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import MaskedInput from '../internal/components/masked-input';
-import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
 import formatDateIso from '../internal/utils/date-time/format-date-iso';
 import formatDateLocalized from '../internal/utils/date-time/format-date-localized';
+import { NonCancelableCustomEvent } from '../types/events';
 import { GeneratedAnalyticsMetadataDateInputComponent } from './analytics-metadata/interfaces';
 import { DateInputProps } from './interfaces';
 import { generateMaskArgs, normalizeIsoDateString } from './utils';

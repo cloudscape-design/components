@@ -10,7 +10,7 @@ import { useReaction } from '../../../lib/components/area-chart/async-store';
 import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
 import { ChartModel } from '../../../lib/components/area-chart/model';
 import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
-import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
+import { ChartDataTypes } from '../../types/cartesian-chart';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {

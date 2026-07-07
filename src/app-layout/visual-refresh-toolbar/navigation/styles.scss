@@ -12,7 +12,7 @@
 .navigation-container {
   position: sticky;
   z-index: constants.$drawer-z-index;
-  background-color: awsui.$color-background-container-content;
+  background-color: awsui.$color-background-layout-panel-content;
   inset-block-end: 0;
   overflow-x: hidden;
   word-wrap: break-word;

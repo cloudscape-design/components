@@ -24,8 +24,8 @@
 
 .segment-part {
   display: inline-grid;
-  border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
-  border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
+  border-inline: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
+  border-block: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-start-start-radius: awsui.$border-radius-button;
   border-start-end-radius: awsui.$border-radius-button;
   border-end-start-radius: awsui.$border-radius-button;

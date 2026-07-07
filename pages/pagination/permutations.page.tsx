@@ -23,6 +23,7 @@ const permutations = createPermutations<PaginationProps>([
     pagesCount: [15],
     disabled: [true],
     ariaLabels: [paginationLabels],
+    jumpToPage: [undefined, { loading: false }],
   },
   {
     currentPageIndex: [1, 6, 15],

@@ -4,7 +4,8 @@
 import React, { useState } from 'react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
-import { FilteringProperty, I18nStrings, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
+import { FilteringProperty, I18nStrings, PropertyFilterProps, Token } from '../interfaces';
+import { InternalFilteringProperty } from '../internal-interfaces';
 
 export const i18nStrings: I18nStrings = {
   dismissAriaLabel: 'Dismiss',

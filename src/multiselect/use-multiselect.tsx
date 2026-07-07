@@ -6,8 +6,8 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
-import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { DropdownOption } from '../internal/components/option/interfaces';
 import { isGroup } from '../internal/components/option/utils/filter-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -21,6 +21,8 @@ import { useLoadItems } from '../select/utils/use-load-items';
 import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { OptionDefinition, OptionGroup } from '../types/option';
 import { MultiselectProps } from './interfaces';
 
 type UseMultiselectOptions = SomeRequired<

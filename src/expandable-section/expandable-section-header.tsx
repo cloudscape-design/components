@@ -13,7 +13,8 @@ import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
   GeneratedAnalyticsMetadataExpandableSectionExpand,
 } from './analytics-metadata/interfaces';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
+import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 import {
   variantRequiresActionsDivider,
   variantSupportsActions,
@@ -108,15 +109,7 @@ const ExpandableDeprecatedHeader = ({
       aria-expanded={expanded}
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
-      <div
-        className={clsx(
-          styles['icon-container'],
-          styles[`icon-container-${variant}`],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
-      >
-        {icon}
-      </div>
+      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
     </div>
   );
@@ -136,11 +129,7 @@ const ExpandableNavigationHeader = ({
   return (
     <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
       <button
-        className={clsx(
-          styles['icon-container'],
-          styles['expand-button'],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
+        className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-controls={ariaControls}
@@ -213,15 +202,7 @@ const ExpandableHeaderTextWrapper = ({
       {...headerButtonListeners}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
-      <span
-        className={clsx(
-          styles['icon-container'],
-          styles[`icon-container-${variant}`],
-          isThemeActive(Theme.OneTheme) && styles['one-theme']
-        )}
-      >
-        {icon}
-      </span>
+      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
       <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
         {children}
       </span>

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes } from './interfaces';
+import { ChartDataTypes } from '../../../types/cartesian-chart';
 import { ChartScale, NumericChartScale } from './scales';
 
 const SPACE_BETWEEN = 4;

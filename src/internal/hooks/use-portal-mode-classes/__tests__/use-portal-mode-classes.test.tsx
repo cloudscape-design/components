@@ -42,6 +42,24 @@ describe('usePortalModeClasses', () => {
     expect(screen.getByTestId('subject')).toHaveClass('awsui-visual-refresh', { exact: true });
   });
 
+  test('should detect one theme mode', () => {
+    document.body.classList.add('awsui-one-theme');
+
+    render(<RenderTest refClasses="" />);
+    expect(screen.getByTestId('subject')).toHaveClass('awsui-one-theme', { exact: true });
+    // Must not stamp the VR class, which would override One Theme tokens on portaled content.
+    expect(screen.getByTestId('subject')).not.toHaveClass('awsui-visual-refresh');
+  });
+
+  test('should let one theme win when visual refresh is also active', () => {
+    globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+    document.body.classList.add('awsui-one-theme');
+
+    render(<RenderTest refClasses="" />);
+    expect(screen.getByTestId('subject')).toHaveClass('awsui-one-theme', { exact: true });
+    expect(screen.getByTestId('subject')).not.toHaveClass('awsui-visual-refresh');
+  });
+
   test('should detect contexts', () => {
     render(
       <VisualContext contextName="content-header">

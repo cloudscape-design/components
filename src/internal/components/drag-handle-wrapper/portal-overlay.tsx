@@ -15,10 +15,12 @@ import styles from './styles.css.js';
 export default function PortalOverlay({
   track,
   isDisabled,
+  referrerId,
   children,
 }: {
   track: React.RefObject<HTMLElement | null>;
   isDisabled: boolean;
+  referrerId?: string;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
@@ -81,7 +83,15 @@ export default function PortalOverlay({
 
   return (
     <Portal container={container}>
-      <span ref={ref} className={clsx(styles['portal-overlay'], isDisabled && styles['portal-overlay-disabled'])}>
+      {/* `data-awsui-referrer-id` links this portaled overlay back to the tracked element in the
+          regular DOM, so outside-click / focus detection (see `nodeBelongs`) treats interactions
+          with the UAP buttons as belonging to wherever the drag handle is mounted (e.g. inside a
+          dropdown), instead of as a click outside it. */}
+      <span
+        ref={ref}
+        data-awsui-referrer-id={referrerId}
+        className={clsx(styles['portal-overlay'], isDisabled && styles['portal-overlay-disabled'])}
+      >
         <span className={styles['portal-overlay-contents']}>{children}</span>
       </span>
     </Portal>

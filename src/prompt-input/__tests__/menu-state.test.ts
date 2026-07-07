@@ -4,7 +4,7 @@
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
 import { act, renderHook } from '../../__tests__/render-hook';
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { useMenuItems, useMenuLoadMore } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
 

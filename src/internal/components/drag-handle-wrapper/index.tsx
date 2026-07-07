@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
@@ -35,6 +35,9 @@ export default function DragHandleWrapper({
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
+  // Links the portaled UAP buttons back to the drag handle's position in the regular DOM,
+  // so outside-click / focus detection treats them as belonging to the handle's container.
+  const referrerId = useUniqueId('drag-handle');
   const [showTooltip, setShowTooltip] = useState(false);
   const [uncontrolledShowButtons, setUncontrolledShowButtons] = useState(initialShowButtons);
 
@@ -244,6 +247,7 @@ export default function DragHandleWrapper({
           <div
             className={clsx(styles['drag-handle'], wrapperClassName)}
             ref={dragHandleRef}
+            id={referrerId}
             onPointerDown={onHandlePointerDown}
             onKeyDown={onDragHandleKeyDown}
           >
@@ -258,7 +262,7 @@ export default function DragHandleWrapper({
         </div>
       </div>
 
-      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons} referrerId={referrerId}>
         {visibleDirections.map(
           (direction, index) =>
             directions[direction] && (
