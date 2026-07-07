@@ -52,6 +52,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightHeavy: '700',
   fontWeightKeyValuePairsLabel: '{fontDisplayLabelWeight}',
   fontWeightLighter: '300',
+  fontWeightLinkSecondary: 'inherit',
   fontWeightNormal: '400',
   fontWeightTabs: '700',
   fontWeightTabsDisabled: '{fontWayfindingLinkActiveWeight}',
