@@ -37640,12 +37640,7 @@ Returns the current value of the input.",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -37680,12 +37675,7 @@ Returns the current value of the input.",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -37703,12 +37693,7 @@ Returns the current value of the input.",
           ],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -37719,7 +37704,7 @@ Returns the current value of the input.",
             "name": "Array",
             "typeArguments": [
               {
-                "name": "ElementWrapper<HTMLElement>",
+                "name": "PaginationButtonWrapper",
               },
             ],
           },
@@ -37729,12 +37714,7 @@ Returns the current value of the input.",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -37747,6 +37727,19 @@ Returns the current value of the input.",
         },
       ],
       "name": "PaginationWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "PaginationButtonWrapper",
     },
     {
       "methods": [
@@ -48804,7 +48797,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -48839,7 +48832,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -48857,7 +48850,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           ],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
+            "name": "PaginationButtonWrapper",
           },
         },
         {
@@ -48868,7 +48861,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "ElementWrapper",
+                "name": "PaginationButtonWrapper",
               },
             ],
           },
@@ -48878,11 +48871,15 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "ElementWrapper",
+            "name": "PaginationButtonWrapper",
           },
         },
       ],
       "name": "PaginationWrapper",
+    },
+    {
+      "methods": [],
+      "name": "PaginationButtonWrapper",
     },
     {
       "methods": [

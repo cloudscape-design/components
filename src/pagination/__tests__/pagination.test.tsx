@@ -47,8 +47,8 @@ test('should re-render component correctly after current page state change', () 
 
 test('should have both arrows disabled when there is only one page', () => {
   const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={1} />);
-  expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
-  expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-disabled', 'true');
+  expect(wrapper.findPreviousPageButton().isDisabled()).toBe(true);
+  expect(wrapper.findNextPageButton().isDisabled()).toBe(true);
   expect(wrapper.findPageNumberByIndex(1)!.getElement()).toHaveTextContent('1');
   expect(getItemsContent(wrapper)).toEqual(['1']);
 });
@@ -63,10 +63,34 @@ test('should have both arrows disabled when there are no pages', () => {
 
 test('should show all buttons when middle page selected', () => {
   const { wrapper } = renderPagination(<Pagination currentPageIndex={5} pagesCount={9} />);
-  expect(wrapper.findPreviousPageButton().getElement()).not.toHaveAttribute('aria-disabled');
-  expect(wrapper.findNextPageButton().getElement()).not.toHaveAttribute('aria-disabled');
+  expect(wrapper.findPreviousPageButton().isDisabled()).toBe(false);
+  expect(wrapper.findNextPageButton().isDisabled()).toBe(false);
   expect(wrapper.findCurrentPage().getElement()).toHaveTextContent('5');
   expect(getItemsContent(wrapper)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+});
+
+test('keeps focus on the previous page button when it becomes disabled after navigating to the first page', () => {
+  const { wrapper, rerender } = renderPagination(<Pagination currentPageIndex={2} pagesCount={10} />);
+
+  wrapper.findPreviousPageButton().focus();
+  expect(wrapper.findPreviousPageButton().getElement()).toHaveFocus();
+
+  rerender(<Pagination currentPageIndex={1} pagesCount={10} />);
+
+  expect(wrapper.findPreviousPageButton().isDisabled()).toBe(true);
+  expect(wrapper.findPreviousPageButton().getElement()).toHaveFocus();
+});
+
+test('keeps focus on the next page button when it becomes disabled after navigating to the last page', () => {
+  const { wrapper, rerender } = renderPagination(<Pagination currentPageIndex={9} pagesCount={10} />);
+
+  wrapper.findNextPageButton().focus();
+  expect(wrapper.findNextPageButton().getElement()).toHaveFocus();
+
+  rerender(<Pagination currentPageIndex={10} pagesCount={10} />);
+
+  expect(wrapper.findNextPageButton().isDisabled()).toBe(true);
+  expect(wrapper.findNextPageButton().getElement()).toHaveFocus();
 });
 
 test('should not fire nextPageClick event when clicking next page with the last page being active', () => {
@@ -308,6 +332,15 @@ describe('jump to page', () => {
 
     expect(wrapper.findJumpToPageInput()).toBeTruthy();
     expect(wrapper.findJumpToPageButton()).toBeTruthy();
+  });
+
+  test('should disable jump to page input and button when pagination is disabled', () => {
+    const { wrapper } = renderPagination(
+      <Pagination currentPageIndex={1} pagesCount={10} disabled={true} jumpToPage={{}} />
+    );
+
+    expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toBeDisabled();
+    expect(wrapper.findJumpToPageButton()!.getElement()).toBeDisabled();
   });
 
   test('should not render jump to page when jumpToPage is not provided', () => {

@@ -246,11 +246,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(242, 243, 243, 0.9)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -3801,11 +3836,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(242, 243, 243, 0.9)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -7356,11 +7426,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(242, 243, 243, 0.9)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -10911,11 +11016,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(242, 243, 243, 0.9)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -14466,11 +14606,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(242, 243, 243, 0.9)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#545b64",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#d13212",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -18021,11 +18196,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "rgba(22, 25, 31, 0.8)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#0073bb",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#1d8102",
+            "light": "#1d8102",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff5d64",
             "light": "#ff5d64",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#d13212",
+            "light": "#d13212",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -21576,11 +21786,46 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "rgba(242, 243, 243, 0.9)",
       },
     },
+    "color-background-badge-blue": {
+      "$description": "The background color of blue badges.",
+      "$value": {
+        "dark": "#0073bb",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-badge-green": {
+      "$description": "The background color of green badges.",
+      "$value": {
+        "dark": "#1d8102",
+        "light": "#1d8102",
+      },
+    },
+    "color-background-badge-grey": {
+      "$description": "The background color of grey badges.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#545b64",
+      },
+    },
     "color-background-badge-icon": {
       "$description": "The background color of the badge indicator on navigation and panel buttons.",
       "$value": {
         "dark": "#ff5d64",
         "light": "#d13212",
+      },
+    },
+    "color-background-badge-red": {
+      "$description": "The background color of red badges.",
+      "$value": {
+        "dark": "#d13212",
+        "light": "#d13212",
+      },
+    },
+    "color-background-badge-yellow": {
+      "$description": "The background color of yellow badges.",
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
       },
     },
     "color-background-button-link-active": {
@@ -25136,11 +25381,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(35, 43, 55, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#424650",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -28691,11 +28971,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(15, 20, 26, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -32246,11 +32561,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(35, 43, 55, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#424650",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -35801,11 +36151,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(35, 43, 55, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#424650",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -39356,11 +39741,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(35, 43, 55, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#424650",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -42911,11 +43331,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(35, 43, 55, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#424650",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#db0000",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -46466,11 +46921,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(15, 20, 26, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -50021,11 +50511,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "rgba(15, 20, 26, 0.7)",
           },
         },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-badge-icon": {
           "$description": "The background color of the badge indicator on navigation and panel buttons.",
           "$value": {
             "dark": "#ff7a7a",
             "light": "#ff7a7a",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -53576,11 +54101,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "rgba(35, 43, 55, 0.7)",
       },
     },
+    "color-background-badge-blue": {
+      "$description": "The background color of blue badges.",
+      "$value": {
+        "dark": "#006ce0",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-badge-green": {
+      "$description": "The background color of green badges.",
+      "$value": {
+        "dark": "#00802f",
+        "light": "#00802f",
+      },
+    },
+    "color-background-badge-grey": {
+      "$description": "The background color of grey badges.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#424650",
+      },
+    },
     "color-background-badge-icon": {
       "$description": "The background color of the badge indicator on navigation and panel buttons.",
       "$value": {
         "dark": "#ff7a7a",
         "light": "#db0000",
+      },
+    },
+    "color-background-badge-red": {
+      "$description": "The background color of red badges.",
+      "$value": {
+        "dark": "#db0000",
+        "light": "#db0000",
+      },
+    },
+    "color-background-badge-yellow": {
+      "$description": "The background color of yellow badges.",
+      "$value": {
+        "dark": "#ffe347",
+        "light": "#ffe347",
       },
     },
     "color-background-button-link-active": {

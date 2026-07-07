@@ -94,7 +94,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Links ─────────────────────────────────────────────────────────────────
   colorTextLinkDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextLinkHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkSecondaryDefault: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
+  colorTextLinkSecondaryDefault: { light: '{colorNeutral700}', dark: '{colorNeutral450}' },
   colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
@@ -104,6 +104,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Selection / focus ─────────────────────────────────────────────────────
   colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBorderItemPlaceholder: '{colorTransparent}',
   colorBackgroundItemSelected: { light: '{colorNeutral150}', dark: '{colorNeutral1000}' },
   colorBackgroundLayoutToggleSelectedDefault: { light: '{colorPrimary100}', dark: '#5c7fff20' },
   colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
@@ -123,12 +124,18 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSliderHandleDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
 
-  // ── Notifications ─────────────────────────────────────────────────────────
-  colorBackgroundNotificationGreen: { light: '{colorSuccess600}', dark: '{colorSuccess800}' },
-  colorBackgroundNotificationBlue: { light: '{colorInfo600}', dark: '{colorInfo900}' },
-  colorBackgroundNotificationRed: { light: '{colorError600}', dark: '{colorError800}' },
-  colorBackgroundNotificationYellow: { light: '{colorWarning400}', dark: '{colorWarning900}' },
+  // ── Badge ─────────────────────────────────────────────────────────
+  colorBackgroundBadgeGreen: { light: '{colorSuccess100}', dark: 'rgba(43, 181, 52, 0.2)' },
+  colorBackgroundBadgeBlue: { light: '{colorInfo100}', dark: 'rgba(92, 127, 255, 0.2)' },
+  colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
+  colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
+  colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
+
+  colorTextBadgeGreen: { light: '{colorSuccess800}', dark: '{colorSuccess200}' },
+  colorTextBadgeBlue: { light: '{colorInfo800}', dark: '{colorInfo300}' },
+  colorTextBadgeRed: { light: '{colorError800}', dark: '{colorError400}' },
+  colorTextBadgeGrey: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
 
   // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
   colorBackgroundFlashbarSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },

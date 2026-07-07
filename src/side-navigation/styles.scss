@@ -250,6 +250,12 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 }
 
+.section-header {
+  display: contents;
+  font-size: awsui.$font-side-navigation-section-header-size;
+  font-weight: awsui.$font-side-navigation-section-header-weight;
+}
+
 // ==========================================================================
 // Section groups
 // ==========================================================================
