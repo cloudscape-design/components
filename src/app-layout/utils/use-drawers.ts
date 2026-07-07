@@ -197,11 +197,13 @@ type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDr
   onAddNewActiveDrawer?: (drawerId: string) => void;
   expandedDrawerId?: string | null;
   setExpandedDrawerId?: (value: string | null) => void;
+  externalLocalRuntimeDrawers?: Array<AppLayoutProps.Drawer> | null;
 };
 
 export function useDrawers(
   {
     drawers,
+    externalLocalRuntimeDrawers,
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
     onGlobalDrawerFocus,
@@ -293,13 +295,19 @@ export function useDrawers(
       : activeDrawerId !== TOOLS_DRAWER_ID
         ? activeDrawerId
         : null;
-  const runtimeDrawers = useRuntimeDrawers(
+  let runtimeDrawers = useRuntimeDrawers(
     disableRuntimeDrawers,
     activeDrawerIdResolved,
     onActiveDrawerChange,
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange
   );
+  if (externalLocalRuntimeDrawers) {
+    runtimeDrawers = {
+      ...runtimeDrawers,
+      localBefore: [...externalLocalRuntimeDrawers, ...runtimeDrawers.localBefore],
+    };
+  }
   const { localBefore, localAfter, global: runtimeGlobalDrawers } = runtimeDrawers;
   const combinedLocalDrawers = drawers
     ? [...localBefore, ...drawers, ...localAfter]

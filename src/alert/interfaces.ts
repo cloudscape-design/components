@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ErrorContext } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { ErrorContext } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export namespace AlertProps {
   export type Type = 'success' | 'error' | 'warning' | 'info';
@@ -157,6 +157,8 @@ export interface AlertProps extends BaseComponentProps {
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
   /**
+   * An object containing CSS properties to customize the alert's visual appearance.
+   * Refer to the [style](/components/alert/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AlertProps.Style;

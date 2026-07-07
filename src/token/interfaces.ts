@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface TokenProps extends BaseComponentProps {
   /** Slot for the label of the token as text or an element.
@@ -69,8 +69,47 @@ export interface TokenProps extends BaseComponentProps {
    * Only applies to plain text labels.
    */
   tooltipContent?: string;
+
+  /**
+   * An object containing CSS properties to customize the token's visual appearance.
+   * Refer to the [style](/components/token/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: TokenProps.Style;
 }
 
 export namespace TokenProps {
   export type Variant = 'normal' | 'inline';
+
+  export interface Style {
+    root?: {
+      background?: {
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    dismissButton?: {
+      color?: {
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        readOnly?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+  }
 }

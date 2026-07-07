@@ -96,7 +96,7 @@ function renderTable(props: Partial<TableProps>) {
 }
 
 const getMetadata = (
-  additionalProperties: Record<string, string>,
+  additionalProperties: Record<string, string | string[] | string[][]>,
   innerContext?: Record<string, string>,
   event: GeneratedAnalyticsMetadataFragment = {}
 ) => {
@@ -108,6 +108,7 @@ const getMetadata = (
           name: 'awsui.Table',
           label: componentLabel,
           properties: {
+            columnLabels: ['Value', 'Description', 'Actions'],
             itemsCount: '3',
             ...additionalProperties,
           },
@@ -136,13 +137,27 @@ describe('Table renders correct analytics metadata', () => {
         detail: { position: '1', item: 'first' },
       };
       expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, selectEvent)
+        getMetadata(
+          {
+            selectedItemsCount: '1',
+            selectedItemsLabels: [['third', 'Third choice']],
+            selectionType: 'multi',
+            variant: 'full-page',
+          },
+          undefined,
+          selectEvent
+        )
       );
 
       const disabledSelectionArea = wrapper.findRowSelectionArea(2)!.find('input')!.getElement();
       validateComponentNameAndLabels(disabledSelectionArea, labels);
       expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' })
+        getMetadata({
+          selectedItemsCount: '1',
+          selectedItemsLabels: [['third', 'Third choice']],
+          selectionType: 'multi',
+          variant: 'full-page',
+        })
       );
 
       const thirdSelectionArea = wrapper.findRowSelectionArea(3)!.find('input')!.getElement();
@@ -152,7 +167,16 @@ describe('Table renders correct analytics metadata', () => {
         detail: { position: '3', item: 'third' },
       };
       expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' }, undefined, deselectEvent)
+        getMetadata(
+          {
+            selectedItemsCount: '1',
+            selectedItemsLabels: [['third', 'Third choice']],
+            selectionType: 'multi',
+            variant: 'full-page',
+          },
+          undefined,
+          deselectEvent
+        )
       );
 
       const selectAllArea = wrapper.findSelectAllTrigger()!.find('input')!.getElement();
@@ -163,7 +187,12 @@ describe('Table renders correct analytics metadata', () => {
       };
       expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
         getMetadata(
-          { selectedItemsCount: '1', selectionType: 'multi', variant: 'full-page' },
+          {
+            selectedItemsCount: '1',
+            selectedItemsLabels: [['third', 'Third choice']],
+            selectionType: 'multi',
+            variant: 'full-page',
+          },
           undefined,
           selectAllEvent
         )
@@ -180,7 +209,16 @@ describe('Table renders correct analytics metadata', () => {
       };
       expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
         getMetadata(
-          { selectedItemsCount: '3', selectionType: 'multi', variant: 'container' },
+          {
+            selectedItemsCount: '3',
+            selectedItemsLabels: [
+              ['first', 'First choice.'],
+              ['second', 'Second choice'],
+              ['third', 'Third choice'],
+            ],
+            selectionType: 'multi',
+            variant: 'container',
+          },
           undefined,
           deselectAllEvent
         )
@@ -192,16 +230,30 @@ describe('Table renders correct analytics metadata', () => {
       const firstSelectionArea = wrapper.findRowSelectionArea(1)!.find('input')!.getElement();
       validateComponentNameAndLabels(firstSelectionArea, labels);
       expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'single', variant: 'container' }, undefined, {
-          action: 'select',
-          detail: { position: '1', item: 'first' },
-        })
+        getMetadata(
+          {
+            selectedItemsCount: '1',
+            selectedItemsLabels: [['third', 'Third choice']],
+            selectionType: 'single',
+            variant: 'container',
+          },
+          undefined,
+          {
+            action: 'select',
+            detail: { position: '1', item: 'first' },
+          }
+        )
       );
 
       const disabledSelectionArea = wrapper.findRowSelectionArea(2)!.find('input')!.getElement();
       validateComponentNameAndLabels(disabledSelectionArea, labels);
       expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(
-        getMetadata({ selectedItemsCount: '1', selectionType: 'single', variant: 'container' })
+        getMetadata({
+          selectedItemsCount: '1',
+          selectedItemsLabels: [['third', 'Third choice']],
+          selectionType: 'single',
+          variant: 'container',
+        })
       );
     });
   });
@@ -219,7 +271,17 @@ describe('Table renders correct analytics metadata', () => {
         validateComponentNameAndLabels(element, labels);
         expect(getGeneratedAnalyticsMetadata(element)).toEqual(
           getMetadata(
-            { selectedItemsCount: '2', selectionType, variant: 'container' },
+            {
+              selectedItemsCount: '2',
+              ...(selectionType === 'multi' && {
+                selectedItemsLabels: [
+                  ['first', 'First choice.'],
+                  ['third', 'Third choice'],
+                ],
+              }),
+              selectionType,
+              variant: 'container',
+            },
             {
               columnId: columnDefinitions[column - 1].id as string,
               columnLabel: columnDefinitions[column - 1].header as string,
@@ -329,6 +391,7 @@ describe('Table renders correct analytics metadata', () => {
               name: 'awsui.Table',
               label: '',
               properties: {
+                columnLabels: ['Value', 'Description', 'Actions'],
                 itemsCount: '3',
                 selectedItemsCount: '0',
                 selectionType: 'none',

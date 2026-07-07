@@ -3,11 +3,14 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { BaseKeyDetail, CancelableEventHandler, fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { BaseComponentProps } from '../../../types/base-component';
+import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
+import { getBaseProps } from '../../base-component';
+import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
@@ -28,7 +31,6 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   inlineTokens?: boolean;
   ariaHasPopup?: 'true' | 'listbox' | 'dialog';
   ariaControls?: string;
-  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>;
@@ -53,7 +55,6 @@ const ButtonTrigger = (
     inlineTokens,
     inFilteringToken,
     ariaHasPopup,
-    ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
     ariaControls,
@@ -90,7 +91,6 @@ const ButtonTrigger = (
     ),
     disabled: disabled,
     'aria-expanded': pressed,
-    'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
@@ -133,7 +133,11 @@ const ButtonTrigger = (
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>
-          <InternalIcon name="caret-down-filled" variant={disabled || readOnly ? 'disabled' : 'normal'} />
+          <InternalIcon
+            name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+            size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
+            variant={disabled || readOnly ? 'disabled' : 'normal'}
+          />
         </span>
       )}
     </button>

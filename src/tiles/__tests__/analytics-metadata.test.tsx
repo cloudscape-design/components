@@ -30,6 +30,12 @@ const items: TilesProps['items'] = [
   { value: 'third', label: 'Third choice' },
 ];
 
+const metadataOptions = items.map(item => ({
+  label: item.label,
+  value: item.value,
+  description: item.description,
+})) as any;
+
 const componentLabel = 'radio group example';
 
 function renderTiles(props: TilesProps) {
@@ -64,6 +70,7 @@ const getMetadata = (
           properties: {
             value: `${currentValue}`,
             valueLabel: `${currentValueLabel}`,
+            options: metadataOptions,
           },
         },
       },
@@ -125,6 +132,7 @@ describe('Tiles renders correct analytics metadata', () => {
               properties: {
                 value: '2',
                 valueLabel: '',
+                options: metadataOptions,
               },
             },
           },
@@ -155,6 +163,7 @@ describe('Tiles renders correct analytics metadata', () => {
               properties: {
                 value: '2',
                 valueLabel: '',
+                options: metadataOptions,
               },
             },
           },

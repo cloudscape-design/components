@@ -34,6 +34,7 @@ const componentsWithExceptions = [
   'annotation-context',
   'icon-provider',
   'error-boundary',
+  'tooltip',
   ...componentWithMultipleRootElements,
 ];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));

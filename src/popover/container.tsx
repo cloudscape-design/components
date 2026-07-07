@@ -6,7 +6,8 @@ import clsx from 'clsx';
 import { getLogicalBoundingClientRect, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { InternalPosition, PopoverProps } from './interfaces';
+import { PopoverProps } from './interfaces';
+import { InternalPosition } from './internal-interfaces';
 import usePopoverPosition from './use-popover-position.js';
 import usePositionObserver from './use-position-observer';
 
@@ -27,6 +28,8 @@ interface PopoverContainerProps {
   */
   trackKey?: string | number;
   minVisibleBlockSize?: number;
+  /** Optional parent element to clamp popover position within its bounds */
+  triggerClampRef?: React.RefObject<HTMLElement>;
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
@@ -52,6 +55,7 @@ export default function PopoverContainer({
   trackRef,
   getTrack: externalGetTrack,
   trackKey,
+  triggerClampRef,
   minVisibleBlockSize,
   arrow,
   children,
@@ -90,6 +94,7 @@ export default function PopoverContainer({
       popoverRef,
       bodyRef,
       arrowRef,
+      triggerClampRef,
       getTrack: getTrack.current,
       contentRef,
       allowScrollToFit,

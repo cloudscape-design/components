@@ -6,14 +6,24 @@ import { mount, unmount } from '~mount';
 
 import styles from './iframe-wrapper.scss';
 
-function copyStyles(srcDoc: Document, targetDoc: Document) {
+function copyStyles(srcDoc: Document, targetDoc: Document): Promise<unknown> {
+  const pending: Promise<void>[] = [];
+
   for (const stylesheet of Array.from(srcDoc.querySelectorAll('link[rel=stylesheet]'))) {
     const newStylesheet = targetDoc.createElement('link');
     for (const attr of stylesheet.getAttributeNames()) {
       newStylesheet.setAttribute(attr, stylesheet.getAttribute(attr)!);
     }
+    pending.push(
+      new Promise<void>(resolve => {
+        newStylesheet.addEventListener('load', () => resolve());
+        newStylesheet.addEventListener('error', () => resolve());
+      })
+    );
     targetDoc.head.appendChild(newStylesheet);
   }
+
+  return Promise.all(pending);
 }
 
 function syncClasses(from: HTMLElement, to: HTMLElement) {
@@ -56,11 +66,22 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
 
       const innerAppRoot = iframeDocument.createElement('div');
       iframeDocument.body.appendChild(innerAppRoot);
-      copyStyles(document, iframeDocument);
       iframeDocument.dir = document.dir;
       const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
-      mount(<AppComponent />, innerAppRoot);
+
+      // Wait for the copied stylesheets to load before mounting the app. Mounting synchronously
+      // would run layout effects against an unstyled DOM, producing incorrect computed styles
+      // that never get recalculated afterwards.
+      let disposed = false;
+      copyStyles(document, iframeDocument).then(() => {
+        if (disposed) {
+          return;
+        }
+        mount(<AppComponent />, innerAppRoot);
+      });
+
       cleanupRef.current = () => {
+        disposed = true;
         syncClassesCleanup();
         unmount(innerAppRoot);
         container.removeChild(iframeEl);

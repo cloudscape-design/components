@@ -8,6 +8,7 @@ import OptionsList from '../internal/components/options-list';
 import { useVirtual } from '../internal/hooks/use-virtual';
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
+import { getParentProps } from './utils/parent-props';
 
 import styles from './styles.css.js';
 
@@ -20,6 +21,7 @@ const VirtualList = ({
   highlightText,
   listBottom,
   screenReaderContent,
+  renderOption,
 }: ListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   // update component, when it gets wider or narrower to reposition items
@@ -43,6 +45,8 @@ const VirtualList = ({
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
 
+  let lastGroupIndex = -1;
+
   return (
     <OptionsList {...menuProps} onLoadMore={handleLoadMore} ref={scrollRef} open={true}>
       <div
@@ -63,8 +67,15 @@ const VirtualList = ({
           hasDropdownStatus
         );
 
+        const { parentProps, updatedLastGroupIndex } = getParentProps(item, index, lastGroupIndex, index);
+        lastGroupIndex = updatedLastGroupIndex;
+
         return (
           <AutosuggestOption
+            parentProps={parentProps}
+            index={index}
+            virtualIndex={index}
+            renderOption={renderOption}
             key={index}
             ref={measureRef}
             highlightText={highlightText}

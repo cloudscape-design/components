@@ -38,6 +38,11 @@ const permutations = createPermutations<Omit<FileTokenGroupProps, 'onDismiss'>>(
     alignment: ['horizontal', 'vertical'],
     limit: [undefined, 0],
   },
+  {
+    items: [[{ file: file1 }, { file: file2 }]],
+    readOnly: [true],
+    alignment: ['horizontal', 'vertical'],
+  },
 ]);
 
 export default function FileTokenGroupPermutations() {

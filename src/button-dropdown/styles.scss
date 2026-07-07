@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
 
 $dropdown-trigger-icon-offset: 2px;
 
@@ -50,6 +51,10 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .trigger-button {
+  @include theming.one-theme-only {
+    display: flex;
+    align-items: center;
+  }
   &.full-width {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -97,6 +102,20 @@ $dropdown-trigger-icon-offset: 2px;
     &.visual-refresh {
       & > .trigger-button {
         padding-inline-end: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+      }
+    }
+
+    @include theming.one-theme-only {
+      & > .trigger-button {
+        // Resets the padding-inline-end override applied by .visual-refresh above,
+        // so both sides stay at $space-xs - $dropdown-trigger-icon-offset.
+        padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+      }
+
+      &.has-trigger-text {
+        & > .trigger-button {
+          padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
+        }
       }
     }
   }

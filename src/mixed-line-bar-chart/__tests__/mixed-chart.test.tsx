@@ -1058,6 +1058,16 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
 
+  test('renders popover footer when x value is zero', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart {...lineChartProps} detailPopoverFooter={xValue => <span>Footer for {xValue}</span>} />
+    );
+
+    // Focus triggers highlight on the first data point which has x=0.
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Footer for 0');
+  });
+
   test('highlights relevant x-thresholds when navigating line series', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />

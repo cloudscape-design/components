@@ -155,7 +155,12 @@ const InternalFileInput = React.forwardRef(
             [styles['force-focus-outline-button']]: isFocused && variant === 'button',
             [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
           })}
-          nativeButtonAttributes={{ tabIndex: -1, 'aria-hidden': true }}
+          nativeButtonAttributes={{
+            tabIndex: -1,
+            'aria-hidden': true,
+            // AWSUI-61771 Prevent focus on the decorative button to avoid aria-hidden focus warning
+            onMouseDown: (event: React.MouseEvent) => event.preventDefault(),
+          }}
           __skipNativeAttributesWarnings={true}
         >
           {variant === 'button' && children}

@@ -7,11 +7,12 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { MultiselectProps } from '../../multiselect/interfaces';
+import Tooltip from '../../tooltip/internal.js';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { ItemParentProps, ItemProps } from './item';
 
 import styles from './styles.css.js';
@@ -159,6 +160,7 @@ const MultiSelectItem = (
   return (
     <SelectableItem
       disableContentStyling={!!renderResult}
+      ariaSelected={isParent && indeterminate ? undefined : Boolean(selected)}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -208,11 +210,10 @@ const MultiSelectItem = (
           {highlighted && canShowTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
-              trackRef={internalRef}
-              value={disabledReason!}
+              getTrack={() => internalRef.current}
+              content={disabledReason!}
               position="right"
-              hideOnOverscroll={true}
-              onDismiss={() => setCanShowTooltip(false)}
+              onEscape={() => setCanShowTooltip(false)}
             />
           )}
         </>

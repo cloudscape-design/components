@@ -42,6 +42,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -154,6 +155,10 @@ Map {
         "toolbar": 0,
       },
     },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -235,6 +240,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -389,6 +395,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -573,6 +580,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -727,6 +735,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -887,6 +896,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -973,7 +983,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1002,6 +1012,10 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
       "activeDrawerId": null,
@@ -1089,6 +1103,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1175,7 +1190,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1249,6 +1264,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1335,7 +1351,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1411,6 +1427,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1497,7 +1514,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1603,6 +1620,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1689,7 +1707,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1763,6 +1781,7 @@ Map {
         breadcrumbs
       </div>,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1849,7 +1868,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel6",
+      "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1939,6 +1958,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -2023,7 +2043,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
+      "splitPanelControlId": "split-panel10",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -2052,6 +2072,10 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
       "activeDrawerId": "security",
@@ -2150,6 +2174,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -2234,7 +2259,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
+      "splitPanelControlId": "split-panel10",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -2320,6 +2345,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -2404,7 +2430,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
+      "splitPanelControlId": "split-panel10",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -2520,6 +2546,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -2604,7 +2631,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
+      "splitPanelControlId": "split-panel10",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -2690,6 +2717,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -2774,7 +2802,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel8",
+      "splitPanelControlId": "split-panel10",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {

@@ -34,6 +34,7 @@ export interface GridProps extends GridBaseProps, Required<Pick<CalendarProps, '
   currentMonthAriaLabel?: string;
   startOfWeek?: DayIndex;
   todayAriaLabel?: string;
+  referrerId?: string;
 }
 
 export interface SelectGridProps extends GridBaseProps, Pick<CalendarProps, 'granularity'> {
@@ -53,4 +54,5 @@ export interface SelectGridProps extends GridBaseProps, Pick<CalendarProps, 'gra
   startOfWeek?: DayIndex;
   todayAriaLabel?: string;
   currentMonthAriaLabel?: string;
+  referrerId?: string;
 }

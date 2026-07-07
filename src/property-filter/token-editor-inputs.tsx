@@ -4,21 +4,19 @@
 import React from 'react';
 
 import InternalAutosuggest from '../autosuggest/internal.js';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
-import { NonCancelableEventHandler } from '../internal/events/index.js';
 import InternalMultiselect from '../multiselect/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
-import { getAllowedOperators, getPropertySuggestions } from './controller.js';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
+import { getAllowedFreeTextOperators, getAllowedOperators, getPropertySuggestions } from './controller.js';
 import { I18nStringsInternal, operatorToDescription } from './i18n-utils.js';
+import { ComparisonOperator, GroupText, LoadItemsDetail } from './interfaces.js';
 import {
-  ComparisonOperator,
-  GroupText,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
-  LoadItemsDetail,
-} from './interfaces.js';
+} from './internal-interfaces.js';
 import { useLoadItems } from './use-load-items.js';
 
 import styles from './styles.css.js';
@@ -99,7 +97,8 @@ export function OperatorInput({
   freeTextFiltering,
   triggerVariant,
 }: OperatorInputProps) {
-  const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
+  const operators = property ? getAllowedOperators(property) : getAllowedFreeTextOperators(freeTextFiltering);
+  const operatorOptions = operators.map(operator => ({
     value: operator,
     label: operator,
     description: operatorToDescription(operator, i18nStrings),

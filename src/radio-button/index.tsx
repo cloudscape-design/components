@@ -29,7 +29,4 @@ const RadioButton = React.forwardRef((props: RadioButtonProps, ref: React.Ref<HT
 
 applyDisplayName(RadioButton, 'RadioButton');
 
-/**
- * @awsuiSystem core
- */
 export default RadioButton;

@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/utils/theming' as theming;
 
 .breadcrumb-group {
   @include styles.styles-reset;
@@ -63,6 +64,12 @@
         margin-inline: styles.$base-size;
         color: awsui.$color-text-breadcrumb-icon;
       }
+
+      @include theming.one-theme-only {
+        > .icon {
+          margin-inline: awsui.$space-xxs;
+        }
+      }
     }
   }
 }
@@ -94,7 +101,7 @@
   }
   > :last-child {
     color: awsui.$color-text-breadcrumb-current;
-    font-weight: styles.$font-weight-bold;
+    font-weight: awsui.$font-weight-breadcrumb-current;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

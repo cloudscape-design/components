@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface CopyToClipboardProps extends BaseComponentProps {
   /** Determines the general styling of the copy button as follows:
@@ -32,9 +32,15 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
-   * The text content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
    */
-  textToDisplay?: string;
+  textToDisplay?: React.ReactNode;
+
+  /**
+   * Specifies if the `textToDisplay` content should wrap. If you set it to false, it prevents the text
+   * from wrapping and truncates it with an ellipsis. Only applies to `variant="inline"`.
+   */
+  wrapText?: boolean;
 
   /**
    * The message shown when the text is copied successfully.
@@ -59,6 +65,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Renders the copy to clipboard button as disabled and prevents clicks.
    */
   disabled?: boolean;
+
   /**
    * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
    * If provided, the copy to clipboard button becomes focusable.

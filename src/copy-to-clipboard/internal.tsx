@@ -24,6 +24,7 @@ export default function InternalCopyToClipboard({
   copyErrorText,
   textToCopy,
   textToDisplay,
+  wrapText = true,
   popoverRenderWithPortal,
   disabled,
   disabledReason,
@@ -119,10 +120,10 @@ export default function InternalCopyToClipboard({
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       {isInline ? (
-        <span className={styles['inline-container']}>
+        <span className={clsx(styles['inline-container'], !wrapText && styles['inline-container-no-wrap'])}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'])}>
-            {textToDisplay ?? textToCopy}
+          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'], styles['text-to-display'])}>
+            {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
         </span>
       ) : (

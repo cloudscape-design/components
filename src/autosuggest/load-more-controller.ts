@@ -3,8 +3,8 @@
 
 import { useRef } from 'react';
 
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { DropdownStatusProps } from '../types/dropdown-status';
 import { AutosuggestProps } from './interfaces';
 
 interface UseAutosuggestLoadMoreProps {

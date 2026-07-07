@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseCheckboxProps } from '../checkbox/base-checkbox';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseCheckboxProps } from '../types/base-checkbox';
+import { NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ToggleProps extends BaseCheckboxProps {
   /**
@@ -23,6 +23,8 @@ export interface ToggleProps extends BaseCheckboxProps {
   onChange?: NonCancelableEventHandler<ToggleProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the toggle's visual appearance.
+   * Refer to the [style](/components/toggle/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ToggleProps.Style;

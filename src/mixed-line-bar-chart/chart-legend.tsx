@@ -5,7 +5,8 @@ import React, { useMemo } from 'react';
 import { ChartFilterProps } from '../internal/components/chart-filter';
 import ChartLegend from '../internal/components/chart-legend';
 import ChartSeriesMarker from '../internal/components/chart-series-marker';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { InternalChartSeries } from './internal-interfaces';
 import { chartLegendMap } from './utils';
 
 interface InternalChartLegendProps<T extends ChartDataTypes> {

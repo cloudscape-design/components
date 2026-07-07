@@ -24,6 +24,8 @@ function getComponentsExports() {
     // Plugin api
     './internal/plugins': './internal/plugins/index.js',
     './internal/plugins/widget': './internal/plugins/widget.js',
+    // Public plugin api
+    './plugins': './plugins/index.js',
     // Public internal components
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './internal/do-not-use/chart-filter': './internal/do-not-use/chart-filter.js',
@@ -32,6 +34,7 @@ function getComponentsExports() {
     './internal/do-not-use/i18n': './internal/do-not-use/i18n.js',
     './internal/do-not-use/tooltip': './internal/do-not-use/tooltip.js',
     './internal/do-not-use/drag-handle': './internal/do-not-use/drag-handle.js',
+    './internal/do-not-use/feature-prompt': './internal/do-not-use/feature-prompt/index.js',
     './internal/widget-exports': './internal/widget-exports.js',
     './test-utils/dom/internal/drag-handle': './test-utils/dom/internal/drag-handle.js',
     './test-utils/selectors/internal/drag-handle': './test-utils/selectors/internal/drag-handle.js',
@@ -98,6 +101,14 @@ const devPagesPackageJson = generatePackageJson(path.join(workspace.targetPath, 
   name: '@cloudscape-design/dev-pages',
 });
 
+const testDefinitionsPackageJson = generatePackageJson(path.join(workspace.targetPath, 'test-definitions'), {
+  name: '@cloudscape-design/test-definitions',
+  exports: {
+    '.': './index.js',
+    './types': './types.js',
+  },
+});
+
 module.exports = parallel([
   ...themes.flatMap(theme => [
     generatePackageJson(
@@ -127,5 +138,6 @@ module.exports = parallel([
   componentsThemeablePackageJson,
   copyTask('package-lock', ['package-lock.json'], path.join(workspace.targetPath, 'dev-pages', 'internal')),
   devPagesPackageJson,
+  testDefinitionsPackageJson,
 ]);
 module.exports.generatePackageJson = generatePackageJson;

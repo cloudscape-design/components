@@ -8,9 +8,9 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
-import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { NonCancelableCustomEvent } from '../types/events';
 import TutorialDetailView from './components/tutorial-detail-view';
 import TutorialList from './components/tutorial-list';
 import { TutorialPanelProps } from './interfaces';

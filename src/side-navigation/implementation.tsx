@@ -24,6 +24,7 @@ export function SideNavigationImplementation({
   items = [],
   onFollow,
   onChange,
+  collapsed = false,
   __internalRootRef,
   ...props
 }: SideNavigationInternalProps) {
@@ -66,9 +67,15 @@ export function SideNavigationImplementation({
       ref={__internalRootRef}
     >
       {header && (
-        <Header definition={header} activeHref={activeHref} fireChange={onChangeHandler} fireFollow={onFollowHandler} />
+        <Header
+          definition={header}
+          activeHref={activeHref}
+          fireChange={onChangeHandler}
+          fireFollow={onFollowHandler}
+          collapsed={collapsed}
+        />
       )}
-      {itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
+      {!collapsed && itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
       {items && (
         <div className={styles['list-container']}>
           <NavigationItemsList
@@ -77,6 +84,7 @@ export function SideNavigationImplementation({
             fireFollow={onFollowHandler}
             fireChange={onChangeHandler}
             activeHref={activeHref}
+            collapsed={collapsed}
           />
         </div>
       )}

@@ -5,6 +5,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../internal/styles' as styles;
+@use '../../internal/styles/utils/theming';
 @use '../constants.scss' as constants;
 
 .drawers-container {
@@ -20,6 +21,12 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+  }
+
+  @include theming.one-theme-only {
+    &.has-open-drawer {
+      background-color: awsui.$color-background-layout-panel-content;
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -64,6 +71,12 @@
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+  }
+
+  @include theming.one-theme-only {
+    &.has-multiple-triggers.has-open-drawer {
+      background-color: awsui.$color-background-layout-panel-content;
+    }
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
@@ -124,6 +137,10 @@
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+
+  @include theming.one-theme-only {
+    background-color: awsui.$color-background-layout-panel-content;
+  }
 
   > .drawer-content-container {
     grid-column: 1 / span 2;

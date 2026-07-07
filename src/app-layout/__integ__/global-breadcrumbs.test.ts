@@ -33,41 +33,22 @@ function setupTest({ url }: { url: string }, testFn: (page: GlobalBreadcrumbsPag
   });
 }
 
-describe.each(['classic', 'refresh'])('%s', theme => {
-  const visualRefresh = theme === 'refresh' ? 'true' : 'false';
-  test(
-    'does not work in this design',
-    setupTest(
-      {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh, hasOwnBreadcrumbs: 'true' }).toString()}`,
-      },
-      async page => {
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
+test(
+  'does not work in visual refresh',
+  setupTest(
+    {
+      url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ hasOwnBreadcrumbs: 'true' }).toString()}`,
+    },
+    async page => {
+      await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+      await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
 
-        await page.toggleExtraBreadcrumb();
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
-      }
-    )
-  );
-});
-
-describe('classic', () => {
-  test(
-    'does not react to the feature flag even if it is enabled',
-    setupTest(
-      {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutToolbar: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
-      },
-      async page => {
-        await page.toggleExtraBreadcrumb();
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
-      }
-    )
-  );
-});
+      await page.toggleExtraBreadcrumb();
+      await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+      await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
+    }
+  )
+);
 
 describe('refresh-toolbar', () => {
   test(

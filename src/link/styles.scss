@@ -10,6 +10,7 @@
 @use './constants' as constants;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/utils/theming' as theming;
 
 .link {
   @include styles.styles-reset;
@@ -38,6 +39,21 @@
   &.button {
     @include styles.font-smoothing;
     @include styles.link-variant-style(map.get(constants.$link-styles, 'button'));
+
+    @include theming.one-theme-only {
+      @include styles.link-variant-style(map.get(constants.$link-variants, 'primary'));
+      & {
+        font-weight: inherit;
+        letter-spacing: normal;
+      }
+      &.color-inverted {
+        color: awsui.$color-text-notification-default;
+        text-decoration-color: currentColor;
+        &:hover {
+          color: awsui.$color-text-link-inverted-hover;
+        }
+      }
+    }
   }
 
   &.color-inverted {
@@ -64,6 +80,10 @@
       @include styles.font($font-size);
       @include styles.link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
     }
+  }
+
+  &.in-inline-token {
+    text-underline-offset: 0.15em;
   }
 }
 

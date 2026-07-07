@@ -3,21 +3,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
-import Dropdown from '../internal/components/dropdown';
+import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
+import { OptionGroup } from '../types/option';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
 import PlainList, { SelectListProps } from './parts/plain-list';
@@ -105,6 +107,11 @@ const InternalSelect = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -212,6 +219,7 @@ const InternalSelect = React.forwardRef(
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
       ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+      ariaRequired,
     };
 
     const announcement = useAnnouncement({
@@ -249,13 +257,12 @@ const InternalSelect = React.forwardRef(
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
+          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          stretchBeyondTriggerWidth={true}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
@@ -267,24 +274,25 @@ const InternalSelect = React.forwardRef(
           expandToViewport={expandToViewport}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}
-        >
-          <ListComponent
-            listBottom={
-              !dropdownStatus.isSticky ? (
-                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-              ) : null
-            }
-            renderOption={renderOption}
-            menuProps={menuProps}
-            getOptionProps={getOptionProps}
-            filteredOptions={filteredOptions}
-            filteringValue={filteringValue}
-            ref={scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            screenReaderContent={announcement}
-            highlightType={highlightType}
-          />
-        </Dropdown>
+          content={
+            <ListComponent
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              renderOption={renderOption}
+              menuProps={menuProps}
+              getOptionProps={getOptionProps}
+              filteredOptions={filteredOptions}
+              filteringValue={filteringValue}
+              ref={scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              screenReaderContent={announcement}
+              highlightType={highlightType}
+            />
+          }
+        />
         <div hidden={true} id={selectAriaLabelId}>
           {ariaLabel || inlineLabelText}
         </div>

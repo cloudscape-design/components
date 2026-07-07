@@ -51,6 +51,15 @@ const itemPermutations = createPermutations<ButtonGroupProps.Item>([
       </StatusIndicator>,
     ],
   },
+  // Link (href)
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['external'],
+    text: ['Open in a new tab'],
+    href: ['#'],
+    target: ['_blank'],
+  },
   // Toggle button
   {
     type: ['icon-toggle-button'],
@@ -114,6 +123,28 @@ const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdow
     text: ['More actions'],
     disabled: [true],
     disabledReason: ['Disabled reason'],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
+        },
+      ],
+    ],
+  },
+  // Custom icon
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    iconName: [undefined, 'settings'],
+    iconSvg: [
+      undefined,
+      <svg key="custom-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" strokeWidth="2" />
+      </svg>,
+    ],
     items: [
       [
         {

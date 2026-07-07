@@ -2,14 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAllowedOperators, getAutosuggestOptions, parseText } from '../controller';
-import {
-  ComparisonOperator,
-  FilteringProperty,
-  GroupText,
-  InternalFilteringProperty,
-  InternalFreeTextFiltering,
-  ParsedText,
-} from '../interfaces';
+import { ComparisonOperator, FilteringProperty, GroupText } from '../interfaces';
+import { InternalFilteringProperty, InternalFreeTextFiltering, ParsedText } from '../internal-interfaces';
 import { i18nStrings, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
@@ -108,8 +102,8 @@ describe('getAllowedOperators', () => {
     ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
   ];
-  test.each<TestCase>(cases)('%s', (__description, input, exepcted) => {
-    expect(getAllowedOperators(input)).toEqual(exepcted);
+  test.each<TestCase>(cases)('%s', (__description, input, expected) => {
+    expect(getAllowedOperators(input)).toEqual(expected);
   });
 });
 

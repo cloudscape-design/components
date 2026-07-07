@@ -32,6 +32,7 @@ const VirtualListOpen = forwardRef(
       useInteractiveGroups,
       screenReaderContent,
       firstOptionSticky,
+      isMultiSelect,
       renderOption,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
@@ -106,7 +107,7 @@ const VirtualListOpen = forwardRef(
     });
 
     return (
-      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
+      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef} isMultiSelect={isMultiSelect}>
         {finalOptions}
         <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
@@ -120,10 +121,10 @@ const VirtualListOpen = forwardRef(
 );
 
 const VirtualListClosed = forwardRef(
-  ({ menuProps, listBottom }: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
+  ({ menuProps, listBottom, isMultiSelect }: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
     useImperativeHandle(ref, () => () => {}, []);
     return (
-      <OptionsList {...menuProps} ref={menuProps.ref}>
+      <OptionsList {...menuProps} ref={menuProps.ref} isMultiSelect={isMultiSelect}>
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}

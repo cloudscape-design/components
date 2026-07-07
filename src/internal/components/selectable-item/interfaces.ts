@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
 import { HighlightType } from '../options-list/utils/use-highlight-option';
 
 export type SelectableItemProps = BaseComponentProps & {
@@ -28,7 +28,9 @@ export type SelectableItemProps = BaseComponentProps & {
   sticky?: boolean;
   afterHeader?: boolean;
   withScrollbar?: boolean;
-} & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
+  ariaSelected?: boolean | never;
+  ariaChecked?: boolean | 'mixed' | never;
+};
 
 export interface ItemDataAttributes {
   'data-group-index'?: string;

@@ -22,6 +22,17 @@ const tokens: StyleDictionary.ColorSeverityDictionary = {
   colorTextNotificationSeverityMedium: '{colorNeutral950}',
   colorTextNotificationSeverityLow: '{colorNeutral950}',
   colorTextNotificationSeverityNeutral: '{colorNeutral100}',
+
+  colorBorderBadgeSeverityCritical: 'transparent',
+  colorBorderBadgeSeverityHigh: 'transparent',
+  colorBorderBadgeSeverityMedium: 'transparent',
+  colorBorderBadgeSeverityLow: 'transparent',
+  colorBorderBadgeSeverityNeutral: 'transparent',
+  colorTextBadgeSeverityCritical: '{colorTextNotificationSeverityCritical}',
+  colorTextBadgeSeverityHigh: '{colorTextNotificationSeverityHigh}',
+  colorTextBadgeSeverityMedium: '{colorTextNotificationSeverityMedium}',
+  colorTextBadgeSeverityLow: '{colorTextNotificationSeverityLow}',
+  colorTextBadgeSeverityNeutral: '{colorTextNotificationSeverityNeutral}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

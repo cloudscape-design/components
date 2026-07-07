@@ -11,6 +11,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
+import { IconProps } from '../icon/interfaces';
 import Icon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
@@ -20,7 +21,6 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -31,6 +31,7 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalLiveRegion from '../live-region/internal';
+import Tooltip from '../tooltip/internal.js';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
@@ -51,6 +52,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   badge?: boolean;
   analyticsAction?: string;
   __iconClass?: string;
+  __iconSize?: IconProps.Size;
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __title?: string;
@@ -64,6 +66,7 @@ export const InternalButton = React.forwardRef(
       children,
       iconName,
       __iconClass,
+      __iconSize,
       onClick,
       onFollow,
       iconAlign = 'left',
@@ -85,6 +88,7 @@ export const InternalButton = React.forwardRef(
       ariaLabel,
       ariaDescribedby,
       ariaExpanded,
+      ariaHaspopup,
       ariaControls,
       fullWidth,
       badge,
@@ -215,6 +219,7 @@ export const InternalButton = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      'aria-haspopup': ariaHaspopup,
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: __title ?? ariaLabel,
@@ -235,7 +240,7 @@ export const InternalButton = React.forwardRef(
       variant,
       badge,
       iconClass: __iconClass,
-      iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
+      iconSize: __iconSize ?? (variant === 'modal-dismiss' ? 'medium' : 'normal'),
     };
     const buttonContent = (
       <>
@@ -283,9 +288,9 @@ export const InternalButton = React.forwardRef(
         {showTooltip && (
           <Tooltip
             className={testUtilStyles['disabled-reason-tooltip']}
-            trackRef={buttonRef}
-            value={disabledReason!}
-            onDismiss={() => setShowTooltip(false)}
+            getTrack={() => buttonRef.current}
+            content={disabledReason!}
+            onEscape={() => setShowTooltip(false)}
           />
         )}
       </>
@@ -298,7 +303,7 @@ export const InternalButton = React.forwardRef(
         if (isNotInteractive) {
           // If disabled with a reason, make it focusable so users can access the tooltip
           // Otherwise, resolve to the default button props tabIndex.
-          return disabledReason ? 0 : buttonProps.tabIndex;
+          return isDisabledWithReason ? 0 : buttonProps.tabIndex;
         }
         return buttonProps.tabIndex;
       };

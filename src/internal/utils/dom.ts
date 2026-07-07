@@ -64,10 +64,13 @@ export function isNode(target: unknown): target is Node {
     target instanceof Node ||
     (target !== null &&
       typeof target === 'object' &&
+      // eslint-disable-next-line no-restricted-syntax -- Cross-window duck typing: instanceof fails across iframes
       'nodeType' in target &&
       typeof target.nodeType === 'number' &&
+      // eslint-disable-next-line no-restricted-syntax -- Cross-window duck typing: instanceof fails across iframes
       'nodeName' in target &&
       typeof target.nodeName === 'string' &&
+      // eslint-disable-next-line no-restricted-syntax -- Cross-window duck typing: instanceof fails across iframes
       'parentNode' in target &&
       typeof target.parentNode === 'object')
   );
@@ -78,6 +81,7 @@ export function isHTMLElement(target: unknown): target is HTMLElement {
     target instanceof HTMLElement ||
     (isNode(target) &&
       target.nodeType === Node.ELEMENT_NODE &&
+      // eslint-disable-next-line no-restricted-syntax -- Cross-window HTMLElement detection
       'style' in target &&
       typeof target.style === 'object' &&
       typeof target.ownerDocument === 'object' &&
@@ -90,6 +94,7 @@ export function isSVGElement(target: unknown): target is SVGElement {
     target instanceof SVGElement ||
     (isNode(target) &&
       target.nodeType === Node.ELEMENT_NODE &&
+      // eslint-disable-next-line no-restricted-syntax -- Cross-window SVGElement detection
       'ownerSVGElement' in target &&
       typeof target.ownerSVGElement === 'object')
   );

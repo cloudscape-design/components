@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { LinkItem } from '../button-dropdown/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
 
 export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>
   extends BaseComponentProps {
@@ -31,7 +30,7 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
    */
   expandAriaLabel?: string;
   /**
-   * Called when the user clicks on a breadcrumb item.
+   * Called when the user clicks on a breadcrumb item. Do not use this handler for navigation, use the `onFollow` event instead.
    */
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
   /**
@@ -54,12 +53,6 @@ export namespace BreadcrumbGroupProps {
     href: string;
   }
 }
-
-export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
-  BreadcrumbGroupProps<T> &
-    InternalBaseComponentProps & {
-      __injectAnalyticsComponentMetadata?: boolean;
-    };
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;

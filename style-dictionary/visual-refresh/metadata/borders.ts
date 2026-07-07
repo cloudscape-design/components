@@ -12,6 +12,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
+  borderWidthItemSelected: {
+    description: 'The border width of selected items, like table rows.',
+    public: true,
+    themeable: true,
+  },
   borderRadiusAlert: {
     description: 'The border radius of alerts.',
     public: true,
@@ -20,6 +25,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusBadge: {
     description: 'The border radius of badges.',
     public: true,
+    themeable: true,
+  },
+  borderRadiusStatusIndicator: {
+    description: 'The border radius of status indicators.',
+    public: false,
     themeable: true,
   },
   borderRadiusButton: {
@@ -74,6 +84,17 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusSideNavigationItem: {
+    description: 'The border radius of a side navigation item in the default (expanded) state.',
+    public: false,
+    themeable: true,
+  },
+  borderRadiusSideNavigationItemCollapsed: {
+    description:
+      'The border radius of a side navigation item while the navigation is collapsed, including its active background.',
+    public: false,
+    themeable: true,
+  },
   borderRadiusInput: {
     description: 'The border radius of form controls. For example: input, select.',
     public: true,
@@ -99,6 +120,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusTokenInline: {
+    description: 'The border radius of inline tokens. For example: multiselect component.',
+    public: true,
+    themeable: true,
+  },
   borderRadiusChatBubble: {
     description: 'The border radius of chat bubbles.',
     public: true,
@@ -111,6 +137,41 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthAlert: {
     description: 'The border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertBlockStart: {
+    description: 'The block-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertBlockEnd: {
+    description: 'The block-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineStart: {
+    description: 'The inline-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthFlashbarInlineStart: {
+    description: 'The inline-start border width of flash messages in flashbars.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineEnd: {
+    description: 'The inline-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthCard: {
+    description: 'The border width of a card.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthCardSelected: {
+    description: 'The border width of a selected card.',
     public: true,
     themeable: true,
   },
@@ -139,6 +200,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthIconXSmall: {
+    description: 'The visual stroke width of extra small icons.',
+    public: true,
+    themeable: true,
+  },
   borderWidthIconSmall: {
     description: 'The visual stroke width of small icons.',
     public: true,
@@ -161,6 +227,51 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthIconLarge: {
     description: 'The visual stroke width of large icons.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusCardDefault: {
+    description: 'The border radius of default cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusCardEmbedded: {
+    description: 'The border radius of embedded cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusActionCardDefault: {
+    description: 'The border radius of default action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusActionCardEmbedded: {
+    description: 'The border radius of embedded action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardDefault: {
+    description: 'The border width of action cards in default state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardHover: {
+    description: 'The border width of action cards in hover state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardActive: {
+    description: 'The border width of action cards in active state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardDisabled: {
+    description: 'The border width of action cards in disabled state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthBadge: {
+    description: 'The border width of badges.',
     public: true,
     themeable: true,
   },

@@ -3,15 +3,16 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton, InternalButtonProps } from '../button/internal';
+import Dropdown from '../dropdown/internal';
+import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
@@ -22,7 +23,8 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
+import { ButtonDropdownProps } from './interfaces';
+import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';
@@ -46,6 +48,10 @@ const InternalButtonDropdown = React.forwardRef(
       customTriggerBuilder,
       expandToViewport,
       ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
       title,
       description,
       preferCenter,
@@ -58,6 +64,7 @@ const InternalButtonDropdown = React.forwardRef(
       position,
       nativeMainActionAttributes,
       nativeTriggerAttributes,
+      renderItem,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -73,13 +80,19 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', mainAction.href);
     }
 
+    const hasCustomTriggerIcon = !!(iconName || iconUrl || iconSvg);
+
     if (isDevelopment) {
       if (mainAction && variant !== 'primary' && variant !== 'normal') {
         warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
       }
+      if (hasCustomTriggerIcon && variant !== 'icon' && variant !== 'inline-icon') {
+        warnOnce('ButtonDropdown', 'Custom icon is only supported for "icon" and "inline-icon" component variant.');
+      }
     }
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
+    const isOneTheme = isThemeActive(Theme.OneTheme);
 
     const {
       isOpen,
@@ -140,13 +153,17 @@ const InternalButtonDropdown = React.forwardRef(
     const canBeFullWidth = !!fullWidth && (variant === 'primary' || variant === 'normal');
 
     const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
-    const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
+    const iconProps: Partial<ButtonProps & { __iconClass?: string; __iconSize?: IconProps.Size }> =
       variant === 'icon' || variant === 'inline-icon'
         ? {
-            iconName: 'ellipsis',
+            iconName: hasCustomTriggerIcon ? iconName : 'ellipsis',
+            iconAlt,
+            iconUrl,
+            iconSvg,
           }
         : {
-            iconName: 'caret-down-filled',
+            iconName: isOneTheme ? 'angle-down' : 'caret-down-filled',
+            __iconSize: isOneTheme ? 'x-small' : 'normal',
             iconAlign: 'right',
             __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
           };
@@ -170,27 +187,27 @@ const InternalButtonDropdown = React.forwardRef(
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
       formAction: 'none',
-      nativeButtonAttributes: {
-        'aria-haspopup': true,
-        ...nativeTriggerAttributes,
-      },
+      ariaHaspopup: true,
+      nativeButtonAttributes: nativeTriggerAttributes,
     };
 
     const triggerId = useUniqueId('awsui-button-dropdown__trigger');
 
     const triggerHasBadge = () => {
+      const groupKey: keyof ButtonDropdownProps.ItemGroup = 'items';
       const flatItems = items.flatMap(item => {
-        if ('items' in item) {
+        if (groupKey in item) {
           return item.items;
         }
         return item;
       });
 
+      const badgeKey: keyof InternalItem = 'badge';
       return (
         variant === 'icon' &&
         !!flatItems?.find(item => {
-          if ('badge' in item) {
-            return item.badge;
+          if (badgeKey in item) {
+            return (item as InternalItem).badge;
           }
         })
       );
@@ -285,6 +302,7 @@ const InternalButtonDropdown = React.forwardRef(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
                 isVisualRefresh && styles['visual-refresh'],
+                !!children && styles['has-trigger-text'],
                 styles[`variant-${variant}`],
                 baseTriggerProps.loading && styles.loading
               )}
@@ -358,65 +376,70 @@ const InternalButtonDropdown = React.forwardRef(
       >
         <Dropdown
           open={canBeOpened && isOpen}
-          stretchWidth={false}
           stretchTriggerHeight={variant === 'navigation'}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          hideBlockBorder={false}
           expandToViewport={expandToViewport}
-          preferCenter={preferCenter}
-          onDropdownClose={() => toggleDropdown()}
+          preferredAlignment={preferCenter ? 'center' : 'start'}
+          onOutsideClick={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
-        >
-          {hasHeader && (
-            <div className={styles.header} id={headerId}>
-              {title && (
-                <div className={styles.title}>
-                  <InternalBox
-                    fontSize="heading-s"
-                    fontWeight="bold"
-                    color="inherit"
-                    tagOverride="h2"
-                    margin={{ vertical: 'n', horizontal: 'n' }}
-                  >
-                    {title}
-                  </InternalBox>
+          content={
+            <>
+              {hasHeader && (
+                <div className={styles.header} id={headerId}>
+                  {title && (
+                    <div className={styles.title}>
+                      <InternalBox
+                        fontSize="heading-s"
+                        fontWeight="bold"
+                        color="inherit"
+                        tagOverride="h2"
+                        margin={{ vertical: 'n', horizontal: 'n' }}
+                      >
+                        {title}
+                      </InternalBox>
+                    </div>
+                  )}
+                  {description && (
+                    <InternalBox fontSize="body-s">
+                      <span className={styles.description}>{description}</span>
+                    </InternalBox>
+                  )}
                 </div>
               )}
-              {description && (
-                <InternalBox fontSize="body-s">
-                  <span className={styles.description}>{description}</span>
-                </InternalBox>
-              )}
-            </div>
-          )}
-          <OptionsList
-            open={canBeOpened && isOpen}
-            position="static"
-            role="menu"
-            tagOverride="ul"
-            decreaseBlockMargin={true}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
-            statusType="finished"
-          >
-            <ItemsList
-              items={items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              hasExpandableGroups={expandableGroups}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={true}
-              highlightItem={highlightItem}
-              expandToViewport={expandToViewport}
-              variant={variant}
-              analyticsMetadataTransformer={analyticsMetadataTransformer}
-              linkStyle={linkStyle}
-              position={position}
-            />
-          </OptionsList>
-        </Dropdown>
+              <OptionsList
+                open={canBeOpened && isOpen}
+                position="static"
+                role="menu"
+                tagOverride="ul"
+                decreaseBlockMargin={true}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
+                statusType="finished"
+              >
+                <ItemsList
+                  items={items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  hasExpandableGroups={expandableGroups}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={true}
+                  highlightItem={highlightItem}
+                  expandToViewport={expandToViewport}
+                  variant={variant}
+                  analyticsMetadataTransformer={analyticsMetadataTransformer}
+                  linkStyle={linkStyle}
+                  position={position}
+                  renderItem={renderItem}
+                />
+              </OptionsList>
+            </>
+          }
+        />
       </div>
     );
   }

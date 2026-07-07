@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { InternalBreadcrumbGroupProps } from './interfaces';
+import { InternalBreadcrumbGroupProps } from './internal-interfaces';
 import { FunnelBreadcrumbItem } from './item/funnel';
 
 import styles from './styles.css.js';

@@ -9,7 +9,7 @@ import {
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
-import { AnalyticsMetadata } from '../../analytics/interfaces';
+import { AnalyticsMetadata } from '../../../types/analytics';
 import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
 import { getVisualTheme } from '../../utils/get-visual-theme';
 import { useVisualRefresh } from '../use-visual-mode';

@@ -22,7 +22,4 @@ const NavigableGroup = React.forwardRef(({ ...rest }: NavigableGroupProps, ref: 
 
 applyDisplayName(NavigableGroup, 'NavigableGroup');
 
-/**
- * @awsuiSystem core
- */
 export default NavigableGroup;

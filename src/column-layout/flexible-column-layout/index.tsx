@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import flattenChildren from '../../internal/vendor/react-keyed-flatten-children';
-import { InternalColumnLayoutProps } from '../interfaces';
+import { flattenChildren } from '../../internal/utils/flatten-children';
+import { InternalColumnLayoutProps } from '../internal-interfaces';
 
 import styles from './styles.css.js';
 
@@ -53,7 +53,7 @@ export default function FlexibleColumnLayout({
   const shouldDisableGutters = variant !== 'text-grid' && disableGutters;
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
-  const flattenedChildren = flattenChildren(children);
+  const flattenedChildren = flattenChildren(children, 'ColumnLayout');
   const Tag = (__tagOverride ?? 'div') as 'div';
 
   return (
@@ -68,7 +68,7 @@ export default function FlexibleColumnLayout({
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
-        const key = (child as Record<'key', unknown>).key;
+        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
         return (
           <div

@@ -38,3 +38,72 @@ export function generateThemeStylesheet({ theme, baseThemeId }: GenerateThemeSty
     baseThemeId,
   });
 }
+
+const themeStorageKey = Symbol.for('awsui-global-theme');
+const themeChangeEvent = 'awsui-global-theme-change';
+
+interface WindowWithTheme extends Window {
+  [themeStorageKey]?: Theme;
+}
+
+function getTopWindow(): WindowWithTheme {
+  try {
+    if (window.top && window.top.document) {
+      return window.top as WindowWithTheme;
+    }
+  } catch {
+    // Cross-origin access error — fall back to current window.
+  }
+  return window as WindowWithTheme;
+}
+
+export function setGlobalTheme(theme: Theme): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const topWindow = getTopWindow();
+  topWindow[themeStorageKey] = theme;
+  topWindow.dispatchEvent(new Event(themeChangeEvent));
+}
+
+function getGlobalTheme(): Theme | undefined {
+  const topWindow = getTopWindow();
+  return topWindow[themeStorageKey];
+}
+
+export function applyGlobalTheme(): ApplyThemeResult {
+  if (typeof window === 'undefined') {
+    return { reset: () => {} };
+  }
+
+  const topWindow = getTopWindow();
+  let currentReset: (() => void) | undefined;
+
+  function apply() {
+    currentReset?.();
+    currentReset = undefined;
+    const theme = getGlobalTheme();
+
+    if (theme) {
+      const result = applyTheme({ theme });
+      currentReset = result.reset;
+    }
+  }
+
+  // Apply the current global theme immediately.
+  apply();
+
+  // Listen for future global theme changes.
+  const listener = () => {
+    apply();
+  };
+  topWindow.addEventListener(themeChangeEvent, listener);
+
+  return {
+    reset: () => {
+      currentReset?.();
+      currentReset = undefined;
+      topWindow.removeEventListener(themeChangeEvent, listener);
+    },
+  };
+}

@@ -438,4 +438,28 @@ describe('Date Input component', () => {
       expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
     });
   });
+
+  describe('partial value handling for iso month format', () => {
+    test('displays complete month value in iso format', () => {
+      expect(renderDateInput({ value: '2024-06', format: 'iso', granularity: 'month' }).inputValue).toBe('2024-06');
+    });
+
+    test('accepts typing into empty input', () => {
+      const { wrapper, onChangeSpy } = renderDateInput({ value: '', format: 'iso', granularity: 'month' });
+      wrapper.findNativeInput().keydown({ key: '2' });
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2' } }));
+    });
+
+    test('displays partial year value as-is', () => {
+      expect(renderDateInput({ value: '20', format: 'iso', granularity: 'month' }).inputValue).toBe('20');
+    });
+
+    test('displays year with trailing separator as-is', () => {
+      expect(renderDateInput({ value: '2024-', format: 'iso', granularity: 'month' }).inputValue).toBe('2024-');
+    });
+
+    test('displays partial month value as-is', () => {
+      expect(renderDateInput({ value: '2024-0', format: 'iso', granularity: 'month' }).inputValue).toBe('2024-0');
+    });
+  });
 });

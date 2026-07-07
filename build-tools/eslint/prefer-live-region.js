@@ -16,7 +16,11 @@ module.exports = {
       JSXElement(node) {
         if (
           node.openingElement.attributes.some(
-            attribute => attribute.type === 'JSXAttribute' && attribute.name.name === 'aria-live'
+            attribute =>
+              attribute.type === 'JSXAttribute' &&
+              attribute.name.name === 'aria-live' &&
+              // Allow aria-live="off" to disable implicit aria-live behaviors of certain roles.
+              !(attribute.value && attribute.value.type === 'Literal' && attribute.value.value === 'off')
           )
         ) {
           context.report({

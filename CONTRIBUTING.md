@@ -4,38 +4,11 @@
 
 Use this repository to [create bug reports or feature requests](https://github.com/cloudscape-design/components/issues/new/choose). You can also [start a discussion](https://github.com/cloudscape-design/components/discussions) to ask a question. We will do our best to reply. To minimize duplicates, we recommend that you search for existing bug reports, feature requests, or discussions before initiating a new thread.
 
-## Versioning
+## Documentation
 
-We release patch versions on a daily basis to release bug fixes and new features and components. Patch versions do not contain breaking changes.
+For supported frameworks, browsers, public APIs, and versioning, see the [General Guide](docs/GENERAL_GUIDE.md).
 
-### Public APIs
-
-Our public API consists of
-
-- [Components APIs](https://cloudscape.design/components) (properties, slots, events, functions)
-- [Test utilities](https://cloudscape.design/get-started/testing/introduction/)
-- Typescript definitions
-- [Design tokens](https://cloudscape.design/foundation/visual-foundation/design-tokens)
-
-The inner HTML structure and class names of our components are not part of our APIs. Modifications to those are not considered breaking changes.
-
-## Frameworks support
-
-We support
-
-- React 16.8+
-- Jest 25+
-
-## Browsers support
-
-We support the latest 3 *major* versions of these browsers for desktop:
-- Google Chrome
-- Mozilla Firefox
-- Microsoft Edge
-
-and the latest three *minor* versions of Apple Safari for macOS for desktop.
-
-We do not support Microsoft Internet Explorer or mobile browsers. We support all viewport sizes across desktop browsers.
+For detailed guides on component conventions, styling, writing tests, and more, see the [Cloudscape Components Guide](docs/CLOUDSCAPE_COMPONENTS_GUIDE.md).
 
 ## How to contribute code
 
@@ -67,178 +40,21 @@ Clone this repository and install the dependencies:
 ```
 git clone git@github.com:cloudscape-design/components.git
 cd components
-npm install
 ```
 
-To generate the build artifacts, run the following command:
-
-```
-npm run build
-```
-
-Then, start the dev-server by running:
-
-```
-npm start
-```
-
-This will open a webpack-dev-server at http://localhost:8080 and watch
-for file changes.
+For setup, building, and running locally, see [Setup](docs/SETUP.md).
 
 ### Quick rebuild
 
-To quickly rebuild this package, run `npm run quick-build`. This runs only the source code build, skipping
-documentation and screenshot testing builds.
+To quickly rebuild this package, run `npm run quick-build`. This runs only the source code build, skipping documentation and screenshot testing builds.
 
 ### Running tests
 
-The package contains three types of tests:
-
-- **Build-tool tests** test the build-tools code in a NodeJS context.
-- **Unit tests** emulate a browser environment using JSDOM.
-- **Integration tests** test against real browser behavior on Chrome, with motion disabled.
-- **Motion tests** run a specific set of tests on Chrome, with motion enabled.
-
-#### Run all tests:
-
-```
-npm test
-```
-
-#### Run build tool and unit tests:
-
-```
-npm run test:unit
-```
-
-#### Run integration tests:
-
-If you're running integration tests on a Mac, make sure you have ChromeDriver:
-
-```
-npm i -g chromedriver
-```
-
-Then, run the dev server and integration tests in separate terminals:
-
-```
-npm start
-```
-
-```
-npm run test:integ
-```
-
-#### Run motion tests:
-
-As in integration tests, make sure you have ChromeDriver installed and start the dev server:
-
-```
-npm i -g chromedriver
-npm start
-```
-
-Then, run the motion tests in a separate terminal:
-
-```
-npm test:motion
-```
-
-#### Run a single test suite
-
-To run a single test suite, you can call Jest directly using the appropriate config:
-
-```
-# Run a single button unit test suite
-npx jest -c jest.unit.config.js src/button/__tests__/button.test.tsx
-
-# Run all input integration tests
-npx jest -c jest.integ.config.js src/input
-
-# Run motion tests for the flashbar component
-npx jest -c jest.motion.config.js src/flashbar
-
-# Test all stylelint rules
-npx jest -c jest.build-tools.config.js build-tools/stylelint
-```
-
-Note: when running jest directly you may see errors about `--experimental-vm-modules`, to fix this you can set this NodeJS flag as follows:
-
-```
-export NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules"
-```
-
-Alternatively, you can set the flag inline with the command:
-
-```
-# Run a single integration test file
-NODE_OPTIONS='--experimental-vm-modules' npx jest -c jest.integ.config.js src/input/__integ__/input.test.ts
-```
-
-#### Updating all snapshots
-
-When component APIs change, you may need to update test snapshots. Use the `-u` flag to update snapshots:
-
-```
-npx jest -u snapshot -c jest.unit.config.js src/
-```
-
-### Run visual regression tests
-
-Visual regression tests for the permutation pages are automatically run when opening a pull request in GitHub.
-
-#### Checking results in a pull requests
-
-To look at the results of the tests, check the details of the "Visual Regression Tests" action in the pull request.
-The logs of the "Test for regressions" step should indicate what pages failed the regression tests.
-
-To check the full report in a browser, go to the action summary and download the `visual-regression-results` artifacts.
-Unzip the downloaded archive and open the `html_report/index.html` file in your browser.
-
-If there are unexpected regressions, fix your pull request.
-If the changes are expected, call this out in your pull request comments.
+For targeting specific files, updating snapshots, ChromeDriver setup, and visual regression tests, see [docs/RUNNING_TESTS.md](docs/RUNNING_TESTS.md).
 
 ### Directory layout
 
-```
-├── __mocks__                   - jest mocks for external dependencies
-│
-├── build-tools                 - build tasks and configuration for gulp
-│
-├── pages                       - react pages for development, scenario and permutation testing
-│   └── <page>.page.tsx
-│
-├── src
-│   ├── __a11y__                - global a11y tests for all components
-│   ├── __integ__               - global integ tests for all components
-│   ├── __tests__               - global unit tests for all components
-|   |
-│   ├── <component-dir>
-│   │   ├── __tests__           - jest unit tests
-│   │   ├── __integ__           - jest integration tests
-│   │   ├── __motion__          - jest motion tests
-│   │   ├── index.tsx           - main component file (imports other files and styles)
-│   │   └── styles.scss         - main SCSS file
-|   │
-|   ├── test-utils              - test utils for components
-│   │   ├── dom                 - main source code for test utils
-│   │   └── selectors           - utils for integration testing, generated from the code in `dom` folder
-|   |
-|   └── internal                - library internals
-|       ├── base-component      - necessary declarations for every public component
-|       ├── components          - internal utility components
-|       ├── events              - utilities for firing public events
-|       ├── hooks               - internal utility hooks
-|       └── generated           - generated code from style-dictionary
-|       └── styles              - base styles and SCSS-mixins
-│
-├── lib                         - build output
-|   ├── components              - the primary components package
-|   ├── components-definitions  – generated metadata for components
-|   └── design-tokens           - exported design tokens
-|
-└── style-dictionary            - style dictionary tokens and roles
-```
+See [docs/DIRECTORY_LAYOUT.md](docs/DIRECTORY_LAYOUT.md) for the full repo structure.
 
 ## Code of Conduct
 

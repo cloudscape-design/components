@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -9,10 +9,10 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import FormField from '../../../lib/components/form-field';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
+import { NonCancelableEventHandler } from '../../types/events';
 import { changeMode } from './change-mode';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
@@ -99,7 +99,16 @@ describe('Date range picker', () => {
         );
 
         wrapper.openDropdown();
-        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
+        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute(
+          'aria-labelledby',
+          expect.stringContaining('#element')
+        );
+      });
+
+      test('aria-label', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaLabel: 'Custom label' });
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('Custom label');
       });
 
       test('aria-invalid', () => {
@@ -110,6 +119,33 @@ describe('Date range picker', () => {
       test('controlId', () => {
         const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, controlId: 'test' });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+      });
+
+      test('appends ariaLabel to the form field label', () => {
+        const { container } = render(
+          <FormField label="form-field-label">
+            <DateRangePicker {...currentModeDefaultProps} ariaLabel="aria-label" />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('form-field-label aria-label');
+      });
+
+      test('appends ariaLabel to the ariaLabelledby prop', () => {
+        const { container } = render(
+          <FormField label="form-field-label">
+            <div id="custom-arialabelledby">custom-aria-labelledby</div>
+            <DateRangePicker
+              {...currentModeDefaultProps}
+              ariaLabelledby="custom-arialabelledby"
+              ariaLabel="aria-label"
+            />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('custom-aria-labelledby aria-label');
       });
 
       test('correctly labels the dropdown trigger with the selected value', () => {
@@ -547,5 +583,66 @@ describe('Date range picker', () => {
         });
       });
     });
+  });
+});
+
+describe('renderTriggerContent', () => {
+  test('renders custom trigger content when provided', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      renderTriggerContent: () => <span>Custom trigger</span>,
+    });
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Custom trigger');
+  });
+
+  test('preserves accessibility attributes with custom trigger content', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      ariaLabel: 'Custom label',
+      renderTriggerContent: () => <span>Custom trigger</span>,
+    });
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Custom label Custom trigger');
+  });
+});
+
+describe('disabled reason behavior', () => {
+  const findDate = (wrapper: DateRangePickerWrapper) => wrapper.findDropdown()!.findDateAt('left', 2, 1);
+
+  test('clicking on disabled reason does not close the calendar', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      rangeSelectorMode: 'absolute-only',
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findDropdown()).not.toBe(null);
+
+    findDate(wrapper).focus();
+    expect(findDate(wrapper).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    findDate(wrapper).findDisabledReason()!.click();
+    expect(findDate(wrapper).findDisabledReason()).not.toBe(null);
+    expect(wrapper.findDropdown()).not.toBe(null);
+  });
+
+  test('disabled reason tooltip can be closed with Escape', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      rangeSelectorMode: 'absolute-only',
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findDropdown()).not.toBe(null);
+
+    findDate(wrapper).focus();
+    expect(findDate(wrapper).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    fireEvent.keyDown(findDate(wrapper).getElement(), { key: 'Escape', code: 'Escape' });
+    expect(wrapper.findDropdown()).not.toBe(null);
+    expect(findDate(wrapper).findDisabledReason()).toBe(null);
   });
 });

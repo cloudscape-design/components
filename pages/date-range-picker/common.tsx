@@ -17,6 +17,7 @@ interface DateRangePickerPageSettings {
   showRelativeOptions?: boolean;
   invalid?: boolean;
   warning?: boolean;
+  readOnly?: boolean;
   rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
   dateInputFormat?: DateRangePickerProps['dateInputFormat'];
@@ -27,6 +28,7 @@ interface DateRangePickerPageSettings {
   disabledDates?: DisabledDate;
   showDisabledReason?: boolean;
   hasValue?: boolean;
+  absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
 }
 
 const defaultSettings: Required<DateRangePickerPageSettings> = {
@@ -35,6 +37,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   showRelativeOptions: true,
   invalid: false,
   warning: false,
+  readOnly: false,
   rangeSelectorMode: 'default',
   absoluteFormat: 'iso',
   dateInputFormat: 'iso',
@@ -45,6 +48,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   disabledDates: 'none',
   showDisabledReason: true,
   hasValue: true,
+  absoluteMultiGridStartPeriod: 'current',
 };
 
 export function useDateRangePickerSettings(
@@ -79,6 +83,7 @@ export function useDateRangePickerSettings(
   const showRelativeOptions = parseBoolean(def('showRelativeOptions'), urlParams.showRelativeOptions);
   const invalid = parseBoolean(def('invalid'), urlParams.invalid);
   const warning = parseBoolean(def('warning'), urlParams.warning);
+  const readOnly = parseBoolean(def('readOnly'), urlParams.readOnly);
   const rangeSelectorMode = urlParams.rangeSelectorMode ?? def('rangeSelectorMode');
   const absoluteFormat = urlParams.absoluteFormat ?? def('absoluteFormat');
   const timeInputFormat = urlParams.timeInputFormat ?? def('timeInputFormat');
@@ -89,12 +94,14 @@ export function useDateRangePickerSettings(
   const disabledDates = urlParams.disabledDates ?? def('disabledDates');
   const showDisabledReason = parseBoolean(def('showDisabledReason'), urlParams.showDisabledReason);
   const hasValue = parseBoolean(def('hasValue'), urlParams.hasValue);
+  const absoluteMultiGridStartPeriod = urlParams.absoluteMultiGridStartPeriod ?? def('absoluteMultiGridStartPeriod');
   const settings: Required<DateRangePickerPageSettings> = {
     dateOnly,
     monthOnly,
     showRelativeOptions,
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -105,6 +112,7 @@ export function useDateRangePickerSettings(
     disabledDates,
     showDisabledReason,
     hasValue,
+    absoluteMultiGridStartPeriod,
   };
   const setSettings = (settings: DateRangePickerPageSettings) => setUrlParams(settings);
 
@@ -184,6 +192,7 @@ export function useDateRangePickerSettings(
     endDateLabel: 'End date',
     startTimeLabel: 'Start time',
     endTimeLabel: 'End time',
+    timePlaceholder: undefined, // Use default format-based placeholder
     clearButtonLabel: 'Clear and dismiss',
     cancelButtonLabel: 'Cancel',
     applyButtonLabel: 'Apply',
@@ -199,6 +208,7 @@ export function useDateRangePickerSettings(
     granularity: monthOnly ? 'month' : 'day',
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -210,6 +220,7 @@ export function useDateRangePickerSettings(
     isValidRange: isValid(monthOnly ? 'month' : 'day'),
     placeholder,
     i18nStrings,
+    absoluteMultiGridStartPeriod,
     locale: 'en-GB',
   };
 
@@ -245,6 +256,7 @@ export function Settings({
     showRelativeOptions,
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -255,6 +267,7 @@ export function Settings({
     disabledDates,
     showDisabledReason,
     hasValue,
+    absoluteMultiGridStartPeriod,
   },
   setSettings,
 }: {
@@ -273,6 +286,7 @@ export function Settings({
   const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
   const inputDateFormat = [{ value: 'iso' }, { value: 'slashed' }];
   const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
+  const absoluteMultiGridStartPeriodOptions = [{ value: 'current' }, { value: 'previous' }, { value: 'auto' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
       <FormField label="Range selector mode">
@@ -331,6 +345,20 @@ export function Settings({
         />
       </FormField>
 
+      <FormField label="Start period">
+        <Select
+          options={absoluteMultiGridStartPeriodOptions}
+          selectedOption={
+            absoluteMultiGridStartPeriodOptions.find(o => o.value === absoluteMultiGridStartPeriod) ?? null
+          }
+          onChange={({ detail }) =>
+            setSettings({
+              absoluteMultiGridStartPeriod: detail.selectedOption.value as DateRangePickerProps.StartPeriod,
+            })
+          }
+        />
+      </FormField>
+
       <SpaceBetween direction="horizontal" size="s">
         <Checkbox checked={hasValue} onChange={({ detail }) => setSettings({ hasValue: detail.checked })}>
           Has initial value
@@ -358,6 +386,9 @@ export function Settings({
         </Checkbox>
         <Checkbox checked={warning} onChange={({ detail }) => setSettings({ warning: detail.checked })}>
           Warning
+        </Checkbox>
+        <Checkbox checked={readOnly} onChange={({ detail }) => setSettings({ readOnly: detail.checked })}>
+          Read-only
         </Checkbox>
         <Checkbox
           checked={expandToViewport}

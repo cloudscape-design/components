@@ -13,7 +13,7 @@ $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
 $handle-size: 1.2 * styles.$base-size;
 $handle-offset: 0.2 * styles.$base-size;
-$shadow-color: rgba(0, 0, 0, 0.25);
+$shadow-color: awsui.$color-shadow-toggle-handle;
 
 .root {
   @include styles.styles-reset;

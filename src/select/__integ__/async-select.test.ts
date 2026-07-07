@@ -13,18 +13,13 @@ const select = createWrapper().findSelect();
 const SCROLL_PAGE_HEIGHT = 550;
 
 function setup(
-  {
-    visualRefresh = false,
-    virtualScrolling,
-    expandToViewport,
-  }: { visualRefresh?: boolean; virtualScrolling?: boolean; expandToViewport?: boolean },
+  { virtualScrolling, expandToViewport }: { virtualScrolling?: boolean; expandToViewport?: boolean },
   testFn: (page: AsyncDropdownComponentPage) => Promise<void>
 ) {
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, select);
     await page.setWindowSize({ width: 950, height: 300 });
-    const params = new URLSearchParams({ visualRefresh: String(visualRefresh) }).toString();
-    await browser.url(`/#/light/select/select.test.async?${params}`);
+    await browser.url('/#/light/select/select.test.async');
     await page.waitForVisible(select.findTrigger().toSelector());
     if (virtualScrolling) {
       await page.enableVirtualScrolling();
@@ -37,10 +32,10 @@ function setup(
   });
 }
 
-describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefresh => {
+describe('async select tests', () => {
   test(
     'should request data when dropdown opens',
-    setup({ visualRefresh }, async page => {
+    setup({}, async page => {
       await expect(page.getOptionsCount()).resolves.toEqual(0);
       await page.assertStatusText('Fetching items');
       await expect(page.getLatestRequestParams()).resolves.toEqual({ filteringText: '', pageNumber: 0 });
@@ -52,7 +47,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
 
   test(
     'should request more items on scroll',
-    setup({ visualRefresh }, async page => {
+    setup({}, async page => {
       await page.respondWith(0, true);
       await page.scrollDropdown(SCROLL_PAGE_HEIGHT);
       await expect(page.getOptionsCount()).resolves.toEqual(RESPONSE_PAGE_SIZE);
@@ -67,7 +62,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
 
   test(
     'should render error state and retry on click',
-    setup({ visualRefresh }, async page => {
+    setup({}, async page => {
       await page.reject();
       await page.assertStatusText('Error fetching results. Retry');
       await page.waitForVisible(select.findErrorRecoveryButton().toSelector());
@@ -81,7 +76,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
 
   test(
     'should render error state when next page request failed',
-    setup({ visualRefresh }, async page => {
+    setup({}, async page => {
       await page.respondWith(0, true);
       await page.scrollDropdown(SCROLL_PAGE_HEIGHT);
       await page.reject();
@@ -92,7 +87,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
 
   test(
     'should clear the previous results when filtering',
-    setup({ visualRefresh }, async page => {
+    setup({}, async page => {
       await page.respondWith(0, true);
       await page.setValue(select.findFilteringInput()!.findNativeInput().toSelector(), 'test');
       await page.pause(DEBOUNCE_FILTERING_DELAY);
@@ -112,7 +107,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
 
   test(
     'should move focus back to the trigger if expandToViewport=true',
-    setup({ visualRefresh, expandToViewport: true }, async page => {
+    setup({ expandToViewport: true }, async page => {
       await page.reject();
 
       // Tabbing to recovery link
@@ -131,7 +126,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
   describe.each([true, false])('Async select scrolling (with virtualScrolling=%s)', (virtualScrolling: boolean) => {
     test(
       'scroll position does not change, when a new batch of items arrives',
-      setup({ visualRefresh, virtualScrolling }, async page => {
+      setup({ virtualScrolling }, async page => {
         await page.respondWith(0, true);
         await page.scrollDropdown(SCROLL_PAGE_HEIGHT);
         const scrollPosition = await page.getDropdownScrollPosition();
@@ -142,7 +137,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
     );
     test(
       'the bottom of the dropdown lines up with the highlighted option, when going down the list',
-      setup({ visualRefresh, virtualScrolling }, async page => {
+      setup({ virtualScrolling }, async page => {
         await page.respondWith(0, true);
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown']);
         const { bottom: optionBottom } = await page.getHighlightedPosition();
@@ -153,7 +148,7 @@ describe.each([false, true])('async select tests (visualRefresh=%s)', visualRefr
     );
     test(
       'the top of the dropdown lines up with the highlighted option, when going up the list',
-      setup({ visualRefresh, virtualScrolling }, async page => {
+      setup({ virtualScrolling }, async page => {
         await page.respondWith(0, true);
         await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown']);
         await page.keys(['ArrowUp', 'ArrowUp']);

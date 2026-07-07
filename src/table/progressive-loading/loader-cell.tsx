@@ -10,14 +10,22 @@ export interface TableLoaderCellProps<ItemType>
   extends Omit<TableTdElementProps, 'isEditable' | 'isEditing' | 'children'>,
     ItemsLoaderProps<ItemType> {}
 
-export function TableLoaderCell<ItemType>({ item, trackBy, children, ...props }: TableLoaderCellProps<ItemType>) {
-  return (
+export function TableLoaderCell<ItemType>({
+  item,
+  trackBy,
+  counter,
+  children,
+  ...props
+}: TableLoaderCellProps<ItemType>) {
+  return props.isRowHeader ? (
+    <TableTdElement {...props} counter={counter} isEditable={false} isEditing={false}>
+      <ItemsLoader item={item} trackBy={trackBy}>
+        {children}
+      </ItemsLoader>
+    </TableTdElement>
+  ) : (
     <TableTdElement {...props} isEditable={false} isEditing={false}>
-      {props.isRowHeader ? (
-        <ItemsLoader item={item} trackBy={trackBy}>
-          {children}
-        </ItemsLoader>
-      ) : null}
+      {null}
     </TableTdElement>
   );
 }

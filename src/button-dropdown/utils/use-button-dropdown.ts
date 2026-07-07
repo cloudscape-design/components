@@ -3,8 +3,9 @@
 import React from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { CancelableEventHandler, fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import { CancelableEventHandler } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import useHighlightedMenu from './use-highlighted-menu';
 import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';

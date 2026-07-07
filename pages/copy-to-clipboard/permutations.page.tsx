@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { CopyToClipboard, CopyToClipboardProps } from '~components';
+import { CopyToClipboard, CopyToClipboardProps, Popover } from '~components';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -21,13 +21,52 @@ const permutations = createPermutations<CopyToClipboardProps>([
     copyErrorText: ['Copy failed.'],
     copyButtonText: ['Copy to clipboard'],
   },
+  {
+    textToDisplay: [
+      <Popover key={1} content="Popover" triggerType="text">
+        Inline block popover
+      </Popover>,
+      <Popover key={2} content="Popover" triggerType="text-inline">
+        Inline text popover
+      </Popover>,
+    ],
+    disabled: [false, true],
+    variant: ['inline'],
+    copyButtonText: ['Copy to clipboard'],
+    textToCopy: ['Lorem ipsum dolor sit amet.'],
+    copySuccessText: ['Text copied successfully'],
+    copyErrorText: ['Copy failed.'],
+  },
+  {
+    wrapText: [true, false],
+    variant: ['inline'],
+    textToCopy: [
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit cursus ut pharetra semper litora lobortis sed lacinia.',
+    ],
+    copyButtonText: ['Copy to clipboard'],
+    copySuccessText: ['Text copied successfully'],
+    copyErrorText: ['Copy failed.'],
+  },
+  {
+    wrapText: [true, false],
+    variant: ['inline'],
+    textToDisplay: [
+      <Popover key={1} content="Popover" wrapTriggerText={false}>
+        Inline block popover with relatively long content that should truncate when wrapText is false
+      </Popover>,
+    ],
+    textToCopy: ['Lorem ipsum dolor sit amet.'],
+    copyButtonText: ['Copy to clipboard'],
+    copySuccessText: ['Text copied successfully'],
+    copyErrorText: ['Copy failed.'],
+  },
 ]);
 
 export default function ButtonPermutations() {
   return (
     <>
       <h1>Button permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea disableAnimations={true} style={{ maxWidth: 400 }}>
         <PermutationsView permutations={permutations} render={permutation => <CopyToClipboard {...permutation} />} />
       </ScreenshotArea>
     </>

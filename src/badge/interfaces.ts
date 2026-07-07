@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface BadgeProps extends BaseComponentProps {
   /**
@@ -29,6 +29,8 @@ export interface BadgeProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
+   * An object containing CSS properties to customize the badge's visual appearance.
+   * Refer to the [style](/components/badge/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;

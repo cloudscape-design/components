@@ -4,7 +4,8 @@ import React from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
+import { Breakpoint } from '../../../types/breakpoint';
+import { getMatchingBreakpoint } from '../../breakpoints';
 
 /**
  * Re-renders the component when the breakpoint for the component changes. Scopes the re-renders to the specific
@@ -16,9 +17,9 @@ import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
 export function useContainerBreakpoints<T extends readonly Breakpoint[], E extends Element = any>(triggers?: T) {
   // triggers.join() gives us a stable value to use for the dependencies argument
   const triggersDep = triggers?.join();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]) as [
-    'default' | T[number] | null,
-    React.Ref<E>,
-  ];
+  return useContainerQuery(
+    (rect, previousBreakpoint) => getMatchingBreakpoint(rect.contentBoxWidth, triggers, previousBreakpoint),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [triggersDep]
+  ) as ['default' | T[number] | null, React.Ref<E>];
 }

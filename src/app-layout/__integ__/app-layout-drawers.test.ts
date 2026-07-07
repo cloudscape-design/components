@@ -4,7 +4,6 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { scrollbarThickness } from '../../__integ__/scrollbars';
 import { viewports } from './constants';
 import { testIf } from './utils';
 
@@ -106,7 +105,6 @@ const setupTest = (
     const params = new URLSearchParams({
       splitPanelPosition,
       disableContentPaddings,
-      visualRefresh: `${theme !== 'classic'}`,
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
     }).toString();
     await browser.url(`#/light/app-layout/with-drawers?${params}`);
@@ -114,11 +112,10 @@ const setupTest = (
     await testFn(page);
   });
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   describe('desktop', () => {
     // there is an extra 2 borders inside drawer box in visual refresh, 1 for toolbar
     const vrBorderOffsets = {
-      ['classic']: 0,
       ['refresh']: 2,
       ['refresh-toolbar']: 1,
     };
@@ -158,7 +155,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffsets[theme]);
         await page.dragResizerTo({ x: 0, y: 0 });
         const expectedWidths = {
-          ['classic']: 505,
           ['refresh']: 432,
           ['refresh-toolbar']: 578,
         };
@@ -245,11 +241,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.openFirstDrawer();
         const resizeHandleBefore = await page.getResizeHandlePosition();
         const scrollableContainer =
-          theme === 'classic'
-            ? wrapper.findActiveDrawer().toSelector()
-            : theme === 'refresh'
-              ? `.${vrDrawerStyles['drawer-content-container']}`
-              : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
+          theme === 'refresh'
+            ? `.${vrDrawerStyles['drawer-content-container']}`
+            : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
 
         await page.elementScrollTo(scrollableContainer, { top: 100 });
         const resizeHandleAfter = await page.getResizeHandlePosition();
@@ -266,16 +260,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         ).resolves.toBe(true);
       })
     );
-
-    testIf(theme === 'classic')(
-      'pushes content over with disableContentPaddings',
-      setupTest({ disableContentPaddings: 'true', theme }, async page => {
-        const width = await page.getMainContentWidth();
-        await page.openFirstDrawer();
-        const newWidth = await page.getMainContentWidth();
-        await expect(width).toBeGreaterThan(newWidth);
-      })
-    );
   });
 
   describe('mobile', () => {
@@ -285,29 +269,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.openFirstDrawer();
         await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
       })
-    );
-  });
-
-  describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    testIf(theme === 'classic')(
-      'pushes content over with disableContentPaddings',
-      setupTest(
-        {
-          disableContentPaddings: 'true',
-          theme,
-          screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile,
-        },
-        async page => {
-          const width = await page.getMainContentWidth();
-          await page.openFirstDrawer();
-          const newWidth = await page.getMainContentWidth();
-          if (size === 'desktop') {
-            expect(width).toBeGreaterThan(newWidth);
-          } else {
-            expect(width + scrollbarThickness).toBe(newWidth);
-          }
-        }
-      )
     );
   });
 });

@@ -14,6 +14,7 @@ export function getRootStyles(style: ContainerProps.Style | undefined) {
     borderRadius: style?.root?.borderRadius,
     borderWidth: style?.root?.borderWidth,
     boxShadow: style?.root?.boxShadow,
+    color: style?.root?.color,
   };
 }
 

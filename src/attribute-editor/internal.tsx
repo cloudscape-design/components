@@ -3,7 +3,7 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -91,6 +91,16 @@ const InternalAttributeEditor = React.forwardRef(
       // we only want to announce when the number of items decreases (i.e. when an item is removed)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, i18nStrings?.itemRemovedAriaLive]);
+
+    for (const def of definition) {
+      if (def && !def.label) {
+        warnOnce(
+          'AttributeEditor',
+          'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
+        );
+        break;
+      }
+    }
 
     if (!gridLayout) {
       gridLayout = gridDefaults[definition.length];

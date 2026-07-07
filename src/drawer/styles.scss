@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../app-layout/constants.scss' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -13,18 +14,54 @@
   }
 }
 
+.root {
+  display: contents;
+}
+
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+  background-color: awsui.$color-background-drawer;
+
+  &.has-close-action {
+    position: relative;
+  }
+
+  &.position-absolute,
+  &.position-sticky,
+  &.position-fixed {
+    &.placement-end {
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    }
+    &.placement-start {
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    }
+    &.placement-top {
+      border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    }
+    &.placement-bottom {
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    }
+  }
 
   &.with-footer {
     display: flex;
     flex-direction: column;
-    min-block-size: 100%;
+    &.position-static {
+      min-block-size: 100%;
+    }
 
     > .content {
       flex: 1;
     }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight($gutter: -2px);
   }
 }
 
@@ -34,9 +71,15 @@
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
   padding-block: awsui.$space-panel-header-vertical;
-  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+
+  // the space on the right is reserved for absolute-positioned close action
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
+
+  &.hide-close-action {
+    padding-inline: awsui.$space-panel-side-left awsui.$space-panel-side-right;
+  }
 
   @include desktop-only {
     &.with-additional-action {
@@ -76,6 +119,12 @@
   z-index: 1;
 }
 
+.close-action {
+  position: absolute;
+  inset-block-start: awsui.$space-static-m;
+  inset-inline-end: awsui.$space-scaled-l;
+}
+
 .content-with-paddings:not(:empty) {
   padding-block-start: awsui.$space-panel-content-top;
   padding-inline-start: awsui.$space-panel-side-left;
@@ -100,4 +149,25 @@
 
 .test-utils-drawer-content {
   /* used in test-utils */
+}
+
+.hidden {
+  display: none;
+}
+
+.focus-trap {
+  display: contents;
+}
+
+.backdrop {
+  inset: 0;
+  background-color: awsui.$color-background-drawer-backdrop;
+
+  &.backdrop-fixed {
+    position: fixed;
+  }
+
+  &.backdrop-absolute {
+    position: absolute;
+  }
 }

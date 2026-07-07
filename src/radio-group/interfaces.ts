@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../internal/base-component';
-import { RadioButtonProps } from '../internal/components/radio-button/interfaces';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+import { RadioButtonProps } from '../radio-button/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
 
 export interface RadioGroupProps extends BaseComponentProps, FormFieldControlProps {
   /**
@@ -65,6 +65,8 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   readOnly?: boolean;
 
   /**
+   * An object containing CSS properties to customize the radio group's visual appearance.
+   * Refer to the [style](/components/radio-group/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;

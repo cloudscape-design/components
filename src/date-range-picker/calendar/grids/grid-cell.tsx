@@ -4,18 +4,19 @@ import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import Tooltip from '../../../internal/components/tooltip';
 import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
 import { applyDisplayName } from '../../../internal/utils/apply-display-name';
+import Tooltip from '../../../tooltip/internal.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
+  referrerId?: string;
 }
 
 export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
-  const { disabledReason, ...rest } = props;
+  const { disabledReason, referrerId, ...rest } = props;
   const isDisabledWithReason = !!disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
   const ref = useRef<HTMLTableCellElement>(null);
@@ -70,9 +71,10 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
           {showTooltip && (
             <Tooltip
               className={testutilStyles['disabled-reason-tooltip']}
-              trackRef={ref}
-              value={disabledReason!}
-              onDismiss={() => setShowTooltip(false)}
+              getTrack={() => ref.current}
+              content={disabledReason!}
+              onEscape={() => setShowTooltip(false)}
+              referrerId={referrerId}
             />
           )}
         </>

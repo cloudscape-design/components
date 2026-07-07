@@ -3,12 +3,14 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
-import { CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
 import Tooltip from '../tooltip.js';
@@ -17,6 +19,7 @@ import { getMenuItemProps } from '../utils/menu-item.js';
 import styles from './styles.css.js';
 
 const MobileExpandableCategoryElement = ({
+  index,
   item,
   onItemActivate,
   onGroupToggle,
@@ -29,6 +32,7 @@ const MobileExpandableCategoryElement = ({
   disabled,
   variant,
   position,
+  renderItem,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -52,13 +56,28 @@ const MobileExpandableCategoryElement = ({
     highlightItem(item);
   };
 
+  const isOneTheme = isThemeActive(Theme.OneTheme);
+
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
+
+  const groupProps: ButtonDropdownProps.GroupRenderItem = {
+    index: index ?? 0,
+    type: 'group',
+    option: item as ButtonDropdownProps.ItemGroup,
+    disabled: !!disabled,
+    highlighted: !!highlighted,
+    expanded: expanded,
+    expandDirection: 'vertical',
+  };
+  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+
   const trigger = item.text && (
     <span
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.highlighted]: highlighted,
         [styles['rolled-down']]: expanded,
+        [styles['no-content-styling']]: !!renderResult,
         [styles.disabled]: disabled,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
@@ -83,19 +102,28 @@ const MobileExpandableCategoryElement = ({
             } as GeneratedAnalyticsMetadataButtonDropdownExpand)
       )}
     >
-      {(item.iconName || item.iconUrl || item.iconSvg) && (
-        <span className={styles['icon-wrapper']}>
-          <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
-        </span>
+      {renderResult ? (
+        renderResult
+      ) : (
+        <>
+          {(item.iconName || item.iconUrl || item.iconSvg) && (
+            <span className={styles['icon-wrapper']}>
+              <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+            </span>
+          )}
+          <span>{item.text}</span>
+          <span
+            className={clsx(styles['expand-icon'], {
+              [styles['expand-icon-up']]: expanded,
+            })}
+          >
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
+          </span>
+        </>
       )}
-      {item.text}
-      <span
-        className={clsx(styles['expand-icon'], {
-          [styles['expand-icon-up']]: expanded,
-        })}
-      >
-        <InternalIcon name="caret-down-filled" />
-      </span>
     </span>
   );
 
@@ -128,6 +156,8 @@ const MobileExpandableCategoryElement = ({
               hasCategoryHeader={true}
               variant={variant}
               position={position}
+              renderItem={renderItem}
+              parentProps={groupProps}
             />
           </ul>
         )}
