@@ -310,6 +310,15 @@ describe('jump to page', () => {
     expect(wrapper.findJumpToPageButton()).toBeTruthy();
   });
 
+  test('should disable jump to page input and button when pagination is disabled', () => {
+    const { wrapper } = renderPagination(
+      <Pagination currentPageIndex={1} pagesCount={10} disabled={true} jumpToPage={{}} />
+    );
+
+    expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toBeDisabled();
+    expect(wrapper.findJumpToPageButton()!.getElement()).toBeDisabled();
+  });
+
   test('should not render jump to page when jumpToPage is not provided', () => {
     const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} />);
 

@@ -221,7 +221,7 @@ const InternalPagination = React.forwardRef(
         loadingText={jumpToPageLoadingText}
         ariaLabel={jumpToPage?.loading ? jumpToPageLoadingText : jumpToPageButtonLabel}
         onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
-        disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
+        disabled={disabled || !jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
       />
     );
 
@@ -300,6 +300,7 @@ const InternalPagination = React.forwardRef(
                   ref={jumpToPageInputRef}
                   type="number"
                   value={jumpToPageValue}
+                  disabled={disabled}
                   __inlineLabelText={jumpToPageLabel || undefined}
                   __fullWidth={true}
                   ariaLabel={jumpToPageLabel || undefined}
