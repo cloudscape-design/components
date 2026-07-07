@@ -37,18 +37,35 @@ const CustomStep = ({
 }) => {
   const { status, statusIconAriaLabel } = step;
   const { header, details, icon } = renderStep(step);
-  return (
-    <li className={styles.container}>
-      <div className={styles.header}>
-        {icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />}
-        {orientation === 'vertical' ? header : <hr className={styles.connector} role="none" />}
-      </div>
-      {orientation === 'vertical' ? (
-        <hr className={styles.connector} role="none" />
-      ) : (
+  const iconNode = icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />;
+
+  if (orientation === 'horizontal') {
+    return (
+      <li className={styles.container}>
+        <div className={styles.header}>
+          {iconNode}
+          <hr className={styles.connector} role="none" />
+        </div>
         <div className={styles['horizontal-header']}>{header}</div>
-      )}
-      {details && <div className={styles.details}>{details}</div>}
+        {details && <div className={styles.details}>{details}</div>}
+      </li>
+    );
+  }
+
+  // Vertical orientation: render the icon and the connector together in a column-1 "rail" so the
+  // connector starts directly beneath the icon and stretches the full height of the step. Unlike
+  // placing the header in the same row as the icon, this keeps the vertical line continuous even
+  // when the custom header wraps onto multiple lines.
+  return (
+    <li className={clsx(styles.container, styles['custom-vertical'])}>
+      <div className={styles.rail}>
+        {iconNode}
+        <hr className={styles.connector} role="none" />
+      </div>
+      <div className={styles.content}>
+        <div className={styles.header}>{header}</div>
+        {details && <div className={styles.details}>{details}</div>}
+      </div>
     </li>
   );
 };

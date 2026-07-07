@@ -5,19 +5,21 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
 import { OptionsListProps } from '../../internal/components/options-list';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { DropdownStatusProps } from '../../types/dropdown-status';
+import { NonCancelableEventHandler } from '../../types/events';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -175,13 +177,13 @@ export function useSelect({
   });
 
   const getDropdownProps: () => Pick<
-    DropdownProps,
-    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
+    InternalDropdownProps,
+    'onFocus' | 'onBlur' | 'dropdownContentId' | 'ariaRole'
   > = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
-    dropdownContentRole: hasFilter ? 'dialog' : undefined,
+    ariaRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {

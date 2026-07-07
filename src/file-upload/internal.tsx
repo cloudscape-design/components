@@ -13,7 +13,7 @@ import InternalFileDropzone from '../file-dropzone/internal';
 import { useFilesDragging } from '../file-dropzone/use-files-dragging';
 import InternalFileInput from '../file-input/internal';
 import InternalFileTokenGroup from '../file-token-group/internal';
-import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { ConstraintTextRegion, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -167,9 +167,9 @@ function InternalFileUpload(
               </FormFieldWarning>
             )}
             {constraintText && (
-              <ConstraintText id={constraintTextId} hasValidationText={!!errorText || !!warningText}>
+              <ConstraintTextRegion id={constraintTextId} hasValidationText={!!errorText || !!warningText}>
                 {constraintText}
-              </ConstraintText>
+              </ConstraintTextRegion>
             )}
           </div>
         )}

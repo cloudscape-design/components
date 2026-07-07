@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Spalteneinstellungen",
     "contentDisplayPreference.description": "Passen Sie die Sichtbarkeit und Reihenfolge der Spalten an.",
     "contentDisplayPreference.dragHandleAriaLabel": "Ziehpunkt",
-    "contentDisplayPreference.dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um die Position abzuschließen. Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
+    "contentDisplayPreference.dragHandleAriaDescription": "Drücken Sie die Leertaste oder die Eingabetaste, um das Ziehen eines Elements zu aktivieren, und verwenden Sie anschließend die Pfeiltasten, um die Position des Elements zu verschieben. Um die Positionsänderung abzuschließen, drücken Sie die Leertaste oder die Eingabetaste; um die Verschiebung abzubrechen, drücken Sie die Escape-Taste. Möglicherweise müssen Sie den Navigationsmodus Ihres Screenreaders umschalten.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Aufgeholtes Element an Position {position} von {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Neuanordnung storniert",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Spalten filtern",
@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Endmonat",
     "i18nStrings.endDateLabel": "Enddatum",
     "i18nStrings.endTimeLabel": "Endzeit",
+    "i18nStrings.datePlaceholder": "JJJJ-MM-TT",
+    "i18nStrings.isoDatePlaceholder": "JJJJ-MM-TT",
+    "i18nStrings.slashedDatePlaceholder": "JJJJ/MM/TT",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
     "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
@@ -179,6 +183,14 @@
     "i18nStrings.headerText": "Unerwarteter Fehler, Inhalt konnte nicht angezeigt werden",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Aktualisieren Sie die Seite, um es erneut zu versuchen. Wir verfolgen dieses Problem nach, Sie können aber <Feedback>hier zusätzliche Informationen mitteilen</Feedback>.} other {Aktualisieren Sie die Seite, um es erneut zu versuchen.}}",
     "i18nStrings.refreshActionText": "Seite aktualisieren"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Neueste Feature-Versionen",
+    "i18nStrings.viewAll": "Alle Feature-Versionen anzeigen",
+    "ariaLabels.closeButton": "Benachrichtigungen schließen",
+    "ariaLabels.content": "Benachrichtigungen über Funktionen",
+    "ariaLabels.triggerButton": "Funktionsbenachrichtigungen anzeigen",
+    "ariaLabels.resizeHandle": "Größe von Funktionsbenachrichtigungen ändern"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Weniger anzeigen",
@@ -243,7 +255,8 @@
     "ariaLabels.previousPageLabel": "Vorherige Seite",
     "ariaLabels.jumpToPageButtonLabel": "Zur Seite springen",
     "i18nStrings.jumpToPageInputLabel": "Seite",
-    "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an."
+    "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an.",
+    "i18nStrings.jumpToPageLoadingText": "Wird geladen"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",
@@ -257,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Popover schließen"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Prompt absenden",
+    "i18nStrings.menuErrorIconAriaLabel": "Fehler",
+    "i18nStrings.menuRecoveryText": "Erneut versuchen",
+    "i18nStrings.menuLoadingText": "Elemente werden geladen",
+    "i18nStrings.menuFinishedText": "Ende der Ergebnisse",
+    "i18nStrings.menuErrorText": "Fehler beim Abrufen der Elemente",
+    "i18nStrings.selectedMenuItemAriaLabel": "Ausgewählt",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} eingefügt",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} angeheftet",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} entfernt"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Alle Eigenschaften",

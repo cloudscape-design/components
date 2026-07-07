@@ -47,11 +47,11 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal-default}));
   inset-block-start: 0;
   inset-inline-end: 0;
-  padding-block: awsui.$space-card-vertical;
-  padding-inline: awsui.$space-card-horizontal;
+  padding-block: awsui.$space-card-vertical-default;
+  padding-inline: awsui.$space-card-horizontal-default;
 }
 
 .loading,
@@ -87,7 +87,7 @@
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      padding-block-start: styles.$control-padding-vertical;
+      /* used in test-utils */
       &-selectable {
         inline-size: 90%;
       }

@@ -11,10 +11,12 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
+import { useTokenInlineContext } from '../internal/context/token-inline-context';
+import { fireNonCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { KeyCode } from '../internal/keycode';
+import { NonCancelableEventHandler } from '../types/events';
 import Arrow from './arrow';
 import PopoverBody from './body';
 import ConditionalLiveRegion from './conditional-live-region';
@@ -29,6 +31,8 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
   isInline?: boolean;
+  __visible?: boolean;
+  __onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
 }
 
 export default React.forwardRef(InternalPopover);
@@ -53,6 +57,8 @@ function InternalPopover(
     __onOpen,
     __internalRootRef,
     __closeAnalyticsAction,
+    __visible: controlledVisible,
+    __onVisibleChange: onVisibleChange,
 
     ...restProps
   }: InternalPopoverProps,
@@ -65,7 +71,20 @@ function InternalPopover(
   const i18n = useInternalI18n('popover');
   const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
 
-  const [visible, setVisible] = useState(false);
+  const [internalVisible, setInternalVisible] = useState(false);
+  const isControlled = controlledVisible !== undefined;
+  const visible = isControlled ? controlledVisible : internalVisible;
+
+  const updateVisible = useCallback(
+    (newVisible: boolean) => {
+      if (isControlled) {
+        fireNonCancelableEvent(onVisibleChange, { visible: newVisible });
+      } else {
+        setInternalVisible(newVisible);
+      }
+    },
+    [isControlled, onVisibleChange]
+  );
 
   const focusTrigger = useCallback(() => {
     if (['text', 'text-inline'].includes(triggerType)) {
@@ -77,13 +96,13 @@ function InternalPopover(
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
-    setVisible(true);
-  }, [__onOpen]);
+    updateVisible(true);
+  }, [__onOpen, updateVisible]);
 
   const onDismiss = useCallback(() => {
-    setVisible(false);
+    updateVisible(false);
     focusTrigger();
-  }, [focusTrigger]);
+  }, [focusTrigger, updateVisible]);
 
   const onTriggerKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -93,21 +112,25 @@ function InternalPopover(
         event.stopPropagation();
       }
       if (isTabKey || isEscapeKey) {
-        setVisible(false);
+        updateVisible(false);
       }
     },
-    [visible]
+    [visible, updateVisible]
   );
 
-  useImperativeHandle(ref, () => ({
-    dismiss: () => {
-      setVisible(false);
-    },
-    focus: () => {
-      setVisible(false);
-      focusTrigger();
-    },
-  }));
+  useImperativeHandle(
+    ref,
+    () => ({
+      dismiss: () => {
+        updateVisible(false);
+      },
+      focus: () => {
+        updateVisible(false);
+        focusTrigger();
+      },
+    }),
+    [updateVisible, focusTrigger]
+  );
 
   const clickFrameId = useRef<number | null>(null);
   useEffect(() => {
@@ -119,7 +142,7 @@ function InternalPopover(
     const onDocumentClick = () => {
       // Dismiss popover unless there was a click inside within the last animation frame.
       if (clickFrameId.current === null) {
-        setVisible(false);
+        updateVisible(false);
       }
     };
 
@@ -128,16 +151,17 @@ function InternalPopover(
     return () => {
       document.removeEventListener('mousedown', onDocumentClick);
     };
-  }, []);
+  }, [updateVisible]);
 
   const popoverClasses = usePortalModeClasses(triggerRef, { resetVisualContext: true });
+  const { isInlineToken } = useTokenInlineContext();
 
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
-    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
+    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`], isInlineToken && styles['in-inline-token']),
   };
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 

@@ -6,7 +6,8 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../internal/events';
 import { joinStrings } from '../../internal/utils/strings';
-import { InternalSelectionType, TableProps } from '../interfaces';
+import { TableProps } from '../interfaces';
+import { InternalSelectionType } from '../internal-interfaces';
 import { getTrackableValue } from '../utils';
 import { SelectionProps } from './interfaces';
 import { ItemSet } from './utils';

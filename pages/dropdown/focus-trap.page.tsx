@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { useState } from 'react';
 
 import { Box, Button, SpaceBetween } from '~components';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import AppContext, { AppContextType } from '../app/app-context';
 
@@ -91,7 +91,7 @@ export default function DropdownScenario() {
                 </Button>
               }
               open={isOpen}
-              onDropdownClose={() => setIsOpen(false)}
+              onOutsideClick={() => setIsOpen(false)}
               header={
                 <div style={{ padding: 8 }}>
                   <Button disabled={disableHeader}>header-1</Button>

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonProps } from '../button/interfaces';
 import { ContainerProps } from '../container/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
-import { FocusRingStyle } from '../internal/types';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FocusRingStyle } from '../types/utils';
 
 export interface TabsProps extends BaseComponentProps {
   /**
@@ -104,6 +104,8 @@ export interface TabsProps extends BaseComponentProps {
   keyboardActivationMode?: 'automatic' | 'manual';
 
   /**
+   * An object containing CSS properties to customize the tabs' visual appearance.
+   * Refer to the [style](/components/tabs/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: TabsProps.Style;

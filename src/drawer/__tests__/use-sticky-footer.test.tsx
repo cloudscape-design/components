@@ -40,7 +40,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -59,7 +59,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     act(() => {
       callbacks.forEach(cb => cb({} as ContainerQueryEntry));
@@ -77,7 +77,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -92,7 +92,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: standaloneDrawer };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -109,7 +109,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
     expect(result.current.isSticky).toBe(true);
 
     jest.spyOn(parentElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 200 }) as DOMRect);
@@ -128,7 +128,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -148,7 +148,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     act(() => {
       callbacks.forEach(cb => cb({} as ContainerQueryEntry));
@@ -162,7 +162,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: null };
     const footerRef = { current: null };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -174,7 +174,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: null };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -185,7 +185,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: null };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 
@@ -200,7 +200,7 @@ describe('useStickyFooter', () => {
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result, rerender } = renderHook(() => useStickyFooter({ rootRef: drawerRef, drawerRef, footerRef }));
 
     rerender({});
 

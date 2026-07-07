@@ -4,7 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 
 import styles from './styles.css.js';
@@ -61,7 +62,7 @@ const CategoryElement = ({
                   <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
                 </span>
               )}
-              {item.text}
+              <span>{item.text}</span>
             </span>
           )}
         </p>

@@ -7,21 +7,17 @@ import clsx from 'clsx';
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useFormFieldContext } from '../contexts/form-field';
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import {
-  BaseKeyDetail,
-  fireCancelableEvent,
-  fireNonCancelableEvent,
-  NonCancelableCustomEvent,
-} from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
+import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { useAutosuggestItems } from './options-controller';

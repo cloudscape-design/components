@@ -43,6 +43,7 @@ function Recursive({ boundaries }: { boundaries: BoundaryTestSpec[] }) {
       </div>
     ),
   };
+  // eslint-disable-next-line no-restricted-syntax -- Test: runtime error type check
   return 'onError' in props ? <ErrorBoundary {...props} /> : <BuiltInErrorBoundary {...props} />;
 }
 
@@ -436,6 +437,7 @@ describe('error propagation and suppressNested', () => {
   ])('suppressNested and suppressible: $description', ({ boundaries, expected }) => {
     render(<Recursive boundaries={boundaries} />);
     expect(findHeader().getElement()).toHaveTextContent(expected);
+    // eslint-disable-next-line no-restricted-syntax -- Test: runtime error type check
     for (const { onError, errorBoundaryId } of boundaries.filter(b => 'onError' in b)) {
       if (errorBoundaryId === expected) {
         expect(onError).toHaveBeenCalledWith({
@@ -546,6 +548,7 @@ describe('built-in error boundaries', () => {
   ])('suppressing built-in boundaries, $description', ({ boundaries, expected }) => {
     render(<Recursive boundaries={boundaries} />);
     expect(findBoundary()!.getElement().parentElement!.textContent).toBe(expected);
+    // eslint-disable-next-line no-restricted-syntax -- Test: runtime error type check
     for (const { onError, errorBoundaryId } of boundaries.filter(b => 'onError' in b)) {
       if (errorBoundaryId && expected.includes(errorBoundaryId)) {
         expect(onError).toHaveBeenCalledWith({

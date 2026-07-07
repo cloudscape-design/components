@@ -6,7 +6,7 @@ const useLiveRegionOverAriaLive = require('../prefer-live-region');
 const ruleTester = new RuleTester({ languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } });
 
 ruleTester.run('no-aria-live', useLiveRegionOverAriaLive, {
-  valid: ['<div></div>'],
+  valid: ['<div></div>', '<div aria-live="off"></div>'],
 
   invalid: [
     {

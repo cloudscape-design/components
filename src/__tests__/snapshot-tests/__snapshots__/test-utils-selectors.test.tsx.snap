@@ -2,6 +2,13 @@
 
 exports[`test-utils selectors 1`] = `
 {
+  "action-card": [
+    "awsui_body_1qivf",
+    "awsui_description_1qivf",
+    "awsui_header_1qivf",
+    "awsui_icon_1qivf",
+    "awsui_root_16248",
+  ],
   "alert": [
     "awsui_action-button_mx3cw",
     "awsui_action-slot_mx3cw",
@@ -92,6 +99,7 @@ exports[`test-utils selectors 1`] = `
   "button-dropdown": [
     "awsui_button-dropdown_sne0l",
     "awsui_description_sne0l",
+    "awsui_disabled_93a1u",
     "awsui_dropdown-trigger_sne0l",
     "awsui_expandable_16mm3",
     "awsui_highlighted_93a1u",
@@ -147,6 +155,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_content-before_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
+    "awsui_content-display-group-children_tc96w",
+    "awsui_content-display-group-header_tc96w",
     "awsui_content-display-no-match_tc96w",
     "awsui_content-display-option-content_tc96w",
     "awsui_content-display-option-label_tc96w",
@@ -243,12 +253,26 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "divider": [
+    "awsui_divider-label_1noo2",
+    "awsui_divider_1noo2",
+  ],
   "drawer": [
-    "awsui_drawer_1sxt8",
+    "awsui_backdrop_1sr4m",
+    "awsui_close-action_1sr4m",
     "awsui_footer_1sxt8",
     "awsui_header-actions_1sxt8",
     "awsui_header_1sxt8",
+    "awsui_root_1sr4m",
     "awsui_test-utils-drawer-content_1sxt8",
+  ],
+  "dropdown": [
+    "awsui_dropdown-content_9duf6",
+    "awsui_dropdown_9duf6",
+    "awsui_footer_1hezk",
+    "awsui_header_1hezk",
+    "awsui_root_9duf6",
+    "awsui_trigger_1hezk",
   ],
   "error-boundary": [
     "awsui_action_11u4a",
@@ -312,7 +336,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_secondary-actions_1i0s3",
   ],
   "form-field": [
+    "awsui_character-count_6mjrv",
     "awsui_constraint_14mhv",
+    "awsui_constraint_6mjrv",
     "awsui_control_14mhv",
     "awsui_description_14mhv",
     "awsui_error_14mhv",
@@ -375,7 +401,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_direction-button-inline-start_8k1rt",
     "awsui_direction-button-visible_8k1rt",
     "awsui_disabled_15o6u",
-    "awsui_dropdown_qwoo0",
     "awsui_expand-toggle_1xe88",
     "awsui_filter-container_z5mul",
     "awsui_filtering-match-highlight_1p2cx",
@@ -400,12 +425,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_recovery_vrgzu",
     "awsui_root_11n0s",
     "awsui_root_15oj2",
+    "awsui_root_1b522",
     "awsui_root_1fcus",
     "awsui_root_1kjc7",
     "awsui_root_1om0h",
     "awsui_root_1qprf",
     "awsui_root_1t44z",
-    "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_screenreader-content_15o6u",
     "awsui_secondary_x6dl3",
@@ -419,6 +444,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_toggle_gfwv3",
     "awsui_value_10ipo",
     "awsui_wrapper_1wepg",
+  ],
+  "item-card": [
+    "awsui_body_14an4",
+    "awsui_description_14an4",
+    "awsui_footer_14an4",
+    "awsui_header_14an4",
+    "awsui_icon_14an4",
+    "awsui_root_n1fwt",
   ],
   "key-value-pairs": [
     "awsui_detail_1y9fy",
@@ -462,6 +495,8 @@ exports[`test-utils selectors 1`] = `
   "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
+    "awsui_jump-to-page-input_fvjdu",
+    "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
   ],
@@ -498,6 +533,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "prompt-input": [
     "awsui_action-button_nr3gs",
+    "awsui_content-editable_nr3gs",
     "awsui_primary-action_nr3gs",
     "awsui_root_nr3gs",
     "awsui_secondary-actions_nr3gs",
@@ -531,8 +567,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_token-editor-token-remove-actions_1heb1",
   ],
   "radio-group": [
-    "awsui_radio_1mabk",
-    "awsui_root_1mabk",
     "awsui_root_1np5w",
   ],
   "s3-resource-selector": [
@@ -573,6 +607,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_section-group-title_l0dv0",
     "awsui_section-group_l0dv0",
     "awsui_section_l0dv0",
+  ],
+  "skeleton": [
+    "awsui_root_1qq5l",
   ],
   "slider": [
     "awsui_root_pcgz5",
@@ -685,6 +722,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1u26h",
   ],
   "top-navigation": [
+    "awsui_custom-content_1oq04",
     "awsui_hidden_k5dlb",
     "awsui_identity_k5dlb",
     "awsui_logo_k5dlb",
@@ -703,6 +741,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_expanded_1js4f",
     "awsui_root_1js4f",
     "awsui_treeitem_1js4f",
+  ],
+  "truncated-text": [
+    "awsui_root_lwmqr",
   ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",
@@ -734,6 +775,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_navigation-link-item_1xupv",
     "awsui_navigation-link-label_1xupv",
     "awsui_navigation-link_1xupv",
+    "awsui_navigation_1xupv",
     "awsui_previous-button_1xupv",
     "awsui_primary-button_1xupv",
     "awsui_root_1xupv",

@@ -53,7 +53,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -63,8 +63,26 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
   @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
+  &.header-cell-group,
+  &.header-cell-grouped,
+  &.header-cell-spans-rows {
+    padding-block: awsui.$space-xxxs;
+    padding-inline: awsui.$space-scaled-xs;
+    border-block-end-color: awsui.$color-border-divider-table-group;
+
+    > .resize-divider.resize-divider {
+      border-inline-start-color: awsui.$color-border-divider-table-group;
+    }
+  }
+
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+
+    &.header-cell-group,
+    &.header-cell-grouped,
+    &.header-cell-spans-rows {
+      border-block-end-color: awsui.$color-border-divider-table-group;
+    }
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
@@ -80,6 +98,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     background: none;
   }
   &:last-child,
+  &[data-rightmost],
   &.header-cell-sortable {
     padding-inline-end: awsui.$space-xs;
   }
@@ -143,6 +162,12 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   padding-inline-end: awsui.$space-s;
   @include cell-offset(awsui.$space-s);
 
+  .header-cell-group > &,
+  .header-cell-grouped > &,
+  .header-cell-spans-rows > & {
+    padding-block: awsui.$space-xxxs;
+  }
+
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
@@ -156,6 +181,26 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   .header-cell-disabled.header-cell-sorted > & {
     & > .sorting-icon {
       color: awsui.$color-text-interactive-disabled;
+    }
+  }
+}
+
+.header-cell-spans-rows {
+  block-size: 100%;
+  vertical-align: bottom;
+
+  > .header-cell-content {
+    block-size: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    // stylelint-disable-next-line no-descending-specificity
+    > .sorting-icon {
+      inset-block-start: auto;
+      inset-block-end: awsui.$space-scaled-xxs;
+      transform: none;
     }
   }
 }
@@ -206,12 +251,14 @@ settings icon in the pagination slot.
   &:first-child {
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
-  &:first-child > .header-cell-content {
+  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-content {
     @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start) {
+  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+      .header-cell-grouped
+    ) {
     @include cell-offset(awsui.$space-xxxs);
   }
 
@@ -220,11 +267,12 @@ settings icon in the pagination slot.
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start) {
+  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(.header-cell-grouped) {
     @include cell-offset(awsui.$space-xxs);
   }
 
-  &:last-child.header-cell-sortable:not(.header-cell-resizable) {
+  &:last-child.header-cell-sortable:not(.header-cell-resizable),
+  &[data-rightmost].header-cell-sortable:not(.header-cell-resizable) {
     padding-inline-end: awsui.$space-xxxs;
   }
 

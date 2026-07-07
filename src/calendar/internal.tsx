@@ -26,6 +26,8 @@ import { getBaseMonth } from './utils/navigation-month';
 
 import styles from './styles.css.js';
 
+type InternalCalendarProps = CalendarProps & InternalBaseComponentProps & { referrerId?: string };
+
 export default function Calendar({
   value,
   locale = '',
@@ -39,11 +41,12 @@ export default function Calendar({
   __internalRootRef,
   i18nStrings,
   granularity = 'day',
+  referrerId,
   previousMonthAriaLabel,
   nextMonthAriaLabel,
   todayAriaLabel,
   ...rest
-}: CalendarProps & InternalBaseComponentProps) {
+}: InternalCalendarProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const baseProps = getBaseProps(rest);
@@ -188,6 +191,7 @@ export default function Calendar({
             renderDateAnnouncement={renderDateAnnouncement}
             isSameDate={isSameDate}
             onGridKeyDownHandler={onGridKeyDownHandler}
+            referrerId={referrerId}
           />
         </div>
       </div>

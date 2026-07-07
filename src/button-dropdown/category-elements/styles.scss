@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming';
 
 .header {
   position: relative;
@@ -15,7 +16,7 @@
   border-inline: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
   border-inline-width: 0;
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +34,7 @@
   &.no-content-styling {
     padding-block: calc((#{awsui.$border-item-width} - #{awsui.$border-divider-list-width}));
     padding-inline: awsui.$border-item-width;
-    font-weight: normal;
+    font-weight: styles.$font-weight-normal;
     color: inherit;
   }
 
@@ -119,6 +120,11 @@
   inline-size: awsui.$space-m;
   display: inline-block;
   margin-inline-start: auto;
+
+  @include theming.one-theme-only {
+    inset-inline-end: calc(-1 * #{awsui.$space-xs});
+    inline-size: awsui.$space-s;
+  }
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;

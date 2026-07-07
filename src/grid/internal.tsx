@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 import clsx, { ClassValue } from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
+import { matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
+import { flattenChildren } from '../internal/utils/flatten-children';
+import { Breakpoint } from '../types/breakpoint';
 import { GridProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -53,7 +54,7 @@ const InternalGrid = React.forwardRef(
     /*
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
-    const flattenedChildren = flattenChildren(children);
+    const flattenedChildren = flattenChildren(children, 'Grid');
     const Tag = (__tagOverride ?? 'div') as 'div';
 
     if (isDevelopment) {
@@ -82,7 +83,7 @@ const InternalGrid = React.forwardRef(
       >
         {flattenedChildren.map((child, i) => {
           // If this react child is a primitive value, the key will be undefined
-          const key = (child as Record<'key', unknown>).key;
+          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
           return (
             <div

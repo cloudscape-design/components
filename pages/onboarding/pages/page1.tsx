@@ -14,8 +14,8 @@ import {
   SelectProps,
   SpaceBetween,
 } from '~components';
-import { CancelableEventHandler } from '~components/internal/events';
 import Link from '~components/link';
+import { CancelableEventHandler } from '~components/types/events';
 
 const availableRegions = [
   { label: 'US East (N. Virginia) us-east-1', value: '1' },

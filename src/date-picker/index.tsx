@@ -11,11 +11,11 @@ import { InternalButton } from '../button/internal';
 import InternalCalendar from '../calendar/internal';
 import { useFormFieldContext } from '../contexts/form-field.js';
 import InternalDateInput from '../date-input/internal';
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
 import { useLocale } from '../i18n/context.js';
 import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
-import Dropdown from '../internal/components/dropdown';
 import FocusLock from '../internal/components/focus-lock';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -180,20 +180,24 @@ const DatePicker = React.forwardRef(
 
     baseProps.className = clsx(baseProps.className, styles.root, styles['date-picker-container']);
 
+    const referrerId = useUniqueId();
+
     return (
       <div {...baseProps} ref={mergedRef} onKeyDown={!disabled && !readOnly ? onWrapperKeyDownHandler : undefined}>
         {disabled || readOnly ? (
           trigger
         ) : (
           <Dropdown
-            stretchWidth={true}
+            minWidth="trigger"
+            maxWidth="trigger"
             stretchHeight={true}
             open={isDropDownOpen}
-            onDropdownClose={onDropdownCloseHandler}
+            onOutsideClick={onDropdownCloseHandler}
             trigger={trigger}
             expandToViewport={expandToViewport}
             scrollable={false}
             dropdownId={dropdownId}
+            triggerId={referrerId}
             content={
               isDropDownOpen ? (
                 <FocusLock className={styles['focus-lock']} autoFocus={true}>
@@ -219,6 +223,7 @@ const DatePicker = React.forwardRef(
                         nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
                         previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                       }}
+                      referrerId={referrerId}
                     />
                     <InternalLiveRegion id={calendarDescriptionId} hidden={true} tagName="span">
                       {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}

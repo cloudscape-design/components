@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ChartSeriesMarkerType } from '../internal/components/chart-series-marker';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { InternalChartSeries } from './internal-interfaces';
 import { ScaledBarGroup } from './make-scaled-bar-groups';
 
 export const chartLegendMap: Record<string, ChartSeriesMarkerType> = {
@@ -100,13 +101,15 @@ export const getKeyValue = (key: ChartDataTypes) => (key instanceof Date ? key.g
 export function isYThreshold<T>(
   series: MixedLineBarChartProps.ChartSeries<T>
 ): series is MixedLineBarChartProps.YThresholdSeries {
-  return series.type === 'threshold' && 'y' in series;
+  const key: keyof MixedLineBarChartProps.YThresholdSeries = 'y';
+  return series.type === 'threshold' && key in series;
 }
 
 export function isXThreshold<T>(
   series: MixedLineBarChartProps.ChartSeries<T>
 ): series is MixedLineBarChartProps.XThresholdSeries<T> {
-  return series.type === 'threshold' && 'x' in series;
+  const key: keyof MixedLineBarChartProps.XThresholdSeries<T> = 'x';
+  return series.type === 'threshold' && key in series;
 }
 
 export function isDataSeries<T>(

@@ -3,13 +3,14 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
+import { NonCancelableEventHandler } from '../../types/events';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -87,13 +88,15 @@ function mapRuntimeHeaderActionsToHeaderActions(
   return runtimeHeaderActions.map(runtimeHeaderAction => {
     return {
       ...runtimeHeaderAction,
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
       ...('iconSvg' in runtimeHeaderAction &&
         runtimeHeaderAction.iconSvg && {
           iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.iconSvg),
         }),
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
       ...('pressedIconSvg' in runtimeHeaderAction &&
         runtimeHeaderAction.pressedIconSvg && {
-          iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),
+          pressedIconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),
         }),
     };
   });

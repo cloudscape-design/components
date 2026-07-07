@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Column preferences",
     "contentDisplayPreference.description": "Customise the visibility and order of the columns.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",
-    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordering cancelled",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter columns",
@@ -158,14 +158,18 @@
     "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
+    "i18nStrings.datePlaceholder": "DD/MM/YYYY",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
-    "i18nStrings.isoDateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
+    "i18nStrings.isoDateTimeConstraintText": "For date, use DD-MM-YYYY. For time, use 24-hr format.",
     "i18nStrings.slashedDateConstraintText": "For date, use DD/MM/YYYY.",
-    "i18nStrings.isoDateConstraintText": "For date, use DD/MM/YYYY.",
+    "i18nStrings.isoDateConstraintText": "For date, use DD-MM-YYYY.",
     "i18nStrings.slashedMonthConstraintText": "For month, use MM/YYYY.",
-    "i18nStrings.isoMonthConstraintText": "For month, use MM/YYYY.",
+    "i18nStrings.isoMonthConstraintText": "For month, use MM-YYYY.",
     "i18nStrings.monthConstraintText": "For month, use YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
@@ -179,6 +183,14 @@
     "i18nStrings.headerText": "Unexpected error, content failed to show",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.} other {Refresh to try again.}}",
     "i18nStrings.refreshActionText": "Refresh page"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Latest feature releases",
+    "i18nStrings.viewAll": "View all feature releases",
+    "ariaLabels.closeButton": "Close notifications",
+    "ariaLabels.content": "Feature notifications",
+    "ariaLabels.triggerButton": "Show feature notifications",
+    "ariaLabels.resizeHandle": "Resize feature notifications"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",
@@ -243,7 +255,8 @@
     "ariaLabels.previousPageLabel": "Previous page",
     "ariaLabels.jumpToPageButtonLabel": "Jump to page",
     "i18nStrings.jumpToPageInputLabel": "Page",
-    "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page."
+    "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page.",
+    "i18nStrings.jumpToPageLoadingText": "Loading"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
@@ -257,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Close pop-over"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Submit prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Error",
+    "i18nStrings.menuRecoveryText": "Retry",
+    "i18nStrings.menuLoadingText": "Loading items",
+    "i18nStrings.menuFinishedText": "End of results",
+    "i18nStrings.menuErrorText": "Error fetching items",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selected",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserted",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} pinned",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} removed"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "All properties",

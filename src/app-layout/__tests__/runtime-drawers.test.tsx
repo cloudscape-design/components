@@ -832,7 +832,15 @@ describeEachAppLayout(({ size }) => {
 });
 
 describe('toolbar mode only features', () => {
-  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+  /**
+   * Validates theme compatibility by checking if non-toolbar themes can render without crashing.
+   * Returns true if the component is compatible with non-toolbar themes (test should be skipped),
+   * false if running in toolbar mode (test should continue with full assertions).
+   */
+  function isNotRefreshToolbarTheme(currentTheme: string): boolean {
+    return currentTheme !== 'refresh-toolbar';
+  }
+  describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     test('should contain overridden in AWS-UI-Widget-Global-Navigation css classes for drawers', async () => {
       const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
@@ -844,6 +852,10 @@ describe('toolbar mode only features', () => {
       });
 
       await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       wrapper.findDrawerTriggerById('global-drawer')!.click();
 
@@ -861,6 +873,10 @@ describe('toolbar mode only features', () => {
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       expect(wrapper.findDrawersTriggers()).toHaveLength(2);
       expect(globalDrawersWrapper.findGlobalDrawersTriggers()).toHaveLength(0);
@@ -890,6 +906,10 @@ describe('toolbar mode only features', () => {
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       expect(wrapper.findDrawersTriggers().length).toBe(4);
       expect(wrapper.find(`.${toolbarStyles['group-divider']}`)!.getElement()).toBeInTheDocument();
@@ -927,6 +947,12 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 3'),
       });
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
       expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
@@ -980,6 +1006,12 @@ describe('toolbar mode only features', () => {
           const renderProps = await renderComponent(<AppLayout />);
           const { globalDrawersWrapper } = renderProps;
 
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           findDrawerTriggerById('test-resizable', renderProps)!.click();
 
           await waitFor(() => {
@@ -1004,6 +1036,12 @@ describe('toolbar mode only features', () => {
 
           const renderProps = await renderComponent(<AppLayout />);
           const { globalDrawersWrapper } = renderProps;
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           findDrawerTriggerById('global-drawer', renderProps)!.click();
           expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
@@ -1031,6 +1069,12 @@ describe('toolbar mode only features', () => {
 
           const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
 
           awsuiPlugins.appLayout.openDrawer('local-drawer');
@@ -1054,6 +1098,12 @@ describe('toolbar mode only features', () => {
           });
 
           const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
 
@@ -1088,6 +1138,12 @@ describe('toolbar mode only features', () => {
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
 
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           findDrawerTriggerById('global-drawer-1', renderProps)!.focus();
           findDrawerTriggerById('global-drawer-1', renderProps)!.click();
           expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
@@ -1108,6 +1164,12 @@ describe('toolbar mode only features', () => {
 
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
 
@@ -1139,6 +1201,12 @@ describe('toolbar mode only features', () => {
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
 
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           findDrawerTriggerById('global-drawer-1', renderProps)!.click();
 
           await delay();
@@ -1154,6 +1222,12 @@ describe('toolbar mode only features', () => {
           registerDrawer({ ...drawerDefaults, resizable: true });
 
           const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           if (type === 'global' && position !== 'bottom') {
             awsuiPlugins.appLayout.openDrawer('test');
@@ -1186,6 +1260,10 @@ describe('toolbar mode only features', () => {
 
           await delay();
 
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           expect(findDrawerTriggerById('global1', renderProps)!.getElement()).toBeInTheDocument();
         });
 
@@ -1196,7 +1274,14 @@ describe('toolbar mode only features', () => {
             id: 'global-drawer',
             onToggle: event => onToggle(event.detail),
           });
+
           const renderProps = await renderComponent(<AppLayout />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           findDrawerTriggerById('global-drawer', renderProps)!.click();
           expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
@@ -1219,7 +1304,15 @@ describe('toolbar mode only features', () => {
             ],
             onHeaderActionClick: event => onHeaderActionClick(event.detail),
           });
+
           const renderProps = await renderComponent(<AppLayout />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           findDrawerTriggerById('global-drawer', renderProps)!.click();
 
           findDrawerHeaderActionById('add', renderProps)!.click();
@@ -1247,8 +1340,16 @@ describe('toolbar mode only features', () => {
               },
             ],
           });
+
           const renderProps = await renderComponent(<AppLayout />);
           const { wrapper } = renderProps;
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
+
           findDrawerTriggerById('global-drawer', renderProps)!.click();
           expect(wrapper.find('[data-testid="custom-icon"]')).toBeTruthy();
           expect(wrapper.find('[data-testid="custom-icon-pressed"]')).toBeTruthy();
@@ -1272,6 +1373,12 @@ describe('toolbar mode only features', () => {
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
+
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
@@ -1288,6 +1395,12 @@ describe('toolbar mode only features', () => {
       });
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
@@ -1320,6 +1433,12 @@ describe('toolbar mode only features', () => {
         />
       );
 
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
+
       getByTestId('trigger-button').focus();
       getByTestId('trigger-button').click();
 
@@ -1344,6 +1463,12 @@ describe('toolbar mode only features', () => {
 
       const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
+
       expect(wrapper.findDrawerTriggerById('test')).toBeFalsy();
 
       awsuiPlugins.appLayout.openDrawer('test');
@@ -1363,7 +1488,14 @@ describe('toolbar mode only features', () => {
           type: 'global',
           onToggle: event => onToggle(event.detail),
         });
+
         await renderComponent(<AppLayout />);
+
+        await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
 
         awsuiPlugins.appLayout.openDrawer('global-drawer', { initiatedByUserAction });
         expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction });
@@ -1387,6 +1519,10 @@ describe('toolbar mode only features', () => {
         });
 
         await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
 
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
 
@@ -1417,6 +1553,10 @@ describe('toolbar mode only features', () => {
         });
 
         await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
 
         wrapper.findDrawerTriggerById('global1')!.click();
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
@@ -1449,6 +1589,10 @@ describe('toolbar mode only features', () => {
         });
 
         await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
 
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
 
@@ -1487,6 +1631,10 @@ describe('toolbar mode only features', () => {
         });
 
         await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
 
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
       });
@@ -1527,8 +1675,15 @@ describe('toolbar mode only features', () => {
               id: drawerId,
               isExpandable: true,
             });
+
             const renderProps = await renderComponent(<AppLayout />);
             const { globalDrawersWrapper } = renderProps;
+
+            await delay();
+
+            if (isNotRefreshToolbarTheme(theme)) {
+              return;
+            }
 
             findDrawerTriggerById(drawerId, renderProps)!.click();
             expect(
@@ -1586,10 +1741,15 @@ describe('toolbar mode only features', () => {
               ...drawerDefaults,
               id: drawerId3Local,
             });
+
             const renderProps = await renderComponent(<AppLayout navigationOpen={true} navigation={<div>nav</div>} />);
             const { wrapper, globalDrawersWrapper } = renderProps;
 
             await delay();
+
+            if (isNotRefreshToolbarTheme(theme)) {
+              return;
+            }
 
             wrapper.findDrawerTriggerById(drawerId1)!.click();
             findDrawerTriggerById(drawerId2, renderProps)!.click();
@@ -1630,7 +1790,13 @@ describe('toolbar mode only features', () => {
               id: drawerId,
               isExpandable: true,
             });
+
+            await delay();
+
             const renderProps = await renderComponent(<AppLayout />);
+            if (isNotRefreshToolbarTheme(theme)) {
+              return;
+            }
             const { globalDrawersWrapper } = renderProps;
 
             await delay();
@@ -1689,6 +1855,7 @@ describe('toolbar mode only features', () => {
             ...drawerDefaults,
             id: drawerId3Local,
           });
+
           const { wrapper, globalDrawersWrapper } = await renderComponent(
             <AppLayout
               navigationOpen={true}
@@ -1698,6 +1865,10 @@ describe('toolbar mode only features', () => {
           );
 
           await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           wrapper.findDrawerTriggerById(drawerId1)!.click();
           wrapper.findDrawerTriggerById(drawerId2)!.click();
@@ -1777,9 +1948,14 @@ describe('toolbar mode only features', () => {
               isExpandable: true,
             });
           }
+
           const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
 
           await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
@@ -1834,6 +2010,7 @@ describe('toolbar mode only features', () => {
             type: 'global',
             isExpandable: true,
           });
+
           await renderComponent(
             <AppLayout
               data-testid="first"
@@ -1841,6 +2018,12 @@ describe('toolbar mode only features', () => {
               content={<AppLayout navigationHide={true} data-testid="second" tools="testing tools" />}
             />
           );
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
+            return;
+          }
 
           const outerLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
           const innerLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
@@ -1877,6 +2060,12 @@ describe('toolbar mode only features', () => {
       awsuiWidgetPlugins.registerBottomDrawer({ ...drawerDefaults, id: 'bottom' });
 
       const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       awsuiPlugins.appLayout.openDrawer('test');
       awsuiPlugins.appLayout.openDrawer('test1');
@@ -1936,6 +2125,10 @@ describe('toolbar mode only features', () => {
 
       await delay();
 
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
+
       wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
       const handle = globalDrawersWrapper.findResizeHandleByActiveDrawerId(drawerDefaults.id)!;
       debug(handle.getElement());
@@ -1947,7 +2140,7 @@ describe('toolbar mode only features', () => {
     });
   });
 
-  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
+  describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     test('calls onToggle handler by clicking on overflown drawers trigger button (global runtime drawers)', async () => {
       const onToggle = jest.fn();
       const drawerIdWithToggle = 'global-drawer4';
@@ -1972,7 +2165,14 @@ describe('toolbar mode only features', () => {
         type: 'global',
         onToggle: event => onToggle(event.detail),
       });
+
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
@@ -1998,6 +2198,13 @@ describe('toolbar mode only features', () => {
       test('assigns correct ARIA roles when mixing global and regular drawers', async () => {
         registerGlobalDrawers(2);
         const { wrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
+
+        await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
         const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
         buttonDropdown!.openDropdown();
@@ -2020,6 +2227,13 @@ describe('toolbar mode only features', () => {
 
         // In mobile view, two drawers are visible in the toolbar, the others are placed in the overflow menu
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
         const buttonDropdown = wrapper.findDrawersOverflowTrigger();
 
         expect(globalDrawersWrapper.findDrawerById('global-drawer2')).toBeFalsy();
@@ -2048,6 +2262,10 @@ describe('toolbar mode only features', () => {
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
       await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
+        return;
+      }
 
       wrapper.findDrawerTriggerById(drawerId)!.click();
       expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();

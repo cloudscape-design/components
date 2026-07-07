@@ -59,6 +59,7 @@ export interface GroupDefinition {
 }
 
 export function isGroupRow(row: TransactionRow): row is TransactionRowGroup {
+  // eslint-disable-next-line no-restricted-syntax -- Union type discrimination for TransactionRow
   return 'children' in row;
 }
 

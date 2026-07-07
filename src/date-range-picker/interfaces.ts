@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { CalendarProps } from '../calendar/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { DateFormat, EditableDateFormat } from '../internal/utils/date-time/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
 import { TimeInputProps } from '../time-input/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { DateFormat, EditableDateFormat } from '../types/date-time';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 
 export interface DateRangePickerBaseProps {
   /**
@@ -208,6 +208,26 @@ export interface DateRangePickerProps
    * Defaults to `false`.
    */
   hideTimeOffset?: boolean;
+
+  /**
+   * Adds `aria-label` to the trigger and dropdown.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Specifies whether to start with the previous or current period (month or year)
+   * when multiple calendar grids are displayed in absolute mode.
+   *
+   * Defaults to 'auto', which starts with previous if no date is selected,
+   * or current if a selection is present.
+   */
+  absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
+
+  /**
+   * Specifies custom content to fully override the trigger content.
+   * When provided, the default content of the trigger is replaced.
+   */
+  renderTriggerContent?: DateRangePickerProps.RenderTriggerContent;
 }
 
 export namespace DateRangePickerProps {
@@ -298,6 +318,8 @@ export namespace DateRangePickerProps {
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
 
+  export type RenderTriggerContent = (props: { formattedDate: JSX.Element }) => React.ReactNode;
+
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 
   export interface Ref {
@@ -310,16 +332,19 @@ export namespace DateRangePickerProps {
   export interface I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
+     * @deprecated Use `ariaLabel` on the component instead.
      */
     ariaLabel?: string;
 
     /**
      * Adds `aria-labelledby` to the trigger and dropdown.
+     * @deprecated Use `ariaLabelledby` on the component instead.
      */
     ariaLabelledby?: string;
 
     /**
      * Adds `aria-describedby` to the trigger and dropdown.
+     * @deprecated Use `ariaDescribedby` on the component instead.
      */
     ariaDescribedby?: string;
 
@@ -570,6 +595,30 @@ export namespace DateRangePickerProps {
      * @i18n
      */
     previousYearAriaLabel?: string;
+
+    /**
+     * Placeholder text for date inputs in absolute mode with 'iso' format (dashes).
+     * Should match the expected date format (for example "YYYY-MM-DD", "JJJJ-MM-TT" for German).
+     * Used for both start and end date inputs.
+     * @i18n
+     */
+    isoDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for date inputs in absolute mode with 'slashed' format (slashes).
+     * Should match the expected date format (for example "YYYY/MM/DD", "JJJJ/MM/TT" for German).
+     * Used for both start and end date inputs.
+     * @i18n
+     */
+    slashedDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for time inputs in absolute mode.
+     * Should match the expected time format (for example "hh:mm:ss", "HH:MM:SS").
+     * Used for both start and end time inputs.
+     * @i18n
+     */
+    timePlaceholder?: string;
   }
 
   export type AbsoluteFormat = DateFormat;
@@ -577,6 +626,8 @@ export namespace DateRangePickerProps {
   export type DateInputFormat = EditableDateFormat | undefined;
 
   export type TimeInputFormat = TimeInputProps.Format;
+
+  export type StartPeriod = 'previous' | 'current' | 'auto';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import Calendar from '~components/calendar';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import i18nStrings from './i18n-strings';
 
@@ -12,10 +12,11 @@ export default function CalendarPage() {
     <article>
       <h1>Calendar page for a11y tests</h1>
       <Dropdown
-        stretchWidth={true}
+        minWidth="trigger"
+        maxWidth="trigger"
         stretchHeight={true}
         open={true}
-        onDropdownClose={() => {}}
+        onOutsideClick={() => {}}
         onMouseDown={() => {}}
         trigger={null}
         content={

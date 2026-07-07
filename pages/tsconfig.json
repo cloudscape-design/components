@@ -19,5 +19,6 @@
     },
     "types": ["node", "webpack-env"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "./mount.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "./mount.d.ts"],
+  "exclude": ["icon-provider/custom-icons"]
 }

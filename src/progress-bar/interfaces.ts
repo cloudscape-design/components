@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface ProgressBarProps extends BaseComponentProps {
   /**
@@ -84,6 +84,8 @@ export interface ProgressBarProps extends BaseComponentProps {
   onResultButtonClick?: NonCancelableEventHandler;
 
   /**
+   * An object containing CSS properties to customize the progress bar's visual appearance.
+   * Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ProgressBarProps.Style;

@@ -24,7 +24,7 @@ export interface ChartPopoverProps extends PopoverProps {
   getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
-    
+
     const trackRef = useRef<Element>(null)
     return (<>
       <Track style={getPosition(selectedItemId)} ref={trackRef} />
@@ -33,6 +33,9 @@ export interface ChartPopoverProps extends PopoverProps {
   */
   trackKey?: string | number;
   minVisibleBlockSize?: number;
+
+  /** Optional element to clamp the popover trigger position within its bounds */
+  triggerClampRef?: React.RefObject<HTMLElement>;
 
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
@@ -53,6 +56,9 @@ export interface ChartPopoverProps extends PopoverProps {
 
   /** Popover footer */
   footer?: React.ReactNode;
+
+  /** Prevents dismiss button auto-focus */
+  disableDismissAutoFocus?: boolean;
 }
 
 export default React.forwardRef(ChartPopover);
@@ -64,6 +70,7 @@ function ChartPopover(
     fixedWidth = false,
     dismissButton = false,
     dismissAriaLabel,
+    disableDismissAutoFocus,
 
     children,
     footer,
@@ -74,6 +81,7 @@ function ChartPopover(
     trackKey,
     onDismiss,
     container,
+    triggerClampRef,
     minVisibleBlockSize,
 
     onMouseEnter,
@@ -137,6 +145,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
+        triggerClampRef={triggerClampRef}
         minVisibleBlockSize={minVisibleBlockSize}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
@@ -152,8 +161,9 @@ function ChartPopover(
         <PopoverBody
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
+          disableDismissAutoFocus={disableDismissAutoFocus}
           header={<span className={testClasses.header}>{title}</span>}
-          onDismiss={onDismiss}
+          onDismiss={() => onDismiss()}
           overflowVisible="content"
           className={styles['popover-body']}
           variant="chart"

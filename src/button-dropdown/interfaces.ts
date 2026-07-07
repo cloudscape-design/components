@@ -2,18 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
-import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
-
 import { ButtonProps } from '../button/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -29,6 +26,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
+   * - `dataAttributes` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
    *
    * ### action
    *
@@ -102,8 +100,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
    *
    * When returning `null`, the default styling will be applied.
-   *
-   * @awsuiSystem core
    */
   renderItem?: ButtonDropdownProps.ItemRenderer;
 
@@ -132,6 +128,28 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * * `inline-icon` for icon buttons with no outer padding
    */
   variant?: ButtonDropdownProps.Variant;
+  /**
+   * Specifies the name of the icon used in the button dropdown trigger, used with the [icon component](/components/icon/).
+   * Defaults to `ellipsis`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconName?: IconProps.Name;
+  /**
+   * Specifies alternate text for a custom icon, for use with `iconUrl`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconAlt?: string;
+  /**
+   * Specifies the URL of a custom icon. Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconUrl?: string;
+  /**
+   * Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconSvg?: React.ReactNode;
   /**
    * Controls expandability of the item groups.
    */
@@ -282,6 +300,7 @@ export namespace ButtonDropdownProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     labelTag?: string;
+    dataAttributes?: Record<string, string>;
   }
 
   export interface CheckboxItem
@@ -340,125 +359,8 @@ export type ItemActivate = (
   event: React.MouseEvent | React.KeyboardEvent
 ) => void;
 
-export interface CategoryProps extends HighlightProps {
-  index?: number;
-  item: ButtonDropdownProps.ItemGroup;
-  onGroupToggle: GroupToggle;
-  onItemActivate: ItemActivate;
-  disabled: boolean;
-  lastInDropdown: boolean;
-  expandToViewport?: boolean;
-  variant?: ItemListProps['variant'];
-  position?: string;
-  renderItem?: ButtonDropdownProps.ItemRenderer;
-}
-
-export interface ItemListProps extends HighlightProps {
-  items: ButtonDropdownProps.Items;
-  onGroupToggle: GroupToggle;
-  onItemActivate: ItemActivate;
-  categoryDisabled?: boolean;
-  hasExpandableGroups?: boolean;
-  hasCategoryHeader?: boolean;
-  lastInDropdown: boolean;
-  expandToViewport?: boolean;
-  variant?: InternalButtonDropdownProps['variant'];
-  position?: string;
-  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
-  linkStyle?: boolean;
-  renderItem?: ButtonDropdownProps.ItemRenderer;
-  parentProps?: ButtonDropdownProps.GroupRenderItem;
-}
-
 export interface LinkItem extends ButtonDropdownProps.Item {
   href: string;
-}
-
-export interface ItemProps {
-  index?: number;
-  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem | LinkItem;
-  disabled: boolean;
-  highlighted: boolean;
-  onItemActivate: ItemActivate;
-  highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
-  showDivider: boolean;
-  hasCategoryHeader: boolean;
-  isKeyboardHighlighted?: boolean;
-  variant?: ItemListProps['variant'];
-  position?: string;
-  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
-  linkStyle?: boolean;
-  renderItem?: ButtonDropdownProps.ItemRenderer;
-  parentProps?: ButtonDropdownProps.GroupRenderItem;
-}
-
-export interface InternalItem extends ButtonDropdownProps.Item {
-  badge?: boolean;
-  /**
-   * Used in breadcrumb-group: indicates that this breadcrumb item is the current page
-   */
-  isCurrentBreadcrumb?: boolean;
-}
-
-export interface InternalCheckboxItem extends ButtonDropdownProps.CheckboxItem {
-  badge?: boolean;
-}
-
-interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
-  items: InternalItems;
-}
-
-type InternalItems = ReadonlyArray<InternalItemOrGroup>;
-
-export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
-
-export interface InternalButtonDropdownProps
-  extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
-    InternalBaseComponentProps {
-  customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
-  variant?: ButtonDropdownProps['variant'] | 'navigation';
-  items: ReadonlyArray<InternalItemOrGroup>;
-
-  /**
-   * Optional text that is displayed as the title at the top of the dropdown.
-   */
-  title?: string;
-
-  /**
-   * Optional text that is displayed underneath the title at the top of the dropdown.
-   */
-  description?: string;
-
-  /**
-   * Only show main action button as a regular, non-split button.
-   * That is needed so that button dropdown test utils wrapper can still be used.
-   */
-  showMainActionOnly?: boolean;
-
-  /**
-   * Determines that the dropdown should preferably be aligned to the center of the trigger
-   * instead of dropping left or right.
-   */
-  preferCenter?: boolean;
-
-  /**
-   * Determines whether simple items should be displayed with the link styles.
-   * Used in Breadcrumb group component for collapsed breadcrumbs
-   */
-  linkStyle?: boolean;
-
-  /**
-   * Determines whether the dropdown should take up the full available width.
-   * Used in Breadcrumb group component for collapsed breadcrumbs
-   */
-  fullWidth?: boolean;
-
-  analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
-
-  /**
-   * Position of the button dropdown inside a list of elements, for example a button group
-   */
-  position?: string;
 }
 
 export interface CustomTriggerProps {

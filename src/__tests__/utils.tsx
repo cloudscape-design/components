@@ -19,7 +19,9 @@ export function getAllComponents(): string[] {
         name !== 'test-utils' &&
         name !== 'theming' &&
         name !== 'contexts' &&
+        name !== 'plugins' &&
         name !== 'i18n' &&
+        name !== 'types' &&
         !name.includes('.') &&
         !name.includes('LICENSE') &&
         !name.includes('NOTICE')

@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 import SelectableItem from '../internal/components/selectable-item';
+import { BaseComponentProps } from '../types/base-component';
+import { OptionDefinition, OptionGroup } from '../types/option';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -108,31 +109,10 @@ const AutosuggestOption = (
   ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(rest);
-  const useEntered = 'type' in option && option.type === 'use-entered';
-  const isParent = 'type' in option && option.type === 'parent';
-  const isChild = 'type' in option && option.type === 'child';
+  const useEntered = option?.type === 'use-entered';
+  const isParent = option?.type === 'parent';
+  const isChild = option?.type === 'child';
   const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
-
-  let optionContent;
-  if (useEntered) {
-    optionContent = option.label;
-    // we don't want fancy generated content for screenreader for the "Use..." option,
-    // just the visible text is fine
-    screenReaderContent = undefined;
-  } else if (isParent) {
-    optionContent = option.label;
-  } else {
-    const a11yProperties: AutosuggestOptionProps['nativeAttributes'] = {};
-    if (nativeAttributes['aria-label']) {
-      a11yProperties['aria-label'] = nativeAttributes['aria-label'];
-    }
-
-    optionContent = (
-      <div {...a11yProperties}>
-        <OptionComponent option={option} highlightedOption={highlighted} highlightText={highlightText} />
-      </div>
-    );
-  }
 
   const getAutosuggestItemProps = (option: AutosuggestItem) => {
     if (option.type === 'parent') {
@@ -169,6 +149,32 @@ const AutosuggestOption = (
   };
   const renderResult = renderOptionWrapper(option);
 
+  let optionContent;
+  if (useEntered) {
+    optionContent = renderResult ?? option.label;
+    // we don't want fancy generated content for screenreader for the "Use..." option,
+    // just the visible text is fine
+    screenReaderContent = undefined;
+  } else if (isParent) {
+    optionContent = renderResult ?? option.label;
+  } else {
+    const a11yProperties: AutosuggestOptionProps['nativeAttributes'] = {};
+    if (nativeAttributes['aria-label']) {
+      a11yProperties['aria-label'] = nativeAttributes['aria-label'];
+    }
+
+    optionContent = (
+      <div {...a11yProperties}>
+        <OptionComponent
+          customContent={renderResult}
+          option={option}
+          highlightedOption={highlighted}
+          highlightText={highlightText}
+        />
+      </div>
+    );
+  }
+
   return (
     <SelectableItem
       {...baseProps}
@@ -192,7 +198,7 @@ const AutosuggestOption = (
       highlightType={highlightType.type}
       value={option.value}
     >
-      {!renderResult ? optionContent : renderResult}
+      {optionContent}
     </SelectableItem>
   );
 };

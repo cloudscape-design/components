@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
@@ -36,6 +36,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   })),
   // Disabled dates
   {
@@ -45,6 +46,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Date-only
   {
@@ -54,6 +56,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Custom control
   {
@@ -62,6 +65,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [() => 'Custom control'],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Date input formats
   {
@@ -71,6 +75,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     timeInputFormat: ['hh:mm:ss'] as const,
     dateInputFormat: ['iso', 'slashed'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Time input formats
   {
@@ -79,37 +84,32 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm', 'hh'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
 ]);
 
 export default function DateRangePickerCalendarPage() {
-  let i = -1;
   return (
     <PermutationsPage title="Date range picker permutations: month calendar" i18n={{}}>
       <div style={{ blockSize: `${(1 + permutations.length) * 400}px` }}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => {
-            i++;
-            return (
-              <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
-                <Dropdown
-                  stretchWidth={true}
-                  stretchHeight={true}
-                  stretchToTriggerWidth={false}
-                  open={true}
-                  onDropdownClose={() => {}}
-                  onMouseDown={() => {}}
-                  trigger={null}
-                  content={
-                    <Box padding="m">
-                      <Calendar {...permutation} />
-                    </Box>
-                  }
-                />
-              </div>
-            );
-          }}
+          render={permutation => (
+            <div style={{ blockSize: '400px' }}>
+              <Dropdown
+                stretchHeight={true}
+                open={true}
+                onOutsideClick={() => {}}
+                onMouseDown={() => {}}
+                trigger={null}
+                content={
+                  <Box padding="m">
+                    <Calendar {...permutation} />
+                  </Box>
+                }
+              />
+            </div>
+          )}
         />
       </div>
     </PermutationsPage>

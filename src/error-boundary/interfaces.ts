@@ -3,7 +3,7 @@
 
 import { ErrorInfo } from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface ErrorBoundaryProps extends BaseComponentProps {
   /**
@@ -108,4 +108,9 @@ export interface BuiltInErrorBoundaryProps {
   children: React.ReactNode;
   wrapper?: (content: React.ReactNode) => React.ReactNode;
   suppressNested?: boolean;
+}
+
+export interface AppLayoutBuiltInErrorBoundaryProps extends BuiltInErrorBoundaryProps {
+  renderFallback?: ErrorBoundaryProps['renderFallback'];
+  appLayoutPart?: string;
 }

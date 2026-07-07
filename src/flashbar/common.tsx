@@ -10,7 +10,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { persistFlashbarDismiss, retrieveFlashbarDismiss } from '../internal/persistence';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
-import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import { FOCUS_DEBOUNCE_DELAY } from './utils';
 
 import styles from './styles.css.js';
@@ -81,6 +82,7 @@ export function useFlashbar({
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
+  // eslint-disable-next-line no-restricted-syntax -- Optional property existence check
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);

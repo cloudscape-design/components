@@ -28,6 +28,7 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
   }
   const isSmall = breakpoint === 'default';
   const hasTools = filter || pagination || preferences;
+  const hasRightAlignedTools = !!(pagination || preferences);
   return (
     <>
       {isHeaderString ? <span id={headingId}>{header}</span> : header}
@@ -42,18 +43,20 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
               {filter}
             </div>
           )}
-          <div className={styles['tools-align-right']}>
-            {pagination && (
-              <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('pagination')}>
-                {pagination}
-              </div>
-            )}
-            {preferences && (
-              <div className={styles['tools-preferences']} onClickCapture={() => setLastUserAction?.('preferences')}>
-                {preferences}
-              </div>
-            )}
-          </div>
+          {hasRightAlignedTools && (
+            <div className={styles['tools-align-right']}>
+              {pagination && (
+                <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('pagination')}>
+                  {pagination}
+                </div>
+              )}
+              {preferences && (
+                <div className={styles['tools-preferences']} onClickCapture={() => setLastUserAction?.('preferences')}>
+                  {preferences}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </>

@@ -1,0 +1,17 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
+import { expandColorDictionary } from '../../utils/index.js';
+import { StyleDictionary } from '../../utils/interfaces.js';
+
+const tokens: StyleDictionary.ColorsDictionary = {
+  colorBackgroundLayoutMain: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutPanelContent: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutToolbar: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
+  colorGapGlobalDrawer: { light: '{colorNeutral250}', dark: '{colorNeutral1000}' },
+};
+
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
+
+export { expandedTokens as tokens };

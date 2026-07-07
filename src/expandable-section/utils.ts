@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { InternalVariant } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 
 const variantIsOneOf = (variant: InternalVariant, oneOf: InternalVariant[]) => oneOf.includes(variant);
 

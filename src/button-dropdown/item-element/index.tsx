@@ -8,12 +8,14 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useDropdownContext } from '../../dropdown/context';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
-import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { getDataAttributes } from '../../internal/utils/data-attributes';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ButtonDropdownProps, InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
+import { ButtonDropdownProps, LinkItem } from '../interfaces';
+import { InternalCheckboxItem, InternalItem, ItemProps } from '../internal-interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -73,6 +75,7 @@ const ItemElement = ({
       role="presentation"
       data-testid={item.id}
       data-description={item.description}
+      {...getDataAttributes(item.dataAttributes, ['testid'])}
       onClick={onClick}
       onMouseEnter={onHover}
       onTouchStart={onHover}
@@ -231,7 +234,7 @@ const MenuItemContent = ({
       <div className={styles['content-wrapper']}>
         <div className={styles['main-row']}>
           <div>
-            {item.text}
+            <span>{item.text}</span>
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
           {item.labelTag && (

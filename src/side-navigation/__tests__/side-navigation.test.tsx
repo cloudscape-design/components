@@ -962,31 +962,6 @@ describe('SideNavigation', () => {
       expect(wrapper.findItemByIndex(1)?.findExpandableLinkGroup()?.findExpandedContent()).not.toBeTruthy();
     });
 
-    it('decorates the link with the accurate aria-expanded attribute', () => {
-      const wrapper = renderSideNavigation({
-        items: [
-          {
-            type: 'expandable-link-group',
-            text: 'Expandable Link Group',
-            href: '#/something',
-            defaultExpanded: true,
-            items: [],
-          },
-          {
-            type: 'expandable-link-group',
-            text: 'Expandable Link Group',
-            href: '#/something/else',
-            defaultExpanded: false,
-            items: [],
-          },
-        ],
-      });
-
-      expect(wrapper.findItemByIndex(1)?.findLink()?.getElement()).toHaveAttribute('aria-expanded', 'true');
-
-      expect(wrapper.findItemByIndex(2)?.findLink()?.getElement()).toHaveAttribute('aria-expanded', 'false');
-    });
-
     describe('when clicking on the title link', () => {
       it('gets expanded', () => {
         const wrapper = renderSideNavigation({

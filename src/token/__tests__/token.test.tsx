@@ -8,6 +8,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Token, { TokenProps } from '../../../lib/components/token';
 import InternalToken from '../../../lib/components/token/internal';
 
+import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 import styles from '../../../lib/components/token/styles.selectors.js';
 
 function renderToken(props: TokenProps) {
@@ -154,6 +155,27 @@ describe('Token', () => {
     });
   });
 
+  describe('One theme', () => {
+    beforeEach(() => {
+      document.body.classList.add('awsui-one-theme');
+    });
+
+    afterEach(() => {
+      document.body.classList.remove('awsui-one-theme');
+    });
+
+    test('overrides icon size to x-small for inline variant in OneTheme', () => {
+      renderToken({
+        label: 'Test token',
+        variant: 'inline',
+        icon: <Icon name="settings" size="normal" data-testid="one-theme-inline-icon" />,
+      });
+      const iconElement = screen.getByTestId('one-theme-inline-icon');
+      expect(iconElement).toHaveClass(iconStyles['size-x-small']);
+      expect(iconElement).not.toHaveClass(iconStyles['size-normal']);
+    });
+  });
+
   describe('Error handling for inline variants', () => {
     test('React elements trigger a dev warning', () => {
       // Mock console.warn to capture the warning
@@ -187,6 +209,22 @@ describe('Token', () => {
       expect(consoleSpy).not.toHaveBeenCalled();
 
       consoleSpy.mockRestore();
+    });
+  });
+
+  describe('Inline element tags', () => {
+    test('normal variant renders div elements', () => {
+      const wrapper = renderToken({ label: 'Test token' });
+      const root = wrapper.getElement();
+      expect(root.tagName).toBe('DIV');
+      expect(root.querySelector(`.${styles['token-box']}`)!.tagName).toBe('DIV');
+    });
+
+    test('inline variant renders span elements', () => {
+      const wrapper = renderToken({ label: 'Test token', variant: 'inline' });
+      const root = wrapper.getElement();
+      expect(root.tagName).toBe('SPAN');
+      expect(root.querySelector(`.${styles['token-box-inline']}`)!.tagName).toBe('SPAN');
     });
   });
 

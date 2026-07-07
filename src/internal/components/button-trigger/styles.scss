@@ -7,11 +7,13 @@
 @use '../../styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../../token/constants' as token;
+@use '../../styles/utils/theming';
 
 @use './motion';
 
 $padding-inline-inner-filtering-token: styles.$control-padding-horizontal;
 $padding-block-inner-filtering-token: 0px;
+$icon-offset: awsui.$space-xxxs;
 
 .button-trigger {
   @include styles.styles-reset;
@@ -69,6 +71,9 @@ $padding-block-inner-filtering-token: 0px;
     inset-inline-end: styles.$control-icon-horizontal-offset;
     inset-block-start: styles.$control-icon-vertical-offset;
     color: awsui.$color-text-button-inline-icon-default;
+    @include theming.one-theme-only {
+      inset-block-start: calc(styles.$control-icon-vertical-offset + $icon-offset);
+    }
   }
 
   &:hover {
@@ -80,6 +85,9 @@ $padding-block-inner-filtering-token: 0px;
   &.pressed {
     > .arrow {
       transform: rotate(-180deg);
+      @include theming.one-theme-only {
+        inset-block-start: calc(styles.$control-icon-vertical-offset - $icon-offset);
+      }
     }
   }
 
@@ -105,6 +113,13 @@ $padding-block-inner-filtering-token: 0px;
   // should retain standard borders, only the icon changes
   &.readonly:not(&.disabled):not(&.in-filtering-token) {
     @include styles.form-readonly-element;
+  }
+
+  // Allow selecting text (e.g. to copy the selected value) in all read-only
+  // button-triggers, including those inside filtering tokens. Individual
+  // placeholder elements opt out via `user-select: none`.
+  &.readonly:not(&.disabled) {
+    user-select: text;
   }
 
   &:focus {

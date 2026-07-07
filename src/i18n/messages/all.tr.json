@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
+    "i18nStrings.datePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.isoDatePlaceholder": "YYYY-AA-GG",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.timePlaceholder": "sa: dk: sn",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
     "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
@@ -179,6 +183,14 @@
     "i18nStrings.headerText": "Beklenmeyen hata, içerik gösterilemedi",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Yeniden denemek için yenileyin. Bu sorunu takip ediyoruz ancak <Feedback>buradan daha fazla bilgi</Feedback> paylaşabilirsiniz.} other {Yeniden denemek için yenileyin.}}",
     "i18nStrings.refreshActionText": "Sayfayı yenile"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "En son özellik sürümleri",
+    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin",
+    "ariaLabels.closeButton": "Bildirimleri kapat",
+    "ariaLabels.content": "Özellik bildirimleri",
+    "ariaLabels.triggerButton": "Özellik bildirimlerini göster",
+    "ariaLabels.resizeHandle": "Özellik bildirimlerini yeniden boyutlandır"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",
@@ -243,7 +255,8 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor."
+    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",
@@ -257,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Açılır pencereyi kapat"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "İstemi gönder",
+    "i18nStrings.menuErrorIconAriaLabel": "Hata",
+    "i18nStrings.menuRecoveryText": "Yeniden dene",
+    "i18nStrings.menuLoadingText": "Öğeler yükleniyor",
+    "i18nStrings.menuFinishedText": "Sonuçların sonu",
+    "i18nStrings.menuErrorText": "Öğeler getirilirken bir hata oluştu",
+    "i18nStrings.selectedMenuItemAriaLabel": "Seçildi",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} eklendi",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} sabitlendi",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} kaldırıldı"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Tüm özellikler",

@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface SegmentedControlProps extends BaseComponentProps {
   /**
@@ -46,6 +46,8 @@ export interface SegmentedControlProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<SegmentedControlProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the segmented control's visual appearance.
+   * Refer to the [style](/components/segmented-control/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: SegmentedControlProps.Style;

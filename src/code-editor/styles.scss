@@ -98,7 +98,7 @@
   background: none;
   border-block: none;
   border-inline: none;
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
   outline: none;
   cursor: pointer;
   z-index: 1;
@@ -149,7 +149,7 @@
   }
 
   &--disabled {
-    font-weight: normal;
+    font-weight: styles.$font-weight-normal;
     color: awsui.$color-text-code-editor-status-bar-disabled;
     cursor: default;
 

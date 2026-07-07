@@ -208,6 +208,32 @@ export default function CustomContainer() {
         >
           Container content
         </Container>
+
+        <Container
+          header={
+            <>
+              <Box color="inherit">{`<Box color="inherit" />`}</Box> Plain text
+            </>
+          }
+          footer={
+            <>
+              <Box color="inherit">{`<Box color="inherit" />`}</Box> Plain text
+            </>
+          }
+          style={{
+            root: {
+              background: 'light-dark(#1a1f6e, #bbc2f4)',
+              color: 'light-dark(#ffffff, #000000)',
+            },
+            content: {
+              paddingBlock: '12px',
+            },
+          }}
+        >
+          <>
+            <Box color="inherit">{`<Box color="inherit" />`}</Box> Plain text
+          </>
+        </Container>
       </SpaceBetween>
     </ScreenshotArea>
   );

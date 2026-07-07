@@ -9,12 +9,17 @@ import LinkWrapper from '../link';
 import buttonDropdownStyles from '../../../button-dropdown/styles.selectors.js';
 import menuDropdownStyles from '../../../internal/components/menu-dropdown/styles.selectors.js';
 import styles from '../../../top-navigation/styles.selectors.js';
+import testUtilStyles from '../../../top-navigation/test-classes/styles.selectors.js';
 
 export default class TopNavigationWrapper extends ComponentWrapper {
   static rootSelector = `${styles['top-navigation']}:not(.${styles.hidden})`;
 
-  findIdentityLink(): ElementWrapper {
-    return this.find(`.${styles.identity} a`)!;
+  findContent(): ElementWrapper | null {
+    return this.find(`.${testUtilStyles['custom-content']}`);
+  }
+
+  findIdentityLink(): ElementWrapper | null {
+    return this.find(`.${styles.identity} a`);
   }
 
   findLogo(): ElementWrapper | null {

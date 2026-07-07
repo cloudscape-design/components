@@ -6,7 +6,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import CategoryElement from './category-elements/category-element';
 import ExpandableCategoryElement from './category-elements/expandable-category-element';
 import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
-import { ItemListProps } from './interfaces';
+import { ItemListProps } from './internal-interfaces';
 import ItemElement from './item-element';
 import { isItemGroup } from './utils/utils';
 

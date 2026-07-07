@@ -69,6 +69,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
       !!(
         context.content &&
         typeof context.content === 'object' &&
+        // eslint-disable-next-line no-restricted-syntax -- Runtime duck typing on unknown plugin content
         'props' in context.content &&
         typeof context.content.props.children === 'string' &&
         context.content.props.children.match('Access denied')

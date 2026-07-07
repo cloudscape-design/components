@@ -3,17 +3,19 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import Dropdown from '../../dropdown/internal';
 import InternalIcon from '../../icon/internal';
-import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from '../analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
@@ -62,6 +64,7 @@ const ExpandableCategoryElement = ({
   };
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -115,9 +118,12 @@ const ExpandableCategoryElement = ({
               <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
             </span>
           )}
-          {item.text}
+          <span>{item.text}</span>
           <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-            <InternalIcon name="caret-down-filled" />
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}
@@ -140,8 +146,8 @@ const ExpandableCategoryElement = ({
     content = (
       <Dropdown
         open={expanded}
-        stretchWidth={false}
         interior={true}
+        hideBlockBorder={false}
         expandToViewport={expandToViewport}
         trigger={trigger}
         content={

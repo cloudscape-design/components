@@ -15,7 +15,8 @@ import { hasModifierKeys } from '../internal/events';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
-import { InternalNavigableGroupProps, NavigableGroupProps } from './interfaces';
+import { NavigableGroupProps } from './interfaces';
+import { InternalNavigableGroupProps } from './internal-interfaces';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -133,6 +134,7 @@ const InternalNavigableGroup = forwardRef(
       }
 
       function isElementDisabled(element: HTMLElement) {
+        // eslint-disable-next-line no-restricted-syntax -- DOM element capability check
         if ('disabled' in element) {
           return element.disabled;
         }

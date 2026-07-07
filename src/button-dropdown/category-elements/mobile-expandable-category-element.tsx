@@ -3,12 +3,14 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
 import Tooltip from '../tooltip.js';
@@ -53,6 +55,8 @@ const MobileExpandableCategoryElement = ({
   const onHover = () => {
     highlightItem(item);
   };
+
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -107,13 +111,16 @@ const MobileExpandableCategoryElement = ({
               <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
             </span>
           )}
-          {item.text}
+          <span>{item.text}</span>
           <span
             className={clsx(styles['expand-icon'], {
               [styles['expand-icon-up']]: expanded,
             })}
           >
-            <InternalIcon name="caret-down-filled" />
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}

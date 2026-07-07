@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../form-field/styles.selectors.js';
+import testStyles from '../../../form-field/test-classes/styles.selectors.js';
 
 export default class FormFieldWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = styles.root;
@@ -20,7 +21,11 @@ export default class FormFieldWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findConstraint(): ElementWrapper | null {
-    return this.find(`:scope > .${styles.hints} .${styles.constraint}`);
+    return this.find(`:scope > .${styles.hints} .${testStyles.constraint}`);
+  }
+
+  findCharacterCount(): ElementWrapper | null {
+    return this.find(`:scope > .${styles.hints} .${testStyles['character-count']}`);
   }
 
   findError(): ElementWrapper | null {

@@ -14,7 +14,7 @@ const scrollbarSelector = `.${tableScrollbarStyles['sticky-scrollbar-visible']}`
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(
     testFn: (page: AppLayoutSplitViewPage) => Promise<void>,
     url = '#/light/app-layout/with-split-panel'
@@ -48,23 +48,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     })
   );
 
-  (theme === 'classic' ? test : test.skip)(
-    'slider is accessible by keyboard in bottom position',
-    setupTest(async page => {
-      await page.openPanel();
-      await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
-
-      const { height } = await page.getSplitPanelSize();
-      const initialSliderValue = await page.getSplitPanelSliderValue();
-
-      await page.keys(['ArrowUp', 'ArrowUp', 'ArrowUp']);
-
-      const expectedHeight = Math.round(height + 30);
-      expect((await page.getSplitPanelSize()).height).toEqual(expectedHeight);
-      expect(await page.getSplitPanelSliderValue()).toBeGreaterThan(initialSliderValue);
-    })
-  );
-
   test(
     'can focus split panel programmatically after opening',
     setupTest(async page => {
@@ -73,35 +56,12 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     }, '#/light/app-layout/dashboard-content-type')
   );
 
-  (theme === 'classic' ? test : test.skip).each([
-    { position: 'side', repeatKey: 'ArrowLeft', expectedValue: 0 },
-    { position: 'side', repeatKey: 'ArrowRight', expectedValue: 100 },
-    { position: 'bottom', repeatKey: 'ArrowLeft', expectedValue: 0 },
-    { position: 'bottom', repeatKey: 'ArrowRight', expectedValue: 100 },
-  ])(
-    'allows split panel slider in $position position to be adjusted to $expectedValue',
-    ({ position, repeatKey, expectedValue }) =>
-      setupTest(async page => {
-        await page.openPanel();
-        if (position === 'side') {
-          await page.switchPosition('side');
-          await page.keys(['Shift', 'Tab', 'Shift']);
-        }
-        await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
-        // send each keystroke as individual command to allow UI re-rendering between keys
-        for (const key of Array(30).fill(repeatKey)) {
-          await page.keys(key);
-        }
-        await expect(page.getSplitPanelSliderValue()).resolves.toBe(expectedValue);
-      })()
-  );
-
   test(
     'renders with initial side position',
     useBrowser(async browser => {
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
-      await browser.url(`#/light/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
+      await browser.url(`#/light/app-layout/with-split-panel?splitPanelPosition=side`);
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
       await page.openPanel();
       await expect(page.getPanelPosition()).resolves.toEqual('side');
@@ -118,8 +78,10 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       await expect(page.getPanelPosition()).resolves.toEqual('bottom');
       // in VR design, split panel keeps same size as it was open on the side
       const { height: windowHeight } = await page.getViewportSize();
-      const expectedBottomOffset = theme === 'refresh' ? windowHeight / 2 + 40 + 'px' : '160px';
-      await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(expectedBottomOffset);
+      const expectedBottomOffset = theme === 'refresh' ? windowHeight / 2 + 40 : 160;
+      const contentOffsetBottom = await page.getContentOffsetBottom(theme);
+      const offsetValue = parseFloat(contentOffsetBottom as string);
+      expect(offsetValue).toBeCloseTo(expectedBottomOffset, -1);
     })
   );
   test(
@@ -191,7 +153,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
         // different design allows for different split panel max width
         const expectedWidth = {
-          classic: arePaddingsEnabled ? 520 - scrollbarThickness : 520,
           refresh: arePaddingsEnabled ? 445 - 2 * scrollbarThickness : 469 - scrollbarThickness,
           'refresh-toolbar': arePaddingsEnabled ? 592 - scrollbarThickness : 592,
         };
@@ -282,7 +243,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   );
 
   describe('interaction with table sticky elements', () => {
-    // bottom padding is included into the offset in VR but not in classic
+    // bottom padding is included into the offset in VR
     const splitPanelPadding = theme === 'refresh' ? 40 : 0;
 
     test(

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import ListContent from './list-content';
@@ -32,8 +32,9 @@ export default function () {
               </button>
             }
             open={open}
-            onDropdownClose={() => setOpen(false)}
+            onOutsideClick={() => setOpen(false)}
             content={<ListContent n={5} />}
+            minWidth={'trigger'}
           />
         </div>
         <div className={styles.placeholder}>An extra element to enable page scroll</div>

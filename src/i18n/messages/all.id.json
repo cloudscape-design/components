@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferensi kolom",
     "contentDisplayPreference.description": "Sesuaikan visibilitas dan urutan kolom.",
     "contentDisplayPreference.dragHandleAriaLabel": "Tuas seret",
-    "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membatalkan perpindahan, gunakan Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret untuk item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membuang perpindahan, gunakan Escape. Anda mungkin perlu beralih mode penelusuran di pembaca layar Anda.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Mengambil item pada posisi {position} dari {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Pengurutan ulang dibatalkan",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter kolom",
@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
+    "i18nStrings.datePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
+    "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
+    "i18nStrings.timePlaceholder": "jj:mm:dd",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
     "i18nStrings.slashedDateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
@@ -179,6 +183,14 @@
     "i18nStrings.headerText": "Kesalahan tak terduga, konten gagal ditampilkan",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh untuk mencoba lagi. Kami sedang melacak masalah ini, tetapi Anda dapat membagikan <Feedback>informasi selengkapnya di sini</Feedback>.} other {Refresh untuk mencoba lagi.}}",
     "i18nStrings.refreshActionText": "Segarkan halaman"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Rilis fitur terbaru",
+    "i18nStrings.viewAll": "Lihat semua rilis fitur",
+    "ariaLabels.closeButton": "Tutup notifikasi",
+    "ariaLabels.content": "Notifikasi fitur",
+    "ariaLabels.triggerButton": "Tampilkan notifikasi fitur",
+    "ariaLabels.resizeHandle": "Ubah ukuran notifikasi fitur"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
@@ -243,7 +255,8 @@
     "ariaLabels.previousPageLabel": "Halaman sebelumnya",
     "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
     "i18nStrings.jumpToPageInputLabel": "Halaman",
-    "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia."
+    "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia.",
+    "i18nStrings.jumpToPageLoadingText": "Memuat"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",
@@ -257,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Tutup popover"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Kirim prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Kesalahan",
+    "i18nStrings.menuRecoveryText": "Coba lagi",
+    "i18nStrings.menuLoadingText": "Memuat item",
+    "i18nStrings.menuFinishedText": "Akhir dari hasil",
+    "i18nStrings.menuErrorText": "Terjadi kesalahan saat mengambil item",
+    "i18nStrings.selectedMenuItemAriaLabel": "Dipilih",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} disisipkan",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} disematkan",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} dihapus"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Semua properti",

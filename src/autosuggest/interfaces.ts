@@ -2,17 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
+import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import {
-  BaseDropdownHostProps,
-  OptionsFilteringType,
-  OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
+import { OptionDefinition, OptionGroup } from '../types/option';
 
 export interface AutosuggestProps
   extends BaseComponentProps,
@@ -23,6 +19,7 @@ export interface AutosuggestProps
     InputClearLabel,
     FormFieldValidationControlProps,
     DropdownStatusProps {
+  onLoadItems?: NonCancelableEventHandler<AutosuggestProps.LoadItemsDetail>;
   /**
    * Specifies an array of options that are displayed to the user as a dropdown list.
    * The options can be grouped using `OptionGroup` objects.
@@ -89,8 +86,6 @@ export interface AutosuggestProps
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
    *
    * When returning `null`, the default rendering will be applied for that item.
-   *
-   * @awsuiSystem core
    */
   renderOption?: AutosuggestProps.ItemRenderer;
 
@@ -165,6 +160,8 @@ export interface AutosuggestProps
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
 
   /**
+   * An object containing CSS properties to customize the autosuggest's visual appearance.
+   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
@@ -181,7 +178,10 @@ export namespace AutosuggestProps {
     label?: string;
     options: ReadonlyArray<Option>;
   }
-  export type LoadItemsDetail = OptionsLoadItemsDetail;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;

@@ -1,13 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { ComparisonOperator, Token } from './interfaces';
 import {
-  ComparisonOperator,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalToken,
-  Token,
-} from './interfaces';
+  InternalTokenGroup,
+} from './internal-interfaces';
+
+export function isInternalToken(tokenOrGroup: InternalToken | InternalTokenGroup): tokenOrGroup is InternalToken {
+  const key: keyof InternalToken = 'operator';
+  return key in tokenOrGroup;
+}
+
+export function isInternalTokenGroup(
+  tokenOrGroup: InternalToken | InternalTokenGroup
+): tokenOrGroup is InternalTokenGroup {
+  const key: keyof InternalTokenGroup = 'operation';
+  return key in tokenOrGroup;
+}
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
@@ -137,17 +149,22 @@ interface AbstractTokenGroup<T extends AbstractToken> {
   tokens: readonly (T | AbstractTokenGroup<T>)[];
 }
 
+function isAbstractToken<T extends AbstractToken>(tokenOrGroup: T | AbstractTokenGroup<T>): tokenOrGroup is T {
+  const key: keyof AbstractToken = 'operator';
+  return key in tokenOrGroup;
+}
+
 /**
  * Transforms query token groups to tokens (only taking 1 level of nesting).
  */
 export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonly (T | AbstractTokenGroup<T>)[]): T[] {
   const tokens: T[] = [];
   for (const tokenOrGroup of tokenGroups) {
-    if ('operator' in tokenOrGroup) {
+    if (isAbstractToken(tokenOrGroup)) {
       tokens.push(tokenOrGroup);
     } else {
       for (const nestedTokenOrGroup of tokenOrGroup.tokens) {
-        if ('operator' in nestedTokenOrGroup) {
+        if (isAbstractToken(nestedTokenOrGroup)) {
           tokens.push(nestedTokenOrGroup);
         } else {
           // Ignore deeply nested tokens

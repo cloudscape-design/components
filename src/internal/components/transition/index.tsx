@@ -20,6 +20,7 @@ interface TransitionProps {
   children: (state: TransitionStatus, transitioningElementRef: MutableRefObject<any>) => React.ReactNode;
   onStatusChange?: (status: TransitionStatus) => void;
   transitionChangeDelay?: { entering?: number };
+  exitTimeout?: number;
 }
 
 /**
@@ -35,6 +36,7 @@ export function Transition({
   onStatusChange = () => void 0,
   disabled = false,
   transitionChangeDelay,
+  exitTimeout,
   ...rest
 }: TransitionProps) {
   const transitionRootElement = useRef<HTMLElement>(null);
@@ -64,7 +66,7 @@ export function Transition({
   return (
     <ReactTransitionGroupTransition
       addEndListener={addTransitionEndListener}
-      timeout={motionDisabled ? 0 : undefined}
+      timeout={motionDisabled ? 0 : exitTimeout}
       in={isIn}
       nodeRef={transitionRootElement}
       exit={exit}

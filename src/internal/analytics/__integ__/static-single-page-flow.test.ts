@@ -237,7 +237,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     })
   );
 
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  test(
     'Form submission',
     setupTest(async page => {
       await page.click('[data-testid=submit]');

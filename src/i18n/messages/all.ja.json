@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "列の詳細設定",
     "contentDisplayPreference.description": "列の表示設定と順序をカスタマイズします。",
     "contentDisplayPreference.dragHandleAriaLabel": "ドラッグハンドル",
-    "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
+    "contentDisplayPreference.dragHandleAriaDescription": "Space キーまたは Enter キーを使用して項目のドラッグを有効にし、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには Space キーまたは Enter キーを使用し、移動を取り消すには Esc キーを使用します。スクリーンリーダーでブラウジングモードを切り替える必要がある場合があります。画面読み上げソフトの閲覧モードを切り替える必要がある場合があります。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "フィルター列",
@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "終了月",
     "i18nStrings.endDateLabel": "終了日",
     "i18nStrings.endTimeLabel": "終了時刻",
+    "i18nStrings.datePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",
     "i18nStrings.slashedDateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
@@ -179,6 +183,14 @@
     "i18nStrings.headerText": "予期しないエラー、コンテンツを表示できませんでした",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {更新してもう一度お試しください。この問題は現在追跡中ですが、<Feedback>詳しい情報はこちら</Feedback>で共有できます。} other {更新してもう一度お試しください。}}",
     "i18nStrings.refreshActionText": "ページを更新"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新機能リリース",
+    "i18nStrings.viewAll": "すべての機能リリースを表示",
+    "ariaLabels.closeButton": "通知を閉じる",
+    "ariaLabels.content": "機能の通知",
+    "ariaLabels.triggerButton": "機能の通知を表示",
+    "ariaLabels.resizeHandle": "機能の通知をリサイズ"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",
@@ -243,7 +255,8 @@
     "ariaLabels.previousPageLabel": "前のページ",
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "i18nStrings.jumpToPageInputLabel": "ページ",
-    "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。"
+    "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。",
+    "i18nStrings.jumpToPageLoadingText": "ロード中"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",
@@ -257,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "ポップオーバーを閉じる"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "プロンプトの送信",
+    "i18nStrings.menuErrorIconAriaLabel": "エラー",
+    "i18nStrings.menuRecoveryText": "再試行",
+    "i18nStrings.menuLoadingText": "項目をロード中",
+    "i18nStrings.menuFinishedText": "結果の最後",
+    "i18nStrings.menuErrorText": "項目の取得中にエラーが発生しました",
+    "i18nStrings.selectedMenuItemAriaLabel": "選択済み",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} が挿入されました",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} がピン留めされました",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} が削除されました"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "すべてのプロパティ",

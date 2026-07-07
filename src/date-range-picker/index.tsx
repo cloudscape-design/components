@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import ButtonTrigger from '../internal/components/button-trigger';
-import Dropdown from '../internal/components/dropdown';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -104,6 +104,7 @@ const DateRangePicker = React.forwardRef(
       isValidRange = () => ({ valid: true }),
       showClearButton = true,
       dateOnly = false,
+      ariaLabel,
       timeOffset,
       getTimeOffset,
       timeInputFormat = 'hh:mm:ss',
@@ -116,6 +117,8 @@ const DateRangePicker = React.forwardRef(
       customRelativeRangeUnits,
       renderRelativeRangeContent,
       granularity = 'day',
+      absoluteMultiGridStartPeriod = 'auto',
+      renderTriggerContent,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -143,12 +146,22 @@ const DateRangePicker = React.forwardRef(
       ? { startDate: undefined, endDate: undefined }
       : normalizeTimeOffset(value, getTimeOffset, timeOffset);
     value = formatInitialValue(value, dateOnly, isMonthOnly, normalizedTimeOffset);
+
     const baseProps = getBaseProps(rest);
-    const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
+    const ariaLabelId = useUniqueId('date-range-picker-arialabel-');
+    const {
+      invalid,
+      warning,
+      controlId,
+      ariaDescribedby,
+      ariaLabelledby: contextAriaLabelledby,
+    } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
       ariaDescribedby: rest.ariaDescribedby ?? i18nStrings?.ariaDescribedby,
       ...rest,
     });
+    const ariaLabelledby = joinStrings(contextAriaLabelledby, ariaLabelId);
+
     const isSingleGrid = useMobile();
 
     const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -275,7 +288,6 @@ const DateRangePicker = React.forwardRef(
         invalid={invalid}
         warning={warning}
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
-        ariaLabel={i18nStrings?.ariaLabel}
         ariaDescribedby={ariaDescribedby}
         className={clsx(testutilStyles.label, styles.label, {
           [styles['label-enabled']]: !readOnly && !disabled,
@@ -288,16 +300,25 @@ const DateRangePicker = React.forwardRef(
         readOnly={readOnly}
         ariaHasPopup="dialog"
       >
-        <span className={styles['trigger-flexbox']}>
-          <span className={styles['icon-wrapper']}>
-            <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
+        {renderTriggerContent ? (
+          <div id={triggerContentId}>
+            {renderTriggerContent({
+              formattedDate,
+            })}
+          </div>
+        ) : (
+          <span className={styles['trigger-flexbox']}>
+            <span className={styles['icon-wrapper']}>
+              <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
+            </span>
+            <span id={triggerContentId}>{formattedDate}</span>
           </span>
-          <span id={triggerContentId}>{formattedDate}</span>
-        </span>
+        )}
       </ButtonTrigger>
     );
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+    const referrerId = useUniqueId();
 
     return (
       <div
@@ -312,14 +333,14 @@ const DateRangePicker = React.forwardRef(
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown
-          stretchWidth={true}
           stretchHeight={true}
+          scrollable={false}
           open={isDropDownOpen}
-          onDropdownClose={() => closeDropdown()}
+          onOutsideClick={() => closeDropdown()}
           trigger={trigger}
-          stretchToTriggerWidth={false}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
+          triggerId={referrerId}
           content={
             /* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */
             <ResetContextsForModal>
@@ -328,7 +349,7 @@ const DateRangePicker = React.forwardRef(
                   startOfWeek={startOfWeek}
                   locale={normalizedLocale}
                   isSingleGrid={isSingleGrid}
-                  onDropdownClose={() => closeDropdown(true)}
+                  onOutsideClick={() => closeDropdown(true)}
                   value={value}
                   showClearButton={showClearButton}
                   isDateEnabled={isDateEnabled}
@@ -351,11 +372,16 @@ const DateRangePicker = React.forwardRef(
                   customRelativeRangeUnits={customRelativeRangeUnits}
                   renderRelativeRangeContent={renderRelativeRangeContent}
                   granularity={granularity}
+                  referrerId={referrerId}
+                  absoluteMultiGridStartPeriod={absoluteMultiGridStartPeriod}
                 />
               )}
             </ResetContextsForModal>
           }
         />
+        <div id={ariaLabelId} hidden={true}>
+          {ariaLabel || i18nStrings?.ariaLabel}
+        </div>
       </div>
     );
   }

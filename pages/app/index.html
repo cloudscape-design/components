@@ -15,7 +15,7 @@
       }
 
       // Theming generates inline styles in runtime
-      if (location.hash.includes('theming')) {
+      if (location.hash.includes('theming') || location.hash.includes('side-navigation/collapsed')) {
         csp['style-src'] = "'unsafe-inline' 'self'";
       }
       if (location.hash.includes('code-editor')) {

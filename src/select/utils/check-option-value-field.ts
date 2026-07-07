@@ -14,7 +14,10 @@ export function checkOptionValueField<ValueType extends ReadonlyArray<any>>(
       return;
     }
 
+    // The `in` checks below are intentional: `element` is `any` (loosely-typed external input),
+    // so compile-time `keyof` validation is not possible. These checks validate runtime shape.
     const valuePropertyMissing = !propertyValue.every(element => {
+      // eslint-disable-next-line no-restricted-syntax -- Runtime shape validation on loosely-typed external input (`any`)
       return 'options' in element || 'value' in element;
     });
 
