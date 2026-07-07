@@ -7,6 +7,8 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { metrics } from '../internal/metrics';
+import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { AppLayoutErrorEntry } from '../internal/plugins/controllers/error-boundary';
 import { SomeRequired } from '../internal/types';
 import { ErrorBoundaryFallback } from './fallback';
 import { AppLayoutBuiltInErrorBoundaryProps, BuiltInErrorBoundaryProps, ErrorBoundaryProps } from './interfaces';
@@ -26,34 +28,9 @@ declare global {
   }
 }
 
-export interface AppLayoutErrorEntry {
-  appLayoutPart: string;
-  message: string;
-}
-
-// Errors caught by app layout built-in error boundaries, recorded so integration/canary tests can assert
-// on real boundary catches instead of scraping the console. A single shared buffer across all app layouts
-// on the page, capped so it never grows unbounded.
-const MAX_RECORDED_APP_LAYOUT_ERRORS = 50;
-const appLayoutErrors: AppLayoutErrorEntry[] = [];
-
-function recordAppLayoutError(entry: AppLayoutErrorEntry) {
-  appLayoutErrors.push(entry);
-  if (appLayoutErrors.length > MAX_RECORDED_APP_LAYOUT_ERRORS) {
-    appLayoutErrors.shift();
-  }
-}
-
-function getAppLayoutErrors(): ReadonlyArray<AppLayoutErrorEntry> {
-  return appLayoutErrors.slice();
-}
-
-function clearAppLayoutErrors() {
-  appLayoutErrors.length = 0;
-}
-
 // Forces a real render throw in every mounted boundary for a given part. The resulting catch is not
-// recoverable (React latches the boundary), so the canary reloads between checks.
+// recoverable (React latches the boundary), so it has no reset counterpart — the canary reloads between
+// checks. Kept local (not on the shared plugin API) so a throw never reaches boundaries in other frames.
 const forcedThrowSetters = new Map<string, Set<(forced: boolean) => void>>();
 
 function throwInAppLayoutPart(appLayoutPart: string) {
@@ -75,8 +52,8 @@ export function attachAppLayoutErrorBoundaryTestHooks(node: HTMLElement | null) 
   if (!node.__awsui__) {
     node.__awsui__ = {};
   }
-  node.__awsui__.getAppLayoutErrors = getAppLayoutErrors;
-  node.__awsui__.clearAppLayoutErrors = clearAppLayoutErrors;
+  node.__awsui__.getAppLayoutErrors = awsuiPluginsInternal.errorBoundary.getErrors;
+  node.__awsui__.clearAppLayoutErrors = awsuiPluginsInternal.errorBoundary.clearErrors;
   node.__awsui__.throwInAppLayoutPart = throwInAppLayoutPart;
 }
 
@@ -159,7 +136,6 @@ export function AppLayoutBuiltInErrorBoundary({
   const thisSuppressed = context.suppressed === true || context.suppressed === RootSuppressed;
   const nextSuppressed = suppressNested || thisSuppressed;
 
-  // Test-only: allow the canary positive-control to force a real throw inside this boundary.
   const [forcedThrow, setForcedThrow] = useState(false);
   useEffect(() => {
     if (!appLayoutPart) {
@@ -187,7 +163,10 @@ export function AppLayoutBuiltInErrorBoundary({
       className={styles['app-layout-part-fallback']}
       onError={error => {
         context?.onError?.(error);
-        recordAppLayoutError({ appLayoutPart: appLayoutPart ?? '', message: error?.error?.message ?? '' });
+        awsuiPluginsInternal.errorBoundary.recordError({
+          appLayoutPart: appLayoutPart ?? '',
+          message: error?.error?.message ?? '',
+        });
         metrics.sendOpsMetricObject('awsui-app-layout-error-boundary-fired', {
           errorMessage: error?.error?.message ?? '',
           appLayoutPart: appLayoutPart ?? '',

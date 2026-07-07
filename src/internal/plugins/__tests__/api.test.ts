@@ -67,6 +67,15 @@ test('partial API can be extended', () => {
   expect(api.awsuiPluginsInternal.alert).toBeDefined();
 });
 
+test('errorBoundary controller is reused across loadApi calls, aggregating recorded errors', () => {
+  const api1 = loadApi();
+  api1.awsuiPluginsInternal.errorBoundary.recordError({ appLayoutPart: 'nav', message: 'boom' });
+
+  const api2 = loadApi();
+  expect(api2.awsuiPluginsInternal.errorBoundary.getErrors()).toContainEqual({ appLayoutPart: 'nav', message: 'boom' });
+  expect(api2.awsuiPluginsInternal.errorBoundary.recordError).toBe(api1.awsuiPluginsInternal.errorBoundary.recordError);
+});
+
 describe('usage metrics', () => {
   let sendPanoramaMetricSpy: jest.SpyInstance;
   beforeEach(() => {
