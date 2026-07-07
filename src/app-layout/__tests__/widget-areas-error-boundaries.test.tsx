@@ -343,3 +343,51 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
     );
   });
 });
+
+describe('AppLayout error boundary detection hooks exposed on the app layout root', () => {
+  const ThrowError = ({ message }: { message: string }) => {
+    throw new Error(message);
+  };
+
+  const getAppLayoutRoot = (container: HTMLElement) => {
+    const root = container.querySelector<HTMLElement>('[data-awsui-app-layout-widget-loaded]');
+    if (!root) {
+      throw new Error('App layout root element not found');
+    }
+    return root;
+  };
+
+  describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
+    let consoleSpy: jest.SpyInstance;
+    beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+
+    test('a real boundary catch is recorded and readable via getAppLayoutErrors on the app layout root', () => {
+      const message = `nav failure ${Math.random()}`;
+      const { container } = renderComponent(
+        <AppLayout content={<div>content</div>} navigation={<ThrowError message={message} />} navigationOpen={true} />
+      );
+
+      const root = getAppLayoutRoot(container);
+      expect(typeof root.__awsui__?.getAppLayoutErrors).toBe('function');
+      expect(root.__awsui__!.getAppLayoutErrors!()).toContainEqual({ appLayoutPart: 'before-main-slot', message });
+    });
+
+    test('throwInAppLayoutPart drives a real boundary catch that lands in the registry', () => {
+      const { container } = renderComponent(<AppLayout content={<div>content</div>} />);
+
+      const root = getAppLayoutRoot(container);
+      root.__awsui__!.clearAppLayoutErrors!();
+      act(() => root.__awsui__!.throwInAppLayoutPart!('before-main-slot'));
+
+      expect(root.__awsui__!.getAppLayoutErrors!()).toContainEqual({
+        appLayoutPart: 'before-main-slot',
+        message: '[AwsUiAppLayout] forced test error',
+      });
+    });
+  });
+});

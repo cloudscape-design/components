@@ -783,4 +783,46 @@ describe('app layout error boundary detection', () => {
     hooksEl.__awsui__!.clearAppLayoutErrors!();
     expect(hooksEl.__awsui__!.getAppLayoutErrors!()).toHaveLength(0);
   });
+
+  test('does not record errors caught by non-app-layout boundaries', () => {
+    render(
+      <ErrorBoundary onError={() => {}}>
+        <BuiltInErrorBoundary>
+          <div>{{}}</div>
+        </BuiltInErrorBoundary>
+      </ErrorBoundary>
+    );
+    expect(hooksEl.__awsui__!.getAppLayoutErrors!()).toHaveLength(0);
+  });
+
+  test('throwInAppLayoutPart fires in every mounted boundary sharing the part', () => {
+    render(
+      <>
+        <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">
+          <div id="nav-1">one</div>
+        </AppLayoutBuiltInErrorBoundary>
+        <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">
+          <div id="nav-2">two</div>
+        </AppLayoutBuiltInErrorBoundary>
+      </>
+    );
+    act(() => hooksEl.__awsui__!.throwInAppLayoutPart!('nav'));
+
+    expect(createWrapper().find('#nav-1')).toBe(null);
+    expect(createWrapper().find('#nav-2')).toBe(null);
+    expect(hooksEl.__awsui__!.getAppLayoutErrors!()).toHaveLength(2);
+  });
+
+  test('attachAppLayoutErrorBoundaryTestHooks is a no-op for a null node', () => {
+    expect(() => attachAppLayoutErrorBoundaryTestHooks(null)).not.toThrow();
+  });
+
+  test('attachAppLayoutErrorBoundaryTestHooks preserves existing __awsui__ hooks', () => {
+    const node = document.createElement('div');
+    const forceError = () => {};
+    node.__awsui__ = { forceError };
+    attachAppLayoutErrorBoundaryTestHooks(node);
+    expect(node.__awsui__!.forceError).toBe(forceError);
+    expect(typeof node.__awsui__!.getAppLayoutErrors).toBe('function');
+  });
 });

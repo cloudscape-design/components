@@ -19,7 +19,6 @@ declare global {
     __awsui__?: {
       forceError?(): void;
       clearForcedError?(): void;
-      // App layout error-boundary detection hooks (see attachAppLayoutErrorBoundaryTestHooks).
       getAppLayoutErrors?(): ReadonlyArray<AppLayoutErrorEntry>;
       clearAppLayoutErrors?(): void;
       throwInAppLayoutPart?(appLayoutPart: string): void;
@@ -32,12 +31,17 @@ export interface AppLayoutErrorEntry {
   message: string;
 }
 
-// Errors caught by app layout built-in error boundaries, recorded so that integration/canary tests
-// can assert on real boundary catches instead of scraping the console. Not for production consumption.
+// Errors caught by app layout built-in error boundaries, recorded so integration/canary tests can assert
+// on real boundary catches instead of scraping the console. A single shared buffer across all app layouts
+// on the page, capped so it never grows unbounded.
+const MAX_RECORDED_APP_LAYOUT_ERRORS = 50;
 const appLayoutErrors: AppLayoutErrorEntry[] = [];
 
 function recordAppLayoutError(entry: AppLayoutErrorEntry) {
   appLayoutErrors.push(entry);
+  if (appLayoutErrors.length > MAX_RECORDED_APP_LAYOUT_ERRORS) {
+    appLayoutErrors.shift();
+  }
 }
 
 function getAppLayoutErrors(): ReadonlyArray<AppLayoutErrorEntry> {
@@ -48,13 +52,12 @@ function clearAppLayoutErrors() {
   appLayoutErrors.length = 0;
 }
 
-// Per-part trigger that forces a real render throw inside the matching app layout boundary. Used by the
-// production canary positive-control test to verify that a genuine caught error is still detectable. The
-// resulting catch is not recoverable (React latches the boundary), so the canary reloads between checks.
-const forcedThrowSetters = new Map<string, (forced: boolean) => void>();
+// Forces a real render throw in every mounted boundary for a given part. The resulting catch is not
+// recoverable (React latches the boundary), so the canary reloads between checks.
+const forcedThrowSetters = new Map<string, Set<(forced: boolean) => void>>();
 
 function throwInAppLayoutPart(appLayoutPart: string) {
-  forcedThrowSetters.get(appLayoutPart)?.(true);
+  forcedThrowSetters.get(appLayoutPart)?.forEach(setForced => setForced(true));
 }
 
 function ForcedTestError(): null {
@@ -62,9 +65,8 @@ function ForcedTestError(): null {
 }
 
 /**
- * Attaches the app layout error-boundary detection hooks to a DOM element (the app layout root).
- * These are test-only helpers: integration/canary tests read caught errors via `getAppLayoutErrors`
- * and can trigger a real, boundary-caught throw via `throwInAppLayoutPart`.
+ * Attaches test-only error-boundary detection hooks to the app layout root element. Used by
+ * integration/canary tests, not production.
  */
 export function attachAppLayoutErrorBoundaryTestHooks(node: HTMLElement | null) {
   if (!node) {
@@ -163,9 +165,17 @@ export function AppLayoutBuiltInErrorBoundary({
     if (!appLayoutPart) {
       return;
     }
-    forcedThrowSetters.set(appLayoutPart, setForcedThrow);
+    let setters = forcedThrowSetters.get(appLayoutPart);
+    if (!setters) {
+      setters = new Set();
+      forcedThrowSetters.set(appLayoutPart, setters);
+    }
+    setters.add(setForcedThrow);
     return () => {
-      forcedThrowSetters.delete(appLayoutPart);
+      setters.delete(setForcedThrow);
+      if (setters.size === 0) {
+        forcedThrowSetters.delete(appLayoutPart);
+      }
     };
   }, [appLayoutPart]);
 
