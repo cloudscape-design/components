@@ -21,6 +21,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontLinkButtonWeight: '{fontWeightButton}',
   fontPanelHeaderLineHeight: '{lineHeightHeadingM}',
   fontPanelHeaderSize: '{fontSizeHeadingM}',
+  fontSideNavigationSectionHeaderSize: 'inherit',
+  fontSideNavigationSectionHeaderWeight: 'inherit',
   fontSizeBodyM: '14px',
   fontSizeBodyS: '12px',
   fontSizeDisplayL: '42px',

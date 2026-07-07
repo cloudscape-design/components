@@ -29,6 +29,9 @@ const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
 
+  fontSideNavigationSectionHeaderSize: '14px',
+  fontSideNavigationSectionHeaderWeight: '500',
+
   fontWeightDisplayL: '500',
   fontWeightDisplayXl: '400',
 

@@ -11,7 +11,7 @@ import InternalExpandableSection from '../expandable-section/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { isPlainLeftClick } from '../internal/events';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import Tooltip from '../tooltip/internal';
 import { NonCancelableCustomEvent } from '../types/events';
@@ -570,7 +570,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         isInSectionGroup && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
-      headerText={definition.text}
+      headerText={<span className={styles['section-header']}>{definition.text}</span>}
     >
       <NavigationItemsList
         variant="section"
@@ -589,12 +589,17 @@ interface SectionGroupProps extends BaseItemComponentProps {
 }
 
 function SectionGroup({ definition, activeHref, fireFollow, fireChange, position, collapsed }: SectionGroupProps) {
+  const isOneTheme = useOneTheme();
   if (collapsed) {
     return null;
   }
   return (
     <div className={styles['section-group']}>
-      <InternalBox className={styles['section-group-title']} variant="h3">
+      <InternalBox
+        className={styles['section-group-title']}
+        variant="h3"
+        fontSize={isOneTheme ? 'heading-s' : undefined}
+      >
         {definition.title}
       </InternalBox>
       <NavigationItemsList
