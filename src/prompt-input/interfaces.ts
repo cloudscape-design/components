@@ -5,15 +5,15 @@ import React from 'react';
 import { BaseDropdownHostProps, OptionsFilteringType } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputSpellcheck } from '../input/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
+import { OptionDefinition, OptionGroup } from '../types/option';
 
 export interface PromptInputProps
   extends Omit<BaseInputProps, 'nativeInputAttributes' | 'name' | 'value' | 'onChange'>,

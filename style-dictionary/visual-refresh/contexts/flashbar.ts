@@ -27,6 +27,9 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextTutorialHotspotDefault: '{colorNeutral300}',
   colorTextTutorialHotspotHover: '{colorNeutral100}',
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.2)',
+  colorTextStatusSuccess: '{colorTextNotificationDefault}',
+  colorTextStatusError: '{colorTextNotificationDefault}',
+  colorTextStatusInfo: '{colorTextNotificationDefault}',
   // Key-value pairs
   colorTextLabel: '{colorNeutral100}',
 

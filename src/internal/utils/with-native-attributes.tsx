@@ -5,9 +5,7 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-export type NativeAttributes<T extends React.HTMLAttributes<HTMLElement>> =
-  | (Omit<T, 'children'> & Record<`data-${string}`, string>)
-  | undefined;
+import { NativeAttributes } from '../../types/native-attributes';
 
 export type SkipWarnings = boolean | string[];
 
@@ -78,3 +76,6 @@ export default React.forwardRef(
     );
   }
 ) as ForwardRefType;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export { NativeAttributes } from '../../types/native-attributes';

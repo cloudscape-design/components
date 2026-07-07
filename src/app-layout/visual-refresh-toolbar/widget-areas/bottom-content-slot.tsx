@@ -42,7 +42,7 @@ export const BottomContentSlotImplementationInternal = ({ appLayoutState, appLay
 
 export const BottomContentSlotImplementation = (props: SkeletonPartProps) => {
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="bottom-content-slot">
       <BottomContentSlotImplementationInternal {...props} />
     </AppLayoutBuiltInErrorBoundary>
   );

@@ -6,11 +6,13 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import { fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { InternalToggleButton } from '../toggle-button/internal.js';
 import Tooltip from '../tooltip/internal.js';
-import { ButtonGroupProps, InternalIconToggleButton } from './interfaces.js';
+import { CancelableEventHandler } from '../types/events';
+import { ButtonGroupProps } from './interfaces.js';
+import { InternalIconToggleButton } from './internal-interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

@@ -3,13 +3,14 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
+import { NonCancelableEventHandler } from '../../types/events';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 

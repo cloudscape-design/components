@@ -8,16 +8,16 @@ import { tokens as vrParentTokens } from '../../visual-refresh/colors.js';
 import { tokens as oneThemeParentTokens } from '../colors.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorBackgroundContainerContent: '{colorNeutralGrey950}',
-  colorBorderDividerDefault: '{colorNeutralGrey750}',
-  colorBackgroundPopover: '{colorNeutralGrey800}',
+  colorBackgroundContainerContent: '{colorNeutral950}',
+  colorBorderDividerDefault: '{colorNeutral750}',
+  colorBackgroundPopover: '{colorNeutral800}',
 
   colorTextButtonInlineIconDefault: '{colorIndigo400}',
   colorTextButtonInlineIconHover: '{colorIndigo300}',
 
-  colorBackgroundDropdownItemDefault: '{colorNeutralGrey800}',
-  colorBackgroundDropdownItemHover: '{colorNeutralGrey700}',
-  colorBackgroundInputDefault: '{colorNeutralGrey950}',
+  colorBackgroundDropdownItemDefault: '{colorNeutral800}',
+  colorBackgroundDropdownItemHover: '{colorNeutral700}',
+  colorBackgroundInputDefault: '{colorNeutral950}',
 
   colorBorderItemFocused: '{colorIndigo500}',
   colorBorderInputFocused: '{colorIndigo500}',

@@ -13,6 +13,7 @@ import SpaceBetween from '~components/space-between';
 import Table from '~components/table';
 
 import { useAppContext } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 interface Item {
   id: string;
@@ -74,7 +75,7 @@ export default function TableSkeletonRowsPage() {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
+    <ScreenshotArea disableAnimations={true}>
       <SpaceBetween size="l">
         <Header variant="h1">Table with Skeleton Rows - Interactive Demo</Header>
 
@@ -168,6 +169,6 @@ export default function TableSkeletonRowsPage() {
           }
         />
       </SpaceBetween>
-    </div>
+    </ScreenshotArea>
   );
 }

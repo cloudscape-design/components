@@ -174,6 +174,14 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceSideNavigationItemGap: {
+    description: 'The vertical gap between side navigation items.',
+    public: true,
+    themeable: true,
+  },
+  spaceSideNavigationItemCollapsedGap: {
+    description: 'The vertical gap between side navigation items in collapsed state.',
+  },
   spaceButtonHorizontal: {
     description: 'The horizontal padding inside buttons.',
     public: true,

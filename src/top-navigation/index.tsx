@@ -10,9 +10,15 @@ import InternalTopNavigation from './internal';
 
 export { TopNavigationProps };
 
-export default function TopNavigation({ utilities = [], ...restProps }: TopNavigationProps) {
+export default function TopNavigation({
+  utilities = [],
+  visualContext = 'top-navigation',
+  ...restProps
+}: TopNavigationProps) {
   const baseComponentProps = useBaseComponent('TopNavigation');
-  return <InternalTopNavigation {...baseComponentProps} utilities={utilities} {...restProps} />;
+  return (
+    <InternalTopNavigation {...baseComponentProps} utilities={utilities} visualContext={visualContext} {...restProps} />
+  );
 }
 
 applyDisplayName(TopNavigation, 'TopNavigation');

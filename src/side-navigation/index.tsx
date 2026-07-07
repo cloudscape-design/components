@@ -15,8 +15,10 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { SideNavigationProps };
 
-export default function SideNavigation({ items = [], ...props }: SideNavigationProps) {
-  const internalProps = useBaseComponent('SideNavigation');
+export default function SideNavigation({ items = [], collapsed = false, ...props }: SideNavigationProps) {
+  const internalProps = useBaseComponent('SideNavigation', {
+    props: { collapsed },
+  });
 
   const componentAnalyticMetadata: GeneratedAnalyticsMetadataSideNavigationComponent = {
     name: 'awsui.SideNavigation',
@@ -30,6 +32,7 @@ export default function SideNavigation({ items = [], ...props }: SideNavigationP
       {...props}
       {...internalProps}
       items={items}
+      collapsed={collapsed}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticMetadata })}
     />
   );

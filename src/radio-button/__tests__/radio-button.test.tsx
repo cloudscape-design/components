@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { RadioButtonProps } from '../../../lib/components/internal/components/radio-button/interfaces';
 import RadioButton from '../../../lib/components/radio-button';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { RadioButtonProps } from '../interfaces';
 import { renderRadioButton } from './common';
 
 describe('Radio Button native attributes from props', () => {

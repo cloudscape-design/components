@@ -1,14 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces.js';
+import merge from 'lodash/merge.js';
 
-export const tokens: StyleDictionary.BordersDictionary = {
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/borders.js';
+
+const tokens: StyleDictionary.BordersDictionary = {
   // ── Border widths ─────────────────────────────────────────────────────────
   borderWidthButton: '1px',
   borderWidthToken: '1px',
   borderWidthAlert: '0px',
   borderItemWidth: '1px',
+  borderWidthDropdown: '1px',
+  borderWidthPopover: '1px',
   borderWidthAlertInlineStart: '2px',
+  borderWidthFlashbarInlineStart: '2px',
   borderWidthItemSelected: '1px',
   borderWidthCardSelected: '1px',
 
@@ -27,11 +33,17 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusDropdown: '2px',
   borderRadiusDropzone: '4px',
   borderRadiusFlashbar: '2px',
-  borderRadiusItem: '2px',
   borderRadiusInput: '2px',
+  borderRadiusItem: '2px',
   borderRadiusPopover: '4px',
+  borderRadiusSideNavigationItemCollapsed: '{borderRadiusItem}',
+  borderRadiusStatusIndicator: '2px',
   borderRadiusTabsFocusRing: '4px',
   borderRadiusToken: '2px',
+  borderRadiusTokenInline: '{borderRadiusToken}',
   borderRadiusTutorialPanelItem: '4px',
-  borderRadiusStatusIndicator: '2px',
 };
+
+const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+
+export { expandedTokens as tokens };

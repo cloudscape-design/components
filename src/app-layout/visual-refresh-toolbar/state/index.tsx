@@ -58,7 +58,7 @@ export const AppLayoutStateProviderInternal = ({ appLayoutProps, stateManager, f
 
 export const AppLayoutStateProvider = (props: AppLayoutStateProps) => {
   return (
-    <AppLayoutBuiltInErrorBoundary>
+    <AppLayoutBuiltInErrorBoundary appLayoutPart="app-layout-state">
       <AppLayoutStateProviderInternal {...props} />
     </AppLayoutBuiltInErrorBoundary>
   );

@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming';
 
 .header {
   position: relative;
@@ -119,6 +120,11 @@
   inline-size: awsui.$space-m;
   display: inline-block;
   margin-inline-start: auto;
+
+  @include theming.one-theme-only {
+    inset-inline-end: calc(-1 * #{awsui.$space-xs});
+    inline-size: awsui.$space-s;
+  }
 
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;

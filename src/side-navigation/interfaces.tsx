@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 
 export interface SideNavigationProps extends BaseComponentProps {
   /**
@@ -52,6 +52,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `externalIconAriaLabel` (string) - Adds an aria-label to the external icon.
    * - `info` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
    *     our UX guidelines allow only to add a Badge and/or a "New" label.
+   * - `icon` (ReactNode) - Optional content rendered before the link text. Accepts any React node (for example, an `<Icon />` component or a custom `<svg>`).
    *
    * #### Divider
    * Object that represents a horizontal divider between navigation content.
@@ -83,6 +84,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
+   * - `icon` (ReactNode) - Optional content rendered before the link group text. Accepts any React node.
    *
    * #### ExpandableLinkGroup
    *
@@ -95,6 +97,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
+   * - `icon` (ReactNode) - Optional content rendered before the expandable link group text. Accepts any React node.
    */
   items?: ReadonlyArray<SideNavigationProps.Item>;
 
@@ -124,12 +127,26 @@ export interface SideNavigationProps extends BaseComponentProps {
    * upon changing the `activeHref` property, this event isn't raised.
    */
   onChange?: NonCancelableEventHandler<SideNavigationProps.ChangeDetail>;
+
+  /**
+   * If true, the navigation is rendered in a compact, icon-only state:
+   * - Item text labels and the header title are hidden.
+   * - Section, `Section group`, `Link group`, and `Expandable link group`
+   *   children are not rendered.
+   * - `Items control` is not rendered.
+   * - Items without an `icon` are not rendered. Provide an icon for any
+   *   item that should remain visible while collapsed.
+   *
+   * @defaultValue false
+   */
+  collapsed?: boolean;
 }
 
 export namespace SideNavigationProps {
   export interface Logo {
-    src: string;
+    src?: string;
     alt?: string;
+    svg?: React.ReactNode;
   }
   export interface Header {
     text?: string;
@@ -148,6 +165,7 @@ export namespace SideNavigationProps {
     external?: boolean;
     externalIconAriaLabel?: string;
     info?: React.ReactNode;
+    icon?: React.ReactNode;
   }
 
   export interface Section {
@@ -168,6 +186,7 @@ export namespace SideNavigationProps {
     href: string;
     info?: React.ReactNode;
     items: ReadonlyArray<Item>;
+    icon?: React.ReactNode;
   }
 
   export interface ExpandableLinkGroup {
@@ -176,6 +195,7 @@ export namespace SideNavigationProps {
     href: string;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
+    icon?: React.ReactNode;
   }
 
   export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionGroup;

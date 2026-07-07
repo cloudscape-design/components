@@ -10,7 +10,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { persistFlashbarDismiss, retrieveFlashbarDismiss } from '../internal/persistence';
 import { focusFlashById, focusFlashFocusableArea } from './flash';
-import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import { FOCUS_DEBOUNCE_DELAY } from './utils';
 
 import styles from './styles.css.js';

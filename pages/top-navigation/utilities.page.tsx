@@ -79,6 +79,34 @@ const simpleActions = [
 
 export default function TopNavigationPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+
+  const badgedUtilities = [
+    {
+      type: 'menu-dropdown' as const,
+      text: 'Settings',
+      iconName: 'settings' as const,
+      badge: true,
+      items: simpleActions,
+    },
+    {
+      type: 'menu-dropdown' as const,
+      ariaLabel: 'Notifications',
+      title: 'Notifications',
+      iconName: 'notification' as const,
+      items: notificationActions,
+      disableUtilityCollapse: true,
+      badge: true,
+    },
+    {
+      type: 'menu-dropdown' as const,
+      text: 'Jane Doe',
+      description: 'jane.doe@example.com',
+      iconName: 'envelope' as const,
+      items: profileActions,
+      expandableGroups: urlParams.expandableGroups,
+    },
+  ];
+
   return (
     <article>
       <h1>Simple TopNavigation</h1>
@@ -146,30 +174,16 @@ export default function TopNavigationPage() {
       <br />
       <TopNavigation
         i18nStrings={I18N_STRINGS}
-        identity={{
-          href: '#',
-          title: 'Title with an href',
-        }}
-        utilities={[
-          { type: 'menu-dropdown', text: 'Settings', iconName: 'settings', badge: true, items: simpleActions },
-          {
-            type: 'menu-dropdown',
-            ariaLabel: 'Notifications',
-            title: 'Notifications',
-            iconName: 'notification',
-            items: notificationActions,
-            disableUtilityCollapse: true,
-            badge: true,
-          },
-          {
-            type: 'menu-dropdown',
-            text: 'Jane Doe',
-            description: 'jane.doe@example.com',
-            iconName: 'envelope',
-            items: profileActions,
-            expandableGroups: urlParams.expandableGroups,
-          },
-        ]}
+        identity={{ href: '#', title: 'Title with an href' }}
+        utilities={badgedUtilities}
+      />
+      <br />
+      <TopNavigation
+        i18nStrings={I18N_STRINGS}
+        identity={{ href: '#', title: 'Title with an href' }}
+        visualContext="none"
+        search={<Input ariaLabel="Input field" value="" onChange={() => {}} />}
+        utilities={badgedUtilities}
       />
     </article>
   );

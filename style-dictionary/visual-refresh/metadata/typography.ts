@@ -49,6 +49,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontSizeDisplayXl: {
+    description: 'The default font size for extra large display text.',
+    themeable: true,
+    public: true,
+  },
   fontSizeHeadingXl: {
     description: 'The default font size for h1s.',
     themeable: true,
@@ -139,6 +144,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightDisplayXl: {
+    description: 'The default font weight for extra large display text.',
+    themeable: true,
+    public: true,
+  },
   fontSizeTabs: {
     description: 'The default font size for tabs.',
     themeable: true,
@@ -159,6 +169,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   letterSpacingDisplayL: {
     description: 'The default letter spacing for large display text.',
+    themeable: true,
+    public: true,
+  },
+  letterSpacingDisplayXl: {
+    description: 'The default letter spacing for extra large display text.',
     themeable: true,
     public: true,
   },
@@ -199,6 +214,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   lineHeightDisplayL: {
     description: 'The default line height for large display text.',
+    themeable: true,
+    public: true,
+  },
+  lineHeightDisplayXl: {
+    description: 'The default line height for extra large display text.',
     themeable: true,
     public: true,
   },

@@ -18,10 +18,13 @@ import {
   InputProps,
 } from '../../../input/interfaces';
 import InternalInput from '../../../input/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { BaseComponentProps } from '../../../types/base-component';
+import { BaseKeyDetail, NonCancelableEventHandler } from '../../../types/events';
+import { FormFieldValidationControlProps } from '../../../types/form-field';
+import { getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
-import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
-import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { useFormFieldContext } from '../../context/form-field-context';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { KeyCode } from '../../keycode';

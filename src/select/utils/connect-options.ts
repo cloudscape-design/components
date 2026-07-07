@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
+import { OptionDefinition } from '../../types/option';
 
 export const connectOptionsByValue = (
   options: ReadonlyArray<DropdownOption>,

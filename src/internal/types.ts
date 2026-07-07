@@ -1,21 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/**
- * Makes specified properties required.
- *
- * @example
- * ```
- * import { AlertProps } from '~components/alert/interfaces'
- *
- * type InternalAlertProps = SomeRequired<AlertProps, 'type'>
- *
- * function Alert(props: AlertProps) { ... }
- * function InternalAlert(props: InternalAlertProps) { ... }
- * ```
- */
-export type SomeRequired<Type, Keys extends keyof Type> = Type & {
-  [Key in Keys]-?: Type[Key];
-};
+
+// SomeRequired, Optional and FocusRingStyle are consumed by public component interfaces, so their
+// canonical definitions now live in the public `src/types` location. They are re-exported here for
+// backward compatibility with internal modules and downstream consumers of this internal path.
+export { FocusRingStyle, Optional, SomeRequired } from '../types/utils';
 
 /**
  * Makes specified properties optional.
@@ -28,39 +17,10 @@ export type SomeRequired<Type, Keys extends keyof Type> = Type & {
 export type SomeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 /**
- * Utility type that makes a union of given type and undefined.
- * @example
- * ```
- * type OptionalString = Optional<string>
- * type OptionalStringOrNumber = Optional<string | number>
- * ```
- */
-export type Optional<Type> = Type | undefined;
-
-/**
  * Use this function to mark conditions which should never be visited
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function assertNever(_value: never) {
   /* istanbul ignore next: this code is not intended to be visited */
   return null;
-}
-
-/**
- * Utility type for focus ring styling properties.
- * Used across components to provide consistent focus ring customization.
- *
- * @example
- * ```
- * export interface Style {
- *   root?: {
- *     focusRing?: FocusRingStyle;
- *   };
- * }
- * ```
- */
-export interface FocusRingStyle {
-  borderColor?: string;
-  borderRadius?: string;
-  borderWidth?: string;
 }

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { NonCancelableEventHandler } from '../../events';
+import { NonCancelableEventHandler } from '../../../types/events';
 import { isDevelopment } from '../../is-development';
 
 export default function checkControlled<ValueType, EventDetailType>(

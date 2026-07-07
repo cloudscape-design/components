@@ -28,6 +28,10 @@ const Alert = React.forwardRef(
       'Alert',
       {
         props: { type, visible, dismissible: props.dismissible },
+        metadata: {
+          hasPersistenceConfig: !!props.persistenceConfig?.uniqueKey,
+          crossServicePersistence: !!props.persistenceConfig?.crossServicePersistence,
+        },
       },
       analyticsMetadata
     );

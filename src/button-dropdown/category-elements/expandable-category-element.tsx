@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import Dropdown from '../../dropdown/internal';
@@ -13,7 +14,8 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from '../analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
@@ -62,6 +64,7 @@ const ExpandableCategoryElement = ({
   };
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -117,7 +120,10 @@ const ExpandableCategoryElement = ({
           )}
           <span>{item.text}</span>
           <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-            <InternalIcon name="caret-down-filled" />
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}

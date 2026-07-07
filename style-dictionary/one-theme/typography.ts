@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces.js';
+import merge from 'lodash/merge.js';
 
-export const tokens: StyleDictionary.TypographyDictionary = {
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/typography.js';
+
+const tokens: StyleDictionary.TypographyDictionary = {
   fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
 
   // ── Headings ──────────────────────────────────────────────────────────────
@@ -26,12 +29,18 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
 
+  fontSideNavigationSectionHeaderSize: '14px',
+  fontSideNavigationSectionHeaderWeight: '500',
+
   fontWeightDisplayL: '500',
+  fontWeightDisplayXl: '400',
 
   // ── Interactive elements ──────────────────────────────────────────────────
   fontWeightButton: '500',
-  fontWeightTabs: '500',
+  fontWeightTabs: '600',
   fontSizeTabs: '14px',
+  fontWayfindingLinkActiveWeight: '600',
+  fontWeightLinkSecondary: '500',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',
@@ -40,7 +49,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   // ── Form labels ───────────────────────────────────────────────────────────
   fontSizeFormLabel: '14px',
   lineHeightFormLabel: '20px',
-  fontWeightFormLabel: '500',
+  fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
   fontWeightBold: '500',
 
@@ -52,3 +61,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   fontWeightBreadcrumbCurrent: '400',
 };
+
+const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+
+export { expandedTokens as tokens };

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { add, differenceInDays } from 'date-fns';
 
+import { ChartDataTypes } from '../../../types/cartesian-chart';
 import { ChartScale, NumericChartScale } from '../../components/cartesian-chart/scales';
 import { X_TICK_COUNT_RATIO, Y_TICK_COUNT_RATIO } from './constants';
-import { ChartDataTypes } from './interfaces';
 
 // The number of ticks is currently defined by the length of the scale.
 // The x scale tends to have longer labels, so we're using less ticks for it.

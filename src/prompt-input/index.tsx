@@ -5,6 +5,7 @@ import React from 'react';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { supportsTokenMode } from './core/token-renderer';
 import { PromptInputProps } from './interfaces';
 import InternalPromptInput from './internal';
 
@@ -39,8 +40,12 @@ const PromptInput = React.forwardRef(
         maxRows,
       },
     });
+
+    const isTokenMode = props.tokens !== undefined && supportsTokenMode;
+
     return (
       <InternalPromptInput
+        key={isTokenMode ? 'token-mode' : 'string-mode'}
         readOnly={readOnly}
         autoComplete={autoComplete}
         autoFocus={autoFocus}

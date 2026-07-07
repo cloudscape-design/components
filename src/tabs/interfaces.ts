@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonProps } from '../button/interfaces';
 import { ContainerProps } from '../container/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
-import { FocusRingStyle } from '../internal/types';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FocusRingStyle } from '../types/utils';
 
 export interface TabsProps extends BaseComponentProps {
   /**

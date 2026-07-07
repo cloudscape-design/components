@@ -7,7 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { processAttributes } from '../internal/utils/with-native-attributes';
-import { InternalItemCardProps } from './interfaces';
+import { InternalItemCardProps } from './internal-interfaces';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } from './style';
 
 import styles from './styles.css.js';

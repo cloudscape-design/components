@@ -3,8 +3,8 @@
 import { ButtonProps } from '../button/interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { CancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { CancelableEventHandler } from '../types/events';
 
 export interface TopNavigationProps extends BaseComponentProps {
   /**
@@ -15,7 +15,21 @@ export interface TopNavigationProps extends BaseComponentProps {
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
    */
-  identity: TopNavigationProps.Identity;
+  identity?: TopNavigationProps.Identity;
+
+  /**
+   * Specifies custom navigation content.
+   * When provided, replaces all structured content (identity, search, utilities are ignored).
+   * @displayname customContent
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Visual context applied to the navigation bar.
+   * - "top-navigation": Applies the top-navigation visual context. The component maintains a dark appearance regardless of the page's light/dark mode setting. Child components automatically adapt their colors to work on this dark background.
+   * - "none": No visual context applied. The component and its children use the same colors as the rest of the page and respond to the global light/dark mode normally.
+   */
+  visualContext?: TopNavigationProps.VisualContext;
 
   /**
    * Use with an input or autosuggest control for a global search query.
@@ -126,4 +140,6 @@ export namespace TopNavigationProps {
     overflowMenuTriggerText?: string;
     overflowMenuTitleText?: string;
   }
+
+  export type VisualContext = 'top-navigation' | 'none';
 }

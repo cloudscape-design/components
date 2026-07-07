@@ -5,12 +5,14 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { getGroupColumnIds, getGroupSplit } from './column-groups/split-utils';
 import { ColumnGroupsLayout } from './column-groups/utils';
 import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
-import { InternalSelectionType, TableProps } from './interfaces';
+import { TableProps } from './interfaces';
+import { InternalSelectionType } from './internal-interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
 import { StickyColumnsModel } from './sticky-columns';
@@ -216,6 +218,7 @@ const Thead = React.forwardRef(
                 onFocusMove={onFocusMove}
                 singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
                 rowSpan={columnGroupsLayout.rows.length}
+                isGrouped={true}
               />
             ) : null}
 
@@ -331,6 +334,7 @@ const Thead = React.forwardRef(
                         resizerTooltipText={resizerTooltipText}
                         isLast={rightColIndex + rightColspan === totalColumns}
                         stickyColumnId={!isSplitFirst ? childIds[childIds.length - 1] : undefined}
+                        stickyBoundaryColumnId={!isSplitFirst ? rightChildIds[0] : undefined}
                       />
                     </React.Fragment>
                   );

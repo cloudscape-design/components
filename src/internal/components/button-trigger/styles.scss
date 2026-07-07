@@ -7,6 +7,7 @@
 @use '../../styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../../token/constants' as token;
+@use '../../styles/utils/theming';
 
 @use './motion';
 
@@ -70,7 +71,7 @@ $icon-offset: awsui.$space-xxxs;
     inset-inline-end: styles.$control-icon-horizontal-offset;
     inset-block-start: styles.$control-icon-vertical-offset;
     color: awsui.$color-text-button-inline-icon-default;
-    &.one-theme {
+    @include theming.one-theme-only {
       inset-block-start: calc(styles.$control-icon-vertical-offset + $icon-offset);
     }
   }
@@ -84,7 +85,7 @@ $icon-offset: awsui.$space-xxxs;
   &.pressed {
     > .arrow {
       transform: rotate(-180deg);
-      &.one-theme {
+      @include theming.one-theme-only {
         inset-block-start: calc(styles.$control-icon-vertical-offset - $icon-offset);
       }
     }
