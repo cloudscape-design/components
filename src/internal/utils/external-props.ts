@@ -5,11 +5,11 @@
  * Method to filter out internal properties prefixed by "__"
  */
 export const getExternalProps = <T extends Record<string, any>>(props: T): T => {
-  const externalPropNames = Object.keys(props).filter(
-    (propName: string) => propName.indexOf('__') !== 0
-  ) as (keyof T)[];
-  return externalPropNames.reduce<Partial<T>>((acc: Partial<T>, propName: keyof T) => {
-    acc[propName] = props[propName];
-    return acc;
-  }, {}) as T;
+  const externalProps: Partial<T> = {};
+  for (const propName in props) {
+    if (!propName.startsWith('__')) {
+      externalProps[propName] = props[propName];
+    }
+  }
+  return externalProps as T;
 };
