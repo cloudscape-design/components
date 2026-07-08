@@ -305,7 +305,15 @@ describe('Button dropdown filtering', () => {
     test('Escape closes the dropdown', () => {
       const { wrapper } = renderDropdown({ filteringType: 'auto' });
       wrapper.openDropdown();
-      wrapper.findOpenDropdown()!.keydown(KeyCode.escape);
+      wrapper.findFilteringInput()!.keydown(KeyCode.escape);
+      expect(wrapper.findOpenDropdown()).toBeNull();
+    });
+
+    test('Escape closes the dropdown when filtering input has text', () => {
+      const { wrapper } = renderDropdown({ filteringType: 'auto' });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Cu');
+      wrapper.findFilteringInput()!.keydown(KeyCode.escape);
       expect(wrapper.findOpenDropdown()).toBeNull();
     });
 
@@ -481,16 +489,19 @@ describe('Button dropdown filtering', () => {
         expandableGroups: true,
       });
       wrapper.openDropdown();
-      const categoryEl = wrapper.findExpandableCategoryById('states')!.getElement();
-      // With filtering enabled the focus stays on the input, so mouse down is prevented on items.
-      expect(fireEvent.mouseDown(categoryEl)).toBe(false);
+      expect(wrapper.findFilteringInput()!.findNativeInput().getElement()).toHaveFocus();
+      wrapper.findExpandableCategoryById('states')!.click();
+      expect(wrapper.findFilteringInput()!.findNativeInput().getElement()).toHaveFocus();
     });
 
     test('does not prevent mouse down for expandable categories without filtering', () => {
       const { wrapper } = renderDropdown({ items: expandableItems, expandableGroups: true });
       wrapper.openDropdown();
-      const categoryEl = wrapper.findExpandableCategoryById('states')!.getElement();
-      expect(fireEvent.mouseDown(categoryEl)).toBe(true);
+      const categoryEl = wrapper.findExpandableCategoryById('states')!;
+      categoryEl.click();
+      // Clicking on a category moves focus to the first item in the category.
+      const startMenuItemEl = wrapper.findItemById('start')!;
+      expect(startMenuItemEl.find('[role=menuitem]')!.getElement()).toHaveFocus();
     });
 
     test('flattens matching items from nested groups into the top-level group', () => {

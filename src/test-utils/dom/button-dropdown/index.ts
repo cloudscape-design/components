@@ -133,9 +133,9 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
-   * are no matching items, this contains the `noMatch` content. Returns null if there is no open dropdown or the
-   * footer is not displayed.
+   * Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+   * entered, this contains content rendered by filteringResultsText if there are matching items and the `noMatch`
+   * content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
    *
    * This utility does not open the dropdown. To find the footer region, call `openDropdown()` first.
    */
