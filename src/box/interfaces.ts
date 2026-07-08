@@ -44,7 +44,6 @@ export interface BoxProps extends BaseComponentProps {
    *
    * Composes with existing Box props such as `padding` and `margin`.
    *
-   * @awsuiSystem one-theme
    */
   visualAccent?: BoxProps.VisualAccent;
   /**
