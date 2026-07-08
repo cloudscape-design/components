@@ -32,6 +32,7 @@ export type KeyboardAndUAPCoordinateGetter = (
 
 type KeyboardAndUAPSensorOptions = KeyboardSensorOptions & {
   coordinateGetter: KeyboardAndUAPCoordinateGetter;
+  direction?: 'vertical' | 'horizontal';
   onActivation?({ event }: { event: KeyboardEvent | MouseEvent }): void;
 };
 
@@ -99,13 +100,28 @@ export class KeyboardAndUAPSensor implements SensorInstance {
         return;
       }
 
-      switch (code) {
-        case KeyboardCode.Up:
-          this.handleDirectionalMove(event, 'up');
-          break;
-        case KeyboardCode.Down:
-          this.handleDirectionalMove(event, 'down');
-          break;
+      const { direction = 'vertical' } = options;
+      if (direction === 'horizontal') {
+        // For a horizontal list the reorder axis is inline: ArrowLeft/ArrowRight drive the move.
+        // The 'up'/'down' argument denotes "towards start"/"towards end" of the list; the actual
+        // physical-to-logical mapping (incl. RTL) is resolved by the reorder hook via positionDelta.
+        switch (code) {
+          case KeyboardCode.Left:
+            this.handleDirectionalMove(event, 'up');
+            break;
+          case KeyboardCode.Right:
+            this.handleDirectionalMove(event, 'down');
+            break;
+        }
+      } else {
+        switch (code) {
+          case KeyboardCode.Up:
+            this.handleDirectionalMove(event, 'up');
+            break;
+          case KeyboardCode.Down:
+            this.handleDirectionalMove(event, 'down');
+            break;
+        }
       }
     }
   }

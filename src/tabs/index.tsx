@@ -56,19 +56,26 @@ export default function Tabs({
   keyboardActivationMode = 'automatic',
   actions,
   style,
+  reorderable,
+  onReorder,
+  addTabButton,
+  onAddTab,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
-    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode },
+    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode, reorderable, addTabButton },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasHeaderActions: !!actions,
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
       hasEagerLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'eager'),
       hasLazyLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'lazy'),
+      hasReorderable: !!reorderable,
+      hasPinnedTabs: tabs.some(tab => !!tab.disableReorder),
+      hasAddTabButton: !!addTabButton,
     },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
@@ -156,6 +163,10 @@ export default function Tabs({
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
       style={style}
+      reorderable={reorderable}
+      onReorder={onReorder}
+      addTabButton={addTabButton}
+      onAddTab={onAddTab}
     />
   );
 

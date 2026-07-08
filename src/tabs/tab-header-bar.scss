@@ -292,3 +292,15 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-focusable {
   /* used to manage focusable logic */
 }
+
+.tabs-tab-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-end: awsui.$space-scaled-xxs;
+}
+
+.add-tab-button {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: awsui.$space-scaled-xxs;
+}

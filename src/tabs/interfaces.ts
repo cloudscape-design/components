@@ -109,6 +109,35 @@ export interface TabsProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: TabsProps.Style;
+
+  /**
+   * When set to `true`, the tabs become reorderable via drag-and-drop or keyboard.
+   * The component keeps `role="application"` (as with `action`/`dismissible`) and
+   * a leading drag handle is rendered on each tab that is not pinned via `disableReorder`.
+   * Reordering is controlled: emit `onReorder` to update the `tabs` order in your state.
+   */
+  reorderable?: boolean;
+
+  /**
+   * Called when the user reorders tabs via drag-and-drop or the keyboard.
+   * The event `detail` contains the new order as `tabIds`. When `reorderable` is `true`
+   * the consumer MUST use this callback to update the `tabs` prop; otherwise the order
+   * will not change.
+   */
+  onReorder?: NonCancelableEventHandler<TabsProps.ReorderDetail>;
+
+  /**
+   * When `true`, a trailing "+" (add-tab) button is rendered inside the tab header,
+   * after the tab list and before the right scroll button. It sits outside the roving
+   * tab order and is reachable via the Tab key. Provide `onAddTab` to handle clicks
+   * and `i18nStrings.addTabAriaLabel` for its accessible name.
+   */
+  addTabButton?: boolean;
+
+  /**
+   * Called when the user activates the add-tab button (mouse click, Enter, or Space).
+   */
+  onAddTab?: NonCancelableEventHandler<TabsProps.AddTabDetail>;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -172,7 +201,24 @@ export namespace TabsProps {
      * - 'lazy': Like 'eager', but content is only rendered after the tab is first activated.
      */
     contentRenderStrategy?: 'active' | 'eager' | 'lazy';
+    /**
+     * (Optional) When Tabs is `reorderable`, marks this tab as pinned:
+     * it has no drag handle, cannot be picked up for reorder, and is not a valid
+     * drop slot (its position is locked). Composes independently with `dismissible` and `action`.
+     * Has no effect when `reorderable` is not set on the parent.
+     */
+    disableReorder?: boolean;
   }
+
+  export interface ReorderDetail {
+    /**
+     * The new order of tab ids after the reorder was committed.
+     */
+    tabIds: string[];
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  export interface AddTabDetail {}
 
   export interface ChangeDetail {
     /**
@@ -195,10 +241,39 @@ export namespace TabsProps {
      */
     scrollRightAriaLabel?: string;
     /**
-     * ARIA role description for the Tabs component when an action or dismissible prop is in use. This is used
-     * with role="application" to provide further information on the purpose of this component
+     * ARIA role description for the Tabs component when an action, dismissible or reorderable prop is in use.
+     * This is used with role="application" to provide further information on the purpose of this component.
      */
     tabsWithActionsAriaRoleDescription?: string;
+    /**
+     * ARIA label for the drag handle rendered on each reorderable tab. Combined with the tab label.
+     */
+    reorderDragHandleAriaLabel?: string;
+    /**
+     * ARIA description for the drag handle. Use this to describe the keyboard model
+     * (e.g. "Press Space to pick up, Arrow keys to move, Space to drop, Escape to cancel").
+     */
+    reorderDragHandleAriaDescription?: string;
+    /**
+     * Announced to screen readers when a tab is picked up for reorder.
+     */
+    liveAnnouncementReorderStarted?: (position: number, total: number) => string;
+    /**
+     * Announced while a tab is being moved during a reorder.
+     */
+    liveAnnouncementReorderMoved?: (from: number, to: number, total: number) => string;
+    /**
+     * Announced when the user commits a reorder.
+     */
+    liveAnnouncementReorderCommitted?: (from: number, to: number, total: number) => string;
+    /**
+     * Announced when the user cancels a reorder (e.g. via Escape).
+     */
+    liveAnnouncementReorderDiscarded?: string;
+    /**
+     * ARIA label for the add-tab ("+") button rendered when `addTabButton` is `true`.
+     */
+    addTabAriaLabel?: string;
   }
 
   export interface Style {
