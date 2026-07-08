@@ -3,5 +3,4 @@
 module.exports.rules = {
   'prefer-live-region': require('./prefer-live-region'),
   'no-legacy-tokens': require('./no-legacy-tokens'),
-  'no-internal-in-public-interfaces': require('./no-internal-in-public-interfaces'),
 };
