@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "Genişlet",
     "ariaLabels.collapseButtonLabel": "Daralt",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",
-    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir"
+    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir",
+    "i18nStrings.sortDropdown.sortAscending": "Artan sıralama",
+    "i18nStrings.sortDropdown.sortDescending": "Azalan sıralama",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Çok sütunlu sıralama (Shift + Tıklama)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Sıralamaya ekle (artan)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Sıralamaya ekle (azalan)",
+    "i18nStrings.sortDropdown.removeFromSort": "Sıralamadan kaldır",
+    "i18nStrings.clearSort": "Sıralamayı temizle",
+    "ariaLabels.sortMenuTriggerLabel": "Sıralama seçenekleri",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "Bu sütun zaten sıralandı",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "Bu sütun sıralanmadı",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} azalan} other {{columnLabel} artan}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Tablo {columns} ölçütüne göre sıralandı",
+    "i18nStrings.liveAnnouncementSortCleared": "Sıralama temizlendi"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Sola kaydır",

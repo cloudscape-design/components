@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "展開する",
     "ariaLabels.collapseButtonLabel": "折りたたむ",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
-    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
+    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能",
+    "i18nStrings.sortDropdown.sortAscending": "昇順にソート",
+    "i18nStrings.sortDropdown.sortDescending": "降順にソート",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "複数列ソート (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "ソートに追加 (昇順)",
+    "i18nStrings.sortDropdown.addToSortDescending": "ソートに追加 (降順)",
+    "i18nStrings.sortDropdown.removeFromSort": "ソートから削除",
+    "i18nStrings.clearSort": "ソートをクリア",
+    "ariaLabels.sortMenuTriggerLabel": "ソートオプション",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "この列は既にソートされています",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "この列はソートされていません",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} 降順} other {{columnLabel} 昇順}}",
+    "i18nStrings.liveAnnouncementSortOrder": "表は {columns}でソートされています",
+    "i18nStrings.liveAnnouncementSortCleared": "ソートがクリアされました"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",

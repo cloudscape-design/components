@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "확장",
     "ariaLabels.collapseButtonLabel": "축소",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",
-    "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능"
+    "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능",
+    "i18nStrings.sortDropdown.sortAscending": "오름차순 정렬",
+    "i18nStrings.sortDropdown.sortDescending": "내림차순 정렬",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "복수 열 정렬(Shift 키를 누른 채 클릭)",
+    "i18nStrings.sortDropdown.addToSortAscending": "정렬에 추가(오름차순)",
+    "i18nStrings.sortDropdown.addToSortDescending": "정렬에 추가 (내림차순)",
+    "i18nStrings.sortDropdown.removeFromSort": "정렬에서 제거",
+    "i18nStrings.clearSort": "정렬 지우기",
+    "ariaLabels.sortMenuTriggerLabel": "정렬 옵션",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "이 열은 이미 정렬되었습니다.",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "이 열은 정렬되지 않았습니다.",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} 내림차순} other {{columnLabel} 오름차순}}",
+    "i18nStrings.liveAnnouncementSortOrder": "{columns} 기준 테이블 정렬",
+    "i18nStrings.liveAnnouncementSortCleared": "정렬이 지워졌습니다."
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "왼쪽으로 스크롤",

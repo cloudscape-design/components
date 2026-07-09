@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "Expandir",
     "ariaLabels.collapseButtonLabel": "Recolher",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erro",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editável"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editável",
+    "i18nStrings.sortDropdown.sortAscending": "Classificar em ordem crescente",
+    "i18nStrings.sortDropdown.sortDescending": "Classificar em ordem decrescente",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Classificação em várias colunas (Shift + Click)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Adicionar à classificação (ascendente)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Adicionar à classificação (decrescente)",
+    "i18nStrings.sortDropdown.removeFromSort": "Remover da classificação",
+    "i18nStrings.clearSort": "Limpar classificação",
+    "ariaLabels.sortMenuTriggerLabel": "Opções de classificação",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "Esta coluna já está classificada",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "Esta coluna não está classificada",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} ordem decrescente} other {{columnLabel} ordem crescente}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Tabela ordenada por {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Classificação cancelada"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Rolar para a esquerda",

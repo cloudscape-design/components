@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "展开",
     "ariaLabels.collapseButtonLabel": "折叠",
     "columnDefinitions.editConfig.errorIconAriaLabel": "错误",
-    "columnDefinitions.editConfig.editIconAriaLabel": "可编辑"
+    "columnDefinitions.editConfig.editIconAriaLabel": "可编辑",
+    "i18nStrings.sortDropdown.sortAscending": "升序排序",
+    "i18nStrings.sortDropdown.sortDescending": "降序排序",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "多列排序（按住 Shift 键点击）",
+    "i18nStrings.sortDropdown.addToSortAscending": "添加到排序（升序）",
+    "i18nStrings.sortDropdown.addToSortDescending": "添加到排序（降序）",
+    "i18nStrings.sortDropdown.removeFromSort": "从排序中移除",
+    "i18nStrings.clearSort": "清除排序",
+    "ariaLabels.sortMenuTriggerLabel": "排序选项",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "此列已排序",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "此列未排序",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} 降序} other {{columnLabel} 升序}}",
+    "i18nStrings.liveAnnouncementSortOrder": "表格已按 {columns} 排序",
+    "i18nStrings.liveAnnouncementSortCleared": "排序已清除"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "向左滚动",

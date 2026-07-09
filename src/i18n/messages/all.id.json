@@ -408,7 +408,20 @@
     "ariaLabels.expandButtonLabel": "Luaskan",
     "ariaLabels.collapseButtonLabel": "Ciutkan",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",
-    "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit"
+    "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit",
+    "i18nStrings.sortDropdown.sortAscending": "Urutkan naik",
+    "i18nStrings.sortDropdown.sortDescending": "Urutkan turun",
+    "i18nStrings.sortDropdown.multiColumnSortGroup": "Urutan multikolom (Shift + Klik)",
+    "i18nStrings.sortDropdown.addToSortAscending": "Tambahkan untuk mengurutkan (naik)",
+    "i18nStrings.sortDropdown.addToSortDescending": "Tambahkan untuk mengurutkan (turun)",
+    "i18nStrings.sortDropdown.removeFromSort": "Hapus dari urutan",
+    "i18nStrings.clearSort": "Hapus urutan",
+    "ariaLabels.sortMenuTriggerLabel": "Opsi urutan",
+    "i18nStrings.sortDropdown.addToSortDisabledReason": "Kolom ini sudah diurutkan",
+    "i18nStrings.sortDropdown.removeFromSortDisabledReason": "Kolom ini tidak diurutkan",
+    "i18nStrings.liveAnnouncementSortColumn": "{isDescending, select, true {{columnLabel} turun} other {{columnLabel} naik}}",
+    "i18nStrings.liveAnnouncementSortOrder": "Tabel diurutkan berdasarkan {columns}",
+    "i18nStrings.liveAnnouncementSortCleared": "Pengurutan dibersihkan"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",
