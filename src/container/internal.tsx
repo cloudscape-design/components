@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -105,7 +105,21 @@ export default function InternalContainer({
     __fullPage && isRefresh && !isMobile
   );
   const contentId = useUniqueId();
-  const headerId = useUniqueId('awsui-container-header-');
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [hasFocusableDescendant, setHasFocusableDescendant] = useState(false);
+
+  // axe scrollable-region-focusable passes when EITHER the scrollable element has tabindex≥0
+  // OR it contains a focusable descendant. We prefer the descendant path to avoid breaking
+  // downstream tab order — only add tabIndex when no focusable child exists.
+  useLayoutEffect(() => {
+    if (!fitHeight || !contentRef.current) {
+      setHasFocusableDescendant(false);
+      return;
+    }
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    setHasFocusableDescendant(contentRef.current.querySelector(focusableSelector) !== null);
+  }, [fitHeight, children]);
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
 
@@ -163,7 +177,6 @@ export default function InternalContainer({
             <ContainerHeaderContextProvider>
               <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
                 <div
-                  id={headerId}
                   className={clsx(
                     isRefresh && styles.refresh,
                     styles.header,
@@ -193,12 +206,12 @@ export default function InternalContainer({
             </ContainerHeaderContextProvider>
           )}
           {/* tabIndex={0} makes the scrollable region keyboard-reachable (axe: scrollable-region-focusable).
-              role="region" + aria-labelledby is conditional on header presence because an unnamed region
-              (no accessible name) is worse than no landmark at all. */}
+              We only add tabIndex when no focusable descendant exists — descendant focusability satisfies
+              the rule and avoids inserting an extra tab stop that breaks downstream tab order. */}
           <div
+            ref={contentRef}
             className={clsx(styles.content, fitHeight && styles['content-fit-height'])}
-            {...(fitHeight && { tabIndex: 0 })}
-            {...(fitHeight && header && { role: 'region', 'aria-labelledby': headerId })}
+            {...(fitHeight && !hasFocusableDescendant && { tabIndex: 0 })}
           >
             <div
               className={clsx(styles['content-inner'], testStyles['content-inner'], {

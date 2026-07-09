@@ -22,7 +22,7 @@ describe('Accessibility: scrollable-region-focusable (fitHeight)', () => {
     expect(contentDiv).not.toHaveAttribute('aria-labelledby');
   });
 
-  test('fitHeight=true with no header: tabIndex=0, no role, no aria-labelledby', () => {
+  test('fitHeight=true with no header and no focusable descendants: tabIndex=0, no role, no aria-labelledby', () => {
     const { wrapper } = renderContainer(<Container fitHeight={true}>content</Container>);
     const contentDiv = wrapper.findByClassName(styles['content-fit-height'])!.getElement();
     expect(contentDiv).toHaveAttribute('tabindex', '0');
@@ -30,22 +30,27 @@ describe('Accessibility: scrollable-region-focusable (fitHeight)', () => {
     expect(contentDiv).not.toHaveAttribute('aria-labelledby');
   });
 
-  test('fitHeight=true with header: tabIndex=0, role="region", aria-labelledby resolves to header wrapper', () => {
-    const { wrapper, container } = renderContainer(
+  test('fitHeight=true with header and no focusable descendants: tabIndex=0, no role, no aria-labelledby', () => {
+    const { wrapper } = renderContainer(
       <Container fitHeight={true} header="My Header">
         content
       </Container>
     );
     const contentDiv = wrapper.findByClassName(styles['content-fit-height'])!.getElement();
     expect(contentDiv).toHaveAttribute('tabindex', '0');
-    expect(contentDiv).toHaveAttribute('role', 'region');
+    expect(contentDiv).not.toHaveAttribute('role');
+    expect(contentDiv).not.toHaveAttribute('aria-labelledby');
+  });
 
-    const labelledById = contentDiv.getAttribute('aria-labelledby');
-    expect(labelledById).toBeTruthy();
-
-    // Verify the referenced element exists in the DOM and is the header wrapper
-    const headerElement = container.querySelector(`#${labelledById}`);
-    expect(headerElement).not.toBeNull();
-    expect(headerElement).toHaveClass(styles.header);
+  test('fitHeight=true with a focusable descendant: no tabIndex, no role, no aria-labelledby', () => {
+    const { wrapper } = renderContainer(
+      <Container fitHeight={true} header="My Header">
+        <button>Click me</button>
+      </Container>
+    );
+    const contentDiv = wrapper.findByClassName(styles['content-fit-height'])!.getElement();
+    expect(contentDiv).not.toHaveAttribute('tabindex');
+    expect(contentDiv).not.toHaveAttribute('role');
+    expect(contentDiv).not.toHaveAttribute('aria-labelledby');
   });
 });

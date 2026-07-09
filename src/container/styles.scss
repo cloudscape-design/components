@@ -262,6 +262,7 @@
   }
 }
 .content-inner {
+  box-sizing: border-box;
   block-size: 100%;
   min-block-size: 0;
   min-inline-size: 0;
