@@ -574,5 +574,30 @@ export namespace PromptInputProps {
       fontStyle?: string;
       fontWeight?: string;
     };
+    /**
+     * Style overrides for the menus/shortcuts dropdown that appears when a trigger
+     * character is typed. Use this to match the dropdown's visual appearance to a
+     * custom design system theme.
+     *
+     * @awsuiSystem core
+     */
+    menu?: {
+      /**
+       * Background color of the dropdown content wrapper.
+       */
+      backgroundColor?: string;
+      /**
+       * Border color of the dropdown content wrapper.
+       */
+      borderColor?: string;
+      /**
+       * Border radius of the dropdown content wrapper.
+       */
+      borderRadius?: string;
+      /**
+       * Border width of the dropdown content wrapper.
+       */
+      borderWidth?: string;
+    };
   }
 }

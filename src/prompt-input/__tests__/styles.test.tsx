@@ -60,6 +60,12 @@ describe('getPromptInputStyles', () => {
         fontWeight: '400',
         fontStyle: 'italic',
       },
+      menu: {
+        backgroundColor: '#1a1a2e',
+        borderColor: '#7b2d8b',
+        borderRadius: '12px',
+        borderWidth: '1.5px',
+      },
     };
 
     expect(getPromptInputStyles(allStyles)).toEqual({
@@ -93,6 +99,10 @@ describe('getPromptInputStyles', () => {
       [customCssProps.promptInputStylePlaceholderFontSize]: '14px',
       [customCssProps.promptInputStylePlaceholderFontWeight]: '400',
       [customCssProps.promptInputStylePlaceholderFontStyle]: 'italic',
+      [customCssProps.promptInputMenuStyleBackgroundColor]: '#1a1a2e',
+      [customCssProps.promptInputMenuStyleBorderColor]: '#7b2d8b',
+      [customCssProps.promptInputMenuStyleBorderRadius]: '12px',
+      [customCssProps.promptInputMenuStyleBorderWidth]: '1.5px',
     });
   });
 

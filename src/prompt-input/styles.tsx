@@ -40,5 +40,9 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
     [customCssProps.promptInputStylePlaceholderFontSize]: style?.placeholder?.fontSize,
     [customCssProps.promptInputStylePlaceholderFontWeight]: style?.placeholder?.fontWeight,
     [customCssProps.promptInputStylePlaceholderFontStyle]: style?.placeholder?.fontStyle,
+    [customCssProps.promptInputMenuStyleBackgroundColor]: style?.menu?.backgroundColor,
+    [customCssProps.promptInputMenuStyleBorderColor]: style?.menu?.borderColor,
+    [customCssProps.promptInputMenuStyleBorderRadius]: style?.menu?.borderRadius,
+    [customCssProps.promptInputMenuStyleBorderWidth]: style?.menu?.borderWidth,
   };
 }

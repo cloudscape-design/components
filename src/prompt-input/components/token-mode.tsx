@@ -4,6 +4,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { DropdownProps } from '../../dropdown/interfaces';
 import Dropdown from '../../dropdown/internal';
 import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
@@ -53,6 +54,8 @@ interface TokenModeProps {
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   maxMenuHeight?: number;
+  /** Style overrides forwarded to the menu dropdown. */
+  menuStyle?: PromptInputProps.Style['menu'];
 }
 
 const MENU_MIN_WIDTH = 300;
@@ -76,6 +79,7 @@ export default function TokenMode({
   menuItemsHandlers,
   menuDropdownStatus,
   maxMenuHeight,
+  menuStyle,
   handleInput,
   handleLoadMore,
   editableElementAttributes,
@@ -117,6 +121,18 @@ export default function TokenMode({
           minWidth={MENU_MIN_WIDTH}
           maxHeight={maxMenuHeight}
           expandToViewport={true}
+          style={
+            menuStyle
+              ? ({
+                  dropdown: {
+                    background: menuStyle.backgroundColor,
+                    borderColor: menuStyle.borderColor,
+                    borderRadius: menuStyle.borderRadius,
+                    borderWidth: menuStyle.borderWidth,
+                  },
+                } satisfies DropdownProps.Style)
+              : undefined
+          }
           open={
             !!(
               shouldRenderMenuDropdown &&

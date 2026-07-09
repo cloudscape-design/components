@@ -444,6 +444,7 @@ const InternalPromptInput = React.forwardRef(
               menuItemsHandlers={tokenMode.menuItemsHandlers}
               menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
+              menuStyle={style?.menu}
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}
