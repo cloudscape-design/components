@@ -138,6 +138,23 @@ export interface TabsProps extends BaseComponentProps {
    * Called when the user activates the add-tab button (mouse click, Enter, or Space).
    */
   onAddTab?: NonCancelableEventHandler<TabsProps.AddTabDetail>;
+
+  /**
+   * Opts this Tabs instance into cross-list reordering. When two or more `reorderable`
+   * Tabs instances share the same non-empty `reorderGroup` value, tabs can be dragged
+   * (pointer or keyboard) from one instance into another — no wrapper or provider is
+   * needed. Has no effect unless the instance is also `reorderable`.
+   */
+  reorderGroup?: string;
+
+  /**
+   * Called when a tab is moved from one list to another within the same reorder group.
+   * The event `detail` (`TabMoveDetail`) identifies the moved tab, the source and target
+   * instances, the target insertion index, and the resulting id order of both lists.
+   * This is a controlled event: the consumer MUST update BOTH lists' `tabs` arrays in
+   * response (remove from source, insert into target). Fires on both instances involved.
+   */
+  onTabMove?: NonCancelableEventHandler<TabsProps.TabMoveDetail>;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -220,6 +237,35 @@ export namespace TabsProps {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface AddTabDetail {}
 
+  export interface TabMoveDetail {
+    /**
+     * The id of the tab that was moved.
+     */
+    tabId: string;
+    /**
+     * The `id` of the source Tabs instance the tab was moved out of.
+     * This is the Tabs instance's own component id (its `BaseComponentProps` id / analytics id).
+     */
+    sourceGroupTabsId: string;
+    /**
+     * The `id` of the target Tabs instance the tab was moved into.
+     */
+    targetGroupTabsId: string;
+    /**
+     * The index at which the moved tab should be inserted into the target list
+     * (respecting any pinned/`disableReorder` tabs in the target).
+     */
+    targetIndex: number;
+    /**
+     * The resulting id order of the SOURCE list after removing the moved tab.
+     */
+    sourceTabIds: string[];
+    /**
+     * The resulting id order of the TARGET list after inserting the moved tab.
+     */
+    targetTabIds: string[];
+  }
+
   export interface ChangeDetail {
     /**
      * The ID of the clicked tab.
@@ -270,6 +316,13 @@ export namespace TabsProps {
      * Announced when the user cancels a reorder (e.g. via Escape).
      */
     liveAnnouncementReorderDiscarded?: string;
+    /**
+     * Announced when a tab is moved across lists (cross-list reorder).
+     * Receives the moved tab's target position, the total count in the target list,
+     * and both source and target list labels are the app's responsibility to convey
+     * via the provided numbers.
+     */
+    liveAnnouncementTabMovedAcrossLists?: (targetPosition: number, targetTotal: number) => string;
     /**
      * ARIA label for the add-tab ("+") button rendered when `addTabButton` is `true`.
      */

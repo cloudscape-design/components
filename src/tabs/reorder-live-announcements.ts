@@ -26,3 +26,8 @@ export const formatTabReorderCommitted: CustomHandler<
     total,
     isInitialPosition: `${initialPosition === finalPosition}`,
   });
+
+export const formatTabMovedAcrossLists: CustomHandler<
+  TabsProps.I18nStrings['liveAnnouncementTabMovedAcrossLists'],
+  I18nFormatArgTypes['tabs']['i18nStrings.liveAnnouncementTabMovedAcrossLists']
+> = format => (targetPosition, targetTotal) => format({ targetPosition, targetTotal });

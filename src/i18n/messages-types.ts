@@ -559,6 +559,10 @@ export interface I18nFormatArgTypes {
       finalPosition: string | number;
     };
     'i18nStrings.liveAnnouncementReorderDiscarded': never;
+    'i18nStrings.liveAnnouncementTabMovedAcrossLists': {
+      targetPosition: string | number;
+      targetTotal: string | number;
+    };
     'i18nStrings.addTabAriaLabel': never;
   };
   'tag-editor': {

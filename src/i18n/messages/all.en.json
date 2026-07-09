@@ -421,6 +421,7 @@
     "i18nStrings.liveAnnouncementReorderMoved": "{isInitialPosition, select, true {Moving tab back to position {currentPosition} of {total}} false {Moving tab to position {currentPosition} of {total}} other {}}",
     "i18nStrings.liveAnnouncementReorderCommitted": "{isInitialPosition, select, true {Tab moved back to its original position {initialPosition} of {total}} false {Tab moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
     "i18nStrings.liveAnnouncementReorderDiscarded": "Reordering canceled",
+    "i18nStrings.liveAnnouncementTabMovedAcrossLists": "Tab moved to position {targetPosition} of {targetTotal} in the destination tab list",
     "i18nStrings.addTabAriaLabel": "Add new tab"
   },
   "tag-editor": {

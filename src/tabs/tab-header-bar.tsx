@@ -27,6 +27,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import InternalLiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -35,6 +36,7 @@ import {
 } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
 import {
+  formatTabMovedAcrossLists,
   formatTabReorderCommitted,
   formatTabReorderMoved,
   formatTabReorderStarted,
@@ -47,6 +49,7 @@ import {
   scrollIntoView,
 } from './scroll-utils';
 import { getTabContainerStyles, getTabStyles } from './styles';
+import useCrossListReorder from './use-cross-list-reorder';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -97,6 +100,9 @@ interface TabHeaderBarProps {
   onReorder?: TabsProps['onReorder'];
   addTabButton?: boolean;
   onAddTab?: TabsProps['onAddTab'];
+  tabsId: string;
+  reorderGroup?: string;
+  onTabMove?: TabsProps['onTabMove'];
 }
 
 export function TabHeaderBar({
@@ -115,6 +121,9 @@ export function TabHeaderBar({
   onReorder,
   addTabButton = false,
   onAddTab,
+  tabsId,
+  reorderGroup,
+  onTabMove,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -137,6 +146,57 @@ export function TabHeaderBar({
   const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
   const isApplicationMode = hasActionOrDismissible || reorderable;
   const hadApplicationMode = usePrevious(isApplicationMode);
+
+  // Selects an adjacent tab after the active tab leaves this (source) list in a cross-list move,
+  // so focus/selection never lands on nothing.
+  const selectAdjacentAfterRemoval = (removedTabId: string, remainingTabIds: string[]) => {
+    if (activeTabId !== removedTabId || remainingTabIds.length === 0) {
+      return;
+    }
+    const removedIndex = tabs.findIndex(tab => tab.id === removedTabId);
+    const nextIndex = Math.min(Math.max(removedIndex, 0), remainingTabIds.length - 1);
+    const nextTabId = remainingTabIds[nextIndex];
+    if (nextTabId) {
+      setPreviousActiveTabId(nextTabId);
+      setFocusedTabId(nextTabId);
+      onChange({ activeTabId: nextTabId, activeTabHref: tabs.find(tab => tab.id === nextTabId)?.href });
+    }
+  };
+
+  const focusTabDragHandle = (tabId: string) => {
+    const handle = containerObjectRef.current?.querySelector<HTMLElement>(
+      `[data-testid="awsui-tab-drag-handle-${tabId}"] [role="button"]`
+    );
+    handle?.focus();
+  };
+
+  const resolvedMovedAcrossLists = i18n(
+    'i18nStrings.liveAnnouncementTabMovedAcrossLists',
+    i18nStrings?.liveAnnouncementTabMovedAcrossLists,
+    formatTabMovedAcrossLists
+  );
+
+  const {
+    active: crossListActive,
+    dropIndicatorOffset,
+    liveMessage: crossListLiveMessage,
+    onReorderStart,
+    onReorderMove,
+    onReorderEnd,
+    onReorderCancel,
+    handleDragHandleKeyDown,
+  } = useCrossListReorder({
+    reorderable,
+    reorderGroup,
+    tabsId,
+    containerRef: containerObjectRef,
+    tabRefs,
+    tabs,
+    onTabMove,
+    selectAdjacentAfterRemoval,
+    focusTabDragHandle,
+    formatMovedAcrossLists: (targetPosition, targetTotal) => resolvedMovedAcrossLists?.(targetPosition, targetTotal),
+  });
   const tabActionAttributes = isApplicationMode
     ? {
         role: 'application',
@@ -378,6 +438,10 @@ export function TabHeaderBar({
               <SortableArea<TabsProps.Tab>
                 items={tabs}
                 direction="horizontal"
+                onReorderStart={onReorderStart}
+                onReorderMove={onReorderMove}
+                onReorderEnd={onReorderEnd}
+                onReorderCancel={onReorderCancel}
                 itemDefinition={{
                   id: tab => tab.id,
                   label: tab => (typeof tab.label === 'string' ? tab.label : tab.id),
@@ -456,6 +520,18 @@ export function TabHeaderBar({
               data-testid="awsui-tab-add-button"
             />
           </span>
+        )}
+        {crossListActive && dropIndicatorOffset !== null && (
+          <span
+            aria-hidden="true"
+            className={styles['tabs-drop-indicator']}
+            style={{ insetInlineStart: dropIndicatorOffset }}
+          />
+        )}
+        {crossListActive && (
+          <InternalLiveRegion hidden={true} tagName="span" preventInitialAnnouncement={true}>
+            {crossListLiveMessage}
+          </InternalLiveRegion>
         )}
       </div>
       {actions && <div className={styles['actions-container']}>{actions}</div>}
@@ -635,6 +711,7 @@ export function TabHeaderBar({
             <span
               className={clsx(styles['tabs-tab-drag-handle'], testUtilStyles['tab-drag-handle'])}
               data-testid={`awsui-tab-drag-handle-${tab.id}`}
+              onKeyDownCapture={crossListActive ? event => handleDragHandleKeyDown(tab.id, event) : undefined}
             >
               <InternalDragHandle {...sortable.dragHandleProps} />
             </span>

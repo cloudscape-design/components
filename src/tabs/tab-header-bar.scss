@@ -26,6 +26,20 @@ $label-horizontal-spacing: awsui.$space-xs;
   display: flex;
   flex-grow: 1;
   max-inline-size: 100%;
+  position: relative;
+}
+
+.tabs-drop-indicator {
+  position: absolute;
+  inset-block: awsui.$space-scaled-xs;
+  inline-size: 2px;
+  border-start-start-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-start-radius: 2px;
+  border-end-end-radius: 2px;
+  background-color: awsui.$color-drag-placeholder-hover;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .tabs-header-list {

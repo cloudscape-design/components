@@ -60,6 +60,8 @@ export default function Tabs({
   onReorder,
   addTabButton,
   onAddTab,
+  reorderGroup,
+  onTabMove,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -92,6 +94,11 @@ export default function Tabs({
   }
 
   const baseProps = getBaseProps(rest);
+
+  // Stable, app-correlatable id for this Tabs instance within a cross-list reorder group.
+  // Prefer a consumer-provided `id` (so `onTabMove` details are meaningful to the app),
+  // falling back to the generated namespace when none is set.
+  const tabsId = (baseProps.id as string | undefined) ?? idNamespace;
 
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataTabsComponent = {
     name: 'awsui.Tabs',
@@ -167,6 +174,9 @@ export default function Tabs({
       onReorder={onReorder}
       addTabButton={addTabButton}
       onAddTab={onAddTab}
+      tabsId={tabsId}
+      reorderGroup={reorderGroup}
+      onTabMove={onTabMove}
     />
   );
 

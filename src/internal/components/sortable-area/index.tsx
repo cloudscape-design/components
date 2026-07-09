@@ -35,6 +35,10 @@ export default function SortableArea<Item>({
   disableReorder,
   i18nStrings,
   direction = 'vertical',
+  onReorderStart,
+  onReorderMove,
+  onReorderEnd,
+  onReorderCancel,
 }: SortableAreaProps<Item>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors, isKeyboard } =
     useDragAndDropReorder({
@@ -59,10 +63,27 @@ export default function SortableArea<Item>({
           : undefined,
         container: portalContainer ?? undefined,
       }}
-      onDragStart={({ active }) => setActiveItemId(active.id)}
+      onDragStart={({ active }) => {
+        setActiveItemId(active.id);
+        onReorderStart?.(String(active.id));
+      }}
+      onDragMove={({ active }) => {
+        if (onReorderMove) {
+          const rect = active.rect.current.translated;
+          onReorderMove(
+            String(active.id),
+            rect ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height } : null
+          );
+        }
+      }}
       onDragEnd={event => {
         setActiveItemId(null);
         const { active, over } = event;
+        // Allow an external (cross-list) coordinator to consume the drop; when it does,
+        // skip the within-list reorder so the tab is not also moved inside this list.
+        if (onReorderEnd?.(String(active.id))) {
+          return;
+        }
         if (over && active.id !== over.id) {
           const movedItem = items.find(item => itemDefinition.id(item) === active.id)!;
           const oldIndex = items.findIndex(item => itemDefinition.id(item) === active.id);
@@ -70,7 +91,10 @@ export default function SortableArea<Item>({
           fireNonCancelableEvent(onItemsChange, { items: arrayMove([...items], oldIndex, newIndex), movedItem });
         }
       }}
-      onDragCancel={() => setActiveItemId(null)}
+      onDragCancel={() => {
+        setActiveItemId(null);
+        onReorderCancel?.();
+      }}
     >
       <SortableContext
         disabled={disableReorder}
@@ -137,7 +161,7 @@ function usePortalContainer() {
   return portalContainerRef.current;
 }
 
-function DraggableItem<Item>({
+export function DraggableItem<Item>({
   item,
   itemDefinition,
   dragHandleAriaLabel,
@@ -145,6 +169,7 @@ function DraggableItem<Item>({
   showDirectionButtons,
   onKeyDown,
   renderItem,
+  sortableId,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
@@ -153,8 +178,10 @@ function DraggableItem<Item>({
   showDirectionButtons: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
+  sortableId?: string;
 }) {
-  const id = itemDefinition.id(item);
+  const rawId = itemDefinition.id(item);
+  const id = sortableId ?? rawId;
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
     id,
   });
@@ -187,7 +214,7 @@ function DraggableItem<Item>({
     <>
       {renderItem({
         item,
-        id,
+        id: rawId,
         ref: setNodeRef,
         style,
         className,
