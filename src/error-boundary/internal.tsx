@@ -110,6 +110,7 @@ export function AppLayoutBuiltInErrorBoundary({
           errorMessage: error?.error?.message ?? '',
           appLayoutPart: appLayoutPart ?? '',
         });
+        console.log(`[AwsUiAppLayoutError] appLayoutPart=${appLayoutPart ?? ''}`, error?.error);
       }}
     >
       <ErrorBoundariesContext.Provider value={{ ...context, suppressed: nextSuppressed, renderFallback }}>
