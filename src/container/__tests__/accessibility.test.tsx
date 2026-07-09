@@ -61,8 +61,12 @@ describe('Accessibility: scrollable-region-focusable (fitHeight)', () => {
       expect(contentDiv).not.toHaveAttribute('role');
       expect(contentDiv).not.toHaveAttribute('aria-labelledby');
     } finally {
-      if (origScroll) Object.defineProperty(HTMLElement.prototype, 'scrollHeight', origScroll);
-      if (origClient) Object.defineProperty(HTMLElement.prototype, 'clientHeight', origClient);
+      if (origScroll) {
+        Object.defineProperty(HTMLElement.prototype, 'scrollHeight', origScroll);
+      }
+      if (origClient) {
+        Object.defineProperty(HTMLElement.prototype, 'clientHeight', origClient);
+      }
     }
   });
 });
