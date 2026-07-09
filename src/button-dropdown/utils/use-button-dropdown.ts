@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { CancelableEventHandler } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
+import { filterItems } from './filter-items';
 import useHighlightedMenu from './use-highlighted-menu';
 import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
 
@@ -16,6 +17,7 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
   expandToViewport?: boolean;
+  hasFiltering: boolean;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -24,9 +26,14 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
+  onDropdownFocusLeave: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
+  filteringValue: string;
+  setFilteringValue: (value: string) => void;
+  filteredItems: ButtonDropdownProps.Items;
+  showExpandableGroups: boolean;
 }
 
 export function useButtonDropdown({
@@ -37,7 +44,17 @@ export function useButtonDropdown({
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
+  hasFiltering,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
+  const [filteringValue, setFilteringValue] = useState('');
+
+  const filteredItems = useMemo(
+    () => (hasFiltering && filteringValue ? filterItems(items, filteringValue) : items),
+    [hasFiltering, filteringValue, items]
+  );
+
+  const showExpandableGroups = hasExpandableGroups && !filteringValue;
+
   const {
     targetItem,
     isHighlighted,
@@ -50,18 +67,48 @@ export function useButtonDropdown({
     reset,
     setIsUsingMouse,
   } = useHighlightedMenu({
-    items,
-    hasExpandableGroups,
+    items: filteredItems,
+    hasExpandableGroups: showExpandableGroups,
     isInRestrictedView,
   });
 
-  const { isOpen, closeDropdown, ...openStateProps } = useOpenState({ onClose: reset });
+  // If the filtering input changes, the options list also changes,
+  // so the highlight isn't valid anymore.
+  const prevFilteringValue = useRef(filteringValue);
+  useEffect(() => {
+    if (prevFilteringValue.current !== filteringValue) {
+      prevFilteringValue.current = filteringValue;
+      reset();
+    }
+  }, [filteringValue, reset]);
+
+  const { isOpen, closeDropdown: closeDropdownState, ...openStateProps } = useOpenState({ onClose: reset });
+
+  const closeDropdown = () => {
+    setFilteringValue('');
+    closeDropdownState();
+  };
+
   const toggleDropdown = (options: { moveHighlightOnOpen?: boolean } = {}) => {
     const moveHighlightOnOpen = options.moveHighlightOnOpen ?? true;
-    if (!isOpen && moveHighlightOnOpen) {
+    if (!isOpen && moveHighlightOnOpen && !hasFiltering) {
       moveHighlight(1);
     }
+    if (isOpen) {
+      setFilteringValue('');
+    }
     openStateProps.toggleDropdown();
+  };
+
+  const onDropdownFocusLeave = () => {
+    if (hasFiltering && isOpen) {
+      if (expandToViewport) {
+        // When expanded to viewport the focus can't move naturally to the next element.
+        // Returning the focus to the trigger instead.
+        onReturnFocus();
+      }
+      closeDropdown();
+    }
   };
 
   const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
@@ -126,7 +173,9 @@ export function useButtonDropdown({
       case KeyCode.down: {
         if (!isOpen) {
           toggleDropdown();
-          moveHighlight(1, true);
+          if (!hasFiltering) {
+            moveHighlight(1, true);
+          }
         } else {
           moveHighlight(1);
         }
@@ -136,7 +185,9 @@ export function useButtonDropdown({
       case KeyCode.up: {
         if (!isOpen) {
           toggleDropdown();
-          moveHighlight(-1, true);
+          if (!hasFiltering) {
+            moveHighlight(-1, true);
+          }
         } else {
           moveHighlight(-1);
         }
@@ -144,11 +195,20 @@ export function useButtonDropdown({
         break;
       }
       case KeyCode.space: {
-        // Prevent scrolling the list of items and highlighting the trigger
-        event.preventDefault();
+        // Prevent scrolling the list of items and highlighting the trigger when filtering
+        // isn't active. Hitting space when filtering is active should just type a space
+        // character into the input, or activate the clear button.
+        if (!hasFiltering && !isOpen) {
+          event.preventDefault();
+        }
         break;
       }
       case KeyCode.enter: {
+        // While filtering, pressing Enter without a highlighted item should not select
+        // any item or close the dropdown.
+        if (isOpen && hasFiltering && !targetItem) {
+          break;
+        }
         if (!targetItem?.disabled) {
           activate(event, true);
         }
@@ -156,6 +216,11 @@ export function useButtonDropdown({
       }
       case KeyCode.left:
       case KeyCode.right: {
+        // When filtering is enabled and there's text in the filter input, left/right
+        // arrow keys should move the caret between the characters.
+        if (hasFiltering && filteringValue) {
+          break;
+        }
         if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
           expandGroup();
         } else if (hasExpandableGroups) {
@@ -175,6 +240,13 @@ export function useButtonDropdown({
         break;
       }
       case KeyCode.tab: {
+        // In filtering mode the dropdown contains multiple focusable elements (the filter
+        // input and its clear button). Tabbing between them must not close the dropdown, so
+        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
+        // focus actually leaves the dropdown.
+        if (hasFiltering) {
+          break;
+        }
         // When expanded to viewport the focus can't move naturally to the next element.
         // Returning the focus to the trigger instead.
         if (expandToViewport) {
@@ -186,10 +258,11 @@ export function useButtonDropdown({
     }
   };
   const onKeyUp = (event: React.KeyboardEvent) => {
-    // We need to handle activating items with Space separately because there is a bug
-    // in Firefox where changing the focus during a Space keydown event it will trigger
-    // unexpected click events on the new element: https://bugzilla.mozilla.org/show_bug.cgi?id=1220143
-    if (event.keyCode === KeyCode.space && !targetItem?.disabled) {
+    // When using a roving tabindex (filtering disabled), we need to handle activating items
+    // with Space separately because there is a bug in Firefox where changing the focus during
+    // a Space keydown event it will trigger unexpected click events on the new element.
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1220143
+    if (event.keyCode === KeyCode.space && !targetItem?.disabled && !hasFiltering) {
       activate(event);
     }
   };
@@ -205,8 +278,13 @@ export function useButtonDropdown({
     onKeyUp,
     onItemActivate,
     onGroupToggle,
+    onDropdownFocusLeave,
     toggleDropdown,
     closeDropdown,
     setIsUsingMouse,
+    filteringValue,
+    setFilteringValue,
+    filteredItems,
+    showExpandableGroups,
   };
 }

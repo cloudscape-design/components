@@ -38,6 +38,10 @@ const ExpandableCategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -46,16 +50,25 @@ const ExpandableCategoryElement = ({
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    if (triggerRef.current && highlighted && !expanded) {
+    if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
       triggerRef.current.focus();
     }
-  }, [expanded, highlighted]);
+  }, [expanded, highlighted, filteringEnabled]);
 
   const onClick: React.MouseEventHandler = event => {
     if (!disabled) {
       event.preventDefault();
       onGroupToggle(item, event);
-      triggerRef.current?.focus();
+      if (!filteringEnabled) {
+        triggerRef.current?.focus();
+      }
+    }
+  };
+
+  const onMouseDown: React.MouseEventHandler = event => {
+    // Ensure that focus remains on the filtering input at all times.
+    if (filteringEnabled) {
+      event.preventDefault();
     }
   };
 
@@ -78,10 +91,11 @@ const ExpandableCategoryElement = ({
     expanded: expanded,
     expandDirection: 'horizontal',
   };
-  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
 
   const trigger = item.text && (
     <span
+      id={menuId && item.id ? `${menuId}-${item.id}` : undefined}
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
@@ -89,10 +103,12 @@ const ExpandableCategoryElement = ({
         [styles['is-focused']]: isKeyboardHighlighted,
         [styles['visual-refresh']]: isVisualRefresh,
       })}
-      // We are using the roving tabindex technique to manage the focus state of the dropdown.
-      // The current element will always have tabindex=0 which means that it can be tabbed to,
-      // while all other items have tabindex=-1 so we can focus them when necessary.
-      tabIndex={highlighted ? 0 : -1}
+      // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+      // the `id` of the item to select it. When filtering is disabled, we are using the roving
+      // tabindex technique to manage the focus state of the dropdown. The current element will
+      // have tabindex=0 which means that it can be tabbed to, while all other items have
+      // tabindex=-1 so we can focus them when necessary.
+      tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, expanded, disabled })}
       {...(isDisabledWithReason ? targetProps : {})}
@@ -171,6 +187,10 @@ const ExpandableCategoryElement = ({
                 position={position}
                 renderItem={renderItem}
                 parentProps={groupProps}
+                filteringText={filteringText}
+                filteringEnabled={filteringEnabled}
+                menuId={menuId}
+                filteringDescriptionId={filteringDescriptionId}
               />
             </ul>
           ) : undefined
@@ -190,6 +210,7 @@ const ExpandableCategoryElement = ({
       data-testid={item.id}
       ref={ref}
       onClick={onClick}
+      onMouseDown={onMouseDown}
       onMouseEnter={onHover}
       onTouchStart={onHover}
     >
