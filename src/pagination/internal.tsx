@@ -14,7 +14,6 @@ import InternalIcon from '../icon/internal';
 import { BaseChangeDetail } from '../input/interfaces';
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -163,15 +162,6 @@ const InternalPagination = React.forwardRef(
         format => (currentPageIndex, pagesCount) => format({ currentPageIndex, pagesCount })
       ) ?? ((current: number, total: number) => `${current} / ${total}`);
 
-    // Accessible (screen reader) name — "Page N of M" from the catalog. Falls back to the visible counter
-    // when unavailable, so no English is hardcoded.
-    const compactPageCounterAriaLabel =
-      i18n(
-        'i18nStrings.compactPageCounterAriaLabel',
-        i18nStrings?.compactPageCounterAriaLabel,
-        format => (currentPageIndex, pagesCount) => format({ currentPageIndex, pagesCount })
-      ) ?? compactPageCounterText;
-
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
     const jumpToPageError = i18n('i18nStrings.jumpToPageError', i18nStrings?.jumpToPageError) ?? '';
@@ -271,10 +261,9 @@ const InternalPagination = React.forwardRef(
         </PageButton>
         {variant === 'compact' ? (
           <li aria-disabled={disabled} className={styles['compact-page-counter']}>
-            <span className={testUtilStyles['compact-page-counter-text']} aria-hidden="true">
+            <span className={testUtilStyles['compact-page-counter-text']}>
               {compactPageCounterText(currentPageIndex, pagesCount)}
             </span>
-            <ScreenreaderOnly>{compactPageCounterAriaLabel(currentPageIndex, pagesCount)}</ScreenreaderOnly>
           </li>
         ) : (
           <>

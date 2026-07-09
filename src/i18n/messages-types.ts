@@ -339,10 +339,6 @@ export interface I18nFormatArgTypes {
       currentPageIndex: string | number;
       pagesCount: string | number;
     };
-    'i18nStrings.compactPageCounterAriaLabel': {
-      currentPageIndex: string | number;
-      pagesCount: string | number;
-    };
   };
   'panel-resize-handle': {
     'i18nStrings.resizeHandleAriaLabel': never;

@@ -64,7 +64,6 @@ export interface PaginationProps {
    * * `jumpToPageError` (string) - Error message displayed when the entered page number is invalid.
    * * `jumpToPageLoadingText` (string) - Loading text displayed while the jump-to-page action is in progress.
    * * `compactPageCounterText` ((currentPageIndex: number, pagesCount: number) => string) - Visible text of the page counter in the `compact` variant, for example `3 of 12`.
-   * * `compactPageCounterAriaLabel` ((currentPageIndex: number, pagesCount: number) => string) - Screen-reader name of the page counter in the `compact` variant, for example `Page 3 of 12`.
    * @i18n
    */
   i18nStrings?: PaginationProps.I18nStrings;
@@ -110,7 +109,6 @@ export namespace PaginationProps {
     jumpToPageError?: string;
     jumpToPageLoadingText?: string;
     compactPageCounterText?: (currentPageIndex: number, pagesCount: number) => string;
-    compactPageCounterAriaLabel?: (currentPageIndex: number, pagesCount: number) => string;
   }
 
   export interface ChangeDetail {

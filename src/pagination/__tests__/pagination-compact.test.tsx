@@ -8,9 +8,6 @@ import messages from '../../../lib/components/i18n/messages/all.en';
 import Pagination from '../../../lib/components/pagination';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
-import paginationStyles from '../../../lib/components/pagination/styles.selectors.js';
-
 function renderPagination(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findPagination()!;
@@ -97,49 +94,9 @@ describe('compact variant', () => {
       expect(wrapper.findCompactPageCounter()!.getElement().textContent).toBe('7 of 10');
     });
 
-    test('visible counter element is aria-hidden (screen reader uses ScreenreaderOnly text)', () => {
+    test('visible counter is announced directly (not aria-hidden)', () => {
       const { wrapper } = renderPagination(<Pagination variant="compact" currentPageIndex={3} pagesCount={12} />);
-      expect(wrapper.findCompactPageCounter()!.getElement()).toHaveAttribute('aria-hidden', 'true');
-    });
-  });
-
-  describe('screen reader (ScreenreaderOnly) announced name', () => {
-    test('renders accessible announced text with catalog default "Page N of M"', () => {
-      const { wrapper } = renderWithI18n(<Pagination variant="compact" currentPageIndex={3} pagesCount={12} />);
-      // ScreenreaderOnly content is present in the DOM but visually hidden
-      const li = wrapper.findByClassName(paginationStyles['compact-page-counter'])!.getElement();
-      // The ScreenreaderOnly span should contain the aria label text
-      const srOnly = li.querySelector(`.${screenreaderOnlyStyles.root}`) as HTMLElement | null;
-      expect(srOnly).not.toBeNull();
-      expect(srOnly!.textContent).toBe('Page 3 of 12');
-    });
-
-    test('consumer override for compactPageCounterAriaLabel changes the announced text', () => {
-      const { wrapper } = renderWithI18n(
-        <Pagination
-          variant="compact"
-          currentPageIndex={3}
-          pagesCount={12}
-          i18nStrings={{
-            compactPageCounterAriaLabel: (current, total) => `Seite ${current} von ${total}`,
-          }}
-        />
-      );
-      const li = wrapper.findByClassName(paginationStyles['compact-page-counter'])!.getElement();
-      const srOnly = li.querySelector(`.${screenreaderOnlyStyles.root}`) as HTMLElement | null;
-      expect(srOnly).not.toBeNull();
-      expect(srOnly!.textContent).toBe('Seite 3 von 12');
-    });
-
-    test('falls back to visible counter text when no ariaLabel i18n is available', () => {
-      // No i18n provider, no consumer override — ariaLabel falls back to the same
-      // function as compactPageCounterText (the `# / #` neutral fallback).
-      const { wrapper } = renderPagination(<Pagination variant="compact" currentPageIndex={5} pagesCount={20} />);
-      const li = wrapper.findByClassName(paginationStyles['compact-page-counter'])!.getElement();
-      const srOnly = li.querySelector(`.${screenreaderOnlyStyles.root}`) as HTMLElement | null;
-      expect(srOnly).not.toBeNull();
-      // Falls back to visible text (5 / 20)
-      expect(srOnly!.textContent).toBe('5 / 20');
+      expect(wrapper.findCompactPageCounter()!.getElement()).not.toHaveAttribute('aria-hidden');
     });
   });
 
