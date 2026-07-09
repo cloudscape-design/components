@@ -161,13 +161,6 @@ export default function StyleBoxPage() {
             })}
           />
         </Container>
-
-        <Box padding={{ top: 'xl' }} />
-        <Container header={<Header variant="h3">Other example</Header>}>
-          <Box visualAccent={{ color: 'purple' }} padding={{ horizontal: 's', vertical: 'n' }} variant="h4">
-            Helloo
-          </Box>
-        </Container>
       </article>
     </div>
   );
