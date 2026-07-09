@@ -30,6 +30,10 @@ export default function ItemsList({
   linkStyle,
   renderItem,
   parentProps,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -55,6 +59,10 @@ export default function ItemsList({
           linkStyle={linkStyle}
           renderItem={renderItem}
           parentProps={parentProps}
+          filteringText={filteringText}
+          filteringEnabled={filteringEnabled}
+          menuId={menuId}
+          filteringDescriptionId={filteringDescriptionId}
         />
       );
     }
@@ -77,6 +85,10 @@ export default function ItemsList({
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
             renderItem={renderItem}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         ) : (
           <ExpandableCategoryElement
@@ -96,6 +108,10 @@ export default function ItemsList({
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
             renderItem={renderItem}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         )
       ) : null;
@@ -117,6 +133,10 @@ export default function ItemsList({
         variant={variant}
         position={`${position ? `${position},` : ''}${index + 1}`}
         renderItem={renderItem}
+        filteringText={filteringText}
+        filteringEnabled={filteringEnabled}
+        menuId={menuId}
+        filteringDescriptionId={filteringDescriptionId}
       />
     );
   });
