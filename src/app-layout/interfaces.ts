@@ -78,7 +78,7 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * If `true`, the navigation panel shows a collapsed rail at `navigationCollapsedWidth`
    * when `navigationOpen` is `false`, instead of being completely hidden.
    */
-  navigationCollapsed?: boolean;
+  navigationCollapsible?: boolean;
 
   /**
    * Width of the collapsed navigation rail in pixels.
@@ -86,6 +86,11 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * @default 54
    */
   navigationCollapsedWidth?: number;
+
+  /**
+   * If `true`, the navigation side border is not displayed.
+   */
+  navigationSideBorderHide?: boolean;
 
   /**
    * If `true`, the navigation drawer is not displayed at all.

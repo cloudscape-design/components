@@ -1563,19 +1563,19 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "number",
     },
     {
-      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
-when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
-      "name": "navigationCollapsed",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
       "defaultValue": "54",
       "description": "Width of the collapsed navigation rail in pixels.
 Only applies when \`navigationCollapsed\` is \`true\` and \`navigationOpen\` is \`false\`.",
       "name": "navigationCollapsedWidth",
       "optional": true,
       "type": "number",
+    },
+    {
+      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
+when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
+      "name": "navigationCollapsible",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "If \`true\`, the navigation drawer is not displayed at all.",
@@ -2127,19 +2127,19 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "number",
     },
     {
-      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
-when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
-      "name": "navigationCollapsed",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
       "defaultValue": "54",
       "description": "Width of the collapsed navigation rail in pixels.
 Only applies when \`navigationCollapsed\` is \`true\` and \`navigationOpen\` is \`false\`.",
       "name": "navigationCollapsedWidth",
       "optional": true,
       "type": "number",
+    },
+    {
+      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
+when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
+      "name": "navigationCollapsible",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "If \`true\`, the navigation drawer is not displayed at all.",

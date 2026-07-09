@@ -122,7 +122,8 @@ export const BeforeMainSlotImplementationInternal = ({
             !navigationOpen && navigationCollapsed && !isMobile && styles['navigation-collapsed'],
             toolsOpen && styles['unfocusable-mobile'],
             !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
-            (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
+            (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden,
+            appLayoutProps?.navigationSideBorderHide && styles['navigation-side-border-hide']
           )}
         >
           <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">

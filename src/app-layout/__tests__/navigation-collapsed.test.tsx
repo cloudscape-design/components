@@ -17,18 +17,18 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   describe('collapsed rail visibility', () => {
-    test('navigation is visible when navigationCollapsed=true and navigationOpen=false', () => {
+    test('navigation is visible when navigationCollapsible=true and navigationOpen=false', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
       expect(navContainer).not.toHaveClass(skeletonStyles['panel-hidden']);
       expect(navContainer).toHaveClass(skeletonStyles['navigation-collapsed']);
     });
 
-    test('navigation is hidden when navigationCollapsed=false and navigationOpen=false', () => {
+    test('navigation is hidden when navigationCollapsible=false and navigationOpen=false', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={false} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={false} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
       expect(navContainer).toHaveClass(skeletonStyles['panel-hidden']);
@@ -39,7 +39,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   describe('toggle behavior', () => {
     test('close button shows angle-right icon in collapsed state', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const closeButton = wrapper.findNavigationClose().getElement();
       expect(closeButton.querySelector(`.${iconStyles['name-angle-right']}`)).not.toBeNull();
@@ -47,7 +47,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     test('close button shows angle-left icon in open state on desktop', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={true} navigation={<>Nav content</>} />
       );
       const closeButton = wrapper.findNavigationClose().getElement();
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
@@ -57,14 +57,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   describe('aria-expanded', () => {
     test('close button has aria-expanded=false when navigation is closed', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       expect(wrapper.findNavigationClose().getElement()).toHaveAttribute('aria-expanded', 'false');
     });
 
     test('close button has aria-expanded=true when navigation is open', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={true} navigation={<>Nav content</>} />
       );
       expect(wrapper.findNavigationClose().getElement()).toHaveAttribute('aria-expanded', 'true');
     });
@@ -73,23 +73,23 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   describe('aria-hidden', () => {
     test('nav is not aria-hidden when collapsed (visible and interactive)', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       expect(wrapper.findNavigation().getElement().closest('nav')).toHaveAttribute('aria-hidden', 'false');
     });
 
     test('nav is aria-hidden when closed without collapsed', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={false} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={false} navigationOpen={false} navigation={<>Nav content</>} />
       );
       expect(wrapper.findNavigation().getElement().closest('nav')).toHaveAttribute('aria-hidden', 'true');
     });
   });
 
   describe('navigationHide guard', () => {
-    test('navigation is fully hidden when navigationHide=true regardless of navigationCollapsed', () => {
+    test('navigation is fully hidden when navigationHide=true regardless of navigationCollapsible', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationHide={true} navigationCollapsed={true} navigationOpen={false} navigation={<>Nav</>} />
+        <AppLayout navigationHide={true} navigationCollapsible={true} navigationOpen={false} navigation={<>Nav</>} />
       );
       expect(wrapper.findNavigation()).toBeFalsy();
       expect(wrapper.findNavigationToggle()).toBeFalsy();
@@ -97,9 +97,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   });
 
   describe('layout computation', () => {
-    test('sets navigationCollapsedWidth CSS property', () => {
+    test('sets navigationCollapsibleWidth CSS property', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav</>} />
       );
       const rootStyle = wrapper.getElement().style;
       expect(rootStyle.getPropertyValue(customCssProps.navigationCollapsedWidth)).toBe('54px');
@@ -108,7 +108,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     test('uses custom navigationCollapsedWidth when provided', () => {
       const { wrapper } = renderComponent(
         <AppLayout
-          navigationCollapsed={true}
+          navigationCollapsible={true}
           navigationCollapsedWidth={80}
           navigationOpen={false}
           navigation={<>Nav</>}
@@ -122,7 +122,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   describe('default values', () => {
     test('navigationCollapsedWidth defaults to 54', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav</>} />
       );
       const rootStyle = wrapper.getElement().style;
       expect(rootStyle.getPropertyValue(customCssProps.navigationCollapsedWidth)).toBe('54px');
@@ -132,9 +132,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
   describe('mobile standard behavior (collapsed is desktop-only)', () => {
-    test('navigation uses panel-hidden when closed on mobile, even with navigationCollapsed', () => {
+    test('navigation uses panel-hidden when closed on mobile, even with navigationCollapsible', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
       expect(navContainer).toHaveClass(skeletonStyles['panel-hidden']);
@@ -142,7 +142,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => 
 
     test('navigation does not use navigation-collapsed class on mobile', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
       expect(navContainer).not.toHaveClass(skeletonStyles['navigation-collapsed']);
@@ -150,7 +150,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => 
 
     test('navigation-container does not have is-navigation-collapsed class on mobile', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={false} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={false} navigation={<>Nav content</>} />
       );
       const nav = wrapper.findNavigation().getElement().closest(`.${navStyles['navigation-container']}`);
       expect(nav).not.toHaveClass(navStyles['is-navigation-collapsed']);
@@ -158,7 +158,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => 
 
     test('navigation opens full width on mobile with standard behavior', () => {
       const { wrapper } = renderComponent(
-        <AppLayout navigationCollapsed={true} navigationOpen={true} navigation={<>Nav content</>} />
+        <AppLayout navigationCollapsible={true} navigationOpen={true} navigation={<>Nav content</>} />
       );
       const navContainer = wrapper.findNavigation().getElement().closest(`.${skeletonStyles.navigation}`);
       expect(navContainer).not.toHaveClass(skeletonStyles['panel-hidden']);
