@@ -582,21 +582,9 @@ export namespace PromptInputProps {
      * @awsuiSystem core
      */
     menu?: {
-      /**
-       * Background color of the dropdown content wrapper.
-       */
       backgroundColor?: string;
-      /**
-       * Border color of the dropdown content wrapper.
-       */
       borderColor?: string;
-      /**
-       * Border radius of the dropdown content wrapper.
-       */
       borderRadius?: string;
-      /**
-       * Border width of the dropdown content wrapper.
-       */
       borderWidth?: string;
     };
   }

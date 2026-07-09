@@ -54,7 +54,6 @@ interface TokenModeProps {
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   maxMenuHeight?: number;
-  /** Style overrides forwarded to the menu dropdown. */
   menuStyle?: PromptInputProps.Style['menu'];
 }
 
@@ -124,6 +123,7 @@ export default function TokenMode({
           style={
             menuStyle
               ? ({
+                  // DropdownProps.Style names the fill `background`; PromptInput exposes it as `backgroundColor`.
                   dropdown: {
                     background: menuStyle.backgroundColor,
                     borderColor: menuStyle.borderColor,
