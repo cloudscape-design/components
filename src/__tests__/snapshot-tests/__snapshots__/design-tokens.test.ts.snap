@@ -2843,6 +2843,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -6431,6 +6445,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -10023,6 +10051,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -13611,6 +13653,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -17203,6 +17259,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -20793,6 +20863,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -24381,6 +24465,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#16191f",
         "light": "#ffffff",
+      },
+    },
+    "color-text-link-decoration-default": {
+      "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+      "$value": {
+        "dark": "currentColor",
+        "light": "currentColor",
+      },
+    },
+    "color-text-link-decoration-hover": {
+      "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+      "$value": {
+        "dark": "currentColor",
+        "light": "currentColor",
       },
     },
     "color-text-link-default": {
@@ -27978,6 +28076,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -31566,6 +31678,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -35158,6 +35284,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -38746,6 +38886,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -42338,6 +42492,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -45926,6 +46094,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -49518,6 +49700,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -53108,6 +53304,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
@@ -56696,6 +56906,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#0f141a",
         "light": "#ffffff",
+      },
+    },
+    "color-text-link-decoration-default": {
+      "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+      "$value": {
+        "dark": "currentColor",
+        "light": "currentColor",
+      },
+    },
+    "color-text-link-decoration-hover": {
+      "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+      "$value": {
+        "dark": "currentColor",
+        "light": "currentColor",
       },
     },
     "color-text-link-default": {

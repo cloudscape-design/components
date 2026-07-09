@@ -153,7 +153,7 @@ export default tsEslint.config(
         },
       ],
       '@cloudscape-design/components/no-legacy-tokens': 'error',
-      '@cloudscape-design/components/no-internal-in-public-interfaces': 'error',
+      '@cloudscape-design/build-tools/no-internal-in-public-interfaces': 'error',
     },
   },
   {

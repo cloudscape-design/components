@@ -105,6 +105,7 @@ export type BuiltInIconName =
   | 'send'
   | 'share'
   | 'shrink'
+  | 'sign-out'
   | 'side-bar'
   | 'slash'
   | 'slash-divider'
