@@ -107,18 +107,31 @@ export default function InternalContainer({
   const contentId = useUniqueId();
   const contentRef = useRef<HTMLDivElement>(null);
   const [hasFocusableDescendant, setHasFocusableDescendant] = useState(false);
+  const [isScrollable, setIsScrollable] = useState(false);
 
-  // axe scrollable-region-focusable passes when EITHER the scrollable element has tabindex≥0
-  // OR it contains a focusable descendant. We prefer the descendant path to avoid breaking
-  // downstream tab order — only add tabIndex when no focusable child exists.
+  // axe scrollable-region-focusable fires only when an element is actually
+  // scrollable at runtime AND lacks keyboard access. We mirror that check:
+  // add tabIndex only when (a) the element genuinely overflows and (b) no
+  // focusable descendant already satisfies the rule. This avoids inserting
+  // an extra tab stop for non-scrolling fit-height containers (e.g. board
+  // widget items) whose downstream tab-order expectations would break.
   useLayoutEffect(() => {
-    if (!fitHeight || !contentRef.current) {
+    const el = contentRef.current;
+    if (!fitHeight || !el) {
       setHasFocusableDescendant(false);
+      setIsScrollable(false);
       return;
     }
     const focusableSelector =
       'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    setHasFocusableDescendant(contentRef.current.querySelector(focusableSelector) !== null);
+    const update = () => {
+      setHasFocusableDescendant(el.querySelector(focusableSelector) !== null);
+      setIsScrollable(el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth);
+    };
+    update();
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(el);
+    return () => resizeObserver.disconnect();
   }, [fitHeight, children]);
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
@@ -206,12 +219,12 @@ export default function InternalContainer({
             </ContainerHeaderContextProvider>
           )}
           {/* tabIndex={0} makes the scrollable region keyboard-reachable (axe: scrollable-region-focusable).
-              We only add tabIndex when no focusable descendant exists — descendant focusability satisfies
-              the rule and avoids inserting an extra tab stop that breaks downstream tab order. */}
+              Only apply when the element is actually scrollable AND has no focusable descendant — matches
+              axe's runtime evaluation and avoids inserting an extra tab stop into non-overflowing consumers. */}
           <div
             ref={contentRef}
             className={clsx(styles.content, fitHeight && styles['content-fit-height'])}
-            {...(fitHeight && !hasFocusableDescendant && { tabIndex: 0 })}
+            {...(fitHeight && isScrollable && !hasFocusableDescendant && { tabIndex: 0 })}
           >
             <div
               className={clsx(styles['content-inner'], testStyles['content-inner'], {
