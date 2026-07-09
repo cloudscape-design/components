@@ -24,6 +24,28 @@ export interface BoxProps extends BaseComponentProps {
    */
   variant?: BoxProps.Variant;
   /**
+   * Renders the box as a visual accent wrapper to emphasize its content.
+   *
+   * Setting this property activates the accent styling: the component renders a `span`
+   * with a coordinated background and content color combination that works in both light
+   * and dark modes. A `variant` is not required to activate the accent.
+   *
+   * The object accepts the following fields:
+   * - `color` (required) — the coordinated background and foreground color pair. The foreground
+   *   color is applied as the wrapper's CSS `color`, so it only affects content that inherits
+   *   the current color (for example an `Icon`, or a nested `Box` with `color="inherit"`).
+   *   Content that sets its own color is not overridden.
+   * - `aspectRatio` — `auto` (default) lets the wrapper's width follow its content;
+   *   `equal` forces equal width and height, suitable for wrapping icons.
+   * - `borderRadius` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
+   *   from the Box spacing scale (`n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`) or
+   *   any valid CSS `border-radius` value such as `'13px'`. Set it to `'50%'` together with
+   *   `aspectRatio: 'equal'` to render a circle.
+   *
+   * Composes with existing Box props such as `padding` and `margin`.
+   */
+  visualAccent?: BoxProps.VisualAccent;
+  /**
    * Overrides the default HTML tag provided by the variant.
    */
   tagOverride?: string;
@@ -155,6 +177,70 @@ export namespace BoxProps {
     | 'awsui-gen-ai-label'
     | 'awsui-value-large'
     | 'awsui-inline-code';
+
+  export interface VisualAccent {
+    /**
+     * The coordinated background and foreground color pair applied to the accent wrapper.
+     * Each color works in both light and dark modes.
+     *
+     * The background color is applied directly to the wrapper. The foreground color is applied
+     * as the wrapper's CSS `color` and is therefore only picked up by content that inherits the
+     * current color, such as an `Icon` or a nested `Box` with `color="inherit"`. Content that
+     * defines its own color (for example a `Box` with an explicit `color`, or a `Link`) keeps that
+     * color and is not recolored by the accent.
+     */
+    color: BoxProps.VisualAccent.Color;
+    /**
+     * Controls the aspect ratio of the accent wrapper.
+     *
+     * - `auto` (default) — the wrapper's width follows its content.
+     * - `equal` — the wrapper has equal width and height, suitable for wrapping icons.
+     *
+     * Combine `aspectRatio: 'equal'` with `borderRadius: '50%'` to render a circle.
+     */
+    aspectRatio?: BoxProps.VisualAccent.AspectRatio;
+    /**
+     * The corner rounding applied to the accent wrapper.
+     *
+     * You can use one of the curated t-shirt size keywords, which map to the same spacing scale
+     * used by `padding` and `margin`: `n` (none), `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`,
+     * or `xxxl`.
+     *
+     * You can also pass any valid CSS `border-radius` value as a string (for example `'13px'`,
+     * `'0.5rem'`, or `'50%'`), which is applied as-is. Combine `borderRadius: '50%'` with
+     * `aspectRatio: 'equal'` to render a circle.
+     */
+    borderRadius?: BoxProps.VisualAccent.BorderRadius;
+  }
+
+  export namespace VisualAccent {
+    export type Color =
+      | 'red'
+      | 'yellow'
+      | 'indigo'
+      | 'green'
+      | 'orange'
+      | 'purple'
+      | 'mint'
+      | 'lime'
+      | 'grey'
+      | 'teal'
+      | 'cyan'
+      | 'blue'
+      | 'violet'
+      | 'fuchsia'
+      | 'magenta'
+      | 'pink'
+      | 'rose'
+      | 'amber';
+    export type AspectRatio = 'auto' | 'equal';
+    /**
+     * A curated t-shirt size keyword aligned to the Box spacing scale
+     * (`n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`), or any valid CSS
+     * `border-radius` value.
+     */
+    export type BorderRadius = 'n' | 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | (string & {});
+  }
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';
   export type TextAlign = 'left' | 'center' | 'right';

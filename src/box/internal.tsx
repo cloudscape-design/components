@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { BoxProps } from './interfaces';
@@ -11,6 +12,11 @@ import { BoxProps } from './interfaces';
 import styles from './styles.css.js';
 
 type InternalBoxProps = BoxProps & InternalBaseComponentProps;
+
+// Curated t-shirt size keywords mirror the Box spacing scale and are applied via CSS classes so
+// they resolve to the corresponding space tokens. Any other value is treated as a raw CSS
+// `border-radius` string and applied through a custom property.
+const RADIUS_KEYWORDS: ReadonlyArray<string> = ['n', 'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'];
 
 export default function InternalBox({
   variant = 'div',
@@ -23,6 +29,7 @@ export default function InternalBox({
   fontSize,
   fontWeight,
   color,
+  visualAccent,
   children,
   nativeAttributes,
   __internalRootRef,
@@ -32,11 +39,26 @@ export default function InternalBox({
   const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
   const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
 
+  const accentAspectRatio = visualAccent?.aspectRatio ?? 'auto';
+  const accentBorderRadius = visualAccent?.borderRadius;
+  const isRadiusKeyword = accentBorderRadius !== undefined && RADIUS_KEYWORDS.includes(accentBorderRadius);
+  // Arbitrary (non-keyword) values are applied through a custom CSS property, which the base
+  // `.visual-accent` rule reads. This keeps custom rounding CSP-safe. Keyword values are handled
+  // by dedicated classes that map to the spacing tokens.
+  const accentStyle =
+    accentBorderRadius !== undefined && !isRadiusKeyword
+      ? { [customCssProps.boxVisualAccentBorderRadius]: accentBorderRadius }
+      : undefined;
+
   const className = clsx(
     baseProps.className,
     styles.root,
     styles.box,
     styles[`${variant.replace(/^awsui-/, '')}-variant`],
+    visualAccent && styles['visual-accent'],
+    visualAccent && styles[`visual-accent-${visualAccent.color}`],
+    visualAccent && styles[`visual-accent-aspect-${accentAspectRatio}`],
+    visualAccent && isRadiusKeyword && styles[`visual-accent-radius-${accentBorderRadius}`],
     marginsClassNamesSuffices.map(suffix => styles[`m-${suffix}`]),
     paddingsClassNamesSuffices.map(suffix => styles[`p-${suffix}`]),
     styles[`d-${display}`],
@@ -53,11 +75,12 @@ export default function InternalBox({
   return (
     <WithNativeAttributes
       {...baseProps}
-      tag={getTag(variant, tagOverride)}
+      tag={getTag(variant, tagOverride, !!visualAccent)}
       componentName="Box"
       tabIndex={tabindex}
       nativeAttributes={nativeAttributes}
       className={className}
+      style={accentStyle}
       ref={__internalRootRef}
     >
       {children}
@@ -73,9 +96,13 @@ const getClassNamesSuffixes = (value: BoxProps.SpacingSize | BoxProps.Spacing) =
   return sides.filter(side => !!value[side]).map(side => `${side}-${value[side]}`);
 };
 
-const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride']) => {
+const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride'], hasVisualAccent: boolean) => {
   if (tagOverride) {
     return tagOverride;
+  }
+
+  if (hasVisualAccent) {
+    return 'span';
   }
 
   if (variant === 'awsui-value-large') {
