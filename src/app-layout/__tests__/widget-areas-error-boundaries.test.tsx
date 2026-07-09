@@ -87,6 +87,7 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
       (wrappedWithErrorBoundary: boolean) => {
         const onError = jest.fn();
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
         const AppLayoutWrapper = wrappedWithErrorBoundary ? ErrorBoundary : 'div';
         const appLayoutWrapperProps = wrappedWithErrorBoundary ? { onError } : {};
         const content = <div>content</div>;
@@ -104,6 +105,10 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
               appLayoutPart,
               errorMessage: expect.any(String),
             });
+            expect(consoleLogSpy).toHaveBeenCalledWith(
+              `[AwsUiAppLayoutError] appLayoutPart=${appLayoutPart}`,
+              expect.anything()
+            );
           }
           const reportedParts = sendPanoramaMetricSpy.mock.calls
             .filter(call => call[0] === 'awsui-app-layout-error-boundary-fired')
