@@ -34783,9 +34783,9 @@ This utility does not open the dropdown. To find the filtering input, call \`ope
           },
         },
         {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
-are no matching items, this contains the \`noMatch\` content. Returns null if there is no open dropdown or the
-footer is not displayed.
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
 
 This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
           "name": "findFooterRegion",
@@ -45454,9 +45454,9 @@ This utility does not open the dropdown. To find the filtering input, call \`ope
           },
         },
         {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
-are no matching items, this contains the \`noMatch\` content. Returns null if there is no open dropdown or the
-footer is not displayed.
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
 
 This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
           "inheritedFrom": {
@@ -46875,9 +46875,9 @@ This utility does not open the dropdown. To find the filtering input, call \`ope
           },
         },
         {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
-are no matching items, this contains the \`noMatch\` content. Returns null if there is no open dropdown or the
-footer is not displayed.
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
 
 This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
           "name": "findFooterRegion",
@@ -54434,9 +54434,9 @@ This utility does not open the dropdown. To find the filtering input, call \`ope
           },
         },
         {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and there
-are no matching items, this contains the \`noMatch\` content. Returns null if there is no open dropdown or the
-footer is not displayed.
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
 
 This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
           "inheritedFrom": {

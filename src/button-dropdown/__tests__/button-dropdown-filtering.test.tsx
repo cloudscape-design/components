@@ -387,7 +387,7 @@ describe('Button dropdown filtering', () => {
       wrapper.openDropdown();
       expect(wrapper.findOpenDropdown()).not.toBeNull();
 
-      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      wrapper.findHighlightedItem()!.keydown(KeyCode.tab);
       expect(wrapper.findOpenDropdown()).toBeNull();
     });
 
@@ -396,7 +396,7 @@ describe('Button dropdown filtering', () => {
       wrapper.openDropdown();
       expect(wrapper.findOpenDropdown()).not.toBeNull();
 
-      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      wrapper.findHighlightedItem()!.keydown(KeyCode.tab);
       expect(wrapper.findOpenDropdown()).toBeNull();
       expect(document.activeElement).toBe(wrapper.findNativeButton().getElement());
     });
@@ -406,7 +406,7 @@ describe('Button dropdown filtering', () => {
       wrapper.openDropdown();
       expect(wrapper.findOpenDropdown()).not.toBeNull();
 
-      wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+      wrapper.findFilteringInput()!.keydown(KeyCode.tab);
       // Dropdown stays open because Tab is handled by onDropdownFocusLeave in filtering mode
       expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
@@ -465,7 +465,7 @@ describe('Button dropdown filtering', () => {
   });
 
   describe('filtered expandable groups', () => {
-    test('renders matching nested items with ids and non-focusable tab indexes', () => {
+    test('renders matching nested items and collapses expandable groups', () => {
       const { wrapper } = renderDropdown({
         filteringType: 'auto',
         items: expandableItems,
@@ -474,12 +474,9 @@ describe('Button dropdown filtering', () => {
       wrapper.openDropdown();
       wrapper.findFilteringInput()!.setInputValue('Start');
 
-      const menuItems = getMenuItems(wrapper);
-      expect(menuItems.length).toBeGreaterThan(0);
-      menuItems.forEach(item => {
-        expect(item.id).toBeTruthy();
-        expect(item.getAttribute('tabindex')).toBe('-1');
-      });
+      expect(wrapper.findExpandableCategoryById('states')).toBeNull(); // Category is no longer expandable
+      expect(getMenuItems(wrapper)).toHaveLength(1); // Excluding groups
+      expect(wrapper.findItemById('start')).not.toBeNull();
     });
 
     test('prevents focus stealing on mouse down for expandable categories while filtering is enabled', () => {
@@ -676,63 +673,48 @@ describe('Button dropdown filtering', () => {
     });
   });
 
-  describe('renderItem filterText', () => {
-    test('passes filterText to renderItem for action items', () => {
-      const renderItem = jest.fn(() => null);
-      const { wrapper } = renderDropdown({
-        filteringType: 'auto',
-        items: [{ id: 'i1', text: 'Cut' }],
-        renderItem,
-      });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Cu');
+  test('passes filterText to renderItem for different item types', () => {
+    const items: ButtonDropdownProps.Items = [
+      { id: 'i1', text: 'Cut' },
+      { id: 'c1', itemType: 'checkbox', text: 'Toggle feature', checked: true },
+      ...expandableItems,
+    ];
 
-      expect(renderItem).toHaveBeenCalledWith(
-        expect.objectContaining({
-          item: expect.objectContaining({ type: 'action' }),
-          filterText: 'Cu',
-        })
-      );
-    });
+    const renderItem = jest.fn(() => null);
+    const { wrapper } = renderDropdown({ filteringType: 'auto', items, expandableGroups: true, renderItem });
+    wrapper.openDropdown();
 
-    test('passes filterText to renderItem for checkbox items', () => {
-      const renderItem = jest.fn(() => null);
-      const checkboxItems: ButtonDropdownProps.Items = [
-        { id: 'c1', itemType: 'checkbox', text: 'Toggle feature', checked: true },
-      ];
-      const { wrapper } = renderDropdown({
-        filteringType: 'auto',
-        items: checkboxItems,
-        renderItem,
-      });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Toggle');
+    wrapper.findFilteringInput()!.setInputValue('Cu');
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filterText: 'Cu',
+        item: expect.objectContaining({
+          type: 'action',
+          option: expect.objectContaining({ id: 'i1', text: 'Cut' }),
+        }),
+      })
+    );
 
-      expect(renderItem).toHaveBeenCalledWith(
-        expect.objectContaining({
-          item: expect.objectContaining({ type: 'checkbox' }),
-          filterText: 'Toggle',
-        })
-      );
-    });
+    wrapper.findFilteringInput()!.setInputValue('Toggle');
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filterText: 'Toggle',
+        item: expect.objectContaining({
+          type: 'checkbox',
+          option: expect.objectContaining({ id: 'c1', text: 'Toggle feature' }),
+        }),
+      })
+    );
 
-    test('passes filterText to renderItem for group items', () => {
-      const renderItem = jest.fn(() => null);
-      const { wrapper } = renderDropdown({
-        filteringType: 'auto',
-        items: expandableItems,
-        expandableGroups: true,
-        renderItem,
-      });
-      wrapper.openDropdown();
-      wrapper.findFilteringInput()!.setInputValue('Start');
-
-      expect(renderItem).toHaveBeenCalledWith(
-        expect.objectContaining({
-          item: expect.objectContaining({ type: 'group' }),
-          filterText: 'Start',
-        })
-      );
-    });
+    wrapper.findFilteringInput()!.setInputValue('Start');
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filterText: 'Start',
+        item: expect.objectContaining({
+          type: 'group',
+          option: expect.objectContaining({ id: 'states', text: 'Instance state' }),
+        }),
+      })
+    );
   });
 });
