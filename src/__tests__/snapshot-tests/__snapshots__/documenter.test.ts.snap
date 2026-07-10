@@ -5121,10 +5121,10 @@ The object accepts the following fields:
   Content that sets its own color is not overridden.
 - \`aspectRatio\` — \`auto\` (default) lets the wrapper's width follow its content;
   \`equal\` forces equal width and height, suitable for wrapping icons.
-- \`borderRadius\` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
-  from the Box spacing scale (\`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`) or
-  any valid CSS \`border-radius\` value such as \`'13px'\`. When not set, the wrapper has no
-  border radius (\`0\`). Set it to \`'50%'\` together with \`aspectRatio: 'equal'\` to render a circle.
+- \`borderRadius\` — the corner rounding applied to the wrapper, using a t-shirt size keyword
+  from the Box spacing scale (\`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`), or
+  \`full\` for fully rounded corners. When not set, the wrapper has no border radius. Set it to
+  \`full\` together with \`aspectRatio: 'equal'\` to render a circle.
 
 Composes with existing Box props such as \`padding\` and \`margin\`.",
       "inlineType": {
@@ -5148,21 +5148,21 @@ Composes with existing Box props such as \`padding\` and \`margin\`.",
               "name": "BoxProps.VisualAccent.BorderRadius",
               "type": "union",
               "values": [
-                ""s"",
-                ""m"",
-                "string & {}",
-                ""xxxs"",
-                ""xxs"",
-                ""xs"",
-                ""l"",
-                ""xl"",
-                ""xxl"",
-                ""xxxl"",
+                "s",
+                "full",
+                "m",
+                "xxxs",
+                "xxs",
+                "xs",
+                "l",
+                "xl",
+                "xxl",
+                "xxxl",
               ],
             },
             "name": "borderRadius",
             "optional": true,
-            "type": "BoxProps.VisualAccent.BorderRadius",
+            "type": "string",
           },
           {
             "inlineType": {
