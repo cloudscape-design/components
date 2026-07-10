@@ -109,6 +109,132 @@ describe('ActionCard Component', () => {
     });
   });
 
+  describe('href', () => {
+    test('renders a button by default', () => {
+      const wrapper = renderActionCard({ header: 'Header' });
+      expect(wrapper.getElement().querySelector('button')).toBeTruthy();
+      expect(wrapper.getElement().querySelector('a')).toBeNull();
+    });
+
+    test('renders an anchor with href when href is provided', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test' });
+      const anchor = wrapper.getElement().querySelector('a')!;
+      expect(anchor).toBeTruthy();
+      expect(anchor).toHaveAttribute('href', '#test');
+      expect(wrapper.getElement().querySelector('button')).toBeNull();
+    });
+
+    test('renders an anchor for the standalone (no header) variant', () => {
+      const wrapper = renderActionCard({ ariaLabel: 'Card', href: '#test' });
+      const anchor = wrapper.getElement().querySelector('a')!;
+      expect(anchor).toHaveAttribute('href', '#test');
+      expect(anchor).toHaveAttribute('aria-label', 'Card');
+    });
+
+    test('applies target and default rel for _blank', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', target: '_blank' });
+      const anchor = wrapper.getElement().querySelector('a')!;
+      expect(anchor).toHaveAttribute('target', '_blank');
+      expect(anchor).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    test('does not set rel by default when target is not _blank', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test' });
+      expect(wrapper.getElement().querySelector('a')!).not.toHaveAttribute('rel');
+    });
+
+    test('custom rel overrides the default', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', target: '_blank', rel: 'nofollow' });
+      expect(wrapper.getElement().querySelector('a')!).toHaveAttribute('rel', 'nofollow');
+    });
+
+    test('applies download attribute', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', download: 'file.txt' });
+      expect(wrapper.getElement().querySelector('a')!).toHaveAttribute('download', 'file.txt');
+    });
+
+    test('removes href when disabled', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', disabled: true });
+      const anchor = wrapper.getElement().querySelector('a')!;
+      expect(anchor).not.toHaveAttribute('href');
+      expect(anchor).toHaveAttribute('aria-disabled', 'true');
+      expect(wrapper.getElement().querySelector('button')).toBeNull();
+    });
+
+    test('disabled link stays focusable and announced as a link', () => {
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', disabled: true });
+      const anchor = wrapper.getElement().querySelector('a')!;
+      expect(anchor).toHaveAttribute('role', 'link');
+      anchor.focus();
+      expect(document.activeElement).toBe(anchor);
+    });
+  });
+
+  describe('onFollow', () => {
+    test('fires onFollow with href and target when href is set', () => {
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', target: '_blank', onFollow: onFollowSpy });
+      wrapper.click();
+      expect(onFollowSpy).toHaveBeenCalledTimes(1);
+      expect(onFollowSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { href: '#test', target: '_blank' } })
+      );
+    });
+
+    test('does not fire onFollow when no href is set', () => {
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ header: 'Header', onFollow: onFollowSpy });
+      wrapper.click();
+      expect(onFollowSpy).not.toHaveBeenCalled();
+    });
+
+    test('does not fire onFollow when disabled', () => {
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', disabled: true, onFollow: onFollowSpy });
+      wrapper.click();
+      expect(onFollowSpy).not.toHaveBeenCalled();
+    });
+
+    test('does not fire onFollow when a modifier key is pressed while clicking', () => {
+      const onClickSpy = jest.fn();
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', onClick: onClickSpy, onFollow: onFollowSpy });
+      wrapper.click({ button: 0, ctrlKey: true });
+      expect(onFollowSpy).not.toHaveBeenCalled();
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('fires onFollow for the standalone (no header) anchor variant', () => {
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ ariaLabel: 'Card', href: '#test', target: '_blank', onFollow: onFollowSpy });
+      wrapper.click();
+      expect(onFollowSpy).toHaveBeenCalledTimes(1);
+      expect(onFollowSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { href: '#test', target: '_blank' } })
+      );
+    });
+
+    test('still fires onClick alongside onFollow', () => {
+      const onClickSpy = jest.fn();
+      const onFollowSpy = jest.fn();
+      const wrapper = renderActionCard({ header: 'Header', href: '#test', onClick: onClickSpy, onFollow: onFollowSpy });
+      wrapper.click();
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+      expect(onFollowSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('nativeAnchorAttributes', () => {
+    test('passes custom attributes to the anchor element', () => {
+      const wrapper = renderActionCard({
+        header: 'Header',
+        href: '#test',
+        nativeAnchorAttributes: { 'data-testid': 'test-anchor' },
+      });
+      expect(wrapper.getElement().querySelector('a')!).toHaveAttribute('data-testid', 'test-anchor');
+    });
+  });
+
   describe('ariaLabel', () => {
     test('root always has role=group', () => {
       const withHeader = renderActionCard({ header: 'Header' });
