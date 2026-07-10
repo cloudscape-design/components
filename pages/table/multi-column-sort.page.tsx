@@ -162,6 +162,7 @@ export default function MultiColumnSortPage() {
   return (
     <SimplePage
       title="Multi-column sort"
+      i18n={{}}
       settings={
         <SpaceBetween size="l" direction="horizontal">
           <Checkbox checked={multiSortEnabled} onChange={({ detail }) => setUrlParams({ multiSort: detail.checked })}>
