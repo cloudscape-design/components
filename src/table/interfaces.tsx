@@ -269,6 +269,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   * `addToSortAscending` (string): Label for the "Add to sort (ascending)" dropdown menu item.
    *   * `addToSortDescending` (string): Label for the "Add to sort (descending)" dropdown menu item.
    *   * `removeFromSort` (string): Label for the "Remove from sort" dropdown menu item.
+   *   * `addToSortDisabledReason` (string): Reason shown when the "Add to sort" menu items are disabled.
+   *   * `removeFromSortDisabledReason` (string): Reason shown when the "Remove from sort" menu item is disabled.
    * * `clearSort` (string): Label for the "Clear sort" button.
    *
    * @i18n
