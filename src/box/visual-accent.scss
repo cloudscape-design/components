@@ -4,6 +4,7 @@
 */
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
@@ -86,93 +87,34 @@ $accent-radii: (
 // selector (0,2,0) so the accent's coordinated foreground color always wins, regardless of
 // stylesheet source order. Winning here preserves the guaranteed background/foreground color
 // contrast of the accent pair. Descendants (nested Box, Icon) inherit this color.
+//
+// Token variables are looked up dynamically from the tokens module, so adding a color only
+// requires extending `$accent-colors`.
+$accent-colors: (
+  'red',
+  'yellow',
+  'indigo',
+  'green',
+  'orange',
+  'purple',
+  'mint',
+  'lime',
+  'grey',
+  'teal',
+  'cyan',
+  'blue',
+  'violet',
+  'fuchsia',
+  'magenta',
+  'pink',
+  'rose',
+  'amber'
+);
+$tokens: meta.module-variables('awsui');
 
-.box.visual-accent.visual-accent-red {
-  background-color: awsui.$color-background-accent-red;
-  color: awsui.$color-text-accent-red;
-}
-
-.box.visual-accent.visual-accent-yellow {
-  background-color: awsui.$color-background-accent-yellow;
-  color: awsui.$color-text-accent-yellow;
-}
-
-.box.visual-accent.visual-accent-indigo {
-  background-color: awsui.$color-background-accent-indigo;
-  color: awsui.$color-text-accent-indigo;
-}
-
-.box.visual-accent.visual-accent-green {
-  background-color: awsui.$color-background-accent-green;
-  color: awsui.$color-text-accent-green;
-}
-
-.box.visual-accent.visual-accent-orange {
-  background-color: awsui.$color-background-accent-orange;
-  color: awsui.$color-text-accent-orange;
-}
-
-.box.visual-accent.visual-accent-purple {
-  background-color: awsui.$color-background-accent-purple;
-  color: awsui.$color-text-accent-purple;
-}
-
-.box.visual-accent.visual-accent-mint {
-  background-color: awsui.$color-background-accent-mint;
-  color: awsui.$color-text-accent-mint;
-}
-
-.box.visual-accent.visual-accent-lime {
-  background-color: awsui.$color-background-accent-lime;
-  color: awsui.$color-text-accent-lime;
-}
-
-.box.visual-accent.visual-accent-grey {
-  background-color: awsui.$color-background-accent-grey;
-  color: awsui.$color-text-accent-grey;
-}
-
-.box.visual-accent.visual-accent-teal {
-  background-color: awsui.$color-background-accent-teal;
-  color: awsui.$color-text-accent-teal;
-}
-
-.box.visual-accent.visual-accent-cyan {
-  background-color: awsui.$color-background-accent-cyan;
-  color: awsui.$color-text-accent-cyan;
-}
-
-.box.visual-accent.visual-accent-blue {
-  background-color: awsui.$color-background-accent-blue;
-  color: awsui.$color-text-accent-blue;
-}
-
-.box.visual-accent.visual-accent-violet {
-  background-color: awsui.$color-background-accent-violet;
-  color: awsui.$color-text-accent-violet;
-}
-
-.box.visual-accent.visual-accent-fuchsia {
-  background-color: awsui.$color-background-accent-fuchsia;
-  color: awsui.$color-text-accent-fuchsia;
-}
-
-.box.visual-accent.visual-accent-magenta {
-  background-color: awsui.$color-background-accent-magenta;
-  color: awsui.$color-text-accent-magenta;
-}
-
-.box.visual-accent.visual-accent-pink {
-  background-color: awsui.$color-background-accent-pink;
-  color: awsui.$color-text-accent-pink;
-}
-
-.box.visual-accent.visual-accent-rose {
-  background-color: awsui.$color-background-accent-rose;
-  color: awsui.$color-text-accent-rose;
-}
-
-.box.visual-accent.visual-accent-amber {
-  background-color: awsui.$color-background-accent-amber;
-  color: awsui.$color-text-accent-amber;
+@each $accent in $accent-colors {
+  .box.visual-accent.visual-accent-#{$accent} {
+    background-color: map.get($tokens, 'color-background-accent-#{$accent}');
+    color: map.get($tokens, 'color-text-accent-#{$accent}');
+  }
 }
