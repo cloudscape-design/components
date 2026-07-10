@@ -14,11 +14,11 @@ initAwsUiVersions(PACKAGE_SOURCE, PACKAGE_VERSION);
 
 export function getBaseProps(props: BaseComponentProps) {
   const baseProps: Record<string, any> = {};
-  Object.keys(props).forEach(prop => {
-    if (prop === 'id' || prop === 'className' || prop.match(/^data-/)) {
+  for (const prop in props) {
+    if (prop === 'id' || prop === 'className' || prop.startsWith('data-')) {
       baseProps[prop] = (props as Record<string, any>)[prop];
     }
-  });
+  }
   return baseProps as BaseComponentProps;
 }
 
