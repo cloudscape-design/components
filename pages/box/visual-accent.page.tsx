@@ -34,7 +34,7 @@ const ALL_VARIANTS: BoxProps.VisualAccent.Color[] = [
 ];
 
 const BOX_VARIANTS: { variant: BoxProps['variant']; label: string; content: string }[] = [
-  { variant: 'h4', label: 'h4', content: 'Heading 4' },
+  { variant: 'h3', label: 'h3', content: 'Heading 3' },
   { variant: 'p', label: 'p', content: 'Body paragraph text' },
 ];
 
@@ -74,10 +74,13 @@ export default function StyleBoxPage() {
             </Box>
             <SpaceBetween size="m" direction="horizontal">
               {ALL_VARIANTS.map(color => (
-                <Box key={color} visualAccent={{ color }} padding={{ horizontal: 'xxxs', vertical: 'n' }}>
-                  <Box variant={variant} color="inherit">
-                    {content}
-                  </Box>
+                <Box
+                  key={color}
+                  variant={variant}
+                  visualAccent={{ color, borderRadius: 'xxxs' }}
+                  padding={{ horizontal: 'xxxs', vertical: 'n' }}
+                >
+                  {content}
                 </Box>
               ))}
             </SpaceBetween>

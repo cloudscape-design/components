@@ -15,8 +15,9 @@ type InternalBoxProps = BoxProps & InternalBaseComponentProps;
 
 // Curated t-shirt size keywords mirror the Box spacing scale and are applied via CSS classes so
 // they resolve to the corresponding space tokens. Any other value is treated as a raw CSS
-// `border-radius` string and applied through a custom property.
-const RADIUS_KEYWORDS: ReadonlyArray<string> = ['n', 'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'];
+// `border-radius` string and applied through a custom property. When `borderRadius` is not set,
+// the wrapper has square corners.
+const RADIUS_KEYWORDS: ReadonlyArray<string> = ['xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'];
 
 export default function InternalBox({
   variant = 'div',
@@ -42,9 +43,11 @@ export default function InternalBox({
   const accentAspectRatio = visualAccent?.aspectRatio ?? 'auto';
   const accentBorderRadius = visualAccent?.borderRadius;
   const isRadiusKeyword = accentBorderRadius !== undefined && RADIUS_KEYWORDS.includes(accentBorderRadius);
-  // Arbitrary (non-keyword) values are applied through a custom CSS property, which the base
-  // `.visual-accent` rule reads. This keeps custom rounding CSP-safe. Keyword values are handled
-  // by dedicated classes that map to the spacing tokens.
+  // Keyword values are applied via dedicated `.visual-accent-radius-*` classes that map to the
+  // spacing tokens. Any other value is treated as a raw CSS `border-radius` string and passed to
+  // the stylesheet through a custom property, which the base `.visual-accent` rule reads and
+  // applies to all four corners. When unset, no custom property is set and the base rule falls
+  // back to a `0` border radius.
   const accentStyle =
     accentBorderRadius !== undefined && !isRadiusKeyword
       ? { [customCssProps.boxVisualAccentBorderRadius]: accentBorderRadius }
@@ -75,7 +78,7 @@ export default function InternalBox({
   return (
     <WithNativeAttributes
       {...baseProps}
-      tag={getTag(variant, tagOverride, !!visualAccent)}
+      tag={getTag(variant, tagOverride)}
       componentName="Box"
       tabIndex={tabindex}
       nativeAttributes={nativeAttributes}
@@ -96,13 +99,9 @@ const getClassNamesSuffixes = (value: BoxProps.SpacingSize | BoxProps.Spacing) =
   return sides.filter(side => !!value[side]).map(side => `${side}-${value[side]}`);
 };
 
-const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride'], hasVisualAccent: boolean) => {
+const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride']) => {
   if (tagOverride) {
     return tagOverride;
-  }
-
-  if (hasVisualAccent) {
-    return 'span';
   }
 
   if (variant === 'awsui-value-large') {

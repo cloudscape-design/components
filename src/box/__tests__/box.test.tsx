@@ -177,9 +177,14 @@ describe('Box', () => {
   });
 
   describe('visualAccent property', () => {
-    test('renders a span by default', () => {
+    test('renders the default div tag when no variant is set', () => {
       const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
-      expect(boxWrapper.getElement().tagName).toBe('SPAN');
+      expect(boxWrapper.getElement().tagName).toBe('DIV');
+    });
+
+    test('preserves the variant tag when combined with visualAccent', () => {
+      const boxWrapper = renderBox({ variant: 'h4', visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement().tagName).toBe('H4');
     });
 
     test('applies the base visual-accent class', () => {
@@ -227,7 +232,6 @@ describe('Box', () => {
 
     test('applies the correct class for each t-shirt size borderRadius keyword', () => {
       const keywords: Array<BoxProps.VisualAccent.BorderRadius> = [
-        'n',
         'xxxs',
         'xxs',
         'xs',

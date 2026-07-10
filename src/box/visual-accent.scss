@@ -10,7 +10,6 @@
 
 // T-shirt size keywords mirror the Box spacing scale (see spacing.scss).
 $accent-radii: (
-  'n': awsui.$space-none,
   'xxxs': awsui.$space-xxxs,
   'xxs': awsui.$space-xxs,
   'xs': awsui.$space-xs,
@@ -30,10 +29,10 @@ $accent-radii: (
 }
 
 // ─── Base visual accent container ─────────────────────────────────────────────
-// Applied whenever the `visualAccent` prop is set. Provides the container layout and default
-// corner rounding. Corner rounding falls back to the `boxVisualAccentBorderRadius` custom
-// property (set by the component for arbitrary CSS `borderRadius` values), or a small default
-// when `borderRadius` is not set. Curated t-shirt size keywords are handled by the
+// Applied whenever the `visualAccent` prop is set. Provides the container layout and corner
+// rounding. Corner rounding falls back to the `boxVisualAccentBorderRadius` custom property
+// (set by the component for arbitrary CSS `borderRadius` values), or square corners when
+// `borderRadius` is not set. Curated t-shirt size keywords are handled by the
 // `.visual-accent-radius-*` classes below, which override this value.
 .visual-accent {
   display: inline-flex;
@@ -42,7 +41,7 @@ $accent-radii: (
   padding-block: awsui.$space-xxs;
   padding-inline: awsui.$space-xs;
   box-sizing: border-box;
-  @include accent-radius(var(#{custom-props.$boxVisualAccentBorderRadius}, 2px));
+  @include accent-radius(var(#{custom-props.$boxVisualAccentBorderRadius}, 0));
 }
 
 // ─── Accent border radius (t-shirt size keywords) ─────────────────────────────

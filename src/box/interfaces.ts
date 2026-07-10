@@ -26,9 +26,10 @@ export interface BoxProps extends BaseComponentProps {
   /**
    * Renders the box as a visual accent wrapper to emphasize its content.
    *
-   * Setting this property activates the accent styling: the component renders a `span`
-   * with a coordinated background and content color combination that works in both light
-   * and dark modes. A `variant` is not required to activate the accent.
+   * Setting this property activates the accent styling: a coordinated background and content
+   * color combination that works in both light and dark modes. A `variant` is not required to
+   * activate the accent. The accent styling is applied on top of the element determined by
+   * `variant` (or `tagOverride`), so the rendered HTML tag is unaffected.
    *
    * The object accepts the following fields:
    * - `color` (required) — the coordinated background and foreground color pair. The foreground
@@ -38,9 +39,9 @@ export interface BoxProps extends BaseComponentProps {
    * - `aspectRatio` — `auto` (default) lets the wrapper's width follow its content;
    *   `equal` forces equal width and height, suitable for wrapping icons.
    * - `borderRadius` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
-   *   from the Box spacing scale (`n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`) or
-   *   any valid CSS `border-radius` value such as `'13px'`. Set it to `'50%'` together with
-   *   `aspectRatio: 'equal'` to render a circle.
+   *   from the Box spacing scale (`xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`) or
+   *   any valid CSS `border-radius` value such as `'13px'`. When not set, the wrapper has no
+   *   border radius (`0`). Set it to `'50%'` together with `aspectRatio: 'equal'` to render a circle.
    *
    * Composes with existing Box props such as `padding` and `margin`.
    */
@@ -200,11 +201,11 @@ export namespace BoxProps {
      */
     aspectRatio?: BoxProps.VisualAccent.AspectRatio;
     /**
-     * The corner rounding applied to the accent wrapper.
+     * The corner rounding applied to the accent wrapper. When not set, the wrapper has no
+     * border radius (`0`).
      *
      * You can use one of the curated t-shirt size keywords, which map to the same spacing scale
-     * used by `padding` and `margin`: `n` (none), `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`,
-     * or `xxxl`.
+     * used by `padding` and `margin`: `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, or `xxxl`.
      *
      * You can also pass any valid CSS `border-radius` value as a string (for example `'13px'`,
      * `'0.5rem'`, or `'50%'`), which is applied as-is. Combine `borderRadius: '50%'` with
@@ -236,10 +237,10 @@ export namespace BoxProps {
     export type AspectRatio = 'auto' | 'equal';
     /**
      * A curated t-shirt size keyword aligned to the Box spacing scale
-     * (`n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`), or any valid CSS
+     * (`xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`), or any valid CSS
      * `border-radius` value.
      */
-    export type BorderRadius = 'n' | 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | (string & {});
+    export type BorderRadius = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | (string & {});
   }
 
   export type Display = 'block' | 'inline' | 'inline-block' | 'none';

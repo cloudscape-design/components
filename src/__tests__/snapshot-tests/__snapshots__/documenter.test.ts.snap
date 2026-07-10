@@ -5020,9 +5020,10 @@ Override the HTML tag by using property \`tagOverride\`.",
     {
       "description": "Renders the box as a visual accent wrapper to emphasize its content.
 
-Setting this property activates the accent styling: the component renders a \`span\`
-with a coordinated background and content color combination that works in both light
-and dark modes. A \`variant\` is not required to activate the accent.
+Setting this property activates the accent styling: a coordinated background and content
+color combination that works in both light and dark modes. A \`variant\` is not required to
+activate the accent. The accent styling is applied on top of the element determined by
+\`variant\` (or \`tagOverride\`), so the rendered HTML tag is unaffected.
 
 The object accepts the following fields:
 - \`color\` (required) — the coordinated background and foreground color pair. The foreground
@@ -5032,9 +5033,9 @@ The object accepts the following fields:
 - \`aspectRatio\` — \`auto\` (default) lets the wrapper's width follow its content;
   \`equal\` forces equal width and height, suitable for wrapping icons.
 - \`borderRadius\` — the corner rounding applied to the wrapper. Accepts a t-shirt size keyword
-  from the Box spacing scale (\`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`) or
-  any valid CSS \`border-radius\` value such as \`'13px'\`. Set it to \`'50%'\` together with
-  \`aspectRatio: 'equal'\` to render a circle.
+  from the Box spacing scale (\`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`) or
+  any valid CSS \`border-radius\` value such as \`'13px'\`. When not set, the wrapper has no
+  border radius (\`0\`). Set it to \`'50%'\` together with \`aspectRatio: 'equal'\` to render a circle.
 
 Composes with existing Box props such as \`padding\` and \`margin\`.",
       "inlineType": {
@@ -5061,7 +5062,6 @@ Composes with existing Box props such as \`padding\` and \`margin\`.",
                 ""s"",
                 ""m"",
                 "string & {}",
-                ""n"",
                 ""xxxs"",
                 ""xxs"",
                 ""xs"",
