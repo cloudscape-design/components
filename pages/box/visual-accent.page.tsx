@@ -10,6 +10,8 @@ import KeyValuePairs from '~components/key-value-pairs';
 import List from '~components/list';
 import SpaceBetween from '~components/space-between';
 
+import ScreenshotArea from '../utils/screenshot-area';
+
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
 const ALL_VARIANTS: BoxProps.VisualAccent.Color[] = [
@@ -51,7 +53,7 @@ const LIST_ITEMS: { id: string; content: string; icon: string; color: BoxProps.V
 
 export default function StyleBoxPage() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <ScreenshotArea disableAnimations={true} style={{ display: 'flex', justifyContent: 'center' }}>
       <article style={{ inlineSize: '90%' }}>
         <Box variant="h1" padding={{ bottom: 'l' }}>
           Box visualAccent
@@ -93,7 +95,7 @@ export default function StyleBoxPage() {
         </Box>
         <SpaceBetween size="m" direction="horizontal">
           {ALL_VARIANTS.map(color => (
-            <Box key={color} visualAccent={{ color, aspectRatio: 'equal', borderRadius: '50%' }}>
+            <Box key={color} visualAccent={{ color, aspectRatio: 'equal', borderRadius: 'full' }}>
               <Icon name="check" size="medium" />
             </Box>
           ))}
@@ -157,7 +159,7 @@ export default function StyleBoxPage() {
               id: item.id,
               content: item.content,
               icon: (
-                <Box padding={'s'} visualAccent={{ color: item.color, borderRadius: '6px', aspectRatio: 'equal' }}>
+                <Box padding={'s'} visualAccent={{ color: item.color, borderRadius: 'xs', aspectRatio: 'equal' }}>
                   <Icon name={item.icon as any} size="medium" />
                 </Box>
               ),
@@ -165,6 +167,6 @@ export default function StyleBoxPage() {
           />
         </Container>
       </article>
-    </div>
+    </ScreenshotArea>
   );
 }

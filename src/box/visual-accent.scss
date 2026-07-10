@@ -6,10 +6,9 @@
 @use 'sass:map';
 @use 'sass:meta';
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/styles/utils/theming' as theming;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 // T-shirt size keywords mirror the Box spacing scale (see spacing.scss).
+// `full` renders fully rounded corners (a circle when combined with `aspectRatio: 'equal'`).
 $accent-radii: (
   'xxxs': awsui.$space-xxxs,
   'xxs': awsui.$space-xxs,
@@ -20,6 +19,7 @@ $accent-radii: (
   'xl': awsui.$space-xl,
   'xxl': awsui.$space-xxl,
   'xxxl': awsui.$space-xxxl,
+  'full': 50%,
 );
 
 @mixin accent-radius($value) {
@@ -30,11 +30,9 @@ $accent-radii: (
 }
 
 // ─── Base visual accent container ─────────────────────────────────────────────
-// Applied whenever the `visualAccent` prop is set. Provides the container layout and corner
-// rounding. Corner rounding falls back to the `boxVisualAccentBorderRadius` custom property
-// (set by the component for arbitrary CSS `borderRadius` values), or square corners when
-// `borderRadius` is not set. Curated t-shirt size keywords are handled by the
-// `.visual-accent-radius-*` classes below, which override this value.
+// Applied whenever the `visualAccent` prop is set. Provides the container layout. Corners are
+// square by default; the `.visual-accent-radius-*` classes below apply corner rounding for the
+// curated `borderRadius` keywords.
 .visual-accent {
   display: inline-flex;
   align-items: center;
@@ -42,7 +40,6 @@ $accent-radii: (
   padding-block: awsui.$space-xxs;
   padding-inline: awsui.$space-xs;
   box-sizing: border-box;
-  @include accent-radius(var(#{custom-props.$boxVisualAccentBorderRadius}, 0));
 }
 
 // ─── Accent border radius (t-shirt size keywords) ─────────────────────────────
@@ -56,7 +53,7 @@ $accent-radii: (
 // ─── Accent aspect ratio ──────────────────────────────────────────────────────
 // `auto`  — default; the container's width follows its content.
 // `equal` — equal width and height, suitable for icon wrapping. Combine with
-//           `borderRadius: '50%'` to render a circle.
+//           `borderRadius: 'full'` to render a circle.
 
 .visual-accent-aspect-auto {
   // Reset any square constraints so content can size the container naturally.

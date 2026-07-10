@@ -4,7 +4,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Box, { BoxProps } from '../../../lib/components/box';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import BoxWrapper from '../../../lib/components/test-utils/dom/box';
 
 import styles from '../../../lib/components/box/styles.css.js';
@@ -230,7 +229,7 @@ describe('Box', () => {
       });
     });
 
-    test('applies the correct class for each t-shirt size borderRadius keyword', () => {
+    test('applies the correct class for each borderRadius keyword', () => {
       const keywords: Array<BoxProps.VisualAccent.BorderRadius> = [
         'xxxs',
         'xxs',
@@ -241,35 +240,24 @@ describe('Box', () => {
         'xl',
         'xxl',
         'xxxl',
+        'full',
       ];
       keywords.forEach(borderRadius => {
         const boxWrapper = renderBox({ visualAccent: { color: 'indigo', borderRadius } });
-        const element = boxWrapper.getElement();
-        expect(element).toHaveClass(styles[`visual-accent-radius-${borderRadius}`]);
-        // Keyword radii are applied via class, not the custom property.
-        expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('');
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-radius-${borderRadius}`]);
       });
     });
 
-    test('applies an arbitrary CSS borderRadius value through the custom property', () => {
-      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', borderRadius: '13px' } });
-      const element = boxWrapper.getElement();
-      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('13px');
-      expect(element.className).not.toMatch(/visual-accent-radius-/);
-    });
-
-    test('does not set the borderRadius custom property or class when borderRadius is not set', () => {
+    test('does not set a borderRadius class when borderRadius is not set', () => {
       const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
-      const element = boxWrapper.getElement();
-      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('');
-      expect(element.className).not.toMatch(/visual-accent-radius-/);
+      expect(boxWrapper.getElement().className).not.toMatch(/visual-accent-radius-/);
     });
 
-    test('renders a circle when combining equal aspect ratio and 50% borderRadius', () => {
-      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio: 'equal', borderRadius: '50%' } });
+    test('renders a circle when combining equal aspect ratio and full borderRadius', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio: 'equal', borderRadius: 'full' } });
       const element = boxWrapper.getElement();
       expect(element).toHaveClass(styles['visual-accent-aspect-equal']);
-      expect(element.style.getPropertyValue(customCssProps.boxVisualAccentBorderRadius)).toBe('50%');
+      expect(element).toHaveClass(styles['visual-accent-radius-full']);
     });
 
     test('tagOverride works with visualAccent', () => {
