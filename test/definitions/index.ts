@@ -14,11 +14,7 @@ import appLayoutDrawers from './visual/app-layout-drawers';
 import appLayoutFlashbar from './visual/app-layout-flashbar';
 import appLayoutHeader from './visual/app-layout-header';
 import appLayoutMulti from './visual/app-layout-multi';
-import appLayoutResponsive600 from './visual/app-layout-responsive-600';
-import appLayoutResponsive1280 from './visual/app-layout-responsive-1280';
-import appLayoutResponsive1400 from './visual/app-layout-responsive-1400';
-import appLayoutResponsive1920 from './visual/app-layout-responsive-1920';
-import appLayoutResponsive2540 from './visual/app-layout-responsive-2540';
+import appLayoutResponsive from './visual/app-layout-responsive';
 import appLayoutStickyTableHeaderSplitPanel from './visual/app-layout-sticky-table-header-split-panel';
 import appLayoutToolbar from './visual/app-layout-toolbar';
 import appLayoutZIndex from './visual/app-layout-z-index';
@@ -33,11 +29,7 @@ export const appLayout: TestSuite[] = [
   appLayoutFlashbar,
   appLayoutHeader,
   appLayoutMulti,
-  appLayoutResponsive600,
-  appLayoutResponsive1280,
-  appLayoutResponsive1400,
-  appLayoutResponsive1920,
-  appLayoutResponsive2540,
+  appLayoutResponsive,
   appLayoutStickyTableHeaderSplitPanel,
   appLayoutToolbar,
   appLayoutZIndex,
