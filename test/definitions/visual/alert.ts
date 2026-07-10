@@ -30,6 +30,7 @@ const suite: TestSuite = {
           path: 'alert/style-custom-types',
           screenshotType: 'screenshotArea' as const,
         },
+        { description: 'runtime-action', path: 'alert/runtime-action', screenshotType: 'screenshotArea' as const },
       ],
     })),
   ],

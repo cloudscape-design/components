@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
@@ -43,6 +43,13 @@ const items: ButtonDropdownProps.Items = [
       act(() => wrapper.findTriggerButton()!.keydown(KeyCode.up));
       expect(wrapper.findOpenDropdown()).toBeTruthy();
       expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item5');
+    });
+
+    test('should preventDefault on space keydown when dropdown is closed to prevent page scroll', () => {
+      expect(wrapper.findOpenDropdown()).toBe(null);
+      const trigger = wrapper.findNativeButton().getElement();
+      const defaultPrevented = !fireEvent.keyDown(trigger, { keyCode: KeyCode.space });
+      expect(defaultPrevented).toBe(true);
     });
 
     test('should show secondaryText in highlighted items', () => {

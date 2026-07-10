@@ -75,6 +75,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `highlighted` (boolean) - Whether the item is currently highlighted.
    * - `disabled` (boolean) - Whether the item is disabled.
    * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
    *
    * ### checkbox
    *
@@ -85,6 +86,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `highlighted` (boolean) - Whether the item is currently highlighted.
    * - `checked` (boolean) - Controls the state of the checkbox item.
    * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
    *
    * ### group
    *
@@ -95,6 +97,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `highlighted` (boolean) - Whether the item is currently highlighted.
    * - `expanded` (boolean) - Whether the group is expanded.
    * - `expandDirection` ('vertical' | 'horizontal') - The direction in which the group expands.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
    *
    * When providing a custom `renderItem` implementation, it fully replaces the default visual rendering and content for that item.
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
@@ -193,6 +196,46 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   fullWidth?: boolean;
 
   /**
+   * Enables filtering of the dropdown items.
+   *
+   * When set to `auto`, a search input is rendered inside the dropdown and the items are filtered as the user
+   * types. Items are matched client-side using a case-insensitive substring match against their `text`,
+   * `secondaryText`, and `labelTag`.
+   */
+  filteringType?: ButtonDropdownProps.FilteringType;
+
+  /**
+   * Specifies the placeholder to display in the filtering input. Only relevant when filtering is enabled.
+   */
+  filteringPlaceholder?: string;
+
+  /**
+   * Adds an `aria-label` to the filtering input. Only relevant when filtering is enabled.
+   */
+  filteringAriaLabel?: string;
+
+  /**
+   * Adds an `aria-label` to the clear button inside the filtering input. Only relevant when filtering is enabled.
+   * @i18n
+   */
+  filteringClearAriaLabel?: string;
+
+  /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
+
+  /**
+   * Displayed when filtering is enabled and there are no matches for the filtering input.
+   */
+  noMatch?: React.ReactNode;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: ButtonDropdownProps.I18nStrings;
+
+  /**
    * Attributes to add to the native `button` element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -226,6 +269,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
+  export type FilteringType = 'auto' | 'none';
+
+  export interface I18nStrings {
+    filteringItemAriaDescription?: string;
+  }
 
   export interface ActionRenderItem {
     type: 'action';
@@ -255,7 +303,7 @@ export namespace ButtonDropdownProps {
   }
 
   export type RenderItem = ActionRenderItem | CheckboxRenderItem | GroupRenderItem;
-  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem }) => ReactNode | null;
+  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem; filterText?: string }) => ReactNode | null;
 
   export interface MainAction {
     text?: string;
