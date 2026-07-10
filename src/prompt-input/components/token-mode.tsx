@@ -10,6 +10,7 @@ import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
+import { getMenuOptionsListStyles } from '../styles';
 import MenuDropdown from './menu-dropdown';
 
 import styles from '../styles.css.js';
@@ -173,6 +174,7 @@ export default function TokenMode({
                   statusType={activeMenu.statusType ?? 'finished'}
                   menuItemsState={menuItemsState}
                   menuItemsHandlers={menuItemsHandlers}
+                  optionsListCustomProperties={getMenuOptionsListStyles(menuStyle)}
                   highlightedOptionId={highlightedMenuOptionId}
                   highlightText={menuFilterText}
                   listId={menuListId}

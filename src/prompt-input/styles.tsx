@@ -1,8 +1,34 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import type { CSSProperties } from 'react';
+
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { PromptInputProps } from './interfaces';
+
+/**
+ * Maps the public `style.menu.options`/`filterMatch` overrides to the internal
+ * options-list custom properties consumed by the shared selectable-item/option
+ * styles. Core system only, mirroring getPromptInputStyles. Unset values are
+ * omitted so those styles keep falling back to design tokens. Returns undefined
+ * when there is nothing to apply, so no custom properties are set on the list.
+ */
+export function getMenuOptionsListStyles(menuStyle: PromptInputProps.Style['menu']): CSSProperties | undefined {
+  if (SYSTEM !== 'core' || (!menuStyle?.options && !menuStyle?.filterMatch)) {
+    return undefined;
+  }
+  return {
+    [customCssProps.optionBackgroundDefault]: menuStyle.options?.backgroundColor?.default,
+    [customCssProps.optionBackgroundHighlighted]: menuStyle.options?.backgroundColor?.highlighted,
+    [customCssProps.optionBackgroundSelected]: menuStyle.options?.backgroundColor?.selected,
+    [customCssProps.optionColorDefault]: menuStyle.options?.color?.default,
+    [customCssProps.optionColorHighlighted]: menuStyle.options?.color?.highlighted,
+    [customCssProps.optionColorDisabled]: menuStyle.options?.color?.disabled,
+    [customCssProps.optionGroupLabelColor]: menuStyle.options?.color?.groupLabel,
+    [customCssProps.optionFilterMatchBackground]: menuStyle.filterMatch?.backgroundColor,
+    [customCssProps.optionFilterMatchColor]: menuStyle.filterMatch?.color,
+  } as CSSProperties;
+}
 
 export function getPromptInputStyles(style: PromptInputProps['style']) {
   if (SYSTEM !== 'core') {
