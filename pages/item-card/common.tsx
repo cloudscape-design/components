@@ -5,6 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { Box, Button, Icon } from '~components';
+import Badge from '~components/badge';
 import ButtonGroup from '~components/button-group';
 import FormField from '~components/form-field';
 import Input from '~components/input';
@@ -78,6 +79,13 @@ export const actions = (
       { type: 'icon-button', id: 'delete', iconName: 'remove', text: 'Delete' },
     ]}
   />
+);
+
+export const wideActions = (
+  <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+    <Badge color="grey">status</Badge>
+    <Button variant="normal">Action</Button>
+  </SpaceBetween>
 );
 
 export const icon = <Icon name="settings"></Icon>;

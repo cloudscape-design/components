@@ -77,7 +77,7 @@ export default function InternalItemCard({
               icon={icon && <div className={testStyles.icon}>{icon}</div>}
               actions={actions}
               disablePaddings={disableHeaderPaddings}
-              wrapActions={false}
+              wrapActions={true}
             />
           </div>
         )}
