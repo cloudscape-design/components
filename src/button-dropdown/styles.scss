@@ -145,6 +145,12 @@ $dropdown-trigger-icon-offset: 2px;
   flex: 0 0 auto;
 }
 
+.filter {
+  position: relative;
+  z-index: 4;
+  flex-shrink: 0;
+}
+
 .test-utils-button-trigger {
   /* used in test-utils */
 }

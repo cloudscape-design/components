@@ -9,6 +9,34 @@ exports[`Components definition for action-card matches the snapshot: action-card
       "description": "Called when the user clicks on the action card.",
       "name": "onClick",
     },
+    {
+      "cancelable": true,
+      "description": "Called when the user clicks on the action card with the left mouse button without pressing
+modifier keys (that is, CTRL, ALT, SHIFT, META), and the action card has an \`href\` set.",
+      "detailInlineType": {
+        "name": "BaseNavigationDetail",
+        "properties": [
+          {
+            "name": "external",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "BaseNavigationDetail",
+      "name": "onFollow",
+    },
   ],
   "functions": [
     {
@@ -61,6 +89,30 @@ exports[`Components definition for action-card matches the snapshot: action-card
       "type": "boolean",
     },
     {
+      "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
+You can specify a string value that will be suggested as the name of the downloaded file.
+This property only applies when an \`href\` is provided.",
+      "inlineType": {
+        "name": "string | boolean",
+        "type": "union",
+        "values": [
+          "string",
+          "false",
+          "true",
+        ],
+      },
+      "name": "download",
+      "optional": true,
+      "type": "string | boolean",
+    },
+    {
+      "description": "Turns the action card into a link, pointing to the given URL. The card is rendered using an \`a\` element instead of a \`button\`.
+For example, use this property if selecting the card should navigate the user to another page.",
+      "name": "href",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "'top'",
       "description": "Specifies the vertical alignment of the icon.",
       "inlineType": {
@@ -85,6 +137,28 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Attributes to add to the native \`a\` element (when \`href\` is provided).
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAnchorAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
       "description": "Attributes to add to the native button element.
 Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
@@ -105,6 +179,21 @@ We do not support using this attribute to apply custom styling.",
         "core",
       ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
+If the \`rel\` property is provided, it overrides the default behavior.
+This property only applies when an \`href\` is provided.",
+      "name": "rel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
+This property only applies when an \`href\` is provided.",
+      "name": "target",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "'default'",
@@ -6115,10 +6204,86 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
+      "description": "Adds an \`aria-label\` to the filtering input. Only relevant when filtering is enabled.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the clear button inside the filtering input. Only relevant when filtering is enabled.",
+      "i18nTag": true,
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the placeholder to display in the filtering input. Only relevant when filtering is enabled.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "inlineType": {
+        "name": "(matchesCount: number, totalCount: number) => string",
+        "parameters": [
+          {
+            "name": "matchesCount",
+            "type": "number",
+          },
+          {
+            "name": "totalCount",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "((matchesCount: number, totalCount: number) => string)",
+    },
+    {
+      "defaultValue": "'none'",
+      "description": "Enables filtering of the dropdown items.
+
+When set to \`auto\`, a search input is rendered inside the dropdown and the items are filtered as the user
+types. Items are matched client-side using a case-insensitive substring match against their \`text\`,
+\`secondaryText\`, and \`labelTag\`.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.FilteringType",
+        "type": "union",
+        "values": [
+          "auto",
+          "none",
+        ],
+      },
+      "name": "filteringType",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
       "name": "fullWidth",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.I18nStrings",
+        "properties": [
+          {
+            "name": "filteringItemAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonDropdownProps.I18nStrings",
     },
     {
       "description": "Specifies alternate text for a custom icon, for use with \`iconUrl\`. Applies to the \`icon\` and \`inline-icon\` variants only.",
@@ -6735,6 +6900,7 @@ The item inside the props has a different shape depending on its type:
 - \`highlighted\` (boolean) - Whether the item is currently highlighted.
 - \`disabled\` (boolean) - Whether the item is disabled.
 - \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+- \`filterText\` (string) - The current value of the filtering input, when filtering is enabled.
 
 ### checkbox
 
@@ -6745,6 +6911,7 @@ The item inside the props has a different shape depending on its type:
 - \`highlighted\` (boolean) - Whether the item is currently highlighted.
 - \`checked\` (boolean) - Controls the state of the checkbox item.
 - \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+- \`filterText\` (string) - The current value of the filtering input, when filtering is enabled.
 
 ### group
 
@@ -6755,6 +6922,7 @@ The item inside the props has a different shape depending on its type:
 - \`highlighted\` (boolean) - Whether the item is currently highlighted.
 - \`expanded\` (boolean) - Whether the group is expanded.
 - \`expandDirection\` ('vertical' | 'horizontal') - The direction in which the group expands.
+- \`filterText\` (string) - The current value of the filtering input, when filtering is enabled.
 
 When providing a custom \`renderItem\` implementation, it fully replaces the default visual rendering and content for that item.
 The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
@@ -6765,7 +6933,7 @@ When returning \`null\`, the default styling will be applied.",
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: ButtonDropdownProps.RenderItem; }",
+            "type": "{ item: ButtonDropdownProps.RenderItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -6811,6 +6979,11 @@ Applies to the \`icon\` and \`inline-icon\` variants only.
 If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.",
       "isDefault": false,
       "name": "iconSvg",
+    },
+    {
+      "description": "Displayed when filtering is enabled and there are no matches for the filtering input.",
+      "isDefault": false,
+      "name": "noMatch",
     },
   ],
   "releaseStatus": "stable",
@@ -33926,10 +34099,19 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
-          "description": "Performs a click by triggering a mouse event on the internal button.
+          "description": "Performs a click by triggering a mouse event on the internal button or link.
 Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
           "name": "click",
-          "parameters": [],
+          "parameters": [
+            {
+              "description": "optional mouse event properties, for example modifier keys (\`ctrlKey\`, \`metaKey\`) or the mouse \`button\`.",
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "params",
+              "typeName": "MouseEventInit",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "void",
@@ -34807,6 +34989,36 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+Returns null if there is no open dropdown or filtering is not enabled.
+
+This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
+          "name": "findFilteringInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
+
+This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
+          "name": "findFooterRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -34956,6 +35168,108 @@ Supported options:
         },
       ],
       "name": "ButtonDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.blur",
+          },
+          "name": "blur",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "name": "findClearButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.findNativeInput",
+          },
+          "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLInputElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.focus",
+          },
+          "name": "focus",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
+          "description": "Gets the value of the component.
+
+Returns the current value of the input.",
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.getInputValue",
+          },
+          "name": "getInputValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.isDisabled",
+          },
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "description": "Sets the value of the component and calls the \`onChange\` handler",
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.setInputValue",
+          },
+          "name": "setInputValue",
+          "parameters": [
+            {
+              "description": "The value the input is set to.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+      ],
+      "name": "InputWrapper",
     },
     {
       "methods": [
@@ -37667,108 +37981,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
         },
       ],
       "name": "TextFilterWrapper",
-    },
-    {
-      "methods": [
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.blur",
-          },
-          "name": "blur",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "void",
-          },
-        },
-        {
-          "name": "findClearButton",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.findNativeInput",
-          },
-          "name": "findNativeInput",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLInputElement",
-              },
-            ],
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.focus",
-          },
-          "name": "focus",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "void",
-          },
-        },
-        {
-          "description": "Gets the value of the component.
-
-Returns the current value of the input.",
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.getInputValue",
-          },
-          "name": "getInputValue",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "string",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.isDisabled",
-          },
-          "name": "isDisabled",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "boolean",
-          },
-        },
-        {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.setInputValue",
-          },
-          "name": "setInputValue",
-          "parameters": [
-            {
-              "description": "The value the input is set to.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "value",
-              "typeName": "string",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "void",
-          },
-        },
-      ],
-      "name": "InputWrapper",
     },
     {
       "methods": [
@@ -45445,6 +45657,42 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+Returns null if there is no open dropdown or filtering is not enabled.
+
+This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFilteringInput",
+          },
+          "name": "findFilteringInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
+
+This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFooterRegion",
+          },
+          "name": "findFooterRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -46833,6 +47081,31 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+Returns null if there is no open dropdown or filtering is not enabled.
+
+This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
+          "name": "findFilteringInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
+
+This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
+          "name": "findFooterRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -46935,6 +47208,30 @@ Supported options:
         },
       ],
       "name": "ButtonDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findClearButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.findNativeInput",
+          },
+          "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "InputWrapper",
     },
     {
       "methods": [
@@ -48902,30 +49199,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
         },
       ],
       "name": "TextFilterWrapper",
-    },
-    {
-      "methods": [
-        {
-          "name": "findClearButton",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.findNativeInput",
-          },
-          "name": "findNativeInput",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-      ],
-      "name": "InputWrapper",
     },
     {
       "methods": [
@@ -54358,6 +54631,37 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               "typeName": "string",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+Returns null if there is no open dropdown or filtering is not enabled.
+
+This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFilteringInput",
+          },
+          "name": "findFilteringInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
+
+This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFooterRegion",
+          },
+          "name": "findFooterRegion",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

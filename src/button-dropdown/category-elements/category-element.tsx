@@ -25,6 +25,10 @@ const CategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const groupProps: ButtonDropdownProps.GroupRenderItem = {
@@ -36,7 +40,7 @@ const CategoryElement = ({
     expanded: true,
     expandDirection: 'vertical',
   };
-  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
 
   // Hide the category title element from screen readers because it will be
   // provided as an ARIA label.
@@ -85,6 +89,10 @@ const CategoryElement = ({
             position={position}
             renderItem={renderItem}
             parentProps={groupProps}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         )}
       </ul>
