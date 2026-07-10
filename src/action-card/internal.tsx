@@ -7,9 +7,10 @@ import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/componen
 
 import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
-import { fireCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { ActionCardProps } from './interfaces';
 
@@ -25,6 +26,11 @@ const InternalActionCard = React.forwardRef(
       description,
       children,
       onClick,
+      onFollow,
+      href,
+      target,
+      rel,
+      download,
       ariaLabel,
       ariaDescribedby,
       disabled,
@@ -34,20 +40,24 @@ const InternalActionCard = React.forwardRef(
       iconVerticalAlignment,
       variant,
       nativeButtonAttributes,
+      nativeAnchorAttributes,
       __internalRootRef,
       ...rest
     }: InternalActionCardProps,
     ref: React.Ref<ActionCardProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const containerRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     const headerId = useUniqueId('action-card-header-');
     const standaloneButtonId = useUniqueId('action-card-button-');
     const descriptionId = useUniqueId('action-card-description-');
     const bodyId = useUniqueId('action-card-body-');
 
-    useForwardFocus(ref, buttonRef);
+    useForwardFocus(ref, containerRef);
+
+    checkSafeUrl('ActionCard', href);
+    const isAnchor = Boolean(href);
 
     if (!header && !ariaLabel) {
       warnOnce(
@@ -56,9 +66,12 @@ const InternalActionCard = React.forwardRef(
       );
     }
 
-    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
       if (disabled) {
         return event.preventDefault();
+      }
+      if (isAnchor && isPlainLeftClick(event)) {
+        fireCancelableEvent(onFollow, { href, target }, event);
       }
       fireCancelableEvent(onClick, {}, event);
     };
@@ -80,8 +93,8 @@ const InternalActionCard = React.forwardRef(
       ariaDescribedby = descriptionId;
     }
 
-    const buttonProps = {
-      type: 'button' as const,
+    // Shared props between <a>-tag and <button>-tag
+    const interactiveProps = {
       className: clsx(
         styles['header-button'],
         testStyles.button,
@@ -93,22 +106,49 @@ const InternalActionCard = React.forwardRef(
       'aria-disabled': disabled || undefined,
     };
 
+    // <a>-tag specific props
+    const anchorProps = {
+      href: disabled ? undefined : href,
+      role: disabled ? 'link' : undefined,
+      tabIndex: disabled ? 0 : undefined,
+      target,
+      // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
+      rel: rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined),
+      download,
+    };
+
+    const renderInteractiveElement = (props: Record<string, unknown>, children?: React.ReactNode) =>
+      isAnchor ? (
+        <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
+          {...props}
+          {...anchorProps}
+          tag="a"
+          componentName="ActionCard"
+          nativeAttributes={nativeAnchorAttributes}
+          ref={containerRef as React.Ref<HTMLAnchorElement>}
+        >
+          {children}
+        </WithNativeAttributes>
+      ) : (
+        <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+          {...props}
+          type="button"
+          tag="button"
+          componentName="ActionCard"
+          nativeAttributes={nativeButtonAttributes}
+          ref={containerRef as React.Ref<HTMLButtonElement>}
+        >
+          {children}
+        </WithNativeAttributes>
+      );
+
     const headerSection = !headerRowEmpty ? (
       <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
         <InternalStructuredItem
           content={
             header && (
               <div className={clsx(styles['header-inner'], testStyles.header, disabled && styles.disabled)}>
-                <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
-                  {...buttonProps}
-                  tag="button"
-                  componentName="ActionCard"
-                  nativeAttributes={nativeButtonAttributes}
-                  ref={buttonRef}
-                  id={headerId}
-                >
-                  {header}
-                </WithNativeAttributes>
+                {renderInteractiveElement({ ...interactiveProps, id: headerId }, header)}
               </div>
             )
           }
@@ -144,24 +184,20 @@ const InternalActionCard = React.forwardRef(
       }
     }
 
-    const standaloneButton = !header ? (
-      <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
-        {...buttonProps}
-        tag="button"
-        componentName="ActionCard"
-        nativeAttributes={nativeButtonAttributes}
-        ref={buttonRef}
-        id={standaloneButtonId}
-        className={clsx(
-          styles['overlay-button'],
-          testStyles.button,
-          disabled && styles.disabled,
-          variant && styles[`variant-${variant}`]
-        )}
-        aria-label={ariaLabel || undefined}
-        aria-labelledby={standaloneButtonLabelledBy}
-      />
-    ) : null;
+    const standaloneOverlayProps = {
+      ...interactiveProps,
+      id: standaloneButtonId,
+      className: clsx(
+        styles['overlay-button'],
+        testStyles.button,
+        disabled && styles.disabled,
+        variant && styles[`variant-${variant}`]
+      ),
+      'aria-label': ariaLabel || undefined,
+      'aria-labelledby': standaloneButtonLabelledBy,
+    };
+
+    const standaloneButton = !header ? renderInteractiveElement(standaloneOverlayProps) : null;
 
     const contentElement = (
       <div className={styles['inner-card']}>

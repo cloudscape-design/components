@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import { BaseComponentProps } from '../types/base-component';
-import { CancelableEventHandler } from '../types/events';
+import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
 import { NativeAttributes } from '../types/native-attributes';
 
 export interface ActionCardProps extends BaseComponentProps {
@@ -26,6 +26,38 @@ export interface ActionCardProps extends BaseComponentProps {
    * Called when the user clicks on the action card.
    */
   onClick?: CancelableEventHandler<ActionCardProps.ClickDetail>;
+
+  /**
+   * Turns the action card into a link, pointing to the given URL. The card is rendered using an `a` element instead of a `button`.
+   * For example, use this property if selecting the card should navigate the user to another page.
+   */
+  href?: string;
+
+  /**
+   * Specifies where to open the linked URL (for example, to open in a new browser window or tab use `_blank`).
+   * This property only applies when an `href` is provided.
+   */
+  target?: string;
+
+  /**
+   * Adds a `rel` attribute to the link. By default, the component sets the `rel` attribute to "noopener noreferrer" when `target` is `"_blank"`.
+   * If the `rel` property is provided, it overrides the default behavior.
+   * This property only applies when an `href` is provided.
+   */
+  rel?: string;
+
+  /**
+   * Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
+   * You can specify a string value that will be suggested as the name of the downloaded file.
+   * This property only applies when an `href` is provided.
+   */
+  download?: boolean | string;
+
+  /**
+   * Called when the user clicks on the action card with the left mouse button without pressing
+   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the action card has an `href` set.
+   */
+  onFollow?: CancelableEventHandler<ActionCardProps.FollowDetail>;
 
   /**
    * Adds an aria-label to the action card.
@@ -81,11 +113,25 @@ export interface ActionCardProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+
+  /**
+   * Attributes to add to the native `a` element (when `href` is provided).
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export namespace ActionCardProps {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface ClickDetail {}
+
+  export type FollowDetail = BaseNavigationDetail;
 
   export type IconVerticalAlignment = 'top' | 'center';
   export type Variant = 'default' | 'embedded';

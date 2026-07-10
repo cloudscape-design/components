@@ -44,14 +44,16 @@ export default class ActionCardWrapper extends ComponentWrapper<HTMLDivElement> 
   }
 
   /**
-   * Performs a click by triggering a mouse event on the internal button.
+   * Performs a click by triggering a mouse event on the internal button or link.
    * Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.
+   *
+   * @param params optional mouse event properties, for example modifier keys (`ctrlKey`, `metaKey`) or the mouse `button`.
    */
   @usesDom
-  click(): void {
+  click(params?: MouseEventInit): void {
     const button = this.findByClassName(testStyles.button);
     if (button) {
-      button.click();
+      button.click(params);
     }
   }
 }
