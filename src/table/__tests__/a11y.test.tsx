@@ -173,7 +173,7 @@ describe('labels', () => {
         totalItemsCount,
         renderAriaLive: ({ totalItemsCount, visibleItemsCount }) => `${totalItemsCount} ${visibleItemsCount}`,
         expandableRows: {
-          getItemChildren: item => [{ ...item, id: item.id * 100 }],
+          getItemChildren: item => (item.id < 10000 ? [{ ...item, id: item.id * 100 }] : []),
           isItemExpandable: item => item.id < 100,
           expandedItems: defaultItems,
           onExpandableItemToggle: () => {},

@@ -2,37 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
-import { IconProps } from '../../../icon/interfaces';
-import { BaseComponentProps } from '../../base-component';
-
-interface BaseOption {
-  value?: string;
-  label?: string;
-  labelContent?: React.ReactNode;
-  lang?: string;
-  description?: string;
-  disabled?: boolean;
-  disabledReason?: string;
-  labelTag?: string;
-  tags?: ReadonlyArray<string>;
-  filteringTags?: ReadonlyArray<string>;
-  iconAlt?: string;
-  iconAriaLabel?: string;
-  iconName?: IconProps.Name;
-  iconUrl?: string;
-  iconSvg?: React.ReactNode;
-}
-
-export interface OptionDefinition extends BaseOption {
-  __labelPrefix?: string;
-}
+import { BaseComponentProps } from '../../../types/base-component';
+import { OptionDefinition, OptionGroup } from '../../../types/option';
 
 interface InternalOptionDefinition extends OptionDefinition {
   __customIcon?: React.ReactNode;
-}
-
-export interface OptionGroup extends BaseOption {
-  options: ReadonlyArray<OptionDefinition>;
 }
 
 export interface DropdownOption {
@@ -56,3 +30,6 @@ export interface OptionProps extends BaseComponentProps {
   labelId?: string;
   customContent?: ReactNode;
 }
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export { OptionDefinition, OptionGroup } from '../../../types/option';

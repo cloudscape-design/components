@@ -21,6 +21,7 @@ interface AutosuggestOptionsListProps
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
   ariaDescribedby?: string;
+  renderOption?: AutosuggestProps.ItemRenderer;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
@@ -45,6 +46,7 @@ export default function AutosuggestOptionsList({
   renderHighlightedAriaLive,
   listBottom,
   ariaDescribedby,
+  renderOption,
 }: AutosuggestOptionsListProps) {
   const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
   const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
@@ -62,6 +64,7 @@ export default function AutosuggestOptionsList({
 
   return (
     <ListComponent
+      renderOption={renderOption}
       listBottom={listBottom}
       handleLoadMore={handleLoadMore}
       autosuggestItemsState={autosuggestItemsState}

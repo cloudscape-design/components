@@ -29,7 +29,7 @@ const findResizeHandlerByDrawerId = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['drawers-slider']}`);
 };
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
     { hasDrawers = 'false', url = 'runtime-drawers', size = viewports.desktop },
     testFn: (page: BasePageObject) => Promise<void>
@@ -134,11 +134,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         const scrollBefore = await getScrollPosition();
 
         const scrollableContainer =
-          theme === 'classic'
-            ? wrapper.findActiveDrawer().toSelector()
-            : theme === 'refresh'
-              ? `.${vrDrawerStyles['drawer-content-container']}`
-              : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
+          theme === 'refresh'
+            ? `.${vrDrawerStyles['drawer-content-container']}`
+            : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
 
         await page.elementScrollTo(scrollableContainer, { top: 100 });
         await expect(getScrollPosition()).resolves.toEqual(scrollBefore);

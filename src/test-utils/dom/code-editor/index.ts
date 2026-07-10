@@ -47,12 +47,13 @@ export default class CodeEditorWrapper extends ComponentWrapper {
   }
 
   /**
-   * Sets the value of the component and calls the `onChange` handler
+   * Sets the value of the component and calls the `onDelayedChange` handler
    *
    * @param value The value the input is set to.
    */
   @usesDom setValue(value: string): void {
     const editor = this.findEditor()?.getElement() as any;
+    // eslint-disable-next-line no-restricted-syntax -- External library duck typing
     if (editor && 'env' in editor) {
       act(() => {
         editor.env.editor.setValue(value, -1);

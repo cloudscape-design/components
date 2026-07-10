@@ -24,7 +24,6 @@ const setupTest = (
   useBrowser(screenSize, async browser => {
     const page = new BasePageObject(browser);
     const params = new URLSearchParams({
-      visualRefresh: `${theme !== 'classic'}`,
       appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
     }).toString();
     await browser.url(`#/light/app-layout/dashboard-content-type?${params}`);
@@ -33,7 +32,7 @@ const setupTest = (
   });
 
 describe('Discreet split panel', () => {
-  describe.each<Theme>(['classic', 'refresh', 'refresh-toolbar'])('%s', theme => {
+  describe.each<Theme>(['refresh', 'refresh-toolbar'])('%s', theme => {
     describe.each<Size>(['desktop', 'mobile'])('%s', size => {
       it(
         'opens and closes',

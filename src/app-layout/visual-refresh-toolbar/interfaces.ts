@@ -6,14 +6,15 @@ import React from 'react';
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
-import { NonCancelableEventHandler } from '../../internal/events';
 import { SomeOptional } from '../../internal/types';
+import { NonCancelableEventHandler } from '../../types/events';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
+import { FeatureNotificationsProps } from './state/use-feature-notifications';
 
 export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
   navigationTriggerHide?: boolean;
@@ -73,6 +74,7 @@ export interface AppLayoutInternals {
   onActiveDrawerChange: (newDrawerId: string | null, params: OnChangeParams) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   onActiveGlobalDrawersChange: (newDrawerId: string, params: OnChangeParams) => void;
+  drawerAnimationDisabled?: boolean;
   splitPanelAnimationDisabled?: boolean;
   expandedDrawerId: string | null;
   setExpandedDrawerId: (value: string | null) => void;
@@ -106,6 +108,7 @@ export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   bottomDrawersFocusControl: FocusControlState;
   onActiveBottomDrawerResize: ({ id, size }: { id: string; size: number }) => void;
   bottomDrawers: ReadonlyArray<InternalDrawer>;
+  featureNotificationsProps?: FeatureNotificationsProps;
 }
 
 // New widget interface

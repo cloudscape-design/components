@@ -13,6 +13,11 @@ export { FlashbarProps };
 export default function Flashbar(props: FlashbarProps) {
   const { __internalRootRef } = useBaseComponent('Flashbar', {
     props: { stackItems: props.stackItems },
+    metadata: {
+      itemsWithPersistence: props.items?.filter(item => !!item.persistenceConfig?.uniqueKey).length ?? null,
+      itemsWithCrossServicePersistence:
+        props.items?.filter(item => !!item.persistenceConfig?.crossServicePersistence).length ?? null,
+    },
   });
   return <InternalFlashbar __internalRootRef={__internalRootRef} {...props} />;
 }

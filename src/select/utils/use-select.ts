@@ -5,19 +5,21 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
 import { OptionsListProps } from '../../internal/components/options-list';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { DropdownStatusProps } from '../../types/dropdown-status';
+import { NonCancelableEventHandler } from '../../types/events';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -76,6 +78,7 @@ export function useSelect({
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
+  const __selectedOptionsSet = new Set(__selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
       selectedValuesSet.add(item.value);
@@ -175,13 +178,13 @@ export function useSelect({
   });
 
   const getDropdownProps: () => Pick<
-    DropdownProps,
-    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
+    InternalDropdownProps,
+    'onFocus' | 'onBlur' | 'dropdownContentId' | 'ariaRole'
   > = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
-    dropdownContentRole: hasFilter ? 'dialog' : undefined,
+    ariaRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {
@@ -277,17 +280,17 @@ export function useSelect({
     const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = isSelectAll ? isAllSelected : __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
+    const selected = isSelectAll ? isAllSelected : __selectedOptionsSet.has(option) || !!groupState?.selected;
     const nextOption = options[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
-        : __selectedOptions.indexOf(options[index + 1]) > -1;
+        : __selectedOptionsSet.has(options[index + 1]);
     const previousOption = options[index - 1]?.option;
     const isPreviousSelected =
       !!previousOption && isGroup(previousOption)
         ? getGroupState(previousOption).selected
-        : __selectedOptions.indexOf(options[index - 1]) > -1;
+        : __selectedOptionsSet.has(options[index - 1]);
     const optionProps: any = {
       key: index,
       option,
@@ -354,7 +357,7 @@ export function useSelect({
   const highlightedGroupSelected =
     !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption.option).selected;
   const announceSelected =
-    !!highlightedOption && (__selectedOptions.indexOf(highlightedOption) > -1 || highlightedGroupSelected);
+    !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 
   return {
     isOpen,

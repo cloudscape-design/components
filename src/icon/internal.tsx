@@ -34,7 +34,7 @@ function iconSizeMap(height: number | null, fontSize?: number | null) {
   } else if (height >= 24 && !!fontSize && fontSize >= 20) {
     return 'medium';
   } else if (height <= 16) {
-    return 'small';
+    return !!fontSize && fontSize <= 12 ? 'x-small' : 'small';
   } else {
     return 'normal';
   }
@@ -135,7 +135,7 @@ const InternalIcon = ({
   const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
   function iconMap(name: IconProps.Name) {
-    if (name === 'gen-ai' && iconSize === 'small') {
+    if (name === 'gen-ai' && (iconSize === 'small' || iconSize === 'x-small')) {
       return (
         <svg
           width="12"
@@ -153,7 +153,14 @@ const InternalIcon = ({
         </svg>
       );
     } else {
-      return icons[name];
+      const icon = icons[name];
+      if (!icon) {
+        warnOnce(
+          'Icon',
+          `You have specified \`name="${name}"\` but no icon with that name was found in the current IconProvider context. If this is a custom icon, ensure your app is wrapped in an \`IconProvider\` with the icon defined via \`defineIcons\`.`
+        );
+      }
+      return icon;
     }
   }
 

@@ -112,9 +112,23 @@ describe('Modal component', () => {
 
   describe('size property', () => {
     it('displays correct size', () => {
-      (['small', 'medium', 'large', 'max'] as ModalProps.Size[]).forEach(size => {
+      (['small', 'medium', 'large', 'x-large', 'xx-large', 'max'] as ModalProps.Size[]).forEach(size => {
         const wrapper = renderModal({ size });
         expect(wrapper.findDialog().getElement()).toHaveClass(styles[size]);
+      });
+    });
+  });
+
+  describe('position property', () => {
+    it('defaults to center position', () => {
+      const wrapper = renderModal();
+      expect(wrapper.findFocusLock().getElement()).toHaveClass(styles['position-center']);
+    });
+
+    it('displays correct position', () => {
+      (['center', 'top'] as ModalProps.Position[]).forEach(position => {
+        const wrapper = renderModal({ position });
+        expect(wrapper.findFocusLock().getElement()).toHaveClass(styles[`position-${position}`]);
       });
     });
   });

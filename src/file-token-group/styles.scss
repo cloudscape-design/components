@@ -34,6 +34,21 @@
   }
 }
 
+.file-name-container {
+  all: unset;
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  cursor: default;
+  text-align: start;
+
+  &:focus-visible {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    }
+  }
+}
+
 .file-option-name,
 .file-option-size,
 .file-option-last-modified {
@@ -123,9 +138,9 @@
   &.read-only {
     border-color: awsui.$color-border-input-disabled;
     background-color: awsui.$color-background-container-content;
-    pointer-events: none;
 
     > .dismiss-button {
+      pointer-events: none;
       color: awsui.$color-text-button-inline-icon-disabled;
 
       &:hover {

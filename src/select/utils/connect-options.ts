@@ -1,22 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption } from '../../internal/components/option/interfaces';
+import { OptionDefinition } from '../../types/option';
 
 export const connectOptionsByValue = (
   options: ReadonlyArray<DropdownOption>,
   selectedOptions: ReadonlyArray<OptionDefinition>
 ): ReadonlyArray<DropdownOption> => {
-  return (selectedOptions || []).map(selectedOption => {
-    for (const dropdownOption of options) {
-      if (
-        dropdownOption.type !== 'parent' &&
-        (dropdownOption.option as OptionDefinition).value === selectedOption.value
-      ) {
-        return dropdownOption;
+  if (!selectedOptions || selectedOptions.length === 0) {
+    return [];
+  }
+  const optionByValue = new Map<OptionDefinition['value'], DropdownOption>();
+  for (const dropdownOption of options) {
+    if (dropdownOption.type !== 'parent') {
+      const value = (dropdownOption.option as OptionDefinition).value;
+      if (!optionByValue.has(value)) {
+        optionByValue.set(value, dropdownOption);
       }
     }
-    return { option: selectedOption };
-  });
+  }
+  return selectedOptions.map(selectedOption => optionByValue.get(selectedOption.value) ?? { option: selectedOption });
 };
 
 export const findOptionIndex = (options: ReadonlyArray<OptionDefinition>, option: OptionDefinition) => {

@@ -11,11 +11,6 @@ class CardsPage extends BasePageObject {
   isSelectionInputFocused = (index: number) => {
     return this.isFocused(this.wrapper.findItems().get(index).find('input').toSelector());
   };
-
-  getActiveElement = async () => {
-    const element = await this.browser.getActiveElement();
-    return this.browser.$(element);
-  };
 }
 
 function setupTest(testFn: (page: CardsPage) => Promise<void>) {

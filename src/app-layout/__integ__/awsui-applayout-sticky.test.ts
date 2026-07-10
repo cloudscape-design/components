@@ -21,7 +21,7 @@ class AppLayoutStickyPage extends BasePageObject {
   }
 }
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new AppLayoutStickyPage(browser);

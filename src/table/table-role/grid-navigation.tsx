@@ -17,8 +17,8 @@ import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import {
   defaultIsSuppressed,
+  findNextCell,
   findTableRowByAriaRowIndex,
-  findTableRowCellByAriaColIndex,
   focusNextElement,
   getClosestCell,
   isElementDisabled,
@@ -330,15 +330,13 @@ export class GridNavigationProcessor {
       return cellFocusables[nextElementIndex];
     }
 
-    // Find next cell to focus or move focus into (can be null if the left/right edge is reached).
+    // Find next cell to focus or move focus into.
     const targetAriaColIndex = from.colIndex + delta.x;
-    const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
-    if (!targetCell) {
-      return null;
-    }
 
-    // When target cell matches the current cell it means we reached the left or right boundary.
-    if (targetCell === cellElement && delta.x !== 0) {
+    const targetCell = this.table
+      ? findNextCell(this.table, targetRow, targetAriaColIndex, delta, cellElement as HTMLTableCellElement | null)
+      : null;
+    if (!targetCell) {
       return null;
     }
 

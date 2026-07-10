@@ -3,9 +3,8 @@
 import React from 'react';
 
 import { ButtonProps } from '../button/interfaces';
-import { ErrorContext } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ErrorContext } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
 
 export namespace FlashbarProps {
   export interface MessageDefinition {
@@ -217,9 +216,9 @@ export interface FlashbarProps extends BaseComponentProps {
   i18nStrings?: FlashbarProps.I18nStrings;
 
   /**
+   * An object containing CSS properties to customize the flashbar's visual appearance.
+   * Refer to the [style](/components/flashbar/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: FlashbarProps.Style;
 }
-
-export type InternalFlashbarProps = FlashbarProps & InternalBaseComponentProps;

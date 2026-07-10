@@ -3,6 +3,8 @@
 const path = require('path');
 const workspace = require('./workspace');
 
+const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
+
 const themes = [
   // This is the default Cloudscape theme, which is best used with Visual Refresh enabled (by default)
   {
@@ -13,7 +15,10 @@ const themes = [
     designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic/index.js',
-    secondaryThemePaths: ['./visual-refresh-secondary/index.js'],
+    secondaryThemePaths: [
+      './visual-refresh-secondary/index.js',
+      ...(INCLUDE_ONE_THEME ? ['./one-theme/index.js'] : []),
+    ],
   },
 ];
 

@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
 
 @use './motion';
 
@@ -29,6 +30,26 @@ $_color-overrides: (
   'yellow': awsui.$color-text-status-warning,
 );
 
+$_status-backgrounds: (
+  'error': awsui.$color-background-status-indicator-error,
+  'warning': awsui.$color-background-status-indicator-warning,
+  'success': awsui.$color-background-status-indicator-success,
+  'info': awsui.$color-background-status-indicator-info,
+  'stopped': awsui.$color-background-status-indicator-neutral,
+  'pending': awsui.$color-background-status-indicator-neutral,
+  'in-progress': awsui.$color-background-status-indicator-neutral,
+  'loading': awsui.$color-background-status-indicator-neutral,
+  'not-started': awsui.$color-background-status-indicator-neutral,
+);
+
+$_background-overrides: (
+  'red': awsui.$color-background-status-indicator-error,
+  'grey': awsui.$color-background-status-indicator-neutral,
+  'blue': awsui.$color-background-status-indicator-info,
+  'green': awsui.$color-background-status-indicator-success,
+  'yellow': awsui.$color-background-status-indicator-warning,
+);
+
 .root {
   @include styles.default-text-style;
   @each $status in map.keys($_status-colors) {
@@ -41,15 +62,41 @@ $_color-overrides: (
       color: #{map.get($_color-overrides, $color)};
     }
   }
+  @each $status in map.keys($_status-backgrounds) {
+    &.status-#{$status} > .container {
+      background: #{map.get($_status-backgrounds, $status)};
+    }
+  }
+  @each $color in map.keys($_background-overrides) {
+    &.color-override-#{$color} > .container {
+      background: #{map.get($_background-overrides, $color)};
+    }
+  }
 }
 
 .container {
+  padding-inline: awsui.$space-status-indicator-padding-horizontal;
+  border-start-start-radius: awsui.$border-radius-status-indicator;
+  border-start-end-radius: awsui.$border-radius-status-indicator;
+  border-end-start-radius: awsui.$border-radius-status-indicator;
+  border-end-end-radius: awsui.$border-radius-status-indicator;
+
+  .root.status-loading > & {
+    @include theming.one-theme-only {
+      background: transparent;
+      align-items: center;
+      color: awsui.$color-text-body-secondary;
+    }
+  }
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;
 
     > .icon {
       white-space: nowrap;
+      @include theming.one-theme-only {
+        vertical-align: middle;
+      }
     }
   }
 
@@ -57,9 +104,19 @@ $_color-overrides: (
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
+    @include theming.one-theme-only {
+      display: inline-flex;
+      align-items: flex-start;
+    }
 
     > .icon {
       padding-inline-end: awsui.$space-xxs;
+
+      @include theming.one-theme-only {
+        display: inline-flex;
+        align-items: center;
+        margin-block-start: awsui.$space-xxxs;
+      }
     }
   }
 }
@@ -70,4 +127,14 @@ $_color-overrides: (
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: text-bottom;
+
+  @include theming.one-theme-only {
+    text-overflow: unset;
+
+    > span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }

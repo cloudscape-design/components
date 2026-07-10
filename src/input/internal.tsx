@@ -13,12 +13,15 @@ import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
-import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { getBaseProps } from '../internal/base-component';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,
@@ -52,6 +55,8 @@ export interface InternalInputProps
   __inheritFormFieldProps?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
+  __inlineLabelText?: string;
+  __fullWidth?: boolean;
 }
 
 function InternalInput(
@@ -93,6 +98,8 @@ function InternalInput(
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
+    __inlineLabelText,
+    __fullWidth,
     style,
     ...rest
   }: InternalInputProps,
@@ -196,6 +203,18 @@ function InternalInput(
     },
   };
 
+  const mainInput = (
+    <WithNativeAttributes
+      {...attributes}
+      tag="input"
+      componentName="Input"
+      nativeAttributes={nativeInputAttributes}
+      skipWarnings={__skipNativeAttributesWarnings}
+      ref={mergedRef}
+      style={getInputStyles(style)}
+    />
+  );
+
   return (
     <div
       {...baseProps}
@@ -211,15 +230,23 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <WithNativeAttributes
-        {...attributes}
-        tag="input"
-        componentName="Input"
-        nativeAttributes={nativeInputAttributes}
-        skipWarnings={__skipNativeAttributesWarnings}
-        ref={mergedRef}
-        style={getInputStyles(style)}
-      />
+      {__inlineLabelText ? (
+        <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
+          <label htmlFor={controlId} className={styles['inline-label']}>
+            {__inlineLabelText}
+          </label>
+          <div
+            className={clsx(
+              styles['inline-label-trigger-wrapper'],
+              __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+            )}
+          >
+            {mainInput}
+          </div>
+        </div>
+      ) : (
+        mainInput
+      )}
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}

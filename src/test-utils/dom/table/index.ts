@@ -15,6 +15,7 @@ import progressiveLoadingStyles from '../../../table/progressive-loading/styles.
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import selectionStyles from '../../../table/selection/styles.selectors.js';
 import styles from '../../../table/styles.selectors.js';
+import testUtilStyles from '../../../table/test-classes/styles.selectors.js';
 
 export default class TableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
@@ -45,7 +46,25 @@ export default class TableWrapper extends ComponentWrapper {
     return this.containerWrapper.findFooter();
   }
 
-  findColumnHeaders(): Array<ElementWrapper> {
+  /**
+   * Returns column header cells from the table's header region.
+   *
+   * By default, returns all leaf-column headers (`scope="col"`).
+   * For tables without column grouping this is equivalent to the previous behavior.
+   * For tables with column grouping this excludes group header cells.
+   *
+   * @param option.groupId When provided, returns only leaf columns belonging to this group
+   *   (matched via `data-column-group-id` attribute).
+   */
+  findColumnHeaders(
+    option: {
+      groupId?: string;
+    } = {}
+  ): Array<ElementWrapper> {
+    const { groupId } = option;
+    if (groupId !== undefined) {
+      return this.findActiveTHead().findAll(`th[data-column-group-id="${groupId}"]`);
+    }
     return this.findActiveTHead().findAll('tr > *');
   }
 
@@ -55,7 +74,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
+    return this.findActiveTHead().find(
+      `th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}, tr:not([data-group-level]) > th:nth-child(${columnIndex}) .${resizerStyles.resizer}`
+    );
   }
 
   /**
@@ -70,8 +91,18 @@ export default class TableWrapper extends ComponentWrapper {
     );
   }
 
+  /**
+   * Returns a table cell counter, if defined, based on given row and column indices.
+   *
+   * @param rowIndex 1-based index of the row of the cell to select.
+   * @param columnIndex 1-based index of the column of the cell to select.
+   */
+  findBodyCellCounter(rowIndex: number, columnIndex: number): ElementWrapper | null {
+    return this.findBodyCell(rowIndex, columnIndex)?.find(`.${testUtilStyles['body-cell-counter']}`) ?? null;
+  }
+
   findRows(): Array<ElementWrapper> {
-    return this.findNativeTable().findAllByClassName(styles.row);
+    return this.findNativeTable().findAll(`tr.${styles.row}:not([aria-hidden])`);
   }
 
   findSelectedRows(): Array<ElementWrapper> {
@@ -94,8 +125,15 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findByClassName(styles.loading);
   }
 
+  /**
+   * Returns the clickable sorting area of a column header.
+   *
+   * @param colIndex 1-based index of the column.
+   */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
+    return this.findActiveTHead().find(
+      `th[data-column-index="${colIndex}"] [role=button], tr:not([data-group-level]) > *:nth-child(${colIndex}) [role=button]`
+    );
   }
 
   /**

@@ -19,7 +19,9 @@ export function getAllComponents(): string[] {
         name !== 'test-utils' &&
         name !== 'theming' &&
         name !== 'contexts' &&
+        name !== 'plugins' &&
         name !== 'i18n' &&
+        name !== 'types' &&
         !name.includes('.') &&
         !name.includes('LICENSE') &&
         !name.includes('NOTICE')
@@ -36,7 +38,7 @@ export function getAllComponents(): string[] {
  * @param componentName the name of the component in kebap-case
  */
 export function supportsDOMProperties(componentName: string) {
-  const componentsWithoutDOMPropertiesSupport = ['annotation-context', 'icon-provider', 'error-boundary'];
+  const componentsWithoutDOMPropertiesSupport = ['annotation-context', 'icon-provider', 'error-boundary', 'tooltip'];
   return !componentsWithoutDOMPropertiesSupport.includes(componentName);
 }
 

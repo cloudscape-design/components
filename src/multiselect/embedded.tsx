@@ -87,6 +87,7 @@ const EmbeddedMultiselect = React.forwardRef(
           useInteractiveGroups={true}
           screenReaderContent={multiselectProps.announcement}
           highlightType={multiselectProps.highlightType}
+          isMultiSelect={true}
         />
 
         {status.content && <DropdownFooter content={status.content} id={footerId} />}

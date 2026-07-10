@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { Breakpoint as _Breakpoint } from '../types/breakpoint';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
 
 export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
   /**

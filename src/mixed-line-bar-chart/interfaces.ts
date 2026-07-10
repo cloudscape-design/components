@@ -2,17 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
+import { CartesianChartProps } from '../types/cartesian-chart';
 
 export type ChartDataTypes = number | string | Date;
 
 export type ScaleType = 'linear' | 'log' | 'time' | 'categorical';
-
-export interface InternalChartSeries<T> {
-  index: number;
-  color: string;
-  series: MixedLineBarChartProps.ChartSeries<T>;
-}
 
 // Properties that are shared as is (including API doc comments) by mixed, line and bar charts.
 export interface CommonMixedChartProps<T extends ChartDataTypes>

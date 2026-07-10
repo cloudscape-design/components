@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../../internal/base-component';
 import { SomeRequired } from '../../internal/types';
+import { BaseComponentProps } from '../../types/base-component';
 import { DateRangePickerProps } from '../interfaces';
 
 export type RangeCalendarI18nStrings = Pick<
@@ -28,6 +28,9 @@ export type RangeCalendarI18nStrings = Pick<
   | 'isoMonthConstraintText'
   | 'slashedMonthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
+  | 'isoDatePlaceholder'
+  | 'slashedDatePlaceholder'
+  | 'timePlaceholder'
 >;
 
 export interface DateRangePickerCalendarProps
@@ -52,6 +55,8 @@ export interface DateRangePickerCalendarProps
   value: DateRangePickerProps.PendingAbsoluteValue;
   setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
   i18nStrings?: RangeCalendarI18nStrings;
+  referrerId?: string;
+  multiGridStartPeriod: DateRangePickerProps.StartPeriod;
 }
 
 export interface RangeInputsProps

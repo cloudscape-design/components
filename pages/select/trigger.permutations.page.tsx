@@ -57,7 +57,7 @@ const permutations = createPermutations<TriggerProps>([
     disabled: [true],
     triggerVariant: ['option'],
     triggerProps: [{ ref: React.createRef() }],
-    selectedOption: [complexOption],
+    selectedOption: [null, complexOption],
   },
   {
     placeholder: ['Select an item'],

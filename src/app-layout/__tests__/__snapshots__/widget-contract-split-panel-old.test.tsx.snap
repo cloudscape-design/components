@@ -42,6 +42,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -154,6 +155,10 @@ Map {
         "toolbar": 0,
       },
     },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -235,6 +240,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -389,6 +395,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -580,6 +587,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -734,6 +742,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -892,6 +901,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1004,6 +1014,10 @@ Map {
         "toolbar": 0,
       },
     },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -1085,6 +1099,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1239,6 +1254,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1429,6 +1445,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {
@@ -1583,6 +1600,7 @@ Map {
       },
       "breadcrumbs": undefined,
       "discoveredBreadcrumbs": null,
+      "drawerAnimationDisabled": true,
       "drawers": [
         {
           "ariaLabels": {

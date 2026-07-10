@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BaseComponentProps } from '../internal/base-component';
 import { StatusIndicatorProps } from '../status-indicator/interfaces';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface StepsProps extends BaseComponentProps {
   /**
@@ -17,8 +17,6 @@ export interface StepsProps extends BaseComponentProps {
   /**
    * The visual orientation of the steps (vertical or horizontal).
    * By default the orientation is vertical.
-   *
-   * @awsuiSystem core
    */
   orientation?: StepsProps.Orientation;
   /**
@@ -27,8 +25,6 @@ export interface StepsProps extends BaseComponentProps {
    * * `header` (React.ReactNode) - Summary corresponding to the step.
    * * `details` (React.ReactNode) - (Optional) Additional information corresponding to the step.
    * * `icon` (React.ReactNode) - (Optional) Replaces the standard step icon from the status indicator.
-   *
-   * @awsuiSystem core
    */
   renderStep?: (step: StepsProps.Step) => {
     header: React.ReactNode;

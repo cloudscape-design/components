@@ -50,6 +50,14 @@ const customCssPropertiesList = [
   'stackedNotificationsDefaultBottomMargin',
   // Dropdown Custom Properties
   'dropdownDefaultMaxWidth',
+  'dropdownDefaultMinWidth',
+  // Dropdown Style API
+  'dropdownContentBorderColor',
+  'dropdownContentBorderWidth',
+  'dropdownContentBorderRadius',
+  // Modal Custom Properties
+  'modalCustomWidth',
+  'modalCustomHeight',
   // Spinner Custom Properties
   'spinnerRotatorFrom',
   'spinnerRotatorTo',
@@ -159,5 +167,22 @@ const customCssPropertiesList = [
   'styleSliderHandleBackgroundHover',
   'styleSliderHandleBackgroundActive',
   'styleSliderHandleBorderRadius',
+  // Token style properties
+  'tokenStyleBackgroundDefault',
+  'tokenStyleBackgroundDisabled',
+  'tokenStyleBackgroundReadOnly',
+  'tokenStyleBorderColorDefault',
+  'tokenStyleBorderColorDisabled',
+  'tokenStyleBorderColorReadOnly',
+  'tokenStyleDismissColorDefault',
+  'tokenStyleDismissColorDisabled',
+  'tokenStyleDismissColorHover',
+  'tokenStyleDismissColorReadOnly',
+  // Item card specific style properties
+  'styleItemCardBackgroundDefault',
+  'styleItemCardBorderColorDefault',
+  'styleItemCardBorderRadius',
+  'styleItemCardBorderWidthDefault',
+  'styleItemCardBoxShadowDefault',
 ];
 module.exports = customCssPropertiesList;

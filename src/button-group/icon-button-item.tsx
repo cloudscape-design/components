@@ -7,10 +7,12 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
-import Tooltip from '../internal/components/tooltip/index.js';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import { fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
-import { ButtonGroupProps, InternalIconButton } from './interfaces.js';
+import Tooltip from '../tooltip/internal.js';
+import { CancelableEventHandler } from '../types/events';
+import { ButtonGroupProps } from './interfaces.js';
+import { InternalIconButton } from './internal-interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -50,6 +52,10 @@ const IconButtonItem = forwardRef(
           iconSvg={item.iconSvg}
           iconAlt={item.text}
           ariaLabel={item.text}
+          href={item.href}
+          target={item.target}
+          rel={item.rel}
+          download={item.download}
           onClick={event => fireCancelableEvent(onItemClick, { id: item.id }, event)}
           ref={ref}
           data-testid={item.id}
@@ -62,14 +68,13 @@ const IconButtonItem = forwardRef(
         </InternalButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            trackRef={containerRef}
-            trackKey={item.id}
-            value={
+            className={testUtilStyles['button-group-tooltip']}
+            getTrack={() => containerRef.current}
+            content={
               (showFeedback && <InternalLiveRegion tagName="span">{item.popoverFeedback}</InternalLiveRegion>) ||
               item.text
             }
-            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
-            onDismiss={onTooltipDismiss}
+            onEscape={onTooltipDismiss}
           />
         )}
       </div>

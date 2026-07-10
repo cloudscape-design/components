@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
@@ -19,7 +19,7 @@ const intervals = [
   ['2022-02', '2022-03'], //next
   ['2021-01', '2021-03'], //q1
   ['2022-04', '2022-06'], //q2
-  ['2023-07', '2022-09'], //q3
+  ['2022-07', '2022-09'], //q3
   ['2024-10', '2024-12'], //q4
 ];
 
@@ -33,6 +33,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current', 'previous'] as const,
   })),
   // Disabled dates
   {
@@ -42,6 +43,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Custom control
   {
@@ -50,6 +52,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [() => 'Custom control'],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Input date formats
   {
@@ -59,36 +62,32 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     timeInputFormat: ['hh:mm:ss'] as const,
     dateInputFormat: ['iso', 'slashed'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
 ]);
 
 export default function DateRangePickerCalendarPage() {
-  let i = -1;
   return (
     <PermutationsPage title="Date range picker permutations: year calendar" i18n={{}}>
-      <div style={{ blockSize: `${(1 + permutations.length) * 300}px` }}>
+      <div style={{ blockSize: `${permutations.length * 320}px` }}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => {
-            i++;
-            return (
-              <div style={{ insetBlockStart: `${i * 300}px`, position: 'relative' }}>
-                <Dropdown
-                  stretchWidth={true}
-                  stretchHeight={true}
-                  stretchToTriggerWidth={false}
-                  open={true}
-                  onDropdownClose={() => {}}
-                  onMouseDown={() => {}}
-                  trigger={null}
-                >
+          render={permutation => (
+            <div style={{ blockSize: '300px' }}>
+              <Dropdown
+                stretchHeight={true}
+                open={true}
+                onOutsideClick={() => {}}
+                onMouseDown={() => {}}
+                trigger={null}
+                content={
                   <Box padding="m">
                     <Calendar {...permutation} granularity="month" />
                   </Box>
-                </Dropdown>
-              </div>
-            );
-          }}
+                }
+              />
+            </div>
+          )}
         />
       </div>
     </PermutationsPage>

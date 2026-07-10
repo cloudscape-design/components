@@ -86,7 +86,7 @@ const InternalTreeItem = <T,>({
       data-testid={`awsui-treeitem-${id}`}
       data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
-      <div className={styles['treeitem-content-wrapper']}>
+      <div className={clsx(styles['treeitem-content-wrapper'])}>
         <div className={styles['expand-toggle-wrapper']}>
           <div className={styles.toggle}>
             {isExpandable ? (

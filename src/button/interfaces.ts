@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../types/events';
 /**
  * @awsuiSystem core
  */
-import { NativeAttributes } from '../internal/utils/with-native-attributes';
+import { NativeAttributes } from '../types/native-attributes';
 
 export interface BaseButtonProps {
   /**
@@ -177,6 +177,11 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   ariaExpanded?: boolean;
 
   /**
+   * Adds `aria-haspopup` to the button element. Use when the button triggers a popup element such as a menu, listbox, tree, grid, or dialog.
+   */
+  ariaHaspopup?: boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog';
+
+  /**
    * Called when the user clicks on the button and the button is not disabled or in loading state.
    */
   onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
@@ -209,6 +214,8 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   iconAlt?: string;
 
   /**
+   * An object containing CSS properties to customize the button's visual appearance.
+   * Refer to the [style](/components/button/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ButtonProps.Style;

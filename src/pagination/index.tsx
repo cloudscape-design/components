@@ -13,12 +13,16 @@ import InternalPagination from './internal';
 
 export { PaginationProps };
 
-export default function Pagination(props: PaginationProps) {
-  const baseComponentProps = useBaseComponent('Pagination', { props: { openEnd: props.openEnd } });
+const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>((props, ref) => {
+  const baseComponentProps = useBaseComponent('Pagination', {
+    props: { openEnd: props.openEnd },
+    metadata: { hasJumpToPage: !!props.jumpToPage },
+  });
   return (
     <InternalPagination
       {...props}
       {...baseComponentProps}
+      ref={ref}
       {...getAnalyticsMetadataAttribute({
         component: {
           name: 'awsui.Pagination',
@@ -32,6 +36,8 @@ export default function Pagination(props: PaginationProps) {
       })}
     />
   );
-}
+});
 
 applyDisplayName(Pagination, 'Pagination');
+
+export default Pagination;

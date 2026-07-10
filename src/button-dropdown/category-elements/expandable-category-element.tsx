@@ -3,17 +3,19 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import Dropdown from '../../dropdown/internal';
 import InternalIcon from '../../icon/internal';
-import Dropdown from '../../internal/components/dropdown';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from '../analytics-metadata/interfaces.js';
-import { CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
@@ -21,6 +23,7 @@ import { getMenuItemProps } from '../utils/menu-item';
 import styles from './styles.css.js';
 
 const ExpandableCategoryElement = ({
+  index,
   item,
   onItemActivate,
   onGroupToggle,
@@ -34,6 +37,11 @@ const ExpandableCategoryElement = ({
   expandToViewport,
   variant,
   position,
+  renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -42,16 +50,25 @@ const ExpandableCategoryElement = ({
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    if (triggerRef.current && highlighted && !expanded) {
+    if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
       triggerRef.current.focus();
     }
-  }, [expanded, highlighted]);
+  }, [expanded, highlighted, filteringEnabled]);
 
   const onClick: React.MouseEventHandler = event => {
     if (!disabled) {
       event.preventDefault();
       onGroupToggle(item, event);
-      triggerRef.current?.focus();
+      if (!filteringEnabled) {
+        triggerRef.current?.focus();
+      }
+    }
+  };
+
+  const onMouseDown: React.MouseEventHandler = event => {
+    // Ensure that focus remains on the filtering input at all times.
+    if (filteringEnabled) {
+      event.preventDefault();
     }
   };
 
@@ -60,21 +77,38 @@ const ExpandableCategoryElement = ({
   };
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
+
+  const groupProps: ButtonDropdownProps.GroupRenderItem = {
+    index: index ?? 0,
+    type: 'group',
+    option: item as ButtonDropdownProps.ItemGroup,
+    disabled: !!disabled,
+    highlighted: !!highlighted,
+    expanded: expanded,
+    expandDirection: 'horizontal',
+  };
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
+
   const trigger = item.text && (
     <span
+      id={menuId && item.id ? `${menuId}-${item.id}` : undefined}
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
+        [styles['no-content-styling']]: !!renderResult,
         [styles['is-focused']]: isKeyboardHighlighted,
         [styles['visual-refresh']]: isVisualRefresh,
       })}
-      // We are using the roving tabindex technique to manage the focus state of the dropdown.
-      // The current element will always have tabindex=0 which means that it can be tabbed to,
-      // while all other items have tabindex=-1 so we can focus them when necessary.
-      tabIndex={highlighted ? 0 : -1}
+      // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+      // the `id` of the item to select it. When filtering is disabled, we are using the roving
+      // tabindex technique to manage the focus state of the dropdown. The current element will
+      // have tabindex=0 which means that it can be tabbed to, while all other items have
+      // tabindex=-1 so we can focus them when necessary.
+      tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, expanded, disabled })}
       {...(isDisabledWithReason ? targetProps : {})}
@@ -91,15 +125,24 @@ const ExpandableCategoryElement = ({
             } as GeneratedAnalyticsMetadataButtonDropdownExpand | GeneratedAnalyticsMetadataButtonDropdownCollapse)
       )}
     >
-      {(item.iconName || item.iconUrl || item.iconSvg) && (
-        <span className={styles['icon-wrapper']}>
-          <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
-        </span>
+      {renderResult ? (
+        renderResult
+      ) : (
+        <>
+          {(item.iconName || item.iconUrl || item.iconSvg) && (
+            <span className={styles['icon-wrapper']}>
+              <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+            </span>
+          )}
+          <span>{item.text}</span>
+          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
+          </span>
+        </>
       )}
-      {item.text}
-      <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-        <InternalIcon name="caret-down-filled" />
-      </span>
     </span>
   );
 
@@ -119,33 +162,40 @@ const ExpandableCategoryElement = ({
     content = (
       <Dropdown
         open={expanded}
-        stretchWidth={false}
         interior={true}
+        hideBlockBorder={false}
         expandToViewport={expandToViewport}
         trigger={trigger}
-      >
-        {item.items && expanded && (
-          <ul
-            role="menu"
-            aria-label={item.text}
-            className={clsx(styles['items-list-container'], styles['in-dropdown'])}
-          >
-            <ItemsList
-              items={item.items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={lastInDropdown}
-              highlightItem={highlightItem}
-              variant={variant}
-              position={position}
-            />
-          </ul>
-        )}
-      </Dropdown>
+        content={
+          item.items && expanded ? (
+            <ul
+              role="menu"
+              aria-label={item.text}
+              className={clsx(styles['items-list-container'], styles['in-dropdown'])}
+            >
+              <ItemsList
+                items={item.items}
+                onItemActivate={onItemActivate}
+                onGroupToggle={onGroupToggle}
+                targetItem={targetItem}
+                isHighlighted={isHighlighted}
+                isKeyboardHighlight={isKeyboardHighlight}
+                isExpanded={isExpanded}
+                lastInDropdown={lastInDropdown}
+                highlightItem={highlightItem}
+                variant={variant}
+                position={position}
+                renderItem={renderItem}
+                parentProps={groupProps}
+                filteringText={filteringText}
+                filteringEnabled={filteringEnabled}
+                menuId={menuId}
+                filteringDescriptionId={filteringDescriptionId}
+              />
+            </ul>
+          ) : undefined
+        }
+      />
     );
   }
 
@@ -160,6 +210,7 @@ const ExpandableCategoryElement = ({
       data-testid={item.id}
       ref={ref}
       onClick={onClick}
+      onMouseDown={onMouseDown}
       onMouseEnter={onHover}
       onTouchStart={onHover}
     >

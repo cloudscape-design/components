@@ -184,6 +184,21 @@ describe('Button Component', () => {
     });
   });
 
+  describe.each(['link', 'inline-link'] as const)(
+    'disabled with reason ignored for %s variant (not applicable)',
+    variant => {
+      test('does not make a link button focusable when disabledReason is set', () => {
+        const wrapper = renderButton({
+          variant,
+          href: 'https://example.com',
+          disabled: true,
+          disabledReason: 'reason',
+        });
+        expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+      });
+    }
+  );
+
   describe.each(['primary', 'normal', 'icon'] as const)('disabled with reason %s variant', variant => {
     describe.each([true, false] as const)('with href %s', withHref => {
       const defaultProps = {
@@ -325,6 +340,13 @@ describe('Button Component', () => {
     test('adds aria-expanded property to button', () => {
       const wrapper = renderButton({ ariaExpanded: true });
       expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
+  describe('ariaHaspopup property', () => {
+    test('adds aria-haspopup property to button', () => {
+      const wrapper = renderButton({ ariaHaspopup: 'menu' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-haspopup', 'menu');
     });
   });
 

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces';
+import { OptionDefinition, OptionGroup } from '../../../../types/option';
+import { DropdownOption } from '../interfaces';
 
 type SearchableField = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagField = 'tags' | 'filteringTags';
@@ -71,5 +72,7 @@ export const isInteractive = (option?: DropdownOption) => !!option && !option.di
 
 export const isGroupInteractive = (option?: DropdownOption) => !!option && !option.disabled;
 
-export const isGroup = (option?: OptionDefinition | OptionGroup): option is OptionGroup =>
-  !!option && 'options' in option && !!option.options;
+export const isGroup = (option?: OptionDefinition | OptionGroup): option is OptionGroup => {
+  const key: keyof OptionGroup = 'options';
+  return !!option && key in option && !!option.options;
+};

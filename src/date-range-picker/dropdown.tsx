@@ -52,16 +52,18 @@ interface DateRangePickerDropdownProps
         | 'i18nStrings'
         | 'customRelativeRangeUnits'
         | 'dateDisabledReason'
+        | 'absoluteMultiGridStartPeriod'
       >,
-      'absoluteFormat' | 'timeInputFormat'
+      'absoluteFormat' | 'timeInputFormat' | 'absoluteMultiGridStartPeriod'
     >,
     Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
-  onDropdownClose: () => void;
+  onOutsideClick: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
   renderRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
+  referrerId?: string;
 }
 
 export function DateRangePickerDropdown({
@@ -75,7 +77,7 @@ export function DateRangePickerDropdown({
   onApply: applyValue,
   getTimeOffset,
   timeOffset,
-  onDropdownClose,
+  onOutsideClick,
   relativeOptions,
   showClearButton,
   isSingleGrid,
@@ -91,6 +93,8 @@ export function DateRangePickerDropdown({
   customRelativeRangeUnits,
   renderRelativeRangeContent,
   granularity = 'day',
+  referrerId,
+  absoluteMultiGridStartPeriod,
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
@@ -120,7 +124,7 @@ export function DateRangePickerDropdown({
 
   const closeDropdown = () => {
     setApplyClicked(false);
-    onDropdownClose();
+    onOutsideClick();
   };
 
   const onClear = () => {
@@ -216,6 +220,8 @@ export function DateRangePickerDropdown({
                       dateInputFormat={dateInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
                       granularity={granularity}
+                      referrerId={referrerId}
+                      multiGridStartPeriod={absoluteMultiGridStartPeriod}
                     />
                   )}
 

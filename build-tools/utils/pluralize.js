@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const pluralizationMap = {
+  ActionCard: 'ActionCards',
   Alert: 'Alerts',
   AnchorNavigation: 'AnchorNavigations',
   Annotation: 'Annotations',
@@ -27,7 +28,9 @@ const pluralizationMap = {
   DateInput: 'DateInputs',
   DatePicker: 'DatePickers',
   DateRangePicker: 'DateRangePickers',
+  Divider: 'Dividers',
   Drawer: 'Drawers',
+  Dropdown: 'Dropdowns',
   ErrorBoundary: 'ErrorBoundaries',
   ExpandableSection: 'ExpandableSections',
   FileDropzone: 'FileDropzones',
@@ -44,6 +47,7 @@ const pluralizationMap = {
   Icon: 'Icons',
   IconProvider: 'IconProviders',
   Input: 'Inputs',
+  ItemCard: 'ItemCards',
   KeyValuePairs: 'KeyValuePairs',
   LineChart: 'LineCharts',
   Link: 'Links',
@@ -67,6 +71,7 @@ const pluralizationMap = {
   SegmentedControl: 'SegmentedControls',
   Select: 'Selects',
   SideNavigation: 'SideNavigations',
+  Skeleton: 'Skeletons',
   Slider: 'Sliders',
   SpaceBetween: 'SpaceBetweens',
   Spinner: 'Spinners',
@@ -85,8 +90,10 @@ const pluralizationMap = {
   ToggleButton: 'ToggleButtons',
   Token: 'Tokens',
   TokenGroup: 'TokenGroups',
+  Tooltip: 'Tooltips',
   TopNavigation: 'TopNavigations',
   TreeView: 'TreeViews',
+  TruncatedText: 'TruncatedTexts',
   TutorialPanel: 'TutorialPanels',
   Wizard: 'Wizards',
 };

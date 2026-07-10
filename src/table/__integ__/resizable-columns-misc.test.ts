@@ -104,7 +104,7 @@ test.skip(
   'should not oscillate when resizing table rendered in flex container',
   useBrowser({ width: 800, height: 800 }, async browser => {
     const page = new ResizableColumnsPage(browser);
-    await browser.url('#/light/table/resizable-coloumns-flex-grow/?visualRefresh=true');
+    await browser.url('#/light/table/resizable-coloumns-flex-grow/');
     await page.waitForVisible(wrapper.toSelector());
 
     const resizerSelector = wrapper.findColumnResizer(2).toSelector();

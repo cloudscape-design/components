@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -82,7 +84,7 @@ export default function StatusIndicator({
   nativeAttributes,
   __animate = false,
   __internalRootRef,
-  __size = 'normal',
+  __size = isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
   __display = 'inline-block',
   ...rest
 }: InternalStatusIndicatorProps) {
@@ -118,7 +120,7 @@ export default function StatusIndicator({
           display={__display}
           size={__size}
         />
-        {children}
+        <span>{children}</span>
       </span>
     </WithNativeAttributes>
   );

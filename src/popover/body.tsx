@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ButtonProps } from '../button/interfaces';
@@ -18,12 +18,13 @@ import styles from './styles.css.js';
 export interface PopoverBodyProps {
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
-  onDismiss: (() => void) | undefined;
+  disableDismissAutoFocus?: boolean;
+  onDismiss: ((method?: 'escape' | 'close-button') => void) | undefined;
   onBlur?: (event: React.FocusEvent) => void;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  variant?: 'annotation' | 'chart';
+  variant?: 'annotation' | 'chart' | 'feature-prompt';
   overflowVisible?: 'content' | 'both';
 
   className?: string;
@@ -37,6 +38,7 @@ const PopoverBody = React.forwardRef(
     {
       dismissButton: showDismissButton,
       dismissAriaLabel,
+      disableDismissAutoFocus = false,
       header,
       children,
       onDismiss,
@@ -58,7 +60,7 @@ const PopoverBody = React.forwardRef(
       (event: React.KeyboardEvent) => {
         if (event.keyCode === KeyCode.escape) {
           event.stopPropagation();
-          onDismiss?.();
+          onDismiss?.('escape');
         }
       },
       [onDismiss]
@@ -68,11 +70,11 @@ const PopoverBody = React.forwardRef(
     // because we also want to focus the dismiss button when it
     // is added dynamically (e.g. in chart popovers)
     useEffect(() => {
-      if (showDismissButton && !dismissButtonFocused.current) {
+      if (showDismissButton && !disableDismissAutoFocus && !dismissButtonFocused.current) {
         dismissButtonRef.current?.focus({ preventScroll: true });
       }
       dismissButtonFocused.current = showDismissButton;
-    }, [showDismissButton]);
+    }, [showDismissButton, disableDismissAutoFocus]);
 
     const dismissButton = (showDismissButton ?? null) && (
       <div
@@ -83,9 +85,10 @@ const PopoverBody = React.forwardRef(
           variant="icon"
           formAction="none"
           iconName="close"
+          __iconSize={isThemeActive(Theme.OneTheme) ? 'x-small' : undefined}
           className={styles['dismiss-control']}
           ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
-          onClick={() => onDismiss?.()}
+          onClick={() => onDismiss?.('close-button')}
           ref={dismissButtonRef}
         />
       </div>

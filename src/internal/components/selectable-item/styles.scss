@@ -7,8 +7,8 @@
 @use '../../styles/tokens' as awsui;
 
 // Box-shadow spread values for simulating borders without layout shifts
-$border-offset: awsui.$border-item-width;
-$border-offset-double: calc(2 * #{awsui.$border-item-width});
+$border-offset: awsui.$border-width-item-selected;
+$border-offset-double: calc(2 * #{$border-offset});
 
 // Divider widths (and negative) for reuse
 $divider-w: awsui.$border-divider-list-width;
@@ -189,14 +189,14 @@ $neg-divider-w: calc(-1 * #{$divider-w});
       > .selectable-item-content {
         padding-block: awsui.$space-xs;
         padding-inline: awsui.$space-xs;
-        font-weight: bold;
+        font-weight: styles.$font-weight-bold;
       }
     }
     &.interactiveGroups {
       > .selectable-item-content {
         padding-block: styles.$group-option-padding-vertical;
         padding-inline: styles.$control-padding-horizontal;
-        font-weight: bold;
+        font-weight: styles.$font-weight-bold;
       }
       &.highlighted > .selectable-item-content {
         color: awsui.$color-text-dropdown-item-highlighted;

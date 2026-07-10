@@ -31,8 +31,7 @@ export default function DatePickerScenario() {
       <FormField label="Date Range Picker field">
         <DateRangePicker
           {...props}
-          locale={undefined}
-          i18nStrings={undefined}
+          locale="de"
           placeholder="Nach einem Zeitraum filtern"
           isValidRange={value =>
             props.granularity === 'month'

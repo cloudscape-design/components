@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useRef } from 'react';
 
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import defaultOptionDescription from '../../internal/components/option/option-announcer';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces';
 
 interface OptionHolder {
@@ -58,6 +58,14 @@ export function useAnnouncement<Option extends OptionHolder>({
   }
 
   // Use default renderer with selected ARIA label if defined and relevant.
+  // Note: We intentionally keep selectedAriaLabel in the live region announcement even though
+  // we now use proper ARIA attributes (aria-selected, aria-checked, aria-multiselectable).
+  // This is because NVDA and older versions of JAWS (e.g., 2022, still commonly used) have bugs
+  // where they don't properly announce the selected state from ARIA attributes alone.
+  // For newer screen readers (modern JAWS, VoiceOver), this results in redundant "Selected"
+  // announcements, but this is preferable to the alternative where users hear "Selected"
+  // followed by "Not Selected" due to missing ARIA attribute support.
+  // See AWSUI-61639 for details.
   const selectedAnnouncement = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
   const defaultDescription = defaultOptionDescription({ option, parentGroup: group, highlightText });
   return [selectedAnnouncement, defaultDescription].filter(Boolean).join(' ');

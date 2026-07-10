@@ -4,7 +4,7 @@ import React, { useContext, useRef, useState } from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown';
 import { DropdownOption } from '~components/internal/components/option/interfaces';
 import PlainList from '~components/select/parts/plain-list';
 import VirtualList from '~components/select/parts/virtual-list';
@@ -78,7 +78,7 @@ export default function MultiselectPage() {
             <Dropdown
               trigger={<Button onClick={() => setOpen(!open)}>Open dropdown</Button>}
               open={open}
-              onDropdownClose={() => setOpen(false)}
+              onOutsideClick={() => setOpen(false)}
               expandToViewport={urlParams.expandToViewport}
               header={
                 urlParams.withHeader ? (
@@ -87,17 +87,18 @@ export default function MultiselectPage() {
                   </Box>
                 ) : null
               }
-            >
-              <ListComponent
-                menuProps={{ statusType: 'finished', ref, open }}
-                getOptionProps={(option, index) => ({ option: { ...option }, key: index, index: index, open })}
-                filteredOptions={options}
-                filteringValue={''}
-                firstOptionSticky={true}
-                highlightType={{ type: 'mouse', moveFocus: false }}
-                useInteractiveGroups={true}
-              />
-            </Dropdown>
+              content={
+                <ListComponent
+                  menuProps={{ statusType: 'finished', ref, open }}
+                  getOptionProps={(option, index) => ({ option: { ...option }, key: index, index: index, open })}
+                  filteredOptions={options}
+                  filteringValue={''}
+                  firstOptionSticky={true}
+                  highlightType={{ type: 'mouse', moveFocus: false }}
+                  useInteractiveGroups={true}
+                />
+              }
+            />
           </div>
         </SpaceBetween>
       </Box>

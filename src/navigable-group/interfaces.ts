@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { BaseComponentProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseComponentProps } from '../types/base-component';
 
 export interface NavigableGroupProps extends BaseComponentProps {
   /**
@@ -29,8 +28,6 @@ export interface NavigableGroupProps extends BaseComponentProps {
    */
   navigationDirection?: 'horizontal' | 'vertical' | 'both';
 }
-
-export interface InternalNavigableGroupProps extends NavigableGroupProps, InternalBaseComponentProps {}
 
 export namespace NavigableGroupProps {
   export interface Ref {

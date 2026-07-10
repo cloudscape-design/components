@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CalendarProps } from '../calendar/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { DateFormat, DateGranularity, EditableDateFormat } from '../internal/utils/date-time/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { DateFormat, DateGranularity, EditableDateFormat } from '../types/date-time';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
 
 export interface DatePickerProps
   extends BaseComponentProps,

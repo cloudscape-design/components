@@ -3,9 +3,11 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../../icon/internal';
-import Tooltip from '../../internal/components/tooltip';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import Tooltip from '../../tooltip/internal.js';
 import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import { getEventDetail } from '../utils';
 import { FunnelBreadcrumbItem } from './funnel';
@@ -47,7 +49,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
     >
       {children}
       {showTooltip && (
-        <Tooltip trackRef={textRef} value={item.text} size="medium" onDismiss={() => setShowTooltip(false)} />
+        <Tooltip getTrack={() => textRef.current} content={item.text} onEscape={() => setShowTooltip(false)} />
       )}
     </Item>
   );
@@ -135,7 +137,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
       )}
       {!isLast ? (
         <span className={styles.icon}>
-          <InternalIcon name="angle-right" />
+          <InternalIcon name={isThemeActive(Theme.OneTheme) ? 'slash-divider' : 'angle-right'} />
         </span>
       ) : null}
     </div>

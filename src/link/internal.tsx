@@ -19,6 +19,7 @@ import {
 import { getBaseProps } from '../internal/base-component';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { useTokenInlineContext } from '../internal/context/token-inline-context';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -62,7 +63,7 @@ const InternalLink = React.forwardRef(
     const isButton = !href;
     const { defaultVariant } = useContext(LinkDefaultVariantContext);
     const variant = providedVariant || defaultVariant;
-    const specialStyles = ['top-navigation', 'link', 'recovery'];
+    const specialStyles = ['top-navigation', 'link', 'recovery', 'info'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
     const i18n = useInternalI18n('link');
@@ -129,6 +130,7 @@ const InternalLink = React.forwardRef(
 
     const fireClickEvent = (event: React.MouseEvent | React.KeyboardEvent) => {
       const { altKey, ctrlKey, metaKey, shiftKey } = event;
+      // eslint-disable-next-line no-restricted-syntax -- MouseEvent vs KeyboardEvent discrimination
       const button = 'button' in event ? event.button : 0;
       // make onClick non-cancelable to prevent it from being used to block full page reload
       // for navigation use `onFollow` event instead
@@ -157,6 +159,7 @@ const InternalLink = React.forwardRef(
 
     const linkRef = useRef<HTMLElement>(null);
     const isVisualRefresh = useVisualRefresh();
+    const { isInlineToken } = useTokenInlineContext();
     useForwardFocus(ref, linkRef);
 
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
@@ -172,7 +175,8 @@ const InternalLink = React.forwardRef(
         applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],
-        styles[getColorStyle(variant, color)]
+        styles[getColorStyle(variant, color)],
+        isInlineToken && styles['in-inline-token']
       ),
       style: getLinkStyles(style),
       'aria-label': ariaLabel,
@@ -187,7 +191,7 @@ const InternalLink = React.forwardRef(
     const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
     const content = (
       <>
-        {children}
+        <span>{children}</span>
         {external && (
           <span className={styles['icon-wrapper']}>
             &nbsp;

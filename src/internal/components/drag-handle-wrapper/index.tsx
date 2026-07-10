@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+import { getLogicalBoundingClientRect, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
@@ -35,6 +35,9 @@ export default function DragHandleWrapper({
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
+  // Links the portaled UAP buttons back to the drag handle's position in the regular DOM,
+  // so outside-click / focus detection treats them as belonging to the handle's container.
+  const referrerId = useUniqueId('drag-handle');
   const [showTooltip, setShowTooltip] = useState(false);
   const [uncontrolledShowButtons, setUncontrolledShowButtons] = useState(initialShowButtons);
 
@@ -184,8 +187,22 @@ export default function DragHandleWrapper({
   const directionsOrder = forcedPosition === 'bottom' ? [...DIRECTIONS_ORDER].reverse() : DIRECTIONS_ORDER;
   const visibleDirections = directionsOrder.filter(dir => directions[dir]);
 
-  useLayoutEffect(() => {
-    if (showButtons && dragHandleRef.current) {
+  // Continuously monitor position while buttons are shown to handle CSS transitions/animations.
+  // The position needs to be recalculated as the element may animate into its final position.
+  useEffect(() => {
+    if (!showButtons || !dragHandleRef.current) {
+      if (forcedPosition !== null) {
+        setForcedPosition(null);
+      }
+      return;
+    }
+
+    let frameId: number;
+
+    const checkPosition = () => {
+      if (!dragHandleRef.current) {
+        return;
+      }
       const rect = getLogicalBoundingClientRect(dragHandleRef.current);
       const conflicts = {
         'block-start': rect.insetBlockStart < FORCED_POSITION_PROXIMITY_PX,
@@ -199,8 +216,15 @@ export default function DragHandleWrapper({
       } else {
         setForcedPosition(null);
       }
-    }
-  }, [showButtons, visibleDirections]);
+      frameId = requestAnimationFrame(checkPosition);
+    };
+
+    frameId = requestAnimationFrame(checkPosition);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, [forcedPosition, showButtons, visibleDirections]);
 
   return (
     <>
@@ -223,6 +247,7 @@ export default function DragHandleWrapper({
           <div
             className={clsx(styles['drag-handle'], wrapperClassName)}
             ref={dragHandleRef}
+            id={referrerId}
             onPointerDown={onHandlePointerDown}
             onKeyDown={onDragHandleKeyDown}
           >
@@ -237,7 +262,7 @@ export default function DragHandleWrapper({
         </div>
       </div>
 
-      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
+      <PortalOverlay track={dragHandleRef} isDisabled={!showButtons} referrerId={referrerId}>
         {visibleDirections.map(
           (direction, index) =>
             directions[direction] && (

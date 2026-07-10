@@ -3,9 +3,9 @@
 import MockDate from 'mockdate';
 
 import { DatePickerProps } from '../../../lib/components/date-picker';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import { NonCancelableEventHandler } from '../../types/events';
 import {
   findCalendarHeaderText,
   findCurrentDate,

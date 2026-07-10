@@ -8,12 +8,17 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useDropdownContext } from '../../dropdown/context';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
-import { useDropdownContext } from '../../internal/components/dropdown/context';
+import HighlightMatch from '../../internal/components/option/highlight-match';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { getDataAttributes } from '../../internal/utils/data-attributes';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { joinStrings } from '../../internal/utils/strings';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
+import { ButtonDropdownProps, LinkItem } from '../interfaces';
+import { InternalCheckboxItem, InternalItem, ItemProps } from '../internal-interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -24,6 +29,7 @@ import styles from './styles.css.js';
 
 const ItemElement = ({
   position = '1',
+  index,
   item,
   disabled,
   onItemActivate,
@@ -35,6 +41,12 @@ const ItemElement = ({
   analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
   linkStyle,
+  renderItem,
+  parentProps,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -70,6 +82,7 @@ const ItemElement = ({
       role="presentation"
       data-testid={item.id}
       data-description={item.description}
+      {...getDataAttributes(item.dataAttributes, ['testid'])}
       onClick={onClick}
       onMouseEnter={onHover}
       onTouchStart={onHover}
@@ -87,35 +100,111 @@ const ItemElement = ({
             }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
-      <MenuItem item={item} disabled={disabled} highlighted={highlighted} linkStyle={linkStyle} />
+      <MenuItem
+        index={index}
+        item={item}
+        disabled={disabled}
+        highlighted={highlighted}
+        linkStyle={linkStyle}
+        renderItem={renderItem}
+        parentProps={parentProps}
+        filteringText={filteringText}
+        filteringEnabled={filteringEnabled}
+        menuId={menuId}
+        filteringDescriptionId={filteringDescriptionId}
+      />
     </li>
   );
 };
 
 interface MenuItemProps {
+  index?: number;
   item: InternalItem | InternalCheckboxItem;
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
+  filteringText?: string;
+  filteringEnabled?: boolean;
+  menuId?: string;
+  filteringDescriptionId?: string;
 }
 
-function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
+function MenuItem({
+  index,
+  item,
+  disabled,
+  highlighted,
+  linkStyle,
+  renderItem,
+  parentProps,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
+}: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
   const isCurrentBreadcrumb = !isCheckbox && item.isCurrentBreadcrumb;
 
   useEffect(() => {
     if (highlighted && menuItemRef.current) {
-      menuItemRef.current.focus();
+      if (filteringEnabled) {
+        // In filtering mode focus stays on the filter input, so we scroll the
+        // highlighted item into view manually instead of relying on focus().
+        scrollElementIntoView(menuItemRef.current);
+      } else {
+        menuItemRef.current.focus();
+      }
     }
-  }, [highlighted]);
+  }, [highlighted, filteringEnabled]);
+
+  let itemProps: { item: ButtonDropdownProps.RenderItem; filterText?: string };
+
+  if (isCheckbox) {
+    itemProps = {
+      item: {
+        index: index ?? 0,
+        type: 'checkbox',
+        option: item as ButtonDropdownProps.CheckboxItem,
+        disabled: disabled,
+        highlighted: highlighted,
+        checked: item.checked,
+        parent: parentProps ?? null,
+      },
+      filterText: filteringText,
+    };
+  } else {
+    itemProps = {
+      item: {
+        index: index ?? 0,
+        type: 'action',
+        option: item as ButtonDropdownProps.Item,
+        disabled: disabled,
+        highlighted: highlighted,
+        parent: parentProps ?? null,
+      },
+      filterText: filteringText,
+    };
+  }
+
+  const renderResult = renderItem?.(itemProps) ?? null;
 
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
+  const itemDomId = menuId && item.id ? `${menuId}-${item.id}` : undefined;
+  const ariaDescribedby = joinStrings(
+    isDisabledWithReason ? targetProps['aria-describedby'] : undefined,
+    filteringDescriptionId
+  );
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
+    id: itemDomId,
     'aria-label': item.ariaLabel,
+    'aria-describedby': ariaDescribedby,
     className: clsx(
       styles['menu-item'],
+      !!renderResult && styles['no-content-styling'],
       analyticsLabels['menu-item'],
       linkStyle && styles['link-style'],
       linkStyle && highlighted && styles['link-style-highlighted'],
@@ -124,12 +213,13 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
     'aria-current': isCurrentBreadcrumb,
     lang: item.lang,
     ref: menuItemRef,
-    // We are using the roving tabindex technique to manage the focus state of the dropdown.
-    // The current element will always have tabindex=0 which means that it can be tabbed to,
-    // while all other items have tabindex=-1 so we can focus them when necessary.
-    tabIndex: highlighted ? 0 : -1,
+    // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+    // the `id` of the item to select it. When filtering is disabled, we are using the roving
+    // tabindex technique to manage the focus state of the dropdown. The current element will
+    // have tabindex=0 which means that it can be tabbed to, while all other items have
+    // tabindex=-1 so we can focus them when necessary.
+    tabIndex: filteringEnabled ? -1 : highlighted ? 0 : -1,
     ...(isCheckbox ? getMenuItemCheckboxProps({ disabled, checked: item.checked }) : getMenuItemProps({ disabled })),
-    ...(isDisabledWithReason ? targetProps : {}),
   };
 
   const menuItem = isLinkItem(item) ? (
@@ -140,18 +230,31 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
     >
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? (
+        renderResult
+      ) : (
+        <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} filteringText={filteringText} />
+      )}
     </a>
   ) : (
     <span {...menuItemProps}>
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? (
+        renderResult
+      ) : (
+        <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} filteringText={filteringText} />
+      )}
     </span>
   );
 
   const { position } = useDropdownContext();
   const tooltipPosition = position === 'bottom-left' || position === 'top-left' ? 'left' : 'right';
   return isDisabledWithReason ? (
-    <Tooltip content={item.disabledReason} position={tooltipPosition} className={styles['item-tooltip-wrapper']}>
+    <Tooltip
+      content={item.disabledReason}
+      position={tooltipPosition}
+      className={styles['item-tooltip-wrapper']}
+      controlledOpen={filteringEnabled ? highlighted : undefined}
+    >
       {menuItem}
       {descriptionEl}
     </Tooltip>
@@ -164,10 +267,12 @@ const MenuItemContent = ({
   item,
   disabled,
   highlighted,
+  filteringText,
 }: {
   item: InternalItem | InternalCheckboxItem;
   disabled: boolean;
   highlighted: boolean;
+  filteringText?: string;
 }) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
@@ -187,18 +292,20 @@ const MenuItemContent = ({
       <div className={styles['content-wrapper']}>
         <div className={styles['main-row']}>
           <div>
-            {item.text}
+            <HighlightMatch str={item.text} highlightText={filteringText} />
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
           {item.labelTag && (
-            <div className={clsx(styles['label-tag'], disabled && styles.disabled)}>{item.labelTag}</div>
+            <div className={clsx(styles['label-tag'], disabled && styles.disabled)}>
+              <HighlightMatch str={item.labelTag} highlightText={filteringText} />
+            </div>
           )}
         </div>
         {item.secondaryText && (
           <div
             className={clsx(styles['secondary-text'], highlighted && styles.highlighted, disabled && styles.disabled)}
           >
-            {item.secondaryText}
+            <HighlightMatch str={item.secondaryText} highlightText={filteringText} />
           </div>
         )}
       </div>

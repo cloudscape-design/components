@@ -40,10 +40,10 @@ class ThemingPage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: ThemingPage) => Promise<void>, vr?: boolean) => {
+const setupTest = (testFn: (page: ThemingPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ThemingPage(browser);
-    await browser.url(`#/light/theming/integration${!vr ? '?visualRefresh=false' : ''}`);
+    await browser.url('#/light/theming/integration');
     await testFn(page);
   });
 };
@@ -57,65 +57,63 @@ const linkTextColor = {
   light: 'rgba(220, 24, 24, 1)',
   dark: 'rgba(255, 165, 0, 1)',
 };
-[true, false].forEach(vr => {
-  test(
-    `applies theme to components${vr ? ' in Visual Refresh' : ''}`,
-    setupTest(async page => {
-      // Using a component is not ideal. Changes to the component will affect this test case.
-      await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.light);
-      await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.light);
+test(
+  'applies theme to components',
+  setupTest(async page => {
+    // Using a component is not ideal. Changes to the component will affect this test case.
+    await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.light);
+    await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.light);
 
-      await page.switchTheme();
+    await page.switchTheme();
 
-      await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
-      await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
+    await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
+    await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-      await page.switchThemeMethod();
+    await page.switchThemeMethod();
 
-      await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
-      await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
+    await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
+    await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-      await page.toggleDarkMode();
+    await page.toggleDarkMode();
 
-      await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.dark);
-      await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.dark);
+    await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.dark);
+    await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.dark);
 
-      await page.switchTheme();
+    await page.switchTheme();
 
-      await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
-      await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+    await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
+    await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
 
-      await page.switchThemeMethod();
+    await page.switchThemeMethod();
 
-      await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
-      await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
-    }, vr)
-  );
+    await expect(page.getButtonBackgroundColor()).resolves.not.toBe(buttonBackgroundColor.dark);
+    await expect(page.getLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+  })
+);
 
-  test(
-    `applies theme to design tokens${vr ? ' in Visual Refresh' : ''}`,
-    setupTest(async page => {
-      await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.light);
+test(
+  'applies theme to design tokens',
+  setupTest(async page => {
+    await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.light);
 
-      await page.switchTheme();
+    await page.switchTheme();
 
-      await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
+    await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-      await page.switchThemeMethod();
+    await page.switchThemeMethod();
 
-      await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
+    await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-      await page.toggleDarkMode();
+    await page.toggleDarkMode();
 
-      await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.dark);
+    await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.dark);
 
-      await page.switchTheme();
+    await page.switchTheme();
 
-      await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+    await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
 
-      await page.switchThemeMethod();
+    await page.switchThemeMethod();
 
-      await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
-    }, vr)
-  );
-});
+    await expect(page.getFakeLinkTextColor()).resolves.not.toBe(linkTextColor.dark);
+  })
+);

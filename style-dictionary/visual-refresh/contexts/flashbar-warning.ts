@@ -16,14 +16,16 @@ const baseTokens: StyleDictionary.ColorsDictionary = {
   // Focus outline matches the text color to align with other flashbar types and to ensure color contrast.
   colorBorderItemFocused: '{colorTextNotificationYellow}',
 
+  // Status icon color
+  colorTextStatusWarning: '{colorTextNotificationYellow}',
+
   // Dismiss button
   colorTextInteractiveInvertedDefault: '{colorNeutral650}',
   colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
-  // Progress bars in flashbars should be using variant="flash" (which uses a white background by default).
-  // For the warning state, it should use colorGrey950.
-  colorBackgroundProgressBarValueInFlash: '{colorNeutral950}',
-  colorBackgroundProgressBarInFlash: '{colorGreyOpaque10}',
+  // Progress bars
+  colorBackgroundProgressBarValueDefault: '{colorNeutral950}',
+  colorBackgroundProgressBarDefault: '{colorGreyOpaque10}',
 
   // Expandable sections
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',

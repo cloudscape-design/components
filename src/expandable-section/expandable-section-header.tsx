@@ -3,7 +3,7 @@
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
@@ -13,7 +13,8 @@ import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
   GeneratedAnalyticsMetadataExpandableSectionExpand,
 } from './analytics-metadata/interfaces';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
+import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 import {
   variantRequiresActionsDivider,
   variantSupportsActions,
@@ -267,9 +268,9 @@ export const ExpandableSectionHeader = ({
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
     <InternalIcon
-      size={variant === 'container' ? 'medium' : 'normal'}
+      size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
       className={clsx(styles.icon, expanded && styles.expanded)}
-      name="caret-down-filled"
+      name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
     />
   );
   const defaultHeaderProps = {
