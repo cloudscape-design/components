@@ -18,6 +18,7 @@ import {
   shortDescription,
   shortFooter,
   shortHeader,
+  wideActions,
 } from './common';
 
 /* Content slot combinations: header, description, children, footer, actions, icon */
@@ -56,6 +57,13 @@ const permutations = createPermutations<ItemCardProps>([
     children: [longContent],
     actions: [actions, undefined],
     description: [longDescription],
+  },
+  // With wide actions and long header
+  {
+    header: [longHeader],
+    description: [shortDescription, undefined],
+    children: [longContent],
+    actions: [wideActions],
   },
   // Minimal: content only
   {
