@@ -54,6 +54,8 @@ const Table = React.forwardRef(
         metadata: {
           expandableRows: !!props.expandableRows,
           progressiveLoading: !!props.getLoadingStatus,
+          hasSkeleton: !!props.skeleton,
+          skeletonTotalRows: props.skeleton?.totalRows ?? null,
           groupSelection: !!props.expandableRows?.groupSelection,
           columnGroups: !!props.groupDefinitions?.length,
           columnGroupsDepth: getColumnGroupsDepth(props.columnDisplay),
