@@ -6,7 +6,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import CategoryElement from './category-elements/category-element';
 import ExpandableCategoryElement from './category-elements/expandable-category-element';
 import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
-import { ItemListProps } from './interfaces';
+import { ItemListProps } from './internal-interfaces';
 import ItemElement from './item-element';
 import { isItemGroup } from './utils/utils';
 
@@ -30,6 +30,10 @@ export default function ItemsList({
   linkStyle,
   renderItem,
   parentProps,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -55,6 +59,10 @@ export default function ItemsList({
           linkStyle={linkStyle}
           renderItem={renderItem}
           parentProps={parentProps}
+          filteringText={filteringText}
+          filteringEnabled={filteringEnabled}
+          menuId={menuId}
+          filteringDescriptionId={filteringDescriptionId}
         />
       );
     }
@@ -77,6 +85,10 @@ export default function ItemsList({
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
             renderItem={renderItem}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         ) : (
           <ExpandableCategoryElement
@@ -96,6 +108,10 @@ export default function ItemsList({
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
             renderItem={renderItem}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         )
       ) : null;
@@ -117,6 +133,10 @@ export default function ItemsList({
         variant={variant}
         position={`${position ? `${position},` : ''}${index + 1}`}
         renderItem={renderItem}
+        filteringText={filteringText}
+        filteringEnabled={filteringEnabled}
+        menuId={menuId}
+        filteringDescriptionId={filteringDescriptionId}
       />
     );
   });

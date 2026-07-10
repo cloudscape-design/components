@@ -11,46 +11,32 @@ import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
-import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { StickyColumnsModel } from '../sticky-columns';
-import { TableRole } from '../table-role';
+import { BaseHeaderCellProps } from './common-props';
 import { TableThElement } from './th-element';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export interface TableHeaderCellProps<ItemType> {
-  tabIndex: number;
+export interface TableHeaderCellProps<ItemType> extends BaseHeaderCellProps {
   column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
-  wrapLines?: boolean;
   stuck?: boolean;
-  sticky?: boolean;
-  hidden?: boolean;
-  stripedRows?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
-  onResizeFinish: () => void;
-  colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
-  resizableColumns?: boolean;
-  resizableStyle?: ColumnWidthStyle;
   isEditable?: boolean;
   columnId: PropertyKey;
-  stickyState: StickyColumnsModel;
-  cellRef: React.RefCallback<HTMLElement>;
-  focusedComponent?: null | string;
-  tableRole: TableRole;
-  resizerRoleDescription?: string;
-  resizerTooltipText?: string;
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
-  variant: TableProps.Variant;
-  tableVariant?: TableProps.Variant;
+  colSpan?: number;
+  rowSpan?: number;
+  columnGroupId?: string;
+  isLastChildOfGroup?: boolean;
+  isLast?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -81,12 +67,18 @@ export function TableHeaderCell<ItemType>({
   isExpandable,
   hasDynamicContent,
   variant,
+  colSpan,
+  rowSpan,
+  columnGroupId,
+  isLastChildOfGroup,
+  isLast,
   tableVariant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
   const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
+  const isGrouped = !!columnGroupId || (rowSpan ?? 1) > 1;
   const handleClick = () =>
     onClick({
       sortingColumn: column,
@@ -139,6 +131,10 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
       variant={variant}
       tableVariant={tableVariant}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      columnGroupId={columnGroupId}
+      isLast={isLast}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({
@@ -214,9 +210,16 @@ export function TableHeaderCell<ItemType>({
           // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
+          isLast={isLast}
+          isGrouped={isGrouped}
+          dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
-        <Divider className={styles['resize-divider']} />
+        <Divider
+          className={styles['resize-divider']}
+          position={isLastChildOfGroup ? 'top' : undefined}
+          isGrouped={isGrouped}
+        />
       )}
     </TableThElement>
   );

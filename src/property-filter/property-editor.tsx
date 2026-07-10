@@ -8,20 +8,14 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import InternalCheckbox from '../checkbox/internal';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { FormFieldContext } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
 import EmbeddedMultiselect from '../multiselect/embedded';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
 import { filterOptions } from './filter-options';
 import { I18nStringsInternal } from './i18n-utils';
-import {
-  ComparisonOperator,
-  ExtendedOperatorForm,
-  InternalFilteringOption,
-  InternalFilteringProperty,
-  InternalToken,
-  LoadItemsDetail,
-} from './interfaces';
+import { ComparisonOperator, ExtendedOperatorForm, LoadItemsDetail } from './interfaces';
+import { InternalFilteringOption, InternalFilteringProperty, InternalToken } from './internal-interfaces';
 import { useLoadItems } from './use-load-items';
 
 import styles from './styles.css.js';

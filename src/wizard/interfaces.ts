@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ErrorContext, FlowType } from '../internal/analytics/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { ErrorContext, FlowType } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export namespace WizardProps {
   export interface AnalyticsMetadata {
@@ -105,8 +105,6 @@ export interface WizardProps extends BaseComponentProps {
 
   /**
    * Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).
-   *
-   * @awsuiSystem core
    */
   customPrimaryActions?: React.ReactNode;
 

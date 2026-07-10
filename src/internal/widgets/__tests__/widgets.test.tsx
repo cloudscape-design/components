@@ -20,6 +20,7 @@ function findContent(container: HTMLElement) {
 
 jest.mock('../../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+  useOneTheme: jest.fn().mockReturnValue(false),
 }));
 
 describe('Classic design', () => {

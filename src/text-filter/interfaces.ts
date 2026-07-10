@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { InputAutoCorrect } from '../input/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
 
 export interface TextFilterProps extends BaseComponentProps, FormFieldControlProps, InputAutoCorrect {
   /**
@@ -61,6 +61,8 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
   onDelayedChange?: NonCancelableEventHandler<TextFilterProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the text filter's visual appearance.
+   * Refer to the [style](/components/text-filter/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: TextFilterProps.Style;

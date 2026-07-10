@@ -30,11 +30,52 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
 
   /**
    * Returns the visibility toggle for the option item.
+   * Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.
    */
   findVisibilityToggle(): ToggleWrapper {
     return this.getListItem()
       .findContent()
       .findComponent(`.${styles['content-display-option-toggle']}`, ToggleWrapper)!;
+  }
+
+  /**
+   * Returns all child option items nested under this item when it is a group.
+   * Returns `null` when this item is a leaf column (has no nested children).
+   *
+   * The children are the leaf-level `ContentDisplayOptionWrapper`s inside the group's
+   * nested `InternalList` — i.e. they already carry a drag handle and visibility toggle.
+   *
+   * @param option.group When `true`, returns only group items. When `false`, returns only leaf column items.
+   *   When omitted, returns all child items regardless of type.
+   */
+  /* istanbul ignore next: :has() selector not supported in JSDOM */
+  findChildrenOptions(
+    option: {
+      group?: boolean;
+    } = {}
+  ): Array<ContentDisplayOptionWrapper> | null {
+    const groupWrapper = this.getListItem().findContent().find('[data-item-type="group"]');
+    if (!groupWrapper) {
+      return null;
+    }
+    const nestedList = groupWrapper.find(`.${ListWrapper.rootSelector}`);
+    if (!nestedList) {
+      return null;
+    }
+    const list = new ListWrapper(nestedList.getElement());
+
+    if (option.group === true) {
+      return list
+        .findAll(`li:has([data-item-type="group"])`)
+        .map(item => new ContentDisplayOptionWrapper(item.getElement()));
+    }
+    if (option.group === false) {
+      return list
+        .findAll(`li:has([data-item-type="column"])`)
+        .map(item => new ContentDisplayOptionWrapper(item.getElement()));
+    }
+
+    return list.findItems().map(item => new ContentDisplayOptionWrapper(item.getElement()));
   }
 }
 
@@ -70,9 +111,34 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns options that the user can reorder.
+   * Returns the top-level items in the preference list.
+   *
+   * For tables **without** column grouping this returns all column options.
+   * For tables **with** column grouping this returns the top-level entries only
+   * (which are group items). Use `.findChildrenOptions()` on a group item to
+   * access the leaf columns nested within it.
+   *
+   * @param option.group When `true`, returns only group items. When `false`, returns only leaf column items.
+   *   When omitted, returns all top-level items regardless of type.
+   * @param option.visible When `true`, returns only visible items. When `false`, returns only hidden items.
+   *   Note that group items have no visibility toggle and are excluded when this filter is active.
    */
-  findOptions(): Array<ContentDisplayOptionWrapper> {
+  findOptions(option: { group?: boolean } = {}): Array<ContentDisplayOptionWrapper> {
+    /* istanbul ignore next: :has() selector not supported in JSDOM */ if (option.group === true) {
+      // Only group items — identified by the data-item-type="group" wrapper inside the list item
+      return this.getList()
+        .findAll(`li:has([data-item-type="group"])`)
+        .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
+    }
+    /* istanbul ignore next: :has() selector not supported in JSDOM */
+    if (option.group === false) {
+      // Only leaf column items — identified by the data-item-type="column" wrapper
+      return this.getList()
+        .findAll(`li:has([data-item-type="column"])`)
+        .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
+    }
+
+    // No group filter — return all top-level items
     return this.getList()
       .findItems()
       .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));

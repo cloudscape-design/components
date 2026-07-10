@@ -7,7 +7,8 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import BarSeries from './bar-series';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
+import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
+import { InternalChartSeries } from './internal-interfaces';
 import LineSeries from './line-series';
 import { calculateStackedBarValues } from './utils';
 

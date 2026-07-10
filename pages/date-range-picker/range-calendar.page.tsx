@@ -30,6 +30,7 @@ export default function RangeCalendarScenario() {
           customAbsoluteRangeControl={undefined}
           timeInputFormat="hh:mm:ss"
           absoluteFormat="slashed"
+          multiGridStartPeriod="current"
         />
 
         <Link id="focusable-after">Focusable element after</Link>

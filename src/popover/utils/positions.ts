@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BoundingBox, Dimensions, InternalPosition, PopoverProps, Rect } from '../interfaces';
+import { BoundingBox, Dimensions, PopoverProps, Rect } from '../interfaces';
+import { InternalPosition } from '../internal-interfaces';
 
 // A structure describing how the popover should be positioned
 interface CalculatedPosition {
@@ -343,6 +344,31 @@ export function getDimensions(element: HTMLElement) {
 
 function isTopOrBottom(internalPosition: InternalPosition) {
   return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
+}
+
+export function clampRect(rect: Rect, bounds?: BoundingBox) {
+  if (!bounds) {
+    return rect;
+  }
+  const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
+  const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
+
+  const clampedInsetInlineStart = Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
+  const clampedInsetBlockStart = Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
+
+  const maxInlineSize = parentInlineEnd - clampedInsetInlineStart;
+  const maxBlockSize = parentBlockEnd - clampedInsetBlockStart;
+  const clampedInlineSize = Math.min(rect.inlineSize, maxInlineSize);
+  const clampedBlockSize = Math.min(rect.blockSize, maxBlockSize);
+
+  return {
+    insetInlineStart: clampedInsetInlineStart,
+    insetBlockStart: clampedInsetBlockStart,
+    inlineSize: clampedInlineSize,
+    blockSize: clampedBlockSize,
+    insetInlineEnd: clampedInsetInlineStart + clampedInlineSize,
+    insetBlockEnd: clampedInsetBlockStart + clampedBlockSize,
+  };
 }
 
 export function isCenterOutside(child: Rect, parent: Rect) {

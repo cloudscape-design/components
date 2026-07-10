@@ -2,28 +2,48 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import Box from '~components/box';
-import Button from '~components/button';
-import FormField from '~components/form-field';
-import Input from '~components/input';
+import { Button, FormField, Input, SpaceBetween, Tabs } from '~components';
 import FocusLock, { FocusLockRef } from '~components/internal/components/focus-lock';
-import SpaceBetween from '~components/space-between';
+
+import { SimplePage } from './app/templates';
 
 export default function FocusLockPage() {
   const ref = useRef<FocusLockRef>(null);
   const [text, setText] = useState('');
 
   return (
-    <Box padding="l">
-      <h1>FocusLock component</h1>
-      <FocusLock ref={ref} autoFocus={true}>
-        <SpaceBetween size="m">
-          <FormField label="First input">
-            <Input value={text} onChange={event => setText(event.detail.value)} />
-          </FormField>
-          <Button onClick={() => ref.current?.focusFirst()}>Focus first</Button>
-        </SpaceBetween>
-      </FocusLock>
-    </Box>
+    <SimplePage title="FocusLock component">
+      <Tabs
+        tabs={[
+          {
+            id: 'with-auto-focus',
+            label: 'With auto focus',
+            content: (
+              <FocusLock ref={ref} autoFocus={true}>
+                <SpaceBetween size="m">
+                  <FormField label="First input">
+                    <Input value={text} onChange={event => setText(event.detail.value)} />
+                  </FormField>
+                  <Button onClick={() => ref.current?.focusFirst()}>Focus first</Button>
+                </SpaceBetween>
+              </FocusLock>
+            ),
+          },
+          {
+            id: 'without-auto-focus',
+            label: 'Without auto focus',
+            content: (
+              <FocusLock ref={ref}>
+                <SpaceBetween size="s" direction="horizontal">
+                  <Button>1</Button>
+                  <Button>2</Button>
+                  <Button>3</Button>
+                </SpaceBetween>
+              </FocusLock>
+            ),
+          },
+        ]}
+      />
+    </SimplePage>
   );
 }

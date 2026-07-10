@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, isValidElement } from 'react';
+import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { flattenChildren } from '../internal/utils/flatten-children';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
-import flattenChildren from '../internal/vendor/react-keyed-flatten-children';
 import { SpaceBetweenProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -34,7 +34,7 @@ const InternalSpaceBetween = forwardRef(
     /*
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
-    const flattenedChildren = flattenChildren(children);
+    const flattenedChildren = flattenChildren(children, 'SpaceBetween');
 
     return (
       <WithNativeAttributes
@@ -52,10 +52,11 @@ const InternalSpaceBetween = forwardRef(
         ref={mergedRef}
       >
         {flattenedChildren.map(child => {
-          const key = isValidElement(child) ? child.key : undefined;
+          // If this react child is a primitive value, the key will be undefined
+          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
           return (
-            <div key={key} className={styles.child}>
+            <div key={key ? String(key) : undefined} className={styles.child}>
               {child}
             </div>
           );

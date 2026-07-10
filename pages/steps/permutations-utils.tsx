@@ -4,14 +4,11 @@ import React from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
-import Icon from '~components/icon';
 import Link from '~components/link';
 import Popover from '~components/popover';
 import { StepsProps } from '~components/steps';
 
-import createPermutations from '../utils/permutations';
-
-const initialSteps: ReadonlyArray<StepsProps.Step> = [
+export const initialSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     statusIconAriaLabel: 'loading',
@@ -20,7 +17,7 @@ const initialSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
-const loadingSteps: ReadonlyArray<StepsProps.Step> = [
+export const loadingSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -72,7 +69,7 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: 'Gathered Security Group IDs',
+    header: 'Gathered Security Group IDs and performed multi-stage analysis on each group to ensure no conflicts',
     details: (
       <Box fontSize="body-s">
         Security Groups ID
@@ -246,7 +243,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
-const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
+export const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'error',
     statusIconAriaLabel: 'error',
@@ -302,8 +299,6 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     details: 'Test description',
   },
 ];
-
-const emptySteps: ReadonlyArray<StepsProps.Step> = [];
 
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
@@ -713,7 +708,7 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
   },
 ];
 
-const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
+export const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -742,47 +737,3 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     ),
   },
 ];
-
-export const stepsPermutations = createPermutations<StepsProps>([
-  {
-    orientation: ['vertical', 'horizontal'],
-    steps: [
-      initialSteps,
-      loadingSteps,
-      loadingSteps2,
-      loadingSteps3,
-      successfulSteps,
-      blockedSteps,
-      failedSteps,
-      emptySteps,
-      allStatusesSteps,
-      initialStepsInteractive,
-      loadingStepsInteractive,
-      loadingSteps2Interactive,
-      loadingSteps3Interactive,
-      successfulStepsInteractive,
-      blockedStepsInteractive,
-      failedStepsInteractive,
-      failedStepsWithRetryTextInteractive,
-      failedStepsWithRetryButtonInteractive,
-      changesetStepsInteractive,
-    ],
-    ariaLabel: ['test label'],
-  },
-  {
-    steps: [allStatusesSteps, successfulSteps],
-    ariaLabel: ['test label'],
-    orientation: ['vertical', 'horizontal'],
-    renderStep: [
-      step => ({
-        header: <b>Custom header for {step.header}</b>,
-        details: step.details && <i>Custom details for {step.details}</i>,
-      }),
-      step => ({
-        header: step.header,
-        details: step.details && <i>Custom details for {step.details}</i>,
-        icon: <Icon ariaLabel="success" name="status-positive" variant="success" />,
-      }),
-    ],
-  },
-]);

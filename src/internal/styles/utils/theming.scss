@@ -11,3 +11,9 @@
     }
   }
 }
+
+@mixin one-theme-only($selector: '') {
+  :global(#{$selector}.awsui-one-theme) & {
+    @content;
+  }
+}

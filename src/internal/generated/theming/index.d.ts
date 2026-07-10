@@ -12,9 +12,6 @@ import {
 export interface TypedOverride extends Override {
   tokens: Partial<Record<string, GlobalValue | TypedModeValueOverride>>;
 
-  /**
-   * @awsuiSystem core
-   */
   referenceTokens?: ReferenceTokens;
 }
 export declare const preset: ThemePreset;

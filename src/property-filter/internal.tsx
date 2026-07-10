@@ -28,6 +28,12 @@ import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
+  PropertyFilterProps,
+  Ref,
+  Token,
+  TokenGroup,
+} from './interfaces';
+import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -35,11 +41,7 @@ import {
   InternalToken,
   InternalTokenGroup,
   ParsedText,
-  PropertyFilterProps,
-  Ref,
-  Token,
-  TokenGroup,
-} from './interfaces';
+} from './internal-interfaces';
 import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
@@ -161,7 +163,11 @@ const PropertyFilterInternal = React.forwardRef(
         tokenOrGroup: Token | TokenGroup,
         standaloneIndex?: number
       ): InternalToken | InternalTokenGroup {
-        return 'operation' in tokenOrGroup
+        const isTokenGroup = (t: Token | TokenGroup): t is TokenGroup => {
+          const key: keyof TokenGroup = 'operation';
+          return key in t;
+        };
+        return isTokenGroup(tokenOrGroup)
           ? {
               operation: tokenOrGroup.operation,
               tokens: tokenOrGroup.tokens.map(token => transformToken(token)),
@@ -316,6 +322,7 @@ const PropertyFilterInternal = React.forwardRef(
         return;
       }
 
+      // eslint-disable-next-line no-restricted-syntax -- Runtime property not in TS type
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;

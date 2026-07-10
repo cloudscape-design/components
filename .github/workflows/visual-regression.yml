@@ -1,0 +1,153 @@
+name: Visual Regression Tests
+
+on:
+  workflow_call:
+    inputs:
+      test-utils-artifact-name:
+        description: 'Name of the artifact containing test-utils selectors.'
+        required: true
+        type: string
+      caller-run-id:
+        description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
+        required: true
+        type: string
+      baseline-artifact-name:
+        description: 'Name of the artifact containing baseline pages (built by the caller workflow).'
+        required: true
+        type: string
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  deployments: write
+
+jobs:
+  visual:
+    name: Visual regression (shard ${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Set up Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Download baseline artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.baseline-artifact-name }}
+          path: pages/lib/static-visual-baseline
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Download test utils artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.test-utils-artifact-name }}
+          path: lib/components
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Resolve PR deployment URL
+        id: hosts
+        run: |
+          DEPLOY_ENV="dev-pages-react18"
+          echo "Looking for deployment with environment '${DEPLOY_ENV}'..."
+          DEPLOY_ID=$(gh api \
+            "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
+            --jq '.[0].id // empty' 2>/dev/null || true)
+          NEW_URL=""
+          if [ -n "$DEPLOY_ID" ]; then
+            NEW_URL=$(gh api \
+              "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
+              --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
+          fi
+          if [ -z "$NEW_URL" ]; then
+            echo "::error::Could not resolve PR deployment URL"
+            exit 1
+          fi
+          echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+
+      - name: Start baseline server
+        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-visual-baseline &
+
+      - name: Wait for baseline server
+        run: node_modules/.bin/wait-on http://localhost:8080
+
+      - name: Run visual regression tests
+        run: |
+          echo "NEW_HOST=${NEW_HOST}"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
+        env:
+          TZ: UTC
+          SHARD: ${{ matrix.shard }}
+          NEW_HOST: ${{ steps.hosts.outputs.new }}
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-shard-${{ matrix.shard }}
+          path: allure-results/
+          retention-days: 3
+
+  report:
+    name: Generate Allure Report
+    if: always()
+    needs: [visual]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-shard-*
+          path: allure-results
+          merge-multiple: true
+
+      - name: Generate Allure HTML report
+        run: npx --yes allure generate allure-results -o allure-report
+
+      - name: Upload Allure report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 14
+
+  deploy-report:
+    name: Deploy Allure Report
+    if: always()
+    needs: [report]
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: allure-report
+      deployment-path: allure-report

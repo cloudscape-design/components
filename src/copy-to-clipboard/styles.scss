@@ -15,4 +15,22 @@
   &-trigger {
     margin-inline-end: awsui.$space-scaled-xxs;
   }
+
+  &-no-wrap {
+    display: inline-flex;
+    align-items: flex-start;
+    max-inline-size: 100%;
+    word-break: normal;
+
+    > .inline-container-trigger {
+      flex-shrink: 0;
+    }
+
+    > .text-to-display {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-inline-size: 0;
+    }
+  }
 }

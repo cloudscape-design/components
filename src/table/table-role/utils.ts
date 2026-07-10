@@ -68,18 +68,72 @@ export function findTableRowCellByAriaColIndex(
   targetAriaColIndex: number,
   delta: number
 ) {
-  let targetCell: null | HTMLTableCellElement = null;
-  const cellElements = Array.from(tableRow.querySelectorAll('td[aria-colindex],th[aria-colindex]'));
-  if (delta < 0) {
-    cellElements.reverse();
-  }
-  for (const element of cellElements) {
-    const columnIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
-    targetCell = element as HTMLTableCellElement;
+  const cellElements = Array.from(
+    tableRow.querySelectorAll<HTMLTableCellElement>('td[aria-colindex],th[aria-colindex]')
+  );
+  return findClosestCellByAriaColIndex(cellElements, targetAriaColIndex, delta);
+}
 
-    if (columnIndex === targetAriaColIndex) {
-      break;
+/**
+ * Collects all cells visually present in a row, including cells from earlier rows
+ * that span into this row via rowspan. This is needed because cells with rowspan > 1
+ * are only in one <tr> in the DOM but visually occupy multiple rows.
+ */
+export function getAllCellsInRow(table: HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
+  const cells: HTMLTableCellElement[] = [];
+  const rows = table.querySelectorAll<HTMLTableRowElement>('tr[aria-rowindex]');
+
+  for (const row of Array.from(rows)) {
+    const rowIndex = parseInt(row.getAttribute('aria-rowindex') ?? '');
+    if (isNaN(rowIndex) || rowIndex > targetAriaRowIndex) {
+      continue;
     }
+
+    const rowCells = row.querySelectorAll<HTMLTableCellElement>('td[aria-colindex],th[aria-colindex]');
+    for (const cell of Array.from(rowCells)) {
+      const rowspan = cell.rowSpan || 1;
+      // Cell is visible in target row if: rowIndex <= targetAriaRowIndex < rowIndex + rowspan
+      if (rowIndex + rowspan > targetAriaRowIndex) {
+        cells.push(cell);
+      }
+    }
+  }
+
+  return cells;
+}
+
+/**
+ * From a list of cell elements, find the closest one to targetAriaColIndex in the direction of delta.
+ * Accounts for colspan: a cell with colindex=2 and colspan=4 covers columns 2,3,4,5.
+ */
+export function findClosestCellByAriaColIndex(
+  cellElements: HTMLTableCellElement[],
+  targetAriaColIndex: number,
+  delta: number
+): HTMLTableCellElement | null {
+  // First check if any cell's colspan range covers the target exactly.
+  for (const element of cellElements) {
+    const colIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
+    const colspan = element.colSpan || 1;
+    if (colIndex <= targetAriaColIndex && targetAriaColIndex < colIndex + colspan) {
+      return element;
+    }
+  }
+
+  // Otherwise find the closest cell in the direction of delta.
+  let targetCell: null | HTMLTableCellElement = null;
+  const sorted = [...cellElements].sort((a, b) => {
+    const aIdx = parseInt(a.getAttribute('aria-colindex') ?? '0');
+    const bIdx = parseInt(b.getAttribute('aria-colindex') ?? '0');
+    return aIdx - bIdx;
+  });
+  if (delta < 0) {
+    sorted.reverse();
+  }
+  for (const element of sorted) {
+    const columnIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
+    targetCell = element;
+
     if (delta >= 0 && columnIndex > targetAriaColIndex) {
       break;
     }
@@ -87,6 +141,50 @@ export function findTableRowCellByAriaColIndex(
       break;
     }
   }
+  return targetCell;
+}
+
+/**
+ * Finds the next cell to navigate to, handling colspan and rowspan for grouped columns.
+ * Skips past the current cell when movement lands on it due to span attributes.
+ */
+export function findNextCell(
+  table: HTMLTableElement,
+  targetRow: HTMLTableRowElement,
+  targetAriaColIndex: number,
+  delta: { x: number; y: number },
+  currentCell: HTMLTableCellElement | null
+): HTMLTableCellElement | null {
+  const targetRowAriaIndex = parseInt(targetRow.getAttribute('aria-rowindex') ?? '');
+  let allVisibleCells = getAllCellsInRow(table, targetRowAriaIndex);
+  let targetCell = findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x);
+
+  // When vertical movement lands on the same cell (due to rowspan), skip past it.
+  if (targetCell === currentCell && delta.y !== 0 && currentCell) {
+    const cellRow = currentCell.closest('tr');
+    const cellRowIndex = parseInt(cellRow?.getAttribute('aria-rowindex') ?? '0');
+    const cellRowSpan = currentCell.rowSpan || 1;
+    const skipToRowIndex = delta.y > 0 ? cellRowIndex + cellRowSpan : cellRowIndex - 1;
+    const skipRow = findTableRowByAriaRowIndex(table, skipToRowIndex, delta.y);
+    if (!skipRow) {
+      return null;
+    }
+    const skipRowAriaIndex = parseInt(skipRow.getAttribute('aria-rowindex') ?? '');
+    allVisibleCells = getAllCellsInRow(table, skipRowAriaIndex);
+    targetCell = findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x);
+  }
+
+  // When horizontal movement lands on the same cell (due to colspan), skip past it.
+  if (targetCell === currentCell && delta.x !== 0 && currentCell) {
+    const cellColIndex = parseInt(currentCell.getAttribute('aria-colindex') ?? '0');
+    const cellColSpan = currentCell.colSpan || 1;
+    const skipToColIndex = delta.x > 0 ? cellColIndex + cellColSpan : cellColIndex - 1;
+    targetCell = findClosestCellByAriaColIndex(allVisibleCells, skipToColIndex, delta.x);
+    if (!targetCell || targetCell === currentCell) {
+      return null;
+    }
+  }
+
   return targetCell;
 }
 

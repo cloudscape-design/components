@@ -27,6 +27,7 @@ const tabbables = [
 
 /** Whether the element or any of its ancestors are not hidden. */
 function isVisible(element: HTMLElement): boolean {
+  // eslint-disable-next-line no-restricted-syntax -- Browser API feature detection
   if (!('checkVisibility' in element)) {
     // checkVisibility isn't defined in JSDOM. It's safer to assume everything is visible.
     return true;

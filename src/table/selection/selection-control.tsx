@@ -9,11 +9,11 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
-import { SelectionProps } from './interfaces';
+import { ItemSelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface SelectionControlProps extends SelectionProps {
+export interface SelectionControlProps extends ItemSelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
@@ -33,6 +33,7 @@ export function SelectionControl({
   onFocusDown,
   name,
   ariaLabel,
+  ariaDescribedby,
   focusedComponent,
   rowIndex,
   itemKey,
@@ -82,6 +83,14 @@ export function SelectionControl({
     nativeInput?.focus();
   };
 
+  const nativeInputAttributes: Record<string, string> = {};
+  if (ariaLabel) {
+    nativeInputAttributes['aria-label'] = ariaLabel;
+  }
+  if (ariaDescribedby) {
+    nativeInputAttributes['aria-describedby'] = ariaDescribedby;
+  }
+
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
@@ -90,9 +99,19 @@ export function SelectionControl({
       controlId={controlId}
       data-focus-id="selection-control"
       indeterminate={indeterminate}
+      ariaLabel={ariaLabel}
+      ariaDescribedby={ariaDescribedby}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onSelect={onChange} />
+    <RadioButton
+      {...sharedProps}
+      controlId={controlId}
+      name={name}
+      value={''}
+      onSelect={onChange}
+      nativeInputAttributes={Object.keys(nativeInputAttributes).length > 0 ? nativeInputAttributes : undefined}
+      __skipNativeAttributesWarnings={['aria-label', 'aria-describedby']}
+    />
   );
 
   return (

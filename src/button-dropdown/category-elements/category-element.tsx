@@ -4,7 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 
 import styles from './styles.css.js';
@@ -24,6 +25,10 @@ const CategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const groupProps: ButtonDropdownProps.GroupRenderItem = {
@@ -35,7 +40,7 @@ const CategoryElement = ({
     expanded: true,
     expandDirection: 'vertical',
   };
-  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
 
   // Hide the category title element from screen readers because it will be
   // provided as an ARIA label.
@@ -61,7 +66,7 @@ const CategoryElement = ({
                   <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
                 </span>
               )}
-              {item.text}
+              <span>{item.text}</span>
             </span>
           )}
         </p>
@@ -84,6 +89,10 @@ const CategoryElement = ({
             position={position}
             renderItem={renderItem}
             parentProps={groupProps}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
           />
         )}
       </ul>

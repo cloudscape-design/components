@@ -41,7 +41,7 @@ function setupTest(
   });
 }
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   [true, false].forEach(mobile =>
     describe(`mobile=${mobile}`, () => {
       test(

@@ -16,7 +16,6 @@ permissions:
   actions: read
   contents: read
   security-events: write
-  deployments: write
 
 jobs:
   build:
@@ -27,19 +26,4 @@ jobs:
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
-      artifact-path: pages/lib/static-default
-      artifact-name: dev-pages-react${{ matrix.react }}
-      react-version: ${{ matrix.react }}   
-  deploy:
-    needs: build
-    name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
-    # skip this job for external contributions as they aren't supported and cause the job's failure
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    strategy:
-      matrix:
-        react: [16, 18]
-    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
-    secrets: inherit
-    with:
-      artifact-name: dev-pages-react${{ matrix.react }}
-      deployment-path: pages/lib/static-default
+      react-version: ${{ matrix.react }}

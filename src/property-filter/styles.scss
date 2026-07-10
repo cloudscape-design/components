@@ -40,7 +40,7 @@ $operator-field-width: 120px;
 }
 
 .token-operator {
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
 }
 
 .property-editor {
@@ -48,7 +48,7 @@ $operator-field-width: 120px;
 
   &-header {
     @include styles.default-text-style;
-    font-weight: bold;
+    font-weight: styles.$font-weight-bold;
 
     padding-block-start: awsui.$space-s;
     padding-block-end: awsui.$space-xxs;
@@ -60,7 +60,7 @@ $operator-field-width: 120px;
     gap: awsui.$space-xs;
 
     @include styles.default-text-style;
-    font-weight: bold;
+    font-weight: styles.$font-weight-bold;
     color: awsui.$color-text-dropdown-group-label;
 
     padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
@@ -117,7 +117,7 @@ $operator-field-width: 120px;
 
   &-multiselect-wrapper {
     position: relative;
-    block-size: awsui.$size-vertical-input;
+    min-block-size: awsui.$size-vertical-input;
     min-inline-size: 200px;
 
     &-inner {

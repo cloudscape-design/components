@@ -5,6 +5,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/styles/utils/theming';
 
 $item-toggle-column-width: 28px;
 
@@ -46,6 +47,16 @@ $item-toggle-column-width: 28px;
         // Compensate for toggle size difference compared to the normal icon size.
         // This way, in trees with icons the toggles and icons are perfectly aligned.
         inset-inline-start: -2px;
+      }
+    }
+
+    @include theming.one-theme-only {
+      align-items: center;
+      > .expand-toggle-wrapper {
+        > .toggle {
+          inset-inline-start: 0px;
+          inset-block-start: 3px;
+        }
       }
     }
 

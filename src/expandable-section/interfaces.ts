@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../internal/base-component';
-import { NonCancelableEventHandler } from '../internal/events';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export namespace ExpandableSectionProps {
   export interface AnalyticsMetadata {
@@ -16,8 +16,6 @@ export namespace ExpandableSectionProps {
   }
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
 }
-
-export type InternalVariant = ExpandableSectionProps.Variant | 'compact';
 
 export interface ExpandableSectionProps extends BaseComponentProps {
   /**

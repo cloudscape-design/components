@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-/* eslint-disable header/header */
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
@@ -43,4 +42,14 @@ test('should render refresh-toolbar app layout with the toolbar flag', () => {
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(refreshToolbarStyles.root);
+});
+test('AppLayout should not render content during SSR', () => {
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+  globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
+  const content = renderToStaticMarkup(
+    <AppLayout content="SSR content region" breadcrumbs="SSR breadcrumbs" navigation="SSR navigation" />
+  );
+  expect(content).not.toContain('SSR content region');
+  expect(content).toContain('SSR breadcrumbs');
+  expect(content).toContain('SSR navigation');
 });

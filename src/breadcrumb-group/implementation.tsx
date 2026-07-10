@@ -4,7 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getLogicalBoundingClientRect, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import {
+  getLogicalBoundingClientRect,
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
@@ -21,7 +26,8 @@ import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
+import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
+import { InternalBreadcrumbGroupProps } from './internal-interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
 import { getEventDetail, getItemsDisplayProperties } from './utils';
@@ -83,7 +89,7 @@ const EllipsisDropdown = ({
         }}
       />
       <span className={styles.icon}>
-        <InternalIcon name="angle-right" />
+        <InternalIcon name={isThemeActive(Theme.OneTheme) ? 'slash-divider' : 'angle-right'} />
       </span>
     </li>
   );

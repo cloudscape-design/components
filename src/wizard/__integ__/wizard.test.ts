@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/wizard/styles.selectors.js';
+
 const wizardWrapper = createWrapper().findWizard();
 
 class WizardPageObject extends BasePageObject {
@@ -24,7 +26,7 @@ class WizardPageObject extends BasePageObject {
 
 function setupTest(testFn: (page: WizardPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('/#/light/wizard/simple?visualRefresh=false');
+    await browser.url('/#/light/wizard/simple');
     const page = new WizardPageObject(browser);
     await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
     await testFn(page);
@@ -92,6 +94,25 @@ describe('Wizard keyboard navigation', () => {
       })
     );
   });
+});
+
+describe('Wizard narrow viewport navigation', () => {
+  test(
+    'shows expandable step navigation at narrow viewport',
+    setupTest(async page => {
+      // Set narrow viewport first using page object with object syntax
+      await page.setWindowSize({ width: 320, height: 600 });
+      await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
+
+      // Collapsed steps container should be displayed at narrow viewport
+      const collapsedSteps = wizardWrapper.find(`.${styles['collapsed-steps']}`).findExpandableSection().toSelector();
+      await expect(page.isDisplayed(collapsedSteps)).resolves.toBe(true);
+
+      // Sidebar navigation should be hidden at narrow viewport
+      const navigation = wizardWrapper.findByClassName(styles.navigation).toSelector();
+      await expect(page.isDisplayed(navigation)).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Wizard scroll to top upon navigation', () => {

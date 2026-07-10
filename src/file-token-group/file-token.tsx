@@ -4,16 +4,16 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
-import { BaseComponentProps } from '../internal/base-component/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
-import DismissButton from '../token/dismiss-button.js';
+import InternalToken from '../token/internal.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import Tooltip from '../tooltip/internal.js';
+import { BaseComponentProps } from '../types/base-component';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 
@@ -22,7 +22,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export namespace FileTokenProps {
   export interface I18nStrings {
-    removeFileAriaLabel?: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number, fileName: string) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
@@ -75,10 +75,9 @@ function InternalFileToken({
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
 
-  const getDismissLabel = (fileIndex: number) => {
-    return i18nStrings?.removeFileAriaLabel?.(fileIndex);
-  };
+  const getDismissLabel = (fileIndex: number) => i18nStrings?.removeFileAriaLabel?.(fileIndex, file.name);
 
   function isEllipsisActive() {
     const span = fileNameRef.current;
@@ -90,8 +89,83 @@ function InternalFileToken({
     return false;
   }
 
+  useResizeObserver(
+    () => fileNameContainerRef.current,
+    () => setIsTruncated(isEllipsisActive())
+  );
+
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
+
+  // The full body of the token. Rendered through InternalToken's customContent slot so this
+  // component owns the inner layout (thumbnail + metadata column + loading overlay), while
+  // InternalToken handles the token-box and the dismiss button.
+  const fileContent = (
+    <>
+      {loading && (
+        <div
+          className={clsx(styles['file-loading-overlay'], {
+            [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
+          })}
+        >
+          <InternalSpinner variant="normal" size="normal" />
+        </div>
+      )}
+      <InternalBox className={styles['file-option']}>
+        {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
+
+        <div
+          className={clsx(styles['file-option-metadata'], {
+            [styles['with-image']]: showFileThumbnail && isImage,
+            [styles['single-row-loading']]: loading && fileIsSingleRow,
+          })}
+        >
+          <InternalSpaceBetween direction="vertical" size="xxxs">
+            <div
+              className={styles['file-name-container']}
+              onMouseOver={() => setShowTooltip(true)}
+              onMouseOut={() => setShowTooltip(false)}
+              onFocus={() => setShowTooltip(true)}
+              onBlur={() => setShowTooltip(false)}
+              role={isTruncated ? 'button' : undefined}
+              aria-expanded={isTruncated ? showTooltip : undefined}
+              tabIndex={isTruncated ? 0 : -1}
+              ref={fileNameContainerRef}
+            >
+              <InternalBox
+                fontWeight="normal"
+                className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
+                  [testUtilStyles['ellipsis-active']]: isTruncated,
+                })}
+              >
+                <span ref={fileNameRef}>{file.name}</span>
+              </InternalBox>
+            </div>
+
+            {showFileSize && file.size ? (
+              <InternalBox
+                fontSize="body-s"
+                color={'text-body-secondary'}
+                className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
+              >
+                {formatFileSize(file.size)}
+              </InternalBox>
+            ) : null}
+
+            {showFileLastModified && file.lastModified ? (
+              <InternalBox
+                fontSize="body-s"
+                color={'text-body-secondary'}
+                className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
+              >
+                {formatFileLastModified(new Date(file.lastModified))}
+              </InternalBox>
+            ) : null}
+          </InternalSpaceBetween>
+        </div>
+      </InternalBox>
+    </>
+  );
 
   return (
     <div
@@ -103,76 +177,24 @@ function InternalFileToken({
       role="group"
       aria-label={file.name}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
-      aria-disabled={loading}
+      aria-disabled={loading || undefined}
       data-index={index}
     >
-      <div
-        className={clsx(styles['token-box'], {
+      <InternalToken
+        // The outer wrapper above is the accessibility group (role="group" + aria-label). The
+        // token itself is presentation-only so screen readers don't see two nested groups.
+        role="presentation"
+        __customContent={fileContent}
+        onDismiss={readOnly ? undefined : onDismiss}
+        dismissLabel={getDismissLabel(index)}
+        __tokenBoxClassName={clsx(styles['token-box'], {
           [styles.loading]: loading,
           [styles.error]: errorText,
           [styles.warning]: showWarning,
           [styles.horizontal]: alignment === 'horizontal',
           [styles['read-only']]: readOnly,
         })}
-      >
-        {loading && (
-          <div
-            className={clsx(styles['file-loading-overlay'], {
-              [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
-            })}
-          >
-            <InternalSpinner variant="disabled" size="normal" />
-          </div>
-        )}
-        <InternalBox className={styles['file-option']}>
-          {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
-
-          <div
-            className={clsx(styles['file-option-metadata'], {
-              [styles['with-image']]: showFileThumbnail && isImage,
-              [styles['single-row-loading']]: loading && fileIsSingleRow,
-            })}
-          >
-            <InternalSpaceBetween direction="vertical" size="xxxs">
-              <div
-                onMouseOver={() => setShowTooltip(true)}
-                onMouseOut={() => setShowTooltip(false)}
-                ref={fileNameContainerRef}
-              >
-                <InternalBox
-                  fontWeight="normal"
-                  className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
-                    [testUtilStyles['ellipsis-active']]: isEllipsisActive(),
-                  })}
-                >
-                  <span ref={fileNameRef}>{file.name}</span>
-                </InternalBox>
-              </div>
-
-              {showFileSize && file.size ? (
-                <InternalBox
-                  fontSize="body-s"
-                  color={'text-body-secondary'}
-                  className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
-                >
-                  {formatFileSize(file.size)}
-                </InternalBox>
-              ) : null}
-
-              {showFileLastModified && file.lastModified ? (
-                <InternalBox
-                  fontSize="body-s"
-                  color={'text-body-secondary'}
-                  className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
-                >
-                  {formatFileLastModified(new Date(file.lastModified))}
-                </InternalBox>
-              ) : null}
-            </InternalSpaceBetween>
-          </div>
-        </InternalBox>
-        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
-      </div>
+      />
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
           {errorText}
@@ -183,7 +205,7 @@ function InternalFileToken({
           {warningText}
         </FormFieldWarning>
       )}
-      {showTooltip && isEllipsisActive() && (
+      {showTooltip && isTruncated && (
         <Tooltip
           getTrack={() => containerRef.current}
           content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}

@@ -14,7 +14,8 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { KeyCode } from '../internal/keycode';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
+import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
 import { variantSupportsDescription } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';

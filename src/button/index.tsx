@@ -37,6 +37,7 @@ const Button = React.forwardRef(
       onClick,
       onFollow,
       ariaExpanded,
+      ariaHaspopup,
       ariaControls,
       fullWidth,
       form,
@@ -80,6 +81,7 @@ const Button = React.forwardRef(
         onClick={onClick}
         onFollow={onFollow}
         ariaExpanded={ariaExpanded}
+        ariaHaspopup={ariaHaspopup}
         ariaControls={ariaControls}
         fullWidth={fullWidth}
         form={form}

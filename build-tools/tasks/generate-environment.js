@@ -5,6 +5,9 @@ const { writeFile } = require('../utils/files');
 const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');
 
+const ALWAYS_VISUAL_REFRESH = process.env.ALWAYS_VISUAL_REFRESH === 'true';
+const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
+
 function writeEnvironmentFile(theme) {
   const filepath = 'internal/environment';
   const values = {
@@ -13,9 +16,12 @@ function writeEnvironmentFile(theme) {
     GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
     SYSTEM: 'core',
-    ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
+    ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh || ALWAYS_VISUAL_REFRESH,
+    INCLUDE_ONE_THEME: INCLUDE_ONE_THEME,
   };
   const basePath = path.join(theme.outputPath, filepath);
+
+  console.log('Environment values\n', JSON.stringify(values, null, 2));
 
   writeFile(`${basePath}.json`, JSON.stringify(values, null, 2));
   writeFile(

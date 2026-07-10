@@ -10,6 +10,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { testIf } from '../../__tests__/utils';
 import { describeEachAppLayout, manyDrawers, renderComponent, testDrawer } from './utils';
 
+import resizeStyles from '../../../lib/components/app-layout/resize/styles.css.js';
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 
@@ -295,4 +296,42 @@ describeEachAppLayout(({ size, theme }) => {
     expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
     expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
   });
+
+  testIf(theme === 'refresh-toolbar' && size === 'desktop')(
+    'does not apply motion class to drawer open on initial render',
+    () => {
+      const { wrapper } = renderComponent(
+        <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
+      );
+      const drawerElement = wrapper.findActiveDrawer()!.getElement();
+      expect(drawerElement.classList.contains(resizeStyles['with-motion-horizontal'])).toBe(false);
+    }
+  );
+
+  testIf(theme === 'refresh-toolbar' && size === 'desktop')(
+    'does not apply motion class when toolsOpen is set on initial render',
+    () => {
+      const { wrapper } = renderComponent(
+        <AppLayout toolsOpen={true} tools="Tools content" onToolsChange={() => {}} />
+      );
+      const toolsElement = wrapper.findTools()!.getElement();
+      expect(toolsElement.classList.contains(resizeStyles['with-motion-horizontal'])).toBe(false);
+    }
+  );
+
+  testIf(theme === 'refresh-toolbar' && size === 'desktop')(
+    'applies motion class after user-initiated drawer toggle',
+    () => {
+      const onChange = jest.fn();
+      const { wrapper, rerender } = renderComponent(
+        <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={onChange} />
+      );
+      // Close the drawer via close button (user-initiated)
+      wrapper.findActiveDrawerCloseButton()!.click();
+      // Rerender with drawer open again
+      rerender(<AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={onChange} />);
+      const drawerElement = wrapper.findActiveDrawer()!.getElement();
+      expect(drawerElement.classList.contains(resizeStyles['with-motion-horizontal'])).toBe(true);
+    }
+  );
 });

@@ -6,15 +6,11 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import {
-  BaseKeyDetail,
-  CancelableEventHandler,
-  fireKeyboardEvent,
-  fireNonCancelableEvent,
-  NonCancelableEventHandler,
-} from '../../events';
-import { DropdownStatusProps } from '../dropdown-status';
+import { BaseComponentProps } from '../../../types/base-component';
+import { DropdownStatusProps } from '../../../types/dropdown-status';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../../../types/events';
+import { getBaseProps } from '../../base-component';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../../events';
 
 import styles from './styles.css.js';
 
@@ -41,9 +37,11 @@ export interface OptionsListProps extends BaseComponentProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  ariaRequired?: boolean;
   decreaseBlockMargin?: boolean;
   embedded?: boolean;
   stickyItemBlockSize?: number | null;
+  isMultiSelect?: boolean;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -76,8 +74,10 @@ const OptionsList = (
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
+    ariaRequired,
     embedded,
     stickyItemBlockSize,
+    isMultiSelect,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLDivElement>
@@ -127,6 +127,8 @@ const OptionsList = (
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
+      aria-multiselectable={role === 'listbox' && isMultiSelect ? true : undefined}
+      aria-required={ariaRequired}
     >
       {open && children}
     </Tag>

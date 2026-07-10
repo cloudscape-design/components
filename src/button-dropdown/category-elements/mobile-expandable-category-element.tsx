@@ -3,12 +3,14 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from '../analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, CategoryProps } from '../interfaces';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
 import Tooltip from '../tooltip.js';
@@ -31,6 +33,10 @@ const MobileExpandableCategoryElement = ({
   variant,
   position,
   renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -38,10 +44,10 @@ const MobileExpandableCategoryElement = ({
   const triggerRef = React.useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (triggerRef.current && highlighted && !expanded) {
+    if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
       triggerRef.current.focus();
     }
-  }, [expanded, highlighted]);
+  }, [expanded, highlighted, filteringEnabled]);
 
   const onClick = (e: React.MouseEvent) => {
     if (!disabled) {
@@ -53,6 +59,8 @@ const MobileExpandableCategoryElement = ({
   const onHover = () => {
     highlightItem(item);
   };
+
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
@@ -66,10 +74,11 @@ const MobileExpandableCategoryElement = ({
     expanded: expanded,
     expandDirection: 'vertical',
   };
-  const renderResult = renderItem?.({ item: groupProps }) ?? null;
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
 
   const trigger = item.text && (
     <span
+      id={menuId && item.id ? `${menuId}-${item.id}` : undefined}
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.highlighted]: highlighted,
         [styles['rolled-down']]: expanded,
@@ -77,10 +86,12 @@ const MobileExpandableCategoryElement = ({
         [styles.disabled]: disabled,
         [styles['is-focused']]: isKeyboardHighlighted,
       })}
-      // We are using the roving tabindex technique to manage the focus state of the dropdown.
-      // The current element will always have tabindex=0 which means that it can be tabbed to,
-      // while all other items have tabindex=-1 so we can focus them when necessary.
-      tabIndex={highlighted ? 0 : -1}
+      // When filtering is enabled, we use aria-activedescendant on the filter input and provide
+      // the `id` of the item to select it. When filtering is disabled, we are using the roving
+      // tabindex technique to manage the focus state of the dropdown. The current element will
+      // have tabindex=0 which means that it can be tabbed to, while all other items have
+      // tabindex=-1 so we can focus them when necessary.
+      tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
       {...getMenuItemProps({ parent: true, disabled, expanded })}
       {...(isDisabledWithReason ? targetProps : {})}
@@ -107,13 +118,16 @@ const MobileExpandableCategoryElement = ({
               <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
             </span>
           )}
-          {item.text}
+          <span>{item.text}</span>
           <span
             className={clsx(styles['expand-icon'], {
               [styles['expand-icon-up']]: expanded,
             })}
           >
-            <InternalIcon name="caret-down-filled" />
+            <InternalIcon
+              name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
+              size={isOneTheme ? 'x-small' : 'normal'}
+            />
           </span>
         </>
       )}
@@ -151,6 +165,10 @@ const MobileExpandableCategoryElement = ({
               position={position}
               renderItem={renderItem}
               parentProps={groupProps}
+              filteringText={filteringText}
+              filteringEnabled={filteringEnabled}
+              menuId={menuId}
+              filteringDescriptionId={filteringDescriptionId}
             />
           </ul>
         )}

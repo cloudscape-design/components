@@ -1,0 +1,55 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.divider {
+  @include styles.styles-reset;
+
+  border-block: none;
+  border-inline: none;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+// Horizontal (default)
+.divider-horizontal {
+  display: block;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  inline-size: 100%;
+  block-size: 0;
+}
+
+// Horizontal with label — flex row with two lines flanking the text
+.divider-has-label {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-xs;
+  border-block: none;
+  border-inline: none;
+  block-size: auto;
+}
+
+.divider-line {
+  flex: 1;
+  block-size: 0;
+  min-inline-size: awsui.$space-m;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.divider-label {
+  flex: 0 1 auto;
+  @include styles.text-wrapping;
+}
+
+// Vertical
+.divider-vertical {
+  display: inline-block;
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  inline-size: 0;
+  block-size: 100%;
+  align-self: stretch;
+}

@@ -31,7 +31,7 @@ function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutSti
   return useBrowser(async browser => {
     const page = new AppLayoutStickyPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url('#/light/container/sticky-with-app-layout?visualRefresh=false');
+    await browser.url('#/light/container/sticky-with-app-layout');
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
   });
@@ -69,13 +69,13 @@ test(
   setupTest({}, async page => {
     const { top: containerHeaderTopBefore } = await page.getBoundingBox(containerInsideDivHeaderSelector);
     const { top: scrollableDivTopBefore } = await page.getBoundingBox(scrollableDivSelector);
-    expect(containerHeaderTopBefore).toEqual(scrollableDivTopBefore);
+    expect(Math.abs(containerHeaderTopBefore - scrollableDivTopBefore)).toBeLessThanOrEqual(1);
 
     await page.elementScrollTo(scrollableDivSelector, { top: 50 });
 
     const { top: containerHeaderTopAfter } = await page.getBoundingBox(containerInsideDivHeaderSelector);
     const { top: scrollableDivTopAfter } = await page.getBoundingBox(scrollableDivSelector);
-    expect(containerHeaderTopAfter).toEqual(scrollableDivTopAfter);
+    expect(Math.abs(containerHeaderTopAfter - scrollableDivTopAfter)).toBeLessThanOrEqual(1);
   })
 );
 

@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import ButtonGroup, { ButtonGroupProps } from '../../../lib/components/button-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { getIconHTML } from '../../icon/__tests__/utils';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 function renderButtonGroup(props: ButtonGroupProps) {
@@ -103,5 +104,114 @@ describe('ButtonGroup Style API', () => {
     );
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
     expect(getComputedStyle(itemElement).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
+  });
+});
+
+test('icon-toggle-button maintains correct icon on state change', () => {
+  const { rerender, container } = render(
+    <ButtonGroup
+      variant="icon"
+      ariaLabel="Test"
+      items={[
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-state',
+          text: 'Toggle State',
+          pressed: false,
+          iconSvg: (
+            <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+          pressedIconSvg: (
+            <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="currentColor" />
+            </svg>
+          ),
+        },
+      ]}
+    />
+  );
+  const wrapper = createWrapper(container).findButtonGroup()!;
+
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.default-icon')).toBeTruthy();
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.pressed-icon')).toBeFalsy();
+
+  // Rerender with pressed state
+  rerender(
+    <ButtonGroup
+      variant="icon"
+      ariaLabel="Test"
+      items={[
+        {
+          type: 'icon-toggle-button',
+          id: 'test-toggle-state',
+          text: 'Toggle State',
+          pressed: true,
+          iconSvg: (
+            <svg className="default-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" />
+            </svg>
+          ),
+          pressedIconSvg: (
+            <svg className="pressed-icon" focusable="false" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="currentColor" />
+            </svg>
+          ),
+        },
+      ]}
+    />
+  );
+
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.default-icon')).toBeFalsy();
+  expect(wrapper.findToggleButtonById('test-toggle-state')!.find('.pressed-icon')).toBeTruthy();
+});
+
+describe('menu-dropdown custom icon', () => {
+  const menuDropdown: ButtonGroupProps.MenuDropdown = {
+    type: 'menu-dropdown',
+    id: 'menu',
+    text: 'More actions',
+    items: [{ id: 'one', text: 'One' }],
+  };
+
+  function renderMenuTrigger(item: ButtonGroupProps.MenuDropdown) {
+    const { container } = render(<ButtonGroup variant="icon" ariaLabel="Test" items={[item]} />);
+    return createWrapper(container).findButtonGroup()!.findMenuById('menu')!.findTriggerButton()!;
+  }
+
+  test('renders ellipsis icon by default', () => {
+    const trigger = renderMenuTrigger(menuDropdown);
+    const icon = trigger.find('svg')!;
+
+    expect(icon.getElement()).toContainHTML(getIconHTML('ellipsis'));
+  });
+
+  test('renders custom icon with iconName', () => {
+    const trigger = renderMenuTrigger({ ...menuDropdown, iconName: 'settings' });
+    const icon = trigger.find('svg')!;
+
+    expect(icon.getElement()).toContainHTML(getIconHTML('settings'));
+  });
+
+  test('renders custom icon with iconUrl', () => {
+    const iconUrl = 'data:image/png;base64,aaaa';
+    const trigger = renderMenuTrigger({ ...menuDropdown, iconUrl, iconAlt: 'Custom icon' });
+
+    expect(trigger.find('img')!.getElement()).toHaveAttribute('src', iconUrl);
+    expect(trigger.find('img')!.getElement()).toHaveAttribute('alt', 'Custom icon');
+  });
+
+  test('renders custom icon with iconSvg', () => {
+    const trigger = renderMenuTrigger({
+      ...menuDropdown,
+      iconSvg: (
+        <svg className="custom-menu-icon" focusable="false" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="7" />
+        </svg>
+      ),
+    });
+
+    expect(trigger.find('.custom-menu-icon')).toBeTruthy();
   });
 });

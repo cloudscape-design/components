@@ -1,0 +1,128 @@
+name: Deploy and visual regression
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  actions: read
+  contents: read
+  deployments: write
+
+jobs:
+  # Quick build: compiles source and bundles dev pages without running tests.
+  # Produces the artifact consumed by deploy, allowing it to start
+  # before the full build+test job finishes.
+  quick-build:
+    name: quick-build (${{format('React {0}', matrix.react)}})
+    # skip this job for external contributions
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    strategy:
+      matrix:
+        react: [16, 18]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Quick build
+        run: npm run quick-build
+        env:
+          NODE_ENV: production
+          REACT_VERSION: ${{ matrix.react }}
+
+      - name: Bundle dev pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
+        env:
+          NODE_ENV: production
+          REACT_VERSION: ${{ matrix.react }}
+
+      - name: Upload dev pages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-pages-react${{ matrix.react }}
+          path: pages/lib/static-default
+
+      # Make the integration test utils available to the visual regression tests
+      - name: Upload test utils selectors artifact
+        if: matrix.react == 18
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-utils-selectors
+          path: lib/components
+
+  deploy:
+    needs: quick-build
+    name: deploy (${{format('React {0}', matrix.react)}})
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    strategy:
+      matrix:
+        react: [16, 18]
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: dev-pages-react${{ matrix.react }}
+      deployment-path: pages/lib/static-default
+
+  # Pages to be served locally as mainline reference for visual regression tests
+  build-baseline:
+    name: Build baseline pages
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm i
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+          retention-days: 1
+
+  visual:
+    name: Visual regression
+    needs: [deploy, build-baseline]
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/visual-regression.yml
+    secrets: inherit
+    with:
+      test-utils-artifact-name: test-utils-selectors
+      baseline-artifact-name: visual-baseline-pages
+      caller-run-id: ${{ github.run_id }}

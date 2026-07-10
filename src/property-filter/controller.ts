@@ -2,25 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
+import { ComparisonOperator, GroupText, I18nStrings, JoinOperation, Query, Token, TokenGroup } from './interfaces';
 import {
-  ComparisonOperator,
-  GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
   InternalTokenGroup,
-  JoinOperation,
   ParsedText,
-  Query,
-  Token,
-  TokenGroup,
-} from './interfaces';
+} from './internal-interfaces';
 import {
+  isInternalToken,
   matchFilteringProperty,
   matchOperator,
   matchOperatorPrefix,
@@ -46,7 +42,7 @@ export const getQueryActions = ({
 }) => {
   const setQuery = (query: InternalQuery) => {
     function transformToken(token: InternalToken | InternalTokenGroup): Token | TokenGroup {
-      if ('operator' in token) {
+      if (isInternalToken(token)) {
         return matchTokenValue(token, filteringOptions);
       }
       return { ...token, tokens: token.tokens.map(transformToken) };
@@ -93,10 +89,16 @@ export const getQueryActions = ({
   return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
 };
 
+const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
+
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
-  const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
   const operatorSet = new Set([defaultOperator, ...operators]);
+  return operatorOrder.filter(op => operatorSet.has(op));
+};
+
+export const getAllowedFreeTextOperators = (freeText: InternalFreeTextFiltering): ComparisonOperator[] => {
+  const operatorSet = new Set(freeText.operators);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
 
@@ -115,10 +117,8 @@ export const parseText = (
   if (!property) {
     if (!freeTextFiltering.disabled) {
       // For free text filtering, we allow ! as a shortcut for !:
-      const freeTextOperators =
-        freeTextFiltering.operators.indexOf('!:') >= 0
-          ? ['!', ...freeTextFiltering.operators]
-          : freeTextFiltering.operators;
+      let freeTextOperators = getAllowedFreeTextOperators(freeTextFiltering);
+      freeTextOperators = freeTextOperators.indexOf('!:') >= 0 ? ['!', ...freeTextOperators] : freeTextOperators;
       const operator = matchOperator(freeTextOperators, filteringText);
       if (operator) {
         return {

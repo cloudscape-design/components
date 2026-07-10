@@ -19,6 +19,16 @@ export default class FlashbarWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns a flash item by its id.
+   *
+   * The id is matched against the `id` property of each item passed to the `items` property of the Flashbar component.
+   */
+  findItemById(id: string): FlashWrapper | null {
+    const element = this.find(`[data-itemid="${CSS.escape(id)}"]`);
+    return element ? new FlashWrapper(element.getElement()) : null;
+  }
+
+  /**
    * Returns the individual flashes of this flashbar given the item type.
    *
    * If the items are stacked, only the item at the top of the stack is returned.

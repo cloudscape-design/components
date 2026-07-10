@@ -4,7 +4,10 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
+import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
 
 const defaultProps = {
   copyTarget: 'Test content',
@@ -75,6 +78,37 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders JSX in textToDisplay when variant="inline"', () => {
+    const { container } = render(
+      <CopyToClipboard
+        {...defaultProps}
+        variant="inline"
+        textToDisplay={
+          <>
+            styled <strong>content</strong>
+          </>
+        }
+      />
+    );
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+    const displayedEl = wrapper.findDisplayedText()!.getElement();
+    expect(displayedEl.innerHTML).toBe('styled <strong>content</strong>');
+  });
+
+  test('renders textToCopy for variant="inline" when textToDisplay is explicitly undefined', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={undefined} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders null for variant="inline" when textToDisplay is explicitly null', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={null} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('');
   });
 
   test('renders an inline button with custom text to display and separate text to copy', () => {
@@ -468,5 +502,25 @@ describe('CopyToClipboard', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       expect(onCopyFailure).not.toHaveBeenCalled();
     });
+  });
+
+  test('wraps text by default for variant="inline"', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('InternalCopyToClipboard wraps text by default for variant="inline"', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('does not wrap text when wrapText=false', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
+  });
+
+  test('InternalCopyToClipboard does not wrap text when wrapText=false', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
   });
 });

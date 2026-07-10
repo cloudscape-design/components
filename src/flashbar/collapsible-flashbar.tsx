@@ -20,6 +20,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import InternalLiveRegion from '../live-region/internal';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
   GeneratedAnalyticsMetadataFlashbarExpand,
@@ -27,7 +28,8 @@ import {
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar, useFlashbarVisibility } from './common';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, InternalFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
+import { InternalFlashbarProps } from './internal-interfaces';
 import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
 import {
   counterTypes,
@@ -35,6 +37,8 @@ import {
   getFlashTypeCount,
   getItemColor,
   getVisibleCollapsedItems,
+  isRefObject,
+  isStackableItem,
   StackableItem,
 } from './utils';
 
@@ -214,11 +218,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   // we need to use different, more custom and more controlled animations.
   const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     enteringItems.some(_item => _item.id && _item.id === item.id);
-  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !isStackableItem(item);
   const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
 
   const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
+    isFlashbarStackExpanded || hasLeft(item) || (isStackableItem(item) && item.expandedIndex === 0);
 
   const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
@@ -301,11 +305,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                       if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
                         if (typeof transitionRootElement === 'function') {
                           transitionRootElement(el);
-                        } else if (
-                          transitionRootElement &&
-                          typeof transitionRootElement === 'object' &&
-                          'current' in transitionRootElement
-                        ) {
+                        } else if (isRefObject(transitionRootElement)) {
                           (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
                         }
                       }
@@ -363,7 +363,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             },
           } as GeneratedAnalyticsMetadataFlashbarExpand | GeneratedAnalyticsMetadataFlashbarCollapse)}
         >
-          <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+          <span className={styles.status} id={itemCountElementId} role="status" aria-live="off">
             {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
             <span className={styles['item-count']}>
               {counterTypes.map(({ type, labelName, iconName }) => (
@@ -376,6 +376,13 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
               ))}
             </span>
           </span>
+          <InternalLiveRegion
+            preventInitialAnnouncement={true}
+            sources={[
+              notificationBarText,
+              ...counterTypes.flatMap(({ type, labelName }) => [iconAriaLabels[labelName], `${countByType[type]}`]),
+            ]}
+          />
           <button
             aria-controls={flashbarElementId}
             aria-describedby={itemCountElementId}

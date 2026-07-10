@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Box from '~components/box';
-import { ItemProps } from '~components/button-dropdown/interfaces';
+import { ItemProps } from '~components/button-dropdown/internal-interfaces';
 import ItemElement from '~components/button-dropdown/item-element';
 
 import img from '../icon/custom-icon.png';

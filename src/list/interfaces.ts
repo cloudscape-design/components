@@ -3,8 +3,8 @@
 
 import { ReactNode } from 'react';
 
-import { SortableAreaProps } from '../internal/components/sortable-area';
-import { NonCancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
+import { DndAreaI18nStrings } from '../types/sortable-area';
 
 export interface ListProps<T = any> {
   /**
@@ -18,7 +18,7 @@ export interface ListProps<T = any> {
    * * `content` (React.ReactNode) - The content of the item.
    * * `secondaryContent` (React.ReactNode) - (Optional) Secondary content, for example item description.
    * * `icon` (React.ReactNode) - (Optional) An icon, displayed at the start.
-   * * `action` (React.ReactNode) - (Optional) Action button(s).
+   * * `actions` (React.ReactNode) - (Optional) Action button(s).
    * * `announcementLabel` (string) - (Optional) An announcement label for the item, used when sorting.
    *    By default, the `content` is used: a custom label should be provided if `content` is not a string.
    */
@@ -27,7 +27,7 @@ export interface ListProps<T = any> {
     content: ReactNode;
     secondaryContent?: ReactNode;
     icon?: ReactNode;
-    action?: ReactNode;
+    actions?: ReactNode;
     announcementLabel?: string;
   };
 
@@ -88,5 +88,5 @@ export namespace ListProps {
     items: ReadonlyArray<T>;
   }
 
-  export type I18nStrings = SortableAreaProps.DndAreaI18nStrings;
+  export type I18nStrings = DndAreaI18nStrings;
 }

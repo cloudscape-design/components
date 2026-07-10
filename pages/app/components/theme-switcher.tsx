@@ -4,13 +4,21 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH, INCLUDE_ONE_THEME } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
-import AppContext from '../app-context';
+import AppContext, { Theme } from '../app-context';
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
+
+  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
+    setUrlParams({
+      visualRefresh: theme === 'visualRefresh',
+      theme: theme === 'oneTheme' ? Theme.OneTheme : Theme.Default,
+    });
+    window.location.reload();
+  }
 
   const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
     id: 'visual-refresh-toggle',
@@ -21,11 +29,8 @@ export default function ThemeSwitcher() {
     vrSwitchProps.checked = true;
     vrSwitchProps.readOnly = true;
   } else {
-    vrSwitchProps.checked = urlParams.visualRefresh;
-    vrSwitchProps.onChange = event => {
-      setUrlParams({ visualRefresh: event.target.checked });
-      window.location.reload();
-    };
+    vrSwitchProps.checked = urlParams.visualRefresh && urlParams.theme !== Theme.OneTheme;
+    vrSwitchProps.onChange = event => activateTheme(event.target.checked ? 'visualRefresh' : 'classic');
   }
 
   return (
@@ -34,6 +39,17 @@ export default function ThemeSwitcher() {
         <input {...vrSwitchProps} />
         Visual refresh
       </label>
+      {INCLUDE_ONE_THEME && (
+        <label>
+          <input
+            id="one-theme-toggle"
+            type="checkbox"
+            checked={urlParams.theme === Theme.OneTheme}
+            onChange={event => activateTheme(event.target.checked ? 'oneTheme' : 'classic')}
+          />
+          One theme
+        </label>
+      )}
       <label>
         <input
           id="mode-toggle"

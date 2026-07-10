@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { createSingletonHandler } from '@cloudscape-design/component-toolkit/internal';
 
@@ -29,5 +29,5 @@ export default function useMouseDownTarget() {
   useEventListenersSingleton(target => {
     mouseDownTargetRef.current = target;
   });
-  return () => mouseDownTargetRef.current;
+  return useCallback(() => mouseDownTargetRef.current, []);
 }

@@ -22,7 +22,7 @@
     cursor: inherit;
   }
   &.parent {
-    font-weight: bold;
+    font-weight: styles.$font-weight-bold;
     &:not(.disabled):not(.highlighted) {
       color: awsui.$color-text-dropdown-group-label;
     }
@@ -102,7 +102,7 @@
 .filtering-match-highlight {
   background-color: awsui.$color-background-dropdown-item-filter-match;
   color: awsui.$color-text-dropdown-item-filter-match;
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
 }
 
 .disabled {

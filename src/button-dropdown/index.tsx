@@ -29,6 +29,10 @@ const ButtonDropdown = React.forwardRef(
       expandableGroups = false,
       expandToViewport = false,
       ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
       children,
       onItemClick,
       onItemFollow,
@@ -37,15 +41,23 @@ const ButtonDropdown = React.forwardRef(
       nativeMainActionAttributes,
       nativeTriggerAttributes,
       renderItem,
+      filteringType = 'none',
+      filteringPlaceholder,
+      filteringAriaLabel,
+      filteringClearAriaLabel,
+      filteringResultsText,
+      noMatch,
+      i18nStrings,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('ButtonDropdown', {
-      props: { expandToViewport, expandableGroups, variant },
+      props: { expandToViewport, expandableGroups, variant, iconName, filteringType },
       metadata: {
         mainAction: !!mainAction,
         checkboxItems: hasCheckboxItems(items),
+        hasCustomIcon: Boolean(iconUrl || iconSvg || iconName),
         hasDisabledReason: Boolean(disabledReason),
         hasDisabledReasons: hasDisabledReasonItems(items),
       },
@@ -73,12 +85,23 @@ const ButtonDropdown = React.forwardRef(
         expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}
         ariaLabel={ariaLabel}
+        iconName={iconName}
+        iconAlt={iconAlt}
+        iconUrl={iconUrl}
+        iconSvg={iconSvg}
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         mainAction={mainAction}
         fullWidth={fullWidth}
         nativeMainActionAttributes={nativeMainActionAttributes}
         nativeTriggerAttributes={nativeTriggerAttributes}
+        filteringType={filteringType}
+        filteringPlaceholder={filteringPlaceholder}
+        filteringAriaLabel={filteringAriaLabel}
+        filteringClearAriaLabel={filteringClearAriaLabel}
+        filteringResultsText={filteringResultsText}
+        noMatch={noMatch}
+        i18nStrings={i18nStrings}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}

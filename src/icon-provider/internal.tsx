@@ -16,11 +16,11 @@ function InternalIconProvider({ children, icons }: IconProviderProps) {
   if (icons !== null) {
     const clonedIcons = { ...icons };
 
-    // Reset null icon values to their original definitions
+    // Reset null icon values to their generated default, or the inherited context value for custom icons
     Object.keys(clonedIcons).forEach(name => {
       const iconName = name as keyof typeof generatedIcons;
-      if (iconName in generatedIcons && clonedIcons[iconName] === null) {
-        clonedIcons[iconName] = generatedIcons[iconName];
+      if (clonedIcons[iconName] === null) {
+        clonedIcons[iconName] = generatedIcons[iconName] ?? contextIcons[iconName];
       }
     });
 

@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -70,6 +71,7 @@ export const useAppLayout = (
   const [notificationsHeight, setNotificationsHeight] = useState(0);
   const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
   const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
+  const [drawerAnimationDisabled, setDrawerAnimationDisabled] = useState(true);
   const [isNested, setIsNested] = useState(false);
   const [expandedDrawerId, setInternalExpandedDrawerId] = useState<string | null>(null);
   const rootRefInternal = useRef<HTMLDivElement>(null);
@@ -78,6 +80,7 @@ export const useAppLayout = (
   const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
+  const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -85,6 +88,7 @@ export const useAppLayout = (
     changeHandler: 'onToolsChange',
   });
   const onToolsToggle = (open: boolean) => {
+    setDrawerAnimationDisabled(false);
     setToolsOpen(open);
     drawersFocusControl.setFocus();
     fireNonCancelableEvent(onToolsChange, { open });
@@ -136,6 +140,9 @@ export const useAppLayout = (
     bottomDrawersFocusControl.setFocus();
   };
 
+  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
+    useFeatureNotifications();
+
   const {
     drawers,
     activeDrawer,
@@ -155,6 +162,7 @@ export const useAppLayout = (
   } = useDrawers(
     {
       ...rest,
+      externalLocalRuntimeDrawers: featureNotificationsProps?.drawer && [featureNotificationsProps?.drawer],
       onGlobalDrawerFocus,
       onAddNewActiveDrawer,
       expandedDrawerId,
@@ -234,12 +242,22 @@ export const useAppLayout = (
     }
   };
 
-  useWidgetMessages(hasToolbar, message => {
+  useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;
     }
 
+    if (
+      ['registerFeatureNotifications', 'showFeaturePromptIfPossible', 'clearFeatureNotifications'].includes(
+        message.type
+      )
+    ) {
+      featureNotificationsMessageHandler(message);
+      return;
+    }
+
+    // eslint-disable-next-line no-restricted-syntax -- postMessage validation: runtime data shape check
     if (!('payload' in message && 'id' in message.payload)) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,
@@ -273,8 +291,14 @@ export const useAppLayout = (
     drawerId: string | null,
     params: OnChangeParams = { initiatedByUserAction: true }
   ) => {
+    if (params.initiatedByUserAction) {
+      setDrawerAnimationDisabled(false);
+    }
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
+    if (featureNotificationsProps?.drawer?.id && featureNotificationsProps?.drawer?.id === drawerId) {
+      onOpenFeatureNotificationsDrawer();
+    }
   };
 
   const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
@@ -437,7 +461,12 @@ export const useAppLayout = (
     activeGlobalDrawers,
     activeGlobalDrawersIds,
     activeGlobalDrawersSizes,
-    onActiveGlobalDrawersChange,
+    onActiveGlobalDrawersChange: (drawerId: string, params: OnChangeParams) => {
+      if (params.initiatedByUserAction) {
+        setDrawerAnimationDisabled(false);
+      }
+      onActiveGlobalDrawersChange(drawerId, params);
+    },
     drawersFocusControl,
     globalDrawersFocusControl,
     splitPanelPosition,
@@ -457,6 +486,7 @@ export const useAppLayout = (
     onActiveDrawerChange: onActiveDrawerChangeHandler,
     onActiveDrawerResize,
     splitPanelAnimationDisabled,
+    drawerAnimationDisabled,
     expandedDrawerId,
     setExpandedDrawerId,
     aiDrawer,
@@ -619,6 +649,7 @@ export const useAppLayout = (
       onActiveBottomDrawerResize,
       bottomDrawers,
       bottomDrawersFocusControl,
+      featureNotificationsProps,
     },
   };
 };

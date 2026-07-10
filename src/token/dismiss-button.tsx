@@ -3,10 +3,12 @@
 import React, { forwardRef, Ref } from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../icon/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
+import { NonCancelableEventHandler } from '../types/events';
 import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
 
 import legacyTestingStyles from '../token-group/styles.css.js';
@@ -27,6 +29,7 @@ function DismissButton(
   { disabled, dismissLabel, onDismiss, readOnly, inline }: DismissButtonProps,
   ref: Ref<HTMLButtonElement>
 ) {
+  const isOneTheme = isThemeActive(Theme.OneTheme);
   const analyticsMetadata: GeneratedAnalyticsMetadataTokenDismiss = {
     action: 'dismiss',
     detail: {
@@ -54,7 +57,7 @@ function DismissButton(
       aria-label={dismissLabel}
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
-      <InternalIcon name="close" />
+      <InternalIcon name="close" size={isOneTheme ? 'x-small' : undefined} />
     </button>
   );
 }

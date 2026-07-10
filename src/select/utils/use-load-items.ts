@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useRef } from 'react';
 
-import { DropdownStatusProps } from '../../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
+import { DropdownStatusProps } from '../../types/dropdown-status';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces';
 
 interface UseLoadItemsProps {

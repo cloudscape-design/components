@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { OptionDefinition } from '../internal/components/option/interfaces';
+import { OptionDefinition } from '../types/option';
 
 export function filterOptions(
   options: readonly (AutosuggestProps.Option | AutosuggestProps.OptionGroup)[],
@@ -27,7 +27,8 @@ export function filterOptions(
 }
 
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
-  return 'options' in optionOrGroup;
+  const key: keyof AutosuggestProps.OptionGroup = 'options';
+  return key in optionOrGroup;
 }
 
 function matchSingleOption(option: OptionDefinition, searchText: string): boolean {

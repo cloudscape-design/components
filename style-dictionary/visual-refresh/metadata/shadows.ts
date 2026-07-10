@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  shadowCard: {
+    description: 'The shadow of a card.',
+    public: true,
+    themeable: true,
+  },
   shadowContainer: { description: 'Shadow for containers and cards.' },
   shadowContainerActive: { description: 'Shadow for containers and cards in active state.', public: true },
   shadowDropup: {
