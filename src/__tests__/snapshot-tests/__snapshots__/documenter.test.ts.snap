@@ -44412,6 +44412,42 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
+          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
+Returns null if there is no open dropdown or filtering is not enabled.
+
+This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFilteringInput",
+          },
+          "name": "findFilteringInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
+entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
+content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
+
+This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findFooterRegion",
+          },
+          "name": "findFooterRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -47435,31 +47471,6 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           },
         },
         {
-          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
-Returns null if there is no open dropdown or filtering is not enabled.
-
-This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
-          "name": "findFilteringInput",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "InputWrapper",
-          },
-        },
-        {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
-entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
-content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
-
-This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
-          "name": "findFooterRegion",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
           "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -47562,30 +47573,6 @@ Supported options:
         },
       ],
       "name": "ButtonDropdownWrapper",
-    },
-    {
-      "methods": [
-        {
-          "name": "findClearButton",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "BaseInputWrapper.findNativeInput",
-          },
-          "name": "findNativeInput",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-      ],
-      "name": "InputWrapper",
     },
     {
       "methods": [
@@ -49557,11 +49544,35 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
     {
       "methods": [
         {
+          "name": "findClearButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "BaseInputWrapper.findNativeInput",
+          },
+          "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "InputWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findCurrentPage",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "PaginationButtonWrapper",
+            "name": "ElementWrapper",
           },
         },
         {
@@ -49596,7 +49607,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "PaginationButtonWrapper",
+            "name": "ElementWrapper",
           },
         },
         {
@@ -49614,7 +49625,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           ],
           "returnType": {
             "isNullable": false,
-            "name": "PaginationButtonWrapper",
+            "name": "ElementWrapper",
           },
         },
         {
@@ -49625,7 +49636,7 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "MultiElementWrapper",
             "typeArguments": [
               {
-                "name": "PaginationButtonWrapper",
+                "name": "ElementWrapper",
               },
             ],
           },
@@ -49635,15 +49646,11 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "PaginationButtonWrapper",
+            "name": "ElementWrapper",
           },
         },
       ],
       "name": "PaginationWrapper",
-    },
-    {
-      "methods": [],
-      "name": "PaginationButtonWrapper",
     },
     {
       "methods": [
@@ -53724,17 +53731,6 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
-          "description": "Returns the "Clear sort" button rendered in the table header tools area.
-The button is auto-rendered only when multi-column sorting is enabled and at
-least one column is sorted. Returns \`null\` otherwise.",
-          "name": "findClearSort",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ButtonWrapper",
-          },
-        },
-        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -53797,45 +53793,6 @@ For tables with column grouping this excludes group header cells.",
                 "isOptional": false,
               },
               "name": "colIndex",
-              "typeName": "number",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the per-column sort menu (kebab dropdown) for the column header at the
-given index. Only present on tables that opt in to multi-column sorting.",
-          "name": "findColumnSortMenu",
-          "parameters": [
-            {
-              "description": "1-based index of the column.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "columnIndex",
-              "typeName": "number",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "TableColumnSortMenuWrapper",
-          },
-        },
-        {
-          "description": "Returns the sort priority badge on the column header at the given index.
-The badge is only rendered when two or more columns participate in a
-multi-column sort. Returns \`null\` otherwise.",
-          "name": "findColumnSortPriorityBadge",
-          "parameters": [
-            {
-              "description": "1-based index of the column.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "columnIndex",
               "typeName": "number",
             },
           ],
@@ -54086,272 +54043,6 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
         },
       ],
       "name": "TableWrapper",
-    },
-    {
-      "methods": [
-        {
-          "description": "Returns the "Add to sort (ascending)" menu item.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "name": "findAddToSortAscendingItem",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the "Add to sort (descending)" menu item.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "name": "findAddToSortDescendingItem",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds the disabled reason tooltip for a dropdown item. Returns null if no disabled item with \`disabledReason\` is highlighted.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findDisabledReason",
-          },
-          "name": "findDisabledReason",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
-
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findExpandableCategoryById",
-          },
-          "name": "findExpandableCategoryById",
-          "parameters": [
-            {
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "id",
-              "typeName": "string",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
-
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findHighlightedItem",
-          },
-          "name": "findHighlightedItem",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
-
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findItemById",
-          },
-          "name": "findItemById",
-          "parameters": [
-            {
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "id",
-              "typeName": "string",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
-
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findItems",
-          },
-          "name": "findItems",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findMainAction",
-          },
-          "name": "findMainAction",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ButtonWrapper",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findNativeButton",
-          },
-          "name": "findNativeButton",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findOpenDropdown",
-          },
-          "name": "findOpenDropdown",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the "Remove from sort" menu item.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "name": "findRemoveFromSortItem",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the "Sort ascending" menu item.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "name": "findSortAscendingItem",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the "Sort descending" menu item.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
-          "name": "findSortDescendingItem",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findTriggerButton",
-          },
-          "name": "findTriggerButton",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ButtonWrapper",
-          },
-        },
-      ],
-      "name": "TableColumnSortMenuWrapper",
     },
     {
       "methods": [
@@ -55301,37 +54992,6 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               "typeName": "string",
             },
           ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Finds the filtering input rendered inside the open dropdown when filtering is enabled.
-Returns null if there is no open dropdown or filtering is not enabled.
-
-This utility does not open the dropdown. To find the filtering input, call \`openDropdown()\` first.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findFilteringInput",
-          },
-          "name": "findFilteringInput",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "InputWrapper",
-          },
-        },
-        {
-          "description": "Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
-entered, this contains content rendered by filteringResultsText if there are matching items and the \`noMatch\`
-content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
-
-This utility does not open the dropdown. To find the footer region, call \`openDropdown()\` first.",
-          "inheritedFrom": {
-            "name": "ButtonDropdownWrapper.findFooterRegion",
-          },
-          "name": "findFooterRegion",
-          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
