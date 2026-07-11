@@ -1,0 +1,117 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '../internal/styles/tokens' as awsui;
+
+// T-shirt size keywords mirror the Box spacing scale (see spacing.scss).
+// `full` renders fully rounded corners (a circle when combined with `aspectRatio: 'equal'`).
+$accent-radii: (
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-s,
+  'm': awsui.$space-m,
+  'l': awsui.$space-l,
+  'xl': awsui.$space-xl,
+  'xxl': awsui.$space-xxl,
+  'xxxl': awsui.$space-xxxl,
+  'full': 50%,
+);
+
+@mixin accent-radius($value) {
+  border-start-start-radius: $value;
+  border-start-end-radius: $value;
+  border-end-start-radius: $value;
+  border-end-end-radius: $value;
+}
+
+// ─── Base visual accent container ─────────────────────────────────────────────
+// Applied whenever the `visualAccent` prop is set. Provides the container layout. Corners are
+// square by default; the `.visual-accent-radius-*` classes below apply corner rounding for the
+// curated `borderRadius` keywords.
+.visual-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xs;
+  box-sizing: border-box;
+}
+
+// ─── Accent border radius (t-shirt size keywords) ─────────────────────────────
+// Mirror the Box spacing scale so `borderRadius` keywords align with `padding` / `margin`.
+@each $name, $value in $accent-radii {
+  .visual-accent-radius-#{$name} {
+    @include accent-radius($value);
+  }
+}
+
+// ─── Accent aspect ratio ──────────────────────────────────────────────────────
+// `auto`  — default; the container's width follows its content.
+// `equal` — equal width and height, suitable for icon wrapping. Combine with
+//           `borderRadius: 'full'` to render a circle.
+
+.visual-accent-aspect-auto {
+  // Reset any square constraints so content can size the container naturally.
+  aspect-ratio: auto;
+  inline-size: auto;
+}
+
+.visual-accent-aspect-equal {
+  // Equal padding on all sides.
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-xs;
+  // Force the element to be a square regardless of content dimensions.
+  // The width is constrained to match the height (content + padding).
+  aspect-ratio: 1 / 1;
+  // Prevent content from stretching the box wider than tall.
+  overflow: hidden;
+  // Let the box shrink-wrap to its height, width follows via aspect-ratio.
+  inline-size: fit-content;
+}
+
+// ─── Accent colors ──────────────────────────────────────────────────────────────
+// Light/dark values are resolved by the design tokens, so no explicit dark-mode
+// overrides are needed here.
+//
+// The selectors chain the `.visual-accent` base class with the `.visual-accent-{color}`
+// modifier (both are always applied together whenever `visualAccent` is set) to reach a
+// specificity of (0,3,0). This intentionally beats the `color` prop's `.box.color-*`
+// selector (0,2,0) so the accent's coordinated foreground color always wins, regardless of
+// stylesheet source order. Winning here preserves the guaranteed background/foreground color
+// contrast of the accent pair. Descendants (nested Box, Icon) inherit this color.
+//
+// Token variables are looked up dynamically from the tokens module, so adding a color only
+// requires extending `$accent-colors`.
+$accent-colors: (
+  'red',
+  'yellow',
+  'indigo',
+  'green',
+  'orange',
+  'purple',
+  'mint',
+  'lime',
+  'grey',
+  'teal',
+  'cyan',
+  'blue',
+  'violet',
+  'fuchsia',
+  'magenta',
+  'pink',
+  'rose',
+  'amber'
+);
+$tokens: meta.module-variables('awsui');
+
+@each $accent in $accent-colors {
+  .box.visual-accent.visual-accent-#{$accent} {
+    background-color: map.get($tokens, 'color-background-accent-#{$accent}');
+    color: map.get($tokens, 'color-text-accent-#{$accent}');
+  }
+}
