@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
 
 # This workflow runs untrusted PR code (npm install + build) and therefore
 # requests no write permissions. Fork PRs would have their token downgraded to

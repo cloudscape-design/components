@@ -19,9 +19,7 @@ permissions:
 jobs:
   report:
     runs-on: ubuntu-latest
-    if: >
-      github.event.workflow_run.event == 'pull_request' ||
-      github.event.workflow_run.event == 'push'
+    if: github.event.workflow_run.event == 'pull_request'
     steps:
       # Trusted code only: the reporting script comes from the base repo's
       # default branch, not from the artifact produced by the PR build.
