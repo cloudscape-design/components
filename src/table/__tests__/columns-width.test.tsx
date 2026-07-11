@@ -397,6 +397,50 @@ describe('with stickyHeader=true', () => {
       { minWidth: '', width: '', maxWidth: '' },
     ]);
   });
+
+  test('re-syncs the sticky header copy when a primary cell changes width without a column change', () => {
+    // Auto-layout columns (no explicit width) resize with their content. When that happens
+    // without the column definitions changing (e.g. paginating), the sticky header copies
+    // must be re-synced from the primary cells via a ResizeObserver.
+    const observers: Array<{ callback: ResizeObserverCallback; elements: Set<Element> }> = [];
+    const OriginalResizeObserver = window.ResizeObserver;
+    window.ResizeObserver = class {
+      private entry: { callback: ResizeObserverCallback; elements: Set<Element> };
+      constructor(callback: ResizeObserverCallback) {
+        this.entry = { callback, elements: new Set() };
+        observers.push(this.entry);
+      }
+      observe(element: Element) {
+        this.entry.elements.add(element);
+      }
+      unobserve(element: Element) {
+        this.entry.elements.delete(element);
+      }
+      disconnect() {
+        this.entry.elements.clear();
+      }
+    } as unknown as typeof ResizeObserver;
+
+    try {
+      const columns: TableProps.ColumnDefinition<Item>[] = [{ id: 'id', header: 'id', cell: item => item.text }];
+      const { wrapper } = renderTable(<Table columnDefinitions={columns} items={defaultItems} stickyHeader={true} />);
+      const [fakeHeader, realHeader] = wrapper.findAll('thead');
+      const realCell = realHeader.findAll('tr > *')[0].getElement();
+      const fakeCell = fakeHeader.findAll('tr > *')[0].getElement();
+
+      // Simulate the primary cell growing (as auto-layout would when the data changes).
+      realCell.getBoundingClientRect = () => ({ width: 250 }) as DOMRect;
+
+      // The provider must observe the primary header cell, so a content-driven resize re-syncs the copy.
+      const observersForCell = observers.filter(observer => observer.elements.has(realCell));
+      expect(observersForCell.length).toBeGreaterThan(0);
+      observersForCell.forEach(observer => observer.callback([], observer as unknown as ResizeObserver));
+
+      expect(fakeCell.style.width).toBe('250px');
+    } finally {
+      window.ResizeObserver = OriginalResizeObserver;
+    }
+  });
 });
 
 describe('with grouped columns', () => {
