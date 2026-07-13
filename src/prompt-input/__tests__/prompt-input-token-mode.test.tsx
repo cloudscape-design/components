@@ -3,10 +3,13 @@
 import * as React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper, { PromptInputWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode, KeyCodeA, KeyCodeDelete } from '../../internal/keycode';
 
+import dropdownStyles from '../../../lib/components/dropdown/styles.css.js';
+import optionsListStyles from '../../../lib/components/internal/components/options-list/styles.css.js';
 import promptInputStyles from '../../../lib/components/prompt-input/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -8158,5 +8161,189 @@ describe('tokens takes precedence over value', () => {
       });
       expect(onChange).toHaveBeenCalled();
     });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// style.menu prop — dropdown styling (covers token-mode.tsx lines added by PR)
+// ---------------------------------------------------------------------------
+describe('style.menu prop — dropdown styling', () => {
+  /**
+   * Opens the menu by inserting the trigger character via insertText.
+   * The dropdown uses expandToViewport=true so it renders into a portal
+   * on document.body — use document.querySelector (not container.querySelector)
+   * to find the open dropdown.
+   */
+  function openMenuWithStyle(menuStyle: PromptInputProps.Style['menu']) {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const result = render(<StatefulPromptInput initialProps={{ style: { menu: menuStyle } }} innerRef={ref} />);
+    const wrapper = createWrapper(result.container).findPromptInput()!;
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('@', 0, 1);
+    });
+    return { wrapper, ref };
+  }
+
+  /** Returns the open dropdown element (rendered in a portal on document.body). */
+  function getOpenDropdown() {
+    return document.querySelector(`.${dropdownStyles.dropdown}[data-open=true]`);
+  }
+
+  test('applies backgroundColor as CSS background on the dropdown content wrapper', () => {
+    const { wrapper } = openMenuWithStyle({ backgroundColor: 'rgb(26, 26, 46)' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const openDropdown = getOpenDropdown();
+    expect(openDropdown).not.toBeNull();
+    const contentWrapper = openDropdown!.querySelector(`.${dropdownStyles['dropdown-content-wrapper']}`) as HTMLElement;
+    expect(contentWrapper).not.toBeNull();
+    // DropdownProps.Style maps backgroundColor → background (not a custom property).
+    expect(contentWrapper.style.background).toBe('rgb(26, 26, 46)');
+  });
+
+  test('applies borderColor custom property to the dropdown content wrapper', () => {
+    const { wrapper } = openMenuWithStyle({ borderColor: '#7b2d8b' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderColor)).toBe('#7b2d8b');
+  });
+
+  test('applies borderRadius custom property to the dropdown content wrapper', () => {
+    const { wrapper } = openMenuWithStyle({ borderRadius: '12px' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderRadius)).toBe('12px');
+  });
+
+  test('applies borderWidth custom property to the dropdown content wrapper', () => {
+    const { wrapper } = openMenuWithStyle({ borderWidth: '1.5px' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderWidth)).toBe('1.5px');
+  });
+
+  test('applies all four surface-level menu style props together', () => {
+    const { wrapper } = openMenuWithStyle({
+      backgroundColor: 'rgb(255, 0, 0)',
+      borderColor: '#00ff00',
+      borderRadius: '8px',
+      borderWidth: '2px',
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    expect(contentWrapper.style.background).toBe('rgb(255, 0, 0)');
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderColor)).toBe('#00ff00');
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderRadius)).toBe('8px');
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderWidth)).toBe('2px');
+  });
+
+  test('does not apply dropdown style when style.menu is undefined', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    render(<StatefulPromptInput innerRef={ref} />);
+    const wrapper = createWrapper(document.body).findPromptInput()!;
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('@', 0, 1);
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    // No custom style applied when style.menu is not set.
+    expect(contentWrapper.style.background).toBe('');
+    expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderColor)).toBe('');
+  });
+
+  test('applies options backgroundColor custom properties to the options list', () => {
+    const { wrapper } = openMenuWithStyle({
+      options: {
+        backgroundColor: { default: 'rgb(16, 16, 16)', highlighted: 'rgb(32, 32, 32)', selected: 'rgb(48, 48, 48)' },
+      },
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const optionsList = document.querySelector(`.${optionsListStyles['options-list']}`);
+    expect(optionsList).not.toBeNull();
+    const el = optionsList as HTMLElement;
+    expect(el.style.getPropertyValue(customCssProps.optionBackgroundDefault)).toBe('rgb(16, 16, 16)');
+    expect(el.style.getPropertyValue(customCssProps.optionBackgroundHighlighted)).toBe('rgb(32, 32, 32)');
+    expect(el.style.getPropertyValue(customCssProps.optionBackgroundSelected)).toBe('rgb(48, 48, 48)');
+  });
+
+  test('applies options color custom properties to the options list', () => {
+    const { wrapper } = openMenuWithStyle({
+      options: {
+        color: {
+          default: 'rgb(255, 255, 255)',
+          highlighted: 'rgb(200, 200, 200)',
+          disabled: 'rgb(100, 100, 100)',
+          groupLabel: 'rgb(150, 150, 150)',
+        },
+      },
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const optionsList = document.querySelector(`.${optionsListStyles['options-list']}`);
+    expect(optionsList).not.toBeNull();
+    const el = optionsList as HTMLElement;
+    expect(el.style.getPropertyValue(customCssProps.optionColorDefault)).toBe('rgb(255, 255, 255)');
+    expect(el.style.getPropertyValue(customCssProps.optionColorHighlighted)).toBe('rgb(200, 200, 200)');
+    expect(el.style.getPropertyValue(customCssProps.optionColorDisabled)).toBe('rgb(100, 100, 100)');
+    expect(el.style.getPropertyValue(customCssProps.optionGroupLabelColor)).toBe('rgb(150, 150, 150)');
+  });
+
+  test('applies filterMatch custom properties to the options list', () => {
+    const { wrapper } = openMenuWithStyle({
+      filterMatch: { backgroundColor: 'rgb(128, 128, 128)', color: 'rgb(0, 0, 0)' },
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const optionsList = document.querySelector(`.${optionsListStyles['options-list']}`);
+    expect(optionsList).not.toBeNull();
+    const el = optionsList as HTMLElement;
+    expect(el.style.getPropertyValue(customCssProps.optionFilterMatchBackground)).toBe('rgb(128, 128, 128)');
+    expect(el.style.getPropertyValue(customCssProps.optionFilterMatchColor)).toBe('rgb(0, 0, 0)');
+  });
+
+  test('does not apply options list styles when only surface-level menu styles are set', () => {
+    const { wrapper } = openMenuWithStyle({ backgroundColor: '#fff', borderColor: '#000' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const optionsList = document.querySelector(`.${optionsListStyles['options-list']}`);
+    expect(optionsList).not.toBeNull();
+    const el = optionsList as HTMLElement;
+    // getMenuOptionsListStyles returns undefined for surface-only overrides — no option custom properties set.
+    expect(el.style.getPropertyValue(customCssProps.optionBackgroundDefault)).toBe('');
+    expect(el.style.getPropertyValue(customCssProps.optionColorDefault)).toBe('');
+  });
+
+  test('menu style props are threaded from InternalPromptInput through to TokenMode', () => {
+    // Verifies the style?.menu pass-through in internal.tsx: menuStyle={style?.menu}
+    const { wrapper } = openMenuWithStyle({ backgroundColor: 'rgb(10, 20, 30)' });
+    expect(wrapper.isMenuOpen()).toBe(true);
+
+    const contentWrapper = getOpenDropdown()!.querySelector(
+      `.${dropdownStyles['dropdown-content-wrapper']}`
+    ) as HTMLElement;
+    // If style?.menu is correctly threaded, background is applied; otherwise it would be empty.
+    expect(contentWrapper.style.background).toBe('rgb(10, 20, 30)');
   });
 });
