@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
@@ -94,6 +94,11 @@ const Thead = React.forwardRef(
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
 
+    // This guarantees the width reported via `onColumnWidthsChange` matches the final rendered width instead of a stale one.
+    // Without this, resetting/remounting a table right after a resize can restore an outdated width.
+    const columnWidthsRef = useRef(columnWidths);
+    columnWidthsRef.current = columnWidths;
+
     const handleSplitGroupResize = (columnIds: string[], newWidth: number) => {
       const lastColumn = columnIds[columnIds.length - 1];
       if (lastColumn) {
@@ -170,7 +175,7 @@ const Thead = React.forwardRef(
                   colIndex={selectionType ? colIndex + 1 : colIndex}
                   columnId={columnId}
                   updateColumn={updateColumn}
-                  onResizeFinish={() => onResizeFinish(columnWidths)}
+                  onResizeFinish={() => onResizeFinish(columnWidthsRef.current)}
                   resizableColumns={resizableColumns}
                   resizableStyle={getColumnStyles(sticky, columnId)}
                   onClick={detail => {
@@ -259,7 +264,7 @@ const Thead = React.forwardRef(
                   group: groupDefinition,
                   rowspan: col.rowSpan,
                   resizableColumns,
-                  onResizeFinish: () => onResizeFinish(columnWidths),
+                  onResizeFinish: () => onResizeFinish(columnWidthsRef.current),
                   columnGroupId:
                     col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined,
                 };
@@ -405,7 +410,7 @@ const Thead = React.forwardRef(
                     colIndex={selectionType ? colIndex + 1 : colIndex}
                     columnId={columnId}
                     updateColumn={updateColumn}
-                    onResizeFinish={() => onResizeFinish(columnWidths)}
+                    onResizeFinish={() => onResizeFinish(columnWidthsRef.current)}
                     resizableColumns={resizableColumns}
                     resizableStyle={getColumnStyles(sticky, columnId)}
                     onClick={detail => {
