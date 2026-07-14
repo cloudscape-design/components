@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAllowedOperators, getAutosuggestOptions, parseText } from '../controller';
+import { operatorToDescription } from '../i18n-utils';
 import { ComparisonOperator, FilteringProperty, GroupText } from '../interfaces';
 import { InternalFilteringProperty, InternalFreeTextFiltering, ParsedText } from '../internal-interfaces';
 import { i18nStrings, toInternalProperties } from './common';
@@ -46,6 +47,20 @@ const filteringProperties = toInternalProperties([
     propertyLabel: 'custom column',
     defaultOperator: ':',
     groupValuesLabel: 'Custom column values',
+  },
+  // supports custom operator
+  {
+    key: 'custom-op',
+    propertyLabel: 'custom-op',
+    operators: ['=', { operator: '~', description: 'Matches regex' }],
+    groupValuesLabel: 'Custom op values',
+  },
+  // supports text-based custom operator
+  {
+    key: 'text-op',
+    propertyLabel: 'status',
+    operators: ['=', '!=', 'in' as ComparisonOperator, 'NOT IN' as ComparisonOperator],
+    groupValuesLabel: 'Status values',
   },
 ]);
 
@@ -99,8 +114,17 @@ describe('getAllowedOperators', () => {
       ['=', '!=', ':', '!:', '>=', '<=', '<', '>'],
     ],
     ['removes duplicates', getFilteringProperty(['=', { operator: '=' }]), ['=']],
-    ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
+    [
+      'preserves custom operators after known ones',
+      getFilteringProperty(['<>' as ComparisonOperator, '>', '=']),
+      ['=', '>', '<>'],
+    ],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
+    [
+      'preserves custom operator with description',
+      getFilteringProperty([{ operator: '~', description: 'Matches regex' }]),
+      ['=', '~'],
+    ],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, expected) => {
     expect(getAllowedOperators(input)).toEqual(expected);
@@ -235,6 +259,30 @@ describe('parseText', () => {
       defaultFreeTextFiltering,
       { step: 'operator', operatorPrefix: '', property: filteringProperties[0] },
     ],
+    [
+      'custom operator',
+      'custom-op~value',
+      defaultFreeTextFiltering,
+      { step: 'property', value: 'value', operator: '~', property: filteringProperties[6] },
+    ],
+    [
+      'text-based operator with space',
+      'status in active, pending',
+      defaultFreeTextFiltering,
+      { step: 'property', value: 'active, pending', operator: 'in', property: filteringProperties[7] },
+    ],
+    [
+      'text-based operator case-insensitive',
+      'status NOT IN active',
+      defaultFreeTextFiltering,
+      { step: 'property', value: 'active', operator: 'NOT IN', property: filteringProperties[7] },
+    ],
+    [
+      'text-based operator not matched when part of value',
+      'status =internal',
+      defaultFreeTextFiltering,
+      { step: 'property', value: 'internal', operator: '=', property: filteringProperties[7] },
+    ],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, disableFreeTextFiltering, expected) => {
     expect(parseText(input, filteringProperties, disableFreeTextFiltering)).toEqual(expected);
@@ -253,6 +301,8 @@ describe('getAutosuggestOptions', () => {
         { label: 'default', value: 'default', keepOpenOnSelect: true },
         { label: 'string!=', value: 'string!=', keepOpenOnSelect: true },
         { label: 'custom column', value: 'custom column', keepOpenOnSelect: true },
+        { label: 'custom-op', value: 'custom-op', keepOpenOnSelect: true },
+        { label: 'status', value: 'status', keepOpenOnSelect: true },
       ],
     },
     { options: [{ label: 'range', value: 'range', keepOpenOnSelect: true }], label: 'Group properties' },
@@ -412,5 +462,95 @@ describe('getAutosuggestOptions', () => {
       i18nStrings
     );
     expect(actual).toEqual(expected);
+  });
+  test('returns custom operator with description in operator suggestions', () => {
+    const parsedText: ParsedText = {
+      step: 'operator',
+      operatorPrefix: '',
+      property: filteringProperties[6],
+    };
+    const actual = getAutosuggestOptions(
+      parsedText,
+      filteringProperties,
+      filteringOptions,
+      customGroupText,
+      i18nStrings
+    );
+    const operatorGroup = actual.options.find(group => group.label === 'Operators');
+    expect(operatorGroup?.options).toEqual([
+      { value: 'custom-op = ', label: 'custom-op =', description: 'Equals', keepOpenOnSelect: true },
+      { value: 'custom-op ~ ', label: 'custom-op ~', description: 'Matches regex', keepOpenOnSelect: true },
+    ]);
+  });
+  test('custom description overrides built-in i18n for predefined operators', () => {
+    const overrideProperties = toInternalProperties([
+      {
+        key: 'date',
+        propertyLabel: 'date',
+        operators: [{ operator: '>', description: 'After' }, { operator: '<', description: 'Before' }, '='],
+        groupValuesLabel: 'Date values',
+      },
+    ]);
+    const parsedText: ParsedText = {
+      step: 'operator',
+      operatorPrefix: '',
+      property: overrideProperties[0],
+    };
+    const actual = getAutosuggestOptions(parsedText, overrideProperties, [], customGroupText, i18nStrings);
+    const operatorGroup = actual.options.find(group => group.label === 'Operators');
+    expect(operatorGroup?.options).toEqual([
+      { value: 'date = ', label: 'date =', description: 'Equals', keepOpenOnSelect: true },
+      { value: 'date < ', label: 'date <', description: 'Before', keepOpenOnSelect: true },
+      { value: 'date > ', label: 'date >', description: 'After', keepOpenOnSelect: true },
+    ]);
+  });
+});
+
+describe('operatorToDescription', () => {
+  test('returns built-in i18n for known operators without custom description', () => {
+    const property = toInternalProperties([
+      { key: 'k', propertyLabel: 'k', operators: ['=', '>'], groupValuesLabel: '' },
+    ])[0];
+    expect(operatorToDescription('=', i18nStrings, property)).toBe('Equals');
+    expect(operatorToDescription('>', i18nStrings, property)).toBe('Greater than');
+  });
+  test('custom description overrides built-in i18n for known operators', () => {
+    const property = toInternalProperties([
+      {
+        key: 'k',
+        propertyLabel: 'k',
+        operators: [
+          { operator: '=', description: 'Exactly matches' },
+          { operator: '>', description: 'After' },
+        ],
+        groupValuesLabel: '',
+      },
+    ])[0];
+    expect(operatorToDescription('=', i18nStrings, property)).toBe('Exactly matches');
+    expect(operatorToDescription('>', i18nStrings, property)).toBe('After');
+  });
+  test('returns custom description for unknown operators', () => {
+    const property = toInternalProperties([
+      {
+        key: 'k',
+        propertyLabel: 'k',
+        operators: [{ operator: '~', description: 'Matches regex' }],
+        groupValuesLabel: '',
+      },
+    ])[0];
+    expect(operatorToDescription('~', i18nStrings, property)).toBe('Matches regex');
+  });
+  test('returns empty string for unknown operators without description', () => {
+    const property = toInternalProperties([
+      { key: 'k', propertyLabel: 'k', operators: ['~' as ComparisonOperator], groupValuesLabel: '' },
+    ])[0];
+    expect(operatorToDescription('~', i18nStrings, property)).toBe('');
+  });
+  test('returns built-in i18n when no property is provided', () => {
+    expect(operatorToDescription('=', i18nStrings, undefined)).toBe('Equals');
+    expect(operatorToDescription(':', i18nStrings, undefined)).toBe('Contains');
+  });
+  test('returns empty string for unknown operator when no property is provided', () => {
+    expect(operatorToDescription('~', i18nStrings, undefined)).toBe('');
   });
 });
