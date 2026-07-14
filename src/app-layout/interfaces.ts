@@ -88,11 +88,6 @@ export interface BaseLayoutProps extends BaseComponentProps {
   navigationCollapsedWidth?: number;
 
   /**
-   * If `true`, the navigation side border is not displayed.
-   */
-  navigationSideBorderHide?: boolean;
-
-  /**
    * If `true`, the navigation drawer is not displayed at all.
    */
   navigationHide?: boolean;

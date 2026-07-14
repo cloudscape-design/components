@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AppLayoutToolbar, Icon } from '~components';
 import Box from '~components/box';
@@ -12,6 +12,7 @@ import Header from '~components/header';
 import { useMobile } from '~components/internal/hooks/use-mobile';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
+import { applyTheme } from '~components/theming';
 import Toggle from '~components/toggle';
 
 import labels from '../app-layout/utils/labels';
@@ -68,13 +69,27 @@ export default function CollapsedWithAppLayoutPage() {
   const header = { text: 'Project 3', href: '#/projects/3' };
   const headerWithIcon = { ...header, logo: { svg: AwsSvg } };
 
+  useEffect(() => {
+    const { reset } = applyTheme({
+      baseThemeId: 'visual-refresh',
+      theme: {
+        tokens: navigationSideBorderHide
+          ? {
+              colorBorderLayoutSideNavigation: 'transparent',
+            }
+          : {},
+      },
+    });
+
+    return () => reset();
+  }, [navigationSideBorderHide]);
+
   return (
     <AppLayoutToolbar
       toolsHide={hideTools}
       navigationTriggerHide={hideToolbar}
       navigationOpen={navOpen}
       navigationCollapsible={navigationCollapsibleEnabled}
-      navigationSideBorderHide={navigationSideBorderHide}
       onNavigationChange={({ detail }) => setNavOpen(detail.open)}
       ariaLabels={labels}
       breadcrumbs={
@@ -119,7 +134,7 @@ export default function CollapsedWithAppLayoutPage() {
                 checked={navigationSideBorderHide}
                 onChange={({ detail }) => setNavigationSideBorderHide(detail.checked)}
               >
-                Enable navigationSideBorderHide
+                Hide navigation side border
               </Toggle>
               <Toggle checked={hideToolbar} onChange={({ detail }) => setHideToolbar(detail.checked)}>
                 Set navigationTriggerHide

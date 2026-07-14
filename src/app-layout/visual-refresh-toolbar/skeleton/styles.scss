@@ -146,10 +146,7 @@
   @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
-
-    &:not(.navigation-side-border-hide) {
-      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-    }
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout-side-navigation;
   }
 
   @include mobile-only {
