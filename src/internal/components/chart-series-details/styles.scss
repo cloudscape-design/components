@@ -65,7 +65,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
   > .list-item {
     > .key-value-pair > .key {
-      align-items: flex-start;
+      align-items: center;
     }
 
     &.dimmed {
