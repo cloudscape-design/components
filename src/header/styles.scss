@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @function space-heading-button-diff($heading-height) {
@@ -163,6 +164,16 @@
   .no-wrap > &:not(.refresh) {
     // Additional padding to make it the same height as a header with wrapping
     padding-block-end: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+  }
+}
+
+// Inside an expandable section (one-theme), tighten the heading's top padding by the button's
+// top and bottom border widths so it aligns with the button content box.
+.title-variant-h2.title-in-expandable-section {
+  @include theming.one-theme-only {
+    padding-block-start: calc(
+      #{space-heading-button-diff(awsui.$line-height-heading-l)} - 2 * #{awsui.$border-width-button}
+    );
   }
 }
 
