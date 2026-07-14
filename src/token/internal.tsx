@@ -103,8 +103,11 @@ function InternalToken({
   });
 
   const sizedIcon = (iconNode: React.ReactNode) => {
-    if (isInline && isOneTheme && React.isValidElement(iconNode) && iconNode.type === InternalIcon) {
-      return React.cloneElement(iconNode, { size: 'x-small' });
+    const isIconComponent =
+      React.isValidElement(iconNode) &&
+      (iconNode.type === InternalIcon || (iconNode.type as { displayName?: string })?.displayName === 'Icon');
+    if (isInline && isOneTheme && isIconComponent) {
+      return React.cloneElement(iconNode as React.ReactElement<{ size?: string }>, { size: 'x-small' });
     }
     return iconNode;
   };
