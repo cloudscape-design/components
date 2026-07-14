@@ -48,14 +48,23 @@ export function matchOperator(
   allowedOperators: readonly ComparisonOperator[],
   filteringText: string
 ): null | ComparisonOperator {
-  filteringText = filteringText.toLowerCase();
+  const lowerText = filteringText.toLowerCase();
 
   let maxLength = 0;
   let matchedOperator: null | ComparisonOperator = null;
 
   for (const operator of allowedOperators) {
-    if (operator.length > maxLength && startsWith(filteringText, operator.toLowerCase())) {
-      maxLength = operator.length;
+    const lowerOp = operator.toLowerCase();
+    if (lowerOp.length > maxLength && startsWith(lowerText, lowerOp)) {
+      // Text-based operators (containing letters) require a word boundary after the match
+      // to avoid matching the operator as a prefix of a value (e.g. "in" matching "internal").
+      if (/[a-zA-Z]/.test(operator)) {
+        const charAfter = lowerText[lowerOp.length];
+        if (charAfter !== undefined && charAfter !== ' ') {
+          continue;
+        }
+      }
+      maxLength = lowerOp.length;
       matchedOperator = operator;
     }
   }

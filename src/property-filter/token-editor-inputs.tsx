@@ -85,6 +85,7 @@ interface OperatorInputProps {
   onChangeOperator: (operator: ComparisonOperator) => void;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
+  filteringProperties: readonly InternalFilteringProperty[];
   freeTextFiltering: InternalFreeTextFiltering;
   triggerVariant: 'option' | 'label';
 }
@@ -94,14 +95,24 @@ export function OperatorInput({
   operator,
   onChangeOperator,
   i18nStrings,
+  filteringProperties,
   freeTextFiltering,
   triggerVariant,
 }: OperatorInputProps) {
-  const operators = property ? getAllowedOperators(property) : getAllowedFreeTextOperators(freeTextFiltering);
-  const operatorOptions = operators.map(operator => ({
-    value: operator,
-    label: operator,
-    description: operatorToDescription(operator, i18nStrings),
+  const getDescription = (op: ComparisonOperator) => {
+    if (property) {
+      return operatorToDescription(op, i18nStrings, property);
+    }
+    const freeTextProperty = filteringProperties.find(prop => prop.getOperatorDescription(op) !== null);
+    return operatorToDescription(op, i18nStrings, freeTextProperty);
+  };
+
+  const operatorOptions = (
+    property ? getAllowedOperators(property) : getAllowedFreeTextOperators(freeTextFiltering)
+  ).map(op => ({
+    value: op,
+    label: op,
+    description: getDescription(op) ?? undefined,
   }));
   return (
     <InternalSelect
@@ -112,7 +123,7 @@ export function OperatorInput({
           ? {
               value: operator,
               label: operator,
-              description: operatorToDescription(operator, i18nStrings),
+              description: getDescription(operator) ?? undefined,
             }
           : null
       }
