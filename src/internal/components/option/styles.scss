@@ -6,6 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use './constants' as constants;
+@use '../../generated/custom-css-properties/index' as custom-props;
 
 .option {
   @include styles.styles-reset;
@@ -100,8 +101,11 @@
 }
 
 .filtering-match-highlight {
-  background-color: awsui.$color-background-dropdown-item-filter-match;
-  color: awsui.$color-text-dropdown-item-filter-match;
+  background-color: var(
+    #{custom-props.$optionFilterMatchBackground},
+    #{awsui.$color-background-dropdown-item-filter-match}
+  );
+  color: var(#{custom-props.$optionFilterMatchColor}, #{awsui.$color-text-dropdown-item-filter-match});
   font-weight: styles.$font-weight-bold;
 }
 
