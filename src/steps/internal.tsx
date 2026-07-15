@@ -12,7 +12,8 @@ import { StepsProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseComponentProps;
+type InternalStepsProps = SomeRequired<StepsProps, 'steps' | 'orientation' | 'connectorLines'> &
+  InternalBaseComponentProps;
 
 const statusToColor: Record<StepsProps.Status, BoxProps.Color> = {
   error: 'text-status-error',
@@ -30,21 +31,24 @@ const CustomStep = ({
   step,
   orientation,
   renderStep,
+  hideConnectors,
 }: {
   step: StepsProps.Step;
   orientation: StepsProps.Orientation;
   renderStep: Required<StepsProps>['renderStep'];
+  hideConnectors: boolean;
 }) => {
   const { status, statusIconAriaLabel } = step;
   const { header, details, icon } = renderStep(step);
   const iconNode = icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />;
+  const connectorClassName = clsx(styles.connector, hideConnectors && styles['connector-hidden']);
 
   if (orientation === 'horizontal') {
     return (
       <li className={styles.container}>
         <div className={styles.header}>
           {iconNode}
-          <hr className={styles.connector} role="none" />
+          <hr className={connectorClassName} role="none" />
         </div>
         <div className={styles['horizontal-header']}>{header}</div>
         {details && <div className={styles.details}>{details}</div>}
@@ -60,7 +64,7 @@ const CustomStep = ({
     <li className={clsx(styles.container, styles['custom-vertical'])}>
       <div className={styles.rail}>
         {iconNode}
-        <hr className={styles.connector} role="none" />
+        <hr className={connectorClassName} role="none" />
       </div>
       <div className={styles.content}>
         <div className={styles.header}>{header}</div>
@@ -76,7 +80,9 @@ const InternalStep = ({
   header,
   details,
   orientation,
-}: StepsProps.Step & { orientation: StepsProps.Orientation }) => {
+  hideConnectors,
+}: StepsProps.Step & { orientation: StepsProps.Orientation; hideConnectors: boolean }) => {
+  const connectorClassName = clsx(styles.connector, hideConnectors && styles['connector-hidden']);
   return (
     <li className={styles.container}>
       <div className={styles.header}>
@@ -89,12 +95,12 @@ const InternalStep = ({
             <InternalBox color={statusToColor[status]}>
               <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />
             </InternalBox>
-            <hr className={styles.connector} role="none" />
+            <hr className={connectorClassName} role="none" />
           </>
         )}
       </div>
       {orientation === 'vertical' ? (
-        <hr className={styles.connector} role="none" />
+        <hr className={connectorClassName} role="none" />
       ) : (
         <div className={styles['horizontal-header']}>
           <InternalBox color={statusToColor[status]}>{header}</InternalBox>
@@ -107,7 +113,8 @@ const InternalStep = ({
 
 const InternalSteps = ({
   steps,
-  orientation = 'vertical',
+  orientation,
+  connectorLines,
   renderStep,
   ariaLabel,
   ariaLabelledby,
@@ -115,6 +122,7 @@ const InternalSteps = ({
   __internalRootRef,
   ...props
 }: InternalStepsProps) => {
+  const hideConnectors = connectorLines === 'none';
   return (
     <div
       {...props}
@@ -129,7 +137,13 @@ const InternalSteps = ({
       >
         {steps.map((step, index) =>
           renderStep ? (
-            <CustomStep key={index} orientation={orientation} step={step} renderStep={renderStep} />
+            <CustomStep
+              key={index}
+              orientation={orientation}
+              step={step}
+              renderStep={renderStep}
+              hideConnectors={hideConnectors}
+            />
           ) : (
             <InternalStep
               key={index}
@@ -138,6 +152,7 @@ const InternalSteps = ({
               header={step.header}
               details={step.details}
               orientation={orientation}
+              hideConnectors={hideConnectors}
             />
           )
         )}

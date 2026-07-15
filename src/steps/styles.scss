@@ -6,6 +6,13 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+.connector {
+  background-color: awsui.$color-border-divider-default;
+}
+.connector.connector-hidden {
+  background-color: transparent;
+}
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -37,7 +44,6 @@
       > .connector {
         grid-row: 2;
         grid-column: 1;
-        background-color: awsui.$color-border-divider-default;
         margin-block: 0;
         border-block: 0;
         border-inline: 0;
@@ -82,7 +88,6 @@
         > .connector {
           display: block;
           flex: 1;
-          background-color: awsui.$color-border-divider-default;
           margin-block: 0;
           border-block: 0;
           border-inline: 0;
@@ -134,7 +139,6 @@
       grid-row: auto;
       grid-column: auto;
       flex: 1 1 auto;
-      background-color: awsui.$color-border-divider-default;
       border-block: 0;
       border-inline: 0;
       inline-size: awsui.$border-divider-list-width;
