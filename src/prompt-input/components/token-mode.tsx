@@ -10,6 +10,7 @@ import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
+import { PromptInputMenuStyle } from '../internal-interfaces';
 import { getMenuOptionsListStyles } from '../styles';
 import MenuDropdown from './menu-dropdown';
 
@@ -55,7 +56,7 @@ interface TokenModeProps {
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   maxMenuHeight?: number;
-  menuStyle?: PromptInputProps.Style['menu'];
+  menuStyle?: PromptInputMenuStyle;
 }
 
 const MENU_MIN_WIDTH = 300;

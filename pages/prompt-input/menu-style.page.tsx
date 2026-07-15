@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 
 import PromptInput, { PromptInputProps } from '~components/prompt-input';
+import { PromptInputInternalStyle, PromptInputMenuStyle } from '~components/prompt-input/internal-interfaces';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 
-// Exercises the full style.menu API: the dropdown surface (background, border,
-// radius) plus the option rows and filtering match highlight. Because the
-// option backgrounds match the surface, the whole menu body reads as themed.
-const menuStyle: PromptInputProps.Style['menu'] = {
+// Menu styling is internal (not in the public PromptInputProps.Style): consumers
+// opt in via the `_menu` key by casting to PromptInputInternalStyle.
+const menuStyle: PromptInputMenuStyle = {
   backgroundColor: `light-dark(${palette.teal20}, ${palette.teal100})`,
   borderColor: `light-dark(${palette.teal80}, ${palette.teal40})`,
   borderRadius: '16px',
@@ -48,17 +48,18 @@ export default function MenuStylePage() {
     <ScreenshotArea>
       <h1>PromptInput — menu style override</h1>
       <p>
-        Type <code>/</code> to open the command menu. The <code>style.menu</code> overrides theme the dropdown surface (
-        <code>backgroundColor</code>, <code>borderColor</code>, <code>borderWidth</code>, <code>borderRadius</code>) as
-        well as the option rows (<code>options.backgroundColor</code>, <code>options.color</code>) and the filtering
-        match highlight (<code>filterMatch</code>). Filter the list to see the match highlight.
+        Type <code>/</code> to open the command menu. The internal <code>style._menu</code> overrides (passed via type
+        manipulation) theme the dropdown surface (<code>backgroundColor</code>, <code>borderColor</code>,{' '}
+        <code>borderWidth</code>, <code>borderRadius</code>) as well as the option rows (
+        <code>options.backgroundColor</code>, <code>options.color</code>) and the filtering match highlight (
+        <code>filterMatch</code>). Filter the list to see the match highlight.
       </p>
       <PromptInput
         ariaLabel="Prompt input with styled menu"
         value={value}
         tokens={tokens}
         menus={[{ id: 'commands', trigger: '/', options, filteringType: 'auto' }]}
-        style={{ menu: menuStyle }}
+        style={{ _menu: menuStyle } as PromptInputInternalStyle}
         onChange={({ detail }) => {
           setValue(detail.value);
           if (detail.tokens) {

@@ -5,15 +5,13 @@ import type { CSSProperties } from 'react';
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { PromptInputProps } from './interfaces';
+import { PromptInputInternalStyle, PromptInputMenuStyle } from './internal-interfaces';
 
 /**
- * Maps the public `style.menu.options`/`filterMatch` overrides to the internal
- * options-list custom properties consumed by the shared selectable-item/option
- * styles. Core system only, mirroring getPromptInputStyles. Unset values are
- * omitted so those styles keep falling back to design tokens. Returns undefined
- * when there is nothing to apply, so no custom properties are set on the list.
+ * Maps `_menu.options`/`filterMatch` to the options-list custom properties read by
+ * the shared selectable-item/option styles. Core-only; unset values fall back to tokens.
  */
-export function getMenuOptionsListStyles(menuStyle: PromptInputProps.Style['menu']): CSSProperties | undefined {
+export function getMenuOptionsListStyles(menuStyle: PromptInputMenuStyle | undefined): CSSProperties | undefined {
   if (SYSTEM !== 'core' || (!menuStyle?.options && !menuStyle?.filterMatch)) {
     return undefined;
   }
@@ -34,6 +32,9 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
   if (SYSTEM !== 'core') {
     return {};
   }
+
+  // `_menu`: internal escape hatch, not part of the public Style.
+  const menuStyle = (style as PromptInputInternalStyle | undefined)?._menu;
 
   return {
     borderRadius: style?.root?.borderRadius,
@@ -66,9 +67,9 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
     [customCssProps.promptInputStylePlaceholderFontSize]: style?.placeholder?.fontSize,
     [customCssProps.promptInputStylePlaceholderFontWeight]: style?.placeholder?.fontWeight,
     [customCssProps.promptInputStylePlaceholderFontStyle]: style?.placeholder?.fontStyle,
-    [customCssProps.promptInputMenuStyleBackgroundColor]: style?.menu?.backgroundColor,
-    [customCssProps.promptInputMenuStyleBorderColor]: style?.menu?.borderColor,
-    [customCssProps.promptInputMenuStyleBorderRadius]: style?.menu?.borderRadius,
-    [customCssProps.promptInputMenuStyleBorderWidth]: style?.menu?.borderWidth,
+    [customCssProps.promptInputMenuStyleBackgroundColor]: menuStyle?.backgroundColor,
+    [customCssProps.promptInputMenuStyleBorderColor]: menuStyle?.borderColor,
+    [customCssProps.promptInputMenuStyleBorderRadius]: menuStyle?.borderRadius,
+    [customCssProps.promptInputMenuStyleBorderWidth]: menuStyle?.borderWidth,
   };
 }

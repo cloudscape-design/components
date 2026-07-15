@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { PromptInputInternalStyle } from '../internal-interfaces';
 import { getMenuOptionsListStyles, getPromptInputStyles } from '../styles';
 
 // Mock the environment module
@@ -17,7 +18,7 @@ describe('getPromptInputStyles', () => {
     expect(getPromptInputStyles(undefined)).toEqual({});
     expect(getPromptInputStyles({})).toEqual({});
 
-    const allStyles = {
+    const allStyles: PromptInputInternalStyle = {
       root: {
         borderRadius: '4px',
         borderWidth: '1px',
@@ -60,7 +61,7 @@ describe('getPromptInputStyles', () => {
         fontWeight: '400',
         fontStyle: 'italic',
       },
-      menu: {
+      _menu: {
         backgroundColor: '#1a1a2e',
         borderColor: '#7b2d8b',
         borderRadius: '12px',

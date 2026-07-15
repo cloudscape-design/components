@@ -31,6 +31,7 @@ import { getPromptText } from './core/token-operations';
 import { supportsTokenMode } from './core/token-renderer';
 import { isPinnedReferenceToken } from './core/type-guards';
 import { PromptInputProps } from './interfaces';
+import { PromptInputInternalStyle } from './internal-interfaces';
 import { getPromptInputStyles } from './styles';
 import { useTokenMode } from './tokens/use-token-mode';
 import { insertTextIntoContentEditable } from './utils/insert-text-content-editable';
@@ -444,7 +445,7 @@ const InternalPromptInput = React.forwardRef(
               menuItemsHandlers={tokenMode.menuItemsHandlers}
               menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
-              menuStyle={style?.menu}
+              menuStyle={(style as PromptInputInternalStyle | undefined)?._menu}
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}

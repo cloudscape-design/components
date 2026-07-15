@@ -5,6 +5,10 @@ import { act, fireEvent, render } from '@testing-library/react';
 
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
+import {
+  PromptInputInternalStyle,
+  PromptInputMenuStyle,
+} from '../../../lib/components/prompt-input/internal-interfaces';
 import createWrapper, { PromptInputWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode, KeyCodeA, KeyCodeDelete } from '../../internal/keycode';
 
@@ -8174,9 +8178,11 @@ describe('style.menu prop — dropdown styling', () => {
    * on document.body — use document.querySelector (not container.querySelector)
    * to find the open dropdown.
    */
-  function openMenuWithStyle(menuStyle: PromptInputProps.Style['menu']) {
+  function openMenuWithStyle(menuStyle: PromptInputMenuStyle) {
     const ref = React.createRef<PromptInputProps.Ref>();
-    const result = render(<StatefulPromptInput initialProps={{ style: { menu: menuStyle } }} innerRef={ref} />);
+    const result = render(
+      <StatefulPromptInput initialProps={{ style: { _menu: menuStyle } as PromptInputInternalStyle }} innerRef={ref} />
+    );
     const wrapper = createWrapper(result.container).findPromptInput()!;
     act(() => {
       ref.current!.focus();
@@ -8252,7 +8258,7 @@ describe('style.menu prop — dropdown styling', () => {
     expect(contentWrapper.style.getPropertyValue(customCssProps.dropdownContentBorderWidth)).toBe('2px');
   });
 
-  test('does not apply dropdown style when style.menu is undefined', () => {
+  test('does not apply dropdown style when style._menu is undefined', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     render(<StatefulPromptInput innerRef={ref} />);
     const wrapper = createWrapper(document.body).findPromptInput()!;
@@ -8336,7 +8342,7 @@ describe('style.menu prop — dropdown styling', () => {
   });
 
   test('menu style props are threaded from InternalPromptInput through to TokenMode', () => {
-    // Verifies the style?.menu pass-through in internal.tsx: menuStyle={style?.menu}
+    // Verifies the style?._menu pass-through in internal.tsx: menuStyle={style?._menu}
     const { wrapper } = openMenuWithStyle({ backgroundColor: 'rgb(10, 20, 30)' });
     expect(wrapper.isMenuOpen()).toBe(true);
 

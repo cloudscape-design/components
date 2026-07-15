@@ -160,9 +160,7 @@ const customCssPropertiesList = [
   'promptInputMenuStyleBorderColor',
   'promptInputMenuStyleBorderRadius',
   'promptInputMenuStyleBorderWidth',
-  // Options list style properties (internal contract; consumed by the shared
-  // selectable-item / option components, currently only set by PromptInput's
-  // style.menu). Each is inert unless a host sets it, falling back to tokens.
+  // Options list style properties (internal)
   'optionBackgroundDefault',
   'optionBackgroundHighlighted',
   'optionBackgroundSelected',

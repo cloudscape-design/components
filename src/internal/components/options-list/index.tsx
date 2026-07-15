@@ -42,11 +42,7 @@ export interface OptionsListProps extends BaseComponentProps {
   embedded?: boolean;
   stickyItemBlockSize?: number | null;
   isMultiSelect?: boolean;
-  /**
-   * Internal style hook. Custom CSS properties applied to the list root; they
-   * inherit down to the options and their filtering-match highlights, letting a
-   * host theme the option rows via the shared selectable-item/option styles.
-   */
+  /** Internal: custom CSS properties set on the list root; inherited by the option rows. */
   customProperties?: React.CSSProperties;
 }
 

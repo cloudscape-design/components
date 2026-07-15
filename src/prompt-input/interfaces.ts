@@ -574,52 +574,5 @@ export namespace PromptInputProps {
       fontStyle?: string;
       fontWeight?: string;
     };
-    /**
-     * Style overrides for the menus/shortcuts dropdown that appears when a trigger
-     * character is typed. Use this to match the dropdown's visual appearance to a
-     * custom design system theme.
-     *
-     * @awsuiSystem core
-     */
-    menu?: {
-      backgroundColor?: string;
-      borderColor?: string;
-      borderRadius?: string;
-      borderWidth?: string;
-
-      /**
-       * Style overrides for the options rendered inside the menu dropdown.
-       * Unlike `backgroundColor` (which themes the dropdown surface), these
-       * theme the option rows themselves, which are otherwise opaque and cover
-       * the surface. Ensure the text colors keep sufficient contrast against
-       * the corresponding backgrounds, including the highlighted and selected
-       * states.
-       */
-      options?: {
-        backgroundColor?: {
-          default?: string;
-          /** Applied to the hovered/keyboard-highlighted option. */
-          highlighted?: string;
-          selected?: string;
-        };
-        color?: {
-          default?: string;
-          /** Applied to the hovered/keyboard-highlighted option. */
-          highlighted?: string;
-          disabled?: string;
-          /** Applied to non-interactive option group labels. */
-          groupLabel?: string;
-        };
-      };
-
-      /**
-       * Style overrides for the substring highlight shown on options that match
-       * the filtering text.
-       */
-      filterMatch?: {
-        backgroundColor?: string;
-        color?: string;
-      };
-    };
   }
 }
