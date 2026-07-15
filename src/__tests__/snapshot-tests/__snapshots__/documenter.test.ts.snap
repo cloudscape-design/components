@@ -1563,19 +1563,31 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "number",
     },
     {
+      "description": "Determines whether the navigation panel collapses or hides completely when closed.
+When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
+at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
+\`collapsed\` property of the side navigation component. On mobile viewports the rail
+is not available and the closed navigation is completely hidden.
+Defaults to \`hide\` if not specified.",
+      "inlineType": {
+        "name": ""hide" | "collapse"",
+        "type": "union",
+        "values": [
+          "hide",
+          "collapse",
+        ],
+      },
+      "name": "navigationCloseBehavior",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "54",
       "description": "Width of the collapsed navigation rail in pixels.
-Only applies when \`navigationCollapsed\` is \`true\` and \`navigationOpen\` is \`false\`.",
+Only applies when \`navigationCloseBehavior\` is \`collapse\` and \`navigationOpen\` is \`false\`.",
       "name": "navigationCollapsedWidth",
       "optional": true,
       "type": "number",
-    },
-    {
-      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
-when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
-      "name": "navigationCollapsible",
-      "optional": true,
-      "type": "boolean",
     },
     {
       "description": "If \`true\`, the navigation drawer is not displayed at all.",
@@ -2127,19 +2139,31 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "number",
     },
     {
+      "description": "Determines whether the navigation panel collapses or hides completely when closed.
+When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
+at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
+\`collapsed\` property of the side navigation component. On mobile viewports the rail
+is not available and the closed navigation is completely hidden.
+Defaults to \`hide\` if not specified.",
+      "inlineType": {
+        "name": ""hide" | "collapse"",
+        "type": "union",
+        "values": [
+          "hide",
+          "collapse",
+        ],
+      },
+      "name": "navigationCloseBehavior",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "54",
       "description": "Width of the collapsed navigation rail in pixels.
-Only applies when \`navigationCollapsed\` is \`true\` and \`navigationOpen\` is \`false\`.",
+Only applies when \`navigationCloseBehavior\` is \`collapse\` and \`navigationOpen\` is \`false\`.",
       "name": "navigationCollapsedWidth",
       "optional": true,
       "type": "number",
-    },
-    {
-      "description": "If \`true\`, the navigation panel shows a collapsed rail at \`navigationCollapsedWidth\`
-when \`navigationOpen\` is \`false\`, instead of being completely hidden.",
-      "name": "navigationCollapsible",
-      "optional": true,
-      "type": "boolean",
     },
     {
       "description": "If \`true\`, the navigation drawer is not displayed at all.",

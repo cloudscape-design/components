@@ -58,7 +58,7 @@ const AwsSvg = (
 export default function CollapsedWithAppLayoutPage() {
   const [navOpen, setNavOpen] = useState(false);
   const [activeHref, setActiveHref] = useState('#/dashboard');
-  const [navigationCollapsibleEnabled, setNavigationCollapsibleEnabled] = useState(true);
+  const [collapseBehavior, setCollapseBehavior] = useState<'collapse' | 'hide'>('collapse');
   const [navigationSideBorderHide, setNavigationSideBorderHide] = useState(false);
   const [hideToolbar, setHideToolbar] = useState(true);
   const [hideTools, setHideTools] = useState(true);
@@ -89,7 +89,7 @@ export default function CollapsedWithAppLayoutPage() {
       toolsHide={hideTools}
       navigationTriggerHide={hideToolbar}
       navigationOpen={navOpen}
-      navigationCollapsible={navigationCollapsibleEnabled}
+      navigationCloseBehavior={collapseBehavior}
       onNavigationChange={({ detail }) => setNavOpen(detail.open)}
       ariaLabels={labels}
       breadcrumbs={
@@ -107,7 +107,7 @@ export default function CollapsedWithAppLayoutPage() {
         <SideNavigation
           header={showHeader ? (!headerIcon ? header : headerWithIcon) : undefined}
           activeHref={activeHref}
-          collapsed={!navOpen && navigationCollapsibleEnabled}
+          collapsed={!navOpen && collapseBehavior === 'collapse'}
           items={items}
           onFollow={e => {
             e.preventDefault();
@@ -121,20 +121,21 @@ export default function CollapsedWithAppLayoutPage() {
           <Box>
             <SpaceBetween size="m">
               <Box variant="p">
-                This page demonstrates the <code>navigationCollapsible</code> prop on AppLayoutToolbar. When enabled,
-                the navigation shows a collapsed icon rail instead of disappearing completely when closed.
+                This page demonstrates the <code>navigationCloseBehavior</code> prop on AppLayoutToolbar. When set to{' '}
+                <code>&quot;collapse&quot;</code>, the navigation shows a collapsed icon rail instead of disappearing
+                completely when closed.
               </Box>
               <Toggle
-                checked={navigationCollapsibleEnabled}
-                onChange={({ detail }) => setNavigationCollapsibleEnabled(detail.checked)}
+                checked={collapseBehavior === 'collapse'}
+                onChange={({ detail }) => setCollapseBehavior(detail.checked ? 'collapse' : 'hide')}
               >
-                Enable navigationCollapsible
+                navigationCloseBehavior = &quot;collapse&quot;
               </Toggle>
               <Toggle
                 checked={navigationSideBorderHide}
                 onChange={({ detail }) => setNavigationSideBorderHide(detail.checked)}
               >
-                Hide navigation side border
+                Hide navigation side border (theme token)
               </Toggle>
               <Toggle checked={hideToolbar} onChange={({ detail }) => setHideToolbar(detail.checked)}>
                 Set navigationTriggerHide
@@ -155,7 +156,7 @@ export default function CollapsedWithAppLayoutPage() {
               <Button onClick={() => setNavOpen(!navOpen)}>{navOpen ? 'Close' : 'Open'} navigation</Button>
               <Box color="text-status-inactive">
                 Current state: navigation is{' '}
-                {navOpen ? 'open' : navigationCollapsibleEnabled ? 'collapsed (rail)' : 'closed (hidden)'}
+                {navOpen ? 'open' : collapseBehavior === 'collapse' ? 'collapsed (rail)' : 'closed (hidden)'}
               </Box>
             </SpaceBetween>
           </Box>

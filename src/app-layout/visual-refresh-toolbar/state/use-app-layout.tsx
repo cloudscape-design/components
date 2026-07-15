@@ -39,7 +39,7 @@ export const useAppLayout = (
     ariaLabels,
     navigationOpen,
     navigationWidth,
-    navigationCollapsible,
+    navigationCloseBehavior,
     navigationCollapsedWidth,
     navigation,
     navigationHide,
@@ -67,7 +67,8 @@ export const useAppLayout = (
   forwardRef: ForwardedRef<AppLayoutProps.Ref>
 ): AppLayoutState => {
   const isMobile = useMobile();
-  // On mobile, always show the nav trigger when collapsed mode is enabled,
+  const navigationCollapsible = navigationCloseBehavior === 'collapse';
+  // On mobile, always show the nav trigger when the collapse behavior is enabled,
   // because the collapsed rail (which provides the toggle on desktop) is not shown on mobile.
   const resolvedNavigationTriggerHide = isMobile && navigationCollapsible ? false : navigationTriggerHide;
   const splitPanelControlId = useUniqueId('split-panel');
@@ -407,7 +408,7 @@ export const useAppLayout = (
     minContentWidth,
     navigationOpen: resolvedNavigationOpen,
     navigationWidth,
-    navigationCollapsed: !!navigationCollapsible && !navigationHide,
+    navigationCollapsed: navigationCollapsible && !navigationHide,
     navigationCollapsedWidth: navigationCollapsedWidth,
     placement,
     splitPanelOpen,
@@ -455,7 +456,7 @@ export const useAppLayout = (
     discoveredBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
-    navigationCollapsed: !!navigationCollapsible && !navigationHide,
+    navigationCollapsed: navigationCollapsible && !navigationHide,
     navigationCollapsedWidth: navigationCollapsedWidth,
     navigation: resolvedNavigation,
     navigationFocusControl,

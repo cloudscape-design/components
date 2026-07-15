@@ -189,6 +189,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -3798,6 +3802,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
+          "$value": "1px",
+        },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
           "$value": "1px",
         },
         "border-width-popover": {
@@ -7411,6 +7419,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -11020,6 +11032,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
+          "$value": "1px",
+        },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
           "$value": "1px",
         },
         "border-width-popover": {
@@ -14633,6 +14649,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -18244,6 +18264,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -21853,6 +21877,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
+      "$value": "1px",
+    },
+    "border-width-layout-side-navigation": {
+      "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
       "$value": "1px",
     },
     "border-width-popover": {
@@ -25471,6 +25499,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -29081,6 +29113,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
+        },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -32693,6 +32729,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -36303,6 +36343,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
+        },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -39915,6 +39959,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -43525,6 +43573,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
+        },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -47137,6 +47189,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -50748,6 +50804,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -54358,6 +54418,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
       "$value": "2px",
+    },
+    "border-width-layout-side-navigation": {
+      "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+      "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",

@@ -1061,6 +1061,7 @@ export type BordersTokenName =
   | 'borderWidthItemCard'
   | 'borderWidthItemCardHighlighted'
   | 'borderWidthItemSelected'
+  | 'borderWidthLayoutSideNavigation'
   | 'borderWidthButton'
   | 'borderWidthDropdown'
   | 'borderWidthField'
