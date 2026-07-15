@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import PromptInput, { PromptInputProps } from '~components/prompt-input';
 import { PromptInputInternalStyle, PromptInputMenuStyle } from '~components/prompt-input/internal-interfaces';
 
+import { SimplePage } from '../app/templates';
 import { palette } from '../app/themes/style-api';
-import ScreenshotArea from '../utils/screenshot-area';
 
 // Menu styling is internal (not in the public PromptInputProps.Style): consumers
 // opt in via the `_menu` key by casting to PromptInputInternalStyle.
@@ -45,15 +45,19 @@ export default function MenuStylePage() {
   const [tokens, setTokens] = useState<readonly PromptInputProps.InputToken[]>([]);
 
   return (
-    <ScreenshotArea>
-      <h1>PromptInput — menu style override</h1>
-      <p>
-        Type <code>/</code> to open the command menu. The internal <code>style._menu</code> overrides (passed via type
-        manipulation) theme the dropdown surface (<code>backgroundColor</code>, <code>borderColor</code>,{' '}
-        <code>borderWidth</code>, <code>borderRadius</code>) as well as the option rows (
-        <code>options.backgroundColor</code>, <code>options.color</code>) and the filtering match highlight (
-        <code>filterMatch</code>). Filter the list to see the match highlight.
-      </p>
+    <SimplePage
+      title="PromptInput — menu style override"
+      subtitle={
+        <>
+          Type <code>/</code> to open the command menu. The internal <code>style._menu</code> overrides (passed via type
+          manipulation) theme the dropdown surface (<code>backgroundColor</code>, <code>borderColor</code>,{' '}
+          <code>borderWidth</code>, <code>borderRadius</code>) as well as the option rows (
+          <code>options.backgroundColor</code>, <code>options.color</code>) and the filtering match highlight (
+          <code>filterMatch</code>). Filter the list to see the match highlight.
+        </>
+      }
+      screenshotArea={{}}
+    >
       <PromptInput
         ariaLabel="Prompt input with styled menu"
         value={value}
@@ -69,6 +73,6 @@ export default function MenuStylePage() {
         onAction={() => {}}
         i18nStrings={{ actionButtonAriaLabel: 'Send' }}
       />
-    </ScreenshotArea>
+    </SimplePage>
   );
 }

@@ -8168,9 +8168,6 @@ describe('tokens takes precedence over value', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// style.menu prop — dropdown styling (covers token-mode.tsx lines added by PR)
-// ---------------------------------------------------------------------------
 describe('style.menu prop — dropdown styling', () => {
   /**
    * Opens the menu by inserting the trigger character via insertText.
