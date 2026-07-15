@@ -27,3 +27,5 @@ jobs:
     secrets: inherit
     with:
       react-version: ${{ matrix.react }}
+      artifact-path: pages/lib/static-default
+      artifact-name: dev-pages-react${{ matrix.react }}
