@@ -76,10 +76,6 @@ export interface BaseLayoutProps extends BaseComponentProps {
 
   /**
    * Determines whether the navigation panel collapses or hides completely when closed.
-   * When set to `collapse`, closing the navigation shows a collapsed icon-only navigation rail
-   * at `navigationCollapsedWidth` instead of hiding the panel. Use it together with the
-   * `collapsed` property of the side navigation component. On mobile viewports the rail
-   * is not available and the closed navigation is completely hidden.
    * Defaults to `hide` if not specified.
    */
   navigationCloseBehavior?: 'collapse' | 'hide';
@@ -87,7 +83,6 @@ export interface BaseLayoutProps extends BaseComponentProps {
   /**
    * Width of the collapsed navigation rail in pixels.
    * Only applies when `navigationCloseBehavior` is `collapse` and `navigationOpen` is `false`.
-   * @default 54
    */
   navigationCollapsedWidth?: number;
 
