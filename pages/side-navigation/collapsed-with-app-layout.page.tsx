@@ -6,7 +6,9 @@ import { AppLayoutToolbar, Icon } from '~components';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
+import FormField from '~components/form-field';
 import Header from '~components/header';
+import Input from '~components/input';
 // Consumers will use: import { useMobile } from '@cloudscape-design/component-toolkit/internal/use-mobile';
 // Draft started on https://github.com/cloudscape-design/component-toolkit/pull/174
 import { useMobile } from '~components/internal/hooks/use-mobile';
@@ -60,6 +62,7 @@ export default function CollapsedWithAppLayoutPage() {
   const [activeHref, setActiveHref] = useState('#/dashboard');
   const [collapseBehavior, setCollapseBehavior] = useState<'collapse' | 'hide'>('collapse');
   const [navigationSideBorderHide, setNavigationSideBorderHide] = useState(false);
+  const [navigationCollapsedWidth, setNavigationCollapsedWidth] = useState(54);
   const [hideToolbar, setHideToolbar] = useState(true);
   const [hideTools, setHideTools] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
@@ -90,6 +93,7 @@ export default function CollapsedWithAppLayoutPage() {
       navigationTriggerHide={hideToolbar}
       navigationOpen={navOpen}
       navigationCloseBehavior={collapseBehavior}
+      navigationCollapsedWidth={navigationCollapsedWidth}
       onNavigationChange={({ detail }) => setNavOpen(detail.open)}
       ariaLabels={labels}
       breadcrumbs={
@@ -143,6 +147,13 @@ export default function CollapsedWithAppLayoutPage() {
               <Toggle checked={hideTools} onChange={({ detail }) => setHideTools(detail.checked)}>
                 Hide tools
               </Toggle>
+              <FormField label="navigationCollapsedWidth">
+                <Input
+                  value={String(navigationCollapsedWidth)}
+                  type="number"
+                  onChange={event => setNavigationCollapsedWidth(parseInt(event.detail.value))}
+                />
+              </FormField>
               <Toggle checked={showHeader} onChange={({ detail }) => setShowHeader(detail.checked)}>
                 Show side nav header
               </Toggle>
