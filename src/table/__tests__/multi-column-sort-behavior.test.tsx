@@ -268,3 +268,28 @@ describe('sort menu item states', () => {
     expect(menu.findAddToSortAscendingItem({ disabled: true })).toBeNull();
   });
 });
+
+describe('sort menu accessibility', () => {
+  test('sort menu trigger is described by its own column header', () => {
+    const { container } = render(
+      <Table
+        items={items}
+        columnDefinitions={columnDefinitions}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+
+    const triggerA = wrapper.findColumnSortMenu(COL_A)!.getElement().querySelector('button')!;
+    const describedById = triggerA.getAttribute('aria-describedby');
+    expect(describedById).toBeTruthy();
+
+    const describedEl = container.querySelector(`#${CSS.escape(describedById!)}`);
+    expect(getHeaderCell(wrapper, COL_A).contains(describedEl)).toBe(true);
+    expect(describedEl?.textContent).toContain('A');
+
+    // Each column's trigger is described by a different header, so the triggers are not ambiguous.
+    const triggerB = wrapper.findColumnSortMenu(COL_B)!.getElement().querySelector('button')!;
+    expect(triggerB.getAttribute('aria-describedby')).not.toBe(describedById);
+  });
+});

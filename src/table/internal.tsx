@@ -431,7 +431,7 @@ const InternalTable = React.forwardRef(
       onSortingChange,
       multiColumnSort,
       i18nStrings,
-      sortMenuTriggerLabel: ariaLabels?.sortMenuTriggerLabel,
+      ariaLabels,
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
@@ -610,7 +610,7 @@ const InternalTable = React.forwardRef(
                   <SortLiveAnnouncement
                     sortingColumns={multiColumnSort.sortingColumns}
                     columnDefinitions={columnDefinitions}
-                    i18nStrings={i18nStrings}
+                    ariaLabels={ariaLabels}
                     containerRef={tableRefObject}
                   />
                 )}

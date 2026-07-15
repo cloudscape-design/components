@@ -27906,7 +27906,13 @@ in tables with data grouping.
 * \`submittingEditText\` (EditableColumnDefinition) => string -
                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
 * \`expandButtonLabel\` (Item) => string - Specifies an alternative text for row expand button.
-* \`collapseButtonLabel\` (Item) => string - Specifies an alternative text for row collapse button.",
+* \`collapseButtonLabel\` (Item) => string - Specifies an alternative text for row collapse button.
+* \`sortMenuTriggerLabel\` (string) - Provides an alternative text for the column header sort menu trigger button when multi-column sort is enabled.
+* \`sortAscending\` (string) - Screen reader word for ascending sort direction, used in sort announcements and a sorted column header's accessible text.
+* \`sortDescending\` (string) - Screen reader word for descending sort direction, used in sort announcements and a sorted column header's accessible text.
+* \`liveAnnouncementSortOrder\` (({ columns }) => string) - Formats the screen reader announcement for the current multi-column sort order.
+* \`liveAnnouncementSortCleared\` (string) - Screen reader announcement made when the multi-column sort is cleared.
+* \`sortPriority\` (({ priority }) => string) - Formats a sorted column's position in a multi-column sort, used in the sorted column header's accessible label.",
       "i18nTag": true,
       "inlineType": {
         "name": "TableProps.AriaLabels<T>",
@@ -28036,6 +28042,27 @@ in tables with data grouping.
             "type": "((data: TableProps.SelectionState<T>, row: T) => string)",
           },
           {
+            "name": "liveAnnouncementSortCleared",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(data: { columns: string; }) => string",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "{ columns: string; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementSortOrder",
+            "optional": true,
+            "type": "((data: { columns: string; }) => string)",
+          },
+          {
             "name": "resizerRoleDescription",
             "optional": true,
             "type": "string",
@@ -28051,9 +28078,35 @@ in tables with data grouping.
             "type": "string",
           },
           {
+            "name": "sortAscending",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "sortDescending",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "sortMenuTriggerLabel",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(data: { priority: number; }) => string",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "{ priority: number; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "sortPriority",
+            "optional": true,
+            "type": "((data: { priority: number; }) => string)",
           },
           {
             "inlineType": {
@@ -28449,18 +28502,18 @@ Each group definition contains the following:
       "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
     },
     {
-      "description": "An object containing all the localized strings required by the multi-column
-sorting UI:
+      "description": "Object containing the localized visible strings used by the Table component.
 
-* \`sortDropdown\` (object): Strings for the per-column sort dropdown menu.
-  * \`sortAscending\` (string): Label for the "Sort ascending" dropdown menu item.
-  * \`sortDescending\` (string): Label for the "Sort descending" dropdown menu item.
-  * \`multiColumnSortGroup\` (string): Label for the "Multi-column sort" dropdown menu group.
-  * \`addToSortAscending\` (string): Label for the "Add to sort (ascending)" dropdown menu item.
-  * \`addToSortDescending\` (string): Label for the "Add to sort (descending)" dropdown menu item.
-  * \`removeFromSort\` (string): Label for the "Remove from sort" dropdown menu item.
-  * \`addToSortDisabledReason\` (string): Reason shown when the "Add to sort" menu items are disabled.
-  * \`removeFromSortDisabledReason\` (string): Reason shown when the "Remove from sort" menu item is disabled.
+When multi-column sorting is enabled it provides the sort UI labels:
+
+* \`sortDropdownSortAscending\` (string): Label for the "Sort ascending" dropdown menu item.
+* \`sortDropdownSortDescending\` (string): Label for the "Sort descending" dropdown menu item.
+* \`sortDropdownMultiColumnSortGroup\` (string): Label for the multi-column sort dropdown menu group.
+* \`sortDropdownAddToSortAscending\` (string): Label for the "Add to sort (ascending)" dropdown menu item.
+* \`sortDropdownAddToSortDescending\` (string): Label for the "Add to sort (descending)" dropdown menu item.
+* \`sortDropdownRemoveFromSort\` (string): Label for the "Remove from sort" dropdown menu item.
+* \`sortDropdownAddToSortDisabledReason\` (string): Reason shown when the "Add to sort" menu items are disabled.
+* \`sortDropdownRemoveFromSortDisabledReason\` (string): Reason shown when the "Remove from sort" menu item is disabled.
 * \`clearSort\` (string): Label for the "Clear sort" button.",
       "i18nTag": true,
       "inlineType": {
@@ -28472,92 +28525,44 @@ sorting UI:
             "type": "string",
           },
           {
-            "name": "liveAnnouncementSortCleared",
+            "name": "sortDropdownAddToSortAscending",
             "optional": true,
             "type": "string",
           },
           {
-            "inlineType": {
-              "name": "(data: { columnLabel: string; isDescending: boolean; }) => string",
-              "parameters": [
-                {
-                  "name": "data",
-                  "type": "{ columnLabel: string; isDescending: boolean; }",
-                },
-              ],
-              "returnType": "string",
-              "type": "function",
-            },
-            "name": "liveAnnouncementSortColumn",
+            "name": "sortDropdownAddToSortDescending",
             "optional": true,
-            "type": "((data: { columnLabel: string; isDescending: boolean; }) => string)",
+            "type": "string",
           },
           {
-            "inlineType": {
-              "name": "(data: { columns: string; }) => string",
-              "parameters": [
-                {
-                  "name": "data",
-                  "type": "{ columns: string; }",
-                },
-              ],
-              "returnType": "string",
-              "type": "function",
-            },
-            "name": "liveAnnouncementSortOrder",
+            "name": "sortDropdownAddToSortDisabledReason",
             "optional": true,
-            "type": "((data: { columns: string; }) => string)",
+            "type": "string",
           },
           {
-            "inlineType": {
-              "name": "object",
-              "properties": [
-                {
-                  "name": "addToSortAscending",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "addToSortDescending",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "addToSortDisabledReason",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "multiColumnSortGroup",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "removeFromSort",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "removeFromSortDisabledReason",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "sortAscending",
-                  "optional": true,
-                  "type": "string",
-                },
-                {
-                  "name": "sortDescending",
-                  "optional": true,
-                  "type": "string",
-                },
-              ],
-              "type": "object",
-            },
-            "name": "sortDropdown",
+            "name": "sortDropdownMultiColumnSortGroup",
             "optional": true,
-            "type": "{ sortAscending?: string | undefined; sortDescending?: string | undefined; multiColumnSortGroup?: string | undefined; addToSortAscending?: string | undefined; addToSortDescending?: string | undefined; removeFromSort?: string | undefined; addToSortDisabledReason?: string | undefined; removeFromSortDisabledReason?: st...",
+            "type": "string",
+          },
+          {
+            "name": "sortDropdownRemoveFromSort",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "sortDropdownRemoveFromSortDisabledReason",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "sortDropdownSortAscending",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "sortDropdownSortDescending",
+            "optional": true,
+            "type": "string",
           },
         ],
         "type": "object",

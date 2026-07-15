@@ -226,6 +226,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
    * * `expandButtonLabel` (Item) => string - Specifies an alternative text for row expand button.
    * * `collapseButtonLabel` (Item) => string - Specifies an alternative text for row collapse button.
+   * * `sortMenuTriggerLabel` (string) - Provides an alternative text for the column header sort menu trigger button when multi-column sort is enabled.
+   * * `sortAscending` (string) - Screen reader word for ascending sort direction, used in sort announcements and a sorted column header's accessible text.
+   * * `sortDescending` (string) - Screen reader word for descending sort direction, used in sort announcements and a sorted column header's accessible text.
+   * * `liveAnnouncementSortOrder` (({ columns }) => string) - Formats the screen reader announcement for the current multi-column sort order.
+   * * `liveAnnouncementSortCleared` (string) - Screen reader announcement made when the multi-column sort is cleared.
+   * * `sortPriority` (({ priority }) => string) - Formats a sorted column's position in a multi-column sort, used in the sorted column header's accessible label.
    * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
@@ -259,18 +265,18 @@ export interface TableProps<T = any> extends BaseComponentProps {
   multiColumnSort?: TableProps.MultiColumnSort<T>;
 
   /**
-   * An object containing all the localized strings required by the multi-column
-   * sorting UI:
+   * Object containing the localized visible strings used by the Table component.
    *
-   * * `sortDropdown` (object): Strings for the per-column sort dropdown menu.
-   *   * `sortAscending` (string): Label for the "Sort ascending" dropdown menu item.
-   *   * `sortDescending` (string): Label for the "Sort descending" dropdown menu item.
-   *   * `multiColumnSortGroup` (string): Label for the "Multi-column sort" dropdown menu group.
-   *   * `addToSortAscending` (string): Label for the "Add to sort (ascending)" dropdown menu item.
-   *   * `addToSortDescending` (string): Label for the "Add to sort (descending)" dropdown menu item.
-   *   * `removeFromSort` (string): Label for the "Remove from sort" dropdown menu item.
-   *   * `addToSortDisabledReason` (string): Reason shown when the "Add to sort" menu items are disabled.
-   *   * `removeFromSortDisabledReason` (string): Reason shown when the "Remove from sort" menu item is disabled.
+   * When multi-column sorting is enabled it provides the sort UI labels:
+   *
+   * * `sortDropdownSortAscending` (string): Label for the "Sort ascending" dropdown menu item.
+   * * `sortDropdownSortDescending` (string): Label for the "Sort descending" dropdown menu item.
+   * * `sortDropdownMultiColumnSortGroup` (string): Label for the multi-column sort dropdown menu group.
+   * * `sortDropdownAddToSortAscending` (string): Label for the "Add to sort (ascending)" dropdown menu item.
+   * * `sortDropdownAddToSortDescending` (string): Label for the "Add to sort (descending)" dropdown menu item.
+   * * `sortDropdownRemoveFromSort` (string): Label for the "Remove from sort" dropdown menu item.
+   * * `sortDropdownAddToSortDisabledReason` (string): Reason shown when the "Add to sort" menu items are disabled.
+   * * `sortDropdownRemoveFromSortDisabledReason` (string): Reason shown when the "Remove from sort" menu item is disabled.
    * * `clearSort` (string): Label for the "Clear sort" button.
    *
    * @i18n
@@ -621,6 +627,11 @@ export namespace TableProps {
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
     sortMenuTriggerLabel?: string;
+    sortAscending?: string;
+    sortDescending?: string;
+    liveAnnouncementSortOrder?: (data: { columns: string }) => string;
+    liveAnnouncementSortCleared?: string;
+    sortPriority?: (data: { priority: number }) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -638,25 +649,15 @@ export namespace TableProps {
     sortingColumns: ReadonlyArray<SortingState<T>>;
   }
   export interface I18nStrings {
-    sortDropdown?: {
-      sortAscending?: string;
-      sortDescending?: string;
-      multiColumnSortGroup?: string;
-      addToSortAscending?: string;
-      addToSortDescending?: string;
-      removeFromSort?: string;
-      addToSortDisabledReason?: string;
-      removeFromSortDisabledReason?: string;
-    };
+    sortDropdownSortAscending?: string;
+    sortDropdownSortDescending?: string;
+    sortDropdownMultiColumnSortGroup?: string;
+    sortDropdownAddToSortAscending?: string;
+    sortDropdownAddToSortDescending?: string;
+    sortDropdownRemoveFromSort?: string;
+    sortDropdownAddToSortDisabledReason?: string;
+    sortDropdownRemoveFromSortDisabledReason?: string;
     clearSort?: string;
-    /**
-     * Live-region announcement fragments for multi-column sort changes, joined internally (charts-style).
-     * `liveAnnouncementSortColumn` formats a single sorted column; the results are joined and passed to
-     * `liveAnnouncementSortOrder`. `liveAnnouncementSortCleared` is announced when sorting is removed.
-     */
-    liveAnnouncementSortColumn?: (data: { columnLabel: string; isDescending: boolean }) => string;
-    liveAnnouncementSortOrder?: (data: { columns: string }) => string;
-    liveAnnouncementSortCleared?: string;
   }
   export interface LabelData {
     sorted: boolean;

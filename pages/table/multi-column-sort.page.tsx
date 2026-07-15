@@ -92,46 +92,30 @@ export default function MultiColumnSortPage() {
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
 
   const headers = longNamesEnabled ? longHeaders : shortHeaders;
-  const getSortLabel =
-    (label: string) =>
-    ({ sorted, descending, disabled, sortIndex }: TableProps.LabelData): string => {
-      if (disabled) {
-        return `${label}, sorting disabled`;
-      }
-      if (!sorted) {
-        return `${label}, not sorted`;
-      }
-      const direction = descending ? 'descending' : 'ascending';
-      return sortIndex ? `${label}, sorted ${direction}, sort position ${sortIndex}` : `${label}, sorted ${direction}`;
-    };
   const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
     {
       id: 'name',
       header: headers.name,
       cell: item => item.name,
       sortingField: 'name',
-      ariaLabel: getSortLabel(headers.name),
     },
     {
       id: 'type',
       header: headers.type,
       cell: item => item.type,
       sortingField: 'type',
-      ariaLabel: getSortLabel(headers.type),
     },
     {
       id: 'state',
       header: headers.state,
       cell: item => item.state,
       sortingField: 'state',
-      ariaLabel: getSortLabel(headers.state),
     },
     {
       id: 'cpu',
       header: headers.cpu,
       cell: item => `${item.cpu}%`,
       sortingField: 'cpu',
-      ariaLabel: getSortLabel(headers.cpu),
     },
   ];
 

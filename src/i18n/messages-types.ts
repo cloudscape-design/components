@@ -536,23 +536,24 @@ export interface I18nFormatArgTypes {
     'ariaLabels.collapseButtonLabel': never;
     'columnDefinitions.editConfig.errorIconAriaLabel': never;
     'columnDefinitions.editConfig.editIconAriaLabel': never;
-    'i18nStrings.sortDropdown.sortAscending': never;
-    'i18nStrings.sortDropdown.sortDescending': never;
-    'i18nStrings.sortDropdown.multiColumnSortGroup': never;
-    'i18nStrings.sortDropdown.addToSortAscending': never;
-    'i18nStrings.sortDropdown.addToSortDescending': never;
-    'i18nStrings.sortDropdown.removeFromSort': never;
-    'i18nStrings.sortDropdown.addToSortDisabledReason': never;
-    'i18nStrings.sortDropdown.removeFromSortDisabledReason': never;
+    'i18nStrings.sortDropdownSortAscending': never;
+    'i18nStrings.sortDropdownSortDescending': never;
+    'i18nStrings.sortDropdownMultiColumnSortGroup': never;
+    'i18nStrings.sortDropdownAddToSortAscending': never;
+    'i18nStrings.sortDropdownAddToSortDescending': never;
+    'i18nStrings.sortDropdownRemoveFromSort': never;
+    'i18nStrings.sortDropdownAddToSortDisabledReason': never;
+    'i18nStrings.sortDropdownRemoveFromSortDisabledReason': never;
     'i18nStrings.clearSort': never;
-    'i18nStrings.liveAnnouncementSortColumn': {
-      columnLabel: string | number;
-      isDescending: string;
-    };
-    'i18nStrings.liveAnnouncementSortOrder': {
+    'ariaLabels.sortAscending': never;
+    'ariaLabels.sortDescending': never;
+    'ariaLabels.liveAnnouncementSortOrder': {
       columns: string | number;
     };
-    'i18nStrings.liveAnnouncementSortCleared': never;
+    'ariaLabels.liveAnnouncementSortCleared': never;
+    'ariaLabels.sortPriority': {
+      priority: string | number;
+    };
     'ariaLabels.sortMenuTriggerLabel': never;
   };
   tabs: {

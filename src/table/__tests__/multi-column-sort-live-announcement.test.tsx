@@ -25,9 +25,9 @@ const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
   { id: 'id', header: <span>Rendered id</span>, cell: item => item.id, sortingField: 'id' },
 ];
 
-const i18nStrings: TableProps.I18nStrings = {
-  liveAnnouncementSortColumn: ({ columnLabel, isDescending }) =>
-    `${columnLabel} ${isDescending ? 'descending' : 'ascending'}`,
+const ariaLabels: TableProps.AriaLabels<Item> = {
+  sortAscending: 'ascending',
+  sortDescending: 'descending',
   liveAnnouncementSortOrder: ({ columns }) => `Table sorted by ${columns}`,
   liveAnnouncementSortCleared: 'Sorting cleared',
 };
@@ -38,7 +38,7 @@ function TableWithSort({ sortingColumns }: { sortingColumns: ReadonlyArray<Table
       items={items}
       columnDefinitions={columnDefinitions}
       multiColumnSort={{ sortingColumns, onChange: () => {} }}
-      i18nStrings={i18nStrings}
+      ariaLabels={ariaLabels}
     />
   );
 }
@@ -92,7 +92,7 @@ test('falls back to the sorting field when the sorted column has no id', async (
       items={items}
       columnDefinitions={noIdColumns}
       multiColumnSort={{ sortingColumns, onChange: () => {} }}
-      i18nStrings={i18nStrings}
+      ariaLabels={ariaLabels}
     />
   );
   const { container, rerender } = render(renderNoId([]));

@@ -148,4 +148,10 @@ export interface InternalButtonDropdownProps
    * while keeping an inline footprint (used by the table multi-column sort menu).
    */
   compactTrigger?: boolean;
+
+  /**
+   * Adds `aria-describedby` to the trigger button, associating it with descriptive text elsewhere
+   * on the page (for example a table header cell that disambiguates otherwise-identical triggers).
+   */
+  ariaDescribedby?: string;
 }

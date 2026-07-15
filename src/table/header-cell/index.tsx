@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
@@ -39,7 +40,7 @@ export interface TableHeaderCellProps<ItemType> extends BaseHeaderCellProps {
   onClick(detail: TableProps.SortingState<any>): void;
   multiColumnSort?: TableProps.MultiColumnSort<ItemType>;
   i18nStrings?: TableProps.I18nStrings;
-  sortMenuTriggerLabel?: string;
+  ariaLabels?: TableProps.AriaLabels<ItemType>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   isEditable?: boolean;
   columnId: PropertyKey;
@@ -88,7 +89,7 @@ export function TableHeaderCell<ItemType>({
   tableVariant,
   multiColumnSort,
   i18nStrings,
-  sortMenuTriggerLabel,
+  ariaLabels,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -109,6 +110,27 @@ export function TableHeaderCell<ItemType>({
   const sortingStatus = getSortingStatus(sortable, sorted, descending, !!sortingDisabled);
   // In multi-sort, only the primary column declares aria-sort (ARIA only allows one column sorted at a time).
   const suppressAriaSort = !!multiColumnSort && inMultiSort && !isPrimaryMultiSort;
+
+  // Screen-reader-only text appended to a sorted column header. The visible header text supplies the column name;
+  // this adds the sort direction (only when `aria-sort` is suppressed, i.e. secondary columns) and the sort priority.
+  const sortDirectionLabel = descending
+    ? i18n('ariaLabels.sortDescending', ariaLabels?.sortDescending)
+    : i18n('ariaLabels.sortAscending', ariaLabels?.sortAscending);
+  const sortPriorityLabel = i18n(
+    'ariaLabels.sortPriority',
+    ariaLabels?.sortPriority,
+    format =>
+      ({ priority }) =>
+        format({ priority })
+  );
+  const sortAccessibleText = inMultiSort
+    ? [
+        suppressAriaSort ? sortDirectionLabel : undefined,
+        showPriorityBadge ? sortPriorityLabel?.({ priority: multiSortIndex ?? 0 }) : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ')
+    : '';
   const handleClick = (shiftKey = false) => {
     if (multiColumnSort) {
       const current = multiColumnSort.sortingColumns;
@@ -276,6 +298,7 @@ export function TableHeaderCell<ItemType>({
               </span>
             ) : null}
           </div>
+          {sortAccessibleText && <ScreenreaderOnly>{sortAccessibleText}</ScreenreaderOnly>}
           {sortingStatus && (
             <span className={styles['sorting-icon']}>
               {showPriorityBadge && (
@@ -294,7 +317,8 @@ export function TableHeaderCell<ItemType>({
             isSortedAscending={inMultiSort && !descending}
             isSortedDescending={inMultiSort && descending}
             i18nStrings={i18nStrings}
-            ariaLabel={sortMenuTriggerLabel}
+            ariaLabel={ariaLabels?.sortMenuTriggerLabel}
+            ariaDescribedby={headerId}
             onAction={handleSortMenuAction}
           />
         )}

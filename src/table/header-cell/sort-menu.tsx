@@ -23,6 +23,7 @@ export interface SortMenuProps<T> {
   isSortedDescending: boolean;
   i18nStrings?: TableProps.I18nStrings;
   ariaLabel?: string;
+  ariaDescribedby?: string;
   onAction: (action: SortMenuAction) => void;
 }
 
@@ -32,48 +33,54 @@ export function SortMenu<T>({
   isSortedDescending,
   i18nStrings,
   ariaLabel,
+  ariaDescribedby,
   onAction,
 }: SortMenuProps<T>) {
-  const strings = i18nStrings?.sortDropdown;
   const i18n = useInternalI18n('table');
 
   const items: ButtonDropdownProps.ItemOrGroup[] = [
     {
       id: 'sort-ascending',
       itemType: 'checkbox',
-      text: i18n('i18nStrings.sortDropdown.sortAscending', strings?.sortAscending) ?? '',
+      text: i18n('i18nStrings.sortDropdownSortAscending', i18nStrings?.sortDropdownSortAscending) ?? '',
       checked: isSortedAscending,
     },
     {
       id: 'sort-descending',
       itemType: 'checkbox',
-      text: i18n('i18nStrings.sortDropdown.sortDescending', strings?.sortDescending) ?? '',
+      text: i18n('i18nStrings.sortDropdownSortDescending', i18nStrings?.sortDropdownSortDescending) ?? '',
       checked: isSortedDescending,
     },
     {
       id: 'multi-column-sort-group',
       itemType: 'group',
-      text: i18n('i18nStrings.sortDropdown.multiColumnSortGroup', strings?.multiColumnSortGroup) ?? '',
+      text: i18n('i18nStrings.sortDropdownMultiColumnSortGroup', i18nStrings?.sortDropdownMultiColumnSortGroup) ?? '',
       items: [
         {
           id: 'add-to-sort-ascending',
-          text: i18n('i18nStrings.sortDropdown.addToSortAscending', strings?.addToSortAscending) ?? '',
+          text: i18n('i18nStrings.sortDropdownAddToSortAscending', i18nStrings?.sortDropdownAddToSortAscending) ?? '',
           disabled: inSort,
-          disabledReason: i18n('i18nStrings.sortDropdown.addToSortDisabledReason', strings?.addToSortDisabledReason),
+          disabledReason: i18n(
+            'i18nStrings.sortDropdownAddToSortDisabledReason',
+            i18nStrings?.sortDropdownAddToSortDisabledReason
+          ),
         },
         {
           id: 'add-to-sort-descending',
-          text: i18n('i18nStrings.sortDropdown.addToSortDescending', strings?.addToSortDescending) ?? '',
+          text: i18n('i18nStrings.sortDropdownAddToSortDescending', i18nStrings?.sortDropdownAddToSortDescending) ?? '',
           disabled: inSort,
-          disabledReason: i18n('i18nStrings.sortDropdown.addToSortDisabledReason', strings?.addToSortDisabledReason),
+          disabledReason: i18n(
+            'i18nStrings.sortDropdownAddToSortDisabledReason',
+            i18nStrings?.sortDropdownAddToSortDisabledReason
+          ),
         },
         {
           id: 'remove-from-sort',
-          text: i18n('i18nStrings.sortDropdown.removeFromSort', strings?.removeFromSort) ?? '',
+          text: i18n('i18nStrings.sortDropdownRemoveFromSort', i18nStrings?.sortDropdownRemoveFromSort) ?? '',
           disabled: !inSort,
           disabledReason: i18n(
-            'i18nStrings.sortDropdown.removeFromSortDisabledReason',
-            strings?.removeFromSortDisabledReason
+            'i18nStrings.sortDropdownRemoveFromSortDisabledReason',
+            i18nStrings?.sortDropdownRemoveFromSortDisabledReason
           ),
         },
       ],
@@ -88,6 +95,7 @@ export function SortMenu<T>({
         compactTrigger={true}
         expandToViewport={true}
         ariaLabel={i18n('ariaLabels.sortMenuTriggerLabel', ariaLabel) ?? ''}
+        ariaDescribedby={ariaDescribedby}
         onItemClick={({ detail }) => onAction(detail.id as SortMenuAction)}
       />
     </span>

@@ -78,6 +78,7 @@ const InternalButtonDropdown = React.forwardRef(
       noMatch,
       i18nStrings,
       compactTrigger,
+      ariaDescribedby,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -216,6 +217,7 @@ const InternalButtonDropdown = React.forwardRef(
       },
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
+      ariaDescribedby,
       formAction: 'none',
       ariaHaspopup: hasFiltering ? 'dialog' : true,
       nativeButtonAttributes: nativeTriggerAttributes,

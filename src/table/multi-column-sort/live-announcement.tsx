@@ -10,19 +10,10 @@ import { buildSortLiveAnnouncement } from './utils';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 
-// Adapt the i18n `format` function to the `i18nStrings.liveAnnouncementSortColumn` signature. The ICU
-// `select` on `isDescending` requires a string, so the boolean is stringified.
-const formatSortColumn: CustomHandler<
-  TableProps.I18nStrings['liveAnnouncementSortColumn'],
-  I18nFormatArgTypes['table']['i18nStrings.liveAnnouncementSortColumn']
-> =
-  format =>
-  ({ columnLabel, isDescending }) =>
-    format({ columnLabel, isDescending: `${isDescending}` });
-
+// Adapt the i18n `format` function to the `ariaLabels.liveAnnouncementSortOrder` signature.
 const formatSortOrder: CustomHandler<
-  TableProps.I18nStrings['liveAnnouncementSortOrder'],
-  I18nFormatArgTypes['table']['i18nStrings.liveAnnouncementSortOrder']
+  TableProps.AriaLabels<any>['liveAnnouncementSortOrder'],
+  I18nFormatArgTypes['table']['ariaLabels.liveAnnouncementSortOrder']
 > =
   format =>
   ({ columns }) =>
@@ -49,7 +40,7 @@ function readColumnHeaderText<T>(
 interface SortLiveAnnouncementProps<T> {
   sortingColumns: ReadonlyArray<TableProps.SortingState<T>>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
-  i18nStrings: TableProps.I18nStrings | undefined;
+  ariaLabels: TableProps.AriaLabels<T> | undefined;
   containerRef: React.RefObject<HTMLElement | null>;
 }
 
@@ -61,7 +52,7 @@ interface SortLiveAnnouncementProps<T> {
 export function SortLiveAnnouncement<T>({
   sortingColumns,
   columnDefinitions,
-  i18nStrings,
+  ariaLabels,
   containerRef,
 }: SortLiveAnnouncementProps<T>) {
   const i18n = useInternalI18n('table');
@@ -70,17 +61,16 @@ export function SortLiveAnnouncement<T>({
   // comma for Arabic). `type: 'unit'` keeps a neutral list without an "and" conjunction, which would
   // otherwise blur the sort priority order.
   const listFormatter = useMemo(() => new Intl.ListFormat(locale ?? undefined, { type: 'unit' }), [locale]);
-  const renderSortColumn = i18n(
-    'i18nStrings.liveAnnouncementSortColumn',
-    i18nStrings?.liveAnnouncementSortColumn,
-    formatSortColumn
-  );
+  const sortAscending = i18n('ariaLabels.sortAscending', ariaLabels?.sortAscending) ?? '';
+  const sortDescending = i18n('ariaLabels.sortDescending', ariaLabels?.sortDescending) ?? '';
+  const renderSortColumn = ({ columnLabel, isDescending }: { columnLabel: string; isDescending: boolean }) =>
+    `${columnLabel} ${isDescending ? sortDescending : sortAscending}`.trim();
   const renderSortOrder = i18n(
-    'i18nStrings.liveAnnouncementSortOrder',
-    i18nStrings?.liveAnnouncementSortOrder,
+    'ariaLabels.liveAnnouncementSortOrder',
+    ariaLabels?.liveAnnouncementSortOrder,
     formatSortOrder
   );
-  const sortCleared = i18n('i18nStrings.liveAnnouncementSortCleared', i18nStrings?.liveAnnouncementSortCleared);
+  const sortCleared = i18n('ariaLabels.liveAnnouncementSortCleared', ariaLabels?.liveAnnouncementSortCleared);
 
   const [announcement, setAnnouncement] = useState('');
   const isFirstRender = useRef(true);
