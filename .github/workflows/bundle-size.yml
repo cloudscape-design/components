@@ -4,12 +4,14 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
 
+# This workflow runs untrusted PR code (npm install + build) and therefore
+# requests no write permissions. Fork PRs would have their token downgraded to
+# read-only anyway. Posting the commit status is delegated to the separate
+# "Report bundle size" workflow (bundle-size-report.yml), which runs with
+# elevated permissions but never executes PR code.
 permissions:
-  statuses: write
+  contents: read
 
 jobs:
   measure:
@@ -26,13 +28,6 @@ jobs:
           cp -r components/.github/workflows/bundle-size bundle-size
           cd bundle-size
           npm i --force
-
-      - uses: actions/github-script@v7
-        name: Create a pending status on the commit
-        with:
-          script: |
-            const { statusReportStart } = await import(process.cwd() + '/bundle-size/status-report.js');
-            await statusReportStart({ context, github });
 
       # ------- Base branch size measurement ------------------------------
 
@@ -73,25 +68,15 @@ jobs:
 
           cat output.json
 
+      # Only the numeric measurements are uploaded. The report workflow derives
+      # the commit SHA from the trusted workflow_run event, not from this
+      # artifact, and handles a missing/failed run via the run conclusion — so
+      # no artifact is needed on the failure path.
       - name: Upload size report artifact
         uses: actions/upload-artifact@v4
         with:
           name: size-report
-          path: bundle-size/output.json
-
-      - name: Update the commit status with calculated results
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { statusReportSuccess } = await import(process.cwd() + '/bundle-size/status-report.js');
-            await statusReportSuccess({ context, github });
-
-      # ------- Error reporting -------------------------------------------
-
-      - name: Report failure
-        if: failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { statusReportFailure } = await import(process.cwd() + '/bundle-size/status-report.js');
-            await statusReportFailure({ context, github });
+          path: |
+            bundle-size/output.json
+            bundle-size/output-basebranch.json
+          if-no-files-found: error
