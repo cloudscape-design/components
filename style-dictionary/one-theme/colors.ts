@@ -17,6 +17,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Container / layout ────────────────────────────────────────────────────
   colorBackgroundLayoutMain: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutAiDrawer: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
   colorBackgroundLayoutPanelContent: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
 
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutral950}' },
@@ -42,6 +43,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalHover: { light: '{colorNeutral850}', dark: '{colorNeutral250}' },
   colorTextButtonNormalActive: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextButtonNormalDisabled: { light: '{colorNeutral450}', dark: '{colorNeutral600}' },
+
+  // Inline-link and icon buttons adopt the link hover color in one-theme.
+  colorTextButtonInlineLinkHover: '{colorTextLinkHover}',
+  colorTextButtonIconHover: '{colorTextLinkHover}',
 
   // ── Tertiary button ─────────────────────────────────────────────────────────
   colorBackgroundButtonLinkDefault: { light: 'transparent', dark: 'transparent' },
@@ -94,7 +99,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Links ─────────────────────────────────────────────────────────────────
   colorTextLinkDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextLinkHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkSecondaryDefault: { light: '{colorNeutral700}', dark: '{colorNeutral450}' },
+  colorTextLinkSecondaryDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
