@@ -16,7 +16,8 @@ export type InternalItem =
   | InternalIconButton
   | InternalIconToggleButton
   | ButtonGroupProps.IconFileInput
-  | ButtonGroupProps.MenuDropdown;
+  | ButtonGroupProps.MenuDropdown
+  | ButtonGroupProps.IconCopyToClipboard;
 
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,

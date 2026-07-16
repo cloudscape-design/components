@@ -6,10 +6,12 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
+import { CopyToClipboardProps } from '../copy-to-clipboard/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces';
 import { fireCancelableEvent } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { NonCancelableEventHandler } from '../types/events';
+import CopyToClipboardItem from './copy-to-clipboard-item.js';
 import FileInputItem from './file-input-item';
 import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
@@ -26,6 +28,8 @@ interface ItemElementProps {
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
+  onCopySuccess?: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail> | undefined;
+  onCopyFailure?: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail> | undefined;
   position: string;
   style?: ButtonGroupProps.Style;
 }
@@ -39,6 +43,8 @@ const ItemElement = forwardRef(
       setTooltip,
       onItemClick,
       onFilesChange,
+      onCopyFailure,
+      onCopySuccess,
       position,
       style,
     }: ItemElementProps,
@@ -120,6 +126,16 @@ const ItemElement = forwardRef(
       setTooltip(null);
     };
 
+    const onCopyFailureHandler: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail> = event => {
+      fireCancelableEvent(onCopyFailure, event.detail);
+      setTooltip(null);
+    };
+
+    const onCopySuccessHandler: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail> = event => {
+      fireCancelableEvent(onCopySuccess, event.detail);
+      setTooltip(null);
+    };
+
     const itemStylePropertiesAndVariables = getButtonGroupItemStyles(style);
 
     return (
@@ -181,6 +197,15 @@ const ItemElement = forwardRef(
             expandToViewport={dropdownExpandToViewport}
             onTooltipDismiss={() => setTooltip(null)}
             position={position}
+          />
+        )}
+        {item.type === 'icon-copy-to-clipboard' && (
+          <CopyToClipboardItem
+            item={item}
+            showTooltip={tooltip?.item === item.id}
+            onTooltipDismiss={() => setTooltip(null)}
+            onCopyFailure={onCopyFailureHandler}
+            onCopySuccess={onCopySuccessHandler}
           />
         )}
       </div>

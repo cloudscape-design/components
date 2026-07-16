@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { CopyToClipboardProps } from '../copy-to-clipboard/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
@@ -106,6 +107,14 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
   /**
+   * Called when the text is successfully copied to the clipboard.
+   */
+  onCopySuccess?: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail>;
+  /**
+   * Called when the copy operation fails.
+   */
+  onCopyFailure?: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail>;
+  /**
    * An object containing CSS properties to customize the button group's visual appearance.
    * Refer to the [style](/components/button-group/?tabId=style) tab for more details.
    * @awsuiSystem core
@@ -132,13 +141,14 @@ export type ItemRuntime =
   | IconButtonRuntime
   | IconToggleButtonRuntime
   | ButtonGroupProps.IconFileInput
-  | MenuDropdownRuntime;
+  | MenuDropdownRuntime
+  | ButtonGroupProps.IconCopyToClipboard;
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown | IconCopyToClipboard;
 
   export interface IconButton {
     type: 'icon-button';
@@ -199,6 +209,17 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+  }
+
+  export interface IconCopyToClipboard {
+    type: 'icon-copy-to-clipboard';
+    id: string;
+    text: string;
+    textToCopy: string;
+    copySuccessText: string;
+    copyErrorText: string;
+    disabled?: boolean;
+    disabledReason?: string;
   }
 
   export interface Group {

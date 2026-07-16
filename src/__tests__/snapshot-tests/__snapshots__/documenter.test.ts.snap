@@ -7094,6 +7094,40 @@ exports[`Components definition for button-group matches the snapshot: button-gro
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the copy operation fails.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopyFailureDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopyFailureDetail",
+      "name": "onCopyFailure",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the text is successfully copied to the clipboard.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopySuccessDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopySuccessDetail",
+      "name": "onCopySuccess",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user uploads files. The event detail object contains the id and files from the file input item.",
       "detailInlineType": {
         "name": "ButtonGroupProps.FilesChangeDetails",
