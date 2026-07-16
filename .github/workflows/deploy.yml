@@ -72,7 +72,6 @@ jobs:
     secrets: inherit
     with:
       artifact-name: dev-pages-react${{ matrix.react }}
-      deployment-path: pages/lib/static-default
 
   # Pages to be served locally as mainline reference for visual regression tests
   build-baseline:
