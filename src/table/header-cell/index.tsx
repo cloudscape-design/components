@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { IconOverride } from '../../icon-provider/icon-override';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
@@ -192,7 +193,11 @@ export function TableHeaderCell<ItemType>({
         </div>
         {sortingStatus && (
           <span className={styles['sorting-icon']}>
-            <InternalIcon name={getSortingIconName(sortingStatus)} />
+            <IconOverride
+              overrideName="sorting-indicator"
+              state={{ sortingState: sortingStatus }}
+              fallback={{ name: getSortingIconName(sortingStatus) }}
+            />
           </span>
         )}
       </div>

@@ -16640,6 +16640,65 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Higher-precedence, role-based icon overrides applied *on top* of \`icons\`.
+
+While \`icons\` replaces a glyph by name wherever it appears (including carets), \`overrides\` target
+specific, stateful roles — such as the expand/collapse toggle (\`expand-toggle\`) or the sorting
+indicator (\`sorting-indicator\`) — for cases when more precision is needed. An override only
+affects its role, so overriding \`sorting-indicator\` never changes an unrelated caret used in a
+cell or header.
+
+Each override is a render function that receives the role's current state and returns the icon to
+display. Use \`size="inherit"\` on a custom \`<Icon>\` so it matches the surrounding icon size.
+Because the override replaces the default rendering entirely, the returned node is responsible for
+representing every state (including any expand/collapse animation). Return \`null\` from a renderer
+to fall back to what \`icons\` (or the default set) would render for that state.
+
+Overrides are inherited by nested providers (closest provider wins). Set a specific override to
+\`null\` to reset it, or set the whole property to \`null\` to reset all overrides.",
+      "inlineType": {
+        "name": "IconProviderProps.Overrides",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "IconOverrideRenderer<"expand-toggle">",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "IconOverrideStates[K]",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "expand-toggle",
+            "optional": true,
+            "type": "IconOverrideRenderer<"expand-toggle"> | null",
+          },
+          {
+            "inlineType": {
+              "name": "IconOverrideRenderer<"sorting-indicator">",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "IconOverrideStates[K]",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "sorting-indicator",
+            "optional": true,
+            "type": "IconOverrideRenderer<"sorting-indicator"> | null",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "overrides",
+      "optional": true,
+      "type": "IconProviderProps.Overrides | null",
+    },
   ],
   "regions": [
     {
@@ -33315,6 +33374,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "(item: T, index: number) => TreeViewProps.TreeItem",
     },
     {
+      "deprecatedTag": "Use the \`IconProvider\` \`overrides\` property with the \`expand-toggle\` override instead.",
       "description": "Use this property to display a custom icon in the toggle button.",
       "inlineType": {
         "name": "(data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
