@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { isThemeActive, Theme, useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../../../icon/internal';
+import { IconGroup } from '../../../icon-provider/icon-group';
 
 import styles from './styles.css.js';
 
@@ -41,10 +41,14 @@ export function ExpandToggleButton({
       onClick={onExpandableItemToggle}
     >
       {customIcon ?? (
-        <InternalIcon
+        <IconGroup
+          groupName="expand-toggle"
+          state={{ expanded: !!isExpanded }}
           size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'small'}
-          name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-          className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
+          fallback={{
+            name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
+            className: clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded']),
+          }}
         />
       )}
     </button>
