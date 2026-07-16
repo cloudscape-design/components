@@ -174,4 +174,95 @@ describe('Box', () => {
       expect(container.firstChild).toHaveClass('additional-class');
     });
   });
+
+  describe('visualAccent property', () => {
+    test('renders the default div tag when no variant is set', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement().tagName).toBe('DIV');
+    });
+
+    test('preserves the variant tag when combined with visualAccent', () => {
+      const boxWrapper = renderBox({ variant: 'h4', visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement().tagName).toBe('H4');
+    });
+
+    test('applies the base visual-accent class', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement()).toHaveClass(styles['visual-accent']);
+    });
+
+    test('applies the correct color class', () => {
+      const colors: Array<BoxProps.VisualAccent.Color> = [
+        'red',
+        'yellow',
+        'indigo',
+        'green',
+        'orange',
+        'purple',
+        'mint',
+        'lime',
+        'grey',
+      ];
+      colors.forEach(color => {
+        const boxWrapper = renderBox({ visualAccent: { color } });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-${color}`]);
+      });
+    });
+
+    test('does not apply any accent class when visualAccent is not set', () => {
+      const boxWrapper = renderBox({});
+      const element = boxWrapper.getElement();
+      expect(element.className).not.toMatch(/visual-accent/);
+      expect(element.tagName).toBe('DIV');
+    });
+
+    test('defaults to the auto aspect ratio', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement()).toHaveClass(styles['visual-accent-aspect-auto']);
+    });
+
+    test('applies the correct aspect ratio class', () => {
+      const aspectRatios: Array<BoxProps.VisualAccent.AspectRatio> = ['auto', 'equal'];
+      aspectRatios.forEach(aspectRatio => {
+        const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio } });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-aspect-${aspectRatio}`]);
+      });
+    });
+
+    test('applies the correct class for each borderRadius keyword', () => {
+      const keywords: Array<BoxProps.VisualAccent.BorderRadius> = [
+        'xxxs',
+        'xxs',
+        'xs',
+        's',
+        'm',
+        'l',
+        'xl',
+        'xxl',
+        'xxxl',
+        'full',
+      ];
+      keywords.forEach(borderRadius => {
+        const boxWrapper = renderBox({ visualAccent: { color: 'indigo', borderRadius } });
+        expect(boxWrapper.getElement()).toHaveClass(styles[`visual-accent-radius-${borderRadius}`]);
+      });
+    });
+
+    test('does not set a borderRadius class when borderRadius is not set', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
+      expect(boxWrapper.getElement().className).not.toMatch(/visual-accent-radius-/);
+    });
+
+    test('renders a circle when combining equal aspect ratio and full borderRadius', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo', aspectRatio: 'equal', borderRadius: 'full' } });
+      const element = boxWrapper.getElement();
+      expect(element).toHaveClass(styles['visual-accent-aspect-equal']);
+      expect(element).toHaveClass(styles['visual-accent-radius-full']);
+    });
+
+    test('tagOverride works with visualAccent', () => {
+      const boxWrapper = renderBox({ visualAccent: { color: 'indigo' }, tagOverride: 'div' });
+      expect(boxWrapper.getElement().tagName).toBe('DIV');
+    });
+  });
 });

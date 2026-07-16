@@ -78,6 +78,7 @@ export type BuiltInIconName =
   | 'heart-filled'
   | 'history'
   | 'insert-row'
+  | 'internal-link'
   | 'key'
   | 'keyboard'
   | 'light-dark'

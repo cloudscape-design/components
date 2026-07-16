@@ -10,7 +10,12 @@
   @include styles.styles-reset;
   word-wrap: break-word;
   padding-block-start: awsui.$space-panel-header-vertical;
-  padding-block-end: 0;
+  // Reserve the bottom whitespace as padding on the panel root rather than as a
+  // margin on the last child. A descendant's block-end margin is not added to an
+  // ancestor scroll container's scrollable region, so when the panel is rendered
+  // inside a fixed-height, scrollable app-layout drawer the trailing margin gets
+  // clipped and the content sits flush against the bottom edge.
+  padding-block-end: awsui.$space-panel-content-bottom;
 
   /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   hr {
@@ -81,11 +86,6 @@
     margin-block-start: awsui.$space-xl;
     color: awsui.$color-text-heading-default;
   }
-  // sets padding at the bottom of the panel
-  & > :last-child {
-    margin-block-end: awsui.$space-panel-content-bottom;
-  }
-
   // add basic font-sizes
   p {
     color: inherit;
