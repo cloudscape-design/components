@@ -9,6 +9,7 @@
 
 $guide-line-width: 2px;
 $guide-line-offset: -2px; // Negative to expand 2px beyond the element
+$anchor-nav-inset-inline: 6px;
 
 .root {
   @include styles.styles-reset;
@@ -35,6 +36,7 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
     position: absolute;
     inset-block-start: $guide-line-offset;
     inline-size: $guide-line-width;
+    inset-inline-start: $anchor-nav-inset-inline;
   }
 }
 
@@ -66,6 +68,7 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
       position: absolute;
       inset-block-start: $guide-line-offset;
       inline-size: $guide-line-width;
+      inset-inline-start: $anchor-nav-inset-inline;
     }
   }
 }

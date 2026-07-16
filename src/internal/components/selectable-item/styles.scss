@@ -5,6 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../generated/custom-css-properties/index' as custom-props;
 
 // Box-shadow spread values for simulating borders without layout shifts
 $border-offset: awsui.$border-width-item-selected;
@@ -85,8 +86,8 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   z-index: 1;
 
   border-width: 0;
-  background-color: awsui.$color-background-dropdown-item-default;
-  color: awsui.$color-text-dropdown-item-default;
+  background-color: var(#{custom-props.$optionBackgroundDefault}, #{awsui.$color-background-dropdown-item-default});
+  color: var(#{custom-props.$optionColorDefault}, #{awsui.$color-text-dropdown-item-default});
 
   @include content-pad(awsui.$border-item-width, awsui.$border-item-width);
 
@@ -116,7 +117,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   }
 
   &.has-background {
-    background-color: awsui.$color-background-dropdown-item-hover;
+    background-color: var(#{custom-props.$optionBackgroundHighlighted}, #{awsui.$color-background-dropdown-item-hover});
   }
   &.child {
     padding-inline-start: awsui.$border-item-width;
@@ -126,18 +127,18 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   }
 
   &.disabled > .selectable-item-content {
-    color: awsui.$color-text-dropdown-item-disabled;
+    color: var(#{custom-props.$optionColorDisabled}, #{awsui.$color-text-dropdown-item-disabled});
   }
 
   &.highlighted,
   &.selected {
-    color: awsui.$color-text-dropdown-item-highlighted;
+    color: var(#{custom-props.$optionColorHighlighted}, #{awsui.$color-text-dropdown-item-highlighted});
     @include logical-radius(awsui.$border-radius-item);
   }
 
   &.highlighted {
     z-index: 3;
-    background-color: awsui.$color-background-dropdown-item-hover;
+    background-color: var(#{custom-props.$optionBackgroundHighlighted}, #{awsui.$color-background-dropdown-item-hover});
     @include highlighted-shadow;
     &.disabled {
       box-shadow: inset 0 0 0 $border-offset awsui.$color-border-dropdown-item-dimmed-hover;
@@ -153,7 +154,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
 
   &.selected {
     z-index: 2;
-    background-color: awsui.$color-background-dropdown-item-selected;
+    background-color: var(#{custom-props.$optionBackgroundSelected}, #{awsui.$color-background-dropdown-item-selected});
     @include selected-shadow;
     &.next-item-selected {
       border-end-start-radius: 0;
@@ -176,7 +177,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   &.parent {
     &:not(.disabled) {
       > .selectable-item-content {
-        color: awsui.$color-text-dropdown-group-label;
+        color: var(#{custom-props.$optionGroupLabelColor}, #{awsui.$color-text-dropdown-group-label});
       }
     }
     &:not(.interactiveGroups) {

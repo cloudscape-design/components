@@ -24,6 +24,8 @@ interface MenuDropdownProps {
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
   ariaDescribedby?: string;
+  /** Custom CSS properties applied to the options list root to theme option rows. */
+  optionsListCustomProperties?: React.CSSProperties;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
@@ -45,6 +47,7 @@ export default function MenuDropdown({
   hasDropdownStatus,
   listBottom,
   ariaDescribedby,
+  optionsListCustomProperties,
 }: MenuDropdownProps) {
   const handleMouseUp = createMouseEventHandler(menuItemsHandlers.selectVisibleOptionWithMouse);
   const handleMouseMove = createMouseEventHandler(menuItemsHandlers.highlightVisibleOptionWithMouse);
@@ -91,6 +94,7 @@ export default function MenuDropdown({
           onMouseMove: handleMouseMove,
           ariaDescribedby,
           statusType: statusType ?? 'finished',
+          customProperties: optionsListCustomProperties,
         }}
         screenReaderContent={announcement}
       />

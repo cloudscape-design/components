@@ -52,10 +52,15 @@ $item-toggle-column-width: 28px;
 
     @include theming.one-theme-only {
       align-items: center;
-      > .expand-toggle-wrapper {
-        > .toggle {
-          inset-inline-start: 0px;
-          inset-block-start: 3px;
+      > .expand-toggle-wrapper > .toggle {
+        inset-inline-start: 0px;
+        inset-block-start: 3px;
+      }
+
+      &.with-icon {
+        align-items: baseline;
+        > .expand-toggle-wrapper > .toggle {
+          inset-block-start: 2px;
         }
       }
     }

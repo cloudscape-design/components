@@ -155,6 +155,21 @@ const customCssPropertiesList = [
   'promptInputStylePlaceholderFontSize',
   'promptInputStylePlaceholderFontStyle',
   'promptInputStylePlaceholderFontWeight',
+  // Prompt input menu/dropdown style properties
+  'promptInputMenuStyleBackgroundColor',
+  'promptInputMenuStyleBorderColor',
+  'promptInputMenuStyleBorderRadius',
+  'promptInputMenuStyleBorderWidth',
+  // Options list style properties (internal)
+  'optionBackgroundDefault',
+  'optionBackgroundHighlighted',
+  'optionBackgroundSelected',
+  'optionColorDefault',
+  'optionColorHighlighted',
+  'optionColorDisabled',
+  'optionGroupLabelColor',
+  'optionFilterMatchBackground',
+  'optionFilterMatchColor',
   // Progress bar style properties
   'progressBarBackgroundColor',
   'progressBarBorderRadius',
