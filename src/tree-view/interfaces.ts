@@ -72,6 +72,8 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
 
   /**
    * Use this property to display a custom icon in the toggle button.
+   *
+   * @deprecated Use the `IconProvider` `iconGroups` property with the `expand-toggle` icon group instead.
    */
   renderItemToggleIcon?: (data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode;
 }

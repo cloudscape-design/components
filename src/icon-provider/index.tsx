@@ -10,10 +10,16 @@ import InternalIconProvider from './internal';
 
 export { IconProviderProps } from './interfaces';
 export { defineIcons } from './define-icons';
-export type { IconRegistry, IconMap } from './interfaces';
+export type { IconRegistry, IconMap, IconGroupStates, IconGroupName, IconGroupRenderer } from './interfaces';
 
 export default function IconProvider(props: IconProviderProps) {
-  useBaseComponent('IconProvider');
+  useBaseComponent('IconProvider', {
+    props: {},
+    metadata: {
+      iconsCount: Object.keys(props.icons ?? {}).length,
+      iconGroupsCount: Object.keys(props.iconGroups ?? {}).length,
+    },
+  });
   return <InternalIconProvider {...props} />;
 }
 
