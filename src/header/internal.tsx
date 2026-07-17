@@ -26,6 +26,7 @@ interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, Inte
   __disableActionsWrapping?: boolean;
   __headingTagRef?: MutableRefObject<HTMLHeadingElement | null>;
   __headingTagTabIndex?: number;
+  __inExpandableSection?: boolean;
 }
 
 export default function InternalHeader({
@@ -40,6 +41,7 @@ export default function InternalHeader({
   __disableActionsWrapping,
   __headingTagRef,
   __headingTagTabIndex,
+  __inExpandableSection,
   ...restProps
 }: InternalHeaderProps) {
   const isMobile = useMobile();
@@ -81,7 +83,14 @@ export default function InternalHeader({
           __disableActionsWrapping && [styles['no-wrap']]
         )}
       >
-        <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
+        <div
+          className={clsx(
+            styles.title,
+            styles[`title-variant-${variantOverride}`],
+            isRefresh && styles.refresh,
+            __inExpandableSection && styles['title-in-expandable-section']
+          )}
+        >
           <HeadingTag
             className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}
             ref={__headingTagRef}

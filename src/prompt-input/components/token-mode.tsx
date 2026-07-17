@@ -4,11 +4,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { DropdownProps } from '../../dropdown/interfaces';
 import Dropdown from '../../dropdown/internal';
 import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
+import { PromptInputMenuStyle } from '../internal-interfaces';
+import { getMenuOptionsListStyles } from '../styles';
 import MenuDropdown from './menu-dropdown';
 
 import styles from '../styles.css.js';
@@ -53,6 +56,7 @@ interface TokenModeProps {
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   maxMenuHeight?: number;
+  menuStyle?: PromptInputMenuStyle;
 }
 
 const MENU_MIN_WIDTH = 300;
@@ -76,6 +80,7 @@ export default function TokenMode({
   menuItemsHandlers,
   menuDropdownStatus,
   maxMenuHeight,
+  menuStyle,
   handleInput,
   handleLoadMore,
   editableElementAttributes,
@@ -117,6 +122,19 @@ export default function TokenMode({
           minWidth={MENU_MIN_WIDTH}
           maxHeight={maxMenuHeight}
           expandToViewport={true}
+          style={
+            menuStyle
+              ? ({
+                  // DropdownProps.Style names the fill `background`; PromptInput exposes it as `backgroundColor`.
+                  dropdown: {
+                    background: menuStyle.backgroundColor,
+                    borderColor: menuStyle.borderColor,
+                    borderRadius: menuStyle.borderRadius,
+                    borderWidth: menuStyle.borderWidth,
+                  },
+                } satisfies DropdownProps.Style)
+              : undefined
+          }
           open={
             !!(
               shouldRenderMenuDropdown &&
@@ -157,6 +175,7 @@ export default function TokenMode({
                   statusType={activeMenu.statusType ?? 'finished'}
                   menuItemsState={menuItemsState}
                   menuItemsHandlers={menuItemsHandlers}
+                  optionsListCustomProperties={getMenuOptionsListStyles(menuStyle)}
                   highlightedOptionId={highlightedMenuOptionId}
                   highlightText={menuFilterText}
                   listId={menuListId}

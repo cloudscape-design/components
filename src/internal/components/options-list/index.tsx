@@ -42,6 +42,8 @@ export interface OptionsListProps extends BaseComponentProps {
   embedded?: boolean;
   stickyItemBlockSize?: number | null;
   isMultiSelect?: boolean;
+  /** Internal: custom CSS properties set on the list root; inherited by the option rows. */
+  customProperties?: React.CSSProperties;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -78,6 +80,7 @@ const OptionsList = (
     embedded,
     stickyItemBlockSize,
     isMultiSelect,
+    customProperties,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLDivElement>
@@ -115,7 +118,7 @@ const OptionsList = (
       {...nativeAttributes}
       className={className}
       ref={mergedRef}
-      style={{ position, scrollPaddingBlockStart: stickyItemBlockSize ?? undefined }}
+      style={{ ...customProperties, position, scrollPaddingBlockStart: stickyItemBlockSize ?? undefined }}
       role={role}
       onScroll={handleScroll}
       onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}

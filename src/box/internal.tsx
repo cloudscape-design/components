@@ -23,6 +23,7 @@ export default function InternalBox({
   fontSize,
   fontWeight,
   color,
+  visualAccent,
   children,
   nativeAttributes,
   __internalRootRef,
@@ -32,11 +33,17 @@ export default function InternalBox({
   const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
   const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
 
+  const accentAspectRatio = visualAccent?.aspectRatio ?? 'auto';
+
   const className = clsx(
     baseProps.className,
     styles.root,
     styles.box,
     styles[`${variant.replace(/^awsui-/, '')}-variant`],
+    visualAccent && styles['visual-accent'],
+    visualAccent && styles[`visual-accent-${visualAccent.color}`],
+    visualAccent && styles[`visual-accent-aspect-${accentAspectRatio}`],
+    visualAccent?.borderRadius && styles[`visual-accent-radius-${visualAccent.borderRadius}`],
     marginsClassNamesSuffices.map(suffix => styles[`m-${suffix}`]),
     paddingsClassNamesSuffices.map(suffix => styles[`p-${suffix}`]),
     styles[`d-${display}`],

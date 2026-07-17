@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use './text';
 @use './layout';
+@use './visual-accent';
 
 .root {
   @include styles.default-text-style;

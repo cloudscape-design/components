@@ -153,7 +153,7 @@
     "webdriverio": "^9.28.0",
     "webpack": "^5.105.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.2.5"
+    "webpack-dev-server": "^6.0.0"
   },
   "overrides": {
     "@types/react-dom": "^16.9.14",
@@ -181,7 +181,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "1350 kB",
+      "limit": "1360 kB",
       "ignore": "react-dom"
     }
   ],

@@ -3323,6 +3323,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "heart",
                       "heart-filled",
                       "insert-row",
+                      "internal-link",
                       "keyboard",
                       "light-dark",
                       "list-view",
@@ -5106,6 +5107,100 @@ Override the HTML tag by using property \`tagOverride\`.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Renders the box as a visual accent wrapper to emphasize its content.
+
+Setting this property activates the accent styling: a coordinated background and content
+color combination that works in both light and dark modes. A \`variant\` is not required to
+activate the accent. The accent styling is applied on top of the element determined by
+\`variant\` (or \`tagOverride\`), so the rendered HTML tag is unaffected.
+
+The object accepts the following fields:
+- \`color\` (required) — the coordinated background and foreground color pair. The foreground
+  color is applied as the wrapper's CSS \`color\`, so it only affects content that inherits
+  the current color (for example an \`Icon\`, or a nested \`Box\` with \`color="inherit"\`).
+  Content that sets its own color is not overridden.
+- \`aspectRatio\` — \`auto\` (default) lets the wrapper's width follow its content;
+  \`equal\` forces equal width and height, suitable for wrapping icons.
+- \`borderRadius\` — the corner rounding applied to the wrapper, using a t-shirt size keyword
+  from the Box spacing scale (\`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`), or
+  \`full\` for fully rounded corners. When not set, the wrapper has no border radius. Set it to
+  \`full\` together with \`aspectRatio: 'equal'\` to render a circle.
+
+Composes with existing Box props such as \`padding\` and \`margin\`.",
+      "inlineType": {
+        "name": "BoxProps.VisualAccent",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.AspectRatio",
+              "type": "union",
+              "values": [
+                "auto",
+                "equal",
+              ],
+            },
+            "name": "aspectRatio",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.BorderRadius",
+              "type": "union",
+              "values": [
+                "s",
+                "full",
+                "m",
+                "xxxs",
+                "xxs",
+                "xs",
+                "l",
+                "xl",
+                "xxl",
+                "xxxl",
+              ],
+            },
+            "name": "borderRadius",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "BoxProps.VisualAccent.Color",
+              "type": "union",
+              "values": [
+                "blue",
+                "cyan",
+                "fuchsia",
+                "green",
+                "grey",
+                "indigo",
+                "lime",
+                "magenta",
+                "orange",
+                "pink",
+                "purple",
+                "red",
+                "teal",
+                "violet",
+                "yellow",
+                "mint",
+                "rose",
+                "amber",
+              ],
+            },
+            "name": "color",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "visualAccent",
+      "optional": true,
+      "type": "BoxProps.VisualAccent",
+    },
   ],
   "regions": [
     {
@@ -5628,6 +5723,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",
@@ -6381,6 +6477,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",
@@ -6676,6 +6773,7 @@ The main action also supports the following properties of the [button](/componen
                 "heart",
                 "heart-filled",
                 "insert-row",
+                "internal-link",
                 "keyboard",
                 "light-dark",
                 "list-view",
@@ -12396,6 +12494,7 @@ Do not use this property when using drawers inside app layout.",
                 "heart",
                 "heart-filled",
                 "insert-row",
+                "internal-link",
                 "keyboard",
                 "light-dark",
                 "list-view",
@@ -15608,6 +15707,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",
@@ -16151,6 +16251,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "insert-row",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "internal-link",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -21676,6 +21781,7 @@ Requires React 18.",
                       "heart",
                       "heart-filled",
                       "insert-row",
+                      "internal-link",
                       "keyboard",
                       "light-dark",
                       "list-view",
@@ -22045,6 +22151,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",
@@ -23122,7 +23229,13 @@ const filteringOptions = [
 * groupValuesLabel [string]: Localized string to display for the 'Values' group label for a specific property.
 * key [string]: The identifier of this property.
 * propertyLabel [string]: A human-readable string for the property.
-* operators [Array]: A list of all operators supported by this property. If you omit the equals operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* operators [Array]: A list of all operators supported by this property. Built-in operators are always shown first in their standard order; custom operators are appended after them. If you omit the equals operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list. Each entry is either an operator string (for example, \`=\`, \`!=\`, \`:\`, \`>\`), or an object that customizes the operator with the following properties:
+  * \`operator\` [string]: The operator string. In addition to the built-in operators, you can define a custom operator string, for example \`~\` or \`in\`.
+  * \`match\` ['date' | 'datetime' | function]: Overrides how items are matched for this operator. Use \`'date'\` or \`'datetime'\` for the built-in date matchers, or a function \`(itemValue, tokenValue) => boolean\` for custom matching. When you use a custom operator string, provide a \`match\` function; otherwise there is no matcher for it and items are not filtered by that operator.
+  * \`description\` [string]: A human-readable description shown next to the operator in the operator dropdown. Use it to describe a custom operator, or to override the built-in description of a predefined operator (for example, describing \`>\` as "After" for a date property).
+  * \`tokenType\` ['value' | 'enum']: The type of value input rendered for this operator.
+  * \`format\` [function]: A function \`(value) => string\` used to format the token value for display.
+  * \`form\` [ReactNode]: A custom form used to enter the token value.
 * group [string]: Optional identifier of a custom group that this filtering option is assigned to. Use to create additional groups below the default one. Make sure to also define labels for the group in the customGroupsText property. Notice that only one level of options nesting is supported.
 * defaultOperator [ComparisonOperator]: Optional parameter that changes the default operator used with this filtering property. Use it only if your API does not support "equals" filtering terms with this property.",
       "name": "filteringProperties",
@@ -23159,7 +23272,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
     {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 
-* operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* operators [Array]: A list of all operators supported for free text filtering. Each entry is either an operator string, or an object with an \`operator\` string and an optional \`match\` function \`(item, text) => boolean\` for custom matching. Custom operator strings are supported and are appended after the built-in operators. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
 * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.",
       "inlineType": {
         "name": "PropertyFilterFreeTextFiltering",
@@ -25624,6 +25737,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "heart",
                       "heart-filled",
                       "insert-row",
+                      "internal-link",
                       "keyboard",
                       "light-dark",
                       "list-view",
@@ -26243,6 +26357,7 @@ If you want to clear the selection, use \`null\`.",
                 "heart",
                 "heart-filled",
                 "insert-row",
+                "internal-link",
                 "keyboard",
                 "light-dark",
                 "list-view",
@@ -31913,6 +32028,7 @@ If an href is provided, it opens the link in a new tab.",
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",
@@ -32127,6 +32243,7 @@ We do not support using this attribute to apply custom styling.",
           "heart",
           "heart-filled",
           "insert-row",
+          "internal-link",
           "keyboard",
           "light-dark",
           "list-view",

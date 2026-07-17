@@ -21,7 +21,8 @@ const filteringProperties = toInternalProperties([
   },
 ]);
 
-const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
+const operators = ['!:', ':', 'contains', 'does not contain'] as ComparisonOperator[];
+const textOperators = ['=', '!=', 'in', 'NOT IN', ':'] as ComparisonOperator[];
 
 describe('matchFilteringProperty', () => {
   test('should match property by label when filtering text equals to it', () => {
@@ -82,6 +83,30 @@ describe('matchOperator', () => {
   test('should not match operator when filtering text has leading space', () => {
     const operator = matchOperator(operators, ' :');
     expect(operator).toBe(null);
+  });
+  test('should not match text operator when followed by non-space character', () => {
+    const operator = matchOperator(textOperators, 'internal-server');
+    expect(operator).toBe(null);
+  });
+  test('should match text operator when followed by space', () => {
+    const operator = matchOperator(textOperators, 'in value1, value2');
+    expect(operator).toBe('in');
+  });
+  test('should match text operator when at end of string', () => {
+    const operator = matchOperator(textOperators, 'in');
+    expect(operator).toBe('in');
+  });
+  test('should match text operator case-insensitively', () => {
+    const operator = matchOperator(textOperators, 'not in value');
+    expect(operator).toBe('NOT IN');
+  });
+  test('should prefer longer text operator match', () => {
+    const operator = matchOperator(textOperators, 'NOT IN value');
+    expect(operator).toBe('NOT IN');
+  });
+  test('should still match symbolic operators without word boundary', () => {
+    const operator = matchOperator(textOperators, '!=value');
+    expect(operator).toBe('!=');
   });
 });
 

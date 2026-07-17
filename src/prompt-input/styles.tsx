@@ -1,13 +1,40 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import type { CSSProperties } from 'react';
+
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { PromptInputProps } from './interfaces';
+import { PromptInputInternalStyle, PromptInputMenuStyle } from './internal-interfaces';
+
+/**
+ * Maps `_menu.options`/`filterMatch` to the options-list custom properties read by
+ * the shared selectable-item/option styles. Core-only; unset values fall back to tokens.
+ */
+export function getMenuOptionsListStyles(menuStyle: PromptInputMenuStyle | undefined): CSSProperties | undefined {
+  if (SYSTEM !== 'core' || (!menuStyle?.options && !menuStyle?.filterMatch)) {
+    return undefined;
+  }
+  return {
+    [customCssProps.optionBackgroundDefault]: menuStyle.options?.backgroundColor?.default,
+    [customCssProps.optionBackgroundHighlighted]: menuStyle.options?.backgroundColor?.highlighted,
+    [customCssProps.optionBackgroundSelected]: menuStyle.options?.backgroundColor?.selected,
+    [customCssProps.optionColorDefault]: menuStyle.options?.color?.default,
+    [customCssProps.optionColorHighlighted]: menuStyle.options?.color?.highlighted,
+    [customCssProps.optionColorDisabled]: menuStyle.options?.color?.disabled,
+    [customCssProps.optionGroupLabelColor]: menuStyle.options?.color?.groupLabel,
+    [customCssProps.optionFilterMatchBackground]: menuStyle.filterMatch?.backgroundColor,
+    [customCssProps.optionFilterMatchColor]: menuStyle.filterMatch?.color,
+  } as CSSProperties;
+}
 
 export function getPromptInputStyles(style: PromptInputProps['style']) {
   if (SYSTEM !== 'core') {
     return {};
   }
+
+  // `_menu`: internal escape hatch, not part of the public Style.
+  const menuStyle = (style as PromptInputInternalStyle | undefined)?._menu;
 
   return {
     borderRadius: style?.root?.borderRadius,
@@ -40,5 +67,9 @@ export function getPromptInputStyles(style: PromptInputProps['style']) {
     [customCssProps.promptInputStylePlaceholderFontSize]: style?.placeholder?.fontSize,
     [customCssProps.promptInputStylePlaceholderFontWeight]: style?.placeholder?.fontWeight,
     [customCssProps.promptInputStylePlaceholderFontStyle]: style?.placeholder?.fontStyle,
+    [customCssProps.promptInputMenuStyleBackgroundColor]: menuStyle?.backgroundColor,
+    [customCssProps.promptInputMenuStyleBorderColor]: menuStyle?.borderColor,
+    [customCssProps.promptInputMenuStyleBorderRadius]: menuStyle?.borderRadius,
+    [customCssProps.promptInputMenuStyleBorderWidth]: menuStyle?.borderWidth,
   };
 }

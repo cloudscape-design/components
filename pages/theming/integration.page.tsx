@@ -17,6 +17,7 @@ const colorGreen500 = '#00a1c9';
 
 const theme: Theme = {
   tokens: {
+    borderRadiusButton: '12px',
     colorBackgroundButtonPrimaryDefault: {
       light: colorGreen600,
       dark: colorGreen500,
