@@ -31,6 +31,7 @@ const ButtonGroup = React.forwardRef(
         iconButtonsCount: itemCounts['icon-button'],
         iconToggleButtonsCount: itemCounts['icon-toggle-button'],
         iconFileInputsCount: itemCounts['icon-file-input'],
+        iconCopyToClipboardsCount: itemCounts['icon-copy-to-clipboard'],
         menuDropdownsCount: itemCounts['menu-dropdown'],
         groupsCount: itemCounts.group,
       },

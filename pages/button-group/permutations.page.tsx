@@ -81,10 +81,12 @@ const disabledReasonGroup: ButtonGroupProps.Group = {
 };
 
 const copy: ButtonGroupProps.Item = {
-  type: 'icon-button',
+  type: 'icon-copy-to-clipboard',
   id: 'copy',
-  iconName: 'copy',
   text: 'Copy',
+  textToCopy: 'Text to copy',
+  copySuccessText: 'Successfully copied',
+  copyErrorText: 'Failed to copy',
 };
 
 const add: ButtonGroupProps.Item = {

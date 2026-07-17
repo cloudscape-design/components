@@ -6,7 +6,6 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
-import { CopyToClipboardProps } from '../copy-to-clipboard/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces';
 import { fireCancelableEvent } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
@@ -28,8 +27,8 @@ interface ItemElementProps {
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
-  onCopySuccess?: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail> | undefined;
-  onCopyFailure?: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail> | undefined;
+  onCopySuccess?: NonCancelableEventHandler<ButtonGroupProps.CopySuccessDetail> | undefined;
+  onCopyFailure?: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail> | undefined;
   position: string;
   style?: ButtonGroupProps.Style;
 }
@@ -54,12 +53,14 @@ const ItemElement = forwardRef(
     const buttonRef = useRef<ButtonProps.Ref>(null);
     const fileInputRef = useRef<FileInputProps.Ref>(null);
     const buttonDropdownRef = useRef<ButtonDropdownProps.Ref>(null);
+    const copyToClipboardRef = useRef<ButtonProps.Ref>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
         buttonRef.current?.focus();
         fileInputRef.current?.focus();
         buttonDropdownRef.current?.focus();
+        copyToClipboardRef.current?.focus();
       },
     }));
 
@@ -126,14 +127,12 @@ const ItemElement = forwardRef(
       setTooltip(null);
     };
 
-    const onCopyFailureHandler: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail> = event => {
+    const onCopyFailureHandler: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail> = event => {
       fireCancelableEvent(onCopyFailure, event.detail);
-      setTooltip(null);
     };
 
-    const onCopySuccessHandler: NonCancelableEventHandler<CopyToClipboardProps.CopySuccessDetail> = event => {
+    const onCopySuccessHandler: NonCancelableEventHandler<ButtonGroupProps.CopySuccessDetail> = event => {
       fireCancelableEvent(onCopySuccess, event.detail);
-      setTooltip(null);
     };
 
     const itemStylePropertiesAndVariables = getButtonGroupItemStyles(style);
@@ -201,9 +200,12 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-copy-to-clipboard' && (
           <CopyToClipboardItem
+            ref={copyToClipboardRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
+            showFeedback={!!tooltip?.feedback}
             onTooltipDismiss={() => setTooltip(null)}
+            onShowFeedback={() => setTooltip({ item: item.id, feedback: true })}
             onCopyFailure={onCopyFailureHandler}
             onCopySuccess={onCopySuccessHandler}
           />
