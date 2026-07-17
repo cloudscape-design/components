@@ -417,6 +417,8 @@
     "i18nStrings.sortDropdownRemoveFromSort": "Remove from sort",
     "i18nStrings.clearSort": "Clear sort",
     "ariaLabels.sortMenuTriggerLabel": "Sort options",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "This column is not sorted",
     "ariaLabels.sortPriority": "sort priority {priority}",
     "ariaLabels.sortAscending": "ascending",
     "ariaLabels.sortDescending": "descending",

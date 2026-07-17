@@ -423,7 +423,7 @@
     "ariaLabels.sortDescending": "降順",
     "ariaLabels.liveAnnouncementSortOrder": "表は {columns}でソートされています",
     "ariaLabels.liveAnnouncementSortCleared": "ソートがクリアされました",
-    "ariaLabels.sortPriority": "並べ替えの優先順位 {priority}"
+    "ariaLabels.sortPriority": "ソートの優先順位 {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",

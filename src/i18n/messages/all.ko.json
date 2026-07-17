@@ -423,7 +423,7 @@
     "ariaLabels.sortDescending": "내림차순",
     "ariaLabels.liveAnnouncementSortOrder": "{columns} 기준 테이블 정렬",
     "ariaLabels.liveAnnouncementSortCleared": "정렬이 지워졌습니다.",
-    "ariaLabels.sortPriority": "정렬 우선순위 {priority}"
+    "ariaLabels.sortPriority": "정렬 우선 순위 {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "왼쪽으로 스크롤",

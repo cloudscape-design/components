@@ -418,12 +418,12 @@
     "i18nStrings.clearSort": "Hapus urutan",
     "ariaLabels.sortMenuTriggerLabel": "Opsi urutan",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "Kolom ini sudah diurutkan",
-    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Kolom ini tidak diurutkan",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Kolom ini belum diurutkan",
     "ariaLabels.sortAscending": "naik",
     "ariaLabels.sortDescending": "turun",
     "ariaLabels.liveAnnouncementSortOrder": "Tabel diurutkan berdasarkan {columns}",
-    "ariaLabels.liveAnnouncementSortCleared": "Pengurutan dibersihkan",
-    "ariaLabels.sortPriority": "prioritas pengurutan {priority}"
+    "ariaLabels.liveAnnouncementSortCleared": "Pengurutan telah dihapus",
+    "ariaLabels.sortPriority": "urutkan prioritas {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",

@@ -419,8 +419,8 @@
     "ariaLabels.sortMenuTriggerLabel": "خيارات الترتيب",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "تم بالفعل ترتيب هذا العمود",
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "لم يتم ترتيب هذا العمود",
-    "ariaLabels.sortAscending": "تصاعدي",
-    "ariaLabels.sortDescending": "تنازلي",
+    "ariaLabels.sortAscending": "تصاعديًا",
+    "ariaLabels.sortDescending": "تنازليًا",
     "ariaLabels.liveAnnouncementSortOrder": "تم فرز الجدول حسب {columns}",
     "ariaLabels.liveAnnouncementSortCleared": "تم إلغاء الفرز",
     "ariaLabels.sortPriority": "أولوية الفرز {priority}"

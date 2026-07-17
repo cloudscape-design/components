@@ -419,10 +419,10 @@
     "ariaLabels.sortMenuTriggerLabel": "Opciones de ordenación",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "Esta columna ya está ordenada",
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Esta columna no está ordenada",
-    "ariaLabels.sortAscending": "en orden ascendente",
-    "ariaLabels.sortDescending": "en orden descendente",
+    "ariaLabels.sortAscending": "ascendente",
+    "ariaLabels.sortDescending": "descendente",
     "ariaLabels.liveAnnouncementSortOrder": "Tabla ordenada por {columns}",
-    "ariaLabels.liveAnnouncementSortCleared": "Clasificación eliminada",
+    "ariaLabels.liveAnnouncementSortCleared": "Ordenación borrada",
     "ariaLabels.sortPriority": "prioridad de ordenación {priority}"
   },
   "tabs": {

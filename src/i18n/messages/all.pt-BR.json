@@ -421,7 +421,7 @@
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Esta coluna não está classificada",
     "ariaLabels.sortAscending": "ordem crescente",
     "ariaLabels.sortDescending": "ordem decrescente",
-    "ariaLabels.liveAnnouncementSortOrder": "Tabela ordenada por {columns}",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabela classificada por {columns}",
     "ariaLabels.liveAnnouncementSortCleared": "Classificação cancelada",
     "ariaLabels.sortPriority": "prioridade de classificação {priority}"
   },

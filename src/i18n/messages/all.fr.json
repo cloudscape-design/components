@@ -419,8 +419,8 @@
     "ariaLabels.sortMenuTriggerLabel": "Options de tri",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "Cette colonne est déjà triée",
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Cette colonne n’est pas triée",
-    "ariaLabels.sortAscending": "par ordre croissant",
-    "ariaLabels.sortDescending": "par ordre décroissant",
+    "ariaLabels.sortAscending": "croissant",
+    "ariaLabels.sortDescending": "décroissant",
     "ariaLabels.liveAnnouncementSortOrder": "Tableau trié selon {columns}",
     "ariaLabels.liveAnnouncementSortCleared": "Tri supprimé",
     "ariaLabels.sortPriority": "priorité de tri {priority}"

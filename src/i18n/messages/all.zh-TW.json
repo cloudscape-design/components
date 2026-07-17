@@ -419,8 +419,8 @@
     "ariaLabels.sortMenuTriggerLabel": "排序選項",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "此欄已排序",
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "此欄未排序",
-    "ariaLabels.sortAscending": "遞增",
-    "ariaLabels.sortDescending": "遞減",
+    "ariaLabels.sortAscending": "升序",
+    "ariaLabels.sortDescending": "降序",
     "ariaLabels.liveAnnouncementSortOrder": "資料表依 {columns} 排序",
     "ariaLabels.liveAnnouncementSortCleared": "已清除排序",
     "ariaLabels.sortPriority": "排序優先順序 {priority}"

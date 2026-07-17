@@ -411,7 +411,7 @@
     "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar",
     "i18nStrings.sortDropdownSortAscending": "Aufsteigend sortieren",
     "i18nStrings.sortDropdownSortDescending": "Absteigend sortieren",
-    "i18nStrings.sortDropdownMultiColumnSortGroup": "Sortieren nach mehreren Spalten (Umschalttaste + Klick)",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Sortieren nach mehreren Spalten (Umschalttaste + Klick)",
     "i18nStrings.sortDropdownAddToSortAscending": "Zur Sortierung hinzufügen (aufsteigend)",
     "i18nStrings.sortDropdownAddToSortDescending": "Zur Sortierung hinzufügen (absteigend)",
     "i18nStrings.sortDropdownRemoveFromSort": "Aus Sortierung entfernen",

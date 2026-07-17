@@ -419,8 +419,8 @@
     "ariaLabels.sortMenuTriggerLabel": "Opzioni di ordinamento",
     "i18nStrings.sortDropdownAddToSortDisabledReason": "Questa colonna è già ordinata",
     "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Questa colonna non è ordinata",
-    "ariaLabels.sortAscending": "crescente",
-    "ariaLabels.sortDescending": "decrescente",
+    "ariaLabels.sortAscending": "ascendente",
+    "ariaLabels.sortDescending": "discendente",
     "ariaLabels.liveAnnouncementSortOrder": "Tabella ordinata per {columns}",
     "ariaLabels.liveAnnouncementSortCleared": "Ordinamento cancellato",
     "ariaLabels.sortPriority": "priorità di ordinamento {priority}"
