@@ -10,6 +10,7 @@ const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');
 const { task } = require('../utils/gulp-utils');
 const { writeFile } = require('../utils/files');
+const { getTokenVersions } = require('../utils/token-versions');
 const { compileTypescript } = require('./typescript');
 
 const styleDictionaryRoot = join(__dirname, '../../', workspace.compiledStyleDictionary);
@@ -81,6 +82,7 @@ function stylesTask(theme) {
       descriptions,
       jsonSchema: true,
       failOnDeprecations: true,
+      tokenVersions: getTokenVersions(variablesMap),
     });
   });
 }
