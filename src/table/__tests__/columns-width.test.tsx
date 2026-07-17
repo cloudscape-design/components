@@ -441,6 +441,21 @@ describe('with stickyHeader=true', () => {
       window.ResizeObserver = OriginalResizeObserver;
     }
   });
+
+  test('renders without a ResizeObserver (e.g. server-side rendering)', () => {
+    const OriginalResizeObserver = window.ResizeObserver;
+    // @ts-expect-error simulate an environment lacking ResizeObserver
+    delete window.ResizeObserver;
+
+    try {
+      const columns: TableProps.ColumnDefinition<Item>[] = [{ id: 'id', header: 'id', cell: item => item.text }];
+      expect(() =>
+        renderTable(<Table columnDefinitions={columns} items={defaultItems} stickyHeader={true} />)
+      ).not.toThrow();
+    } finally {
+      window.ResizeObserver = OriginalResizeObserver;
+    }
+  });
 });
 
 describe('with grouped columns', () => {
