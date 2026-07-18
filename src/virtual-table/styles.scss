@@ -1,0 +1,150 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  display: block;
+  inline-size: 100%;
+}
+
+.header {
+  margin-block-end: awsui.$space-scaled-s;
+}
+
+.scroll-container {
+  position: relative;
+  overflow: auto;
+  inline-size: 100%;
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+.header-rowgroup {
+  display: block;
+}
+
+.header-row {
+  display: flex;
+}
+
+// Sticky header is opt-in; the header stays inside the single scroll container so it
+// scrolls horizontally with the body (CW-14). scaffold: gated wiring lands in core.
+.sticky-header {
+  & > .header-rowgroup {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    background: awsui.$color-background-container-content;
+  }
+}
+
+.header-cell {
+  min-inline-size: 0;
+  font-weight: awsui.$font-weight-bold;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xs;
+  box-sizing: border-box;
+}
+
+.disclosure-header,
+.disclosure-cell {
+  flex: 0 0 auto;
+  inline-size: awsui.$space-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// impl-F1-A2-core: the body is the windowing runway — Root sets its block-size to the full
+// virtualized height and positions each windowed row absolutely at its measured offset.
+.body {
+  display: block;
+  position: relative;
+  inline-size: 100%;
+}
+
+.row,
+.expanded-row {
+  display: flex;
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+
+.row {
+  align-items: center;
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+// The row referenced by aria-activedescendant while the grid container holds focus.
+.row-active {
+  outline: 2px solid awsui.$color-border-item-focused;
+  outline-offset: -2px;
+}
+
+.cell {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xs;
+  box-sizing: border-box;
+}
+
+.disclosure-button {
+  @include styles.styles-reset;
+  cursor: pointer;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+// Sort trigger for a sortable HeaderCell: a native button (implicitly keyboard-operable)
+// that fills the header cell and inherits the bold header typography.
+.sort-button {
+  @include styles.styles-reset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  inline-size: 100%;
+  text-align: start;
+  font-weight: awsui.$font-weight-bold;
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+.expanded-cell {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+.expanded-region {
+  display: block;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-scaled-m;
+}
+
+.loading,
+.empty {
+  padding-block: awsui.$space-scaled-l;
+  text-align: center;
+}
+
+.live-region {
+  @include styles.awsui-util-hide;
+}
