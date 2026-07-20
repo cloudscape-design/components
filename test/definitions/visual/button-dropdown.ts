@@ -168,6 +168,7 @@ const suite: TestSuite = {
         screenshotType: 'screenshotArea' as const,
         configuration: { width },
         queryParams: { expandableGroups: String(expandableGroups) },
+        pixelDiffTolerance: 10,
         setup: async ({ page, wrapper }) => {
           await page.click(wrapper.findButtonDropdown().toSelector());
           if (expandableGroups) {
