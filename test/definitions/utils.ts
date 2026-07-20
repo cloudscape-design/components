@@ -13,8 +13,6 @@ import {
 import { TestDefinition, TestSuite } from './types';
 const defaultWindowSize = { width: 1200, height: 800 };
 
-const tolerance = 0;
-
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
 const oldHost = process.env.OLD_HOST || 'http://localhost:8080';
@@ -99,6 +97,8 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
+    const tolerance = testDef.pixelDiffTolerance ?? 0;
+
     if (testDef.screenshotType === 'permutations') {
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
       const newPermutations = await page.capturePermutations();
@@ -122,7 +122,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
           }
         });
       }
-      expect(failures).toBe(testDef.pixelDiffTolerance);
+      expect(failures).toBe(0);
       return;
     }
 
