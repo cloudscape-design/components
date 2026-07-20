@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../src/internal/styles/style-api' as style-api;
+
+// Illustrates a shared token group.
+$surface: (color-text, color-background, color-border, border-width, border-radius);
+
+// Creates panel props by combining shared and component-specific tokens.
+$props: style-api.combine($surface, (color-text-secondary));
+$tokens: style-api.resolve($props, carrier);
+
+@include style-api.register($props);
+
+.panel {
+  @include style-api.carriers($props);
+  box-sizing: border-box;
+  max-inline-size: 360px;
+  background: var(#{style-api.read($tokens, color-background)}, #fcf2f4);
+  border-block: var(#{style-api.read($tokens, border-width)}, 1px) solid
+    var(#{style-api.read($tokens, color-border)}, #ff8da1);
+  border-inline: var(#{style-api.read($tokens, border-width)}, 1px) solid
+    var(#{style-api.read($tokens, color-border)}, #ff8da1);
+  border-start-start-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
+  border-start-end-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
+  border-end-start-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
+  border-end-end-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
+  padding-block: 16px;
+  padding-inline: 16px;
+}
+// Descendant elements can read tokens because of the carrier re-anchoring inside panel.
+.title {
+  color: var(#{style-api.read($tokens, color-text)}, #16191f);
+  font-weight: 700;
+}
+.body {
+  margin-block-start: 8px;
+  color: var(#{style-api.read($tokens, color-text-secondary)}, #5f6b7a);
+}
