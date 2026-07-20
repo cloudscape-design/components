@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-/**
- * Extended page object for visual regression tests.
- * Adds helper methods that were available in the IntegrationTests page object.
- */
 export default class VisualTestPageObject extends RawScreenshotPageObject {
   /**
    * Dispatches a focus event on all input elements in the page.
