@@ -37,6 +37,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async ({ page }) => {
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
@@ -47,12 +48,13 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      pixelDiffTolerance: 10,
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const forward = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight', 'ArrowRight']);
+        await page.keys([forward, forward]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
     },
@@ -61,14 +63,15 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      pixelDiffTolerance: 10,
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const forward = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight']);
+        await page.keys([forward]);
         await page.keys(['ArrowDown']);
-        await page.keys(['ArrowRight']);
+        await page.keys([forward]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
     },
@@ -78,6 +81,7 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async ({ page }) => {
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.keys(['Tab']);
@@ -93,12 +97,14 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const forward = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight']);
-        await page.keys(['ArrowRight']);
+        await page.keys([forward]);
+        await page.keys([forward]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
         await page.keys(['Enter']);
         await page.waitForVisible('[aria-label="Dismiss"]');
@@ -109,14 +115,15 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      pixelDiffTolerance: 10,
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const forward = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+        // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight']);
+        await page.keys([forward]);
         await page.keys(['ArrowDown']);
-        await page.keys(['ArrowRight']);
+        await page.keys([forward]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
         await page.keys(['Enter']);
         await page.waitForVisible('[aria-label="Dismiss"]');

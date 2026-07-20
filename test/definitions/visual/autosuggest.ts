@@ -11,7 +11,7 @@ const suite: TestSuite = {
       path: 'autosuggest/permutations',
       screenshotType: 'permutations',
       setup: async ({ page }) => {
-        await page.click('input');
+        await page.focusInputs();
       },
     },
     {
@@ -19,7 +19,7 @@ const suite: TestSuite = {
       path: 'autosuggest/permutations-async',
       screenshotType: 'permutations',
       setup: async ({ page }) => {
-        await page.click('input');
+        await page.focusInputs();
       },
     },
     {
@@ -27,7 +27,7 @@ const suite: TestSuite = {
       path: 'autosuggest/scenarios',
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
-        await page.click('input');
+        await page.focusInputs();
       },
     },
     {
@@ -35,7 +35,7 @@ const suite: TestSuite = {
       path: 'autosuggest/regions-scenarios',
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
-        await page.click('input');
+        await page.focusInputs();
       },
     },
     {
