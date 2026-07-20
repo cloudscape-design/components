@@ -59,9 +59,6 @@
     }
   }
 }
-// Annotation content (for example, a timestamp), rendered before the icon. The column
-// auto-sizes to the widest value across steps (see `.with-annotation` below); values are aligned
-// to the start (left in LTR) so shorter values line up under the longest one.
 .annotation {
   min-inline-size: 0;
   color: awsui.$color-text-status-inactive;
@@ -133,6 +130,34 @@
   }
 }
 
+// Share row sizes across horizontal steps so annotations and step content remain aligned.
+.horizontal > .list.with-annotation {
+  grid-template-rows: auto minmax(awsui.$space-static-l, auto) auto auto;
+
+  > .container {
+    grid-row: 1 / -1;
+    grid-template-rows: subgrid;
+
+    > .annotation {
+      grid-row: 1;
+      grid-column: 1 / span 2;
+      padding-block-end: awsui.$space-static-xs;
+    }
+
+    > .header {
+      grid-row: 2;
+    }
+
+    > .horizontal-header {
+      grid-row: 3;
+    }
+
+    > .details {
+      grid-row: 4;
+    }
+  }
+}
+
 // Vertical custom steps: a column-1 "rail" stacks the icon above a connector that grows to fill
 // the full height of the step (header + details), keeping the vertical line continuous and
 // connecting consecutive steps regardless of header height. Placed after `.horizontal` so
@@ -168,26 +193,12 @@
   }
 }
 
-// Timeline leading column. Defined last so its higher-specificity selectors follow the base and
-// custom-vertical rules (satisfies `no-descending-specificity`). The list owns the columns and each
-// step adopts them via `grid-template-columns: subgrid`, so a single leading column (sized to the
-// widest `annotation` via `max-content`) is shared across all steps. The middle column matches the
-// base icon column, so both step layouts just shift one column to the right, keeping the connector
-// under the icon.
-//
-// Design note: this is the first use of CSS `subgrid` in this package. It is within our
-// supported-browser SLA (browserslist: last 3 major versions of Chrome/Firefox/Edge/Safari;
-// subgrid baseline is Chrome/Edge 117, Firefox 71, Safari 16) and passes the
-// `no-unsupported-browser-features` lint. Outside the SLA (browsers without subgrid) this timeline
-// column collapses and timestamps stop aligning; the degradation is scoped to this `annotation`
-// layout only — default vertical and horizontal steps are unaffected. No `@supports` fallback is
-// provided because the scenario is out of SLA and a fallback would add meaningful CSS complexity.
-.root > .list.with-annotation {
+// Share the annotation column width across vertical steps.
+.vertical > .list.with-annotation {
   display: grid;
   grid-template-columns: max-content awsui.$space-static-l 1fr;
 
   > .container {
-    display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
 
@@ -197,37 +208,26 @@
       align-self: start;
       padding-inline-end: awsui.$space-m;
     }
-  }
 
-  // Default step (status indicator + connector), shifted right by the leading column.
-  > .container:not(.custom-vertical) {
     > .header {
       grid-column: 2 / span 2;
     }
 
-    > .connector {
-      grid-column: 2;
-    }
-
-    > .details {
-      grid-column: 3;
-    }
-  }
-
-  // Custom / rail step: icon rail in the middle column, content in the last.
-  > .container.custom-vertical {
     > .rail {
       grid-column: 2;
     }
 
+    > .details,
     > .content {
       grid-column: 3;
     }
   }
+
+  > .container:not(.custom-vertical) > .connector {
+    grid-column: 2;
+  }
 }
 
-// Hide the connector after the final custom/rail step. Placed last so its higher specificity
-// follows the timeline connector rules above (satisfies `no-descending-specificity`).
 .root > .list > .container.custom-vertical:last-of-type > .rail > .connector {
   display: none;
 }

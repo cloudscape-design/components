@@ -27,25 +27,30 @@ const statusToColor: Record<StepsProps.Status, BoxProps.Color> = {
   log: 'text-status-inactive',
 };
 
+const StepAnnotation = ({ children }: { children: React.ReactNode }) => {
+  if (children === undefined || children === null) {
+    return null;
+  }
+  return <div className={styles.annotation}>{children}</div>;
+};
+
 const CustomStep = ({
   step,
   orientation,
   renderStep,
-  showAnnotation,
 }: {
   step: StepsProps.Step;
   orientation: StepsProps.Orientation;
   renderStep: Required<StepsProps>['renderStep'];
-  showAnnotation: boolean;
 }) => {
   const { status, statusIconAriaLabel, annotation } = step;
   const { header, details, icon } = renderStep(step);
-  const iconNode = icon ?? <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />;
+  const iconNode = icon ? icon : <InternalStatusIcon type={status} iconAriaLabel={statusIconAriaLabel} />;
 
   if (orientation === 'horizontal') {
     return (
       <li className={styles.container}>
-        {annotation !== undefined && annotation !== null && <div className={styles.annotation}>{annotation}</div>}
+        <StepAnnotation>{annotation}</StepAnnotation>
         <div className={styles.header}>
           {iconNode}
           <hr className={styles.connector} role="none" />
@@ -63,9 +68,7 @@ const CustomStep = ({
   // is rendered before the rail.
   return (
     <li className={clsx(styles.container, styles['custom-vertical'])}>
-      {showAnnotation && annotation !== undefined && annotation !== null && (
-        <div className={styles.annotation}>{annotation}</div>
-      )}
+      <StepAnnotation>{annotation}</StepAnnotation>
       <div className={styles.rail}>
         {iconNode}
         <hr className={styles.connector} role="none" />
@@ -88,7 +91,7 @@ const InternalStep = ({
 }: StepsProps.Step & { orientation: StepsProps.Orientation }) => {
   return (
     <li className={styles.container}>
-      {annotation !== undefined && annotation !== null && <div className={styles.annotation}>{annotation}</div>}
+      <StepAnnotation>{annotation}</StepAnnotation>
       <div className={styles.header}>
         {orientation === 'vertical' ? (
           <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
@@ -125,7 +128,7 @@ const InternalSteps = ({
   __internalRootRef,
   ...props
 }: InternalStepsProps) => {
-  const showAnnotation = steps.some(step => step.annotation !== undefined && step.annotation !== null);
+  const hasAnnotations = steps.some(step => step.annotation !== undefined && step.annotation !== null);
   return (
     <div
       {...props}
@@ -133,20 +136,14 @@ const InternalSteps = ({
       ref={__internalRootRef}
     >
       <ol
-        className={clsx(styles.list, orientation === 'vertical' && showAnnotation && styles['with-annotation'])}
+        className={clsx(styles.list, hasAnnotations && styles['with-annotation'])}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
       >
         {steps.map((step, index) =>
           renderStep ? (
-            <CustomStep
-              key={index}
-              orientation={orientation}
-              step={step}
-              renderStep={renderStep}
-              showAnnotation={showAnnotation}
-            />
+            <CustomStep key={index} orientation={orientation} step={step} renderStep={renderStep} />
           ) : (
             <InternalStep
               key={index}
