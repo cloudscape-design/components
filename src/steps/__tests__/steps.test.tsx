@@ -185,8 +185,8 @@ describe('Steps', () => {
     test.each([
       { orientation: 'vertical', connectorLines: undefined },
       { orientation: 'horizontal', connectorLines: undefined },
-      { orientation: 'vertical', connectorLines: 'default' },
-      { orientation: 'horizontal', connectorLines: 'default' },
+      { orientation: 'vertical', connectorLines: 'visible' },
+      { orientation: 'horizontal', connectorLines: 'visible' },
     ] as const)(
       'renders visible connector lines when orientation=$orientation and connectorLines=$connectorLines',
       ({ orientation, connectorLines }) => {

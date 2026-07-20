@@ -11,7 +11,7 @@ import * as variants from './permutations-utils';
 
 const stepsPermutations = createPermutations<StepsProps>([
   {
-    connectorLines: ['default'],
+    connectorLines: ['visible'],
     orientation: ['vertical', 'horizontal'],
     steps: [
       variants.initialSteps,

@@ -12,7 +12,7 @@ import InternalSteps from './internal';
 
 export { StepsProps };
 
-const Steps = ({ steps, orientation = 'vertical', connectorLines = 'default', ...props }: StepsProps) => {
+const Steps = ({ steps, orientation = 'vertical', connectorLines = 'visible', ...props }: StepsProps) => {
   const baseProps = getBaseProps(props);
   const baseComponentProps = useBaseComponent('Steps', {
     props: { orientation, connectorLines },

@@ -27777,18 +27777,16 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
-      "defaultValue": "'default'",
+      "defaultValue": "'visible'",
       "description": "Determines whether the connector lines between steps are displayed. The following variants are available:
-* \`default\` - Shows connector lines between consecutive steps.
-* \`none\` - Hides the connector lines between steps.
-
-By default, connector lines are shown.",
+* \`visible\` - Shows connector lines between consecutive steps.
+* \`none\` - Hides the connector lines between steps.",
       "inlineType": {
         "name": "StepsProps.ConnectorLinesVariant",
         "type": "union",
         "values": [
           "none",
-          "default",
+          "visible",
         ],
       },
       "name": "connectorLines",

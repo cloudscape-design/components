@@ -21,10 +21,8 @@ export interface StepsProps extends BaseComponentProps {
   orientation?: StepsProps.Orientation;
   /**
    * Determines whether the connector lines between steps are displayed. The following variants are available:
-   * * `default` - Shows connector lines between consecutive steps.
+   * * `visible` - Shows connector lines between consecutive steps.
    * * `none` - Hides the connector lines between steps.
-   *
-   * By default, connector lines are shown.
    */
   connectorLines?: StepsProps.ConnectorLinesVariant;
   /**
@@ -68,5 +66,5 @@ export namespace StepsProps {
 
   export type Orientation = 'vertical' | 'horizontal';
 
-  export type ConnectorLinesVariant = 'default' | 'none';
+  export type ConnectorLinesVariant = 'visible' | 'none';
 }
