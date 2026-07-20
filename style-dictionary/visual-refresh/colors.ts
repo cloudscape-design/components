@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { expandColorDictionary } from '../utils/index.js';
+import { paletteTokens } from '../core/color-palette.js';
+import { expandColorDictionary, hexToRgba } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
@@ -390,9 +391,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundAccentViolet: { light: '{colorViolet100}', dark: 'rgba(133, 117, 255, 0.2)' },
   colorBackgroundAccentFuchsia: { light: '{colorFuchsia100}', dark: 'rgba(228, 51, 255, 0.2)' },
   colorBackgroundAccentMagenta: { light: '{colorMagenta100}', dark: 'rgba(255, 26, 224, 0.2)' },
-  colorBackgroundAccentPink: { light: '{colorPink100}', dark: 'rgba(255, 51, 153, 0.2)' },
-  colorBackgroundAccentRose: { light: '{colorRose100}', dark: 'rgba(255, 56, 106, 0.2)' },
-  colorBackgroundAccentAmber: { light: '{colorAmber100}', dark: 'rgba(250, 111, 0, 0.2)' },
+  colorBackgroundAccentPink: { light: '{colorPink100}', dark: hexToRgba(paletteTokens.colorPink500!, 0.2) },
+  colorBackgroundAccentRose: { light: '{colorRose100}', dark: hexToRgba(paletteTokens.colorRose500!, 0.2) },
+  colorBackgroundAccentAmber: { light: '{colorAmber100}', dark: hexToRgba(paletteTokens.colorAmber500!, 0.2) },
   colorTextAccentRed: { light: '{colorError800}', dark: '{colorError400}' },
   colorTextAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning400}' },
   colorTextAccentIndigo: { light: '{colorInfo800}', dark: '{colorInfo400}' },

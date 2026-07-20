@@ -88,6 +88,26 @@ export const expandReferenceTokens = (referenceTokens: ReferenceTokens) => {
   return { ...referenceTokens, color: expandedColor };
 };
 
+/**
+ * Converts a hex color primitive (e.g. '#fa6f00') into an `rgba()` string with the given alpha.
+ * Lets semantic tokens derive translucent values straight from the color palette instead of
+ * hardcoding the individual rgb channel numbers.
+ */
+export const hexToRgba = (hex: string, alpha: number): string => {
+  const normalized = hex.replace('#', '');
+  const expanded =
+    normalized.length === 3
+      ? normalized
+          .split('')
+          .map(char => char + char)
+          .join('')
+      : normalized;
+  const r = parseInt(expanded.slice(0, 2), 16);
+  const g = parseInt(expanded.slice(2, 4), 16);
+  const b = parseInt(expanded.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 export const pickState = (tokenCategory: TokenCategory<string, Record<string, string>>, state: string) => {
   return Object.fromEntries(
     Object.entries(tokenCategory).map(([token, value]) => {
