@@ -46,8 +46,8 @@ const suite: TestSuite = {
       pixelDiffTolerance: 12,
       setup: async ({ page }) => {
         await page.click('#focus-target');
-        await (page as any).focusNextElement();
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight', 'ArrowRight']);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
@@ -60,8 +60,8 @@ const suite: TestSuite = {
       pixelDiffTolerance: 10,
       setup: async ({ page }) => {
         await page.click('#focus-target');
-        await (page as any).focusNextElement();
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight', 'ArrowRight']);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
         await page.keys(['Enter']);
@@ -84,10 +84,10 @@ const suite: TestSuite = {
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async ({ page }) => {
-        await (page as any).scrollToBottom('html');
+        await page.scrollToBottom('html');
         await page.click('#focus-target-3');
-        await (page as any).focusNextElement();
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight', 'Enter']);
         await page.waitForVisible('[aria-label="Dismiss"]');
       },

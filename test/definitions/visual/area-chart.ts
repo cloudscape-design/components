@@ -39,7 +39,7 @@ const suite: TestSuite = {
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
       },
     },
     {
@@ -50,7 +50,7 @@ const suite: TestSuite = {
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight', 'ArrowRight']);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
@@ -63,7 +63,7 @@ const suite: TestSuite = {
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight']);
         await page.keys(['ArrowDown']);
         await page.keys(['ArrowRight']);
@@ -94,7 +94,7 @@ const suite: TestSuite = {
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight']);
         await page.keys(['ArrowRight']);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
@@ -110,7 +110,7 @@ const suite: TestSuite = {
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
         await page.keys(['ArrowRight']);
         await page.keys(['ArrowDown']);
         await page.keys(['ArrowRight']);

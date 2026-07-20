@@ -47,7 +47,7 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       setup: async ({ page }) => {
         await page.click('#focusButton');
-        await (page as any).focusNextElement();
+        await page.focusNextElement();
       },
     },
     {
