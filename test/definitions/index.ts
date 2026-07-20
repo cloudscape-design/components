@@ -26,6 +26,7 @@ import barChart from './visual/bar-chart';
 import boxSuite from './visual/box';
 import breadcrumbGroup from './visual/breadcrumb-group';
 import buttonSuite from './visual/button';
+import buttonDropdown from './visual/button-dropdown';
 import buttonGroup from './visual/button-group';
 
 // Per-component exports (grouped by component)
@@ -51,6 +52,7 @@ export const barChartSuites: TestSuite[] = [barChart];
 export const box: TestSuite[] = [boxSuite];
 export const breadcrumbGroupSuites: TestSuite[] = [breadcrumbGroup];
 export const button: TestSuite[] = [buttonSuite];
+export const buttonDropdownSuites: TestSuite[] = [buttonDropdown];
 export const buttonGroupSuites: TestSuite[] = [buttonGroup];
 
 export const allSuites: TestSuite[] = [
@@ -65,5 +67,6 @@ export const allSuites: TestSuite[] = [
   ...box,
   ...breadcrumbGroupSuites,
   ...button,
+  ...buttonDropdownSuites,
   ...buttonGroupSuites,
 ];
