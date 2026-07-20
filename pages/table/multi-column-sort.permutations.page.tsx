@@ -19,10 +19,44 @@ const items: Item[] = [
   { name: 'beta', type: 'm5.large', count: 3 },
 ];
 
+const layoutItems: Item[] = [
+  {
+    name: 'alpha with a deliberately long resource name that demonstrates the table wrapping behavior',
+    type: 't3.micro instance type with an intentionally long description for the layout scenarios',
+    count: 12,
+  },
+  {
+    name: 'beta with another long resource name that demonstrates the table wrapping behavior',
+    type: 'm5.large instance type with an intentionally long description for the layout scenarios',
+    count: 3,
+  },
+];
+
 const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
   { id: 'name', header: 'Name', cell: item => item.name, sortingField: 'name' },
   { id: 'type', header: 'Type', cell: item => item.type, sortingField: 'type' },
   { id: 'count', header: 'Count', cell: item => item.count, sortingField: 'count' },
+];
+
+const longColumnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+  {
+    id: 'name',
+    header: 'Resource name with a deliberately long sortable column header',
+    cell: item => item.name,
+    sortingField: 'name',
+  },
+  {
+    id: 'type',
+    header: 'Instance type with a deliberately long sortable column header',
+    cell: item => item.type,
+    sortingField: 'type',
+  },
+  {
+    id: 'count',
+    header: 'Number of associated resources',
+    cell: item => item.count,
+    sortingField: 'count',
+  },
 ];
 
 const noop = () => {};
@@ -53,6 +87,22 @@ const permutations = createPermutations<TableProps<Item>>([
     ],
     items: [items],
     columnDefinitions: [columnDefinitions],
+  },
+  {
+    selectionType: [undefined],
+    multiColumnSort: [
+      {
+        sortingColumns: [
+          { sortingColumn: { sortingField: 'name' }, isDescending: false },
+          { sortingColumn: { sortingField: 'type' }, isDescending: true },
+        ],
+        onChange: noop,
+      },
+    ],
+    items: [layoutItems],
+    columnDefinitions: [longColumnDefinitions],
+    resizableColumns: [false, true],
+    wrapLines: [false, true],
   },
 ]);
 
