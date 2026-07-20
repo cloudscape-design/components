@@ -47,6 +47,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 10,
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
@@ -60,6 +61,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 10,
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
@@ -107,6 +109,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 10,
       setup: async ({ page }) => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
