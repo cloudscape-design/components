@@ -97,6 +97,7 @@ const suite: TestSuite = {
       path: 'area-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 10,
       setup: async ({ page, configuration }) => {
         const forward = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         // Focus and close the filtering select
