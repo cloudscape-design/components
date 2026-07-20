@@ -223,6 +223,7 @@ const ExpandableHeaderTextWrapper = ({
           info={headerInfo}
           actions={actions}
           headingTagOverride={headingTagOverride}
+          __inExpandableSection={true}
         >
           {headerButton}
         </InternalHeader>

@@ -46,7 +46,7 @@ export const AnchorItem = ({ anchor, onFollow, isActive, index, children }: Anch
       >
         <span
           className={clsx(styles['anchor-link-text'], testUtilsStyles['anchor-link-text'])}
-          style={{ paddingInlineStart: `${anchor.level * 16 + 2}px` }}
+          style={{ paddingInlineStart: `${anchor.level * 16 + 4}px` }}
         >
           {anchor.text}
         </span>
