@@ -4,9 +4,9 @@ import React from 'react';
 
 import Table, { TableProps } from '~components/table';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 interface Item {
   name: string;
@@ -27,26 +27,8 @@ const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
 
 const noop = () => {};
 
-const i18nStrings: TableProps.I18nStrings = {
-  sortDropdownSortAscending: 'Sort ascending',
-  sortDropdownSortDescending: 'Sort descending',
-  sortDropdownMultiColumnSortGroup: 'Multi-column sort (Shift + Click)',
-  sortDropdownAddToSortAscending: 'Add to sort (ascending)',
-  sortDropdownAddToSortDescending: 'Add to sort (descending)',
-  sortDropdownRemoveFromSort: 'Remove from sort',
-  sortDropdownAddToSortDisabledReason: 'This column is already sorted',
-  sortDropdownRemoveFromSortDisabledReason: 'This column is not sorted',
-  clearSort: 'Clear sort',
-};
-
 const ariaLabels: TableProps.AriaLabels<Item> = {
   tableLabel: 'Multi-column sort permutations',
-  sortMenuTriggerLabel: 'Sort options',
-  sortAscending: 'ascending',
-  sortDescending: 'descending',
-  liveAnnouncementSortOrder: ({ columns }) => `Table sorted by ${columns}`,
-  liveAnnouncementSortCleared: 'Sorting cleared',
-  sortPriority: ({ priority }) => `sort priority ${priority}`,
   selectionGroupLabel: 'Item selection',
   allItemsSelectionLabel: () => 'Select all',
   itemSelectionLabel: (_data, item) => `Select ${item.name}`,
@@ -74,22 +56,18 @@ const permutations = createPermutations<TableProps<Item>>([
   },
 ]);
 
-export default function () {
+export default function MultiColumnSortPermutationsPage() {
   return (
-    <>
-      <h1>Table multi-column sort permutations</h1>
-      <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => (
-            <Table
-              {...permutation}
-              i18nStrings={i18nStrings}
-              ariaLabels={{ ...ariaLabels, tableLabel: `Items ${permutations.indexOf(permutation)}` }}
-            />
-          )}
-        />
-      </ScreenshotArea>
-    </>
+    <PermutationsPage title="Table multi-column sort permutations" i18n={{}}>
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <Table
+            {...permutation}
+            ariaLabels={{ ...ariaLabels, tableLabel: `Items ${permutations.indexOf(permutation)}` }}
+          />
+        )}
+      />
+    </PermutationsPage>
   );
 }

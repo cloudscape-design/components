@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import { Checkbox, Pagination, SpaceBetween, Table, TableProps } from '~components';
 
@@ -66,6 +68,12 @@ const groupedColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   },
 ];
 
+const initialMultiColumnSort: ReadonlyArray<TableProps.SortingState<Item>> = [
+  { sortingColumn: { sortingField: 'state' }, isDescending: false },
+  { sortingColumn: { sortingField: 'cpu' }, isDescending: true },
+];
+
+const initialSingleColumnSort: TableProps.SortingState<Item> = initialMultiColumnSort[0];
 const PAGE_SIZE = 4;
 
 export default function MultiColumnSortPage() {
@@ -81,15 +89,13 @@ export default function MultiColumnSortPage() {
   const longNamesEnabled = urlParams.longNames === true || urlParams.longNames === 'true';
   const resizableEnabled = urlParams.resizable === true || urlParams.resizable === 'true';
 
-  const [sortingColumns, setSortingColumns] = useState<ReadonlyArray<TableProps.SortingState<Item>>>([
-    { sortingColumn: { sortingField: 'state' }, isDescending: false },
-    { sortingColumn: { sortingField: 'cpu' }, isDescending: true },
-  ]);
-  // Single-column sort state, used when multi-column sort is toggled off.
-  const [sortingColumn, setSortingColumn] = useState<TableProps.SortingColumn<Item>>({ sortingField: 'state' });
-  const [sortingDescending, setSortingDescending] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<ReadonlyArray<Item>>([]);
-  const [currentPageIndex, setCurrentPageIndex] = useState(1);
+  const { items, collectionProps, paginationProps } = useCollection(allItems, {
+    sorting: multiSortEnabled
+      ? { multiColumn: true, defaultSortingColumns: initialMultiColumnSort }
+      : { defaultState: initialSingleColumnSort },
+    pagination: paginationEnabled ? { pageSize: PAGE_SIZE } : undefined,
+    selection: selectionEnabled ? {} : undefined,
+  });
 
   const headers = longNamesEnabled ? longHeaders : shortHeaders;
   const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
@@ -119,30 +125,6 @@ export default function MultiColumnSortPage() {
     },
   ];
 
-  const compareField = (a: Item, b: Item, field: keyof Item, descending: boolean) => {
-    const aVal = a[field];
-    const bVal = b[field];
-    const cmp =
-      typeof aVal === 'number' && typeof bVal === 'number' ? aVal - bVal : String(aVal).localeCompare(String(bVal));
-    return descending ? -cmp : cmp;
-  };
-  const sorted = multiSortEnabled
-    ? [...allItems].sort((a, b) => {
-        for (const entry of sortingColumns) {
-          const cmp = compareField(a, b, entry.sortingColumn.sortingField as keyof Item, !!entry.isDescending);
-          if (cmp !== 0) {
-            return cmp;
-          }
-        }
-        return 0;
-      })
-    : [...allItems].sort((a, b) => compareField(a, b, sortingColumn.sortingField as keyof Item, sortingDescending));
-
-  const pagesCount = Math.ceil(sorted.length / PAGE_SIZE);
-  const pageItems = paginationEnabled
-    ? sorted.slice((currentPageIndex - 1) * PAGE_SIZE, currentPageIndex * PAGE_SIZE)
-    : sorted;
-
   return (
     <SimplePage
       title="Multi-column sort"
@@ -171,41 +153,16 @@ export default function MultiColumnSortPage() {
       }
     >
       <Table
-        items={pageItems}
+        {...collectionProps}
+        items={items}
         columnDefinitions={columnDefinitions}
         resizableColumns={resizableEnabled}
         groupDefinitions={groupedEnabled ? groupDefinitions : undefined}
         columnDisplay={groupedEnabled ? groupedColumnDisplay : undefined}
         selectionType={selectionEnabled ? 'multi' : undefined}
-        selectedItems={selectionEnabled ? selectedItems : undefined}
-        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-        sortingColumn={multiSortEnabled ? undefined : sortingColumn}
-        sortingDescending={multiSortEnabled ? undefined : sortingDescending}
-        onSortingChange={
-          multiSortEnabled
-            ? undefined
-            : ({ detail }) => {
-                setSortingColumn(detail.sortingColumn);
-                setSortingDescending(!!detail.isDescending);
-              }
-        }
-        multiColumnSort={
-          multiSortEnabled
-            ? { sortingColumns, onChange: ({ detail }) => setSortingColumns(detail.sortingColumns) }
-            : undefined
-        }
-        pagination={
-          paginationEnabled ? (
-            <Pagination
-              currentPageIndex={currentPageIndex}
-              pagesCount={pagesCount}
-              onChange={({ detail }) => setCurrentPageIndex(detail.currentPageIndex)}
-            />
-          ) : undefined
-        }
+        pagination={paginationEnabled ? <Pagination {...paginationProps} /> : undefined}
         ariaLabels={{
           tableLabel: 'Multi-column sort demo',
-          sortMenuTriggerLabel: 'Sort options',
           selectionGroupLabel: 'Item selection',
           allItemsSelectionLabel: () => 'Select all',
           itemSelectionLabel: (_data, item) => `Select ${item.name}`,
