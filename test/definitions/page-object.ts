@@ -4,17 +4,15 @@ import { RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/p
 
 export default class VisualTestPageObject extends RawScreenshotPageObject {
   /**
-   * Dispatches a focus event on all input elements in the page.
-   * Useful for triggering dropdown opens in permutation pages.
+   * Dispatches a focusin event on all input elements in the page to open their dropdowns.
+   * Uses focusin (which bubbles) because React's event delegation listens for it.
    */
   async focusInputs(): Promise<void> {
     await this.browser.execute(function () {
-      Array.prototype.forEach.call(document.querySelectorAll('input'), function (inputElement: HTMLInputElement) {
-        const ev = new FocusEvent('focus');
-        inputElement.dispatchEvent(ev);
+      document.querySelectorAll('input').forEach(function (input) {
+        input.dispatchEvent(new FocusEvent('focusin', { bubbles: true, relatedTarget: null }));
       });
     });
-    // Wait until dropdown auto-reposition timeout ends
     await this.waitForJsTimers(500);
   }
 }
