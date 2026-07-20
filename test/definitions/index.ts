@@ -18,6 +18,15 @@ import appLayoutResponsive from './visual/app-layout-responsive';
 import appLayoutStickyTableHeaderSplitPanel from './visual/app-layout-sticky-table-header-split-panel';
 import appLayoutToolbar from './visual/app-layout-toolbar';
 import appLayoutZIndex from './visual/app-layout-z-index';
+import areaChart from './visual/area-chart';
+import attributeEditor from './visual/attribute-editor';
+import autosuggest from './visual/autosuggest';
+import badgeSuite from './visual/badge';
+import barChart from './visual/bar-chart';
+import boxSuite from './visual/box';
+import breadcrumbGroup from './visual/breadcrumb-group';
+import buttonSuite from './visual/button';
+import buttonGroup from './visual/button-group';
 
 // Per-component exports (grouped by component)
 export const actionCard: TestSuite[] = [actionCardSuite];
@@ -34,5 +43,27 @@ export const appLayout: TestSuite[] = [
   appLayoutToolbar,
   appLayoutZIndex,
 ];
+export const areaChartSuites: TestSuite[] = [areaChart];
+export const attributeEditorSuites: TestSuite[] = [attributeEditor];
+export const autosuggestSuites: TestSuite[] = [autosuggest];
+export const badge: TestSuite[] = [badgeSuite];
+export const barChartSuites: TestSuite[] = [barChart];
+export const box: TestSuite[] = [boxSuite];
+export const breadcrumbGroupSuites: TestSuite[] = [breadcrumbGroup];
+export const button: TestSuite[] = [buttonSuite];
+export const buttonGroupSuites: TestSuite[] = [buttonGroup];
 
-export const allSuites: TestSuite[] = [...actionCard, ...alert, ...appLayout];
+export const allSuites: TestSuite[] = [
+  ...actionCard,
+  ...alert,
+  ...appLayout,
+  ...areaChartSuites,
+  ...attributeEditorSuites,
+  ...autosuggestSuites,
+  ...badge,
+  ...barChartSuites,
+  ...box,
+  ...breadcrumbGroupSuites,
+  ...button,
+  ...buttonGroupSuites,
+];
