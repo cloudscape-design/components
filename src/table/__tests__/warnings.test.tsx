@@ -121,13 +121,42 @@ describe('Multi-column sort validation', () => {
     { header: 'name', cell: () => 'name', sortingField: 'name' },
   ];
 
-  test('prints a warning when multiColumnSort is combined with single-column sorting props', () => {
+  test('prints a warning when multiColumnSort is combined with sortingColumn', () => {
     renderTable(
       <Table
         items={[]}
         columnDefinitions={baseColumns}
         multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
         sortingColumn={{ sortingField: 'name' }}
+      />
+    );
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Table',
+      expect.stringMatching(/`multiColumnSort` prop is mutually exclusive/)
+    );
+  });
+
+  test('prints a warning when multiColumnSort is combined with sortingDescending', () => {
+    renderTable(
+      <Table
+        items={[]}
+        columnDefinitions={baseColumns}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+        sortingDescending={true}
+      />
+    );
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Table',
+      expect.stringMatching(/`multiColumnSort` prop is mutually exclusive/)
+    );
+  });
+
+  test('prints a warning when multiColumnSort is combined with onSortingChange', () => {
+    renderTable(
+      <Table
+        items={[]}
+        columnDefinitions={baseColumns}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
         onSortingChange={() => {}}
       />
     );

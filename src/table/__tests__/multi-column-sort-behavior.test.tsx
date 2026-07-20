@@ -16,10 +16,12 @@ interface Item {
   c: string;
 }
 
+const comparatorC = (a: Item, b: Item) => a.c.localeCompare(b.c);
+
 const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
   { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
   { id: 'b', header: 'B', cell: i => i.b, sortingField: 'b' },
-  { id: 'c', header: 'C', cell: i => i.c, sortingField: 'c' },
+  { id: 'c', header: 'C', cell: i => i.c, sortingComparator: comparatorC },
 ];
 
 const items: Item[] = [{ a: '1', b: '2', c: '3' }];
@@ -31,12 +33,18 @@ const COL_C = 3;
 
 type Sort = ReadonlyArray<TableProps.SortingState<Item>>;
 
-function renderTable(sortingColumns: Sort, onChange = jest.fn(), extraColumns?: TableProps.ColumnDefinition<Item>[]) {
+function renderTable(
+  sortingColumns: Sort,
+  onChange = jest.fn(),
+  extraColumns?: TableProps.ColumnDefinition<Item>[],
+  ariaLabels?: TableProps.AriaLabels<Item>
+) {
   const { container } = render(
     <Table
       items={items}
       columnDefinitions={extraColumns ?? columnDefinitions}
       multiColumnSort={{ sortingColumns, onChange }}
+      ariaLabels={ariaLabels}
     />
   );
   return { wrapper: createWrapper(container).findTable()!, onChange };
@@ -88,6 +96,25 @@ describe('header click / keyboard', () => {
   test('Shift+Enter appends like Shift+click', () => {
     const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
     fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('Space triggers the same behavior as a click', () => {
+    const { wrapper, onChange } = renderTable([]);
+    wrapper.findColumnSortingArea(COL_A)!.keypress(KeyCode.space);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('Shift+Space appends like Shift+click', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    wrapper.findColumnSortingArea(COL_B)!.keypress({
+      keyCode: KeyCode.space,
+      charCode: KeyCode.space,
+      shiftKey: true,
+    });
     expect(emitted(onChange)).toEqual([
       { field: 'a', desc: false },
       { field: 'b', desc: false },
@@ -174,6 +201,16 @@ describe('sort menu dropdown actions', () => {
       { field: 'b', desc: false },
     ]);
   });
+
+  test('"Add to sort (ascending)" appends a comparator-based column', () => {
+    const initialSort = [{ sortingColumn: { sortingField: 'a' }, isDescending: false }];
+    const { wrapper, onChange } = renderTable(initialSort);
+    openAndClick(wrapper, COL_C, menu => menu!.findAddToSortAscendingItem()!.click());
+    expect(onChange.mock.calls[0][0].detail.sortingColumns).toEqual([
+      ...initialSort,
+      { sortingColumn: columnDefinitions[2], isDescending: false },
+    ]);
+  });
 });
 
 describe('aria-sort', () => {
@@ -186,6 +223,27 @@ describe('aria-sort', () => {
     // ARIA permits only one sorted column, so secondary sorted columns omit aria-sort entirely.
     expect(getHeaderCell(wrapper, COL_B).getAttribute('aria-sort')).toBeNull();
     expect(getHeaderCell(wrapper, COL_C).getAttribute('aria-sort')).toBe('none');
+  });
+});
+
+describe('screen reader sort priority', () => {
+  test('announces direction and priority for secondary sorted columns', () => {
+    const { wrapper } = renderTable(
+      [
+        { sortingColumn: { sortingField: 'a' }, isDescending: false },
+        { sortingColumn: { sortingField: 'b' }, isDescending: true },
+      ],
+      jest.fn(),
+      undefined,
+      {
+        sortAscending: 'ascending',
+        sortDescending: 'descending',
+        sortPriority: ({ priority }) => `sort priority ${priority}`,
+      }
+    );
+
+    expect(getHeaderCell(wrapper, COL_A)).toHaveTextContent('sort priority 1');
+    expect(getHeaderCell(wrapper, COL_B)).toHaveTextContent('descending sort priority 2');
   });
 });
 
