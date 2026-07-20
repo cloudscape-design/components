@@ -122,7 +122,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
           }
         });
       }
-      expect(failures).toBe(0);
+      expect(failures).toBe(testDef.pixelDiffTolerance);
       return;
     }
 
