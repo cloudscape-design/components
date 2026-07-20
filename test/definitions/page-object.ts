@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ScreenshotBasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import { RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 /**
  * Extended page object for visual regression tests.
  * Adds helper methods that were available in the IntegrationTests page object.
  */
-export default class VisualTestPageObject extends ScreenshotBasePageObject {
+export default class VisualTestPageObject extends RawScreenshotPageObject {
   /**
    * Dispatches a focus event on all input elements in the page.
    * Useful for triggering dropdown opens in permutation pages.
