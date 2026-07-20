@@ -111,10 +111,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
   colorBackgroundItemSelected: { light: '{colorNeutral150}', dark: '{colorNeutral1000}' },
-  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorPrimary100}', dark: '#5c7fff20' },
-  colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary200}', dark: '#5c7fff40' },
-  colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary100}', dark: '{colorPrimary1000}' },
-  colorTextLayoutToggleSelected: { light: '{colorPrimary600}', dark: '{colorPrimary300}' },
+  colorBackgroundLayoutToggleSelectedDefault: { light: '{colorPrimary500}', dark: '{colorPrimary500}' },
+  colorBackgroundLayoutToggleSelectedHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorBackgroundLayoutToggleSelectedActive: { light: '{colorPrimary500}', dark: '{colorPrimary500}' },
+  colorTextLayoutToggleSelected: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
