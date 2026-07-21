@@ -8,6 +8,8 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
+$collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+
 .hide-navigation {
   position: absolute;
   inset-inline-end: awsui.$space-m;
@@ -38,35 +40,38 @@
     position: relative;
   }
 
-  // All content is hidden by the overflow-x property
+  // Closed panel: collapsed to zero width and removed from the layout so its
+  // focusable children are no longer reachable. The .is-navigation-collapsed
+  // rule below overrides this to render the icon rail instead.
   &:not(.is-navigation-open) {
     inline-size: 0px;
-    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
   }
 
-  &:not(.is-navigation-open).is-navigation-collapsed {
+  // Closed but showing the collapsed icon rail. This class is only ever set while
+  // the panel is closed, so it always overrides the rule above (equal specificity,
+  // later in source order).
+  &.is-navigation-collapsed {
     display: flex;
-    inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
     align-items: center;
+    inline-size: $collapsed-width;
 
     & > .navigation {
-      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+      inline-size: $collapsed-width;
       overflow-x: hidden;
     }
 
+    // In the rail, replace the top-right close button with a centered expand toggle.
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     & > .navigation > .hide-navigation {
       display: none;
 
-      &.show-navigation-toggle {
+      &.expand-navigation-toggle {
         display: flex;
         position: static;
         align-items: center;
         justify-content: center;
         padding-block: awsui.$space-s;
-        inset-inline-end: unset;
-        inset-block-start: unset;
       }
     }
   }

@@ -28,16 +28,10 @@ export const useSkeletonSlotsAttributes = (
     expandedDrawerId,
     activeAiDrawer,
     activeGlobalBottomDrawerId,
-  } = appLayoutState.widgetizedState ?? {};
-  const {
-    contentType,
-    placement,
-    maxContentWidth,
-    navigationWidth,
     navigationCollapsedWidth,
-    minContentWidth,
-    disableContentPaddings,
-  } = appLayoutProps;
+  } = appLayoutState.widgetizedState ?? {};
+  const { contentType, placement, maxContentWidth, navigationWidth, minContentWidth, disableContentPaddings } =
+    appLayoutProps;
   const isMobile = useMobile();
   const toolsOpen = !!activeDrawer;
   const drawerExpandedMode = !!expandedDrawerId;

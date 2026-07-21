@@ -90,8 +90,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -291,8 +289,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -359,6 +355,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
+    "navigationCollapsed": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -448,8 +445,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -642,8 +637,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -799,8 +792,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -960,8 +951,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1161,8 +1150,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1229,6 +1216,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
+    "navigationCollapsed": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -1318,8 +1306,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1511,8 +1497,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
@@ -1668,8 +1652,6 @@ Map {
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
       "navigation": <React.Fragment />,
-      "navigationCollapsed": false,
-      "navigationCollapsedWidth": 54,
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {

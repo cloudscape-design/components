@@ -16,18 +16,20 @@ import styles from './styles.css.js';
 interface AppLayoutNavigationImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   bottomDrawerReportedSize?: number;
+  navigationCollapsible?: boolean;
 }
 
 export function AppLayoutNavigationImplementation({
   appLayoutInternals,
   bottomDrawerReportedSize,
+  // This flag means the "collapse" close behavior is enabled, not that the panel is currently collapsed.
+  navigationCollapsible,
 }: AppLayoutNavigationImplementationProps) {
   const {
     ariaLabels,
     onNavigationToggle,
     isMobile,
     navigationOpen,
-    navigationCollapsed,
     navigation,
     navigationFocusControl,
     placement,
@@ -41,7 +43,9 @@ export function AppLayoutNavigationImplementation({
     isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
 
-  const isCollapsedState = navigationCollapsed && !navigationOpen && !isMobile;
+  // The panel is showing its collapsed icon rail: collapse behavior is on, the panel is closed,
+  // and we're on desktop (the rail is not available on mobile).
+  const navigationCollapsed = navigationCollapsible && !navigationOpen && !isMobile;
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -58,7 +62,7 @@ export function AppLayoutNavigationImplementation({
     <div
       className={clsx(styles['navigation-container'], sharedStyles['with-motion-horizontal'], {
         [styles['is-navigation-open']]: navigationOpen,
-        [styles['is-navigation-collapsed']]: isCollapsedState,
+        [styles['is-navigation-collapsed']]: navigationCollapsed,
       })}
       style={{
         blockSize: drawerHeight,
@@ -74,28 +78,28 @@ export function AppLayoutNavigationImplementation({
           },
           testutilStyles.navigation
         )}
-        aria-hidden={!navigationOpen && !isCollapsedState}
+        aria-hidden={!navigationOpen && !navigationCollapsed}
         onClick={onNavigationClick}
       >
         <div
           className={clsx(styles['hide-navigation'], {
-            [styles['show-navigation-toggle']]: isCollapsedState,
+            [styles['expand-navigation-toggle']]: navigationCollapsed,
           })}
         >
           <InternalButton
             ariaLabel={
-              isCollapsedState
+              navigationCollapsed
                 ? (ariaLabels?.navigationToggle ?? undefined)
                 : (ariaLabels?.navigationClose ?? undefined)
             }
-            ariaExpanded={navigationCollapsed && !isMobile ? navigationOpen : undefined}
-            iconName={isCollapsedState ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
+            ariaExpanded={navigationCollapsible && !isMobile ? navigationOpen : undefined}
+            iconName={navigationCollapsed ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
             onClick={() => onNavigationToggle(!navigationOpen)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}
             ref={navigationFocusControl.refs.close}
-            analyticsAction={isCollapsedState ? 'open' : 'close'}
+            analyticsAction={navigationCollapsed ? 'open' : 'close'}
           />
         </div>
         {navigation}

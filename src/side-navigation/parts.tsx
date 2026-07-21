@@ -36,6 +36,12 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   collapsed?: boolean;
+  // The `position` of the item whose collapsed-state tooltip is currently shown,
+  // or null. Owned once at the root and threaded through the tree so that only a
+  // single tooltip is ever visible — focusing or hovering an item claims the
+  // tooltip and hides any other. See NavigationItemsList in implementation.tsx.
+  activeTooltip?: string | null;
+  setActiveTooltip?: (position: string | null) => void;
 }
 
 interface HeaderProps extends BaseItemComponentProps {
@@ -122,6 +128,8 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   collapsed,
+  activeTooltip,
+  setActiveTooltip,
 }: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
@@ -178,6 +186,8 @@ export function NavigationItemsList({
               fireChange={fireChange}
               position={childPosition}
               collapsed={collapsed}
+              activeTooltip={activeTooltip}
+              setActiveTooltip={setActiveTooltip}
             />
           </li>
         );
@@ -246,6 +256,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -268,6 +280,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -289,6 +303,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -310,6 +326,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -332,6 +350,8 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -445,29 +465,58 @@ const ItemIcon = React.forwardRef<HTMLSpanElement, ItemIconProps>(function ItemI
 // Used in the collapsed state, where the visible labels are hidden, to give
 // pointer and keyboard users a way to identify each item without relying on
 // their browser's native title popup.
-function useCollapsedTooltip<T extends HTMLElement>(label: React.ReactNode) {
-  const [show, setShow] = useState(false);
+//
+// Which item's tooltip is visible is a single value owned at the root and shared
+// across all items (activeTooltip), so only one tooltip is ever shown. Focusing or
+// hovering an item claims the tooltip; leaving it releases the tooltip only if this
+// item still owns it, so that moving the pointer onto another item (which already
+// claimed the tooltip) doesn't get cancelled by the previous item's leave/blur.
+function useCollapsedTooltip<T extends HTMLElement>({
+  label,
+  position,
+  activeTooltip,
+  setActiveTooltip,
+}: {
+  label: React.ReactNode;
+  position?: string;
+  activeTooltip?: string | null;
+  setActiveTooltip?: (position: string | null) => void;
+}) {
   const triggerRef = useRef<T | null>(null);
+  const id = position ?? '';
+  const show = activeTooltip === id;
+
+  const claim = () => setActiveTooltip?.(id);
+  const release = () => {
+    if (activeTooltip === id) {
+      setActiveTooltip?.(null);
+    }
+  };
 
   const triggerProps = {
-    onFocus: () => setShow(true),
-    onBlur: () => setShow(false),
-    onMouseEnter: () => setShow(true),
-    onMouseLeave: () => setShow(false),
+    onFocus: claim,
+    onBlur: release,
+    onMouseEnter: claim,
+    onMouseLeave: release,
   };
 
   const tooltip = show ? (
-    <Tooltip getTrack={() => triggerRef.current} content={label} position="right" onEscape={() => setShow(false)} />
+    <Tooltip getTrack={() => triggerRef.current} content={label} position="right" onEscape={release} />
   ) : null;
 
   return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position, collapsed, activeTooltip, setActiveTooltip }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
-  const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>(definition.text);
+  const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>({
+    label: definition.text,
+    position,
+    activeTooltip,
+    setActiveTooltip,
+  });
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -617,7 +666,16 @@ interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
 }
 
-function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, collapsed }: LinkGroupProps) {
+function LinkGroup({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  position,
+  collapsed,
+  activeTooltip,
+  setActiveTooltip,
+}: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
   return (
@@ -635,6 +693,8 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, c
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
       {!collapsed && (
         <NavigationItemsList
@@ -663,6 +723,8 @@ function ExpandableLinkGroup({
   variant,
   position,
   collapsed,
+  activeTooltip,
+  setActiveTooltip,
 }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
@@ -716,6 +778,8 @@ function ExpandableLinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
     );
   }

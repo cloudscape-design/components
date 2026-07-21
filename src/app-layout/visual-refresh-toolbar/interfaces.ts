@@ -39,8 +39,6 @@ export interface AppLayoutInternals {
   headerVariant: AppLayoutPropsWithDefaults['headerVariant'];
   placement: AppLayoutPropsWithDefaults['placement'];
   navigationOpen: AppLayoutPropsWithDefaults['navigationOpen'];
-  navigationCollapsed: boolean;
-  navigationCollapsedWidth: number;
   navigationFocusControl: FocusControlState;
   navigation: React.ReactNode;
   splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
@@ -111,6 +109,8 @@ export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   onActiveBottomDrawerResize: ({ id, size }: { id: string; size: number }) => void;
   bottomDrawers: ReadonlyArray<InternalDrawer>;
   featureNotificationsProps?: FeatureNotificationsProps;
+  navigationCollapsible: boolean;
+  navigationCollapsedWidth: number;
 }
 
 // New widget interface

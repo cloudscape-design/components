@@ -1,16 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { AppLayoutToolbar, Icon } from '~components';
+import { AppLayoutProps, AppLayoutToolbar, Icon } from '~components';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
-import Button from '~components/button';
 import FormField from '~components/form-field';
 import Header from '~components/header';
 import Input from '~components/input';
-// Consumers will use: import { useMobile } from '@cloudscape-design/component-toolkit/internal/use-mobile';
-// Draft started on https://github.com/cloudscape-design/component-toolkit/pull/174
 import { useMobile } from '~components/internal/hooks/use-mobile';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
@@ -58,6 +55,7 @@ const AwsSvg = (
 );
 
 export default function CollapsedWithAppLayoutPage() {
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [activeHref, setActiveHref] = useState('#/dashboard');
   const [collapseBehavior, setCollapseBehavior] = useState<'collapse' | 'hide'>('collapse');
@@ -71,6 +69,7 @@ export default function CollapsedWithAppLayoutPage() {
 
   const header = { text: 'Project 3', href: '#/projects/3' };
   const headerWithIcon = { ...header, logo: { svg: AwsSvg } };
+  const resolvedNavigationTriggerHide = isMobile && collapseBehavior === 'collapse' ? false : hideToolbar;
 
   useEffect(() => {
     const { reset } = applyTheme({
@@ -89,8 +88,9 @@ export default function CollapsedWithAppLayoutPage() {
 
   return (
     <AppLayoutToolbar
+      ref={appLayoutRef}
       toolsHide={hideTools}
-      navigationTriggerHide={hideToolbar}
+      navigationTriggerHide={resolvedNavigationTriggerHide}
       navigationOpen={navOpen}
       navigationCloseBehavior={collapseBehavior}
       navigationCollapsedWidth={navigationCollapsedWidth}
@@ -129,6 +129,7 @@ export default function CollapsedWithAppLayoutPage() {
                 <code>&quot;collapse&quot;</code>, the navigation shows a collapsed icon rail instead of disappearing
                 completely when closed.
               </Box>
+              <Box>Current page: {activeHref}</Box>
               <Toggle
                 checked={collapseBehavior === 'collapse'}
                 onChange={({ detail }) => setCollapseBehavior(detail.checked ? 'collapse' : 'hide')}
@@ -164,7 +165,6 @@ export default function CollapsedWithAppLayoutPage() {
                   </Toggle>
                 </Box>
               )}
-              <Button onClick={() => setNavOpen(!navOpen)}>{navOpen ? 'Close' : 'Open'} navigation</Button>
               <Box color="text-status-inactive">
                 Current state: navigation is{' '}
                 {navOpen ? 'open' : collapseBehavior === 'collapse' ? 'collapsed (rail)' : 'closed (hidden)'}

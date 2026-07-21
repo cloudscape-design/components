@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { useMergeRefs, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useStableCallback, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { SplitPanelSideToggleProps } from '../../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../../internal/events';
@@ -68,9 +68,15 @@ export const useAppLayout = (
 ): AppLayoutState => {
   const isMobile = useMobile();
   const navigationCollapsible = navigationCloseBehavior === 'collapse';
-  // On mobile, always show the nav trigger when the collapse behavior is enabled,
-  // because the collapsed rail (which provides the toggle on desktop) is not shown on mobile.
-  const resolvedNavigationTriggerHide = isMobile && navigationCollapsible ? false : navigationTriggerHide;
+
+  if (navigationCollapsible && navigationCollapsedWidth !== undefined && navigationCollapsedWidth >= navigationWidth) {
+    warnOnce(
+      'AppLayout',
+      '`navigationCollapsedWidth` should be smaller than `navigationWidth`. ' +
+        'When collapsed width equals or exceeds the expanded width, the ARIA expanded/collapsed semantics become inverted.'
+    );
+  }
+
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
   const [toolbarHeight, setToolbarHeight] = useState(0);
@@ -371,7 +377,7 @@ export const useAppLayout = (
     true,
     activeGlobalBottomDrawerId
   );
-  const navigationFocusControl = useAsyncFocusControl(navigationOpen, resolvedNavigationTriggerHide);
+  const navigationFocusControl = useAsyncFocusControl(navigationOpen, navigationTriggerHide);
   const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
   const onNavigationToggle = useStableCallback(({ isOpen, autoFocus }: { isOpen: boolean; autoFocus: boolean }) => {
@@ -408,8 +414,8 @@ export const useAppLayout = (
     minContentWidth,
     navigationOpen: resolvedNavigationOpen,
     navigationWidth,
-    navigationCollapsed: navigationCollapsible && !navigationHide,
-    navigationCollapsedWidth: navigationCollapsedWidth,
+    navigationCollapsible,
+    navigationCollapsedWidth,
     placement,
     splitPanelOpen,
     splitPanelPosition: splitPanelPreferences?.position,
@@ -456,8 +462,6 @@ export const useAppLayout = (
     discoveredBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
-    navigationCollapsed: navigationCollapsible && !navigationHide,
-    navigationCollapsedWidth: navigationCollapsedWidth,
     navigation: resolvedNavigation,
     navigationFocusControl,
     activeDrawer,
@@ -667,6 +671,8 @@ export const useAppLayout = (
       bottomDrawers,
       bottomDrawersFocusControl,
       featureNotificationsProps,
+      navigationCollapsible: navigationCollapsible,
+      navigationCollapsedWidth: navigationCollapsedWidth,
     },
   };
 };
