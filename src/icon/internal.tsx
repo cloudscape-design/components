@@ -10,6 +10,7 @@ import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import Tooltip from '../tooltip/internal';
 import { IconProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -47,6 +48,7 @@ const InternalIcon = ({
   url,
   alt,
   ariaLabel,
+  tooltipText,
   svg,
   badge,
   nativeAttributes,
@@ -59,6 +61,7 @@ const InternalIcon = ({
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
@@ -91,8 +94,26 @@ const InternalIcon = ({
   });
 
   const mergedRef = useMergeRefs(iconRef, __internalRootRef);
-  const hasAriaLabel = typeof ariaLabel === 'string';
-  const labelAttributes = hasAriaLabel ? { role: 'img', 'aria-label': ariaLabel } : {};
+  // When tooltipText is provided, it serves as the accessible name unless an explicit
+  // ariaLabel is provided. The tooltip itself is purely visual; the aria-label keeps the
+  // information available to assistive technology.
+  const effectiveAriaLabel = ariaLabel ?? tooltipText;
+  const hasAriaLabel = typeof effectiveAriaLabel === 'string';
+  const hasTooltipText = typeof tooltipText === 'string';
+  const labelAttributes = hasAriaLabel ? { role: 'img', 'aria-label': effectiveAriaLabel } : {};
+  // When tooltipText is set, the icon becomes a focusable target.
+  const tooltipTextAttributes = hasTooltipText
+    ? {
+        tabIndex: 0,
+        onPointerEnter: () => setShowTooltip(true),
+        onPointerLeave: () => setShowTooltip(false),
+        onFocus: () => setShowTooltip(true),
+        onBlur: () => setShowTooltip(false),
+      }
+    : {};
+  const tooltipElement = hasTooltipText && showTooltip && (
+    <Tooltip content={tooltipText!} getTrack={() => iconRef.current} onEscape={() => setShowTooltip(false)} />
+  );
 
   if (svg) {
     if (url) {
@@ -102,33 +123,41 @@ const InternalIcon = ({
       );
     }
     return (
-      <WithNativeAttributes
-        {...baseProps}
-        {...labelAttributes}
-        tag="span"
-        componentName="Icon"
-        nativeAttributes={nativeAttributes}
-        ref={mergedRef}
-        aria-hidden={!hasAriaLabel}
-        style={inlineStyles}
-      >
-        {svg}
-      </WithNativeAttributes>
+      <>
+        <WithNativeAttributes
+          {...baseProps}
+          {...labelAttributes}
+          {...tooltipTextAttributes}
+          tag="span"
+          componentName="Icon"
+          nativeAttributes={nativeAttributes}
+          ref={mergedRef}
+          aria-hidden={!hasAriaLabel}
+          style={inlineStyles}
+        >
+          {svg}
+        </WithNativeAttributes>
+        {tooltipElement}
+      </>
     );
   }
 
   if (url) {
     return (
-      <WithNativeAttributes
-        {...baseProps}
-        tag="span"
-        componentName="Icon"
-        nativeAttributes={nativeAttributes}
-        ref={mergedRef}
-        style={inlineStyles}
-      >
-        <img src={url} alt={ariaLabel ?? alt} />
-      </WithNativeAttributes>
+      <>
+        <WithNativeAttributes
+          {...baseProps}
+          {...tooltipTextAttributes}
+          tag="span"
+          componentName="Icon"
+          nativeAttributes={nativeAttributes}
+          ref={mergedRef}
+          style={inlineStyles}
+        >
+          <img src={url} alt={ariaLabel ?? tooltipText ?? alt} />
+        </WithNativeAttributes>
+        {tooltipElement}
+      </>
     );
   }
 
@@ -165,17 +194,21 @@ const InternalIcon = ({
   }
 
   return (
-    <WithNativeAttributes
-      {...baseProps}
-      {...labelAttributes}
-      tag="span"
-      componentName="Icon"
-      nativeAttributes={nativeAttributes}
-      ref={mergedRef}
-      style={inlineStyles}
-    >
-      {validIcon ? iconMap(name) : undefined}
-    </WithNativeAttributes>
+    <>
+      <WithNativeAttributes
+        {...baseProps}
+        {...labelAttributes}
+        {...tooltipTextAttributes}
+        tag="span"
+        componentName="Icon"
+        nativeAttributes={nativeAttributes}
+        ref={mergedRef}
+        style={inlineStyles}
+      >
+        {validIcon ? iconMap(name) : undefined}
+      </WithNativeAttributes>
+      {tooltipElement}
+    </>
   );
 };
 
