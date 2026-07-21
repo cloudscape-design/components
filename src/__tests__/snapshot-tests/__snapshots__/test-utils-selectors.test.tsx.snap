@@ -378,6 +378,8 @@ exports[`test-utils selectors 1`] = `
   "input": [
     "awsui_input-button-right_2rhyz",
     "awsui_input-container_2rhyz",
+    "awsui_input-prefix_2rhyz",
+    "awsui_input-suffix_2rhyz",
     "awsui_input_2rhyz",
     "awsui_root_2rhyz",
   ],

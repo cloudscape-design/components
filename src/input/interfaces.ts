@@ -188,6 +188,44 @@ export interface InputProps
    * @awsuiSystem core
    */
   style?: InputProps.Style;
+
+  /**
+   * Short text or symbol rendered in a shaded cell on the leading edge of the
+   * input field, before the editable value.
+   *
+   * Use for contextual decorators such as currency symbols (`$`, `€`),
+   * URL schemes (`https://`), or path prefixes (`/api/v2/`).
+   *
+   * The adornment is purely decorative — it does not mutate the `value` prop
+   * or the `onChange` detail. Ensure the unit is also reflected in the visible
+   * `<FormField>` label so screen reader users receive the same context
+   * (for example, label = "Amount in US dollars", not just "Amount").
+   *
+   * In RTL locales the `prefix` cell appears on the trailing edge.
+   * "prefix" means "before the value" semantically, not "on the left".
+   *
+   * Don't use `prefix` as a substitute for a visible label.
+   *
+   * @see suffix
+   */
+  prefix?: string;
+
+  /**
+   * Short text or symbol rendered in a shaded cell on the trailing edge of
+   * the input field, after the editable value.
+   *
+   * Use for units of measure (`%`, `ms`, `TB/mo`, `GB`, `req/s`, `days`),
+   * currency codes (`USD`, `EUR`), or degree notation (`°C`, `°E`).
+   *
+   * The adornment is purely decorative — it does not mutate the `value` prop
+   * or the `onChange` detail. Ensure the unit is also reflected in the visible
+   * `<FormField>` label (for example, label = "CPU utilization (percent)").
+   *
+   * In RTL locales the `suffix` cell appears on the leading edge.
+   *
+   * @see prefix
+   */
+  suffix?: string;
 }
 
 export namespace InputProps {

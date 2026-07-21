@@ -57,6 +57,9 @@ export interface InternalInputProps
   __skipNativeAttributesWarnings?: SkipWarnings;
   __inlineLabelText?: string;
   __fullWidth?: boolean;
+
+  prefix?: string;
+  suffix?: string;
 }
 
 function InternalInput(
@@ -101,6 +104,8 @@ function InternalInput(
     __inlineLabelText,
     __fullWidth,
     style,
+    prefix,
+    suffix,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -142,6 +147,7 @@ function InternalInput(
       __rightIcon && styles['input-has-icon-right'],
       __leftIcon && styles['input-has-icon-left'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      (prefix !== undefined || suffix !== undefined) && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
         [styles['input-invalid']]: invalid,
@@ -215,6 +221,25 @@ function InternalInput(
     />
   );
 
+  // The input element, optionally wrapped in an inline-label structure.
+  const inputWithLabel = __inlineLabelText ? (
+    <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
+      <label htmlFor={controlId} className={styles['inline-label']}>
+        {__inlineLabelText}
+      </label>
+      <div
+        className={clsx(
+          styles['inline-label-trigger-wrapper'],
+          __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+        )}
+      >
+        {mainInput}
+      </div>
+    </div>
+  ) : (
+    mainInput
+  );
+
   return (
     <div
       {...baseProps}
@@ -230,22 +255,35 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      {__inlineLabelText ? (
-        <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
-          <label htmlFor={controlId} className={styles['inline-label']}>
-            {__inlineLabelText}
-          </label>
-          <div
-            className={clsx(
-              styles['inline-label-trigger-wrapper'],
-              __fullWidth && styles['inline-label-trigger-wrapper-full-width']
-            )}
-          >
-            {mainInput}
-          </div>
+      {prefix !== undefined || suffix !== undefined ? (
+        // One flex bar owns the border, radius, background, and focus ring.
+        // Layout: [prefix][divider][input][divider][suffix]
+        // Dividers only render on sides that have an adornment.
+        <div
+          className={clsx(
+            styles['input-adorned-container'],
+            invalid && styles['input-adorned-container-invalid'],
+            warning && !invalid && styles['input-adorned-container-warning'],
+            disabled && styles['input-adorned-container-disabled'],
+            readOnly && !disabled && styles['input-adorned-container-readonly']
+          )}
+        >
+          {prefix !== undefined && (
+            <span className={styles['input-prefix']} aria-hidden="true">
+              {prefix}
+            </span>
+          )}
+          {prefix !== undefined && <span className={styles['input-adornment-divider']} />}
+          {inputWithLabel}
+          {suffix !== undefined && <span className={styles['input-adornment-divider']} />}
+          {suffix !== undefined && (
+            <span className={styles['input-suffix']} aria-hidden="true">
+              {suffix}
+            </span>
+          )}
         </div>
       ) : (
-        mainInput
+        inputWithLabel
       )}
       {__rightIcon && (
         <span
