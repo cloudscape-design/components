@@ -22,7 +22,6 @@ interface AppLayoutNavigationImplementationProps {
 export function AppLayoutNavigationImplementation({
   appLayoutInternals,
   bottomDrawerReportedSize,
-  // This flag means the "collapse" close behavior is enabled, not that the panel is currently collapsed.
   navigationCollapsible,
 }: AppLayoutNavigationImplementationProps) {
   const {
@@ -43,8 +42,6 @@ export function AppLayoutNavigationImplementation({
     isMobile ? 0 : (bottomDrawerReportedSize ?? 0)
   );
 
-  // The panel is showing its collapsed icon rail: collapse behavior is on, the panel is closed,
-  // and we're on desktop (the rail is not available on mobile).
   const navigationCollapsed = navigationCollapsible && !navigationOpen && !isMobile;
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.

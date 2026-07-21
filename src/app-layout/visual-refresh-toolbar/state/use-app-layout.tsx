@@ -671,8 +671,8 @@ export const useAppLayout = (
       bottomDrawers,
       bottomDrawersFocusControl,
       featureNotificationsProps,
-      navigationCollapsible: navigationCollapsible,
-      navigationCollapsedWidth: navigationCollapsedWidth,
+      navigationCollapsible,
+      navigationCollapsedWidth,
     },
   };
 };
