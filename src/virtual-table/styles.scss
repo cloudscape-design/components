@@ -6,11 +6,24 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+// VirtualTable (F2-A1, logs-specialized) is styled to visually match the existing
+// Cloudscape `Table` BY DEFAULT. Every colour / border / spacing value below is a
+// Cloudscape design token REUSED from the Table component styles
+// (src/table/header-cell/styles.scss and src/table/body-cell/styles.scss) rather
+// than a bespoke value, so the look tracks Table + visual refresh automatically.
+// The virtualization viewport (.scroll-container) scrolls with the NATIVE browser
+// scrollbar — there is no custom / synthetic / overlay scrollbar anywhere.
+// The logs-specialized affordances (toolbar / live-tail follow toggle / mark-in-place
+// indicator column / match navigation / sortable header button) reuse the same Table
+// tokens so they read as part of the same surface.
+
 .root {
   @include styles.styles-reset;
   position: relative;
   display: block;
   inline-size: 100%;
+  // Sit on the container content surface, like a Table inside a Container.
+  background: awsui.$color-background-container-content;
 }
 
 .toolbar {
@@ -27,6 +40,7 @@
 
 .scroll-container {
   position: relative;
+  // Native scrollbar only — no ::-webkit-scrollbar / overlay / synthetic scrollbar.
   overflow: auto;
   inline-size: 100%;
 
@@ -42,27 +56,36 @@
   display: block;
 }
 
+// Header treatment matches Table's thead: table-header surface + a default divider
+// under the header row (Table: border-block-end divider-list-width solid
+// color-border-divider-default).
 .header-row {
   display: flex;
+  background: awsui.$color-background-table-header;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
 }
 
 // Sticky header is opt-in: only pin the header row when the consumer sets stickyHeader.
 // The header stays inside the single scroll container so it scrolls horizontally with
-// the body (header <-> body sync, CW-14) while pinning vertically.
+// the body (header <-> body sync, CW-14) while pinning vertically. Its surface matches
+// the non-sticky header (Table sticky-header look).
 .sticky-header {
   & > .header-rowgroup {
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
-    background: awsui.$color-background-container-content;
+    background: awsui.$color-background-table-header;
   }
 }
 
 .header-cell {
   min-inline-size: 0;
-  font-weight: awsui.$font-weight-bold;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  line-height: awsui.$line-height-heading-xs;
+  // Table cell rhythm: dense vertical padding, space-scaled-l inline padding.
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
 }
 
@@ -75,8 +98,9 @@
   justify-content: center;
 }
 
-// The body is the scroll runway. In the scaffold it renders rows in normal flow; the
-// core replaces this with absolutely-positioned windowed rows over a sized runway.
+// The body is the scroll runway. The core sizes it to the full virtualized height and
+// absolutely positions the windowed rows within it via inline styles (position/offset
+// set in internal.tsx), so this class only provides the runway box.
 .body {
   display: block;
   position: relative;
@@ -92,6 +116,18 @@
 
 .row {
   align-items: center;
+  // Table's per-row divider: the border sits on the row (not the cell) so it always
+  // lands at the row boundary regardless of cell padding / fixed windowed row height.
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+
+  // Selected-row surface, matching Table's selected row (color-background-item-selected
+  // + selected border). F2-A1 has no selection prop today; this is an inert style hook
+  // so a marked row reads identically to Table if a consumer sets the class.
+  &.row-selected {
+    background: awsui.$color-background-item-selected;
+    border-block: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  }
+
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
     outline-offset: -2px;
@@ -107,12 +143,24 @@
 
 .cell {
   min-inline-size: 0;
+  // Default: single line, truncate with an ellipsis. This matches Table's default
+  // (wrapLines = false). Wrapping is available via the cell-wrap hook on measured rows
+  // (getRowHeight: 'auto'), mirroring Table's opt-in wrapLines.
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
+}
+
+// Wrapping affordance (Table wrapLines parity). Apply on cells in rows that opt into
+// measured heights (getRowHeight: 'auto') so wrapped content is measured and windowed
+// correctly — e.g. the raw/file line renderer.
+.cell-wrap {
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-overflow: clip;
 }
 
 .disclosure-button {
@@ -128,12 +176,17 @@
   box-sizing: border-box;
 }
 
+// The expanded region sits on the container content surface with a divider below, so an
+// expanded row reads as a detail panel attached to its data row (Table expandable-rows
+// look), while holding arbitrary non-tabular content (R-EXPAND shapes A/B).
 .expanded-region {
   display: block;
   inline-size: 100%;
   box-sizing: border-box;
+  background: awsui.$color-background-container-content;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   padding-block: awsui.$space-scaled-s;
-  padding-inline: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-l;
 }
 
 .loading,
@@ -169,10 +222,13 @@
   background: awsui.$color-background-item-selected;
 }
 
+// Sortable header trigger: reuse Table's column-header typography so a sortable header
+// matches Table's look rather than a bespoke bold button.
 .sort-button {
   @include styles.styles-reset;
   cursor: pointer;
-  font-weight: awsui.$font-weight-bold;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
   inline-size: 100%;
   text-align: start;
 }
