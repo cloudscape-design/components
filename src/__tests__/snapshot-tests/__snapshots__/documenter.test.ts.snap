@@ -33859,6 +33859,8 @@ specified in the \`i18nStrings\` property.",
 }
 `;
 
+exports[`Components definition for visual-contexts matches the snapshot: visual-contexts 1`] = `undefined`;
+
 exports[`Components definition for wizard matches the snapshot: wizard 1`] = `
 {
   "dashCaseName": "wizard",

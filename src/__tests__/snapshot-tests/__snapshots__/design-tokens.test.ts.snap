@@ -50550,9 +50550,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.",
           "$value": "8px",
         },
+        "border-radius-token-inline": {
+          "$description": "The border radius of inline tokens. For example: multiselect component.",
+          "$value": "4px",
+        },
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-disabled": {
+          "$description": "The border width of action cards in disabled state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -50574,6 +50594,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -50593,6 +50617,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-flashbar-inline-start": {
+          "$description": "The inline-start border width of flash messages in flashbars.",
+          "$value": "0px",
         },
         "border-width-icon-big": {
           "$description": "The visual stroke width of big icons.",
@@ -50614,6 +50642,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
+        "border-width-icon-x-small": {
+          "$description": "The visual stroke width of extra small icons.",
+          "$value": "1.5px",
+        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
@@ -50625,6 +50657,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-action-card-disabled": {
+          "$description": "The background color of action cards in disabled state.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -50638,6 +50698,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
             "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+          },
+        },
+        "color-background-backdrop": {
+          "$description": "The background color of the backdrop shown behind overlay surfaces such as modals and drawers.",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 0.7)",
+            "light": "rgba(15, 20, 26, 0.7)",
+          },
+        },
+        "color-background-badge-blue": {
+          "$description": "The background color of blue badges.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-badge-green": {
+          "$description": "The background color of green badges.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-badge-grey": {
+          "$description": "The background color of grey badges.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-background-badge-icon": {
+          "$description": "The background color of the badge indicator on navigation and panel buttons.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-badge-red": {
+          "$description": "The background color of red badges.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-badge-yellow": {
+          "$description": "The background color of yellow badges.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
           },
         },
         "color-background-button-link-active": {
@@ -50752,6 +50861,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "transparent",
           },
         },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
+          },
+        },
         "color-background-container-content": {
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
@@ -50815,6 +50931,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
+        "color-background-flashbar-error": {
+          "$description": "The background color of error flash messages.",
+          "$value": {
+            "dark": "#db0000",
+            "light": "#db0000",
+          },
+        },
+        "color-background-flashbar-info": {
+          "$description": "The background color of info and in-progress flash messages.",
+          "$value": {
+            "dark": "#006ce0",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-flashbar-success": {
+          "$description": "The background color of success flash messages.",
+          "$value": {
+            "dark": "#00802f",
+            "light": "#00802f",
+          },
+        },
+        "color-background-flashbar-warning": {
+          "$description": "The background color of warning flash messages.",
+          "$value": {
+            "dark": "#ffe347",
+            "light": "#ffe347",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -50845,6 +50996,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel": {
+          "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -51025,6 +51183,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-segment-wrapper": {
+          "$description": "The background color of segmented control wrapper.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-side-navigation-item-active": {
+          "$description": "The background color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-slider-handle-active": {
           "$description": "The background color of the slider handle in active state.",
           "$value": {
@@ -51088,6 +51260,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-tiles-disabled": {
+          "$description": "The background color of disabled tiles.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-toggle-button-normal-hover": {
+          "$description": "The background color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -51102,6 +51295,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#002b66",
           },
         },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-board-placeholder-active": {
           "$description": "The color of board placeholder in active state.",
           "$value": {
@@ -51114,6 +51314,104 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-border-action-card-disabled": {
+          "$description": "The border color of action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -51305,6 +51603,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-wrapper": {
+          "$description": "The border color of the segmented control wrapper.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-status-error": {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": {
@@ -51331,6 +51636,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#fbd332",
             "light": "#fbd332",
+          },
+        },
+        "color-border-toggle-button-normal-default": {
+          "$description": "The default border color of normal toggle buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-border-toggle-button-normal-hover": {
+          "$description": "The border color of normal toggle buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -52509,6 +52828,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-shadow-toggle-handle": {
+          "$description": "The color of the drop shadow under the toggle handle.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.25)",
+            "light": "rgba(0, 0, 0, 0.25)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -52516,11 +52842,81 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-text-action-card-disabled": {
+          "$description": "The text color of action cards in disabled state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -52663,6 +53059,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -52712,8 +53115,36 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-default": {
+          "$description": "The default color of the expandable section header text.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-expandable-section-hover": {
+          "$description": "The color of the expandable section header text in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-expandable-section-navigation-icon-default": {
+          "$description": "The default color of the expand icon in the navigation variant of the expandable section.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -52766,6 +53197,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
           },
         },
         "color-text-input-disabled": {
@@ -52864,6 +53302,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-link-decoration-default": {
+          "$description": "The default color of the text decoration (underline) of links. Defaults to the link text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
+          },
+        },
+        "color-text-link-decoration-hover": {
+          "$description": "The hover color of the text decoration (underline) of links. Defaults to the link hover text color.",
+          "$value": {
+            "dark": "currentColor",
+            "light": "currentColor",
           },
         },
         "color-text-link-default": {
@@ -52971,6 +53423,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#75cfff",
           },
         },
+        "color-text-side-navigation-item-active": {
+          "$description": "The text color of an active (highlighted) side navigation item.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-text-status-error": {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": {
@@ -53062,6 +53521,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for large display text.",
           "$value": "42px",
         },
+        "font-size-display-xl": {
+          "$description": "The default font size for extra large display text.",
+          "$value": "64px",
+        },
         "font-size-heading-l": {
           "$description": "The default font size for h2s.",
           "$value": "20px",
@@ -53101,6 +53564,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
+        },
+        "font-weight-display-xl": {
+          "$description": "The default font weight for extra large display text.",
+          "$value": "400",
         },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
@@ -53150,6 +53617,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
         },
+        "letter-spacing-display-xl": {
+          "$description": "The default letter spacing for extra large display text.",
+          "$value": "-0.03em",
+        },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
           "$value": "-0.015em",
@@ -53181,6 +53652,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-display-l": {
           "$description": "The default line height for large display text.",
           "$value": "48px",
+        },
+        "line-height-display-xl": {
+          "$description": "The default line height for extra large display text.",
+          "$value": "72px",
         },
         "line-height-heading-l": {
           "$description": "The default line height for h2s.",
@@ -53311,11 +53786,46 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-item-height": {
+          "$description": "The minimum height of side navigation items.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "24px",
+          },
+        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
             "comfortable": "32px",
             "compact": "28px",
+          },
+        },
+        "space-action-card-horizontal-default": {
+          "$description": "The default horizontal padding inside an action card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside an embedded action card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-action-card-vertical-default": {
+          "$description": "The default vertical padding inside an action card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-action-card-vertical-embedded": {
+          "$description": "The vertical padding inside an embedded action card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-alert-vertical": {
@@ -53462,6 +53972,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The XXXS spacing unit which scales between modes.",
           "$value": {
             "comfortable": "2px",
+            "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-gap": {
+          "$description": "The vertical gap between side navigation items.",
+          "$value": {
+            "comfortable": "0px",
             "compact": "0px",
           },
         },
