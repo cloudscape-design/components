@@ -65,15 +65,6 @@ $dropdown-trigger-icon-offset: 2px;
   }
 }
 
-// Removes the trigger's vertical padding and borders so an `icon`-variant trigger matches the
-// compact `inline-icon` footprint. The class is doubled to override the button variant styles
-// (`.button.variant-icon`), which button-dropdown CSS is loaded after.
-.compact-trigger.compact-trigger {
-  padding-block: 0;
-  border-block-width: 0;
-  border-inline-width: 0;
-}
-
 .split-trigger-wrapper {
   display: flex;
 

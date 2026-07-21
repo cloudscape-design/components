@@ -82,12 +82,12 @@ export default function MultiColumnSortPage() {
   >();
 
   // `multiSort` defaults to on; the rest default to off.
-  const multiSortEnabled = urlParams.multiSort !== 'false' && urlParams.multiSort !== false;
-  const selectionEnabled = urlParams.selection === true || urlParams.selection === 'true';
-  const groupedEnabled = urlParams.grouped === true || urlParams.grouped === 'true';
-  const paginationEnabled = urlParams.pagination === true || urlParams.pagination === 'true';
-  const longNamesEnabled = urlParams.longNames === true || urlParams.longNames === 'true';
-  const resizableEnabled = urlParams.resizable === true || urlParams.resizable === 'true';
+  const multiSortEnabled = urlParams.multiSort !== false;
+  const selectionEnabled = !!urlParams.selection;
+  const groupedEnabled = !!urlParams.grouped;
+  const paginationEnabled = !!urlParams.pagination;
+  const longNamesEnabled = !!urlParams.longNames;
+  const resizableEnabled = !!urlParams.resizable;
 
   const { items, collectionProps, paginationProps } = useCollection(allItems, {
     sorting: multiSortEnabled

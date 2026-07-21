@@ -7,7 +7,7 @@ import InternalButtonDropdown from '../../../lib/components/button-dropdown/inte
 import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/internal-interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import styles from '../../../lib/components/button-dropdown/styles.css.js';
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 
 const items: InternalButtonDropdownProps['items'] = [{ id: 'one', text: 'One' }];
 
@@ -16,12 +16,12 @@ function renderDropdown(props: Partial<InternalButtonDropdownProps>) {
   return createWrapper(container).findButtonDropdown()!;
 }
 
-test('applies the compact-trigger class to the trigger button when compactTrigger is set', () => {
+test('applies the button-compact class to the trigger button when compactTrigger is set', () => {
   const wrapper = renderDropdown({ compactTrigger: true });
-  expect(wrapper.findNativeButton().getElement()).toHaveClass(styles['compact-trigger']);
+  expect(wrapper.findNativeButton().getElement()).toHaveClass(buttonStyles['button-compact']);
 });
 
-test('does not apply the compact-trigger class by default', () => {
+test('does not apply the button-compact class by default', () => {
   const wrapper = renderDropdown({});
-  expect(wrapper.findNativeButton().getElement()).not.toHaveClass(styles['compact-trigger']);
+  expect(wrapper.findNativeButton().getElement()).not.toHaveClass(buttonStyles['button-compact']);
 });

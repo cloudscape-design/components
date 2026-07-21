@@ -68,6 +68,16 @@ const ariaLabels: TableProps.AriaLabels<Item> = {
   itemSelectionLabel: (_data, item) => `Select ${item.name}`,
 };
 
+function getTableLabel(permutation: TableProps<Item>, index: number) {
+  const sortingCount = permutation.multiColumnSort?.sortingColumns.length ?? 0;
+  const sortingDescription = sortingCount === 0 ? 'no active sort' : `${sortingCount}-column sort`;
+  const selectionDescription = permutation.selectionType ? `${permutation.selectionType} selection` : 'no selection';
+  const resizingDescription = permutation.resizableColumns ? 'resizable columns' : 'fixed columns';
+  const wrappingDescription = permutation.wrapLines ? 'wrapped lines' : 'unwrapped lines';
+
+  return `Multi-column sort example ${index + 1}: ${sortingDescription}, ${selectionDescription}, ${resizingDescription}, ${wrappingDescription}`;
+}
+
 const permutations = createPermutations<TableProps<Item>>([
   {
     selectionType: [undefined, 'multi'],
@@ -111,11 +121,8 @@ export default function MultiColumnSortPermutationsPage() {
     <PermutationsPage title="Table multi-column sort permutations" i18n={{}}>
       <PermutationsView
         permutations={permutations}
-        render={permutation => (
-          <Table
-            {...permutation}
-            ariaLabels={{ ...ariaLabels, tableLabel: `Items ${permutations.indexOf(permutation)}` }}
-          />
+        render={(permutation, index = 0) => (
+          <Table {...permutation} ariaLabels={{ ...ariaLabels, tableLabel: getTableLabel(permutation, index) }} />
         )}
       />
     </PermutationsPage>
