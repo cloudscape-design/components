@@ -163,6 +163,7 @@ export function TokenEditor({
             operator={groups[index].operator}
             onChangeOperator={groups[index].onChangeOperator}
             i18nStrings={i18nStrings}
+            filteringProperties={filteringProperties}
             freeTextFiltering={freeTextFiltering}
             triggerVariant={supportsGroups ? 'label' : 'option'}
           />

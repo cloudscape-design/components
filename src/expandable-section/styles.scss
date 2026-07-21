@@ -18,7 +18,7 @@ $icon-margin-right-small: calc(awsui.$space-xs - awsui.$space-xxxs);
 $icon-margin-right-medium: awsui.$space-xs;
 $icon-offset-inline: awsui.$space-xxs;
 $icon-offset-block: awsui.$space-xxxs;
-$icon-offset-container: 3px;
+$icon-offset-container: awsui.$space-xxs;
 
 // Total space occupied by the expand icon on the left and its margins.
 // Useful to keep elements correctly aligned.

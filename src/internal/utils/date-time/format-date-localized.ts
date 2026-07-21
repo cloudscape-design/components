@@ -3,6 +3,7 @@
 import { isValid, parseISO } from 'date-fns';
 
 import { formatTimeOffsetLocalized } from './format-time-offset';
+import { getDateTimeFormat } from './intl-date-time-format-cache';
 
 export default function formatDateLocalized({
   date: isoDate,
@@ -26,7 +27,7 @@ export default function formatDateLocalized({
   }
 
   if (isMonthOnly) {
-    const formattedMonthDate = new Intl.DateTimeFormat(locale, {
+    const formattedMonthDate = getDateTimeFormat(locale, {
       month: 'long',
       year: 'numeric',
     }).format(date);
@@ -34,7 +35,7 @@ export default function formatDateLocalized({
     return formattedMonthDate;
   }
 
-  const formattedDate = new Intl.DateTimeFormat(locale, {
+  const formattedDate = getDateTimeFormat(locale, {
     month: 'long',
     year: 'numeric',
     day: 'numeric',
@@ -44,7 +45,7 @@ export default function formatDateLocalized({
     return formattedDate;
   }
 
-  const formattedTime = new Intl.DateTimeFormat(locale, {
+  const formattedTime = getDateTimeFormat(locale, {
     hour: '2-digit',
     hourCycle: 'h23',
     minute: '2-digit',

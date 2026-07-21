@@ -23229,7 +23229,13 @@ const filteringOptions = [
 * groupValuesLabel [string]: Localized string to display for the 'Values' group label for a specific property.
 * key [string]: The identifier of this property.
 * propertyLabel [string]: A human-readable string for the property.
-* operators [Array]: A list of all operators supported by this property. If you omit the equals operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* operators [Array]: A list of all operators supported by this property. Built-in operators are always shown first in their standard order; custom operators are appended after them. If you omit the equals operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list. Each entry is either an operator string (for example, \`=\`, \`!=\`, \`:\`, \`>\`), or an object that customizes the operator with the following properties:
+  * \`operator\` [string]: The operator string. In addition to the built-in operators, you can define a custom operator string, for example \`~\` or \`in\`.
+  * \`match\` ['date' | 'datetime' | function]: Overrides how items are matched for this operator. Use \`'date'\` or \`'datetime'\` for the built-in date matchers, or a function \`(itemValue, tokenValue) => boolean\` for custom matching. When you use a custom operator string, provide a \`match\` function; otherwise there is no matcher for it and items are not filtered by that operator.
+  * \`description\` [string]: A human-readable description shown next to the operator in the operator dropdown. Use it to describe a custom operator, or to override the built-in description of a predefined operator (for example, describing \`>\` as "After" for a date property).
+  * \`tokenType\` ['value' | 'enum']: The type of value input rendered for this operator.
+  * \`format\` [function]: A function \`(value) => string\` used to format the token value for display.
+  * \`form\` [ReactNode]: A custom form used to enter the token value.
 * group [string]: Optional identifier of a custom group that this filtering option is assigned to. Use to create additional groups below the default one. Make sure to also define labels for the group in the customGroupsText property. Notice that only one level of options nesting is supported.
 * defaultOperator [ComparisonOperator]: Optional parameter that changes the default operator used with this filtering property. Use it only if your API does not support "equals" filtering terms with this property.",
       "name": "filteringProperties",
@@ -23266,7 +23272,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
     {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 
-* operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* operators [Array]: A list of all operators supported for free text filtering. Each entry is either an operator string, or an object with an \`operator\` string and an optional \`match\` function \`(item, text) => boolean\` for custom matching. Custom operator strings are supported and are appended after the built-in operators. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
 * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.",
       "inlineType": {
         "name": "PropertyFilterFreeTextFiltering",
