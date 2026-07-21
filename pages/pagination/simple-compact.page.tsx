@@ -30,7 +30,7 @@ export default function PaginationSimplePage() {
         <h1>Pagination simple compact</h1>
         <h2>Compact pagination with 20 pages (default &quot;# of #&quot; format)</h2>
         <Pagination
-          variant="compact"
+          pagesVariant="compact"
           currentPageIndex={compactPageIndex}
           pagesCount={20}
           ariaLabels={paginationLabels}
@@ -39,7 +39,7 @@ export default function PaginationSimplePage() {
 
         <h2>Compact pagination with 20 pages without the paginationLabel</h2>
         <Pagination
-          variant="compact"
+          pagesVariant="compact"
           currentPageIndex={compactJumpPageIndex}
           pagesCount={20}
           ariaLabels={paginationLabelsWithout}

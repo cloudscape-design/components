@@ -258,7 +258,7 @@
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page out of range. Showing last available page.",
     "i18nStrings.jumpToPageLoadingText": "Loading",
-    "i18nStrings.compactPageCounterText": "{currentPageIndex} of {pagesCount}"
+    "i18nStrings.pagesCompactText": "{currentPage} of {pagesCount}{openEnd, select, true {+} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",

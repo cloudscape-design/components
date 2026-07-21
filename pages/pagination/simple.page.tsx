@@ -19,7 +19,7 @@ const i18nStrings: PaginationProps.I18nStrings = {
   jumpToPageInputLabel: 'Page number',
   jumpToPageError: 'Enter a valid page number',
   jumpToPageLoadingText: 'Loading page',
-  compactPageCounterText: (currentPageIndex, pagesCount) => `${currentPageIndex} / ${pagesCount}`,
+  pagesCompactText: ({ currentPage, pagesCount, openEnd }) => `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`,
 };
 
 export default function PaginationSimplePage() {
@@ -52,7 +52,7 @@ export default function PaginationSimplePage() {
 
         <h2>Compact pagination with 20 pages (default &quot;# of #&quot; format)</h2>
         <Pagination
-          variant="compact"
+          pagesVariant="compact"
           currentPageIndex={compactPageIndex}
           pagesCount={20}
           ariaLabels={paginationLabels}
@@ -61,7 +61,7 @@ export default function PaginationSimplePage() {
 
         <h2>Compact pagination with jump to page (custom &quot;# / #&quot; format)</h2>
         <Pagination
-          variant="compact"
+          pagesVariant="compact"
           currentPageIndex={compactJumpPageIndex}
           pagesCount={20}
           ariaLabels={paginationLabels}

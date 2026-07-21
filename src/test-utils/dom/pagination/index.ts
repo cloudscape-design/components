@@ -49,14 +49,11 @@ export default class PaginationWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the visible text element of the compact page counter (for example, `3 of 12`),
-   * or `null` when the component is not rendered with `variant="compact"`.
-   *
-   * The returned element excludes the visually hidden screen reader name, so
-   * `getElement().textContent` reflects only the on-screen counter text.
+   * Returns the visible text for compact pages (for example, `3 of 12` or `3 of 12+`),
+   * or `null` when `pagesVariant` is not set to `compact`.
    */
-  findCompactPageCounter(): ElementWrapper | null {
-    return this.findByClassName(paginationTestUtilsStyles['compact-page-counter-text']);
+  findPagesCompactText(): ElementWrapper | null {
+    return this.findByClassName(paginationTestUtilsStyles['pages-compact-text']);
   }
 
   /**

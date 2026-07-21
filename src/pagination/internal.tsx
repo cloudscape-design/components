@@ -115,7 +115,7 @@ const InternalPagination = React.forwardRef(
       i18nStrings,
       pagesCount,
       disabled,
-      variant = 'default',
+      pagesVariant = 'normal',
       onChange,
       onNextPageClick,
       onPreviousPageClick,
@@ -153,14 +153,21 @@ const InternalPagination = React.forwardRef(
       i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
       ((pageNumber: number) => `${pageNumber}`);
 
-    // Visible counter. The worded "N of M" default comes from the i18n catalog; the neutral `# / #`
-    // fallback (no translatable words) only applies when no i18n provider is present.
-    const compactPageCounterText =
+    // The localized default describes the known page count. The language-neutral fallback is used when no i18n
+    // provider or direct override is available.
+    const pagesCompactText =
       i18n(
-        'i18nStrings.compactPageCounterText',
-        i18nStrings?.compactPageCounterText,
-        format => (currentPageIndex, pagesCount) => format({ currentPageIndex, pagesCount })
-      ) ?? ((current: number, total: number) => `${current} / ${total}`);
+        'i18nStrings.pagesCompactText',
+        i18nStrings?.pagesCompactText,
+        format => options =>
+          format({
+            currentPage: options.currentPage,
+            pagesCount: options.pagesCount,
+            openEnd: `${options.openEnd}`,
+          })
+      ) ??
+      (({ currentPage, pagesCount, openEnd }: { currentPage: number; pagesCount: number; openEnd: boolean }) =>
+        `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`);
 
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
@@ -259,10 +266,10 @@ const InternalPagination = React.forwardRef(
         >
           <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
         </PageButton>
-        {variant === 'compact' ? (
-          <li aria-disabled={disabled} className={styles['compact-page-counter']}>
-            <span className={testUtilStyles['compact-page-counter-text']}>
-              {compactPageCounterText(currentPageIndex, pagesCount)}
+        {pagesVariant === 'compact' ? (
+          <li aria-disabled={disabled} className={styles['pages-compact']}>
+            <span className={testUtilStyles['pages-compact-text']}>
+              {pagesCompactText({ currentPage: currentPageIndex, pagesCount, openEnd: !!openEnd })}
             </span>
           </li>
         ) : (

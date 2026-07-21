@@ -21,7 +21,7 @@ const i18nStrings: PaginationProps.I18nStrings = {
   jumpToPageInputLabel: 'Page number',
   jumpToPageError: 'Enter a valid page number',
   jumpToPageLoadingText: 'Loading page',
-  compactPageCounterText: (currentPageIndex, pagesCount) => `${currentPageIndex} / ${pagesCount}`,
+  pagesCompactText: ({ currentPage, pagesCount, openEnd }) => `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`,
 };
 
 const permutations = createPermutations<PaginationProps>([
@@ -40,8 +40,9 @@ const permutations = createPermutations<PaginationProps>([
     jumpToPage: [undefined, { loading: false }, { loading: true }],
   },
   {
-    variant: ['compact'],
+    pagesVariant: ['compact'],
     currentPageIndex: [1, 6, 15],
+    openEnd: [true, false],
     pagesCount: [15],
     disabled: [true, false],
     ariaLabels: [paginationLabels],
