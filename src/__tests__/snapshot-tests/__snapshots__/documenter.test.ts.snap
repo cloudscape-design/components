@@ -1564,11 +1564,12 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     },
     {
       "description": "Determines whether the navigation panel collapses or hides completely when closed.
+Defaults to \`hide\` if not specified.
+
 When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
 at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
 \`collapsed\` property of the side navigation component. On mobile viewports the rail
-is not available and the closed navigation is completely hidden.
-Defaults to \`hide\` if not specified.",
+is not available and the closed navigation is completely hidden.",
       "inlineType": {
         "name": ""hide" | "collapse"",
         "type": "union",
@@ -2140,11 +2141,12 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     },
     {
       "description": "Determines whether the navigation panel collapses or hides completely when closed.
+Defaults to \`hide\` if not specified.
+
 When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
 at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
 \`collapsed\` property of the side navigation component. On mobile viewports the rail
-is not available and the closed navigation is completely hidden.
-Defaults to \`hide\` if not specified.",
+is not available and the closed navigation is completely hidden.",
       "inlineType": {
         "name": ""hide" | "collapse"",
         "type": "union",
