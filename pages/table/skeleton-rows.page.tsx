@@ -36,13 +36,14 @@ type SelectionMode = 'none' | 'single' | 'multi';
 
 export default function TableSkeletonRowsPage() {
   const { urlParams, setUrlParams } = useAppContext<
-    'loadingState' | 'skeletonRows' | 'dataRows' | 'stripedRows' | 'selectionMode'
+    'loadingState' | 'skeletonRows' | 'dataRows' | 'stripedRows' | 'selectionMode' | 'autoSkeletonRows'
   >();
 
   const loadingState = (urlParams.loadingState || 'skeleton') as LoadingState;
   const skeletonRowsCount = String(urlParams.skeletonRows || '5');
   const dataRowsCount = String(urlParams.dataRows || '10');
   const stripedRows = urlParams.stripedRows !== 'false' && urlParams.stripedRows !== false;
+  const autoSkeletonRows = urlParams.autoSkeletonRows === true || urlParams.autoSkeletonRows === 'true';
   const selectionMode = (urlParams.selectionMode || 'multi') as SelectionMode;
 
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
@@ -135,6 +136,12 @@ export default function TableSkeletonRowsPage() {
                 >
                   Striped rows
                 </Checkbox>
+                <Checkbox
+                  checked={autoSkeletonRows}
+                  onChange={({ detail }) => setUrlParams({ autoSkeletonRows: detail.checked })}
+                >
+                  Fill the viewport automatically
+                </Checkbox>
               </FormField>
             </ColumnLayout>
           </SpaceBetween>
@@ -144,7 +151,13 @@ export default function TableSkeletonRowsPage() {
           columnDefinitions={columnDefinitions}
           items={items}
           enableKeyboardNavigation={true}
-          skeleton={loadingState === 'skeleton' ? { totalRows: skeletonRows } : undefined}
+          skeleton={
+            loadingState === 'skeleton'
+              ? autoSkeletonRows
+                ? { totalRows: 'auto', maxAutoRows: 10 }
+                : { totalRows: skeletonRows }
+              : undefined
+          }
           loading={loadingState !== 'data'}
           loadingText="Loading items..."
           empty="No items to display"

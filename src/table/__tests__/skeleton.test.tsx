@@ -95,4 +95,51 @@ describe('Table skeleton loading', () => {
       expect(wrapper.getElement().textContent).toContain('Loading more');
     });
   });
+
+  describe('automatic rows', () => {
+    const originalClientHeight = document.documentElement.clientHeight;
+
+    beforeEach(() => {
+      Object.defineProperty(document.documentElement, 'clientHeight', { configurable: true, value: 400 });
+      jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+        if (this.matches('tr[aria-hidden="true"]')) {
+          return { top: 200, bottom: 240, height: 40 } as DOMRect;
+        }
+        if (this.querySelector('tbody')) {
+          return { top: 0, bottom: 300, height: 300 } as DOMRect;
+        }
+        return { top: 0, bottom: 0, height: 0 } as DOMRect;
+      });
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+      Object.defineProperty(document.documentElement, 'clientHeight', {
+        configurable: true,
+        value: originalClientHeight,
+      });
+    });
+
+    test('fills the viewport automatically', () => {
+      const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto' } });
+
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+    });
+
+    test('respects maxAutoRows', () => {
+      const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto', maxAutoRows: 2 } });
+
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+    });
+
+    test('adds automatic skeleton rows after partial data', () => {
+      const wrapper = renderTable({
+        items: defaultItems,
+        loading: true,
+        skeleton: { totalRows: 'auto', maxAutoRows: 2 },
+      });
+
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+    });
+  });
 });

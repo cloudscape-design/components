@@ -44,3 +44,37 @@ test('reports cellVerticalAlign and columnDefinitionsVerticalAlign correctly', (
     expect.anything()
   );
 });
+test('reports automatic skeleton configuration', () => {
+  render(<Table columnDefinitions={[]} items={[]} loading={true} skeleton={{ totalRows: 'auto', maxAutoRows: 10 }} />);
+
+  expect(useBaseComponentSpy).toHaveBeenCalledWith(
+    'Table',
+    {
+      props: expect.anything(),
+      metadata: expect.objectContaining({
+        hasSkeleton: true,
+        skeletonAutoRows: true,
+        skeletonMaxAutoRows: 10,
+        skeletonTotalRows: null,
+      }),
+    },
+    expect.anything()
+  );
+});
+
+test('does not report an automatic row cap for fixed skeleton rows', () => {
+  render(<Table columnDefinitions={[]} items={[]} loading={true} skeleton={{ totalRows: 5 }} />);
+
+  expect(useBaseComponentSpy).toHaveBeenCalledWith(
+    'Table',
+    {
+      props: expect.anything(),
+      metadata: expect.objectContaining({
+        skeletonAutoRows: false,
+        skeletonMaxAutoRows: null,
+        skeletonTotalRows: 5,
+      }),
+    },
+    expect.anything()
+  );
+});

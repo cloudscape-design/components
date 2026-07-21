@@ -67,6 +67,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * - `totalRows` (number) - The total number of rows that should be rendered. If `items`
    *    are also provided, those items will be rendered first, and `totalRows - items.length`
    *    additional skeleton rows rendered after.
+   * - `totalRows` ('auto') - The number of skeleton rows is calculated from the available viewport height.
+   * - `maxAutoRows` (number) - Limits the number of rows rendered when `totalRows` is set to `'auto'`.
    */
   skeleton?: TableProps.SkeletonConfig;
 
@@ -706,9 +708,7 @@ export namespace TableProps {
     item: T;
   }
 
-  export interface SkeletonConfig {
-    totalRows: number;
-  }
+  export type SkeletonConfig = { totalRows: number; maxAutoRows?: never } | { totalRows: 'auto'; maxAutoRows?: number };
 }
 
 export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
