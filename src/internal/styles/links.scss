@@ -59,6 +59,8 @@
 /* Style used for links in slots/components that are text heavy, to help links stand out among
 surrounding text. (WCAG F73) https://www.w3.org/WAI/WCAG21/Techniques/failures/F73#description */
 @mixin link-inline($font-size: 'inherit') {
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
   @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
   @include link-variant-style(map.get(constants.$link-variants, 'primary'));
 }
