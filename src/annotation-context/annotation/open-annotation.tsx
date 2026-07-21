@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { HotspotProps } from '../../hotspot/interfaces';
+import { usePortalContainer } from '../../internal/hooks/use-portal-container';
 import { AnnotationContextProps } from '../interfaces';
 import { AnnotationPopover } from './annotation-popover';
 import AnnotationTrigger from './annotation-trigger';
@@ -61,6 +62,7 @@ export function OpenAnnotation({
   i18nStrings,
 }: AnnotationProps) {
   const trackRef = useRef<HTMLButtonElement>(null);
+  const portalContainer = usePortalContainer(() => trackRef.current);
 
   return (
     <>
@@ -72,7 +74,7 @@ export function OpenAnnotation({
         totalLocalSteps={totalLocalSteps}
         taskLocalStepIndex={taskLocalStepIndex}
       />
-      <Portal>
+      <Portal container={portalContainer}>
         <AnnotationPopover
           trackRef={trackRef}
           previousButtonEnabled={previousButtonEnabled}
