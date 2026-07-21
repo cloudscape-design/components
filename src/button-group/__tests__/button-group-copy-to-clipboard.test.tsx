@@ -18,7 +18,7 @@ const copyItem: ButtonGroupProps.IconCopyToClipboard = {
 function renderButtonGroup(props: Partial<ButtonGroupProps>) {
   const { container } = render(<ButtonGroup variant="icon" ariaLabel="Chat actions" items={[copyItem]} {...props} />);
   const wrapper = createWrapper(container).findButtonGroup()!;
-  const copyToClipboard = wrapper.findButtonById('copy')!;
+  const copyToClipboard = wrapper.findCopyToClipboardById('copy')!;
   return { wrapper, copyToClipboard };
 }
 
