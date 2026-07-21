@@ -355,7 +355,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
-    "navigationCollapsed": false,
+    "navigationCollapsible": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -1224,7 +1224,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
-    "navigationCollapsed": false,
+    "navigationCollapsible": false,
   },
   "AppLayoutNotificationsImplementation" => {
     "appLayoutInternals": {
@@ -2295,7 +2295,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
-    "navigationCollapsed": false,
+    "navigationCollapsible": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
