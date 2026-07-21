@@ -154,6 +154,16 @@ export function ColumnWidthsProvider({
     };
   };
 
+  // Mirrors the current primary cell widths onto the sticky header copies.
+  const syncStickyColumnWidths = useStableCallback(() => {
+    for (const { id } of visibleColumns) {
+      const element = stickyCellsRef.current.get(id);
+      if (element) {
+        setElementWidths(element, getColumnStyles(true, id));
+      }
+    }
+  });
+
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
@@ -180,13 +190,25 @@ export function ColumnWidthsProvider({
     }
 
     // Sticky column widths must always be synchronized regardless of columnWidths state.
-    for (const { id } of visibleColumns) {
-      const element = stickyCellsRef.current.get(id);
-      if (element) {
-        setElementWidths(element, getColumnStyles(true, id));
-      }
-    }
+    syncStickyColumnWidths();
   });
+
+  // Re-syncs the sticky header copies when the primary cells change width without a
+  // corresponding change to the column definitions. This happens with auto-layout
+  // columns whose widths depend on the rendered content (e.g. paginating or filtering).
+  // Fixed-width and resizable columns don't resize on data changes, so this stays idle.
+  // The effect re-observes when the set of visible columns changes, since that swaps
+  // the underlying cell elements.
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const observer = new ResizeObserver(() => syncStickyColumnWidths());
+    for (const element of cellsRef.current.values()) {
+      observer.observe(element);
+    }
+    return () => observer.disconnect();
+  }, [syncStickyColumnWidths, visibleColumns]);
 
   // Observes container size and requests an update to the last cell width as it depends on the container's width.
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {

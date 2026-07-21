@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { attachment, step } from 'allure-js-commons';
 
-import { RawScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-
 import createWrapper from '../../lib/components/test-utils/selectors';
+import VisualTestPageObject from './page-object';
 import {
   captureSingleScreenshot,
   compareScreenshots,
@@ -13,8 +12,6 @@ import {
 } from './screenshot-utils';
 import { TestDefinition, TestSuite } from './types';
 const defaultWindowSize = { width: 1200, height: 800 };
-
-const tolerance = 0;
 
 // NEW_HOST serves the PR's pages, OLD_HOST serves the baseline (main) pages.
 const newHost = process.env.NEW_HOST || 'http://localhost:8080';
@@ -45,7 +42,7 @@ async function attachDiffImages(result: CropAndCompareResult, testName: string):
 
 async function preparePage(
   browser: WebdriverIO.Browser,
-  page: RawScreenshotPageObject,
+  page: VisualTestPageObject,
   url: string,
   testDef: TestDefinition,
   windowSize?: { width?: number; height?: number }
@@ -95,10 +92,12 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
     const browser = getBrowser();
-    const page = new RawScreenshotPageObject(browser);
+    const page = new VisualTestPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
+
+    const tolerance = testDef.pixelDiffTolerance ?? 0;
 
     if (testDef.screenshotType === 'permutations') {
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
