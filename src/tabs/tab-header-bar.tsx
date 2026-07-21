@@ -16,8 +16,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
+import InternalDragHandle from '../internal/components/drag-handle';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
-import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
+import SortableArea, { SortableAreaProps } from '../internal/components/sortable-area';
+import { fireNonCancelableEvent, hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -25,6 +27,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import InternalLiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -33,6 +36,12 @@ import {
 } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
 import {
+  formatTabMovedAcrossLists,
+  formatTabReorderCommitted,
+  formatTabReorderMoved,
+  formatTabReorderStarted,
+} from './reorder-live-announcements';
+import {
   hasHorizontalOverflow,
   hasInlineEndOverflow,
   hasInlineStartOverflow,
@@ -40,6 +49,7 @@ import {
   scrollIntoView,
 } from './scroll-utils';
 import { getTabContainerStyles, getTabStyles } from './styles';
+import useCrossListReorder from './use-cross-list-reorder';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -86,6 +96,13 @@ interface TabHeaderBarProps {
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
   style?: TabsProps['style'];
+  reorderable?: boolean;
+  onReorder?: TabsProps['onReorder'];
+  addTabButton?: boolean;
+  onAddTab?: TabsProps['onAddTab'];
+  tabsId: string;
+  reorderGroup?: string;
+  onTabMove?: TabsProps['onTabMove'];
 }
 
 export function TabHeaderBar({
@@ -100,6 +117,13 @@ export function TabHeaderBar({
   keyboardActivationMode,
   actions,
   style,
+  reorderable = false,
+  onReorder,
+  addTabButton = false,
+  onAddTab,
+  tabsId,
+  reorderGroup,
+  onTabMove,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -120,8 +144,60 @@ export function TabHeaderBar({
   const [focusedTabId, setFocusedTabId] = useState(activeTabId);
   const [previousActiveTabId, setPreviousActiveTabId] = useState<string | undefined>(activeTabId);
   const hasActionOrDismissible = tabs.some(tab => tab.action || tab.dismissible);
-  const hadActionOrDismissible = usePrevious(hasActionOrDismissible);
-  const tabActionAttributes = hasActionOrDismissible
+  const isApplicationMode = hasActionOrDismissible || reorderable;
+  const hadApplicationMode = usePrevious(isApplicationMode);
+
+  // Selects an adjacent tab after the active tab leaves this (source) list in a cross-list move,
+  // so focus/selection never lands on nothing.
+  const selectAdjacentAfterRemoval = (removedTabId: string, remainingTabIds: string[]) => {
+    if (activeTabId !== removedTabId || remainingTabIds.length === 0) {
+      return;
+    }
+    const removedIndex = tabs.findIndex(tab => tab.id === removedTabId);
+    const nextIndex = Math.min(Math.max(removedIndex, 0), remainingTabIds.length - 1);
+    const nextTabId = remainingTabIds[nextIndex];
+    if (nextTabId) {
+      setPreviousActiveTabId(nextTabId);
+      setFocusedTabId(nextTabId);
+      onChange({ activeTabId: nextTabId, activeTabHref: tabs.find(tab => tab.id === nextTabId)?.href });
+    }
+  };
+
+  const focusTabDragHandle = (tabId: string) => {
+    const handle = containerObjectRef.current?.querySelector<HTMLElement>(
+      `[data-testid="awsui-tab-drag-handle-${tabId}"] [role="button"]`
+    );
+    handle?.focus();
+  };
+
+  const resolvedMovedAcrossLists = i18n(
+    'i18nStrings.liveAnnouncementTabMovedAcrossLists',
+    i18nStrings?.liveAnnouncementTabMovedAcrossLists,
+    formatTabMovedAcrossLists
+  );
+
+  const {
+    active: crossListActive,
+    dropIndicatorOffset,
+    liveMessage: crossListLiveMessage,
+    onReorderStart,
+    onReorderMove,
+    onReorderEnd,
+    onReorderCancel,
+    handleDragHandleKeyDown,
+  } = useCrossListReorder({
+    reorderable,
+    reorderGroup,
+    tabsId,
+    containerRef: containerObjectRef,
+    tabRefs,
+    tabs,
+    onTabMove,
+    selectAdjacentAfterRemoval,
+    focusTabDragHandle,
+    formatMovedAcrossLists: (targetPosition, targetTotal) => resolvedMovedAcrossLists?.(targetPosition, targetTotal),
+  });
+  const tabActionAttributes = isApplicationMode
     ? {
         role: 'application',
         'aria-roledescription': i18n(
@@ -134,14 +210,14 @@ export function TabHeaderBar({
       };
 
   useEffect(() => {
-    if (hadActionOrDismissible && !hasActionOrDismissible) {
+    if (hadApplicationMode && !isApplicationMode) {
       // when tabs becomes non-dismissible (e.g. when all dismissible tabs are removed),
-      // the hasActionOrDismissible is changing which causing tabs to re-mount to the React tree,
+      // the isApplicationMode is changing which causes tabs to re-mount to the React tree,
       // which, in turn, causes losing their refs, and the nextActive.focus() function inside handleDismiss does not focus on the next tab
       // so this code does
       getNextFocusTarget()?.focus();
     }
-  }, [hasActionOrDismissible, hadActionOrDismissible]);
+  }, [isApplicationMode, hadApplicationMode]);
 
   useEffect(() => {
     if (headerBarRef.current) {
@@ -323,7 +399,7 @@ export function TabHeaderBar({
     return getAllFocusables(target).filter(el => isElementRegistered(el) && isElementFocusable(el));
   }
 
-  const TabList = hasActionOrDismissible ? 'div' : 'ul';
+  const TabList = isApplicationMode ? 'div' : 'ul';
 
   return (
     <div className={classes}>
@@ -358,7 +434,65 @@ export function TabHeaderBar({
             onFocus={onFocus}
             onBlur={onBlur}
           >
-            {tabs.map(renderTabHeader)}
+            {reorderable ? (
+              <SortableArea<TabsProps.Tab>
+                items={tabs}
+                direction="horizontal"
+                onReorderStart={onReorderStart}
+                onReorderMove={onReorderMove}
+                onReorderEnd={onReorderEnd}
+                onReorderCancel={onReorderCancel}
+                itemDefinition={{
+                  id: tab => tab.id,
+                  label: tab => (typeof tab.label === 'string' ? tab.label : tab.id),
+                }}
+                onItemsChange={({ detail }) => {
+                  const nextOrder = reorderWithPinnedLocked(tabs, detail.items).map(tab => tab.id);
+                  fireNonCancelableEvent(onReorder, { tabIds: nextOrder });
+                }}
+                i18nStrings={{
+                  liveAnnouncementDndStarted: i18n(
+                    'i18nStrings.liveAnnouncementReorderStarted',
+                    i18nStrings?.liveAnnouncementReorderStarted,
+                    formatTabReorderStarted
+                  ),
+                  liveAnnouncementDndItemReordered: i18n(
+                    'i18nStrings.liveAnnouncementReorderMoved',
+                    i18nStrings?.liveAnnouncementReorderMoved,
+                    formatTabReorderMoved
+                  ),
+                  liveAnnouncementDndItemCommitted: i18n(
+                    'i18nStrings.liveAnnouncementReorderCommitted',
+                    i18nStrings?.liveAnnouncementReorderCommitted,
+                    formatTabReorderCommitted
+                  ),
+                  liveAnnouncementDndDiscarded: i18n(
+                    'i18nStrings.liveAnnouncementReorderDiscarded',
+                    i18nStrings?.liveAnnouncementReorderDiscarded
+                  ),
+                  dragHandleAriaLabel: i18n(
+                    'i18nStrings.reorderDragHandleAriaLabel',
+                    i18nStrings?.reorderDragHandleAriaLabel
+                  ),
+                  dragHandleAriaDescription: i18n(
+                    'i18nStrings.reorderDragHandleAriaDescription',
+                    i18nStrings?.reorderDragHandleAriaDescription
+                  ),
+                }}
+                renderItem={sortableProps =>
+                  renderTabHeader(sortableProps.item, tabs.indexOf(sortableProps.item), {
+                    setNodeRef: sortableProps.ref,
+                    style: sortableProps.style,
+                    className: sortableProps.className,
+                    dragHandleProps: sortableProps.dragHandleProps,
+                    isDragGhost: sortableProps.isDragGhost,
+                    isDropPlaceholder: sortableProps.isDropPlaceholder,
+                  })
+                }
+              />
+            ) : (
+              tabs.map((tab, index) => renderTabHeader(tab, index))
+            )}
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (
@@ -374,14 +508,51 @@ export function TabHeaderBar({
             />
           </span>
         )}
+        {addTabButton && (
+          <span className={styles['add-tab-button']}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="add-plus"
+              onClick={() => fireNonCancelableEvent(onAddTab, {})}
+              ariaLabel={i18n('i18nStrings.addTabAriaLabel', i18nStrings?.addTabAriaLabel)}
+              className={testUtilStyles['add-tab-button']}
+              data-testid="awsui-tab-add-button"
+            />
+          </span>
+        )}
+        {crossListActive && dropIndicatorOffset !== null && (
+          <span
+            aria-hidden="true"
+            className={styles['tabs-drop-indicator']}
+            style={{ insetInlineStart: dropIndicatorOffset }}
+          />
+        )}
+        {crossListActive && (
+          <InternalLiveRegion hidden={true} tagName="span" preventInitialAnnouncement={true}>
+            {crossListLiveMessage}
+          </InternalLiveRegion>
+        )}
       </div>
       {actions && <div className={styles['actions-container']}>{actions}</div>}
     </div>
   );
 
-  function renderTabHeader(tab: TabsProps.Tab, index: number) {
+  function renderTabHeader(
+    tab: TabsProps.Tab,
+    index: number,
+    sortable?: {
+      setNodeRef: React.RefCallback<HTMLElement> | undefined;
+      style: React.CSSProperties;
+      className?: string;
+      dragHandleProps: SortableAreaProps.RenderItemProps<TabsProps.Tab>['dragHandleProps'];
+      isDragGhost: boolean;
+      isDropPlaceholder: boolean;
+    }
+  ) {
     const { dismissible, dismissLabel, dismissDisabled, action, onDismiss } = tab;
     const isActive = activeTabId === tab.id && !tab.disabled;
+    const isPinned = !!tab.disableReorder;
 
     const clickTab = (event: React.MouseEvent) => {
       if (tab.disabled) {
@@ -447,14 +618,14 @@ export function TabHeaderBar({
       onClick: clickTab,
     };
 
-    const tabHeaderContainerAriaProps = hasActionOrDismissible
+    const tabHeaderContainerAriaProps = isApplicationMode
       ? {
           role: 'group',
           'aria-labelledby': commonProps.id,
         }
       : {};
 
-    if (!hasActionOrDismissible) {
+    if (!isApplicationMode) {
       commonProps['aria-selected'] = activeTabId === tab.id;
       commonProps.role = 'tab';
     } else {
@@ -495,7 +666,7 @@ export function TabHeaderBar({
       onDismiss(event);
     };
 
-    const TabItem = hasActionOrDismissible ? 'div' : 'li';
+    const TabItem = isApplicationMode ? 'div' : 'li';
 
     const analyticsDismissMetadata: GeneratedAnalyticsMetadataTabsDismiss = {
       action: 'dismiss',
@@ -514,12 +685,21 @@ export function TabHeaderBar({
       },
     };
 
+    const combinedTabItemRef = (element: any) => {
+      tabRefs.current.set(tab.id, element as HTMLElement);
+      sortable?.setNodeRef?.(element as HTMLElement);
+    };
+
+    const tabItemClassName = clsx(styles['tabs-tab'], sortable?.className);
+    const tabItemStyle = sortable?.style;
+
     return (
       <TabItem
-        ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
-        className={styles['tabs-tab']}
+        ref={combinedTabItemRef}
+        className={tabItemClassName}
         role="presentation"
         key={tab.id}
+        style={tabItemStyle}
       >
         <div
           className={tabHeaderContainerClasses}
@@ -527,6 +707,15 @@ export function TabHeaderBar({
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
           style={getTabContainerStyles(style)}
         >
+          {sortable && !isPinned && (
+            <span
+              className={clsx(styles['tabs-tab-drag-handle'], testUtilStyles['tab-drag-handle'])}
+              data-testid={`awsui-tab-drag-handle-${tab.id}`}
+              onKeyDownCapture={crossListActive ? event => handleDragHandleKeyDown(tab.id, event) : undefined}
+            >
+              <InternalDragHandle {...sortable.dragHandleProps} />
+            </span>
+          )}
           <TabTrigger
             ref={setElement}
             tab={tab}
@@ -626,4 +815,39 @@ const TabTrigger = forwardRef(
 
 export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
   return namespace + '-' + tabId;
+}
+
+/**
+ * Enforces the "pinned" (position-locked) contract for reorder-able tabs:
+ * any tab with `disableReorder` is kept at its original index in the result,
+ * while non-pinned tabs take on the order emitted by SortableArea.
+ * This means dragging a non-pinned tab past a pinned one visually reorders
+ * only the non-pinned slots, never the pinned ones.
+ */
+export function reorderWithPinnedLocked(
+  original: TabsProps['tabs'],
+  proposed: readonly TabsProps.Tab[]
+): TabsProps.Tab[] {
+  const hasPinned = original.some(tab => tab.disableReorder);
+  if (!hasPinned) {
+    return [...proposed];
+  }
+  const proposedNonPinned = proposed.filter(tab => !tab.disableReorder);
+  const result: TabsProps.Tab[] = new Array(original.length);
+  const pinnedByIndex = new Map<number, TabsProps.Tab>();
+  original.forEach((tab, index) => {
+    if (tab.disableReorder) {
+      pinnedByIndex.set(index, tab);
+    }
+  });
+  let nonPinnedCursor = 0;
+  for (let i = 0; i < original.length; i++) {
+    const pinned = pinnedByIndex.get(i);
+    if (pinned) {
+      result[i] = pinned;
+    } else {
+      result[i] = proposedNonPinned[nonPinnedCursor++];
+    }
+  }
+  return result;
 }

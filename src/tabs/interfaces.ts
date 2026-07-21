@@ -109,6 +109,52 @@ export interface TabsProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: TabsProps.Style;
+
+  /**
+   * When set to `true`, the tabs become reorderable via drag-and-drop or keyboard.
+   * The component keeps `role="application"` (as with `action`/`dismissible`) and
+   * a leading drag handle is rendered on each tab that is not pinned via `disableReorder`.
+   * Reordering is controlled: emit `onReorder` to update the `tabs` order in your state.
+   */
+  reorderable?: boolean;
+
+  /**
+   * Called when the user reorders tabs via drag-and-drop or the keyboard.
+   * The event `detail` contains the new order as `tabIds`. When `reorderable` is `true`
+   * the consumer MUST use this callback to update the `tabs` prop; otherwise the order
+   * will not change.
+   */
+  onReorder?: NonCancelableEventHandler<TabsProps.ReorderDetail>;
+
+  /**
+   * When `true`, a trailing "+" (add-tab) button is rendered inside the tab header,
+   * after the tab list and before the right scroll button. It sits outside the roving
+   * tab order and is reachable via the Tab key. Provide `onAddTab` to handle clicks
+   * and `i18nStrings.addTabAriaLabel` for its accessible name.
+   */
+  addTabButton?: boolean;
+
+  /**
+   * Called when the user activates the add-tab button (mouse click, Enter, or Space).
+   */
+  onAddTab?: NonCancelableEventHandler<TabsProps.AddTabDetail>;
+
+  /**
+   * Opts this Tabs instance into cross-list reordering. When two or more `reorderable`
+   * Tabs instances share the same non-empty `reorderGroup` value, tabs can be dragged
+   * (pointer or keyboard) from one instance into another — no wrapper or provider is
+   * needed. Has no effect unless the instance is also `reorderable`.
+   */
+  reorderGroup?: string;
+
+  /**
+   * Called when a tab is moved from one list to another within the same reorder group.
+   * The event `detail` (`TabMoveDetail`) identifies the moved tab, the source and target
+   * instances, the target insertion index, and the resulting id order of both lists.
+   * This is a controlled event: the consumer MUST update BOTH lists' `tabs` arrays in
+   * response (remove from source, insert into target). Fires on both instances involved.
+   */
+  onTabMove?: NonCancelableEventHandler<TabsProps.TabMoveDetail>;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -172,6 +218,52 @@ export namespace TabsProps {
      * - 'lazy': Like 'eager', but content is only rendered after the tab is first activated.
      */
     contentRenderStrategy?: 'active' | 'eager' | 'lazy';
+    /**
+     * (Optional) When Tabs is `reorderable`, marks this tab as pinned:
+     * it has no drag handle, cannot be picked up for reorder, and is not a valid
+     * drop slot (its position is locked). Composes independently with `dismissible` and `action`.
+     * Has no effect when `reorderable` is not set on the parent.
+     */
+    disableReorder?: boolean;
+  }
+
+  export interface ReorderDetail {
+    /**
+     * The new order of tab ids after the reorder was committed.
+     */
+    tabIds: string[];
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  export interface AddTabDetail {}
+
+  export interface TabMoveDetail {
+    /**
+     * The id of the tab that was moved.
+     */
+    tabId: string;
+    /**
+     * The `id` of the source Tabs instance the tab was moved out of.
+     * This is the Tabs instance's own component id (its `BaseComponentProps` id / analytics id).
+     */
+    sourceGroupTabsId: string;
+    /**
+     * The `id` of the target Tabs instance the tab was moved into.
+     */
+    targetGroupTabsId: string;
+    /**
+     * The index at which the moved tab should be inserted into the target list
+     * (respecting any pinned/`disableReorder` tabs in the target).
+     */
+    targetIndex: number;
+    /**
+     * The resulting id order of the SOURCE list after removing the moved tab.
+     */
+    sourceTabIds: string[];
+    /**
+     * The resulting id order of the TARGET list after inserting the moved tab.
+     */
+    targetTabIds: string[];
   }
 
   export interface ChangeDetail {
@@ -195,10 +287,46 @@ export namespace TabsProps {
      */
     scrollRightAriaLabel?: string;
     /**
-     * ARIA role description for the Tabs component when an action or dismissible prop is in use. This is used
-     * with role="application" to provide further information on the purpose of this component
+     * ARIA role description for the Tabs component when an action, dismissible or reorderable prop is in use.
+     * This is used with role="application" to provide further information on the purpose of this component.
      */
     tabsWithActionsAriaRoleDescription?: string;
+    /**
+     * ARIA label for the drag handle rendered on each reorderable tab. Combined with the tab label.
+     */
+    reorderDragHandleAriaLabel?: string;
+    /**
+     * ARIA description for the drag handle. Use this to describe the keyboard model
+     * (e.g. "Press Space to pick up, Arrow keys to move, Space to drop, Escape to cancel").
+     */
+    reorderDragHandleAriaDescription?: string;
+    /**
+     * Announced to screen readers when a tab is picked up for reorder.
+     */
+    liveAnnouncementReorderStarted?: (position: number, total: number) => string;
+    /**
+     * Announced while a tab is being moved during a reorder.
+     */
+    liveAnnouncementReorderMoved?: (from: number, to: number, total: number) => string;
+    /**
+     * Announced when the user commits a reorder.
+     */
+    liveAnnouncementReorderCommitted?: (from: number, to: number, total: number) => string;
+    /**
+     * Announced when the user cancels a reorder (e.g. via Escape).
+     */
+    liveAnnouncementReorderDiscarded?: string;
+    /**
+     * Announced when a tab is moved across lists (cross-list reorder).
+     * Receives the moved tab's target position, the total count in the target list,
+     * and both source and target list labels are the app's responsibility to convey
+     * via the provided numbers.
+     */
+    liveAnnouncementTabMovedAcrossLists?: (targetPosition: number, targetTotal: number) => string;
+    /**
+     * ARIA label for the add-tab ("+") button rendered when `addTabButton` is `true`.
+     */
+    addTabAriaLabel?: string;
   }
 
   export interface Style {

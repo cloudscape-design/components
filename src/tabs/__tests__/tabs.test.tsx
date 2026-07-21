@@ -1400,3 +1400,238 @@ describe('Tabs', () => {
     expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
   });
 });
+
+describe('Reorderable tabs', () => {
+  const reorderTabs: Array<TabsProps.Tab> = [
+    { id: 'a', label: 'Alpha', content: 'A content' },
+    { id: 'b', label: 'Beta', content: 'B content' },
+    { id: 'c', label: 'Gamma', content: 'C content' },
+  ];
+
+  const reorderI18n: TabsProps.I18nStrings = {
+    reorderDragHandleAriaLabel: 'Drag handle',
+    reorderDragHandleAriaDescription: 'Use arrow keys',
+    liveAnnouncementReorderStarted: (pos, total) => `Picked up ${pos}/${total}`,
+    liveAnnouncementReorderMoved: (from, to, total) => `Moving ${from}->${to} of ${total}`,
+    liveAnnouncementReorderCommitted: (from, to, total) => `Committed ${from}->${to} of ${total}`,
+    liveAnnouncementReorderDiscarded: 'Canceled',
+    addTabAriaLabel: 'Add new tab',
+  };
+
+  function ControlledReorderableTabs(
+    props: Omit<TabsProps, 'onReorder' | 'tabs'> & { initialTabs: Array<TabsProps.Tab> }
+  ) {
+    const [tabs, setTabs] = useState<Array<TabsProps.Tab>>(props.initialTabs);
+    return (
+      <Tabs
+        {...props}
+        tabs={tabs}
+        reorderable={true}
+        onReorder={({ detail }) => {
+          const byId = new Map(tabs.map(t => [t.id, t]));
+          setTabs(detail.tabIds.map(id => byId.get(id)!));
+        }}
+      />
+    );
+  }
+
+  const tick = () => new Promise(resolve => setTimeout(resolve, 0));
+  function press(el: HTMLElement, key: string) {
+    fireEvent.keyDown(el, { key, code: key });
+  }
+  function getDragHandleButton(w: TabsWrapper, tabId: string): HTMLElement {
+    const wrapperEl = w.findTabDragHandleByTabId(tabId);
+    if (!wrapperEl) {
+      throw new Error(`No drag handle rendered for tab "${tabId}"`);
+    }
+    const el = wrapperEl.getElement().querySelector<HTMLElement>('[role="button"]');
+    if (!el) {
+      throw new Error(`Could not find the interactive drag handle inside the tab-drag-handle span for "${tabId}"`);
+    }
+    return el;
+  }
+
+  test('renders a drag handle on every tab when reorderable is true', () => {
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} reorderable={true} onReorder={() => undefined} i18nStrings={reorderI18n} />
+    );
+    for (let i = 1; i <= reorderTabs.length; i++) {
+      expect(wrapper.findTabDragHandle(i)).not.toBeNull();
+    }
+    for (const tab of reorderTabs) {
+      expect(wrapper.findTabDragHandleByTabId(tab.id)).not.toBeNull();
+    }
+  });
+
+  test('does NOT render drag handles when reorderable is false', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={reorderTabs} />);
+    expect(wrapper.findTabDragHandle(1)).toBeNull();
+    expect(wrapper.findTabDragHandleByTabId('a')).toBeNull();
+    // and no add-tab button
+    expect(wrapper.findAddTabButton()).toBeNull();
+  });
+
+  test('forces role=application when reorderable=true (mirrors the action/dismissible switch)', () => {
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} reorderable={true} onReorder={() => undefined} i18nStrings={reorderI18n} />
+    );
+    expect(wrapper.find('[role="application"]')).not.toBeNull();
+    expect(wrapper.find('[role="tablist"]')).toBeNull();
+  });
+
+  test('keyboard reorder: Space + ArrowRight + Space emits onReorder with the new tabIds order (LTR)', async () => {
+    const onReorder = jest.fn();
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} reorderable={true} onReorder={onReorder} i18nStrings={reorderI18n} />
+    );
+
+    const handle = getDragHandleButton(wrapper, 'a');
+    press(handle, 'Space');
+    await tick();
+    press(handle, 'ArrowRight');
+    press(handle, 'Space');
+
+    expect(onReorder).toHaveBeenCalledTimes(1);
+    const call = onReorder.mock.calls[0][0];
+    expect(call.detail.tabIds).toEqual(['b', 'a', 'c']);
+  });
+
+  test('keyboard reorder: ArrowLeft moves the tab toward the start (LTR)', async () => {
+    const onReorder = jest.fn();
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} reorderable={true} onReorder={onReorder} i18nStrings={reorderI18n} />
+    );
+
+    const handle = getDragHandleButton(wrapper, 'b');
+    press(handle, 'Space');
+    await tick();
+    press(handle, 'ArrowLeft');
+    press(handle, 'Space');
+
+    expect(onReorder).toHaveBeenCalledTimes(1);
+    expect(onReorder.mock.calls[0][0].detail.tabIds).toEqual(['b', 'a', 'c']);
+  });
+
+  test('controlled reorder round-trip: the tab order updates on subsequent renders', async () => {
+    const { wrapper } = renderTabs(<ControlledReorderableTabs initialTabs={reorderTabs} i18nStrings={reorderI18n} />);
+    const initialOrder = wrapper.findTabLinks().map(link => link.getElement().dataset.testid);
+    expect(initialOrder).toEqual(['a', 'b', 'c']);
+
+    const handle = getDragHandleButton(wrapper, 'a');
+    press(handle, 'Space');
+    await tick();
+    press(handle, 'ArrowRight');
+    press(handle, 'Space');
+
+    const finalOrder = wrapper.findTabLinks().map(link => link.getElement().dataset.testid);
+    expect(finalOrder).toEqual(['b', 'a', 'c']);
+  });
+
+  test('renders across all three variants (default, container, stacked)', () => {
+    for (const variant of ['default', 'container', 'stacked'] as const) {
+      const { wrapper, unmount } = renderTabs(
+        <Tabs
+          variant={variant}
+          tabs={reorderTabs}
+          reorderable={true}
+          onReorder={() => undefined}
+          i18nStrings={reorderI18n}
+        />
+      );
+      expect(wrapper.findTabDragHandle(1)).not.toBeNull();
+      expect(wrapper.findTabDragHandle(2)).not.toBeNull();
+      expect(wrapper.findTabDragHandle(3)).not.toBeNull();
+      unmount();
+    }
+  });
+
+  test('pinned tab (disableReorder) renders no drag handle', () => {
+    const withPinned: Array<TabsProps.Tab> = [
+      { ...reorderTabs[0], disableReorder: true },
+      reorderTabs[1],
+      reorderTabs[2],
+    ];
+    const { wrapper } = renderTabs(
+      <Tabs tabs={withPinned} reorderable={true} onReorder={() => undefined} i18nStrings={reorderI18n} />
+    );
+    expect(wrapper.findTabDragHandle(1)).toBeNull();
+    expect(wrapper.findTabDragHandle(2)).not.toBeNull();
+    expect(wrapper.findTabDragHandle(3)).not.toBeNull();
+  });
+
+  test('pinned tab is position-locked when a non-pinned tab is reordered past it', async () => {
+    // 'a' is pinned at index 0; moving 'b' left should NOT change 'a's position;
+    // moving 'c' twice left (past b) should keep 'a' locked and only reorder 'b' and 'c'.
+    function PinnedControlled() {
+      const [tabs, setTabs] = useState<Array<TabsProps.Tab>>([
+        { id: 'a', label: 'A', disableReorder: true, content: 'A' },
+        { id: 'b', label: 'B', content: 'B' },
+        { id: 'c', label: 'C', content: 'C' },
+      ]);
+      return (
+        <Tabs
+          tabs={tabs}
+          reorderable={true}
+          onReorder={({ detail }) => {
+            const byId = new Map(tabs.map(t => [t.id, t]));
+            setTabs(detail.tabIds.map(id => byId.get(id)!));
+          }}
+          i18nStrings={reorderI18n}
+        />
+      );
+    }
+    const { wrapper } = renderTabs(<PinnedControlled />);
+    // Move 'c' left one slot: pinned 'a' stays at index 0, so 'b' and 'c' swap.
+    const cHandle = getDragHandleButton(wrapper, 'c');
+    press(cHandle, 'Space');
+    await tick();
+    press(cHandle, 'ArrowLeft');
+    press(cHandle, 'Space');
+
+    const order = wrapper.findTabLinks().map(link => link.getElement().dataset.testid);
+    expect(order[0]).toBe('a'); // pinned stayed at index 0
+    expect(order).toEqual(['a', 'c', 'b']);
+  });
+
+  test('add-tab button renders when addTabButton=true and fires onAddTab', () => {
+    const onAddTab = jest.fn();
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} addTabButton={true} onAddTab={onAddTab} i18nStrings={reorderI18n} />
+    );
+    const addBtn = wrapper.findAddTabButton();
+    expect(addBtn).not.toBeNull();
+    addBtn!.getElement().click();
+    expect(onAddTab).toHaveBeenCalledTimes(1);
+  });
+
+  test('add-tab button is keyboard reachable via native Tab key (button is not disabled)', () => {
+    const onAddTab = jest.fn();
+    const { wrapper } = renderTabs(
+      <Tabs tabs={reorderTabs} addTabButton={true} onAddTab={onAddTab} i18nStrings={reorderI18n} />
+    );
+    const addBtn = wrapper.findAddTabButton()!.getElement();
+    expect(addBtn.tagName).toBe('BUTTON');
+    expect(addBtn.hasAttribute('disabled')).toBe(false);
+    // fireEvent.click simulates a keyboard-activated click (Enter/Space) too.
+    fireEvent.click(addBtn);
+    expect(onAddTab).toHaveBeenCalledTimes(1);
+  });
+
+  test('composes with dismissible + action tabs (all still render alongside drag handles)', () => {
+    const composed: Array<TabsProps.Tab> = [
+      { id: 'x', label: 'X', content: 'X', dismissible: true, dismissLabel: 'Dismiss X', onDismiss: jest.fn() },
+      { id: 'y', label: 'Y', content: 'Y', action: <span data-testid="y-action">act</span> },
+      { id: 'z', label: 'Z', content: 'Z', disableReorder: true },
+    ];
+    const { wrapper } = renderTabs(
+      <Tabs tabs={composed} reorderable={true} onReorder={() => undefined} i18nStrings={reorderI18n} />
+    );
+    // Non-pinned tabs have handles; pinned does not.
+    expect(wrapper.findTabDragHandleByTabId('x')).not.toBeNull();
+    expect(wrapper.findTabDragHandleByTabId('y')).not.toBeNull();
+    expect(wrapper.findTabDragHandleByTabId('z')).toBeNull();
+    // Dismissible + action still render.
+    expect(wrapper.findDismissibleButtonByTabId('x')).not.toBeNull();
+    expect(wrapper.findActionByTabId('y')).not.toBeNull();
+  });
+});

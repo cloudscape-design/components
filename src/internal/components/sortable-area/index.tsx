@@ -3,7 +3,13 @@
 
 import React, { useEffect, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
@@ -11,6 +17,7 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
 import { joinStrings } from '../../utils/strings';
+import { DragHandleProps } from '../drag-handle/interfaces';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
@@ -27,12 +34,19 @@ export default function SortableArea<Item>({
   onItemsChange,
   disableReorder,
   i18nStrings,
+  direction = 'vertical',
+  onReorderStart,
+  onReorderMove,
+  onReorderEnd,
+  onReorderCancel,
 }: SortableAreaProps<Item>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors, isKeyboard } =
     useDragAndDropReorder({
       items,
       itemDefinition,
+      direction,
     });
+  const sortingStrategy = direction === 'horizontal' ? horizontalListSortingStrategy : verticalListSortingStrategy;
   const activeItem = activeItemId ? items.find(item => itemDefinition.id(item) === activeItemId) : null;
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
@@ -49,10 +63,27 @@ export default function SortableArea<Item>({
           : undefined,
         container: portalContainer ?? undefined,
       }}
-      onDragStart={({ active }) => setActiveItemId(active.id)}
+      onDragStart={({ active }) => {
+        setActiveItemId(active.id);
+        onReorderStart?.(String(active.id));
+      }}
+      onDragMove={({ active }) => {
+        if (onReorderMove) {
+          const rect = active.rect.current.translated;
+          onReorderMove(
+            String(active.id),
+            rect ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height } : null
+          );
+        }
+      }}
       onDragEnd={event => {
         setActiveItemId(null);
         const { active, over } = event;
+        // Allow an external (cross-list) coordinator to consume the drop; when it does,
+        // skip the within-list reorder so the tab is not also moved inside this list.
+        if (onReorderEnd?.(String(active.id))) {
+          return;
+        }
         if (over && active.id !== over.id) {
           const movedItem = items.find(item => itemDefinition.id(item) === active.id)!;
           const oldIndex = items.findIndex(item => itemDefinition.id(item) === active.id);
@@ -60,18 +91,22 @@ export default function SortableArea<Item>({
           fireNonCancelableEvent(onItemsChange, { items: arrayMove([...items], oldIndex, newIndex), movedItem });
         }
       }}
-      onDragCancel={() => setActiveItemId(null)}
+      onDragCancel={() => {
+        setActiveItemId(null);
+        onReorderCancel?.();
+      }}
     >
       <SortableContext
         disabled={disableReorder}
         items={items.map(item => itemDefinition.id(item))}
-        strategy={verticalListSortingStrategy}
+        strategy={sortingStrategy}
       >
         {items.map(item => (
           <DraggableItem
             key={itemDefinition.id(item)}
             item={item}
             itemDefinition={itemDefinition}
+            direction={direction}
             showDirectionButtons={item === activeItem && isKeyboard.current}
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
@@ -126,22 +161,27 @@ function usePortalContainer() {
   return portalContainerRef.current;
 }
 
-function DraggableItem<Item>({
+export function DraggableItem<Item>({
   item,
   itemDefinition,
   dragHandleAriaLabel,
+  direction,
   showDirectionButtons,
   onKeyDown,
   renderItem,
+  sortableId,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
   dragHandleAriaLabel?: string;
+  direction: SortableAreaProps.Direction;
   showDirectionButtons: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
+  sortableId?: string;
 }) {
-  const id = itemDefinition.id(item);
+  const rawId = itemDefinition.id(item);
+  const id = sortableId ?? rawId;
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
     id,
   });
@@ -164,11 +204,17 @@ function DraggableItem<Item>({
     isSorting && styles.sorting
   );
   const dragHandleRef = useRef<HTMLElement>(null);
+  const directionStartKey: DragHandleProps.Direction = direction === 'horizontal' ? 'inline-start' : 'block-start';
+  const directionEndKey: DragHandleProps.Direction = direction === 'horizontal' ? 'inline-end' : 'block-end';
+  const directionButtons: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>> = {
+    [directionStartKey]: 'active',
+    [directionEndKey]: 'active',
+  };
   return (
     <>
       {renderItem({
         item,
-        id,
+        id: rawId,
         ref: setNodeRef,
         style,
         className,
@@ -184,17 +230,15 @@ function DraggableItem<Item>({
           triggerMode: 'controlled',
           controlledShowButtons: showDirectionButtons,
           ref: dragHandleRef,
-          directions: showDirectionButtons
-            ? {
-                'block-start': 'active',
-                'block-end': 'active',
+          directions: showDirectionButtons ? directionButtons : undefined,
+          onDirectionClick: clickedDirection => {
+            const event = new Event(
+              clickedDirection === directionStartKey ? EventName.CustomUp : EventName.CustomDown,
+              {
+                bubbles: true,
+                cancelable: true,
               }
-            : undefined,
-          onDirectionClick: direction => {
-            const event = new Event(direction === 'block-start' ? EventName.CustomUp : EventName.CustomDown, {
-              bubbles: true,
-              cancelable: true,
-            });
+            );
             onKeyDown(event as any);
             dragHandleRef.current?.dispatchEvent(event);
           },

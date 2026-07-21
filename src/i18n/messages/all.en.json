@@ -414,7 +414,15 @@
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",
     "i18nStrings.scrollRightAriaLabel": "Scroll right",
-    "i18nStrings.tabsWithActionsAriaRoleDescription": "Tabs with actions"
+    "i18nStrings.tabsWithActionsAriaRoleDescription": "Tabs with actions",
+    "i18nStrings.reorderDragHandleAriaLabel": "Drag handle",
+    "i18nStrings.reorderDragHandleAriaDescription": "Use Space or Enter to activate drag for a tab, then use the arrow keys to move the tab's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    "i18nStrings.liveAnnouncementReorderStarted": "Picked up tab at position {position} of {total}",
+    "i18nStrings.liveAnnouncementReorderMoved": "{isInitialPosition, select, true {Moving tab back to position {currentPosition} of {total}} false {Moving tab to position {currentPosition} of {total}} other {}}",
+    "i18nStrings.liveAnnouncementReorderCommitted": "{isInitialPosition, select, true {Tab moved back to its original position {initialPosition} of {total}} false {Tab moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
+    "i18nStrings.liveAnnouncementReorderDiscarded": "Reordering canceled",
+    "i18nStrings.liveAnnouncementTabMovedAcrossLists": "Tab moved to position {targetPosition} of {targetTotal} in the destination tab list",
+    "i18nStrings.addTabAriaLabel": "Add new tab"
   },
   "tag-editor": {
     "i18nStrings.keyPlaceholder": "Enter key",
