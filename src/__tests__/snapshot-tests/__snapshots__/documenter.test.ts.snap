@@ -6076,6 +6076,13 @@ This property only applies when an \`href\` is provided.",
       "type": "string",
     },
     {
+      "description": "The text displayed in a tooltip on hover or focus.
+If \`disabledReason\` is also provided, it takes precedence over \`tooltipText\` when disabled.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button as follows:
 * \`primary\` for primary buttons.
@@ -34322,6 +34329,19 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "isDisabled",
           "parameters": [],
           "returnType": {
@@ -37606,6 +37626,22 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findTextRegion",
           },
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findTooltip",
+          },
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -46604,6 +46640,14 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             "name": "ElementWrapper",
           },
         },
+        {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
       ],
       "name": "ButtonWrapper",
     },
@@ -48918,6 +48962,17 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findTextRegion",
           },
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findTooltip",
+          },
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": false,
