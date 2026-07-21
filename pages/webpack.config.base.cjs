@@ -155,6 +155,7 @@ module.exports = ({
       }),
       replaceModule(/~components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
+      replaceModule(/@cloudscape-design\/components(?!\w)/, componentsPath),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)
         : noop,
