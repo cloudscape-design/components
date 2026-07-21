@@ -192,7 +192,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
-      "navigationCollapsed": false,
+      "navigationCollapsible": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -1053,7 +1053,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
-      "navigationCollapsed": false,
+      "navigationCollapsible": false,
       "navigationFocusRef": {
         "current": null,
       },

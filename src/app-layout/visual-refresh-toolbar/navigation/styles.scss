@@ -40,6 +40,14 @@ $collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navi
     position: relative;
   }
 
+  // Closed panel: collapsed to zero width and removed from the layout so its
+  // focusable children are no longer reachable. The .is-navigation-collapsed
+  // rule below overrides this to render the icon rail instead.
+  &:not(.is-navigation-open) {
+    inline-size: 0px;
+    display: none;
+  }
+
   // Closed but showing the collapsed icon rail. This class is only ever set while
   // the panel is closed, so it always overrides the rule above (equal specificity,
   // later in source order).
@@ -73,11 +81,4 @@ $collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navi
     #{custom-props.$navigationWidth}: 100vw;
     z-index: constants.$drawer-z-index-mobile;
   }
-}
-
-// All content is hidden by the overflow-x property
-&:not(.is-navigation-open) {
-  inline-size: 0px;
-  // We need to hide the closed panel to make containing focusable elements not focusable anymore.
-  display: none;
 }

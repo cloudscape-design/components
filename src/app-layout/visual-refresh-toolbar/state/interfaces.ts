@@ -9,7 +9,7 @@ import { SplitPanelToggleProps, ToolbarProps } from '../toolbar';
 
 export interface SharedProps {
   navigationOpen: boolean;
-  navigationCollapsed?: boolean;
+  navigationCollapsible?: boolean;
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
   onNavigationToggle?: (open: boolean) => void;
