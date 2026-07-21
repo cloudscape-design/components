@@ -1233,6 +1233,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextNotificationYellow: {
+    description: 'The text and foreground color used on warning flash messages (yellow notification surface).',
+    public: true,
+    themeable: true,
+  },
   colorTextSegmentActive: {
     description: 'The text color of the active segment in a segmented control.',
     public: true,
