@@ -133,6 +133,50 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(rootStyle.getPropertyValue(customCssProps.navigationCollapsedWidth)).toBe('54px');
     });
   });
+
+  describe('navigationCollapsedWidth vs navigationWidth warning', () => {
+    let consoleWarnSpy: jest.SpyInstance;
+    beforeEach(() => {
+      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    });
+    afterEach(() => {
+      consoleWarnSpy?.mockRestore();
+    });
+
+    const warning =
+      '[AwsUi] [AppLayout] `navigationCollapsedWidth` should be smaller than `navigationWidth`. ' +
+      'When collapsed width equals or exceeds the expanded width, the ARIA expanded/collapsed semantics become inverted.';
+
+    test('does not warn when collapsed width is smaller than navigation width', () => {
+      renderComponent(
+        <AppLayout
+          navigationCloseBehavior="collapse"
+          navigationWidth={200}
+          navigationCollapsedWidth={54}
+          navigation={<>Nav</>}
+        />
+      );
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+
+    test('does not warn when collapse behavior is not enabled, even if collapsed width is larger', () => {
+      renderComponent(<AppLayout navigationWidth={100} navigationCollapsedWidth={200} navigation={<>Nav</>} />);
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+
+    // Kept last: it primes warnOnce's cache for this message, so it must not run before the negative cases above.
+    test('warns when collapsed width is not smaller than navigation width', () => {
+      renderComponent(
+        <AppLayout
+          navigationCloseBehavior="collapse"
+          navigationWidth={200}
+          navigationCollapsedWidth={200}
+          navigation={<>Nav</>}
+        />
+      );
+      expect(console.warn).toHaveBeenCalledWith(warning);
+    });
+  });
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
