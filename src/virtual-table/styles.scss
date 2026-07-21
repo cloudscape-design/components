@@ -6,11 +6,23 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+// VirtualTable (F3-A2, headless core + compound Cloudscape skin) is styled to visually
+// match the existing Cloudscape `Table` BY DEFAULT. Every colour / border / spacing value
+// below is a Cloudscape design token REUSED from the Table component styles
+// (src/table/header-cell/styles.scss and src/table/body-cell/styles.scss) rather than a
+// bespoke value, so the look tracks Table + visual refresh automatically. This is the SKIN
+// stylesheet only — the headless `useVirtualGrid` core carries no CSS (it returns props
+// objects), so all default styling lands here. The virtualization viewport
+// (.scroll-container) scrolls with the NATIVE browser scrollbar — there is no custom /
+// synthetic / overlay scrollbar anywhere.
+
 .root {
   @include styles.styles-reset;
   position: relative;
   display: block;
   inline-size: 100%;
+  // Sit on the container content surface, like a Table inside a Container.
+  background: awsui.$color-background-container-content;
 }
 
 .header {
@@ -19,8 +31,12 @@
 
 .scroll-container {
   position: relative;
+  // Native scrollbar only — no ::-webkit-scrollbar / overlay / synthetic scrollbar.
   overflow: auto;
   inline-size: 100%;
+
+  // The scroll container is the single tab stop (active-descendant keyboard model), so it
+  // carries the focus ring; the active row is indicated via .row-active.
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
     outline-offset: -2px;
@@ -31,26 +47,34 @@
   display: block;
 }
 
+// Header treatment matches Table's thead: table-header surface + a default divider under
+// the header row (Table: border-block-end divider-list-width solid color-border-divider-default).
 .header-row {
   display: flex;
+  background: awsui.$color-background-table-header;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
 }
 
 // Sticky header is opt-in; the header stays inside the single scroll container so it scrolls
-// horizontally with the body (CW-14). scaffold: core wires the offset-reporting seam.
+// horizontally with the body (header <-> body sync, CW-14) while pinning vertically. Its
+// surface matches the non-sticky header (Table sticky-header look).
 .sticky-header {
   & > .header-row {
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
-    background: awsui.$color-background-container-content;
+    background: awsui.$color-background-table-header;
   }
 }
 
 .header-cell {
   min-inline-size: 0;
-  font-weight: awsui.$font-weight-bold;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  line-height: awsui.$line-height-heading-xs;
+  // Table cell rhythm: dense vertical padding, space-scaled-l inline padding.
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
 }
 
@@ -63,8 +87,10 @@
   justify-content: center;
 }
 
-// impl-F3-A2-core: the body is the windowing runway — the core sets its block-size to the
-// full virtualized height and positions each windowed row absolutely at its measured offset.
+// impl-F3-A2-core: the body is the windowing runway — the core sizes it to the full
+// virtualized height and absolutely positions each windowed row at its measured offset via
+// inline styles (position/offset set in use-virtual-grid.ts), so this class only provides
+// the runway box.
 .body {
   display: block;
   position: relative;
@@ -80,20 +106,52 @@
 
 .row {
   align-items: center;
+  // Table's per-row divider: the border sits on the row (not the cell) so it always lands
+  // at the row boundary regardless of cell padding / fixed windowed row height.
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+
+  // Selected-row surface, matching Table's selected row (color-background-item-selected +
+  // selected border). F3-A2's compound skin has no selection prop today; this is an inert
+  // style-only hook so a marked row reads identically to Table if a consumer sets the class.
+  &.row-selected {
+    background: awsui.$color-background-item-selected;
+    border-block: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  }
+
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
     outline-offset: -2px;
   }
 }
 
+// Active-descendant highlight: the scroll container holds the single tab stop, this row is
+// the aria-activedescendant target moved by the arrow keys (row-granular grid). Style-only
+// hook for the skin to mark the active row; matches Table's focus treatment.
+.row-active {
+  outline: 2px solid awsui.$color-border-item-focused;
+  outline-offset: -2px;
+}
+
 .cell {
   min-inline-size: 0;
+  // Default: single line, truncate with an ellipsis. This matches Table's default
+  // (wrapLines = false). Wrapping is available via the cell-wrap hook on measured rows
+  // (getRowHeight: 'auto'), mirroring Table's opt-in wrapLines.
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
+}
+
+// Wrapping affordance (Table wrapLines parity). Apply on cells in rows that opt into
+// measured heights (getRowHeight: 'auto') so wrapped content is measured and windowed
+// correctly — e.g. a raw/file line renderer.
+.cell-wrap {
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-overflow: clip;
 }
 
 .disclosure-button {
@@ -103,8 +161,9 @@
   block-size: 100%;
 }
 
-// Sort trigger for a sortable HeaderCell: a native button (implicitly keyboard-operable)
-// that fills the header cell and inherits the bold header typography.
+// Sortable header trigger: a native button (implicitly keyboard-operable) that fills the
+// header cell and reuses Table's column-header typography so a sortable header matches
+// Table's look rather than a bespoke bold button.
 .sort-button {
   @include styles.styles-reset;
   cursor: pointer;
@@ -112,7 +171,8 @@
   align-items: center;
   inline-size: 100%;
   text-align: start;
-  font-weight: awsui.$font-weight-bold;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
     outline-offset: -2px;
@@ -125,12 +185,17 @@
   box-sizing: border-box;
 }
 
+// The expanded region sits on the container content surface with a divider below, so an
+// expanded row reads as a detail panel attached to its data row (Table expandable-rows
+// look), while holding arbitrary non-tabular content (R-EXPAND).
 .expanded-region {
   display: block;
   inline-size: 100%;
   box-sizing: border-box;
+  background: awsui.$color-background-container-content;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   padding-block: awsui.$space-scaled-s;
-  padding-inline: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-l;
 }
 
 .loading,
