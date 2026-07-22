@@ -102,6 +102,9 @@ describe('Table skeleton loading', () => {
     beforeEach(() => {
       Object.defineProperty(document.documentElement, 'clientHeight', { configurable: true, value: 400 });
       jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+        if (this === document.body) {
+          return { top: 0, bottom: 400, height: 400 } as DOMRect;
+        }
         if (this.matches('tr[aria-hidden="true"]')) {
           return { top: 200, bottom: 240, height: 40 } as DOMRect;
         }
@@ -124,6 +127,35 @@ describe('Table skeleton loading', () => {
       const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto' } });
 
       expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+    });
+
+    test('removes rows that overflow the viewport', () => {
+      const originalOverflowY = document.body.style.overflowY;
+      const originalClientHeight = Object.getOwnPropertyDescriptor(document.body, 'clientHeight');
+      const originalScrollHeight = Object.getOwnPropertyDescriptor(document.body, 'scrollHeight');
+      document.body.style.overflowY = 'auto';
+      Object.defineProperty(document.body, 'clientHeight', { configurable: true, value: 400 });
+      Object.defineProperty(document.body, 'scrollHeight', {
+        configurable: true,
+        get: () => (document.querySelectorAll('tr[aria-hidden="true"]').length > 2 ? 401 : 400),
+      });
+
+      try {
+        const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto' } });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+      } finally {
+        document.body.style.overflowY = originalOverflowY;
+        if (originalClientHeight) {
+          Object.defineProperty(document.body, 'clientHeight', originalClientHeight);
+        } else {
+          delete (document.body as { clientHeight?: number }).clientHeight;
+        }
+        if (originalScrollHeight) {
+          Object.defineProperty(document.body, 'scrollHeight', originalScrollHeight);
+        } else {
+          delete (document.body as { scrollHeight?: number }).scrollHeight;
+        }
+      }
     });
 
     test('respects maxAutoRows', () => {

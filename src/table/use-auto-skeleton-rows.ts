@@ -14,6 +14,12 @@ interface AutoSkeletonRowsCalculation {
   viewportBottom: number;
 }
 
+interface AutoSkeletonRowReductionCalculation {
+  currentRows: number;
+  overflowHeight: number;
+  rowHeight: number;
+}
+
 interface UseAutoSkeletonRowsProps {
   enabled: boolean;
   maxRows?: number;
@@ -48,6 +54,18 @@ function getViewportBottom(element: HTMLElement) {
   );
 }
 
+function getOverflowHeight(element: HTMLElement) {
+  const scrollContainer = getScrollContainers(element)[0];
+  if (scrollContainer) {
+    return Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+  }
+
+  return Math.max(
+    0,
+    Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - getDocumentViewportBottom()
+  );
+}
+
 export function calculateAutoSkeletonRows({
   maxRows,
   rowHeight,
@@ -63,6 +81,17 @@ export function calculateAutoSkeletonRows({
   );
   const rows = Math.floor(availableHeight / rowHeight);
   return Math.max(1, Math.min(maxRows ?? Number.POSITIVE_INFINITY, rows));
+}
+
+export function calculateAutoSkeletonRowReduction({
+  currentRows,
+  overflowHeight,
+  rowHeight,
+}: AutoSkeletonRowReductionCalculation) {
+  return Math.min(
+    currentRows - 1,
+    Math.max(1, Math.ceil((overflowHeight + AUTO_SKELETON_VIEWPORT_BUFFER) / rowHeight))
+  );
 }
 
 export function useAutoSkeletonRows({
@@ -104,6 +133,22 @@ export function useAutoSkeletonRows({
   }, [enabled, maxRows, tableBodyRef, tableRootRef, tableWrapperRef]);
 
   useLayoutEffect(updateRows, [updateRows]);
+
+  useLayoutEffect(() => {
+    const tableWrapper = tableWrapperRef.current;
+    const rowHeight = rowHeightRef.current;
+    if (!enabled || rows === 1 || !tableWrapper || !rowHeight) {
+      return;
+    }
+
+    const overflowHeight = getOverflowHeight(tableWrapper);
+    if (overflowHeight === 0) {
+      return;
+    }
+
+    const rowsToRemove = calculateAutoSkeletonRowReduction({ currentRows: rows, overflowHeight, rowHeight });
+    setRows(currentRows => currentRows - rowsToRemove);
+  }, [enabled, rows, tableWrapperRef]);
 
   useLayoutEffect(() => {
     if (!enabled || typeof ResizeObserver === 'undefined') {
