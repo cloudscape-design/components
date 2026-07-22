@@ -37540,6 +37540,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Finds a copy-to-clipboard item by its id.",
+          "name": "findCopyToClipboardById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
           "description": "Finds a file input item by its id.",
           "name": "findFileInputById",
           "parameters": [
@@ -48852,6 +48869,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
         {
           "description": "Finds a button item by its id.",
           "name": "findButtonById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds a copy-to-clipboard item by its id.",
+          "name": "findCopyToClipboardById",
           "parameters": [
             {
               "flags": {
