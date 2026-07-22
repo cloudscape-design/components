@@ -20,6 +20,12 @@ export interface StepsProps extends BaseComponentProps {
    */
   orientation?: StepsProps.Orientation;
   /**
+   * Determines whether the connector lines between steps are displayed. The following variants are available:
+   * * `visible` - Shows connector lines between consecutive steps.
+   * * `none` - Hides the connector lines between steps.
+   */
+  connectorLines?: StepsProps.ConnectorLinesVariant;
+  /**
    * Render a step. This overrides the default icon, header, and details provided by the component.
    * The function is called for each step and should return an object with the following keys:
    * * `header` (React.ReactNode) - Summary corresponding to the step.
@@ -59,4 +65,6 @@ export namespace StepsProps {
   }
 
   export type Orientation = 'vertical' | 'horizontal';
+
+  export type ConnectorLinesVariant = 'visible' | 'none';
 }

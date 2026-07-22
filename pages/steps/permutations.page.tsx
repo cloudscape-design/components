@@ -11,6 +11,7 @@ import * as variants from './permutations-utils';
 
 const stepsPermutations = createPermutations<StepsProps>([
   {
+    connectorLines: ['visible'],
     orientation: ['vertical', 'horizontal'],
     steps: [
       variants.initialSteps,
@@ -32,6 +33,12 @@ const stepsPermutations = createPermutations<StepsProps>([
       variants.failedStepsWithRetryButtonInteractive,
       variants.changesetStepsInteractive,
     ],
+    ariaLabel: ['test label'],
+  },
+  {
+    connectorLines: ['none'],
+    orientation: ['vertical', 'horizontal'],
+    steps: [variants.successfulSteps],
     ariaLabel: ['test label'],
   },
 ]);

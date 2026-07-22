@@ -27779,6 +27779,23 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
+      "defaultValue": "'visible'",
+      "description": "Determines whether the connector lines between steps are displayed. The following variants are available:
+* \`visible\` - Shows connector lines between consecutive steps.
+* \`none\` - Hides the connector lines between steps.",
+      "inlineType": {
+        "name": "StepsProps.ConnectorLinesVariant",
+        "type": "union",
+        "values": [
+          "none",
+          "visible",
+        ],
+      },
+      "name": "connectorLines",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -27788,6 +27805,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'vertical'",
       "description": "The visual orientation of the steps (vertical or horizontal).
 By default the orientation is vertical.",
       "inlineType": {
