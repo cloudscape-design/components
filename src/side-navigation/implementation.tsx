@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
@@ -31,6 +31,7 @@ export function SideNavigationImplementation({
   const baseProps = getBaseProps(props);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   if (isDevelopment) {
     // This code should be wiped in production anyway.
@@ -63,7 +64,12 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.root, baseProps.className, isToolbar && styles['with-toolbar'])}
+      className={clsx(
+        styles.root,
+        baseProps.className,
+        isToolbar && styles['with-toolbar'],
+        collapsed && styles['root--collapsed']
+      )}
       ref={__internalRootRef}
     >
       {header && (
@@ -85,6 +91,8 @@ export function SideNavigationImplementation({
             fireChange={onChangeHandler}
             activeHref={activeHref}
             collapsed={collapsed}
+            activeTooltip={activeTooltip}
+            setActiveTooltip={setActiveTooltip}
           />
         </div>
       )}

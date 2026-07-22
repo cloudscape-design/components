@@ -1563,6 +1563,34 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "number",
     },
     {
+      "description": "Determines whether the navigation panel collapses or hides completely when closed.
+Defaults to \`hide\` if not specified.
+
+When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
+at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
+\`collapsed\` property of the side navigation component. On mobile viewports the rail
+is not available and the closed navigation is completely hidden.",
+      "inlineType": {
+        "name": ""hide" | "collapse"",
+        "type": "union",
+        "values": [
+          "hide",
+          "collapse",
+        ],
+      },
+      "name": "navigationCloseBehavior",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "54",
+      "description": "Width of the collapsed navigation rail in pixels.
+Only applies when \`navigationCloseBehavior\` is \`collapse\` and \`navigationOpen\` is \`false\`.",
+      "name": "navigationCollapsedWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "description": "If \`true\`, the navigation drawer is not displayed at all.",
       "name": "navigationHide",
       "optional": true,
@@ -2108,6 +2136,34 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     {
       "description": "Minimum main content panel width in pixels.",
       "name": "minContentWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Determines whether the navigation panel collapses or hides completely when closed.
+Defaults to \`hide\` if not specified.
+
+When set to \`collapse\`, closing the navigation shows a collapsed icon-only navigation rail
+at \`navigationCollapsedWidth\` instead of hiding the panel. Use it together with the
+\`collapsed\` property of the side navigation component. On mobile viewports the rail
+is not available and the closed navigation is completely hidden.",
+      "inlineType": {
+        "name": ""hide" | "collapse"",
+        "type": "union",
+        "values": [
+          "hide",
+          "collapse",
+        ],
+      },
+      "name": "navigationCloseBehavior",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "54",
+      "description": "Width of the collapsed navigation rail in pixels.
+Only applies when \`navigationCloseBehavior\` is \`collapse\` and \`navigationOpen\` is \`false\`.",
+      "name": "navigationCollapsedWidth",
       "optional": true,
       "type": "number",
     },
@@ -27849,7 +27905,7 @@ The function is called for each step and should return an object with the follow
       "description": "An array of individual steps
 
 Each step definition has the following properties:
- * \`status\` (string) - Status of the step corresponding to a status indicator.
+ * \`status\` (string) - Status of the step corresponding to a status indicator. The \`log\` status renders a neutral dot marker.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
  * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.",

@@ -36,6 +36,8 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   collapsed?: boolean;
+  activeTooltip?: string | null;
+  setActiveTooltip?: (position: string | null) => void;
 }
 
 interface HeaderProps extends BaseItemComponentProps {
@@ -65,41 +67,40 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
 
   return (
     <>
-      <h2 className={clsx(styles.header, collapsed && styles['header--collapsed'])}>
-        <a
-          href={definition.href}
-          className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
-          aria-current={definition.href === activeHref ? 'page' : undefined}
-          aria-label={collapsed ? definition.text : undefined}
-          onClick={onClick}
-          {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
-        >
-          {definition.logo &&
-            (definition.logo.svg ? (
-              <span
-                className={clsx(styles['header-logo'], {
-                  [styles['header-logo--stretched']]: !definition.text || collapsed,
-                })}
-              >
-                {definition.logo.svg}
-              </span>
-            ) : (
-              <img
-                className={clsx(styles['header-logo'], {
-                  [styles['header-logo--stretched']]: !definition.text || collapsed,
-                })}
-                src={definition.logo.src}
-                alt={definition.logo.alt}
-              />
-            ))}
-          {!collapsed && (
+      {!collapsed && (
+        <h2 className={styles.header}>
+          <a
+            href={definition.href}
+            className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
+            aria-current={definition.href === activeHref ? 'page' : undefined}
+            onClick={onClick}
+            {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
+          >
+            {definition.logo &&
+              (definition.logo.svg ? (
+                <span
+                  className={clsx(styles['header-logo'], {
+                    [styles['header-logo--stretched']]: !definition.text,
+                  })}
+                >
+                  {definition.logo.svg}
+                </span>
+              ) : (
+                <img
+                  className={clsx(styles['header-logo'], {
+                    [styles['header-logo--stretched']]: !definition.text,
+                  })}
+                  src={definition.logo.src}
+                  alt={definition.logo.alt}
+                />
+              ))}
             <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
               {definition.text}
             </span>
-          )}
-        </a>
-      </h2>
-      <Divider isPresentational={true} variant="header" />
+          </a>
+        </h2>
+      )}
+      {!collapsed && <Divider isPresentational={true} variant="header" />}
     </>
   );
 }
@@ -123,6 +124,8 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   collapsed,
+  activeTooltip,
+  setActiveTooltip,
 }: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
@@ -179,6 +182,8 @@ export function NavigationItemsList({
               fireChange={fireChange}
               position={childPosition}
               collapsed={collapsed}
+              activeTooltip={activeTooltip}
+              setActiveTooltip={setActiveTooltip}
             />
           </li>
         );
@@ -247,6 +252,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -269,6 +276,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -290,6 +299,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -311,6 +322,8 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -333,6 +346,8 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 collapsed={collapsed}
+                activeTooltip={activeTooltip}
+                setActiveTooltip={setActiveTooltip}
               />
             </li>
           ),
@@ -446,29 +461,52 @@ const ItemIcon = React.forwardRef<HTMLSpanElement, ItemIconProps>(function ItemI
 // Used in the collapsed state, where the visible labels are hidden, to give
 // pointer and keyboard users a way to identify each item without relying on
 // their browser's native title popup.
-function useCollapsedTooltip<T extends HTMLElement>(label: React.ReactNode) {
-  const [show, setShow] = useState(false);
+function useCollapsedTooltip<T extends HTMLElement>({
+  label,
+  position,
+  activeTooltip,
+  setActiveTooltip,
+}: {
+  label: React.ReactNode;
+  position?: string;
+  activeTooltip?: string | null;
+  setActiveTooltip?: (position: string | null) => void;
+}) {
   const triggerRef = useRef<T | null>(null);
+  const id = position ?? '';
+  const show = activeTooltip === id;
+
+  const claim = () => setActiveTooltip?.(id);
+  const release = () => {
+    if (activeTooltip === id) {
+      setActiveTooltip?.(null);
+    }
+  };
 
   const triggerProps = {
-    onFocus: () => setShow(true),
-    onBlur: () => setShow(false),
-    onMouseEnter: () => setShow(true),
-    onMouseLeave: () => setShow(false),
+    onFocus: claim,
+    onBlur: release,
+    onMouseEnter: claim,
+    onMouseLeave: release,
   };
 
   const tooltip = show ? (
-    <Tooltip getTrack={() => triggerRef.current} content={label} position="right" onEscape={() => setShow(false)} />
+    <Tooltip getTrack={() => triggerRef.current} content={label} position="right" onEscape={release} />
   ) : null;
 
   return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position, collapsed, activeTooltip, setActiveTooltip }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
-  const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>(definition.text);
+  const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>({
+    label: definition.text,
+    position,
+    activeTooltip,
+    setActiveTooltip,
+  });
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -618,7 +656,16 @@ interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
 }
 
-function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, collapsed }: LinkGroupProps) {
+function LinkGroup({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  position,
+  collapsed,
+  activeTooltip,
+  setActiveTooltip,
+}: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
   return (
@@ -636,6 +683,8 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, c
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
       {!collapsed && (
         <NavigationItemsList
@@ -664,6 +713,8 @@ function ExpandableLinkGroup({
   variant,
   position,
   collapsed,
+  activeTooltip,
+  setActiveTooltip,
 }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
@@ -717,6 +768,8 @@ function ExpandableLinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
     );
   }

@@ -842,6 +842,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBorderLayoutSideNavigation: {
+    description: 'The border color of the side navigation divider in the app layout.',
+    public: true,
+    themeable: true,
+  },
   colorBorderTutorial: { description: 'The border color of tutorials in the tutorials list in the tutorial panel.' },
   colorForegroundControlDefault: {
     description:
@@ -1230,6 +1235,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
+    public: true,
+    themeable: true,
+  },
+  colorTextNotificationYellow: {
+    description: 'The text and foreground color used on warning flash messages (yellow notification surface).',
     public: true,
     themeable: true,
   },
