@@ -47,6 +47,7 @@ import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
+import { RowEditActionCell } from './row-editing';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
@@ -66,6 +67,7 @@ import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
+import { useRowEditing } from './use-row-editing';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
@@ -152,6 +154,8 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      rowEditingConfig,
+      submitRowEdit,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -196,6 +200,7 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
+    const rowEditing = useRowEditing({ onCancel: onEditCancel, onSubmit: submitRowEdit });
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
     const preferencesRef = useRef<PreferencesRef>({});
@@ -441,6 +446,7 @@ const InternalTable = React.forwardRef(
       selectionColumnId,
       tableRole,
       isExpandable,
+      hasRowEditing: !!rowEditingConfig,
       setLastUserAction,
     };
 
@@ -708,9 +714,14 @@ const InternalTable = React.forwardRef(
                                 {visibleColumnDefinitions.map((column, colIndex) => {
                                   const colId = `${getColumnKey(column, colIndex)}`;
                                   const cellId = { row: rowId, col: colId };
-                                  const isEditing = cellEditing.checkEditing(cellId);
+                                  const isRowCurrentlyEditing = rowEditingConfig
+                                    ? rowEditing.isRowEditing(rowId)
+                                    : false;
+                                  const isEditing = isRowCurrentlyEditing
+                                    ? !!column.editConfig && !rowEditing.isLoading
+                                    : cellEditing.checkEditing(cellId);
                                   const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
-                                  const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                  const isEditable = !rowEditingConfig && !!column.editConfig && !cellEditing.isLoading;
                                   const cellExpandableProps =
                                     isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
                                   const counter = column.counter?.({
@@ -751,9 +762,31 @@ const InternalTable = React.forwardRef(
                                       isRowHeader={column.isRowHeader}
                                       successfulEdit={successfulEdit}
                                       resizableColumns={resizableColumns}
-                                      onEditStart={() => cellEditing.startEdit(cellId)}
-                                      onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
-                                      submitEdit={cellEditing.submitEdit}
+                                      onEditStart={() => {
+                                        if (rowEditingConfig) {
+                                          // Row-edit mode: edit start is handled by the action cell
+                                        } else {
+                                          cellEditing.startEdit(cellId);
+                                        }
+                                      }}
+                                      onEditEnd={editCancelled => {
+                                        if (rowEditingConfig) {
+                                          if (editCancelled) {
+                                            rowEditing.cancelRowEdit();
+                                          }
+                                          // save is handled by the action cell Save button
+                                        } else {
+                                          cellEditing.completeEdit(cellId, editCancelled);
+                                        }
+                                      }}
+                                      submitEdit={
+                                        rowEditingConfig
+                                          ? (item: any, column: any, newValue: unknown) => {
+                                              const colKey = column.id ?? String(colIndex);
+                                              rowEditing.setColumnValue(colKey, newValue);
+                                            }
+                                          : cellEditing.submitEdit
+                                      }
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
                                       verticalAlign={column.verticalAlign ?? cellVerticalAlign}
@@ -764,6 +797,18 @@ const InternalTable = React.forwardRef(
                                     />
                                   );
                                 })}
+                                {rowEditingConfig && row.type === 'data' && (
+                                  <RowEditActionCell
+                                    item={row.item}
+                                    isEditing={rowEditing.isRowEditing(rowId)}
+                                    isLoading={rowEditing.isLoading}
+                                    ariaLabels={ariaLabels}
+                                    disabledReason={rowEditingConfig.disabledReason?.(row.item)}
+                                    onEditStart={() => rowEditing.startRowEdit(row.item, rowId)}
+                                    onSave={() => rowEditing.submitRowEdit?.()}
+                                    onCancel={() => rowEditing.cancelRowEdit()}
+                                  />
+                                )}
                               </tr>
                             );
                           }
