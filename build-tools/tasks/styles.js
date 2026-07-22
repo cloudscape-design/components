@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const { parallel, series } = require('gulp');
-const { readFileSync } = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 const { createHash } = require('crypto');
 const { join } = require('path');
 const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build/internal');
@@ -69,7 +69,7 @@ function stylesTask(theme) {
       }
     });
 
-    return buildThemedComponentsInternal({
+    await buildThemedComponentsInternal({
       primary,
       secondary,
       exposed,
@@ -84,7 +84,105 @@ function stylesTask(theme) {
       failOnDeprecations: true,
       tokenVersions: getTokenVersions(variablesMap),
     });
+
+    // Post-process: inject .awsui-auto-mode CSS alongside .awsui-dark-mode.
+    // The auto-mode class wraps the same dark-mode token overrides inside
+    // @media (prefers-color-scheme: dark) so SSR apps can avoid theme flash
+    // without JavaScript by rendering the class server-side.
+    injectAutoModeStyles(theme.outputPath);
   });
+}
+
+/**
+ * Reads the compiled base-component styles.scoped.css, extracts all
+ * `.awsui-dark-mode` rules that live inside `@media not print { … }` blocks,
+ * replaces the selector with `.awsui-auto-mode`, wraps the block in the
+ * combined media query `@media not print and (prefers-color-scheme: dark)`,
+ * and appends the result to the same file.
+ *
+ * This is a text-level transformation — it does not parse the CSS AST — so it
+ * relies on the stable output format produced by theming-build's PostCSS pipeline.
+ */
+function injectAutoModeStyles(outputPath) {
+  const stylesPath = join(outputPath, 'internal/base-component/styles.scoped.css');
+  let css;
+  try {
+    css = readFileSync(stylesPath, 'utf-8');
+  } catch {
+    // File may not exist in some build configurations; skip silently.
+    return;
+  }
+
+  // Extract the @media not print { … } block that contains the dark-mode overrides.
+  // The block starts with `@media not print {` and contains nested .awsui-dark-mode rules.
+  // We capture the entire @media block using a bracket-depth counter.
+  const darkModeMediaBlocks = [];
+  const mediaStart = '@media not print {';
+  let searchFrom = 0;
+
+  while (true) {
+    const blockStart = css.indexOf(mediaStart, searchFrom);
+    if (blockStart === -1) {
+      break;
+    }
+
+    // Walk forward counting braces to find the matching closing `}`.
+    let depth = 0;
+    let blockEnd = -1;
+    for (let i = blockStart; i < css.length; i++) {
+      if (css[i] === '{') {
+        depth++;
+      } else if (css[i] === '}') {
+        depth--;
+        if (depth === 0) {
+          blockEnd = i;
+          break;
+        }
+      }
+    }
+
+    if (blockEnd === -1) {
+      break;
+    }
+
+    const block = css.slice(blockStart, blockEnd + 1);
+
+    // Only keep blocks that contain `.awsui-dark-mode` selectors.
+    if (block.includes('.awsui-dark-mode')) {
+      darkModeMediaBlocks.push(block);
+    }
+
+    searchFrom = blockEnd + 1;
+  }
+
+  if (darkModeMediaBlocks.length === 0) {
+    return;
+  }
+
+  // Build the auto-mode equivalent: replace selector, wrap in combined media query.
+  const autoModeBlocks = darkModeMediaBlocks.map(block => {
+    // Replace all occurrences of .awsui-dark-mode with .awsui-auto-mode.
+    // Also handle the compound selector `.awsui-context-X.awsui-dark-mode`.
+    const autoBlock = block
+      .replace(/\.awsui-dark-mode/g, '.awsui-auto-mode')
+      // The inner @media is `not print`; replace with the combined query.
+      .replace('@media not print {', '@media not print and (prefers-color-scheme: dark) {');
+    return autoBlock;
+  });
+
+  const autoModeSection = [
+    '',
+    '/*',
+    ' * .awsui-auto-mode — CSS-only system-preference dark mode (auto-generated).',
+    ' * Apply this class to the root element to activate dark-mode tokens when the',
+    ' * OS/browser prefers dark (`prefers-color-scheme: dark`), without JavaScript.',
+    ' * See: https://github.com/cloudscape-design/components/issues/4128',
+    ' */',
+    ...autoModeBlocks,
+    '',
+  ].join('\n');
+
+  writeFileSync(stylesPath, css + autoModeSection, 'utf-8');
 }
 
 module.exports = series(

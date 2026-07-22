@@ -2,11 +2,37 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+
+/**
+ * Wraps content in dark-mode selectors only.
+ *
+ * Activated by `.awsui-dark-mode` (or the legacy `.awsui-polaris-dark-mode`) class
+ * on an ancestor element. This is the explicit/JS-driven dark mode.
+ */
 @mixin dark-mode-only($selector: '') {
   @media not print {
     /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
     :global(#{$selector}.awsui-polaris-dark-mode) &,
     :global(#{$selector}.awsui-dark-mode) & {
+      @content;
+    }
+  }
+}
+
+/**
+ * Wraps content in the CSS-only auto-mode selector.
+ *
+ * Activated when `.awsui-auto-mode` is set on an ancestor element AND the user's OS
+ * preference is dark (`prefers-color-scheme: dark`). This lets SSR apps opt into
+ * system-aware dark mode without any JavaScript, avoiding theme flash on first paint.
+ *
+ * Usage: add `.awsui-auto-mode` to the `<body>` or root container. The browser will
+ * automatically apply dark-mode tokens when the OS is in dark mode.
+ */
+@mixin auto-mode-only($selector: '') {
+  @media not print and (prefers-color-scheme: dark) {
+    /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
+    :global(#{$selector}.awsui-auto-mode) & {
       @content;
     }
   }
