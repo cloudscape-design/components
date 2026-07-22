@@ -15,29 +15,28 @@ import ScreenshotArea from '../utils/screenshot-area';
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
 const ALL_VARIANTS: BoxProps.VisualAccent.Color[] = [
-  'red',
-  'yellow',
-  'indigo',
-  'green',
-  'orange',
-  'purple',
-  'mint',
-  'lime',
   'grey',
-  'teal',
-  'cyan',
-  'blue',
-  'violet',
-  'fuchsia',
-  'magenta',
-  'pink',
-  'rose',
+  'indigo',
+  'red',
+  'green',
+  'yellow',
+
   'amber',
+  'teal',
+  'purple',
+  'blue',
+  'magenta',
+  'lime',
+
+  'violet',
+
+  'pink',
+  'orange',
 ];
 
 const BOX_VARIANTS: { variant: BoxProps['variant']; label: string; content: string }[] = [
-  { variant: 'h3', label: 'h3', content: 'Heading 3' },
-  { variant: 'p', label: 'p', content: 'Body paragraph text' },
+  { variant: 'h3', label: 'h3', content: 'Heading' },
+  { variant: 'p', label: 'p', content: 'Paragraph' },
 ];
 
 const LIST_ITEMS: { id: string; content: string; icon: string; color: BoxProps.VisualAccent.Color }[] = [
@@ -46,7 +45,7 @@ const LIST_ITEMS: { id: string; content: string; icon: string; color: BoxProps.V
   { id: 'network', content: 'Network configuration', icon: 'globe', color: 'grey' },
   { id: 'multi-session', content: 'Multi-session data', icon: 'multiscreen', color: 'purple' },
   { id: 'alert', content: 'Alert center', icon: 'security', color: 'red' },
-  { id: 'communication', content: 'Communication', icon: 'contact', color: 'mint' },
+  { id: 'communication', content: 'Communication', icon: 'contact', color: 'teal' },
 ];
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
@@ -114,7 +113,7 @@ export default function StyleBoxPage() {
                 label: 'Components',
                 value: (
                   <Box
-                    visualAccent={{ color: 'mint' }}
+                    visualAccent={{ color: 'teal' }}
                     padding={{ horizontal: 'xxxs', vertical: 'xxxs' }}
                     margin={{ top: 'xxs' }}
                   >
@@ -126,7 +125,7 @@ export default function StyleBoxPage() {
                 label: 'Patterns',
                 value: (
                   <Box
-                    visualAccent={{ color: 'mint' }}
+                    visualAccent={{ color: 'teal' }}
                     padding={{ horizontal: 'xxxs', vertical: 'xxxs' }}
                     margin={{ top: 'xxs' }}
                   >
@@ -138,7 +137,7 @@ export default function StyleBoxPage() {
                 label: 'Demos',
                 value: (
                   <Box
-                    visualAccent={{ color: 'mint' }}
+                    visualAccent={{ color: 'teal' }}
                     padding={{ horizontal: 'xxxs', vertical: 'xxxs' }}
                     margin={{ top: 'xxs' }}
                   >
