@@ -13,6 +13,7 @@ import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
 import { TableProps } from './interfaces';
 import { InternalSelectionType } from './internal-interfaces';
+import { TableHeaderRowDragHandle } from './row-reordering';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
 import { StickyColumnsModel } from './sticky-columns';
@@ -49,6 +50,9 @@ export interface TheadProps {
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
   selectionColumnId: PropertyKey;
+  dragHandleColumnId?: PropertyKey;
+  rowReorderingAriaLabel?: string;
+  hasRowReordering?: boolean;
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
@@ -82,6 +86,9 @@ const Thead = React.forwardRef(
       stickyColumnsFirst,
       stickyColumnsLast,
       selectionColumnId,
+      dragHandleColumnId,
+      rowReorderingAriaLabel,
+      hasRowReordering,
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
@@ -147,6 +154,14 @@ const Thead = React.forwardRef(
             {...getTableHeaderRowRoleProps({ tableRole })}
             {...sharedTrProps}
           >
+            {hasRowReordering && dragHandleColumnId ? (
+              <TableHeaderRowDragHandle
+                {...commonCellProps}
+                columnId={dragHandleColumnId}
+                ariaLabel={rowReorderingAriaLabel}
+              />
+            ) : null}
+
             {selectionType ? (
               <TableHeaderSelectionCell
                 {...commonCellProps}
@@ -172,7 +187,7 @@ const Thead = React.forwardRef(
                   sortingDescending={sortingDescending}
                   sortingDisabled={sortingDisabled}
                   wrapLines={wrapLines}
-                  colIndex={selectionType ? colIndex + 1 : colIndex}
+                  colIndex={(hasRowReordering ? 1 : 0) + (selectionType ? 1 : 0) + colIndex}
                   columnId={columnId}
                   updateColumn={updateColumn}
                   onResizeFinish={() => onResizeFinish(columnWidthsRef.current)}
@@ -407,7 +422,7 @@ const Thead = React.forwardRef(
                     sortingDescending={sortingDescending}
                     sortingDisabled={sortingDisabled}
                     wrapLines={wrapLines}
-                    colIndex={selectionType ? colIndex + 1 : colIndex}
+                    colIndex={(hasRowReordering ? 1 : 0) + (selectionType ? 1 : 0) + colIndex}
                     columnId={columnId}
                     updateColumn={updateColumn}
                     onResizeFinish={() => onResizeFinish(columnWidthsRef.current)}
