@@ -91,6 +91,16 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    *
+   * ### icon-copy-to-clipboard
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onCopySuccess` and `onCopyFailure` handlers and to focus the button using `ref.focus(id)`.
+   * * `text` (string) - The name shown as a tooltip for this button.
+   * * `textToCopy` (string) - The text that is copied to the clipboard when the button is activated.
+   * * `copySuccessText` (string) - The message announced to screen readers and shown as a popover when the text is copied successfully.
+   * * `copyErrorText` (string) - The message announced to screen readers and shown as a popover when the text fails to copy.
+   * * `disabled` (optional, boolean) - The disabled state indication for this button.
+   * * `disabledReason` (optional, boolean) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable.
+   *
    * ### group
    *
    * * `text` (string) - The name of the group rendered as ARIA label for this group.
@@ -105,6 +115,14 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user uploads files. The event detail object contains the id and files from the file input item.
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
+  /**
+   * Called when the text is successfully copied to the clipboard.
+   */
+  onCopySuccess?: NonCancelableEventHandler<ButtonGroupProps.CopySuccessDetail>;
+  /**
+   * Called when the copy operation fails.
+   */
+  onCopyFailure?: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail>;
   /**
    * An object containing CSS properties to customize the button group's visual appearance.
    * Refer to the [style](/components/button-group/?tabId=style) tab for more details.
@@ -132,13 +150,14 @@ export type ItemRuntime =
   | IconButtonRuntime
   | IconToggleButtonRuntime
   | ButtonGroupProps.IconFileInput
-  | MenuDropdownRuntime;
+  | MenuDropdownRuntime
+  | ButtonGroupProps.IconCopyToClipboard;
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown | IconCopyToClipboard;
 
   export interface IconButton {
     type: 'icon-button';
@@ -201,6 +220,17 @@ export namespace ButtonGroupProps {
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
   }
 
+  export interface IconCopyToClipboard {
+    type: 'icon-copy-to-clipboard';
+    id: string;
+    text: string;
+    textToCopy: string;
+    copySuccessText: string;
+    copyErrorText: string;
+    disabled?: boolean;
+    disabledReason?: string;
+  }
+
   export interface Group {
     type: 'group';
     text: string;
@@ -216,6 +246,15 @@ export namespace ButtonGroupProps {
   export interface FilesChangeDetails {
     id: string;
     files: File[];
+  }
+  export interface CopySuccessDetail {
+    id: string;
+    text: string;
+  }
+
+  export interface CopyFailureDetail {
+    id: string;
+    text: string;
   }
 
   export interface Ref {
