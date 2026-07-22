@@ -311,11 +311,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorBackgroundAccentMint: {
-    description: 'The background color of the mint accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorBackgroundAccentLime: {
     description: 'The background color of the lime accent in the Box `awsui-accent` variant.',
     public: false,
@@ -331,11 +326,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorBackgroundAccentCyan: {
-    description: 'The background color of the cyan accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorBackgroundAccentBlue: {
     description: 'The background color of the blue accent in the Box `awsui-accent` variant.',
     public: false,
@@ -346,11 +336,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorBackgroundAccentFuchsia: {
-    description: 'The background color of the fuchsia accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorBackgroundAccentMagenta: {
     description: 'The background color of the magenta accent in the Box `awsui-accent` variant.',
     public: false,
@@ -358,11 +343,6 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundAccentPink: {
     description: 'The background color of the pink accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
-  colorBackgroundAccentRose: {
-    description: 'The background color of the rose accent in the Box `awsui-accent` variant.',
     public: false,
     themeable: false,
   },
@@ -401,11 +381,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorTextAccentMint: {
-    description: 'The content color of the mint accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorTextAccentLime: {
     description: 'The content color of the lime accent in the Box `awsui-accent` variant.',
     public: false,
@@ -421,11 +396,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorTextAccentCyan: {
-    description: 'The content color of the cyan accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorTextAccentBlue: {
     description: 'The content color of the blue accent in the Box `awsui-accent` variant.',
     public: false,
@@ -436,11 +406,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: false,
   },
-  colorTextAccentFuchsia: {
-    description: 'The content color of the fuchsia accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
   colorTextAccentMagenta: {
     description: 'The content color of the magenta accent in the Box `awsui-accent` variant.',
     public: false,
@@ -448,11 +413,6 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextAccentPink: {
     description: 'The content color of the pink accent in the Box `awsui-accent` variant.',
-    public: false,
-    themeable: false,
-  },
-  colorTextAccentRose: {
-    description: 'The content color of the rose accent in the Box `awsui-accent` variant.',
     public: false,
     themeable: false,
   },
