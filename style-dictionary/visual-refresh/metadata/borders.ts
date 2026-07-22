@@ -10,6 +10,11 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
+  borderWidthLayoutSideNavigation: {
+    description: 'The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.',
+    public: true,
+    themeable: true,
+  },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
   borderWidthItemSelected: {

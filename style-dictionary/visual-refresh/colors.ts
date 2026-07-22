@@ -196,6 +196,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: '{colorItemSelected}',
   colorBorderLayout: { light: '{colorNeutral350}', dark: '{colorNeutral650}' },
+  colorBorderLayoutSideNavigation: '{colorBorderLayout}',
   colorBorderNotificationStackBar: '{colorNeutral750}',
   colorBorderPanelHeader: '{colorBorderDividerDefault}',
   colorBorderPopover: '{colorBorderDropdownContainer}',

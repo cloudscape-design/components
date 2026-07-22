@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
+import { BeforeMainSlotSkeleton } from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/skeleton-parts';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
+import navStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/navigation/styles.selectors.js';
 import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 
@@ -114,5 +117,40 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(toolbarContainer!.getElement()).toHaveClass(toolbarStyles['universal-toolbar']);
       expect(toolbarContainer!.getElement()).toHaveClass(testutilStyles.toolbar);
     });
+  });
+});
+
+// The navigation branches of the skeleton depend on `toolbarProps.navigationCollapsible`, which the
+// full app layout does not provide while the widget is still loading (the skeleton is shown before
+// the state that computes it exists). These render the skeleton part directly to cover those branches.
+describe('BeforeMainSlotSkeleton navigation', () => {
+  const appLayoutProps = { navigation: <div>nav content</div> } as any;
+
+  function renderSkeleton(toolbarProps: any) {
+    const { container } = render(
+      <BeforeMainSlotSkeleton toolbarProps={toolbarProps} appLayoutProps={appLayoutProps} appLayoutState={{} as any} />
+    );
+    return container;
+  }
+
+  it('shows the collapsed rail when closed with collapse behavior', () => {
+    const container = renderSkeleton({ hasNavigation: true, navigationOpen: false, navigationCollapsible: true });
+    expect(container.querySelector(`.${skeletonStyles['navigation-collapsed']}`)).toBeTruthy();
+    expect(container.querySelector(`.${skeletonStyles['panel-hidden']}`)).toBeFalsy();
+    expect(container.querySelector(`.${navStyles['is-navigation-collapsed']}`)).toBeTruthy();
+  });
+
+  it('hides the panel when closed without collapse behavior', () => {
+    const container = renderSkeleton({ hasNavigation: true, navigationOpen: false, navigationCollapsible: false });
+    expect(container.querySelector(`.${skeletonStyles['panel-hidden']}`)).toBeTruthy();
+    expect(container.querySelector(`.${skeletonStyles['navigation-collapsed']}`)).toBeFalsy();
+    expect(container.querySelector(`.${navStyles['is-navigation-collapsed']}`)).toBeFalsy();
+  });
+
+  it('does not apply collapsed rail classes when the navigation is open', () => {
+    const container = renderSkeleton({ hasNavigation: true, navigationOpen: true, navigationCollapsible: true });
+    expect(container.querySelector(`.${skeletonStyles['navigation-collapsed']}`)).toBeFalsy();
+    expect(container.querySelector(`.${navStyles['is-navigation-collapsed']}`)).toBeFalsy();
+    expect(container.querySelector(`.${navStyles['is-navigation-open']}`)).toBeTruthy();
   });
 });

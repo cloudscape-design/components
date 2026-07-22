@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { useMergeRefs, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useStableCallback, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { SplitPanelSideToggleProps } from '../../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../../internal/events';
@@ -39,6 +39,8 @@ export const useAppLayout = (
     ariaLabels,
     navigationOpen,
     navigationWidth,
+    navigationCloseBehavior,
+    navigationCollapsedWidth,
     navigation,
     navigationHide,
     onNavigationChange,
@@ -65,6 +67,16 @@ export const useAppLayout = (
   forwardRef: ForwardedRef<AppLayoutProps.Ref>
 ): AppLayoutState => {
   const isMobile = useMobile();
+  const navigationCollapsible = navigationCloseBehavior === 'collapse';
+
+  if (navigationCollapsible && navigationCollapsedWidth !== undefined && navigationCollapsedWidth >= navigationWidth) {
+    warnOnce(
+      'AppLayout',
+      '`navigationCollapsedWidth` should be smaller than `navigationWidth`. ' +
+        'When collapsed width equals or exceeds the expanded width, the ARIA expanded/collapsed semantics become inverted.'
+    );
+  }
+
   const splitPanelControlId = useUniqueId('split-panel');
   const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
   const [toolbarHeight, setToolbarHeight] = useState(0);
@@ -402,6 +414,8 @@ export const useAppLayout = (
     minContentWidth,
     navigationOpen: resolvedNavigationOpen,
     navigationWidth,
+    navigationCollapsible,
+    navigationCollapsedWidth,
     placement,
     splitPanelOpen,
     splitPanelPosition: splitPanelPreferences?.position,
@@ -577,7 +591,20 @@ export const useAppLayout = (
       return;
     }
 
-    const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
+    function getActiveNavigationWidth() {
+      if (navigationHide) {
+        return 0;
+      }
+      if (navigationOpen) {
+        return navigationWidth;
+      }
+      if (navigationCollapsible) {
+        return navigationCollapsedWidth;
+      }
+      return 0;
+    }
+
+    const activeNavigationWidth = getActiveNavigationWidth();
     const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
     const hasHorizontalScroll = scrollWidth > placement.inlineSize;
     if (hasHorizontalScroll) {
@@ -592,6 +619,8 @@ export const useAppLayout = (
     totalActiveDrawersMinSize,
     closeFirstDrawer,
     isMobile,
+    navigationCollapsible,
+    navigationCollapsedWidth,
     navigationHide,
     navigationOpen,
     navigationWidth,
@@ -650,6 +679,8 @@ export const useAppLayout = (
       bottomDrawers,
       bottomDrawersFocusControl,
       featureNotificationsProps,
+      navigationCollapsible,
+      navigationCollapsedWidth,
     },
   };
 };
