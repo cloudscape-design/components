@@ -89,7 +89,6 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
   const [currency, setCurrency] = useState('');
   const [percent, setPercent] = useState('');
   const [compound, setCompound] = useState('');
-  const [url, setUrl] = useState('');
   const [both, setBoth] = useState('');
   const [ms, setMs] = useState('');
 
@@ -98,7 +97,7 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
       header={
         <Header
           variant="h2"
-          description="Purely visual. Not submitted with the form value. Screen readers do not announce the adornment — the FormField label carries the unit."
+          description="Purely visual. Not submitted with the form value. Screen readers do not announce the adornment. The FormField label carries the unit."
         >
           Format hint adornments
           <Box display="inline-block" margin={{ left: 'xs' }}>
@@ -173,20 +172,6 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
             />
           </FormField>
 
-          <FormField label="Webhook endpoint URL" errorText={invalid ? 'Enter a valid URL.' : undefined}>
-            <Input
-              value={url}
-              onChange={e => setUrl(e.detail.value)}
-              prefix="https://"
-              type="url"
-              placeholder="example.com/webhook"
-              disabled={disabled}
-              readOnly={readOnly}
-              invalid={invalid}
-              warning={warning}
-            />
-          </FormField>
-
           <FormField
             label="Error rate threshold"
             description="Alert when error rate exceeds this value."
@@ -204,6 +189,120 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
               invalid={invalid}
               warning={warning}
             />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
+// ─── Required prefix/suffix (userland concatenation) ──────────────────────────
+// These examples answer the "mandatory prefix/suffix" use-case. The component
+// does NOT do this. The `prefix`/`suffix` props are always decorative and never
+// mutate `onChange`. The fixed segment is shown visually with the decorative prop,
+// and the builder concatenates it into the value in application code.
+
+function RequiredAffixExamples({ disabled, readOnly, invalid, warning }: FormatHintProps) {
+  const [url, setUrl] = useState('');
+  const [bucket, setBucket] = useState('');
+  const [host, setHost] = useState('');
+
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          description="The fixed segment is decorative. The builder concatenates it into the submitted value. The component does not do this automatically."
+        >
+          Required prefix/suffix
+          <Box display="inline-block" margin={{ left: 'xs' }}>
+            <Badge color="grey">Builder concatenates</Badge>
+          </Box>
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <ColumnLayout columns={2}>
+          <FormField
+            label="Webhook endpoint URL"
+            constraintText="The https:// scheme is added automatically."
+            errorText={invalid ? 'Enter a valid URL.' : undefined}
+          >
+            <SpaceBetween size="xs">
+              <Input
+                value={url}
+                onChange={e => setUrl(e.detail.value)}
+                prefix="https://"
+                type="url"
+                placeholder="example.com/webhook"
+                disabled={disabled}
+                readOnly={readOnly}
+                invalid={invalid}
+                warning={warning}
+              />
+              {url && (
+                <Box variant="small" color="text-body-secondary">
+                  Submitted value:{' '}
+                  <Box variant="code" display="inline">
+                    https://{url}
+                  </Box>
+                </Box>
+              )}
+            </SpaceBetween>
+          </FormField>
+
+          <FormField
+            label="S3 bucket name"
+            constraintText="The amazon-braket- prefix is required and included in the resource name."
+            errorText={invalid ? 'Enter a valid bucket name.' : undefined}
+          >
+            <SpaceBetween size="xs">
+              <Input
+                value={bucket}
+                onChange={e => setBucket(e.detail.value)}
+                prefix="amazon-braket-"
+                placeholder="my-bucket"
+                disabled={disabled}
+                readOnly={readOnly}
+                invalid={invalid}
+                warning={warning}
+              />
+              {bucket && (
+                <Box variant="small" color="text-body-secondary">
+                  Submitted value:{' '}
+                  <Box variant="code" display="inline">
+                    amazon-braket-{bucket}
+                  </Box>
+                </Box>
+              )}
+            </SpaceBetween>
+          </FormField>
+
+          <FormField
+            label="Private DNS hostname"
+            constraintText="The .ec2.internal domain suffix is appended automatically."
+            errorText={invalid ? 'Enter a valid hostname.' : undefined}
+          >
+            <SpaceBetween size="xs">
+              <Input
+                value={host}
+                onChange={e => setHost(e.detail.value)}
+                suffix=".ec2.internal"
+                placeholder="my-host"
+                disabled={disabled}
+                readOnly={readOnly}
+                invalid={invalid}
+                warning={warning}
+              />
+              {host && (
+                <Box variant="small" color="text-body-secondary">
+                  Submitted value:{' '}
+                  <Box variant="code" display="inline">
+                    {host}.ec2.internal
+                  </Box>
+                </Box>
+              )}
+            </SpaceBetween>
           </FormField>
         </ColumnLayout>
       </SpaceBetween>
@@ -305,9 +404,9 @@ export default function AdornmentsPage() {
         header={
           <Header
             variant="h1"
-            description="New prefix and suffix props on the Input component. Format hints are decorative and do not affect the submitted value. Mandatory prefixes are semantic and are included in the submitted value."
+            description="New prefix and suffix props on the Input component. Both props are decorative. They render a visual adornment and never affect the submitted value. To include a fixed prefix or suffix in the value, concatenate it in application code (see the required prefix/suffix section)."
           >
-            Input — prefix/suffix adornments
+            Input: prefix/suffix adornments
           </Header>
         }
       >
@@ -327,6 +426,7 @@ export default function AdornmentsPage() {
             setRtl={setRtl}
           />
           <FormatHintExamples {...stateProps} />
+          <RequiredAffixExamples {...stateProps} />
           <BaselineComparison {...stateProps} />
           <RtlSection />
         </SpaceBetween>
