@@ -298,6 +298,28 @@ export const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     header: 'not started step',
     details: 'Test description',
   },
+  {
+    status: 'log',
+    statusIconAriaLabel: 'log entry',
+    header: 'log step',
+    details: 'Test description',
+  },
+];
+
+export const logSteps: ReadonlyArray<StepsProps.Step> = [
+  {
+    status: 'log',
+    header: 'Request received',
+  },
+  {
+    status: 'log',
+    header: 'Request parameters recorded',
+    details: 'The request parameters were added to the execution log.',
+  },
+  {
+    status: 'log',
+    header: 'Request forwarded',
+  },
 ];
 
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [

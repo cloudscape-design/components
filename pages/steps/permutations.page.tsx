@@ -22,6 +22,7 @@ const stepsPermutations = createPermutations<StepsProps>([
       variants.blockedSteps,
       variants.failedSteps,
       variants.allStatusesSteps,
+      variants.logSteps,
       variants.initialStepsInteractive,
       variants.loadingStepsInteractive,
       variants.loadingSteps2Interactive,
