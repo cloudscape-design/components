@@ -232,4 +232,76 @@ describe('Steps', () => {
       expect(wrapper.findItems()[0].findHeader()?.findStatusIndicator()).toBeNull();
     });
   });
+
+  describe('annotation', () => {
+    test('renders annotation content in vertical orientation', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'log', annotation: '10:30' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('returns null when annotation is not provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()).toBeNull();
+    });
+
+    test('uses a shared leading column when any vertical step has an annotation', () => {
+      const wrapper = renderSteps({
+        steps: [
+          { header: 'First', status: 'log', annotation: '10:30' },
+          { header: 'Second', status: 'log' },
+        ],
+      });
+
+      expect(wrapper.findByClassName(stepsStyles['with-annotation'])).not.toBeNull();
+      expect(wrapper.findItems()[0].findAnnotation()).not.toBeNull();
+      expect(wrapper.findItems()[1].findAnnotation()).toBeNull();
+    });
+
+    test('renders annotation content in horizontal orientation', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+      });
+
+      const item = wrapper.findItems()[0];
+      const annotation = item.findAnnotation()!.getElement();
+      const header = item.findHeader()!.getElement();
+
+      expect(annotation).toHaveTextContent('10:30');
+      expect(annotation.nextElementSibling).toBe(header);
+    });
+
+    test.each(['vertical', 'horizontal'] as const)(
+      'renders annotation for custom steps in %s orientation',
+      orientation => {
+        const wrapper = renderSteps({
+          steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+          orientation,
+          renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+        });
+
+        expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+      }
+    );
+
+    test('renders annotation values of different lengths in the shared vertical column', () => {
+      const shortValue = '9:00 AM';
+      const longValue = 'December 31, 2024, 11:59:59 PM (UTC+14:00)';
+      const wrapper = renderSteps({
+        steps: [
+          { header: 'Short timestamp', status: 'log', annotation: shortValue },
+          { header: 'Long timestamp', status: 'log', annotation: longValue },
+        ],
+      });
+
+      const first = wrapper.findItems()[0].findAnnotation()!.getElement();
+      const second = wrapper.findItems()[1].findAnnotation()!.getElement();
+
+      expect(first).toHaveTextContent(shortValue);
+      expect(second).toHaveTextContent(longValue);
+      expect(second.textContent).toBe(longValue);
+    });
+  });
 });

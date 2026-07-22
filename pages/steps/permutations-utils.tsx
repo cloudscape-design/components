@@ -322,6 +322,48 @@ export const logSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
+export const timelineSteps: ReadonlyArray<StepsProps.Step> = [
+  {
+    annotation: <time dateTime="2024-05-01T15:01:23Z">3:01:23 PM</time>,
+    status: 'log',
+    header: <Link href="#m1">Provided preferences</Link>,
+  },
+  {
+    annotation: <time dateTime="2024-05-01T15:03:10Z">3:03:10 PM</time>,
+    status: 'success',
+    statusIconAriaLabel: 'Success',
+    header: 'Created environment',
+  },
+  {
+    annotation: <time dateTime="2024-05-01T15:04:45Z">3:04:45 PM</time>,
+    status: 'error',
+    statusIconAriaLabel: 'Error',
+    header: 'Validation failed',
+    details: 'One or more resources could not be validated.',
+  },
+];
+
+export const timelineStepsWithVaryingAnnotations: ReadonlyArray<StepsProps.Step> = [
+  {
+    annotation: <time dateTime="2024-05-01T09:00:00Z">9:00 AM</time>,
+    status: 'log',
+    header: 'Short timestamp',
+  },
+  {
+    annotation: (
+      <time dateTime="2024-12-31T23:59:59+14:00" title="December 31, 2024, 11:59:59 PM">
+        December 31, 2024, 11:59:59 PM (UTC+14:00)
+      </time>
+    ),
+    status: 'log',
+    header: 'Long timestamp',
+  },
+  {
+    status: 'loading',
+    header: 'No annotation',
+  },
+];
+
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',

@@ -27834,7 +27834,8 @@ Each step definition has the following properties:
  * \`status\` (string) - Status of the step corresponding to a status indicator. The \`log\` status renders a neutral dot marker.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
- * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.",
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
+ * \`annotation\` (ReactNode) - (Optional) Content rendered at the start of the step, before the icon. Typically a timestamp in a timeline view.",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
@@ -44656,6 +44657,20 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Finds the annotation of a step",
+          "name": "findAnnotation",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds the details of a step",
           "name": "findDetails",
           "parameters": [],
@@ -53897,6 +53912,15 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
     },
     {
       "methods": [
+        {
+          "description": "Finds the annotation of a step",
+          "name": "findAnnotation",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "description": "Finds the details of a step",
           "name": "findDetails",
