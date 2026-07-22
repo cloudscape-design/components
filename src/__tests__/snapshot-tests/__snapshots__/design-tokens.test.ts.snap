@@ -2941,6 +2941,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -6543,6 +6550,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-segment-active": {
@@ -10149,6 +10163,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -13751,6 +13772,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-segment-active": {
@@ -17357,6 +17385,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -20961,6 +20996,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -24563,6 +24605,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#fafafa",
         "light": "#fafafa",
+      },
+    },
+    "color-text-notification-yellow": {
+      "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#16191f",
       },
     },
     "color-text-segment-active": {
@@ -28174,6 +28223,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -31776,6 +31832,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-active": {
@@ -35382,6 +35445,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -38984,6 +39054,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-active": {
@@ -42590,6 +42667,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -46192,6 +46276,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-active": {
@@ -49798,6 +49889,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -53402,6 +53500,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-yellow": {
+          "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -57004,6 +57109,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#f9f9fa",
         "light": "#f9f9fa",
+      },
+    },
+    "color-text-notification-yellow": {
+      "$description": "The text and foreground color used on warning flash messages (yellow notification surface).",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
       },
     },
     "color-text-segment-active": {
