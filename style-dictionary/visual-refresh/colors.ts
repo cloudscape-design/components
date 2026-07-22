@@ -376,76 +376,76 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
 
   // ── Visual accent ───────────────────────────────────
-  colorBackgroundAccentRed: {
+  colorBackgroundVisualAccentRed: {
     light: paletteTokens.colorRed100!,
     dark: hexToRgba(paletteTokens.colorRed500!, 0.2),
   },
-  colorBackgroundAccentYellow: {
+  colorBackgroundVisualAccentYellow: {
     light: paletteTokens.colorYellow100!,
     dark: hexToRgba(paletteTokens.colorYellow500!, 0.2),
   },
-  colorBackgroundAccentIndigo: {
+  colorBackgroundVisualAccentIndigo: {
     light: paletteTokens.colorIndigo100!,
     dark: hexToRgba(paletteTokens.colorIndigo500!, 0.2),
   },
-  colorBackgroundAccentGreen: {
+  colorBackgroundVisualAccentGreen: {
     light: paletteTokens.colorGreen100!,
     dark: hexToRgba(paletteTokens.colorGreen500!, 0.2),
   },
-  colorBackgroundAccentOrange: {
+  colorBackgroundVisualAccentOrange: {
     light: hexToRgba(paletteTokens.colorOrange100!, 0.6),
     dark: hexToRgba(paletteTokens.colorOrange500!, 0.2),
   },
-  colorBackgroundAccentPurple: {
+  colorBackgroundVisualAccentPurple: {
     light: hexToRgba(paletteTokens.colorPurple100!, 0.6),
     dark: hexToRgba(paletteTokens.colorPurple500!, 0.2),
   },
-  colorBackgroundAccentLime: {
+  colorBackgroundVisualAccentLime: {
     light: '{colorLime100}',
     dark: hexToRgba(paletteTokens.colorLime500!, 0.2),
   },
-  colorBackgroundAccentGrey: {
+  colorBackgroundVisualAccentGrey: {
     light: '{colorNeutral250}',
     dark: '{colorNeutral700}',
   },
-  colorBackgroundAccentTeal: {
+  colorBackgroundVisualAccentTeal: {
     light: hexToRgba(paletteTokens.colorTeal100!, 0.7),
     dark: hexToRgba(paletteTokens.colorTeal500!, 0.2),
   },
-  colorBackgroundAccentBlue: {
+  colorBackgroundVisualAccentBlue: {
     light: hexToRgba(paletteTokens.colorBlue100!, 0.6),
     dark: hexToRgba(paletteTokens.colorBlue500!, 0.2),
   },
-  colorBackgroundAccentViolet: {
+  colorBackgroundVisualAccentViolet: {
     light: hexToRgba(paletteTokens.colorViolet100!, 0.6),
     dark: hexToRgba(paletteTokens.colorViolet500!, 0.2),
   },
-  colorBackgroundAccentMagenta: {
+  colorBackgroundVisualAccentMagenta: {
     light: hexToRgba(paletteTokens.colorMagenta100!, 0.6),
     dark: hexToRgba(paletteTokens.colorMagenta500!, 0.15),
   },
-  colorBackgroundAccentPink: {
+  colorBackgroundVisualAccentPink: {
     light: hexToRgba(paletteTokens.colorPink100!, 0.7),
     dark: hexToRgba(paletteTokens.colorPink500!, 0.2),
   },
-  colorBackgroundAccentAmber: {
+  colorBackgroundVisualAccentAmber: {
     light: hexToRgba(paletteTokens.colorAmber100!, 0.7),
     dark: hexToRgba(paletteTokens.colorAmber500!, 0.2),
   },
-  colorTextAccentRed: { light: '{colorError800}', dark: '{colorError400}' },
-  colorTextAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning400}' },
-  colorTextAccentIndigo: { light: '{colorInfo800}', dark: '{colorInfo400}' },
-  colorTextAccentGreen: { light: '{colorSuccess800}', dark: '{colorSuccess400}' },
-  colorTextAccentOrange: { light: paletteTokens.colorOrange700!, dark: paletteTokens.colorOrange300! },
-  colorTextAccentPurple: { light: paletteTokens.colorPurple600!, dark: paletteTokens.colorPurple300! },
-  colorTextAccentLime: { light: paletteTokens.colorLime700!, dark: paletteTokens.colorLime300! },
-  colorTextAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorTextAccentTeal: { light: paletteTokens.colorTeal600!, dark: paletteTokens.colorTeal300! },
-  colorTextAccentBlue: { light: paletteTokens.colorBlue600!, dark: paletteTokens.colorBlue300! },
-  colorTextAccentViolet: { light: paletteTokens.colorViolet600!, dark: paletteTokens.colorViolet300! },
-  colorTextAccentMagenta: { light: paletteTokens.colorMagenta700!, dark: paletteTokens.colorMagenta400! },
-  colorTextAccentPink: { light: paletteTokens.colorPink700!, dark: paletteTokens.colorPink300! },
-  colorTextAccentAmber: { light: paletteTokens.colorAmber700!, dark: paletteTokens.colorAmber300! },
+  colorTextVisualAccentRed: { light: '{colorError800}', dark: '{colorError400}' },
+  colorTextVisualAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning400}' },
+  colorTextVisualAccentIndigo: { light: '{colorInfo800}', dark: '{colorInfo400}' },
+  colorTextVisualAccentGreen: { light: '{colorSuccess800}', dark: '{colorSuccess400}' },
+  colorTextVisualAccentOrange: { light: paletteTokens.colorOrange700!, dark: paletteTokens.colorOrange300! },
+  colorTextVisualAccentPurple: { light: paletteTokens.colorPurple600!, dark: paletteTokens.colorPurple300! },
+  colorTextVisualAccentLime: { light: paletteTokens.colorLime700!, dark: paletteTokens.colorLime300! },
+  colorTextVisualAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
+  colorTextVisualAccentTeal: { light: paletteTokens.colorTeal600!, dark: paletteTokens.colorTeal300! },
+  colorTextVisualAccentBlue: { light: paletteTokens.colorBlue600!, dark: paletteTokens.colorBlue300! },
+  colorTextVisualAccentViolet: { light: paletteTokens.colorViolet600!, dark: paletteTokens.colorViolet300! },
+  colorTextVisualAccentMagenta: { light: paletteTokens.colorMagenta700!, dark: paletteTokens.colorMagenta400! },
+  colorTextVisualAccentPink: { light: paletteTokens.colorPink700!, dark: paletteTokens.colorPink300! },
+  colorTextVisualAccentAmber: { light: paletteTokens.colorAmber700!, dark: paletteTokens.colorAmber300! },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
