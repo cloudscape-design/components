@@ -117,7 +117,15 @@ export default function CollapsedWithAppLayoutPage() {
       navigationCloseBehavior={collapseBehavior}
       navigationCollapsedWidth={navigationCollapsedWidth}
       onNavigationChange={({ detail }) => setNavOpen(detail.open)}
-      ariaLabels={labels}
+      ariaLabels={{
+        ...labels,
+        ...(collapseBehavior === 'collapse'
+          ? {
+              navigationToggle: 'Expand navigation',
+              navigationClose: 'Collapse navigation',
+            }
+          : {}),
+      }}
       breadcrumbs={
         isMobile ? (
           <BreadcrumbGroup
