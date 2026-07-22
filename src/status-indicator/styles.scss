@@ -108,7 +108,7 @@ $_background-overrides: (
     word-break: break-all;
     @include theming.one-theme-only {
       display: inline-flex;
-      align-items: flex-start;
+      vertical-align: top;
     }
 
     > .icon {
@@ -117,7 +117,7 @@ $_background-overrides: (
       @include theming.one-theme-only {
         display: inline-flex;
         align-items: center;
-        margin-block-start: awsui.$space-xxxs;
+        block-size: awsui.$line-height-body-m;
       }
     }
   }
