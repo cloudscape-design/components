@@ -164,7 +164,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(console.warn).not.toHaveBeenCalled();
     });
 
-    // Kept last: it primes warnOnce's cache for this message, so it must not run before the negative cases above.
     test('warns when collapsed width is not smaller than navigation width', () => {
       renderComponent(
         <AppLayout

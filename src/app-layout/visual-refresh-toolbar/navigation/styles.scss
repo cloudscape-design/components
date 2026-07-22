@@ -62,7 +62,6 @@ $collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navi
     }
 
     // In the rail, replace the top-right close button with a centered expand toggle.
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     & > .navigation > .hide-navigation {
       display: none;
 

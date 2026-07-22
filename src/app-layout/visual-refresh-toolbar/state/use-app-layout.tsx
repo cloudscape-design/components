@@ -591,12 +591,20 @@ export const useAppLayout = (
       return;
     }
 
-    const activeNavigationWidth =
-      !navigationHide && navigationOpen
-        ? navigationWidth
-        : !navigationHide && navigationCollapsible
-          ? navigationCollapsedWidth
-          : 0;
+    function getActiveNavigationWidth() {
+      if (navigationHide) {
+        return 0;
+      }
+      if (navigationOpen) {
+        return navigationWidth;
+      }
+      if (navigationCollapsible) {
+        return navigationCollapsedWidth;
+      }
+      return 0;
+    }
+
+    const activeNavigationWidth = getActiveNavigationWidth();
     const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
     const hasHorizontalScroll = scrollWidth > placement.inlineSize;
     if (hasHorizontalScroll) {

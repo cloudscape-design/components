@@ -36,10 +36,6 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   collapsed?: boolean;
-  // The `position` of the item whose collapsed-state tooltip is currently shown,
-  // or null. Owned once at the root and threaded through the tree so that only a
-  // single tooltip is ever visible — focusing or hovering an item claims the
-  // tooltip and hides any other. See NavigationItemsList in implementation.tsx.
   activeTooltip?: string | null;
   setActiveTooltip?: (position: string | null) => void;
 }
@@ -465,12 +461,6 @@ const ItemIcon = React.forwardRef<HTMLSpanElement, ItemIconProps>(function ItemI
 // Used in the collapsed state, where the visible labels are hidden, to give
 // pointer and keyboard users a way to identify each item without relying on
 // their browser's native title popup.
-//
-// Which item's tooltip is visible is a single value owned at the root and shared
-// across all items (activeTooltip), so only one tooltip is ever shown. Focusing or
-// hovering an item claims the tooltip; leaving it releases the tooltip only if this
-// item still owns it, so that moving the pointer onto another item (which already
-// claimed the tooltip) doesn't get cancelled by the previous item's leave/blur.
 function useCollapsedTooltip<T extends HTMLElement>({
   label,
   position,

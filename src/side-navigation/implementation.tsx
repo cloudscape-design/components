@@ -31,9 +31,6 @@ export function SideNavigationImplementation({
   const baseProps = getBaseProps(props);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
-  // In collapsed mode each item shows its label in a tooltip on focus/hover. Only one
-  // tooltip should ever be visible, so its owner (the item's `position`) is tracked once
-  // here and passed down; focusing or hovering an item claims it and hides any other.
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   if (isDevelopment) {

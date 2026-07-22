@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { AppLayoutProps, AppLayoutToolbar, Icon } from '~components';
 import Box from '~components/box';
@@ -14,7 +14,20 @@ import SpaceBetween from '~components/space-between';
 import { applyTheme } from '~components/theming';
 import Toggle from '~components/toggle';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
+
+type CollapsedNavDemoContext = React.Context<
+  AppContextType<{
+    navigationCollapse: boolean;
+    navigationSideBorderHide: boolean;
+    navigationTriggerHide: boolean;
+    toolsHide: boolean;
+    navigationCollapsedWidth: string;
+    showHeader: boolean;
+    showHeaderIcon: boolean;
+  }>
+>;
 
 const items: SideNavigationProps.Item[] = [
   { type: 'link', text: 'Dashboard', href: '#/dashboard', icon: <Icon name="grid-view" /> },
@@ -54,22 +67,31 @@ const AwsSvg = (
   </svg>
 );
 
+const DEFAULT_COLLAPSED_WIDTH = 54;
+
 export default function CollapsedWithAppLayoutPage() {
+  const { urlParams, setUrlParams } = useContext(AppContext as CollapsedNavDemoContext);
+  const {
+    navigationCollapse = true,
+    navigationSideBorderHide = false,
+    navigationTriggerHide = true,
+    toolsHide = true,
+    showHeader = true,
+    showHeaderIcon = true,
+  } = urlParams;
+  const collapseBehavior = navigationCollapse ? 'collapse' : 'hide';
+  const navigationCollapsedWidth = urlParams.navigationCollapsedWidth
+    ? parseInt(urlParams.navigationCollapsedWidth)
+    : DEFAULT_COLLAPSED_WIDTH;
+
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [activeHref, setActiveHref] = useState('#/dashboard');
-  const [collapseBehavior, setCollapseBehavior] = useState<'collapse' | 'hide'>('collapse');
-  const [navigationSideBorderHide, setNavigationSideBorderHide] = useState(false);
-  const [navigationCollapsedWidth, setNavigationCollapsedWidth] = useState(54);
-  const [hideToolbar, setHideToolbar] = useState(true);
-  const [hideTools, setHideTools] = useState(true);
-  const [showHeader, setShowHeader] = useState(true);
-  const [headerIcon, setHeaderIcon] = useState(true);
   const isMobile = useMobile();
 
   const header = { text: 'Project 3', href: '#/projects/3' };
   const headerWithIcon = { ...header, logo: { svg: AwsSvg } };
-  const resolvedNavigationTriggerHide = isMobile && collapseBehavior === 'collapse' ? false : hideToolbar;
+  const resolvedNavigationTriggerHide = isMobile && collapseBehavior === 'collapse' ? false : navigationTriggerHide;
 
   useEffect(() => {
     const { reset } = applyTheme({
@@ -89,7 +111,7 @@ export default function CollapsedWithAppLayoutPage() {
   return (
     <AppLayoutToolbar
       ref={appLayoutRef}
-      toolsHide={hideTools}
+      toolsHide={toolsHide}
       navigationTriggerHide={resolvedNavigationTriggerHide}
       navigationOpen={navOpen}
       navigationCloseBehavior={collapseBehavior}
@@ -109,7 +131,7 @@ export default function CollapsedWithAppLayoutPage() {
       }
       navigation={
         <SideNavigation
-          header={showHeader ? (!headerIcon ? header : headerWithIcon) : undefined}
+          header={showHeader ? (!showHeaderIcon ? header : headerWithIcon) : undefined}
           activeHref={activeHref}
           collapsed={!navOpen && collapseBehavior === 'collapse'}
           items={items}
@@ -131,36 +153,42 @@ export default function CollapsedWithAppLayoutPage() {
               </Box>
               <Box>Current page: {activeHref}</Box>
               <Toggle
-                checked={collapseBehavior === 'collapse'}
-                onChange={({ detail }) => setCollapseBehavior(detail.checked ? 'collapse' : 'hide')}
+                checked={navigationCollapse}
+                onChange={({ detail }) => setUrlParams({ navigationCollapse: detail.checked })}
               >
                 navigationCloseBehavior = &quot;collapse&quot;
               </Toggle>
               <Toggle
                 checked={navigationSideBorderHide}
-                onChange={({ detail }) => setNavigationSideBorderHide(detail.checked)}
+                onChange={({ detail }) => setUrlParams({ navigationSideBorderHide: detail.checked })}
               >
                 Hide navigation side border (theme token)
               </Toggle>
-              <Toggle checked={hideToolbar} onChange={({ detail }) => setHideToolbar(detail.checked)}>
+              <Toggle
+                checked={navigationTriggerHide}
+                onChange={({ detail }) => setUrlParams({ navigationTriggerHide: detail.checked })}
+              >
                 Set navigationTriggerHide
               </Toggle>
-              <Toggle checked={hideTools} onChange={({ detail }) => setHideTools(detail.checked)}>
+              <Toggle checked={toolsHide} onChange={({ detail }) => setUrlParams({ toolsHide: detail.checked })}>
                 Hide tools
               </Toggle>
               <FormField label="navigationCollapsedWidth">
                 <Input
                   value={String(navigationCollapsedWidth)}
                   type="number"
-                  onChange={event => setNavigationCollapsedWidth(parseInt(event.detail.value))}
+                  onChange={event => setUrlParams({ navigationCollapsedWidth: event.detail.value })}
                 />
               </FormField>
-              <Toggle checked={showHeader} onChange={({ detail }) => setShowHeader(detail.checked)}>
+              <Toggle checked={showHeader} onChange={({ detail }) => setUrlParams({ showHeader: detail.checked })}>
                 Show side nav header
               </Toggle>
               {showHeader && (
                 <Box padding={{ left: 'xxl' }}>
-                  <Toggle checked={headerIcon} onChange={({ detail }) => setHeaderIcon(detail.checked)}>
+                  <Toggle
+                    checked={showHeaderIcon}
+                    onChange={({ detail }) => setUrlParams({ showHeaderIcon: detail.checked })}
+                  >
                     Include icon
                   </Toggle>
                 </Box>
