@@ -11,6 +11,13 @@
 
 $toolbar-height: 42px;
 
+@mixin drawer-separator-border {
+  inset-block-start: $toolbar-height;
+  inline-size: awsui.$border-divider-section-width;
+  block-size: calc(100vh - #{$toolbar-height});
+  background: awsui.$color-border-layout;
+}
+
 .universal-toolbar {
   background-color: awsui.$color-background-layout-toolbar;
   box-sizing: border-box;
@@ -40,14 +47,13 @@ $toolbar-height: 42px;
        * - Main content area: Uses `display: contents`, preventing border application
        * - Nav panel: May be hidden, causing the border to disappear when separation is still needed
       */
+      // Visual refresh: separator only in dark mode
       @include theming.dark-mode-only {
-        content: '';
-        position: absolute;
-        inset-block-start: $toolbar-height;
-        inset-inline-start: 0;
-        inline-size: awsui.$border-divider-section-width;
-        block-size: calc(100vh - #{$toolbar-height});
-        background: awsui.$color-border-layout;
+        @include drawer-separator-border;
+      }
+      // One-theme: separator in both light and dark modes
+      @include theming.one-theme-only {
+        @include drawer-separator-border;
       }
     }
 
@@ -121,6 +127,13 @@ $toolbar-height: 42px;
     grid-template-rows: 1fr;
 
     @include theming.dark-mode-only {
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      &.with-ai-drawer {
+        border-start-start-radius: awsui.$space-xxs;
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+    @include theming.one-theme-only {
       border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       &.with-ai-drawer {
         border-start-start-radius: awsui.$space-xxs;

@@ -185,6 +185,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundLayoutAiDrawer: {
+    description: 'The background color of the AI assistant drawer in the app layout.',
+    public: false,
+    themeable: true,
+  },
   colorBackgroundLayoutPanel: {
     description:
       'The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.',
@@ -903,6 +908,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The color of inline button icons in hover state.',
     themeable: true,
     public: true,
+  },
+  colorTextButtonInlineLinkHover: {
+    description: 'The hover text color of inline link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextButtonIconHover: {
+    description: 'The hover color of icon buttons.',
+    themeable: true,
+    public: false,
   },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
