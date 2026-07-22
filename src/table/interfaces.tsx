@@ -462,6 +462,15 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Renders loader counter that is appended to the loader content in all loader states.
    */
   renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
+  /**
+   * Specifies a total/footer row rendered in a <tfoot> element below the table body.
+   * Use it to display per-column aggregations (sums, averages, counts, etc.) or custom content.
+   *
+   * * `cells` (TotalRowCell[]) - An array of cell definitions. Each entry maps a column `id`
+   *   to the content to render in that column's total cell. Columns without a matching entry
+   *   render an empty cell.
+   */
+  totalRow?: TableProps.TotalRow;
 }
 
 export namespace TableProps {
@@ -709,8 +718,25 @@ export namespace TableProps {
   export interface SkeletonConfig {
     totalRows: number;
   }
-}
 
+  export interface TotalRowCell {
+    /**
+     * The `id` of the column definition this cell belongs to.
+     */
+    columnId: string;
+    /**
+     * The content to render inside the total row cell.
+     */
+    content: React.ReactNode;
+  }
+
+  export interface TotalRow {
+    /**
+     * Per-column cell definitions for the total row.
+     */
+    cells: ReadonlyArray<TotalRowCell>;
+  }
+}
 export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
 
 interface TableDataRow<T> {

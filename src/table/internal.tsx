@@ -61,6 +61,7 @@ import {
   GridNavigationProvider,
   TableRole,
 } from './table-role';
+import { Tfoot } from './tfoot';
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
@@ -151,6 +152,7 @@ const InternalTable = React.forwardRef(
       renderLoaderError,
       renderLoaderEmpty,
       renderLoaderCounter,
+      totalRow,
       cellVerticalAlign,
       __funnelSubStepProps,
       ...rest
@@ -842,6 +844,16 @@ const InternalTable = React.forwardRef(
                         />
                       )}
                     </tbody>
+                    {totalRow && (
+                      <Tfoot
+                        totalRow={totalRow}
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        selectionType={selectionType}
+                        stickyState={stickyState}
+                        tableRole={tableRole}
+                        colIndexOffset={colIndexOffset}
+                      />
+                    )}
                   </table>
                 </GridNavigationProvider>
 

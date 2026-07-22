@@ -250,4 +250,21 @@ export default class TableWrapper extends ComponentWrapper {
     const selector = `.${progressiveLoadingStyles['items-loader']}[data-parentrow="${itemId}"]`;
     return this.find(selector);
   }
+  /**
+   * Returns the total/footer row element, if present.
+   */
+  findTotalRow(): ElementWrapper | null {
+    return this.findNativeTable().find(`.${testUtilStyles['tfoot-row']}`);
+  }
+
+  /**
+   * Returns a total row cell by 1-based column index.
+   *
+   * @param columnIndex 1-based index of the column.
+   */
+  findTotalRowCell(columnIndex: number): ElementWrapper | null {
+    return this.findNativeTable().find(
+      `.${testUtilStyles['tfoot-row']} .${testUtilStyles['tfoot-cell']}:nth-child(${columnIndex})`
+    );
+  }
 }
