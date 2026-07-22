@@ -32,6 +32,7 @@ const customCssPropertiesList = [
   'offsetTop',
   'overlapHeight',
   'navigationWidth',
+  'navigationCollapsedWidth',
   'splitPanelReportedHeaderSize',
   'splitPanelReportedSize',
   'splitPanelHeight',

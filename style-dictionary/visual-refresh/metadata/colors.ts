@@ -842,6 +842,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBorderLayoutSideNavigation: {
+    description: 'The border color of the side navigation divider in the app layout.',
+    public: true,
+    themeable: true,
+  },
   colorBorderTutorial: { description: 'The border color of tutorials in the tutorials list in the tutorial panel.' },
   colorForegroundControlDefault: {
     description:

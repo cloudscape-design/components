@@ -45,13 +45,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-
-  &--collapsed {
-    padding-inline: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .header-link {
@@ -95,6 +88,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .items-control,
 .list-container {
   margin-block-start: calc(#{awsui.$space-panel-content-top} - #{$item-padding-block});
+  .root--collapsed > & {
+    margin-block-start: awsui.$space-xs;
+  }
+
   // Toolbar removes margin and item padding for whatever comes first after the header
   .with-toolbar > .divider-header + & {
     margin-block-start: calc(-1 * #{$item-padding-block});

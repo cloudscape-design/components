@@ -189,6 +189,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -1105,6 +1109,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d5dbdb",
           },
         },
         "color-border-popover": {
@@ -3800,6 +3811,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -4716,6 +4731,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d5dbdb",
           },
         },
         "color-border-popover": {
@@ -7411,6 +7433,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -8327,6 +8353,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d5dbdb",
           },
         },
         "color-border-popover": {
@@ -11022,6 +11055,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -11938,6 +11975,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d5dbdb",
           },
         },
         "color-border-popover": {
@@ -14633,6 +14677,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -15549,6 +15597,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d5dbdb",
           },
         },
         "color-border-popover": {
@@ -18244,6 +18299,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -19160,6 +19219,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
           },
         },
         "color-border-popover": {
@@ -21855,6 +21921,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of selected items, like table rows.",
       "$value": "1px",
     },
+    "border-width-layout-side-navigation": {
+      "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+      "$value": "1px",
+    },
     "border-width-popover": {
       "$description": "The border width of popovers.",
       "$value": "1px",
@@ -22771,6 +22841,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-border-layout-side-navigation": {
+      "$description": "The border color of the side navigation divider in the app layout.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#d5dbdb",
       },
     },
     "color-border-popover": {
@@ -25471,6 +25548,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -26387,6 +26468,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-popover": {
@@ -29082,6 +29170,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -29998,6 +30090,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-popover": {
@@ -32693,6 +32792,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -33609,6 +33712,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-popover": {
@@ -36304,6 +36414,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -37220,6 +37334,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-popover": {
@@ -39915,6 +40036,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -40831,6 +40956,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-popover": {
@@ -43526,6 +43658,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -44442,6 +44578,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-popover": {
@@ -47137,6 +47280,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -48053,6 +48200,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-popover": {
@@ -50748,6 +50902,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
+        "border-width-layout-side-navigation": {
+          "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+          "$value": "1px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "2px",
@@ -51664,6 +51822,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-border-layout-side-navigation": {
+          "$description": "The border color of the side navigation divider in the app layout.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-popover": {
@@ -54359,6 +54524,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of selected items, like table rows.",
       "$value": "2px",
     },
+    "border-width-layout-side-navigation": {
+      "$description": "The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.",
+      "$value": "1px",
+    },
     "border-width-popover": {
       "$description": "The border width of popovers.",
       "$value": "2px",
@@ -55275,6 +55444,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-border-layout-side-navigation": {
+      "$description": "The border color of the side navigation divider in the app layout.",
+      "$value": {
+        "dark": "#424650",
+        "light": "#c6c6cd",
       },
     },
     "color-border-popover": {

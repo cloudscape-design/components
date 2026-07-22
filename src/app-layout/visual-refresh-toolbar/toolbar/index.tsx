@@ -30,6 +30,7 @@ export interface ToolbarProps {
   // navigation
   hasNavigation?: boolean;
   navigationOpen?: boolean;
+  navigationCollapsible?: boolean;
   onNavigationToggle?: (open: boolean) => void;
   navigationFocusRef?: React.Ref<Focusable>;
 
