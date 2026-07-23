@@ -6,6 +6,7 @@ import { BaseComponentProps } from '../types/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 import { Optional } from '../types/utils';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
+import { RowReorderingProps } from './row-reordering/interfaces';
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -429,6 +430,15 @@ export interface TableProps<T = any> extends BaseComponentProps {
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 
+  /**
+   * Enables drag-to-reorder rows. When set, a drag-handle column is prepended to the table.
+   * Use `onRowReorder` inside this object to receive the updated items array after a reorder.
+   * Keyboard reordering (Space to grab, Arrow keys to move, Space/Enter to drop, Escape to cancel)
+   * and ARIA live-region announcements are supported out of the box.
+   *
+   * Note: row reordering cannot be combined with `expandableRows`.
+   */
+  rowReordering?: RowReorderingProps<T>;
   /**
    * A function that specifies the current status of loading more items. It is called once for the entire
    * table with `item=null` and then for each expanded item. The function result is one of the four possible states:

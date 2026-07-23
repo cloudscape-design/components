@@ -47,6 +47,7 @@ import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
+import { DRAG_HANDLE_COLUMN_WIDTH, RowReorderingContext, SortableRow, TableRowDragHandle } from './row-reordering';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
@@ -77,6 +78,7 @@ import styles from './styles.css.js';
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
+const dragHandleColumnId = Symbol('drag-handle-column-id');
 
 type InternalTableProps<T> = SomeRequired<
   TableProps<T>,
@@ -152,6 +154,7 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      rowReordering,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -363,6 +366,7 @@ const InternalTable = React.forwardRef(
         : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
+    const hasRowReordering = !!rowReordering;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
 
@@ -376,6 +380,10 @@ const InternalTable = React.forwardRef(
     const { visibleColumnWidthsWithSelection, visibleColumnIdsWithSelection } = useMemo(() => {
       const widths: ColumnWidthDefinition[] = [];
       const ids: PropertyKey[] = [];
+      if (hasRowReordering) {
+        widths.push({ id: dragHandleColumnId, width: DRAG_HANDLE_COLUMN_WIDTH });
+        ids.push(dragHandleColumnId);
+      }
       if (hasSelection) {
         widths.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
         ids.push(selectionColumnId);
@@ -386,7 +394,7 @@ const InternalTable = React.forwardRef(
         ids.push(columnId);
       }
       return { visibleColumnWidthsWithSelection: widths, visibleColumnIdsWithSelection: ids };
-    }, [hasSelection, visibleColumnDefinitions]);
+    }, [hasRowReordering, hasSelection, visibleColumnDefinitions]);
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
@@ -439,6 +447,9 @@ const InternalTable = React.forwardRef(
       stickyColumnsFirst: stickyColumns?.first ?? 0,
       stickyColumnsLast: stickyColumns?.last ?? 0,
       selectionColumnId,
+      dragHandleColumnId,
+      hasRowReordering,
+      rowReorderingAriaLabel: rowReordering?.i18nStrings?.dragHandleAriaLabel,
       tableRole,
       isExpandable,
       setLastUserAction,
@@ -470,7 +481,7 @@ const InternalTable = React.forwardRef(
     const [toolsHeaderHeight, toolsHeaderWrapperMeasureRef] = useContainerQuery(rect => rect.borderBoxHeight);
     const toolsHeaderWrapper = useMergeRefs(toolsHeaderPerformanceMarkRef, toolsHeaderWrapperMeasureRef);
 
-    const colIndexOffset = selectionType ? 1 : 0;
+    const colIndexOffset = (hasRowReordering ? 1 : 0) + (selectionType ? 1 : 0);
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
     const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
@@ -637,6 +648,235 @@ const InternalTable = React.forwardRef(
                             containerRef={wrapperMeasureRefObject}
                           />
                         </tr>
+                      ) : hasRowReordering && rowReordering ? (
+                        <RowReorderingContext
+                          items={allItems}
+                          getItemId={item => `${getItemKey(trackBy, item, allItems.indexOf(item))}`}
+                          rowReordering={rowReordering}
+                        >
+                          {allRows.map((row, rowIndex) => {
+                            const isFirstRow = rowIndex === 0;
+                            const hasSkeletonBelow =
+                              loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
+                            const isLastDataRow = rowIndex === allRows.length - 1;
+                            const isLastRow = isLastDataRow && !hasSkeletonBelow;
+                            const rowExpandableProps =
+                              row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
+                            const rowRoleProps = getTableRowRoleProps({
+                              tableRole,
+                              firstIndex,
+                              rowIndex,
+                              headerRowCount,
+                              level: row.type === 'loader' ? row.level : undefined,
+                              ...rowExpandableProps,
+                            });
+                            const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
+                            const sharedCellProps = {
+                              isFirstRow,
+                              isLastRow,
+                              isSelected: hasSelection && isRowSelected(row),
+                              isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
+                              isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
+                              isEvenRow: rowIndex % 2 === 0,
+                              stripedRows,
+                              hasSelection,
+                              hasFooter,
+                              stickyState,
+                              tableRole,
+                            };
+                            if (row.type === 'data') {
+                              const rowId = `${getTableItemKey(row.item)}`;
+                              return (
+                                <SortableRow key={rowId} id={rowId}>
+                                  {({
+                                    ref: sortableRef,
+                                    style: sortableStyle,
+                                    isDragging: isRowDragging,
+                                    dragHandleProps: rowDragHandleProps,
+                                  }) => (
+                                    <tr
+                                      ref={sortableRef as React.RefCallback<HTMLTableRowElement>}
+                                      style={sortableStyle}
+                                      key={rowId}
+                                      className={clsx(
+                                        styles.row,
+                                        sharedCellProps.isSelected && styles['row-selected'],
+                                        isRowDragging && styles['row-dragging']
+                                      )}
+                                      onFocus={({ currentTarget }) => {
+                                        // When an element inside table row receives focus we want to adjust the scroll.
+                                        // However, that behavior is unwanted when the focus is received as result of a click
+                                        // as it causes the click to never reach the target element.
+                                        if (!currentTarget.contains(getMouseDownTarget())) {
+                                          stickyHeaderRef.current?.scrollToRow(currentTarget);
+                                        }
+                                      }}
+                                      {...focusMarkers.item}
+                                      onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
+                                      onContextMenu={
+                                        onRowContextMenuHandler &&
+                                        onRowContextMenuHandler.bind(null, rowIndex, row.item)
+                                      }
+                                      {...rowRoleProps}
+                                    >
+                                      <TableRowDragHandle
+                                        {...sharedCellProps}
+                                        columnId={dragHandleColumnId}
+                                        dragHandleProps={{
+                                          ariaLabel:
+                                            rowReordering?.i18nStrings?.dragHandleItemAriaLabel?.(row.item) ??
+                                            rowReordering?.i18nStrings?.dragHandleAriaLabel ??
+                                            '',
+                                          ariaDescribedby: rowDragHandleProps.ariaDescribedby,
+                                          active: rowDragHandleProps.active,
+                                          disabled: !!rowDragHandleProps.disabled,
+                                          onPointerDown: rowDragHandleProps.onPointerDown as
+                                            | React.PointerEventHandler
+                                            | undefined,
+                                          onKeyDown: rowDragHandleProps.onKeyDown as
+                                            | React.KeyboardEventHandler
+                                            | undefined,
+                                        }}
+                                        verticalAlign={cellVerticalAlign}
+                                        tableVariant={computedVariant}
+                                      />
+                                      {selection.getItemSelectionProps && (
+                                        <TableBodySelectionCell
+                                          {...sharedCellProps}
+                                          columnId={selectionColumnId}
+                                          selectionControlProps={{
+                                            ...selection.getItemSelectionProps(row.item),
+                                            onFocusDown: moveFocusDown,
+                                            onFocusUp: moveFocusUp,
+                                            rowIndex,
+                                            itemKey: rowId,
+                                          }}
+                                          verticalAlign={cellVerticalAlign}
+                                          tableVariant={computedVariant}
+                                        />
+                                      )}
+
+                                      {visibleColumnDefinitions.map((column, colIndex) => {
+                                        const colId = `${getColumnKey(column, colIndex)}`;
+                                        const cellId = { row: rowId, col: colId };
+                                        const isEditing = cellEditing.checkEditing(cellId);
+                                        const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
+                                        const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                        const cellExpandableProps =
+                                          isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
+                                        const counter = column.counter?.({
+                                          item: row.item,
+                                          itemsCount: rowExpandableProps?.itemsCount,
+                                          selectedItemsCount: rowExpandableProps?.selectedItemsCount,
+                                        });
+
+                                        const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
+                                          component: {
+                                            innerContext: {
+                                              position: `${rowIndex + 1},${colIndex + 1}`,
+                                              columnId: column.id ? `${column.id}` : '',
+                                              columnLabel: {
+                                                selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
+                                                root: 'component',
+                                              },
+                                              item: rowId,
+                                            } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
+                                          },
+                                        };
+
+                                        return (
+                                          <TableBodyCell
+                                            key={colId}
+                                            {...sharedCellProps}
+                                            resizableStyle={{
+                                              width: column.width,
+                                              minWidth: column.minWidth,
+                                              maxWidth: column.maxWidth,
+                                            }}
+                                            ariaLabels={ariaLabels}
+                                            column={column}
+                                            item={row.item}
+                                            wrapLines={wrapLines}
+                                            isEditable={isEditable}
+                                            isEditing={isEditing}
+                                            isRowHeader={column.isRowHeader}
+                                            successfulEdit={successfulEdit}
+                                            resizableColumns={resizableColumns}
+                                            onEditStart={() => cellEditing.startEdit(cellId)}
+                                            onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
+                                            submitEdit={cellEditing.submitEdit}
+                                            columnId={column.id ?? colIndex}
+                                            colIndex={colIndex + colIndexOffset}
+                                            verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                            tableVariant={computedVariant}
+                                            counter={counter}
+                                            {...cellExpandableProps}
+                                            {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+                                          />
+                                        );
+                                      })}
+                                    </tr>
+                                  )}
+                                </SortableRow>
+                              );
+                            }
+                            const loaderSelectionProps =
+                              selection.getLoaderSelectionProps && selection.getLoaderSelectionProps(row.item);
+                            const rowSelection = selectionType === 'group' ? loaderSelectionProps : undefined;
+                            const loaderContent = getLoaderContent({
+                              item: row.item,
+                              loadingStatus: row.status,
+                              renderLoaderPending,
+                              renderLoaderLoading,
+                              renderLoaderError,
+                              renderLoaderEmpty,
+                            });
+                            const loaderCounter = renderLoaderCounter?.({
+                              item: row.item,
+                              loadingStatus: row.status,
+                              selected: !!rowSelection?.checked,
+                            });
+                            return (
+                              loaderContent && (
+                                <tr
+                                  key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                                  className={styles.row}
+                                  {...rowRoleProps}
+                                >
+                                  {selectionType ? (
+                                    <TableBodySelectionCell
+                                      {...sharedCellProps}
+                                      columnId={selectionColumnId}
+                                      verticalAlign={cellVerticalAlign}
+                                      tableVariant={computedVariant}
+                                      selectionControlProps={
+                                        selectionType === 'group' ? loaderSelectionProps : undefined
+                                      }
+                                      isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
+                                    />
+                                  ) : null}
+                                  {visibleColumnDefinitions.map((column, colIndex) => (
+                                    <TableLoaderCell
+                                      key={getColumnKey(column, colIndex)}
+                                      {...sharedCellProps}
+                                      wrapLines={false}
+                                      columnId={column.id ?? colIndex}
+                                      colIndex={colIndex + colIndexOffset}
+                                      isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
+                                      isRowHeader={colIndex === 0}
+                                      level={row.level}
+                                      item={row.item}
+                                      trackBy={trackBy}
+                                      counter={loaderCounter}
+                                    >
+                                      {loaderContent}
+                                    </TableLoaderCell>
+                                  ))}
+                                </tr>
+                              )
+                            );
+                          })}
+                        </RowReorderingContext>
                       ) : (
                         allRows.map((row, rowIndex) => {
                           const isFirstRow = rowIndex === 0;
@@ -675,9 +915,6 @@ const InternalTable = React.forwardRef(
                                 key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                                 onFocus={({ currentTarget }) => {
-                                  // When an element inside table row receives focus we want to adjust the scroll.
-                                  // However, that behavior is unwanted when the focus is received as result of a click
-                                  // as it causes the click to never reach the target element.
                                   if (!currentTarget.contains(getMouseDownTarget())) {
                                     stickyHeaderRef.current?.scrollToRow(currentTarget);
                                   }
@@ -704,7 +941,6 @@ const InternalTable = React.forwardRef(
                                     tableVariant={computedVariant}
                                   />
                                 )}
-
                                 {visibleColumnDefinitions.map((column, colIndex) => {
                                   const colId = `${getColumnKey(column, colIndex)}`;
                                   const cellId = { row: rowId, col: colId };
@@ -718,21 +954,6 @@ const InternalTable = React.forwardRef(
                                     itemsCount: rowExpandableProps?.itemsCount,
                                     selectedItemsCount: rowExpandableProps?.selectedItemsCount,
                                   });
-
-                                  const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
-                                    component: {
-                                      innerContext: {
-                                        position: `${rowIndex + 1},${colIndex + 1}`,
-                                        columnId: column.id ? `${column.id}` : '',
-                                        columnLabel: {
-                                          selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
-                                          root: 'component',
-                                        },
-                                        item: rowId,
-                                      } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
-                                    },
-                                  };
-
                                   return (
                                     <TableBodyCell
                                       key={colId}
@@ -760,66 +981,13 @@ const InternalTable = React.forwardRef(
                                       tableVariant={computedVariant}
                                       counter={counter}
                                       {...cellExpandableProps}
-                                      {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
                                   );
                                 })}
                               </tr>
                             );
                           }
-                          const loaderSelectionProps =
-                            selection.getLoaderSelectionProps && selection.getLoaderSelectionProps(row.item);
-                          const rowSelection = selectionType === 'group' ? loaderSelectionProps : undefined;
-                          const loaderContent = getLoaderContent({
-                            item: row.item,
-                            loadingStatus: row.status,
-                            renderLoaderPending,
-                            renderLoaderLoading,
-                            renderLoaderError,
-                            renderLoaderEmpty,
-                          });
-                          const loaderCounter = renderLoaderCounter?.({
-                            item: row.item,
-                            loadingStatus: row.status,
-                            selected: !!rowSelection?.checked,
-                          });
-                          return (
-                            loaderContent && (
-                              <tr
-                                key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                                className={styles.row}
-                                {...rowRoleProps}
-                              >
-                                {selectionType ? (
-                                  <TableBodySelectionCell
-                                    {...sharedCellProps}
-                                    columnId={selectionColumnId}
-                                    verticalAlign={cellVerticalAlign}
-                                    tableVariant={computedVariant}
-                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
-                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
-                                  />
-                                ) : null}
-                                {visibleColumnDefinitions.map((column, colIndex) => (
-                                  <TableLoaderCell
-                                    key={getColumnKey(column, colIndex)}
-                                    {...sharedCellProps}
-                                    wrapLines={false}
-                                    columnId={column.id ?? colIndex}
-                                    colIndex={colIndex + colIndexOffset}
-                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
-                                    isRowHeader={colIndex === 0}
-                                    level={row.level}
-                                    item={row.item}
-                                    trackBy={trackBy}
-                                    counter={loaderCounter}
-                                  >
-                                    {loaderContent}
-                                  </TableLoaderCell>
-                                ))}
-                              </tr>
-                            )
-                          );
+                          return null;
                         })
                       )}
                       {loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0 && (

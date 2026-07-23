@@ -229,7 +229,8 @@ filter search icon.
 
 .thead-active,
 .row,
-.row-selected {
+.row-selected,
+.row-dragging {
   /* used in test-utils */
 }
 
@@ -237,4 +238,13 @@ filter search icon.
   padding-block: 0;
   padding-inline: 0;
   border-block-end: none;
+}
+
+/* Row reordering */
+.row-dragging {
+  opacity: 0.5;
+}
+
+.row-drag-handle-cell {
+  /* matches selection column width */
 }
