@@ -68,7 +68,14 @@ import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } fro
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
-import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
+import {
+  applyWidthsToColumnDisplay,
+  checkSortingState,
+  getColumnKey,
+  getItemKey,
+  getVisibleColumnDefinitions,
+  toContainerVariant,
+} from './utils';
 
 import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';
@@ -428,7 +435,11 @@ const InternalTable = React.forwardRef(
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
-          fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
+          // Build an updated columnDisplay array with persisted widths when columnDisplay is provided.
+          const updatedColumnDisplay = columnDisplay
+            ? applyWidthsToColumnDisplay(columnDisplay, columnDefinitions, widthsDetail)
+            : undefined;
+          fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail, columnDisplay: updatedColumnDisplay });
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
