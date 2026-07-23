@@ -313,3 +313,84 @@ describe('Expandable rows', () => {
     expect(table).not.toBe(null);
   });
 });
+
+describe('Expand/collapse all', () => {
+  // Expandable nodes are those that are expandable AND actually have children to reveal.
+  const expandableNodes = [nestedItems[0], nestedItems[0].children![2], nestedItems[1]];
+
+  function renderTableWithRef(expandableRows: TableProps.ExpandableRows<Instance>) {
+    const ref = React.createRef<TableProps.Ref>();
+    render(
+      <Table ref={ref} columnDefinitions={columnDefinitions} items={nestedItems} expandableRows={expandableRows} />
+    );
+    return ref;
+  }
+
+  const baseExpandableRows: TableProps.ExpandableRows<Instance> = {
+    isItemExpandable: item => !!item.children && item.children.length > 0,
+    expandedItems: [],
+    getItemChildren: item => item.children ?? [],
+    onExpandableItemToggle: () => {},
+  };
+
+  test('expandAll fires onExpandAllToggle with all expandable nodes across the whole tree', () => {
+    const onExpandAllToggle = jest.fn();
+    const ref = renderTableWithRef({ ...baseExpandableRows, onExpandAllToggle });
+
+    ref.current!.expandAll!();
+
+    expect(onExpandAllToggle).toHaveBeenCalledTimes(1);
+    expect(onExpandAllToggle).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: true, expandedItems: expandableNodes } })
+    );
+  });
+
+  test('collapseAll fires onExpandAllToggle with an empty expandedItems array', () => {
+    const onExpandAllToggle = jest.fn();
+    const ref = renderTableWithRef({
+      ...baseExpandableRows,
+      expandedItems: flatten(nestedItems),
+      onExpandAllToggle,
+    });
+
+    ref.current!.collapseAll!();
+
+    expect(onExpandAllToggle).toHaveBeenCalledTimes(1);
+    expect(onExpandAllToggle).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: false, expandedItems: [] } })
+    );
+  });
+
+  test('expandAll only includes nodes for which isItemExpandable returns true', () => {
+    const onExpandAllToggle = jest.fn();
+    // Mark Root-1 (and its subtree) as not expandable; only Root-2 remains expandable.
+    const ref = renderTableWithRef({
+      ...baseExpandableRows,
+      isItemExpandable: item => item.name === 'Root-2',
+      onExpandAllToggle,
+    });
+
+    ref.current!.expandAll!();
+
+    expect(onExpandAllToggle).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: true, expandedItems: [nestedItems[1]] } })
+    );
+  });
+
+  test('expandAll and collapseAll are no-ops when onExpandAllToggle is not provided', () => {
+    const ref = renderTableWithRef(baseExpandableRows);
+    expect(() => {
+      ref.current!.expandAll!();
+      ref.current!.collapseAll!();
+    }).not.toThrow();
+  });
+
+  test('expandAll and collapseAll do not throw when expandableRows is not set', () => {
+    const ref = React.createRef<TableProps.Ref>();
+    render(<Table ref={ref} columnDefinitions={columnDefinitions} items={nestedItems} />);
+    expect(() => {
+      ref.current!.expandAll!();
+      ref.current!.collapseAll!();
+    }).not.toThrow();
+  });
+});

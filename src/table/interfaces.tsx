@@ -411,6 +411,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `isItemExpandable` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
    * * `expandedItems` (Item[]) - Use it to represent the expanded state of items.
    * * `onExpandableItemToggle` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
+   * * `onExpandAllToggle` (optional, TableProps.OnExpandAllToggle<Item>) - Called when the table's `expandAll` or `collapseAll`
+   * imperative ref methods are invoked. The event detail contains `expanded` (boolean) and `expandedItems` (Item[]) -- the complete
+   * set of items to reflect in `expandedItems`. Use it to update the controlled `expandedItems` state for bulk expand/collapse.
    * * `groupSelection` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
    * properties `selectionType` and `selectedItems` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
    *  * `{ inverted: false, toggledItems: [] }` - no items are selected;
@@ -634,6 +637,23 @@ export namespace TableProps {
      * Dismiss an inline edit if currently active.
      */
     cancelEdit?(): void;
+
+    /**
+     * Expands all expandable rows in the table, including nested rows at every level.
+     *
+     * This only has an effect when `expandableRows` is defined together with
+     * `expandableRows.onExpandAllToggle`, which receives the complete set of
+     * expandable items so the controlled `expandableRows.expandedItems` state can be updated.
+     */
+    expandAll?(): void;
+
+    /**
+     * Collapses all expanded rows in the table.
+     *
+     * This only has an effect when `expandableRows` is defined together with
+     * `expandableRows.onExpandAllToggle`, which receives an empty set of expanded items.
+     */
+    collapseAll?(): void;
   }
 
   export type SubmitEditFunction<ItemType, ValueType = unknown> = (
@@ -662,6 +682,7 @@ export namespace TableProps {
     isItemExpandable: (item: T) => boolean;
     expandedItems: ReadonlyArray<T>;
     onExpandableItemToggle: OnExpandableItemToggle<T>;
+    onExpandAllToggle?: OnExpandAllToggle<T>;
     groupSelection?: GroupSelectionState<T>;
     onGroupSelectionChange?: OnGroupSelectionChange<T>;
     getItemsCount?: (item: T) => number;
@@ -675,6 +696,20 @@ export namespace TableProps {
   export interface ExpandableItemToggleDetail<T> {
     item: T;
     expanded: boolean;
+  }
+
+  export type OnExpandAllToggle<T> = NonCancelableEventHandler<ExpandAllToggleDetail<T>>;
+
+  export interface ExpandAllToggleDetail<T> {
+    /**
+     * `true` when the table requested to expand all expandable rows, `false` when it requested to collapse them.
+     */
+    expanded: boolean;
+    /**
+     * The complete set of items that should be reflected in `expandableRows.expandedItems` after the operation.
+     * When expanding, this contains every expandable node in the tree; when collapsing, this is an empty array.
+     */
+    expandedItems: ReadonlyArray<T>;
   }
 
   export type OnGroupSelectionChange<T> = NonCancelableEventHandler<GroupSelectionChangeDetail<T>>;

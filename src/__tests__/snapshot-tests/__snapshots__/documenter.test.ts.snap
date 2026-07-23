@@ -28161,6 +28161,25 @@ The event detail contains the current sortingColumn and isDescending.",
       "returnType": "void",
     },
     {
+      "description": "Collapses all expanded rows in the table.
+
+This only has an effect when \`expandableRows\` is defined together with
+\`expandableRows.onExpandAllToggle\`, which receives an empty set of expanded items.",
+      "name": "collapseAll",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Expands all expandable rows in the table, including nested rows at every level.
+
+This only has an effect when \`expandableRows\` is defined together with
+\`expandableRows.onExpandAllToggle\`, which receives the complete set of
+expandable items so the controlled \`expandableRows.expandedItems\` state can be updated.",
+      "name": "expandAll",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
       "description": "When the sticky header is enabled and you call this function, the table
 scroll parent scrolls to reveal the first row of the table.",
       "name": "scrollToTop",
@@ -28573,6 +28592,9 @@ By default, the keyboard navigation is active for tables with expandable rows.",
 * \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
 * \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
 * \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
+* \`onExpandAllToggle\` (optional, TableProps.OnExpandAllToggle<Item>) - Called when the table's \`expandAll\` or \`collapseAll\`
+imperative ref methods are invoked. The event detail contains \`expanded\` (boolean) and \`expandedItems\` (Item[]) -- the complete
+set of items to reflect in \`expandedItems\`. Use it to update the controlled \`expandedItems\` state for bulk expand/collapse.
 * \`groupSelection\` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
 properties \`selectionType\` and \`selectedItems\` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
  * \`{ inverted: false, toggledItems: [] }\` - no items are selected;
@@ -28696,6 +28718,22 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "name": "onExpandableItemToggle",
             "optional": false,
             "type": "TableProps.OnExpandableItemToggle<T>",
+          },
+          {
+            "inlineType": {
+              "name": "TableProps.OnExpandAllToggle<T>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "NonCancelableCustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onExpandAllToggle",
+            "optional": true,
+            "type": "TableProps.OnExpandAllToggle<T>",
           },
           {
             "inlineType": {
