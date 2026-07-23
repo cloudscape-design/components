@@ -10,13 +10,17 @@ interface Item {
   id: string;
   name: string;
   status: string;
+  region: string;
   detail: string;
 }
+
+const REGIONS = ['us-east-1', 'eu-west-1', 'ap-southeast-2', 'us-west-2'];
 
 const items: Item[] = Array.from({ length: 25 }, (_, index) => ({
   id: `row-${index}`,
   name: `Resource ${index}`,
   status: index % 2 === 0 ? 'Available' : 'Pending',
+  region: REGIONS[index % REGIONS.length],
   detail: `Extended detail for resource ${index}: arbitrary non-tabular expanded content.`,
 }));
 
@@ -35,6 +39,7 @@ export default function VirtualTableCompoundSimplePage() {
           items={items}
           trackBy={item => item.id}
           estimatedRowHeight={23}
+          resizableColumns={true}
           defaultExpandedItems={['row-0']}
           ariaLabels={{
             tableLabel: 'Resources',
@@ -43,9 +48,12 @@ export default function VirtualTableCompoundSimplePage() {
           }}
         >
           <VirtualTable.Header sticky={true}>
-            <VirtualTable.HeaderCell columnId="name">Name</VirtualTable.HeaderCell>
-            <VirtualTable.HeaderCell columnId="status" stretch={true}>
-              Status
+            <VirtualTable.HeaderCell columnId="name" width={200}>
+              Name
+            </VirtualTable.HeaderCell>
+            <VirtualTable.HeaderCell columnId="status">Status</VirtualTable.HeaderCell>
+            <VirtualTable.HeaderCell columnId="region" stretch={true}>
+              Region
             </VirtualTable.HeaderCell>
           </VirtualTable.Header>
           <VirtualTable.Body>
@@ -53,6 +61,7 @@ export default function VirtualTableCompoundSimplePage() {
               <VirtualTable.Row item={item} api={api}>
                 <VirtualTable.Cell columnId="name">{item.name}</VirtualTable.Cell>
                 <VirtualTable.Cell columnId="status">{item.status}</VirtualTable.Cell>
+                <VirtualTable.Cell columnId="region">{item.region}</VirtualTable.Cell>
                 <VirtualTable.ExpandedContent estimatedHeight={80}>
                   <div>
                     <strong>Details</strong>

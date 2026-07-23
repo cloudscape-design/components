@@ -38,8 +38,16 @@ export interface VirtualTableContextValue<T = unknown> {
   columns: ReadonlyArray<DerivedColumn>;
   /** 1-based aria-colindex for a data column id (disclosure column, when present, is 1). */
   columnIndexOf: (columnId: string) => number;
-  /** Fixed-layout flex style for a column by id (width / stretch / share). */
-  columnStyleOf: (columnId: string) => React.CSSProperties;
+  /** The SINGLE shared `grid-template-columns` string, computed once from the HeaderCell set
+   *  (+ the disclosure column). Applied identically to `.header-row` and EVERY body `.row`
+   *  so columns align across rows deterministically (content-independent). */
+  gridTemplateColumns: string;
+  /** True when `resizableColumns` is set: HeaderCell renders a drag handle on its trailing edge. */
+  resizableColumns: boolean;
+  /** Ref callback so Root can measure a header cell's rendered width (freeze-on-first-resize). */
+  registerHeaderCell: (columnId: string, node: HTMLElement | null) => void;
+  /** Begin a pointer-driven column resize for `columnId` from a HeaderCell's drag handle. */
+  startColumnResize: (columnId: string, event: React.PointerEvent<HTMLElement>) => void;
   /**
    * aria-sort for a column: `'ascending'`/`'descending'` when it is the active sort column,
    * `'none'` when sortable but inactive, and `undefined` when the column declares no

@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { ExpandToggleButton } from '../internal/components/expand-toggle-button';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import {
@@ -39,8 +39,14 @@ function Header({ children }: VirtualTableProps.HeaderProps) {
   const ctx = useVirtualTableContext('Header');
   return (
     // Header row is aria-rowindex 1 so it is counted exactly once and SR "row X of Y" is
-    // coherent under windowing (design B1).
-    <div className={styles['header-row']} role="row" aria-rowindex={1}>
+    // coherent under windowing (design B1). It carries the SAME shared grid-template-columns
+    // as every body row so the columns align across rows content-independently.
+    <div
+      className={styles['header-row']}
+      role="row"
+      aria-rowindex={1}
+      style={{ gridTemplateColumns: ctx.gridTemplateColumns }}
+    >
       {ctx.hasDisclosureColumn && (
         // Materialised leading disclosure column: an accessible, empty columnheader (a spacer
         // aligned to the row's disclosure-toggle column) counted at aria-colindex 1 so data
@@ -62,7 +68,7 @@ function HeaderCell({ columnId, children }: VirtualTableProps.HeaderCellProps) {
       role="columnheader"
       aria-colindex={ctx.columnIndexOf(columnId)}
       aria-sort={ariaSort}
-      style={ctx.columnStyleOf(columnId)}
+      ref={node => ctx.registerHeaderCell(columnId, node)}
     >
       {ariaSort !== undefined ? (
         // Sortable columns (those declaring a sortingField) expose a native, implicitly
@@ -81,6 +87,13 @@ function HeaderCell({ columnId, children }: VirtualTableProps.HeaderCellProps) {
       ) : (
         children
       )}
+      {ctx.resizableColumns && (
+        <span
+          aria-hidden="true"
+          className={styles['resize-handle']}
+          onPointerDown={event => ctx.startColumnResize(columnId, event)}
+        />
+      )}
     </span>
   );
 }
@@ -92,12 +105,7 @@ const Body = (() => null) as <T>(props: VirtualTableProps.BodyProps<T>) => React
 function Cell({ columnId, children }: VirtualTableProps.CellProps) {
   const ctx = useVirtualTableContext('Cell');
   return (
-    <span
-      className={styles.cell}
-      role="gridcell"
-      aria-colindex={ctx.columnIndexOf(columnId)}
-      style={ctx.columnStyleOf(columnId)}
-    >
+    <span className={styles.cell} role="gridcell" aria-colindex={ctx.columnIndexOf(columnId)}>
       {children}
     </span>
   );
@@ -146,7 +154,6 @@ function Row<T>({ item, api, children }: VirtualTableProps.RowProps<T>) {
         className={styles.cell}
         role="gridcell"
         aria-colindex={ctx.columnIndexOf(column.columnId)}
-        style={ctx.columnStyleOf(column.columnId)}
       />
     );
   });
@@ -200,23 +207,24 @@ function Row<T>({ item, api, children }: VirtualTableProps.RowProps<T>) {
         className={clsx(styles.row, isActive && styles['row-active'])}
         role="row"
         aria-rowindex={dataAriaRowIndex}
-        style={dataStyle}
+        style={{ ...dataStyle, gridTemplateColumns: ctx.gridTemplateColumns }}
         ref={ctx.measureRef('d:' + id, dataAuto)}
       >
         {ctx.hasDisclosureColumn && (
           <span className={styles['disclosure-cell']} role="gridcell" aria-colindex={1}>
             {expandedContent ? (
-              <button
+              // Match the standard Table expandable-row toggle exactly: the shared
+              // ExpandToggleButton renders the rotating angle-down/caret icon and owns the
+              // button role + aria-expanded + aria-label. The label function already resolves
+              // the state-correct string, so it feeds both label slots.
+              <ExpandToggleButton
+                isExpanded={expanded}
+                onExpandableItemToggle={() => ctx.toggle(item)}
+                expandButtonLabel={ctx.ariaLabels?.expandButtonLabel?.(item, expanded)}
+                collapseButtonLabel={ctx.ariaLabels?.expandButtonLabel?.(item, expanded)}
                 id={toggleId}
-                type="button"
-                className={styles['disclosure-button']}
-                aria-expanded={expanded}
-                aria-controls={expanded ? regionId : undefined}
-                aria-label={ctx.ariaLabels?.expandButtonLabel?.(item, expanded)}
-                onClick={() => ctx.toggle(item)}
-              >
-                <InternalIcon name={expanded ? 'angle-down' : 'angle-right'} />
-              </button>
+                ariaControls={expanded ? regionId : undefined}
+              />
             ) : null}
           </span>
         )}
@@ -232,7 +240,7 @@ function Row<T>({ item, api, children }: VirtualTableProps.RowProps<T>) {
           className={styles['expanded-row']}
           role="row"
           aria-rowindex={dataAriaRowIndex}
-          style={expandedStyle}
+          style={{ ...expandedStyle, gridTemplateColumns: ctx.gridTemplateColumns }}
           ref={ctx.measureRef('e:' + id, expandedAuto)}
         >
           {/* A div (not a span) holds the arbitrary, possibly block-level expanded content —
@@ -281,23 +289,6 @@ function deriveColumns(headerElement: React.ReactElement<VirtualTableProps.Heade
   return columns;
 }
 
-// Fixed-layout column sizing: an explicit width pins the column; the stretch column fills
-// remaining space; otherwise columns share space.
-function cellStyle(
-  column: DerivedColumn | undefined,
-  columnWidths: Record<string, number> | undefined,
-  stretch: boolean
-): React.CSSProperties {
-  const width = (column && columnWidths?.[column.columnId]) ?? column?.width;
-  if (stretch) {
-    return { flex: '1 1 auto', minInlineSize: column?.minWidth };
-  }
-  if (width !== undefined) {
-    return { flex: `0 0 ${width}px`, minInlineSize: column?.minWidth };
-  }
-  return { flex: '1 1 0', minInlineSize: column?.minWidth ?? 0 };
-}
-
 // --- Root -----------------------------------------------------------------------------
 
 interface InternalRootProps<T> extends VirtualTableProps<T>, InternalBaseComponentProps {}
@@ -322,7 +313,9 @@ function InternalRoot<T>({
   sortingColumn,
   sortingDescending,
   onSortingChange,
+  resizableColumns = false,
   columnWidths,
+  onColumnWidthsChange,
   ariaLabels,
   imperativeRef,
   children,
@@ -404,11 +397,109 @@ function InternalRoot<T>({
   const hasDisclosureColumn = probe.hasDisclosureColumn;
   const dataColumnStart = hasDisclosureColumn ? 2 : 1;
   const columnCount = columns.length + (hasDisclosureColumn ? 1 : 0);
-  const stretchColumnId = [...columns].reverse().find(column => column.stretch)?.columnId;
   const columnIndex = useMemo(
     () => new Map(columns.map((column, index) => [column.columnId, dataColumnStart + index])),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [columns.map(column => column.columnId).join('\u0000'), dataColumnStart]
+  );
+
+  // --- Shared column-track layout + resize -----------------------------------------------
+  // ONE grid-template-columns string is computed from the HeaderCell set (+ the disclosure
+  // column) and applied identically to the header row and every body row, so columns align
+  // across rows content-independently. Track rules: the disclosure column is a leading `auto`
+  // track that resolves to the disclosure cell's fixed inline-size ($space-xl); a column with
+  // a resized/explicit width is `<w>px`; a width-less column (incl. the stretch column) is
+  // `minmax(<minWidth||0>px, 1fr)` so flexible columns share the remaining width equally.
+  // Resize maps take precedence over declared width.
+  const isWidthControlled = columnWidths !== undefined;
+  const [uncontrolledWidths, setUncontrolledWidths] = useState<Record<string, number>>({});
+  const widths = isWidthControlled ? columnWidths! : uncontrolledWidths;
+
+  const gridTemplateColumns = (() => {
+    const tracks: string[] = [];
+    if (hasDisclosureColumn) {
+      tracks.push('auto');
+    }
+    for (const column of columns) {
+      const resized = widths[column.columnId];
+      if (resized !== undefined) {
+        tracks.push(`${Math.max(resized, column.minWidth ?? 0)}px`);
+      } else if (column.width !== undefined) {
+        tracks.push(`${column.width}px`);
+      } else {
+        tracks.push(`minmax(${column.minWidth ?? 0}px, 1fr)`);
+      }
+    }
+    return tracks.join(' ');
+  })();
+
+  // Refs so the pointer-drag handlers always read the latest widths / minWidths / cell nodes
+  // without re-subscribing listeners on every render.
+  const headerCellRefs = useRef(new Map<string, HTMLElement>());
+  const widthsRef = useRef(widths);
+  widthsRef.current = widths;
+  const minWidthByColumn = useRef(new Map<string, number | undefined>());
+  minWidthByColumn.current = new Map(columns.map(column => [column.columnId, column.minWidth]));
+
+  const registerHeaderCell = useCallback((columnId: string, node: HTMLElement | null) => {
+    if (node) {
+      headerCellRefs.current.set(columnId, node);
+    } else {
+      headerCellRefs.current.delete(columnId);
+    }
+  }, []);
+
+  const applyWidths = useCallback(
+    (next: Record<string, number>) => {
+      if (!isWidthControlled) {
+        setUncontrolledWidths(next);
+      }
+      if (onColumnWidthsChange) {
+        fireNonCancelableEvent(onColumnWidthsChange, { widths: next });
+      }
+    },
+    [isWidthControlled, onColumnWidthsChange]
+  );
+
+  const resizeState = useRef<{ columnId: string; startX: number; startWidth: number } | null>(null);
+  const startColumnResize = useCallback(
+    (columnId: string, event: React.PointerEvent<HTMLElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      // Freeze-on-first-resize: snapshot the CURRENT rendered px width of every column so
+      // flexible (1fr) tracks become fixed px, making the drag predictable and alignment-safe.
+      const frozen: Record<string, number> = { ...widthsRef.current };
+      let needSnapshot = false;
+      headerCellRefs.current.forEach((node, id) => {
+        if (frozen[id] === undefined) {
+          frozen[id] = Math.round(node.getBoundingClientRect().width);
+          needSnapshot = true;
+        }
+      });
+      const startWidth =
+        frozen[columnId] ?? Math.round(headerCellRefs.current.get(columnId)?.getBoundingClientRect().width ?? 0);
+      resizeState.current = { columnId, startX: event.clientX, startWidth };
+      if (needSnapshot) {
+        applyWidths(frozen);
+      }
+      const onMove = (moveEvent: PointerEvent) => {
+        const state = resizeState.current;
+        if (!state) {
+          return;
+        }
+        const min = minWidthByColumn.current.get(state.columnId) ?? 0;
+        const next = Math.max(min, Math.round(state.startWidth + (moveEvent.clientX - state.startX)));
+        applyWidths({ ...widthsRef.current, [state.columnId]: next });
+      };
+      const onUp = () => {
+        resizeState.current = null;
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+      };
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    },
+    [applyWidths]
   );
 
   // Absolute positions for the windowed slots, keyed by row id.
@@ -547,10 +638,10 @@ function InternalRoot<T>({
     columnCount,
     columns,
     columnIndexOf: (columnId: string) => columnIndex.get(columnId) ?? dataColumnStart,
-    columnStyleOf: (columnId: string) => {
-      const column = columns.find(candidate => candidate.columnId === columnId);
-      return cellStyle(column, columnWidths, columnId === stretchColumnId);
-    },
+    gridTemplateColumns,
+    resizableColumns,
+    registerHeaderCell,
+    startColumnResize,
     ariaSortOf: (columnId: string) => {
       const column = columns.find(candidate => candidate.columnId === columnId);
       if (!column?.sortingField) {
