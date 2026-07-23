@@ -138,17 +138,18 @@ interface ValueInputProps {
   i18nStrings: I18nStringsInternal;
   onChangeValue: (value: unknown) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  onSubmit?: () => void;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
   value: unknown;
 }
 
 export function ValueInput(props: ValueInputProps) {
-  const { property, operator, value, onChangeValue } = props;
+  const { property, operator, value, onChangeValue, onSubmit } = props;
   const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
 
   if (OperatorForm) {
-    return <OperatorForm value={value} onChange={onChangeValue} operator={operator} />;
+    return <OperatorForm value={value} onChange={onChangeValue} operator={operator} submit={onSubmit} />;
   }
   if (property && operator && property.getTokenType(operator) === 'enum') {
     return <ValueInputEnum {...props} property={property} operator={operator} />;
