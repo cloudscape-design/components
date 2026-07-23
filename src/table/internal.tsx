@@ -63,6 +63,7 @@ import {
 } from './table-role';
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
+import { useBulkEditing } from './use-bulk-editing';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
@@ -133,6 +134,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
       contentDensity,
       submitEdit,
+      bulkEdit,
       onEditCancel,
       resizableColumns,
       onColumnWidthsChange,
@@ -196,6 +198,9 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
+    // WIP (AWSUI-56121): opt-in bulk inline editing controller. When `bulkEdit` is not provided
+    // the controller is disabled (`isActive` is always false) and has no effect on rendering.
+    const bulkEditing = useBulkEditing({ items: allItems, trackBy, columnDefinitions, bulkEdit });
     const paginationRef = useRef<PaginationRef>({});
     const filterRef = useRef<FilterRef>({});
     const preferencesRef = useRef<PreferencesRef>({});
@@ -710,7 +715,8 @@ const InternalTable = React.forwardRef(
                                   const cellId = { row: rowId, col: colId };
                                   const isEditing = cellEditing.checkEditing(cellId);
                                   const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
-                                  const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                  const isEditable =
+                                    !!column.editConfig && (bulkEditing.isActive || !cellEditing.isLoading);
                                   const cellExpandableProps =
                                     isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
                                   const counter = column.counter?.({

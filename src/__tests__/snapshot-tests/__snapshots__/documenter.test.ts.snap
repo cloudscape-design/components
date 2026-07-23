@@ -28443,6 +28443,60 @@ in tables with data grouping.
       "type": "TableProps.AriaLabels<T>",
     },
     {
+      "description": "**(WIP - AWSUI-56121)** Opt-in configuration that enables bulk inline editing, allowing
+multiple editable cells to be edited simultaneously and committed together, rather than
+one cell at a time. This is additive to per-column \`editConfig\`: a column must define
+\`editConfig\` to participate in bulk editing.
+
+The configuration object consists of:
+* \`onSubmit\` ((detail: BulkEditSubmitDetail<T>) => Promise<void> | void) - Called when the user commits
+  all pending edits. Receives every changed cell as a \`BulkEditChange\`. Return a promise to keep the
+  table in a submitting state while the request is in progress.
+* \`activateBulkEditLabel\` (optional, string) - Label for the control that enters bulk-edit mode.
+* \`submitBulkEditLabel\` (optional, string) - Label for the control that commits all pending edits.
+* \`cancelBulkEditLabel\` (optional, string) - Label for the control that discards all pending edits.",
+      "inlineType": {
+        "name": "TableProps.BulkEditConfig<T, unknown>",
+        "properties": [
+          {
+            "name": "activateBulkEditLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "cancelBulkEditLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(detail: TableProps.BulkEditSubmitDetail<ItemType, ValueType>) => void | Promise<void>",
+              "parameters": [
+                {
+                  "name": "detail",
+                  "type": "TableProps.BulkEditSubmitDetail<ItemType, ValueType>",
+                },
+              ],
+              "returnType": "void | Promise<void>",
+              "type": "function",
+            },
+            "name": "onSubmit",
+            "optional": false,
+            "type": "(detail: TableProps.BulkEditSubmitDetail<ItemType, ValueType>) => void | Promise<void>",
+          },
+          {
+            "name": "submitBulkEditLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "bulkEdit",
+      "optional": true,
+      "type": "TableProps.BulkEditConfig<T, unknown>",
+    },
+    {
       "defaultValue": "'middle'",
       "description": "Determines the alignment of the content inside table cells.
 This property affects all cells, including the ones in the selection column.
