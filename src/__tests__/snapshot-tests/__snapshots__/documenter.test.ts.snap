@@ -9419,6 +9419,93 @@ The values for all configured preferences are present even if the user didn't ch
       "detailType": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
       "name": "onConfirm",
     },
+    {
+      "cancelable": false,
+      "description": "Called when the user restores the default preferences using the reset button in the modal footer.
+
+The event \`detail\` contains the default preferences the modal's working state was restored to
+(the same object supplied in \`resetToDefaults.preferences\`).",
+      "detailInlineType": {
+        "name": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": ""compact" | "comfortable"",
+              "type": "union",
+              "values": [
+                "compact",
+                "comfortable",
+              ],
+            },
+            "name": "contentDensity",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "contentDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+          },
+          {
+            "inlineType": {
+              "name": "NonNullable<CustomPreferenceType>",
+              "type": "union",
+              "values": [
+                "CustomPreferenceType",
+                "{}",
+              ],
+            },
+            "name": "custom",
+            "optional": true,
+            "type": "NonNullable<CustomPreferenceType>",
+          },
+          {
+            "name": "pageSize",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "inlineType": {
+              "name": "StickyColumns",
+              "properties": [
+                {
+                  "name": "first",
+                  "optional": true,
+                  "type": "number",
+                },
+                {
+                  "name": "last",
+                  "optional": true,
+                  "type": "number",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "StickyColumns",
+          },
+          {
+            "name": "stripedRows",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "visibleContent",
+            "optional": true,
+            "type": "ReadonlyArray<string>",
+          },
+          {
+            "name": "wrapLines",
+            "optional": true,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+      "name": "onReset",
+    },
   ],
   "functions": [],
   "name": "CollectionPreferences",
@@ -9924,6 +10011,116 @@ of the most recent getModalRoot call as an argument.",
       "name": "removeModalRoot",
       "optional": true,
       "type": "((container: HTMLElement | null) => void)",
+    },
+    {
+      "description": "Configures the built-in "reset to defaults" affordance.
+
+When set, the component displays a reset button in the modal footer that restores the modal's
+working state to the provided default preferences in a single action. The user still needs to
+confirm the change using the confirm button for it to take effect.
+
+It contains the following:
+- \`label\` (string) - Specifies the text displayed on the reset button.
+- \`preferences\` (CollectionPreferencesProps.Preferences) - Specifies the default preference values the modal
+  is restored to when the user activates the reset button.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "CollectionPreferencesProps.ResetToDefaults<CustomPreferenceType>",
+        "properties": [
+          {
+            "name": "label",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": ""compact" | "comfortable"",
+                    "type": "union",
+                    "values": [
+                      "compact",
+                      "comfortable",
+                    ],
+                  },
+                  "name": "contentDensity",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "contentDisplay",
+                  "optional": true,
+                  "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+                },
+                {
+                  "inlineType": {
+                    "name": "NonNullable<CustomPreferenceType>",
+                    "type": "union",
+                    "values": [
+                      "CustomPreferenceType",
+                      "{}",
+                    ],
+                  },
+                  "name": "custom",
+                  "optional": true,
+                  "type": "NonNullable<CustomPreferenceType>",
+                },
+                {
+                  "name": "pageSize",
+                  "optional": true,
+                  "type": "number",
+                },
+                {
+                  "inlineType": {
+                    "name": "StickyColumns",
+                    "properties": [
+                      {
+                        "name": "first",
+                        "optional": true,
+                        "type": "number",
+                      },
+                      {
+                        "name": "last",
+                        "optional": true,
+                        "type": "number",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "stickyColumns",
+                  "optional": true,
+                  "type": "StickyColumns",
+                },
+                {
+                  "name": "stripedRows",
+                  "optional": true,
+                  "type": "boolean",
+                },
+                {
+                  "name": "visibleContent",
+                  "optional": true,
+                  "type": "ReadonlyArray<string>",
+                },
+                {
+                  "name": "wrapLines",
+                  "optional": true,
+                  "type": "boolean",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "preferences",
+            "optional": false,
+            "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "resetToDefaults",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ResetToDefaults<CustomPreferenceType>",
     },
     {
       "description": "Configures the sticky columns preference that can be set for both left and right columns.
@@ -38468,6 +38665,14 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "name": "findResetButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
           "name": "findStickyColumnsPreference",
           "parameters": [
             {
@@ -49644,6 +49849,14 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           "returnType": {
             "isNullable": false,
             "name": "PageSizePreferenceWrapper",
+          },
+        },
+        {
+          "name": "findResetButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
           },
         },
         {
