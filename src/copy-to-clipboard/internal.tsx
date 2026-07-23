@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
@@ -23,6 +23,7 @@ export default function InternalCopyToClipboard({
   copySuccessText,
   copyErrorText,
   textToCopy,
+  getTextToCopy,
   textToDisplay,
   wrapText = true,
   popoverRenderWithPortal,
@@ -35,6 +36,15 @@ export default function InternalCopyToClipboard({
 }: InternalCopyToClipboardProps) {
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('success');
   const [statusText, setStatusText] = useState(copySuccessText);
+  const [loading, setLoading] = useState(false);
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (navigator.permissions) {
@@ -53,7 +63,8 @@ export default function InternalCopyToClipboard({
   }, [copyErrorText]);
 
   const baseProps = getBaseProps(restProps);
-  const onClick = () => {
+
+  const onClick = async () => {
     if (!navigator.clipboard) {
       // The clipboard API is not available in insecure contexts.
       setStatus('error');
@@ -62,17 +73,44 @@ export default function InternalCopyToClipboard({
       return;
     }
 
+    let resolvedText = textToCopy;
+
+    if (getTextToCopy) {
+      setLoading(true);
+      try {
+        resolvedText = await Promise.resolve(getTextToCopy());
+      } catch {
+        if (isMounted.current) {
+          setLoading(false);
+          setStatus('error');
+          setStatusText(copyErrorText);
+          fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
+        }
+        return;
+      }
+      if (!isMounted.current) {
+        return;
+      }
+      setLoading(false);
+    }
+
     navigator.clipboard
-      .writeText(textToCopy)
+      .writeText(resolvedText)
       .then(() => {
+        if (!isMounted.current) {
+          return;
+        }
         setStatus('success');
         setStatusText(copySuccessText);
-        fireNonCancelableEvent(onCopySuccess, { text: textToCopy });
+        fireNonCancelableEvent(onCopySuccess, { text: resolvedText });
       })
       .catch(() => {
+        if (!isMounted.current) {
+          return;
+        }
         setStatus('error');
         setStatusText(copyErrorText);
-        fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
+        fireNonCancelableEvent(onCopyFailure, { text: resolvedText });
       });
   };
 
@@ -95,6 +133,8 @@ export default function InternalCopyToClipboard({
       formAction="none"
       disabled={disabled}
       disabledReason={disabledReason}
+      loading={loading}
+      loadingText={copyButtonAriaLabel ?? copyButtonText}
     >
       {copyButtonText}
     </InternalButton>

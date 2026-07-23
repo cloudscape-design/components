@@ -10771,6 +10771,26 @@ Applicable for all variants except inline.",
       "type": "string",
     },
     {
+      "description": "An optional function that returns the text to copy, either synchronously or as a \`Promise<string>\`.
+Use this when the text is expensive to compute or must be fetched asynchronously — it is only
+called at the moment the user clicks the copy button, so large content does not need to be
+pre-populated.
+
+When provided, this takes precedence over \`textToCopy\` for the clipboard write operation.
+The \`detail.text\` field of \`onCopySuccess\` / \`onCopyFailure\` will contain the resolved value.
+
+While the function is executing the button enters a loading state and cannot be clicked again.",
+      "inlineType": {
+        "name": "() => string | Promise<string>",
+        "parameters": [],
+        "returnType": "string | Promise<string>",
+        "type": "function",
+      },
+      "name": "getTextToCopy",
+      "optional": true,
+      "type": "(() => string | Promise<string>)",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -10791,7 +10811,8 @@ Enable this setting if you need the popover to ignore its parent stacking contex
       "type": "boolean",
     },
     {
-      "description": "The text content to be copied. It is displayed next to the copy button when \`variant="inline"\` unless when \`content\` is specified, and is not shown otherwise.",
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant="inline"\` unless when \`content\` is specified, and is not shown otherwise.
+When \`getTextToCopy\` is also provided, \`getTextToCopy\` takes precedence for the actual clipboard write, but \`textToCopy\` is still used for the inline display text.",
       "name": "textToCopy",
       "optional": false,
       "type": "string",
