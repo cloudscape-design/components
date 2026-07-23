@@ -86,6 +86,22 @@ describe('Expandable Section', () => {
         });
       }
     });
+    describe('populates description slot with React nodes', () => {
+      for (const variant of variantsWithDescription) {
+        test(`${variant} variant renders a link inside headerDescription`, () => {
+          const wrapper = renderExpandableSection({
+            variant,
+            headerText: 'Test Header',
+            headerDescription: <Link href="#learn-more">Learn more</Link>,
+          });
+          const description = wrapper.findHeaderDescription();
+          expect(description).not.toBeNull();
+          const link = description!.findLink();
+          expect(link).not.toBeNull();
+          expect(link!.getElement()).toHaveTextContent('Learn more');
+        });
+      }
+    });
     describe('populates info links slot correctly', () => {
       for (const variant of containerizedVariants) {
         test(`${variant} variant`, () => {
@@ -497,6 +513,19 @@ describe('headerText', () => {
         });
         const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
         expect(headerButton).toHaveAccessibleDescription('Expand to see more content');
+      });
+      test('set aria description when headerDescription is a React node', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+          headerDescription: (
+            <>
+              See the <Link href="#docs">documentation</Link> for details.
+            </>
+          ),
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        expect(headerButton).toHaveAccessibleDescription('See the documentation for details.');
       });
       test('button should be under heading', () => {
         const wrapper = renderExpandableSection({
