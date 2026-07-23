@@ -260,6 +260,24 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
   row-gap: awsui.$space-scaled-xxxs;
+
+  // AWSUI-60837: Let the heading shrink and wrap its text so that the header
+  // actions stay inline on narrow widths (wrapping the header text first), and
+  // only wrap underneath the title when there is genuinely not enough room,
+  // instead of overflowing or clipping the content.
+  > .header-wrapper {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+
+    > .header-button {
+      min-inline-size: 0;
+
+      > .header-text {
+        min-inline-size: 0;
+        overflow-wrap: break-word;
+      }
+    }
+  }
 }
 
 .content {

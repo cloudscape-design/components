@@ -12,6 +12,8 @@ import Header from '../../../lib/components/header';
 import Link from '../../../lib/components/link';
 import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/expandable-section/styles.css.js';
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -384,6 +386,44 @@ describe('Expandable Section', () => {
         });
       });
     });
+  });
+});
+
+describe('header actions wrapping (AWSUI-60837)', () => {
+  const actionsWrappingVariants: ExpandableSectionProps.Variant[] = ['default', 'inline'];
+
+  for (const variant of actionsWrappingVariants) {
+    test(`renders the header actions wrapper alongside the heading for the ${variant} variant`, () => {
+      const wrapper = renderExpandableSection({
+        variant,
+        headerText: 'A very long expandable section header text that should wrap on narrow widths',
+        headerActions: <Button>Action</Button>,
+      });
+      const actionsWrapper = wrapper.findHeader().findByClassName(styles['header-actions-wrapper']);
+      expect(actionsWrapper).toBeTruthy();
+      // The heading and the actions live inside the same wrapper so they can reflow together
+      // (heading text wraps first, actions only drop below when there is no room).
+      expect(actionsWrapper!.findByClassName(styles['header-wrapper'])).toBeTruthy();
+      expect(actionsWrapper!.getElement()).toHaveTextContent('Action');
+      expect(actionsWrapper!.getElement()).toHaveTextContent('A very long expandable section header text');
+    });
+  }
+
+  test('does not render the header actions wrapper when there are no header actions', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'default',
+      headerText: 'No actions here',
+    });
+    expect(wrapper.findHeader().findByClassName(styles['header-actions-wrapper'])).toBeNull();
+  });
+
+  test('keeps the header text node discoverable for the default variant with actions', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'default',
+      headerText: 'Header text',
+      headerActions: <Button>Action</Button>,
+    });
+    expect(wrapper.findHeaderText()?.getElement()).toHaveTextContent('Header text');
   });
 });
 
