@@ -10214,6 +10214,115 @@ and the maximum number of columns as defined by the \`columns\` property.",
 }
 `;
 
+exports[`Components definition for comparison-table matches the snapshot: comparison-table 1`] = `
+{
+  "dashCaseName": "comparison-table",
+  "description": "ComparisonTable renders a side-by-side comparison of two or more entities: attributes are
+rendered as rows, entities as columns, with a sticky attribute column and optional
+highlighting of rows whose values differ across entities.
+
+This is a work-in-progress (v0) component built as a thin, opt-in composition over the
+existing Table component.",
+  "events": [],
+  "functions": [],
+  "name": "ComparisonTable",
+  "properties": [
+    {
+      "description": "Provides an accessible name for the underlying table, announced by assistive technology.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "''",
+      "description": "Header text rendered above the sticky attribute (first) column.
+Defaults to an empty string.",
+      "name": "attributeColumnHeader",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The attributes to compare across entities. Each attribute is rendered as a **row**.
+
+The order of this array is the order the rows appear in. Use the \`render\` function on an
+attribute to customize how the value for each entity is displayed.",
+      "name": "attributes",
+      "optional": false,
+      "type": "ReadonlyArray<ComparisonTableProps.Attribute>",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The entities being compared. Each entity is rendered as a **column** next to the sticky
+attribute column.
+
+Every entity exposes its per-attribute values through the \`data\` map, keyed by attribute \`id\`.",
+      "name": "entities",
+      "optional": false,
+      "type": "ReadonlyArray<ComparisonTableProps.Entity>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "When \`true\`, attribute rows whose values are not identical across all entities are visually
+emphasized so differences stand out.
+
+Equality is determined with \`Object.is\` against the raw \`entity.data[attribute.id]\` values.
+Rows with a custom \`render\` are still compared using their raw \`data\` values, so keep the
+\`data\` values comparable (primitives) when relying on this feature.",
+      "name": "highlightDifferences",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Whether the attribute (first) column is pinned to the inline-start edge while the entity
+columns scroll horizontally. Defaults to \`true\`.",
+      "name": "stickyAttributeColumn",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'container'",
+      "description": "The visual variant of the comparison table.
+
+- \`"container"\` (default) — renders inside a bordered container.
+- \`"embedded"\` — removes the outer container border for embedding in another surface.
+- \`"borderless"\` — removes borders entirely.
+- \`"stacked"\` — for use in a vertically stacked set of containers.",
+      "inlineType": {
+        "name": "ComparisonTableProps.Variant",
+        "type": "union",
+        "values": [
+          "container",
+          "embedded",
+          "stacked",
+          "borderless",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for container matches the snapshot: container 1`] = `
 {
   "dashCaseName": "container",
@@ -39174,6 +39283,53 @@ Note that, despite its typings, this may return null for group items since group
     {
       "methods": [
         {
+          "description": "Returns all attribute (row header) label elements.",
+          "name": "findAttributeLabels",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all cells that are highlighted because their attribute row differs across entities.",
+          "name": "findHighlightedCells",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all rendered rows of the underlying table (one per attribute).",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ComparisonTableWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -50180,6 +50336,53 @@ Note that, despite its typings, this may return null for group items since group
         },
       ],
       "name": "ColumnLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns all attribute (row header) label elements.",
+          "name": "findAttributeLabels",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all cells that are highlighted because their attribute row differs across entities.",
+          "name": "findHighlightedCells",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all rendered rows of the underlying table (one per attribute).",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ComparisonTableWrapper",
     },
     {
       "methods": [
