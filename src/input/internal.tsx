@@ -19,6 +19,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
+import InternalLiveRegion from '../live-region/internal';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
@@ -100,6 +101,8 @@ function InternalInput(
     __skipNativeAttributesWarnings,
     __inlineLabelText,
     __fullWidth,
+    maxLength,
+    showCharacterCount,
     style,
     ...rest
   }: InternalInputProps,
@@ -125,13 +128,25 @@ function InternalInput(
     ? formFieldContext
     : rest;
 
+  // ── Character count ──────────────────────────────────────────────────────
+  const showCount = showCharacterCount && maxLength !== undefined;
+  const charCount = value ? value.length : 0;
+  const charCountText = showCount ? `${charCount}/${maxLength}` : undefined;
+
+  // Stable id for the live region so the input can reference it in aria-describedby.
+  const charCountId = showCount && controlId ? `${controlId}-char-count` : undefined;
+
+  // Include char-count live region in aria-describedby so AT reads it on focus.
+  const effectiveAriaDescribedby = [ariaDescribedby, charCountId].filter(Boolean).join(' ') || undefined;
+  // ─────────────────────────────────────────────────────────────────────────
+
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
     // aria-labelledby has precedence over aria-label in accessible name calculation.
     // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
     // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
     'aria-labelledby': ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby,
-    'aria-describedby': ariaDescribedby,
+    'aria-describedby': effectiveAriaDescribedby,
     name,
     placeholder,
     autoFocus,
@@ -155,6 +170,7 @@ function InternalInput(
     step,
     inputMode,
     spellCheck: spellcheck,
+    maxLength,
     onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     // We set a default value on the component in order to force it into the controlled mode.
@@ -267,6 +283,21 @@ function InternalInput(
             disabled={disabled}
           />
         </span>
+      )}
+      {showCount && (
+        <div className={styles['char-count-wrapper']}>
+          {/* Visual counter — hidden from AT to avoid double-announcement */}
+          <span className={styles['char-count']} aria-hidden="true">
+            {charCountText}
+          </span>
+          {/*
+           * Debounced live region (1 s default delay) so the count is
+           * announced to screen readers without interrupting every keystroke.
+           */}
+          <InternalLiveRegion id={charCountId} tagName="span" delay={1} preventInitialAnnouncement={true}>
+            {charCountText}
+          </InternalLiveRegion>
+        </div>
       )}
     </div>
   );

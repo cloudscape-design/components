@@ -122,7 +122,7 @@ export interface InputSpellcheck {
    * For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
    *
    * Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
-   * Make sure it’s deactivated for fields with sensitive information to prevent
+   * Make sure it's deactivated for fields with sensitive information to prevent
    * inadvertently sending data (such as user passwords) to third parties.
    */
   spellcheck?: boolean;
@@ -181,6 +181,21 @@ export interface InputProps
    * including the date, month, week, time, datetime-local, number and range types.
    */
   step?: InputProps.Step;
+
+  /**
+   * Specifies the maximum number of characters allowed in the input. When set,
+   * the native `maxlength` attribute is applied to the input element.
+   * Use together with `showCharacterCount` to display a character counter.
+   */
+  maxLength?: number;
+
+  /**
+   * When `true`, displays a character count indicator below the input showing
+   * the number of characters entered relative to `maxLength` (e.g. "12/100").
+   * Requires `maxLength` to be set. The indicator is announced to screen readers
+   * via a debounced live region so that it does not interrupt typing.
+   */
+  showCharacterCount?: boolean;
 
   /**
    * An object containing CSS properties to customize the input's visual appearance.

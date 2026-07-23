@@ -17063,6 +17063,14 @@ single form field.",
       "type": "boolean",
     },
     {
+      "description": "Specifies the maximum number of characters allowed in the input. When set,
+the native \`maxlength\` attribute is applied to the input element.
+Use together with \`showCharacterCount\` to display a character counter.",
+      "name": "maxLength",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "description": "Specifies the name of the control used in HTML forms.",
       "name": "name",
       "optional": true,
@@ -17107,13 +17115,22 @@ Don't use read-only inputs outside a form.",
       "type": "boolean",
     },
     {
+      "description": "When \`true\`, displays a character count indicator below the input showing
+the number of characters entered relative to \`maxLength\` (e.g. "12/100").
+Requires \`maxLength\` to be set. The indicator is announced to screen readers
+via a debounced live region so that it does not interrupt typing.",
+      "name": "showCharacterCount",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
 This value controls the native browser capability to check for spelling/grammar errors.
 If not set, the browser default behavior is to perform spellchecking.
 For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
 
 Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
-Make sure it’s deactivated for fields with sensitive information to prevent
+Make sure it's deactivated for fields with sensitive information to prevent
 inadvertently sending data (such as user passwords) to third parties.",
       "name": "spellcheck",
       "optional": true,
@@ -22677,7 +22694,7 @@ If not set, the browser default behavior is to perform spellchecking.
 For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
 
 Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
-Make sure it’s deactivated for fields with sensitive information to prevent
+Make sure it's deactivated for fields with sensitive information to prevent
 inadvertently sending data (such as user passwords) to third parties.",
       "name": "spellcheck",
       "optional": true,
@@ -30953,7 +30970,7 @@ If not set, the browser default behavior is to perform spellchecking.
 For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
 
 Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
-Make sure it’s deactivated for fields with sensitive information to prevent
+Make sure it's deactivated for fields with sensitive information to prevent
 inadvertently sending data (such as user passwords) to third parties.",
       "name": "spellcheck",
       "optional": true,
