@@ -469,6 +469,8 @@ exports[`test-utils selectors 1`] = `
   "list": [
     "awsui_item_rckk5",
     "awsui_root_rckk5",
+    "awsui_selected_rckk5",
+    "awsui_selection-control_rckk5",
   ],
   "live-region": [
     "awsui_root_1pc7b",

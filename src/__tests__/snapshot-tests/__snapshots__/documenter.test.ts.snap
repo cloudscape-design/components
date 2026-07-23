@@ -18588,6 +18588,23 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the selection changes. The event \`detail\` contains the updated \`selectedItems\`.",
+      "detailInlineType": {
+        "name": "ListProps.SelectionChangeDetail<T>",
+        "properties": [
+          {
+            "name": "selectedItems",
+            "optional": false,
+            "type": "ReadonlyArray<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ListProps.SelectionChangeDetail<T>",
+      "name": "onSelectionChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when items are reordered in a sortable list.",
       "detailInlineType": {
         "name": "ListProps.SortingState<T>",
@@ -18741,6 +18758,24 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
       "type": "DndAreaI18nStrings",
     },
     {
+      "description": "A function that determines whether a given item can be selected. Return \`true\` to
+prevent an item from being selected.",
+      "inlineType": {
+        "name": "(item: T) => boolean",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "boolean",
+        "type": "function",
+      },
+      "name": "isItemDisabled",
+      "optional": true,
+      "type": "((item: T) => boolean)",
+    },
+    {
       "description": "The items to display in the list.",
       "name": "items",
       "optional": false,
@@ -18769,6 +18804,32 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
       "name": "renderItem",
       "optional": false,
       "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
+    },
+    {
+      "description": "The currently selected items. Use together with \`selectionType\` and \`onSelectionChange\`
+to control the selection state. Items are matched using the \`id\` returned by \`renderItem\`.",
+      "name": "selectedItems",
+      "optional": true,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Enables item selection and defines the selection behavior:
+* \`single\` - Only one item can be selected at a time (renders as a radio control).
+* \`multi\` - Multiple items can be selected at a time (renders as a checkbox control).
+
+When set, the list is rendered as an ARIA \`listbox\` and each item as an \`option\`.
+Selection is not supported together with \`sortable\`; when both are provided, sorting takes precedence.",
+      "inlineType": {
+        "name": "ListProps.SelectionType",
+        "type": "union",
+        "values": [
+          "single",
+          "multi",
+        ],
+      },
+      "name": "selectionType",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Makes the list sortable by enabling drag and drop functionality.",
@@ -41775,6 +41836,20 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             ],
           },
         },
+        {
+          "description": "Returns all currently selected items. Only meaningful for selectable lists.",
+          "name": "findSelectedItems",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ListItemWrapper",
+              },
+            ],
+          },
+        },
       ],
       "name": "ListWrapper",
     },
@@ -41846,6 +41921,20 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             "name": "StructuredItemWrapper.findSecondaryContent",
           },
           "name": "findSecondaryContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the selection control (checkbox or radio) for a selectable list item, if present.",
+          "name": "findSelectionControl",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -51998,6 +52087,20 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             ],
           },
         },
+        {
+          "description": "Returns all currently selected items. Only meaningful for selectable lists.",
+          "name": "findSelectedItems",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ListItemWrapper",
+              },
+            ],
+          },
+        },
       ],
       "name": "ListWrapper",
     },
@@ -52049,6 +52152,15 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             "name": "StructuredItemWrapper.findSecondaryContent",
           },
           "name": "findSecondaryContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the selection control (checkbox or radio) for a selectable list item, if present.",
+          "name": "findSelectionControl",
           "parameters": [],
           "returnType": {
             "isNullable": false,
