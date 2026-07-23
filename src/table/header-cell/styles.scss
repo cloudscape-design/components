@@ -280,3 +280,35 @@ settings icon in the pagination slot.
     @include cell-offset($cell-horizontal-padding);
   }
 }
+
+.header-cell-info {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: awsui.$space-xxs;
+  vertical-align: middle;
+}
+
+.header-cell-info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: awsui.$color-text-interactive-default;
+  border-radius: awsui.$border-radius-button;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}

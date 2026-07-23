@@ -250,4 +250,17 @@ export default class TableWrapper extends ComponentWrapper {
     const selector = `.${progressiveLoadingStyles['items-loader']}[data-parentrow="${itemId}"]`;
     return this.find(selector);
   }
+
+  /**
+   * Returns the info popover trigger button for a column header, if present.
+   *
+   * @param colIndex 1-based index of the column.
+   */
+  findColumnHeaderInfo(colIndex: number): ElementWrapper | null {
+    return (
+      this.findActiveTHead().find(
+        `th[data-column-index="${colIndex}"] .${headerCellStyles['header-cell-info-button']}, tr:not([data-group-level]) > th:nth-child(${colIndex}) .${headerCellStyles['header-cell-info-button']}`
+      ) ?? null
+    );
+  }
 }
