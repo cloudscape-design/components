@@ -53,33 +53,35 @@ export default function ContentLayoutFullBleedHeaderPage() {
           )}
         </ContentLayout>
 
-        <div style={{ padding: '20px 40px', background: '#f8f8f8', borderTop: '1px solid #ddd' }}>
-          <SpaceBetween size="s" direction="horizontal">
-            <Toggle
-              checked={!!urlParams.fullBleedHeader}
-              onChange={({ detail }) => setUrlParams({ fullBleedHeader: detail.checked })}
-            >
-              fullBleedHeader
-            </Toggle>
-            <Toggle
-              checked={!!urlParams.disableOverlap}
-              onChange={({ detail }) => setUrlParams({ disableOverlap: detail.checked })}
-            >
-              disableOverlap
-            </Toggle>
-            <Toggle
-              checked={!!urlParams.hasContent}
-              onChange={({ detail }) => setUrlParams({ hasContent: detail.checked })}
-            >
-              Has content
-            </Toggle>
-            <Toggle
-              checked={!!urlParams.useCustomBackground}
-              onChange={({ detail }) => setUrlParams({ useCustomBackground: detail.checked })}
-            >
-              Custom background
-            </Toggle>
-          </SpaceBetween>
+        <div style={{ marginBlockStart: '16px' }}>
+          <Container>
+            <SpaceBetween size="s" direction="horizontal">
+              <Toggle
+                checked={!!urlParams.fullBleedHeader}
+                onChange={({ detail }) => setUrlParams({ fullBleedHeader: detail.checked })}
+              >
+                fullBleedHeader
+              </Toggle>
+              <Toggle
+                checked={!!urlParams.disableOverlap}
+                onChange={({ detail }) => setUrlParams({ disableOverlap: detail.checked })}
+              >
+                disableOverlap
+              </Toggle>
+              <Toggle
+                checked={!!urlParams.hasContent}
+                onChange={({ detail }) => setUrlParams({ hasContent: detail.checked })}
+              >
+                Has content
+              </Toggle>
+              <Toggle
+                checked={!!urlParams.useCustomBackground}
+                onChange={({ detail }) => setUrlParams({ useCustomBackground: detail.checked })}
+              >
+                Custom background
+              </Toggle>
+            </SpaceBetween>
+          </Container>
         </div>
       </main>
     </ScreenshotArea>
