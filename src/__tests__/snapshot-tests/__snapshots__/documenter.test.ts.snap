@@ -9693,6 +9693,11 @@ Each content display item is one of the following:
             "type": "((position: number, total: number) => string)",
           },
           {
+            "name": "lockedItemsCount",
+            "optional": true,
+            "type": "number",
+          },
+          {
             "name": "options",
             "optional": false,
             "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
@@ -18745,6 +18750,13 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Number of leading items that are locked and cannot be reordered.
+Their drag handles are disabled and other items cannot be dropped above them.",
+      "name": "lockedItemsCount",
+      "optional": true,
+      "type": "number",
     },
     {
       "description": "Render an item. The function should return an object with the following keys:
