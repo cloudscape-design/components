@@ -569,6 +569,12 @@ exports[`test-utils selectors 1`] = `
   "radio-group": [
     "awsui_root_1np5w",
   ],
+  "rich-text-editor": [
+    "awsui_content_1wzki",
+    "awsui_root_1wzki",
+    "awsui_toolbar-button_1wzki",
+    "awsui_toolbar_1wzki",
+  ],
   "s3-resource-selector": [
     "awsui_alert_1u0yw",
     "awsui_browse-button_1vtzr",

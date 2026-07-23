@@ -74,6 +74,7 @@ import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
 import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
+import RichTextEditorWrapper from './rich-text-editor';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
 import SelectWrapper from './select';
@@ -170,6 +171,7 @@ export { PromptInputWrapper };
 export { PropertyFilterWrapper };
 export { RadioButtonWrapper };
 export { RadioGroupWrapper };
+export { RichTextEditorWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
 export { SelectWrapper };
@@ -2024,6 +2026,34 @@ findAllRadioGroups(selector?: string): Array<RadioGroupWrapper>;
  */
 findClosestRadioGroup(): RadioGroupWrapper | null;
 /**
+ * Returns the wrapper of the first RichTextEditor that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first RichTextEditor.
+ * If no matching RichTextEditor is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RichTextEditorWrapper | null}
+ */
+findRichTextEditor(selector?: string): RichTextEditorWrapper | null;
+
+/**
+ * Returns an array of RichTextEditor wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the RichTextEditors inside the current wrapper.
+ * If no matching RichTextEditor is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<RichTextEditorWrapper>}
+ */
+findAllRichTextEditors(selector?: string): Array<RichTextEditorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent RichTextEditor for the current element,
+ * or the element itself if it is an instance of RichTextEditor.
+ * If no RichTextEditor is found, returns \`null\`.
+ *
+ * @returns {RichTextEditorWrapper | null}
+ */
+findClosestRichTextEditor(): RichTextEditorWrapper | null;
+/**
  * Returns the wrapper of the first S3ResourceSelector that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first S3ResourceSelector.
  * If no matching S3ResourceSelector is found, returns \`null\`.
@@ -3684,6 +3714,19 @@ ElementWrapper.prototype.findRadioGroup = function(selector) {
 ElementWrapper.prototype.findAllRadioGroups = function(selector) {
   return this.findAllComponents(RadioGroupWrapper, selector);
 };
+ElementWrapper.prototype.findRichTextEditor = function(selector) {
+  let rootSelector = \`.\${RichTextEditorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RichTextEditorWrapper && RichTextEditorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RichTextEditorWrapper.rootSelector}, .\${RichTextEditorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RichTextEditorWrapper);
+};
+
+ElementWrapper.prototype.findAllRichTextEditors = function(selector) {
+  return this.findAllComponents(RichTextEditorWrapper, selector);
+};
 ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
   let rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
   if("legacyRootSelector" in S3ResourceSelectorWrapper && S3ResourceSelectorWrapper.legacyRootSelector){
@@ -4387,6 +4430,11 @@ ElementWrapper.prototype.findClosestRadioGroup = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(RadioGroupWrapper);
 };
+ElementWrapper.prototype.findClosestRichTextEditor = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(RichTextEditorWrapper);
+};
 ElementWrapper.prototype.findClosestS3ResourceSelector = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4616,6 +4664,7 @@ import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
 import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
+import RichTextEditorWrapper from './rich-text-editor';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
 import SelectWrapper from './select';
@@ -4712,6 +4761,7 @@ export { PromptInputWrapper };
 export { PropertyFilterWrapper };
 export { RadioButtonWrapper };
 export { RadioGroupWrapper };
+export { RichTextEditorWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
 export { SelectWrapper };
@@ -5850,6 +5900,23 @@ findRadioGroup(selector?: string): RadioGroupWrapper;
  * @returns {MultiElementWrapper<RadioGroupWrapper>}
  */
 findAllRadioGroups(selector?: string): MultiElementWrapper<RadioGroupWrapper>;
+/**
+ * Returns a wrapper that matches the RichTextEditors with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches RichTextEditors.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RichTextEditorWrapper}
+ */
+findRichTextEditor(selector?: string): RichTextEditorWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches RichTextEditors with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches RichTextEditors.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<RichTextEditorWrapper>}
+ */
+findAllRichTextEditors(selector?: string): MultiElementWrapper<RichTextEditorWrapper>;
 /**
  * Returns a wrapper that matches the S3ResourceSelectors with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches S3ResourceSelectors.
@@ -7191,6 +7258,19 @@ ElementWrapper.prototype.findRadioGroup = function(selector) {
 
 ElementWrapper.prototype.findAllRadioGroups = function(selector) {
   return this.findAllComponents(RadioGroupWrapper, selector);
+};
+ElementWrapper.prototype.findRichTextEditor = function(selector) {
+  let rootSelector = \`.\${RichTextEditorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RichTextEditorWrapper && RichTextEditorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RichTextEditorWrapper.rootSelector}, .\${RichTextEditorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RichTextEditorWrapper);
+};
+
+ElementWrapper.prototype.findAllRichTextEditors = function(selector) {
+  return this.findAllComponents(RichTextEditorWrapper, selector);
 };
 ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
   let rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;

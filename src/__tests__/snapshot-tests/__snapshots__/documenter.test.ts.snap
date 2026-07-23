@@ -24598,6 +24598,235 @@ If you want to clear the selection, use \`null\`.",
 }
 `;
 
+exports[`Components definition for rich-text-editor matches the snapshot: rich-text-editor 1`] = `
+{
+  "dashCaseName": "rich-text-editor",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the editor loses focus.",
+      "name": "onBlur",
+    },
+    {
+      "cancelable": false,
+      "description": "Called whenever the editor content changes. The event detail contains the
+new value as an HTML string.",
+      "detailInlineType": {
+        "name": "RichTextEditorProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "RichTextEditorProps.ChangeDetail",
+      "name": "onChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the editor receives focus.",
+      "name": "onFocus",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Moves focus into the editable region.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "RichTextEditor",
+  "properties": [
+    {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the editable region. Use this to provide an
+accessible name when the component is not associated with a form field.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+
+It defaults to an automatically generated ID that
+is provided by its parent form field component.",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines whether the editor is disabled. A disabled editor cannot be
+focused or edited and its toolbar controls are inactive.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "{}",
+      "description": "An object containing all the localized strings required by the component.",
+      "inlineType": {
+        "name": "RichTextEditorProps.I18nStrings",
+        "properties": [
+          {
+            "name": "boldButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "bulletedListButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "italicButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "linkButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "linkUrlPromptText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "numberedListButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "strikethroughButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "toolbarAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "underlineButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "RichTextEditorProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Placeholder text rendered when the editor is empty.",
+      "name": "placeholder",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines whether the editor is read-only. A read-only editor renders its
+value but cannot be edited. The toolbar is hidden in read-only mode.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "DEFAULT_TOOLBAR_CONTROLS",
+      "description": "Controls which formatting actions are shown in the toolbar, and in which
+order. When omitted, all supported v0 controls are shown.",
+      "name": "toolbarControls",
+      "optional": true,
+      "type": "ReadonlyArray<RichTextEditorProps.ToolbarControl>",
+    },
+    {
+      "description": "The current value of the editor, as an HTML string.
+
+The component is controlled: pass the value returned by the latest \`onChange\`
+event back into this property to keep the editor in sync.
+
+Note (WIP v0): the value is sanitized only for rendering by the browser's
+\`contenteditable\` implementation. Consuming applications are responsible for
+sanitizing/escaping the HTML before persisting or re-rendering it elsewhere.",
+      "name": "value",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "description": "Overrides the warning state. Usually the warning state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.
+When you use it, provide additional context with
+information on the input state, and associate it
+with the input using \`ariaDescribedby\`.",
+      "name": "warning",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for s3-resource-selector matches the snapshot: s3-resource-selector 1`] = `
 {
   "dashCaseName": "s3-resource-selector",
@@ -43786,6 +44015,84 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Finds the editable (contenteditable) region.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLDivElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the formatting toolbar. Returns \`null\` when the component is read-only.",
+          "name": "findToolbar",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds a specific toolbar button by its control name (e.g. \`"bold"\`).",
+          "name": "findToolbarButton",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "control",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLButtonElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds all toolbar buttons.",
+          "name": "findToolbarButtons",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLButtonElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the current value of the editor as an HTML string.",
+          "name": "getValue",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "string",
+          },
+        },
+      ],
+      "name": "RichTextEditorWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findAlertSlot",
           "parameters": [],
           "returnType": {
@@ -53333,6 +53640,60 @@ In this case, use findContentEditableElement() instead.",
         },
       ],
       "name": "FilteringGroupedTokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the editable (contenteditable) region.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the formatting toolbar. Returns \`null\` when the component is read-only.",
+          "name": "findToolbar",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds a specific toolbar button by its control name (e.g. \`"bold"\`).",
+          "name": "findToolbarButton",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "control",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds all toolbar buttons.",
+          "name": "findToolbarButtons",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "RichTextEditorWrapper",
     },
     {
       "methods": [
