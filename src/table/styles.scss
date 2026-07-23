@@ -241,8 +241,8 @@ filter search icon.
 
 /* Row-actions column */
 .row-actions-cell {
-  width: 54px;
-  min-width: 54px;
+  inline-size: 54px;
+  min-inline-size: 54px;
   text-align: center;
   padding-inline: awsui.$space-xxs;
 }

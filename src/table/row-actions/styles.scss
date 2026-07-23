@@ -1,12 +1,12 @@
 /*
- * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
 
 .row-actions-cell {
   /* Narrow fixed width so the column stays compact */
-  width: 54px;
-  min-width: 54px;
+  inline-size: 54px;
+  min-inline-size: 54px;
   text-align: center;
   padding-inline: 4px;
 }
