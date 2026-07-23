@@ -33903,6 +33903,23 @@ If you set it to a value that exceeds the maximum value (that is, the number of 
       "type": "number",
     },
     {
+      "description": "When set to \`true\`, users can navigate directly to any step ahead of the
+current one from the navigation pane, rather than only to previously visited
+steps or optional steps that can be skipped over. This enables non-linear
+navigation where every step is directly reachable.
+
+Navigating to a not-yet-visited step fires \`onNavigate\` with a \`reason\` of \`skip\`.
+
+This is an opt-in enhancement of the navigation pane and is independent of
+\`allowSkipTo\` (which controls the in-form *skip-to* button). The two can be
+combined.
+
+Defaults to \`false\`.",
+      "name": "allowNonLinearNavigation",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "defaultValue": "false",
       "description": "When set to \`false\`, the *skip-to* button is never shown.
 When set to \`true\`, the *skip-to* button may appear to offer faster navigation for the user.
