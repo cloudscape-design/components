@@ -127,7 +127,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
-   *     * `cellContext.submitValue` - Function to submit the `currentValue`.
+   *     * `cellContext.submitValue` - Function to submit the edit. Call with no arguments to submit
+   *              `currentValue` (text-style editors), or pass a value explicitly to submit it immediately,
+   *              e.g. from a `Select`/`Autosuggest`/`Multiselect` change handler (submit on selection).
    *   * `editConfig.disableNativeForm` (boolean) - Disables the use of a `<form>` element to capture submissions inside the inline editor.
    *        If enabled, ensure that any text inputs in the editing cell submit the cell value when the Enter key is pressed, using `cellContext.submitValue`.
    * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
@@ -476,7 +478,19 @@ export namespace TableProps {
   export interface CellContext<V> {
     currentValue: Optional<V>;
     setValue: (value: V | undefined) => void;
-    submitValue: () => void;
+    /**
+     * Submits the current inline edit.
+     *
+     * When called with no arguments, the value tracked by `setValue` is submitted. This is
+     * suitable for text-based editors where the value is accumulated as the user types.
+     *
+     * For editors that produce a value in a single, discrete interaction - such as a `Select`,
+     * `Autosuggest`, or `Multiselect` used as a dropdown - you can pass the chosen value explicitly
+     * to submit it immediately from the change handler, without waiting for the `setValue` state
+     * update to be applied. This enables a "submit on selection" experience, for example:
+     * `onChange={({ detail }) => submitValue(detail.selectedOption.value)}`.
+     */
+    submitValue: (value?: V) => void;
   }
 
   export interface EditConfig<T, V = any> {
