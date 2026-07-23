@@ -245,6 +245,11 @@ describe('compact variant', () => {
       expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('20 of 20');
     });
 
+    test('does not show a current page beyond the last page', () => {
+      const { wrapper } = renderWithI18n(<Pagination pagesVariant="compact" currentPageIndex={21} pagesCount={20} />);
+      expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('20 of 20');
+    });
+
     test('works with pagesCount=1', () => {
       const { wrapper } = renderWithI18n(<Pagination pagesVariant="compact" currentPageIndex={1} pagesCount={1} />);
       const counter = wrapper.findPagesCompactText();

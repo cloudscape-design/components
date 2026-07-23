@@ -9,17 +9,15 @@ export interface PaginationProps {
   currentPageIndex: number;
 
   /**
-   * Sets the total number of pages. When `openEnd` is `true`, this is the number of pages currently known to be
-   * available. Only positive integers are allowed.
+   * Sets the total number of pages. When `openEnd` is `true`, this is the number of pages currently available.
+   * Only positive integers are allowed.
    */
   pagesCount: number;
 
   /**
-   * Sets the pagination to open-ended mode when the total number of pages is unknown. The next page button remains
-   * enabled on the last known page. In normal pages, an ellipsis indicates that more pages might be available. In
-   * compact pages, a plus sign after the last known page count indicates that more pages might be available. When the
-   * user requests a page beyond the last known page, `onNextPageClick` is called with
-   * `requestedPageAvailable: false` in the event detail.
+   * Specifies whether the total number of pages is unknown. The next page button remains enabled on the last
+   * available page. If the user requests a page beyond `pagesCount`, `onNextPageClick` is called with
+   * `requestedPageAvailable: false`.
    *
    * @default false
    */
@@ -30,9 +28,7 @@ export interface PaginationProps {
    * * `normal` - Displays page number buttons. For larger page ranges, the displayed range is truncated with
    *   ellipses.
    * * `compact` - Displays the current page and page count between the previous and next buttons. When `openEnd` is
-   *   `true`, a plus sign after the page count indicates that more pages might be available. By default, the text uses
-   *   a localized format, such as `3 of 12` or `3 of 12+` in English. You can customize the text using
-   *   `i18nStrings.pagesCompactText`. When `jumpToPage` is set, the jump-to-page control is displayed next to it.
+   *   `true`, a plus sign after the page count indicates that more pages are available.
    *
    * @default 'normal'
    */
@@ -69,8 +65,8 @@ export interface PaginationProps {
    * * `jumpToPageInputLabel` (string) - Accessible label for the jump-to-page number input.
    * * `jumpToPageError` (string) - Error message displayed when the entered page number is invalid.
    * * `jumpToPageLoadingText` (string) - Loading text displayed while the jump-to-page action is in progress.
-   * * `pagesCompactText` ((options: PaginationProps.PagesCompactTextOptions) => string) - Visible text for compact
-   *   pages, for example `3 of 12` or `3 of 12+` when more pages might be available.
+   * * `pagesCompactText` ((options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string) -
+   *   Visible text for compact pages.
    * @i18n
    */
   i18nStrings?: PaginationProps.I18nStrings;
@@ -115,6 +111,11 @@ export namespace PaginationProps {
     jumpToPageInputLabel?: string;
     jumpToPageError?: string;
     jumpToPageLoadingText?: string;
+    /**
+     * Visible text for compact pages. Receives the current page, page count, and whether pagination is open-ended.
+     * @param options The page state used to format the text.
+     * @returns The text displayed for compact pages.
+     */
     pagesCompactText?: (options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string;
   }
 

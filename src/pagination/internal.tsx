@@ -153,21 +153,16 @@ const InternalPagination = React.forwardRef(
       i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
       ((pageNumber: number) => `${pageNumber}`);
 
-    // The localized default describes the known page count. The language-neutral fallback is used when no i18n
-    // provider or direct override is available.
-    const pagesCompactText =
-      i18n(
-        'i18nStrings.pagesCompactText',
-        i18nStrings?.pagesCompactText,
-        format => options =>
-          format({
-            currentPage: options.currentPage,
-            pagesCount: options.pagesCount,
-            openEnd: `${options.openEnd}`,
-          })
-      ) ??
-      (({ currentPage, pagesCount, openEnd }: { currentPage: number; pagesCount: number; openEnd: boolean }) =>
-        `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`);
+    const pagesCompactText = i18n(
+      'i18nStrings.pagesCompactText',
+      i18nStrings?.pagesCompactText,
+      format => options =>
+        format({
+          currentPage: options.currentPage,
+          pagesCount: options.pagesCount,
+          openEnd: `${options.openEnd}`,
+        })
+    );
 
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
@@ -269,7 +264,11 @@ const InternalPagination = React.forwardRef(
         {pagesVariant === 'compact' ? (
           <li aria-disabled={disabled} className={styles['pages-compact']}>
             <span className={testUtilStyles['pages-compact-text']}>
-              {pagesCompactText({ currentPage: currentPageIndex, pagesCount, openEnd: !!openEnd })}
+              {pagesCompactText?.({
+                currentPage: Math.min(currentPageIndex, pagesCount),
+                pagesCount,
+                openEnd: !!openEnd,
+              })}
             </span>
           </li>
         ) : (
