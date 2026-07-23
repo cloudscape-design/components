@@ -9,8 +9,10 @@ import Container from '~components/container';
 import ContentLayout from '~components/content-layout';
 import FormField from '~components/form-field';
 import Header from '~components/header';
+import Icon from '~components/icon';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 import Toggle from '~components/toggle';
 
 // ─── State controls panel ─────────────────────────────────────────────────────
@@ -76,16 +78,16 @@ function StateControls({
   );
 }
 
-// ─── Format hint examples ─────────────────────────────────────────────────────
+// ─── Format hint examples — string adornments ─────────────────────────────────
 
-interface FormatHintProps {
+interface StateProps {
   disabled: boolean;
   readOnly: boolean;
   invalid: boolean;
   warning: boolean;
 }
 
-function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHintProps) {
+function FormatHintExamples({ disabled, readOnly, invalid, warning }: StateProps) {
   const [currency, setCurrency] = useState('');
   const [percent, setPercent] = useState('');
   const [compound, setCompound] = useState('');
@@ -97,9 +99,9 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
       header={
         <Header
           variant="h2"
-          description="Purely visual. Not submitted with the form value. Screen readers do not announce the adornment. The FormField label carries the unit."
+          description="String adornments. Purely visual. Not submitted with the form value. Screen readers do not announce the adornment — the FormField label carries the unit."
         >
-          Format hint adornments
+          Format hint adornments — string
           <Box display="inline-block" margin={{ left: 'xs' }}>
             <Badge color="blue">Decorative</Badge>
           </Box>
@@ -196,13 +198,324 @@ function FormatHintExamples({ disabled, readOnly, invalid, warning }: FormatHint
   );
 }
 
-// ─── Required prefix/suffix (userland concatenation) ──────────────────────────
-// These examples answer the "mandatory prefix/suffix" use-case. The component
-// does NOT do this. The `prefix`/`suffix` props are always decorative and never
-// mutate `onChange`. The fixed segment is shown visually with the decorative prop,
-// and the builder concatenates it into the value in application code.
+// ─── ReactNode adornments — icons ─────────────────────────────────────────────
 
-function RequiredAffixExamples({ disabled, readOnly, invalid, warning }: FormatHintProps) {
+function ReactNodeIconExamples({ disabled, readOnly, invalid, warning }: StateProps) {
+  const [search, setSearch] = useState('');
+  const [email, setEmail] = useState('');
+  const [url, setUrl] = useState('');
+  const [amount, setAmount] = useState('');
+  const [locked, setLocked] = useState('');
+
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          description="ReactNode adornments using Icon components. Icons should be aria-hidden when the FormField label already conveys the meaning."
+        >
+          ReactNode adornments — Icons
+          <Box display="inline-block" margin={{ left: 'xs' }}>
+            <Badge color="green">ReactNode</Badge>
+          </Box>
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <ColumnLayout columns={2}>
+          <FormField label="Search resources" errorText={invalid ? 'Enter a search term.' : undefined}>
+            <Input
+              value={search}
+              onChange={e => setSearch(e.detail.value)}
+              prefix={<Icon name="search" aria-hidden="true" />}
+              placeholder="Filter by name or tag"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField label="Email address" errorText={invalid ? 'Enter a valid email.' : undefined}>
+            <Input
+              value={email}
+              onChange={e => setEmail(e.detail.value)}
+              prefix={<Icon name="envelope" aria-hidden="true" />}
+              type="email"
+              placeholder="user@example.com"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField
+            label="Webhook URL"
+            constraintText="Must be a valid HTTPS endpoint."
+            errorText={invalid ? 'Enter a valid URL.' : undefined}
+          >
+            <Input
+              value={url}
+              onChange={e => setUrl(e.detail.value)}
+              prefix={<Icon name="external" aria-hidden="true" />}
+              type="url"
+              placeholder="https://example.com/hook"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField label="Payment amount (USD)" errorText={invalid ? 'Enter a valid amount.' : undefined}>
+            <Input
+              value={amount}
+              onChange={e => setAmount(e.detail.value)}
+              prefix={<Icon name="ticket" aria-hidden="true" />}
+              suffix="USD"
+              inputMode="decimal"
+              placeholder="0.00"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField
+            label="API secret key"
+            description="Stored encrypted. Visible only at creation."
+            errorText={invalid ? 'Enter a valid key.' : undefined}
+          >
+            <Input
+              value={locked}
+              onChange={e => setLocked(e.detail.value)}
+              prefix={<Icon name="lock-private" aria-hidden="true" />}
+              type="password"
+              placeholder="sk-••••••••"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
+// ─── ReactNode adornments — Badges ────────────────────────────────────────────
+
+function ReactNodeBadgeExamples({ disabled, readOnly, invalid, warning }: StateProps) {
+  const [beta, setBeta] = useState('');
+  const [required, setRequired] = useState('');
+  const [new_, setNew_] = useState('');
+
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          description="ReactNode adornments using Badge components to signal field status, tier, or requirement."
+        >
+          ReactNode adornments — Badges
+          <Box display="inline-block" margin={{ left: 'xs' }}>
+            <Badge color="green">ReactNode</Badge>
+          </Box>
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <ColumnLayout columns={2}>
+          <FormField
+            label="Feature flag name"
+            description="This field is in beta."
+            errorText={invalid ? 'Enter a flag name.' : undefined}
+          >
+            <Input
+              value={beta}
+              onChange={e => setBeta(e.detail.value)}
+              suffix={<Badge color="blue">Beta</Badge>}
+              placeholder="my-feature-flag"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField
+            label="Account ID"
+            description="12-digit AWS account identifier."
+            errorText={invalid ? 'Enter a valid account ID.' : undefined}
+          >
+            <Input
+              value={required}
+              onChange={e => setRequired(e.detail.value)}
+              suffix={<Badge color="red">Required</Badge>}
+              inputMode="numeric"
+              placeholder="123456789012"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField
+            label="AI model endpoint"
+            description="Newly added model endpoint."
+            errorText={invalid ? 'Enter a valid endpoint.' : undefined}
+          >
+            <Input
+              value={new_}
+              onChange={e => setNew_(e.detail.value)}
+              suffix={<Badge color="green">New</Badge>}
+              placeholder="arn:aws:bedrock:..."
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
+// ─── ReactNode adornments — StatusIndicator ───────────────────────────────────
+
+function ReactNodeStatusExamples({ disabled, readOnly, invalid, warning }: StateProps) {
+  const [endpoint, setEndpoint] = useState('');
+  const [pending, setPending] = useState('');
+
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          description="ReactNode adornments using StatusIndicator to convey live connectivity or validation state alongside the field."
+        >
+          ReactNode adornments — StatusIndicator
+          <Box display="inline-block" margin={{ left: 'xs' }}>
+            <Badge color="green">ReactNode</Badge>
+          </Box>
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <ColumnLayout columns={2}>
+          <FormField
+            label="Database endpoint"
+            description="Shows the live connection status."
+            errorText={invalid ? 'Enter a valid endpoint.' : undefined}
+          >
+            <Input
+              value={endpoint}
+              onChange={e => setEndpoint(e.detail.value)}
+              suffix={<StatusIndicator type="success">Connected</StatusIndicator>}
+              placeholder="db.example.com:5432"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField
+            label="Async job ID"
+            description="Submitted for processing."
+            errorText={invalid ? 'Enter a job ID.' : undefined}
+          >
+            <Input
+              value={pending}
+              onChange={e => setPending(e.detail.value)}
+              suffix={<StatusIndicator type="pending">Queued</StatusIndicator>}
+              placeholder="job-abc123"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
+// ─── ReactNode adornments — icon + text combination ───────────────────────────
+
+function ReactNodeCompositeExamples({ disabled, readOnly, invalid, warning }: StateProps) {
+  const [rate, setRate] = useState('');
+  const [storage, setStorage] = useState('');
+
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          description="Composite ReactNode adornments combining an icon with a text label. Use sparingly — prefer a plain string when text alone is sufficient."
+        >
+          ReactNode adornments — Icon + text composite
+          <Box display="inline-block" margin={{ left: 'xs' }}>
+            <Badge color="green">ReactNode</Badge>
+          </Box>
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <ColumnLayout columns={2}>
+          <FormField label="Request rate limit (req/s)" errorText={invalid ? 'Enter a valid rate.' : undefined}>
+            <Input
+              value={rate}
+              onChange={e => setRate(e.detail.value)}
+              suffix={
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <Icon name="status-positive" aria-hidden="true" />
+                  req/s
+                </span>
+              }
+              inputMode="numeric"
+              placeholder="1000"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+
+          <FormField label="Storage capacity (GB)" errorText={invalid ? 'Enter a valid capacity.' : undefined}>
+            <Input
+              value={storage}
+              onChange={e => setStorage(e.detail.value)}
+              prefix={<Icon name="settings" aria-hidden="true" />}
+              suffix={
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <Icon name="upload-download" aria-hidden="true" />
+                  GB
+                </span>
+              }
+              inputMode="numeric"
+              placeholder="512"
+              disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
+              warning={warning}
+            />
+          </FormField>
+        </ColumnLayout>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
+// ─── Required prefix/suffix (userland concatenation) ──────────────────────────
+
+function RequiredAffixExamples({ disabled, readOnly, invalid, warning }: StateProps) {
   const [url, setUrl] = useState('');
   const [bucket, setBucket] = useState('');
   const [host, setHost] = useState('');
@@ -312,14 +625,14 @@ function RequiredAffixExamples({ disabled, readOnly, invalid, warning }: FormatH
 
 // ─── Baseline comparison ──────────────────────────────────────────────────────
 
-function BaselineComparison({ disabled, readOnly, invalid, warning }: FormatHintProps) {
+function BaselineComparison({ disabled, readOnly, invalid, warning }: StateProps) {
   const [value, setValue] = useState('');
   return (
     <Container
       header={
         <Header
           variant="h2"
-          description="Standard Cloudscape Input with no adornment. Use this as a visual reference to confirm the adorned variant matches the baseline styling."
+          description="Standard Cloudscape Input with no adornment. Use as a visual reference to confirm the adorned variant matches baseline styling."
         >
           Baseline: plain Input
         </Header>
@@ -345,6 +658,7 @@ function BaselineComparison({ disabled, readOnly, invalid, warning }: FormatHint
 function RtlSection() {
   const [val, setVal] = useState('');
   const [val2, setVal2] = useState('');
+  const [val3, setVal3] = useState('');
   return (
     <Container header={<Header variant="h2">RTL layout</Header>}>
       <Box variant="p" color="text-body-secondary">
@@ -356,7 +670,12 @@ function RtlSection() {
         <Box variant="code" display="inline">
           suffix
         </Box>{' '}
-        appears on the leading edge. The prop names are semantic (before/after the value), not directional.
+        appears on the leading edge. The prop names are semantic (before/after the value), not directional. Icons flip
+        correctly because the flex container inherits{' '}
+        <Box variant="code" display="inline">
+          dir
+        </Box>
+        .
       </Box>
       <Box margin={{ top: 'm' }}>
         <div dir="rtl">
@@ -377,6 +696,15 @@ function RtlSection() {
                 suffix="%"
                 inputMode="numeric"
                 placeholder="0"
+              />
+            </FormField>
+            <FormField label="بريد إلكتروني">
+              <Input
+                value={val3}
+                onChange={e => setVal3(e.detail.value)}
+                prefix={<Icon name="envelope" aria-hidden="true" />}
+                type="email"
+                placeholder="user@example.com"
               />
             </FormField>
           </ColumnLayout>
@@ -404,9 +732,9 @@ export default function AdornmentsPage() {
         header={
           <Header
             variant="h1"
-            description="New prefix and suffix props on the Input component. Both props are decorative. They render a visual adornment and never affect the submitted value. To include a fixed prefix or suffix in the value, concatenate it in application code (see the required prefix/suffix section)."
+            description="prefix and suffix props on Input now accept any ReactNode — plain strings, icons, badges, status indicators, or composite elements. Both props are always decorative and never affect the submitted value."
           >
-            Input: prefix/suffix adornments
+            Input: prefix/suffix adornments (ReactNode)
           </Header>
         }
       >
@@ -426,6 +754,10 @@ export default function AdornmentsPage() {
             setRtl={setRtl}
           />
           <FormatHintExamples {...stateProps} />
+          <ReactNodeIconExamples {...stateProps} />
+          <ReactNodeBadgeExamples {...stateProps} />
+          <ReactNodeStatusExamples {...stateProps} />
+          <ReactNodeCompositeExamples {...stateProps} />
           <RequiredAffixExamples {...stateProps} />
           <BaselineComparison {...stateProps} />
           <RtlSection />

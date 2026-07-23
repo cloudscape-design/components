@@ -58,8 +58,8 @@ export interface InternalInputProps
   __inlineLabelText?: string;
   __fullWidth?: boolean;
 
-  prefix?: string;
-  suffix?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }
 
 function InternalInput(
