@@ -191,6 +191,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_column-layout_vvxn7",
     "awsui_item_zqq3x",
   ],
+  "comparison-table": [
+    "awsui_attribute-label_gfu3l",
+    "awsui_cell-highlighted_gfu3l",
+    "awsui_root_gfu3l",
+  ],
   "container": [
     "awsui_content-inner_1mwlm",
     "awsui_content-wrapper_14iqq",
