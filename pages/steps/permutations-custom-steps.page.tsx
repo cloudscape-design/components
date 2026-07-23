@@ -12,7 +12,7 @@ import * as variants from './permutations-utils';
 
 const stepsPermutations = createPermutations<StepsProps>([
   {
-    steps: [variants.allStatusesSteps, variants.successfulSteps],
+    steps: [variants.allStatusesSteps, variants.successfulSteps, variants.timelineStepsWithVaryingAnnotations],
     ariaLabel: ['test label'],
     orientation: ['vertical', 'horizontal'],
     renderStep: [
@@ -24,6 +24,12 @@ const stepsPermutations = createPermutations<StepsProps>([
         header: step.header,
         details: step.details && <i>Custom details for {step.details}</i>,
         icon: <Icon ariaLabel="success" name="status-positive" variant="success" />,
+      }),
+      step => ({
+        annotation: step.annotation,
+        header: step.header,
+        details: step.details && <i>Custom details for {step.details}</i>,
+        icon: <Icon ariaLabel="log" name="dot" variant="normal" />,
       }),
     ],
   },
