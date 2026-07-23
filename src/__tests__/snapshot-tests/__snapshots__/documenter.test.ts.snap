@@ -27967,6 +27967,38 @@ Each step definition has the following properties:
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
     },
+    {
+      "description": "Style overrides for the Steps component.
+Refer to the [style](/components/steps/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "StepsProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ color?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "connector",
+            "optional": true,
+            "type": "{ color?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "StepsProps.Style",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
