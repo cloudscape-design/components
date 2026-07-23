@@ -28517,7 +28517,8 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
 * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
 * \`hasDynamicContent\` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
    This may have a negative performance impact, so should be used only if necessary. It has no effect if \`resizableColumns\` is set to \`true\`.
-* \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.",
+* \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.
+* \`tooltip\` (ReactNode) - Content to display in an info popover on the column header. When specified, an info icon button appears next to the header text.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -44037,6 +44038,29 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the info popover trigger button for a column header, if present.",
+          "name": "findColumnHeaderInfo",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "colIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns column header cells from the table's header region.
 
 By default, returns all leaf-column headers (\`scope="col"\`).
@@ -53534,6 +53558,24 @@ In this case, use findContentEditableElement() instead.",
           "returnType": {
             "isNullable": false,
             "name": "CollectionPreferencesWrapper",
+          },
+        },
+        {
+          "description": "Returns the info popover trigger button for a column header, if present.",
+          "name": "findColumnHeaderInfo",
+          "parameters": [
+            {
+              "description": "1-based index of the column.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "colIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {

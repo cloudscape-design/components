@@ -280,3 +280,41 @@ settings icon in the pagination slot.
     @include cell-offset($cell-horizontal-padding);
   }
 }
+
+.header-cell-info {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: awsui.$space-xxs;
+  vertical-align: middle;
+}
+
+.header-cell-info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  background: none;
+  border-block: none;
+  border-inline: none;
+  cursor: pointer;
+  color: awsui.$color-text-interactive-default;
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}

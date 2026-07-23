@@ -653,6 +653,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_empty_wih1l",
     "awsui_header-cell-ascending_1spae",
     "awsui_header-cell-descending_1spae",
+    "awsui_header-cell-info-button_1spae",
     "awsui_header-controls_wih1l",
     "awsui_items-loader_115pt",
     "awsui_loading_wih1l",

@@ -134,6 +134,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `hasDynamicContent` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
    *    This may have a negative performance impact, so should be used only if necessary. It has no effect if `resizableColumns` is set to `true`.
    * * `verticalAlign` ('middle' | 'top') - Determines the alignment of the content in the table cell.
+   * * `tooltip` (ReactNode) - Content to display in an info popover on the column header. When specified, an info icon button appears next to the header text.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 
@@ -528,6 +529,11 @@ export namespace TableProps {
   export type ColumnDefinition<T> = {
     id?: string;
     header: React.ReactNode;
+    /**
+     * Content to display in an info popover on the column header.
+     * When specified, an info icon button appears next to the header text.
+     */
+    tooltip?: React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
