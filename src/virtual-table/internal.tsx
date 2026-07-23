@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { ExpandToggleButton } from '../internal/components/expand-toggle-button';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { VirtualTableProps } from './interfaces';
@@ -46,7 +46,9 @@ export default function InternalVirtualTable<T>({
   expandedItems,
   defaultExpandedItems,
   onExpandChange,
+  resizableColumns = false,
   columnWidths,
+  onColumnWidthsChange,
   stickyHeader = false,
   sortingColumn,
   sortingDescending = false,
@@ -57,9 +59,8 @@ export default function InternalVirtualTable<T>({
 }: InternalVirtualTableProps<T>) {
   const baseProps = getBaseProps(props);
   // Deferred beyond core (declared in interfaces, intentionally not wired here):
-  // resizableColumns / columnLayout='auto' / onColumnWidthsChange / onSortingChange.
-  // They fall into ...props and getBaseProps drops unknown props (no DOM leak); the
-  // resize + auto-layout + sort-emit behaviours land in impl-F1-A1-cw-* / later units.
+  // columnLayout='auto' / onSortingChange. They fall into ...props and getBaseProps
+  // drops unknown props (no DOM leak); auto-layout + sort-emit land in later units.
   const baseId = useUniqueId('virtual-table');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -67,8 +68,6 @@ export default function InternalVirtualTable<T>({
   const hasDisclosureColumn = !!getExpandedContent;
   const dataColumnStart = hasDisclosureColumn ? 2 : 1;
   const columnCount = columnDefinitions.length + (hasDisclosureColumn ? 1 : 0);
-  // Single stretch target: if several columns set isStretch, the last-declared wins (CW-8).
-  const stretchColumnId = [...columnDefinitions].reverse().find(column => column.isStretch)?.id;
 
   const expansion = useExpansion<T>({ trackBy, expandedItems, defaultExpandedItems, onExpandChange });
 
@@ -85,6 +84,108 @@ export default function InternalVirtualTable<T>({
   });
 
   const liveMessage = useLiveAnnouncement(items.length, ariaLabels?.appendAnnouncement);
+
+  // --- Shared column-track layout + resize -------------------------------------------------
+  // ONE grid-template-columns string is computed from the column definitions (+ the leading
+  // disclosure column) and applied identically to the header row and EVERY body row, so
+  // columns align across rows content-independently (the alignment contract). Track rules:
+  // the disclosure column is a leading `auto` track that resolves to the disclosure cell's
+  // fixed inline-size ($space-xl); a column with a resized/explicit width becomes `<w>px`; a
+  // width-less column (flexible/stretch) becomes `minmax(<minWidth||0>px, 1fr)` so flexible
+  // columns share the remaining width equally. A live resize map takes precedence over the
+  // declared width.
+  const isWidthControlled = columnWidths !== undefined;
+  const [uncontrolledWidths, setUncontrolledWidths] = useState<Record<string, number>>({});
+  const widths = isWidthControlled ? columnWidths! : uncontrolledWidths;
+
+  const gridTemplateColumns = (() => {
+    const tracks: string[] = [];
+    if (hasDisclosureColumn) {
+      // Leading disclosure column: an `auto` track that resolves to the disclosure cell's
+      // fixed inline-size ($space-xl), identically in the header and every row.
+      tracks.push('auto');
+    }
+    for (const column of columnDefinitions) {
+      const resized = widths[column.id];
+      if (resized !== undefined) {
+        tracks.push(`${Math.max(resized, column.minWidth ?? 0)}px`);
+      } else if (column.width !== undefined) {
+        tracks.push(`${column.width}px`);
+      } else {
+        tracks.push(`minmax(${column.minWidth ?? 0}px, 1fr)`);
+      }
+    }
+    return tracks.join(' ');
+  })();
+
+  // Refs so the pointer-drag handlers always read the latest widths / minWidths / cell nodes
+  // without re-subscribing listeners on every render.
+  const headerCellRefs = useRef(new Map<string, HTMLElement>());
+  const widthsRef = useRef(widths);
+  widthsRef.current = widths;
+  const minWidthByColumn = useRef(new Map<string, number | undefined>());
+  minWidthByColumn.current = new Map(columnDefinitions.map(column => [column.id, column.minWidth]));
+
+  const registerHeaderCell = useCallback((columnId: string, node: HTMLElement | null) => {
+    if (node) {
+      headerCellRefs.current.set(columnId, node);
+    } else {
+      headerCellRefs.current.delete(columnId);
+    }
+  }, []);
+
+  const applyWidths = useCallback(
+    (next: Record<string, number>) => {
+      if (!isWidthControlled) {
+        setUncontrolledWidths(next);
+      }
+      if (onColumnWidthsChange) {
+        fireNonCancelableEvent(onColumnWidthsChange, { widths: next });
+      }
+    },
+    [isWidthControlled, onColumnWidthsChange]
+  );
+
+  const resizeState = useRef<{ columnId: string; startX: number; startWidth: number } | null>(null);
+  const startColumnResize = useCallback(
+    (columnId: string, event: React.PointerEvent<HTMLElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      // Freeze-on-first-resize: snapshot the CURRENT rendered px width of every column so
+      // flexible (1fr) tracks become fixed px, making the drag predictable and alignment-safe.
+      const frozen: Record<string, number> = { ...widthsRef.current };
+      let needSnapshot = false;
+      headerCellRefs.current.forEach((node, id) => {
+        if (frozen[id] === undefined) {
+          frozen[id] = Math.round(node.getBoundingClientRect().width);
+          needSnapshot = true;
+        }
+      });
+      const startWidth =
+        frozen[columnId] ?? Math.round(headerCellRefs.current.get(columnId)?.getBoundingClientRect().width ?? 0);
+      resizeState.current = { columnId, startX: event.clientX, startWidth };
+      if (needSnapshot) {
+        applyWidths(frozen);
+      }
+      const onMove = (moveEvent: PointerEvent) => {
+        const state = resizeState.current;
+        if (!state) {
+          return;
+        }
+        const min = minWidthByColumn.current.get(state.columnId) ?? 0;
+        const next = Math.max(min, Math.round(state.startWidth + (moveEvent.clientX - state.startX)));
+        applyWidths({ ...widthsRef.current, [state.columnId]: next });
+      };
+      const onUp = () => {
+        resizeState.current = null;
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+      };
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    },
+    [applyWidths]
+  );
 
   // Surface the accurate windowed range (variable heights make a scrollTop estimate
   // unreliable, so the measured range is emitted here).
@@ -221,31 +322,26 @@ export default function InternalVirtualTable<T>({
         // Header row is aria-rowindex 1; data rows are dataset index + 2, so the header
         // is counted exactly once and SR "row X of Y" is coherent under windowing (B1).
         aria-rowindex={index + 2}
-        style={{ insetBlockStart: start, blockSize: auto ? undefined : size }}
+        style={{ insetBlockStart: start, blockSize: auto ? undefined : size, gridTemplateColumns }}
       >
         {hasDisclosureColumn && (
           <span className={styles['disclosure-cell']} role="gridcell" aria-colindex={1}>
-            <button
+            {/* Match the standard Table expandable-row toggle exactly: the shared
+                ExpandToggleButton renders the rotating angle-down/caret icon and owns the
+                button role + aria-expanded + aria-label. The label function is fed both
+                slots so the button self-selects the state-correct label. */}
+            <ExpandToggleButton
+              isExpanded={expanded}
+              onExpandableItemToggle={() => expansion.toggle(item)}
+              expandButtonLabel={ariaLabels?.expandButtonLabel?.(item, false)}
+              collapseButtonLabel={ariaLabels?.expandButtonLabel?.(item, true)}
               id={toggleId}
-              type="button"
-              className={styles['disclosure-button']}
-              aria-expanded={expanded}
-              aria-controls={expanded ? regionId : undefined}
-              aria-label={ariaLabels?.expandButtonLabel?.(item, expanded)}
-              onClick={() => expansion.toggle(item)}
-            >
-              <InternalIcon name={expanded ? 'angle-down' : 'angle-right'} />
-            </button>
+              ariaControls={expanded ? regionId : undefined}
+            />
           </span>
         )}
         {columnDefinitions.map((column, columnIndex) => (
-          <span
-            key={column.id}
-            className={styles.cell}
-            role="gridcell"
-            aria-colindex={dataColumnStart + columnIndex}
-            style={cellStyle(column, columnWidths, column.id === stretchColumnId)}
-          >
+          <span key={column.id} className={styles.cell} role="gridcell" aria-colindex={dataColumnStart + columnIndex}>
             {column.cell(item, context)}
           </span>
         ))}
@@ -269,7 +365,7 @@ export default function InternalVirtualTable<T>({
         // therefore counts the header + data rows only, independent of how many rows
         // are currently expanded.
         aria-rowindex={index + 2}
-        style={{ insetBlockStart: start, blockSize: auto ? undefined : size }}
+        style={{ insetBlockStart: start, blockSize: auto ? undefined : size, gridTemplateColumns }}
       >
         {/* Full-width gridcell keeps a valid grid child model; the arbitrary,
             non-tabular content lives in a labeled region inside it (design B2). A
@@ -339,7 +435,7 @@ export default function InternalVirtualTable<T>({
         onKeyDown={onGridKeyDown}
       >
         <div className={styles['header-rowgroup']} role="rowgroup">
-          <div className={styles['header-row']} role="row" aria-rowindex={1}>
+          <div className={styles['header-row']} role="row" aria-rowindex={1} style={{ gridTemplateColumns }}>
             {hasDisclosureColumn && (
               // Materialised leading disclosure column: an accessible, visually hidden
               // columnheader counted at aria-colindex 1 so data columns start at 2 in
@@ -355,9 +451,19 @@ export default function InternalVirtualTable<T>({
                   role="columnheader"
                   aria-colindex={dataColumnStart + columnIndex}
                   aria-sort={sorted ? (sortingDescending ? 'descending' : 'ascending') : undefined}
-                  style={cellStyle(column, columnWidths, column.id === stretchColumnId)}
+                  ref={node => registerHeaderCell(column.id, node)}
                 >
                   {column.header}
+                  {resizableColumns && (
+                    // Pointer-only resize affordance pinned to the cell's trailing edge
+                    // (aria-hidden — it adds no semantics; the columnheader keeps its role).
+                    // Dragging drives the shared column template's width map.
+                    <span
+                      aria-hidden="true"
+                      className={styles['resize-handle']}
+                      onPointerDown={event => startColumnResize(column.id, event)}
+                    />
+                  )}
                 </span>
               );
             })}
@@ -389,21 +495,4 @@ export default function InternalVirtualTable<T>({
       </div>
     </div>
   );
-}
-
-// Fixed-layout column sizing: an explicit width pins the column; the stretch column
-// (CW-8, single last-wins target) fills remaining space; otherwise columns share space.
-function cellStyle<T>(
-  column: VirtualTableProps.ColumnDefinition<T>,
-  columnWidths: Record<string, number> | undefined,
-  stretch: boolean
-): React.CSSProperties {
-  const width = columnWidths?.[column.id] ?? column.width;
-  if (stretch) {
-    return { flex: '1 1 auto', minInlineSize: column.minWidth };
-  }
-  if (width !== undefined) {
-    return { flex: `0 0 ${width}px`, minInlineSize: column.minWidth };
-  }
-  return { flex: '1 1 0', minInlineSize: column.minWidth ?? 0 };
 }
