@@ -398,6 +398,22 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
+   * Enables row-level batch inline editing. When set, an action column is appended
+   * to the table with Edit / Save / Cancel controls per row. Clicking Edit puts all
+   * columns that have `editConfig` into edit state simultaneously. Clicking Save
+   * calls `submitRowEdit` with the item and a map of changed column values.
+   * The existing per-cell `submitEdit` path is unaffected when this prop is absent.
+   */
+  rowEditingConfig?: TableProps.RowEditingConfig<T>;
+
+  /**
+   * Specifies a function called after the user saves a row-level inline edit.
+   * Receives the original item and a `Map<columnKey, newValue>` of all changed cells.
+   * Return a promise to keep the row in loading state while the request is in progress.
+   */
+  submitRowEdit?: TableProps.SubmitRowEditFunction<T>;
+
+  /**
    * Use this property to activate advanced keyboard navigation and focusing behaviors.
    * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
    *
@@ -585,6 +601,10 @@ export namespace TableProps {
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
     submittingEditText?: (column: ColumnDefinition<any>) => string;
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
+    activateRowEditLabel?: (item: T) => string;
+    cancelRowEditLabel?: (item: T) => string;
+    submitRowEditLabel?: (item: T) => string;
+    submittingRowEditText?: (item: T) => string;
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
   }
@@ -641,6 +661,23 @@ export namespace TableProps {
     column: ColumnDefinition<ItemType>,
     newValue: ValueType
   ) => Promise<void> | void;
+
+  /**
+   * Called with the original item and a `Map` of `columnKey -> newValue` for all
+   * columns whose value was changed during a row-level edit.
+   */
+  export type SubmitRowEditFunction<ItemType> = (
+    item: ItemType,
+    newValues: Map<string, unknown>
+  ) => Promise<void> | void;
+
+  export interface RowEditingConfig<T> {
+    /**
+     * Determines whether row editing is disabled for a given item.
+     * Return a string to disable with a reason; return `undefined` to allow editing.
+     */
+    disabledReason?: (item: T) => string | undefined;
+  }
 
   export interface ColumnDisplay {
     type?: 'column';
