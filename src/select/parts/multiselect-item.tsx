@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../../icon/internal.js';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
@@ -100,6 +101,8 @@ const MultiSelectItem = (
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
   const isSelectAll = option.type === 'select-all';
+  const collapsible = !!option.collapsible;
+  const isExpanded = option.expanded;
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
   const disabledReason =
@@ -170,6 +173,8 @@ const MultiSelectItem = (
       isParent={isParent}
       isChild={isChild}
       isSelectAll={isSelectAll}
+      collapsible={collapsible}
+      isExpanded={isExpanded}
       highlightType={highlightType}
       ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
@@ -186,7 +191,12 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {!renderResult && hasCheckbox && (
+        {isParent && collapsible && (
+          <div className={styles['expand-icon']} aria-hidden="true">
+            <InternalIcon name={isExpanded ? 'caret-down-filled' : 'caret-right-filled'} size="small" />
+          </div>
+        )}
+        {!renderResult && hasCheckbox && !(isParent && collapsible) && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}

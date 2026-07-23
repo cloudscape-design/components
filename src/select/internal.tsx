@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -11,6 +11,8 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { DropdownOption } from '../internal/components/option/interfaces';
+import { applyGroupCollapse, getGroupKey } from '../internal/components/option/utils/collapse-options.js';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -68,6 +70,7 @@ const InternalSelect = React.forwardRef(
       virtualScroll,
       expandToViewport,
       autoFocus,
+      collapsibleGroups = false,
       __inFilteringToken,
       __internalRootRef,
       renderOption,
@@ -99,10 +102,38 @@ const InternalSelect = React.forwardRef(
 
     const [filteringValue, setFilteringValue] = useState('');
 
+    const [collapsedGroups, setCollapsedGroups] = useState<ReadonlySet<number>>(() => new Set());
+    const toggleGroupExpanded = useCallback(
+      (option: DropdownOption) => {
+        const groupIndex = getGroupKey(options, option.option as OptionGroup);
+        if (groupIndex === -1) {
+          return;
+        }
+        setCollapsedGroups(prev => {
+          const next = new Set(prev);
+          if (next.has(groupIndex)) {
+            next.delete(groupIndex);
+          } else {
+            next.add(groupIndex);
+          }
+          return next;
+        });
+      },
+      [options]
+    );
+
     const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
       options,
       filteringType,
       filteringValue
+    );
+
+    const displayOptions = useMemo(
+      () =>
+        collapsibleGroups
+          ? applyGroupCollapse({ options, filteredOptions, parentMap, collapsedGroups })
+          : filteredOptions,
+      [collapsibleGroups, options, filteredOptions, parentMap, collapsedGroups]
     );
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -134,7 +165,7 @@ const InternalSelect = React.forwardRef(
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
-      options: filteredOptions,
+      options: displayOptions,
       filteringType,
       onBlur,
       onFocus,
@@ -142,11 +173,13 @@ const InternalSelect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       statusType,
+      collapsibleGroups,
+      onToggleGroupExpanded: toggleGroupExpanded,
     });
 
     const handleNativeSearch = useNativeSearch({
       isEnabled: filteringType === 'none' && !readOnly,
-      options: filteredOptions,
+      options: displayOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
     });
@@ -284,7 +317,7 @@ const InternalSelect = React.forwardRef(
               renderOption={renderOption}
               menuProps={menuProps}
               getOptionProps={getOptionProps}
-              filteredOptions={filteredOptions}
+              filteredOptions={displayOptions}
               filteringValue={filteringValue}
               ref={scrollToIndex}
               hasDropdownStatus={dropdownStatus.content !== null}

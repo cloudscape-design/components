@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { DropdownOption } from '../internal/components/option/interfaces';
+import { applyGroupCollapse, getGroupKey } from '../internal/components/option/utils/collapse-options';
 import { isGroup } from '../internal/components/option/utils/filter-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -43,6 +44,7 @@ type UseMultiselectOptions = SomeRequired<
     | 'onChange'
     | 'selectedAriaLabel'
     | 'enableSelectAll'
+    | 'collapsibleGroups'
     | 'i18nStrings'
   > &
     DropdownStatusProps & {
@@ -83,6 +85,7 @@ export function useMultiselect({
   externalRef,
   embedded,
   enableSelectAll,
+  collapsibleGroups = false,
   i18nStrings,
   ...restProps
 }: UseMultiselectOptions) {
@@ -110,6 +113,34 @@ export function useMultiselect({
     filteringValue
   );
 
+  const [collapsedGroups, setCollapsedGroups] = useState<ReadonlySet<number>>(() => new Set());
+  const toggleGroupExpanded = useCallback(
+    (option: DropdownOption) => {
+      const groupIndex = getGroupKey(options, option.option as OptionGroup);
+      if (groupIndex === -1) {
+        return;
+      }
+      setCollapsedGroups(prev => {
+        const next = new Set(prev);
+        if (next.has(groupIndex)) {
+          next.delete(groupIndex);
+        } else {
+          next.add(groupIndex);
+        }
+        return next;
+      });
+    },
+    [options]
+  );
+
+  const displayFilteredOptions = useMemo(
+    () =>
+      collapsibleGroups
+        ? applyGroupCollapse({ options, filteredOptions, parentMap, collapsedGroups })
+        : filteredOptions,
+    [collapsibleGroups, options, filteredOptions, parentMap, collapsedGroups]
+  );
+
   const selectAllOption: DropdownOption = {
     type: 'select-all',
     afterHeader: filteringType !== 'none',
@@ -117,7 +148,9 @@ export function useMultiselect({
   };
 
   const visibleOptions =
-    enableSelectAll && filteredOptions.length ? [selectAllOption, ...filteredOptions] : filteredOptions;
+    enableSelectAll && displayFilteredOptions.length
+      ? [selectAllOption, ...displayFilteredOptions]
+      : displayFilteredOptions;
 
   // Includes visible and non-visible (filtered out) options
   const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
@@ -210,6 +243,8 @@ export function useMultiselect({
     isAllSelected,
     isSomeSelected,
     toggleAll,
+    collapsibleGroups,
+    onToggleGroupExpanded: toggleGroupExpanded,
   });
 
   const wrapperOnKeyDown = useNativeSearch({

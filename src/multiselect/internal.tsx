@@ -62,6 +62,7 @@ const InternalMultiselect = React.forwardRef(
       __internalRootRef,
       autoFocus,
       enableSelectAll,
+      collapsibleGroups,
       renderOption,
       ...restProps
     }: InternalMultiselectProps,
@@ -90,6 +91,7 @@ const InternalMultiselect = React.forwardRef(
       setFilteringValue,
       externalRef,
       enableSelectAll,
+      collapsibleGroups,
       i18nStrings,
       ...restProps,
     });

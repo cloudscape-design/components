@@ -34,6 +34,13 @@ $checkbox-size: awsui.$size-control;
     inline-size: $checkbox-size;
     margin-inline-end: styles.$control-padding-horizontal;
   }
+
+  > .expand-icon {
+    display: flex;
+    align-items: center;
+    margin-inline-end: awsui.$space-xxs;
+    color: awsui.$color-text-dropdown-group-label;
+  }
 }
 
 .option-group {

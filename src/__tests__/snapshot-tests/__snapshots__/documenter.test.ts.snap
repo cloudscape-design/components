@@ -19738,6 +19738,18 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     {
+      "description": "When set to \`true\`, option groups (defined via \`OptionGroup\` objects in \`options\`)
+become collapsible. The group header renders an expand/collapse control with
+\`aria-expanded\`, and collapsing a group hides its child options. All groups are
+expanded by default.
+
+This property is opt-in and backward compatible: when omitted or \`false\`, groups
+behave exactly as before.",
+      "name": "collapsibleGroups",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies the ID for the trigger component. It uses an automatically generated ID by default.",
       "name": "controlId",
       "optional": true,
@@ -26070,6 +26082,18 @@ To use it correctly, define an ID for the element you want to use as label and s
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "When set to \`true\`, option groups (defined via \`OptionGroup\` objects in \`options\`)
+become collapsible. The group header renders an expand/collapse control with
+\`aria-expanded\`, and collapsing a group hides its child options. All groups are
+expanded by default.
+
+This property is opt-in and backward compatible: when omitted or \`false\`, groups
+behave exactly as before.",
+      "name": "collapsibleGroups",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "Specifies the ID for the trigger component. It uses an automatically generated ID by default.",
