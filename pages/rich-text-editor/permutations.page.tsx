@@ -35,7 +35,7 @@ export default function RichTextEditorPermutations() {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <RichTextEditor onChange={() => {}} {...permutation} />}
+          render={permutation => <RichTextEditor ariaLabel="Rich text editor" onChange={() => {}} {...permutation} />}
         />
       </ScreenshotArea>
     </>
