@@ -5430,6 +5430,18 @@ not a link.",
       "optional": false,
       "type": "ReadonlyArray<T>",
     },
+    {
+      "description": "The maximum number of breadcrumb items to display before collapsing middle items into an
+overflow ellipsis. The first and last items are always visible. When the total number of
+items exceeds \`maxItems\`, middle items are hidden and can be revealed by activating the
+ellipsis control.
+
+Must be a positive integer ≥ 2. When omitted (default), no static item limit is applied
+and only the responsive (container-width-based) collapse is used.",
+      "name": "maxItems",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
