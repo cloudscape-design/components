@@ -4,6 +4,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../../icon/internal';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
 
@@ -21,18 +22,25 @@ const ContentDisplayOption = forwardRef(
   ({ onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
+    const isLocked = option.locked === true;
     return (
       <div ref={ref} className={getClassName('content')} data-item-type="column">
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}
         </label>
         <div className={getClassName('toggle')}>
-          <InternalToggle
-            checked={!!option.visible}
-            onChange={() => onToggle && onToggle(option)}
-            disabled={option.alwaysVisible === true}
-            controlId={controlId}
-          />
+          {isLocked ? (
+            <span className={getClassName('lock-icon')} aria-label="Locked" role="img">
+              <InternalIcon name="lock-private" />
+            </span>
+          ) : (
+            <InternalToggle
+              checked={!!option.visible}
+              onChange={() => onToggle && onToggle(option)}
+              disabled={option.alwaysVisible === true}
+              controlId={controlId}
+            />
+          )}
         </div>
       </div>
     );
