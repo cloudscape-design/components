@@ -15,6 +15,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import InternalButtonDropdown from '../button-dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
@@ -86,6 +87,7 @@ interface TabHeaderBarProps {
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
   style?: TabsProps['style'];
+  overflowBehavior?: TabsProps['overflowBehavior'];
 }
 
 export function TabHeaderBar({
@@ -100,6 +102,7 @@ export function TabHeaderBar({
   keyboardActivationMode,
   actions,
   style,
+  overflowBehavior = 'scroll',
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -133,12 +136,12 @@ export function TabHeaderBar({
         role: 'tablist',
       };
 
+  // Dropdown overflow: track which tab elements are fully visible
+  const [overflowTabIds, setOverflowTabIds] = useState<Set<string>>(new Set());
+  const tabItemRefs = useRef<Map<string, HTMLElement>>(new Map());
+
   useEffect(() => {
     if (hadActionOrDismissible && !hasActionOrDismissible) {
-      // when tabs becomes non-dismissible (e.g. when all dismissible tabs are removed),
-      // the hasActionOrDismissible is changing which causing tabs to re-mount to the React tree,
-      // which, in turn, causes losing their refs, and the nextActive.focus() function inside handleDismiss does not focus on the next tab
-      // so this code does
       getNextFocusTarget()?.focus();
     }
   }, [hasActionOrDismissible, hadActionOrDismissible]);
@@ -151,6 +154,41 @@ export function TabHeaderBar({
     }
   }, [widthChange, tabs]);
 
+  // Dropdown overflow: use IntersectionObserver to detect which tabs are clipped
+  useEffect(() => {
+    if (overflowBehavior !== 'dropdown') {
+      return;
+    }
+    const container = headerBarRef.current;
+    if (!container) {
+      return;
+    }
+
+    const hidden = new Set<string>();
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const tabId = (entry.target as HTMLElement).dataset.tabId;
+          if (!tabId) {
+            return;
+          }
+          if (entry.intersectionRatio < 0.95) {
+            hidden.add(tabId);
+          } else {
+            hidden.delete(tabId);
+          }
+        });
+        setOverflowTabIds(new Set(hidden));
+      },
+      { root: container, threshold: 0.95 }
+    );
+
+    tabItemRefs.current.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [overflowBehavior, tabs, widthChange]);
+
   const scrollIntoViewIfPossible = (smooth: boolean) => {
     if (!activeTabId) {
       return;
@@ -162,27 +200,18 @@ export function TabHeaderBar({
   };
 
   useEffect(() => {
-    // Delay scrollIntoView as the position is depending on parent elements
-    // (effects are called inside-out in the component tree).
-    // Wait one frame to allow parents to complete it's calculation.
     requestAnimationFrame(() => {
       scrollIntoViewIfPossible(false);
     });
-    // Non-smooth scrolling should not be called upon activeId change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [horizontalOverflow, widthChange, tabs.length]);
 
   useEffect(() => {
     scrollIntoViewIfPossible(true);
-    // Smooth scrolling should only be called upon activeId change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTabId]);
 
   useEffect(() => {
-    /*
-     When the selected tab changes and we are currently already focused on a tab,
-     move the focus to the newly selected tab.
-    */
     if (documentRef.current && headerBarRef.current?.contains(documentRef.current.activeElement)) {
       if (documentRef.current.activeElement !== activeTabHeaderRef.current) {
         activeTabHeaderRef.current?.focus({ preventScroll: true });
@@ -293,7 +322,6 @@ export function TabHeaderBar({
   }
   function focusElement(element: HTMLElement) {
     element.focus();
-    // If focusable element is a tab - fire the onChange for it.
     const tabsById = tabs.reduce((map, tab) => map.set(tab.id, tab), new Map<string, TabsProps.Tab>());
     for (const [tabId, focusTargetTabTriggerElement] of tabRefs.current.entries()) {
       const focusTargetTabLabelElement = focusTargetTabTriggerElement?.querySelector(`.${styles['tabs-tab-link']}`);
@@ -308,7 +336,6 @@ export function TabHeaderBar({
       }
     }
   }
-  // List all non-disabled and registered focusables: those are eligible for keyboard navigation.
   function getFocusablesFrom(target: HTMLElement) {
     function isElementRegistered(element: HTMLElement) {
       return navigationAPI.current?.isRegistered(element) ?? false;
@@ -325,10 +352,23 @@ export function TabHeaderBar({
 
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
 
+  // Build dropdown items for overflowed tabs
+  const overflowDropdownItems = tabs
+    .filter(tab => overflowTabIds.has(tab.id))
+    .map(tab => ({
+      id: tab.id,
+      text: tab.label as string,
+      disabled: tab.disabled,
+    }));
+
+  const overflowMenuLabel = i18n('i18nStrings.overflowMenuAriaLabel', i18nStrings?.overflowMenuAriaLabel) ?? 'More';
+
+  const hasDropdownOverflow = overflowBehavior === 'dropdown' && overflowTabIds.size > 0;
+
   return (
     <div className={classes}>
       <div className={styles['tab-header-scroll-container']} ref={containerRef}>
-        {horizontalOverflow && (
+        {overflowBehavior === 'scroll' && horizontalOverflow && (
           <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
             <InternalButton
               formAction="none"
@@ -349,7 +389,11 @@ export function TabHeaderBar({
         >
           <TabList
             {...tabActionAttributes}
-            className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
+            className={clsx(
+              styles['tabs-header-list'],
+              analyticsSelectors['tabs-header-list'],
+              overflowBehavior === 'dropdown' && styles['tabs-header-list-dropdown-overflow']
+            )}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
@@ -358,10 +402,10 @@ export function TabHeaderBar({
             onFocus={onFocus}
             onBlur={onBlur}
           >
-            {tabs.map(renderTabHeader)}
+            {tabs.map((tab, index) => renderTabHeader(tab, index))}
           </TabList>
         </SingleTabStopNavigationProvider>
-        {horizontalOverflow && (
+        {overflowBehavior === 'scroll' && horizontalOverflow && (
           <span className={rightButtonClasses}>
             <InternalButton
               formAction="none"
@@ -371,6 +415,22 @@ export function TabHeaderBar({
               __focusable={true}
               onClick={() => onPaginationClick(headerBarRef, 'forward')}
               ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
+            />
+          </span>
+        )}
+        {overflowBehavior === 'dropdown' && hasDropdownOverflow && (
+          <span className={clsx(styles['overflow-dropdown-container'], testUtilStyles['tabs-overflow-dropdown'])}>
+            <InternalButtonDropdown
+              items={overflowDropdownItems}
+              variant="icon"
+              iconName="ellipsis"
+              ariaLabel={overflowMenuLabel}
+              onItemClick={event => {
+                const tab = tabs.find(t => t.id === event.detail.id);
+                if (tab && !tab.disabled) {
+                  onChange({ activeTabId: tab.id, activeTabHref: tab.href });
+                }
+              }}
             />
           </span>
         )}
@@ -389,14 +449,12 @@ export function TabHeaderBar({
         return;
       }
 
-      // if the primary mouse button is clicked with a modifier key, the browser will handle opening a new tab
       const specialKey = !isPlainLeftClick(event);
       if (specialKey && tab.href) {
         return;
       }
 
       event.preventDefault();
-      // for browsers that do not focus buttons on button click
       if (!tab.href) {
         const clickedTabRef = tabRefs.current.get(tab.id) as undefined | HTMLButtonElement;
         if (clickedTabRef) {
@@ -516,10 +574,14 @@ export function TabHeaderBar({
 
     return (
       <TabItem
-        ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
+        ref={(element: any) => {
+          tabRefs.current.set(tab.id, element as HTMLElement);
+          tabItemRefs.current.set(tab.id, element as HTMLElement);
+        }}
         className={styles['tabs-tab']}
         role="presentation"
         key={tab.id}
+        data-tab-id={tab.id}
       >
         <div
           className={tabHeaderContainerClasses}
@@ -566,7 +628,6 @@ const TabTrigger = forwardRef(
     const children = (
       <>
         <span className={clsx(styles['tabs-tab-label'], analyticsSelectors['tab-label'])} ref={tabLabelRefObject}>
-          {/* The label is wrapped with span so that whitespaces inside don't get trimmed. */}
           <span>{tab.label}</span>
         </span>
         {isDisabledWithReason && (
