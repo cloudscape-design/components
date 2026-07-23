@@ -233,6 +233,10 @@ filter search icon.
   /* used in test-utils */
 }
 
+.row-clickable {
+  cursor: pointer;
+}
+
 .skeleton-loading-cell {
   padding-block: 0;
   padding-inline: 0;

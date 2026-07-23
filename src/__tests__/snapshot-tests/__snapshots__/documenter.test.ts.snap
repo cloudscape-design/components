@@ -28467,6 +28467,14 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
       "type": "string",
     },
     {
+      "description": "When set to \`true\`, clicking anywhere on a table row toggles its selection.
+Requires \`selectionType\` to be set. Interactive cells (such as inline-editable cells,
+expandable row toggles, and the selection control itself) are excluded from this behavior.",
+      "name": "clickToSelect",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "The columns configuration object
 * \`id\` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
   and 2) to match entries in the \`columnDisplay\` property, if defined.
