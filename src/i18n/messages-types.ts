@@ -118,6 +118,7 @@ export interface I18nFormatArgTypes {
     title: never;
     confirmLabel: never;
     cancelLabel: never;
+    'resetToDefaults.label': never;
     'pageSizePreference.title': never;
     'wrapLinesPreference.label': never;
     'wrapLinesPreference.description': never;

@@ -225,6 +225,27 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Content displayed before the preferences. Use it to display additional information relating to the preferences.
    */
   contentBefore?: React.ReactNode;
+  /**
+   * Configures the built-in "reset to defaults" affordance.
+   *
+   * When set, the component displays a reset button in the modal footer that restores the modal's
+   * working state to the provided default preferences in a single action. The user still needs to
+   * confirm the change using the confirm button for it to take effect.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the text displayed on the reset button.
+   * - `preferences` (CollectionPreferencesProps.Preferences) - Specifies the default preference values the modal
+   *   is restored to when the user activates the reset button.
+   * @i18n
+   */
+  resetToDefaults?: CollectionPreferencesProps.ResetToDefaults<CustomPreferenceType>;
+  /**
+   * Called when the user restores the default preferences using the reset button in the modal footer.
+   *
+   * The event `detail` contains the default preferences the modal's working state was restored to
+   * (the same object supplied in `resetToDefaults.preferences`).
+   */
+  onReset?: NonCancelableEventHandler<CollectionPreferencesProps.Preferences<CustomPreferenceType>>;
 }
 
 export namespace CollectionPreferencesProps {
@@ -237,6 +258,11 @@ export namespace CollectionPreferencesProps {
     stickyColumns?: StickyColumns;
     contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
+  }
+
+  export interface ResetToDefaults<CustomPreferenceType = any> {
+    label?: string;
+    preferences: Preferences<CustomPreferenceType>;
   }
 
   export interface ContentDisplayPreference extends DndAreaI18nStrings {
