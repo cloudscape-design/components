@@ -114,7 +114,13 @@ export const InternalButton = React.forwardRef(
     const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason =
-      (variant === 'normal' || variant === 'primary' || variant === 'icon') && !!disabledReason && disabled;
+      (variant === 'normal' ||
+        variant === 'primary' ||
+        variant === 'icon' ||
+        variant === 'link' ||
+        variant === 'inline-link') &&
+      !!disabledReason &&
+      disabled;
 
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
