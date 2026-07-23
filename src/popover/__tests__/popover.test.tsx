@@ -472,7 +472,11 @@ describe('triggerType="no-wrapper"', () => {
     it('clones the child element and does not add a wrapper element', () => {
       const wrapper = renderPopover({
         triggerType: 'no-wrapper',
-        children: <button type="button" id="my-trigger">Open</button>,
+        children: (
+          <button type="button" id="my-trigger">
+            Open
+          </button>
+        ),
         content: 'Popover content',
       });
       // The trigger element should be the button itself, not a span wrapper
@@ -493,7 +497,11 @@ describe('triggerType="no-wrapper"', () => {
     it('uses the child element id when provided, rather than generating one', () => {
       const wrapper = renderPopover({
         triggerType: 'no-wrapper',
-        children: <button type="button" id="custom-id">Open</button>,
+        children: (
+          <button type="button" id="custom-id">
+            Open
+          </button>
+        ),
         content: 'Popover content',
       });
       expect(wrapper.findTrigger().getElement().id).toBe('custom-id');
@@ -574,7 +582,11 @@ describe('triggerType="no-wrapper"', () => {
       const childOnClick = jest.fn();
       const wrapper = renderPopover({
         triggerType: 'no-wrapper',
-        children: <button type="button" onClick={childOnClick}>Open</button>,
+        children: (
+          <button type="button" onClick={childOnClick}>
+            Open
+          </button>
+        ),
         content: 'Popover content',
       });
       wrapper.findTrigger().click();
@@ -586,7 +598,11 @@ describe('triggerType="no-wrapper"', () => {
       const childOnKeyDown = jest.fn();
       const wrapper = renderPopover({
         triggerType: 'no-wrapper',
-        children: <button type="button" onKeyDown={childOnKeyDown}>Open</button>,
+        children: (
+          <button type="button" onKeyDown={childOnKeyDown}>
+            Open
+          </button>
+        ),
         content: 'Popover content',
         dismissButton: false,
       });
