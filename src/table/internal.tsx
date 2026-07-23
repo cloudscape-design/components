@@ -47,6 +47,7 @@ import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
+import { GroupHeaderRow } from './row-grouping/group-header-row';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
@@ -145,6 +146,7 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       enableKeyboardNavigation,
       expandableRows: externalExpandableRows,
+      rowGrouping,
       getLoadingStatus,
       renderLoaderPending,
       renderLoaderLoading,
@@ -183,6 +185,41 @@ const InternalTable = React.forwardRef(
     const { allItems, isExpandable } = expandableRows;
     const { allRows } = useProgressiveLoadingProps({ getLoadingStatus, expandableRows });
     const selectionType = expandableRows.hasGroupSelection ? ('group' as const) : externalSelectionType;
+
+    // Row grouping: map each group id to its items (in items order) and mark which rows start a new group.
+    const groupedItemsById = useMemo(() => {
+      const map = new Map<string, T[]>();
+      if (rowGrouping) {
+        for (const item of allItems) {
+          const groupId = rowGrouping.getGroupId(item);
+          const existing = map.get(groupId);
+          if (existing) {
+            existing.push(item);
+          } else {
+            map.set(groupId, [item]);
+          }
+        }
+      }
+      return map;
+    }, [rowGrouping, allItems]);
+
+    const rowGroupStart = useMemo(() => {
+      const starts = new Array<boolean>(allRows.length).fill(false);
+      if (rowGrouping) {
+        let previousGroupId: string | undefined = undefined;
+        for (let i = 0; i < allRows.length; i++) {
+          const row = allRows[i];
+          if (row.type === 'data') {
+            const groupId = rowGrouping.getGroupId(row.item);
+            if (groupId !== previousGroupId) {
+              starts[i] = true;
+              previousGroupId = groupId;
+            }
+          }
+        }
+      }
+      return starts;
+    }, [rowGrouping, allRows]);
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
@@ -670,7 +707,24 @@ const InternalTable = React.forwardRef(
                           };
                           if (row.type === 'data') {
                             const rowId = `${getTableItemKey(row.item)}`;
-                            return (
+                            const isGroupStart = rowGroupStart[rowIndex];
+                            const groupId = rowGrouping && isGroupStart ? rowGrouping.getGroupId(row.item) : undefined;
+                            const groupHeaderRow =
+                              rowGrouping && groupId !== undefined ? (
+                                <GroupHeaderRow
+                                  groupId={groupId}
+                                  content={rowGrouping.renderGroupHeader({
+                                    groupId,
+                                    items: groupedItemsById.get(groupId) ?? [],
+                                  })}
+                                  totalColumnsCount={totalColumnsCount}
+                                  tableRole={tableRole}
+                                  rowIndex={rowIndex}
+                                  firstIndex={firstIndex}
+                                  headerRowCount={headerRowCount}
+                                />
+                              ) : null;
+                            const dataRowElement = (
                               <tr
                                 key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
@@ -765,6 +819,14 @@ const InternalTable = React.forwardRef(
                                   );
                                 })}
                               </tr>
+                            );
+                            return groupHeaderRow ? (
+                              <React.Fragment key={`group-${rowId}`}>
+                                {groupHeaderRow}
+                                {dataRowElement}
+                              </React.Fragment>
+                            ) : (
+                              dataRowElement
                             );
                           }
                           const loaderSelectionProps =

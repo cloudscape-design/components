@@ -430,6 +430,23 @@ export interface TableProps<T = any> extends BaseComponentProps {
   expandableRows?: TableProps.ExpandableRows<T>;
 
   /**
+   * Visually groups table rows under non-selectable group header rows. Use it to organize the items
+   * into sections without changing the flat data structure of `items`.
+   *
+   * The configuration contains:
+   * * `getGroupId` ((Item) => string) - Returns the group identifier for the given item. Consecutive
+   * items that share the same identifier form a group. A group header row is rendered above the first
+   * item of every group.
+   * * `renderGroupHeader` ((TableProps.RowGroupHeaderDetail<Item>) => ReactNode) - Renders the content
+   * of a group header row. It is called once per group with the group identifier and the list of items
+   * belonging to the group.
+   *
+   * The group header row spans all columns and is not selectable, editable, or expandable.
+   * The feature is opt-in and does not change the behavior of tables that do not define it.
+   */
+  rowGrouping?: TableProps.RowGrouping<T>;
+
+  /**
    * A function that specifies the current status of loading more items. It is called once for the entire
    * table with `item=null` and then for each expanded item. The function result is one of the four possible states:
    * * `pending` - Indicates that no request in progress, but more options may be loaded.
@@ -668,6 +685,16 @@ export namespace TableProps {
     totalItemsCount?: number;
     getSelectedItemsCount?: (item: T) => number;
     totalSelectedItemsCount?: number;
+  }
+
+  export interface RowGrouping<T> {
+    getGroupId: (item: T) => string;
+    renderGroupHeader: (detail: RowGroupHeaderDetail<T>) => React.ReactNode;
+  }
+
+  export interface RowGroupHeaderDetail<T> {
+    groupId: string;
+    items: ReadonlyArray<T>;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<ExpandableItemToggleDetail<T>>;
