@@ -23120,7 +23120,7 @@ exports[`Components definition for property-filter matches the snapshot: propert
                 {
                   "name": "operators",
                   "optional": true,
-                  "type": "ReadonlyArray<string | PropertyFilterOperatorExtended<TokenValue>>",
+                  "type": "ReadonlyArray<string | PropertyFilterOperatorExtendedAugmented<TokenValue>>",
                 },
                 {
                   "name": "propertyLabel",

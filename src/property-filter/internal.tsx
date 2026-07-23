@@ -367,6 +367,16 @@ const PropertyFilterInternal = React.forwardRef(
     const operatorForm = propertyStep && propertyStep.property.getValueFormRenderer(propertyStep.operator);
     const isEnumValue = propertyStep?.property.getTokenType(propertyStep.operator) === 'enum';
 
+    // Applies a custom-form token and resets the input. Shared by the dropdown footer button and the
+    // `submit` callback exposed to custom operator forms, so that programmatic submission (e.g. on the
+    // "Enter" key) behaves identically to clicking the "Apply" button.
+    const submitCustomFormToken = (token: InternalToken) => {
+      addToken(token);
+      setFilteringText('');
+      inputRef.current?.focus({ preventDropdown: true });
+      inputRef.current?.close();
+    };
+
     const searchResultsId = useUniqueId('property-filter-search-results');
     const constraintTextId = useUniqueId('property-filter-constraint');
     const textboxAriaDescribedBy = filteringConstraintText
@@ -409,6 +419,13 @@ const PropertyFilterInternal = React.forwardRef(
                           operatorForm={operatorForm}
                           value={customFormValue}
                           onChange={setCustomFormValue}
+                          submit={() =>
+                            submitCustomFormToken({
+                              property: propertyStep.property,
+                              operator: propertyStep.operator,
+                              value: customFormValue,
+                            })
+                          }
                         />
                       ) : (
                         <PropertyEditorContentEnum
@@ -434,12 +451,7 @@ const PropertyFilterInternal = React.forwardRef(
                             inputRef.current?.close();
                             inputRef.current?.focus({ preventDropdown: true });
                           }}
-                          onSubmit={token => {
-                            addToken(token);
-                            setFilteringText('');
-                            inputRef.current?.focus({ preventDropdown: true });
-                            inputRef.current?.close();
-                          }}
+                          onSubmit={submitCustomFormToken}
                         />
                       ),
                     }
