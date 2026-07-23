@@ -541,6 +541,7 @@ export interface I18nFormatArgTypes {
     'i18nStrings.scrollLeftAriaLabel': never;
     'i18nStrings.scrollRightAriaLabel': never;
     'i18nStrings.tabsWithActionsAriaRoleDescription': never;
+    'i18nStrings.overflowMenuAriaLabel': never;
   };
   'tag-editor': {
     'i18nStrings.keyPlaceholder': never;
