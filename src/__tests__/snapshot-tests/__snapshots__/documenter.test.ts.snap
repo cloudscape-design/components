@@ -27429,6 +27429,14 @@ exports[`Components definition for space-between matches the snapshot: space-bet
       "type": "string",
     },
     {
+      "description": "When set to \`true\`, renders a visual divider line between each child element.
+The divider is oriented perpendicular to the layout direction:
+a horizontal line for \`direction="vertical"\` and a vertical line for \`direction="horizontal"\`.",
+      "name": "divider",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
