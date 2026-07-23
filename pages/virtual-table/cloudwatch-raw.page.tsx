@@ -47,11 +47,12 @@ export default function CloudWatchRawCompoundPage() {
       <h1>VirtualTable — CloudWatch file / raw view (compound)</h1>
       <p>{items.length.toLocaleString()} raw log lines · wrapping, expansion off</p>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable.Root
             items={items}
             trackBy={item => item.id}
             estimatedRowHeight={RAW_LINE_HEIGHT}
+            height={480}
             getRowHeight={item => (item.text.length > 120 ? 'auto' : RAW_LINE_HEIGHT)}
             overscan={FILE_VIEW_OVERSCAN}
             ariaLabels={{ tableLabel: 'Raw log events' }}

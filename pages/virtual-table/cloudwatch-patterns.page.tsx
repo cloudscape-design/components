@@ -396,11 +396,12 @@ export default function CloudWatchPatternsCompoundPage() {
         <Button onClick={toggleDiffMode}>{diffMode ? 'Exit compare mode' : 'Compare across time'}</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable.Root
             items={items}
             trackBy={item => item.id}
             estimatedRowHeight={23}
+            height={480}
             overscan={20}
             resizableColumns={true}
             sortingColumn={sortingColumnId ? { columnId: sortingColumnId } : undefined}

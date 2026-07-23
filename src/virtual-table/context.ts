@@ -13,7 +13,10 @@ import React, { createContext, useContext } from 'react';
 /** Absolute-position + measurement descriptor for a windowed row's data and expanded slots. */
 export interface RowPosition {
   dataStart: number;
+  /** Fixed pitch of the data row from the model; used to clamp fixed rows to the windowed pitch. */
+  dataSize: number;
   expandedStart?: number;
+  expandedSize?: number;
 }
 
 export interface DerivedColumn {

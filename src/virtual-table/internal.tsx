@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -171,11 +172,25 @@ function Row<T>({ item, api, children }: VirtualTableProps.RowProps<T>) {
   const dataAuto = ctx.getRowHeight ? ctx.getRowHeight(item) === 'auto' : false;
 
   const dataStyle: React.CSSProperties | undefined = position
-    ? { position: 'absolute', insetBlockStart: position.dataStart, insetInlineStart: 0, insetInlineEnd: 0 }
+    ? {
+        position: 'absolute',
+        insetBlockStart: position.dataStart,
+        insetInlineStart: 0,
+        insetInlineEnd: 0,
+        // Fixed rows are clamped to the windowed pitch (with .cell overflow:hidden) so the
+        // row box equals the model pitch and rows never overlap; measured rows stay auto.
+        blockSize: dataAuto ? undefined : position.dataSize,
+      }
     : undefined;
   const expandedStyle: React.CSSProperties | undefined =
     position && position.expandedStart !== undefined
-      ? { position: 'absolute', insetBlockStart: position.expandedStart, insetInlineStart: 0, insetInlineEnd: 0 }
+      ? {
+          position: 'absolute',
+          insetBlockStart: position.expandedStart,
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          blockSize: expandedAuto ? undefined : position.expandedSize,
+        }
       : undefined;
 
   return (
@@ -199,7 +214,9 @@ function Row<T>({ item, api, children }: VirtualTableProps.RowProps<T>) {
                 aria-controls={expanded ? regionId : undefined}
                 aria-label={ctx.ariaLabels?.expandButtonLabel?.(item, expanded)}
                 onClick={() => ctx.toggle(item)}
-              />
+              >
+                <InternalIcon name={expanded ? 'angle-down' : 'angle-right'} />
+              </button>
             ) : null}
           </span>
         )}
@@ -292,6 +309,8 @@ function InternalRoot<T>({
   estimatedRowHeight = 40,
   getRowHeight,
   overscan = 10,
+  height,
+  maxHeight,
   onVisibleRangeChange,
   header,
   empty,
@@ -397,11 +416,13 @@ function InternalRoot<T>({
     const map = new Map<string, RowPosition>();
     for (const slot of model.slots) {
       const id = trackBy(items[slot.index]);
-      const entry = map.get(id) ?? { dataStart: 0 };
+      const entry = map.get(id) ?? { dataStart: 0, dataSize: 0 };
       if (slot.type === 'data') {
         entry.dataStart = slot.start;
+        entry.dataSize = slot.size;
       } else {
         entry.expandedStart = slot.start;
+        entry.expandedSize = slot.size;
       }
       map.set(id, entry);
     }
@@ -412,6 +433,11 @@ function InternalRoot<T>({
   // active row while it is windowed, so the grid is Tab-reachable at any scroll offset (design
   // B3). Arrow/Home/End move the active row and scroll it into view.
   const [activeId, setActiveId] = useState<string | null>(null);
+  // The active row is a keyboard-navigation concept: only meaningful — and only rendered —
+  // while the grid container actually holds focus. Gating on real focus stops the default
+  // active row (items[0]) from advertising aria-activedescendant / painting an active outline
+  // on initial load, before any interaction.
+  const [hasFocus, setHasFocus] = useState(false);
   const effectiveActiveId = activeId ?? (items.length > 0 ? trackBy(items[0]) : null);
   const windowedIds = useMemo(() => {
     const set = new Set<string>();
@@ -422,7 +448,8 @@ function InternalRoot<T>({
     }
     return set;
   }, [model.slots, items, trackBy]);
-  const activeDescendantId = effectiveActiveId && windowedIds.has(effectiveActiveId) ? effectiveActiveId : null;
+  const activeDescendantId =
+    hasFocus && effectiveActiveId && windowedIds.has(effectiveActiveId) ? effectiveActiveId : null;
 
   const moveActive = useCallback(
     (nextIndex: number) => {
@@ -568,6 +595,11 @@ function InternalRoot<T>({
           ref={scrollContainerRef}
           className={clsx(styles['scroll-container'], headerSticky && styles['sticky-header'])}
           role={role}
+          // A bounded viewport is what makes the model window: the visible range is derived
+          // from this container's clientHeight, so an explicit height/maxHeight (or a
+          // height-bounded parent via the flex-column root) clips it to the visible rows
+          // instead of mounting the whole dataset.
+          style={{ blockSize: height, maxBlockSize: maxHeight }}
           aria-label={ariaLabels?.tableLabel}
           aria-rowcount={items.length + 1}
           aria-colcount={columnCount}
@@ -575,6 +607,18 @@ function InternalRoot<T>({
           aria-activedescendant={
             role === 'grid' && activeDescendantId ? `${baseId}-row-${activeDescendantId}` : undefined
           }
+          // focusin/focusout bubble; only the grid container itself holding focus advertises an
+          // active row, so focusing a descendant control (disclosure / expanded content) does not.
+          onFocus={event => {
+            if (event.target === event.currentTarget) {
+              setHasFocus(true);
+            }
+          }}
+          onBlur={event => {
+            if (event.target === event.currentTarget) {
+              setHasFocus(false);
+            }
+          }}
           onKeyDown={role === 'grid' ? onGridKeyDown : undefined}
         >
           <div className={styles['header-rowgroup']} role="rowgroup">

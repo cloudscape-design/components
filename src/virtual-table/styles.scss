@@ -17,7 +17,12 @@
 .root {
   @include styles.styles-reset;
   position: relative;
-  display: block;
+  // Height-owning flex column: when the component (or a parent) is given a bounded
+  // block-size, the scroll container flexes to fill it and windows. Combined with the
+  // height / maxHeight props (which bound .scroll-container directly), this guarantees a
+  // bounded viewport so the model windows instead of mounting every row.
+  display: flex;
+  flex-direction: column;
   inline-size: 100%;
   // Sit on the container content surface, like a Table inside a Container.
   background: awsui.$color-background-container-content;
@@ -29,6 +34,11 @@
 
 .scroll-container {
   position: relative;
+  // Fill the height-owning root when it is bounded (min-block-size:0 lets a flex item shrink
+  // below its content so it can scroll); an explicit height / maxHeight prop overrides this
+  // with a fixed viewport. Either way the viewport is bounded.
+  flex: 1 1 auto;
+  min-block-size: 0;
   // Native scrollbar only — no ::-webkit-scrollbar / overlay scrollbar styling.
   overflow: auto;
   inline-size: 100%;
@@ -58,7 +68,10 @@
   & > .header-rowgroup {
     position: sticky;
     inset-block-start: 0;
-    z-index: 1;
+    // Match Table's sticky-header stacking convention (Table pins its sticky header at 800,
+    // above sticky columns at 798); a bare `1` risks under-layering other console stacking
+    // contexts.
+    z-index: 800;
     background: awsui.$color-background-table-header;
   }
 }
@@ -120,7 +133,11 @@
   }
 }
 
-// The row referenced by aria-activedescendant while the grid container holds focus.
+// The row referenced by aria-activedescendant while the grid container holds focus. Applied
+// via the .row-active class ONLY while the grid holds focus (see internal.tsx), so it never
+// paints on initial load. The shared styles.focus-highlight mixin is intentionally NOT used
+// here: it forces `position: relative`, which would break the row's `position: absolute`
+// windowing placement; the outline is inset to sit inside the row like Table's focused ring.
 .row-active {
   outline: 2px solid awsui.$color-border-item-focused;
   outline-offset: -2px;
@@ -134,7 +151,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-block: awsui.$space-scaled-xxs;
+  // Match Table body-cell vertical density ($space-scaled-xs). Fixed-height rows are clamped
+  // by their explicit blockSize regardless; this aligns wrapping / auto rows with a real Table.
+  padding-block: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
 }
@@ -195,6 +214,12 @@
 .empty {
   padding-block: awsui.$space-scaled-l;
   text-align: center;
+}
+
+// Empty / no-match text is muted, matching Table's empty slot.
+.empty {
+  color: awsui.$color-text-empty;
+  padding-inline: awsui.$space-l;
 }
 
 .live-region {

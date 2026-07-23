@@ -219,14 +219,41 @@ describe('VirtualTable F1-A2 a11y', () => {
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
       expect(grid.getAttribute('tabindex')).toBe('0');
+      // The active descendant is a keyboard-navigation concept, seeded only once the grid
+      // actually holds focus; it then defaults to the first (rendered) row.
+      fireEvent.focus(grid);
       const firstRow = wrapper.findRowByIndex(0)!.getElement();
       expect(grid.getAttribute('aria-activedescendant')).toBe(firstRow.id);
       expect(document.getElementById(firstRow.id)).not.toBeNull();
     });
 
+    test('advertises no active descendant until the grid holds focus', () => {
+      const { container, wrapper } = renderTable(makeItems(20));
+      const grid = getGrid(container);
+      // No active row is advertised on initial render (before any interaction).
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+
+      fireEvent.focus(grid);
+      expect(grid.getAttribute('aria-activedescendant')).toBe(wrapper.findRowByIndex(0)!.getElement().id);
+
+      // Blurring the container retracts the active descendant again.
+      fireEvent.blur(grid);
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    test('focusing a descendant control does not advertise an active descendant on the grid', () => {
+      const { container, wrapper } = renderTable(makeItems(20), { expandable: true });
+      const grid = getGrid(container);
+      // focusin bubbles from the disclosure button to the container; the guard must ignore
+      // descendant focus so items[0] is not falsely activated (WCAG).
+      wrapper.findExpandToggle(0)!.getElement().focus();
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
     test('Arrow/Home/End move the active row when the grid holds focus', () => {
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       expect(grid.getAttribute('aria-activedescendant')).toBe(wrapper.findRowByIndex(1)!.getElement().id);
@@ -241,6 +268,7 @@ describe('VirtualTable F1-A2 a11y', () => {
     test('does not hijack arrow keys originating inside the expanded region', () => {
       const { container, wrapper } = renderTable(makeItems(20), { expandable: true, expandedItems: ['row-0'] });
       const grid = getGrid(container);
+      fireEvent.focus(grid);
       const before = grid.getAttribute('aria-activedescendant');
 
       const innerButton = wrapper.findExpandedRegion(0)!.getElement().querySelector('button')!;
@@ -259,6 +287,7 @@ describe('VirtualTable F1-A2 a11y', () => {
       // a11y contract note.
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       const active = grid.getAttribute('aria-activedescendant');

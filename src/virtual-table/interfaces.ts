@@ -60,6 +60,23 @@ export interface VirtualTableProps<T> extends BaseComponentProps {
   overscan?: number;
 
   /**
+   * Fixed height (px) of the scrollable viewport. Windowing REQUIRES a bounded viewport:
+   * the visible range is computed from the scroll container's own height, so without a
+   * bound the container grows to the full content height and every row mounts. Set this
+   * (or `maxHeight`, or bound Root's parent — Root is a height-owning flex column) to
+   * enable windowing.
+   */
+  height?: number;
+
+  /**
+   * Maximum height (px) of the scrollable viewport. The viewport grows with content up to
+   * this bound, then scrolls. Use instead of `height` when the table should be shorter than
+   * the bound for small datasets. Windowing needs `height`, `maxHeight`, or a height-bounded
+   * parent (see `height`).
+   */
+  maxHeight?: number;
+
+  /**
    * Fires when the windowed visible range changes. `firstIndex`/`lastIndex` index
    * into `items`.
    */
