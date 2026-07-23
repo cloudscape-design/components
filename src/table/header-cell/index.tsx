@@ -94,6 +94,8 @@ export function TableHeaderCell<ItemType>({
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const isGrouped = !!columnGroupId || (rowSpan ?? 1) > 1;
+  // The sort menu only renders for a sortable, enabled column under multi-column sort.
+  const hasSortMenu = !!multiColumnSort && sortable && !sortingDisabled;
 
   // Multi-column sort context — derived from `multiColumnSort.sortingColumns` when present.
   const multiSortIndex = multiColumnSort ? getSortIndex(multiColumnSort.sortingColumns, column) : null;
@@ -243,7 +245,7 @@ export function TableHeaderCell<ItemType>({
             },
           } as GeneratedAnalyticsMetadataTableSort))}
     >
-      <div className={clsx(styles['header-cell-main'], multiColumnSort && styles['header-cell-main-with-menu'])}>
+      <div className={clsx(styles['header-cell-main'], hasSortMenu && styles['header-cell-main-with-menu'])}>
         <div
           ref={clickableHeaderRef}
           data-focus-id={`sorting-control-${String(columnId)}`}
@@ -251,6 +253,7 @@ export function TableHeaderCell<ItemType>({
             [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
             [styles['header-cell-content-expandable']]: isExpandable,
             [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
+            [styles['header-cell-content-with-menu']]: hasSortMenu,
           })}
           aria-label={
             column.ariaLabel
@@ -310,7 +313,7 @@ export function TableHeaderCell<ItemType>({
             </span>
           )}
         </div>
-        {multiColumnSort && sortable && !sortingDisabled && (
+        {hasSortMenu && (
           <SortMenu<ItemType>
             column={column}
             inSort={inMultiSort}

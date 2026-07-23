@@ -78,7 +78,7 @@ const PAGE_SIZE = 4;
 
 export default function MultiColumnSortPage() {
   const { urlParams, setUrlParams } = useAppContext<
-    'multiSort' | 'selection' | 'grouped' | 'pagination' | 'longNames' | 'resizable'
+    'multiSort' | 'selection' | 'grouped' | 'pagination' | 'longNames' | 'resizable' | 'keyboardNav'
   >();
 
   // `multiSort` defaults to on; the rest default to off.
@@ -88,6 +88,7 @@ export default function MultiColumnSortPage() {
   const paginationEnabled = !!urlParams.pagination;
   const longNamesEnabled = !!urlParams.longNames;
   const resizableEnabled = !!urlParams.resizable;
+  const keyboardNavEnabled = !!urlParams.keyboardNav;
 
   const { items, collectionProps, paginationProps } = useCollection(allItems, {
     sorting: multiSortEnabled
@@ -149,6 +150,12 @@ export default function MultiColumnSortPage() {
           <Checkbox checked={resizableEnabled} onChange={({ detail }) => setUrlParams({ resizable: detail.checked })}>
             Resizable columns
           </Checkbox>
+          <Checkbox
+            checked={keyboardNavEnabled}
+            onChange={({ detail }) => setUrlParams({ keyboardNav: detail.checked })}
+          >
+            Keyboard navigation
+          </Checkbox>
         </SpaceBetween>
       }
     >
@@ -157,6 +164,7 @@ export default function MultiColumnSortPage() {
         items={items}
         columnDefinitions={columnDefinitions}
         resizableColumns={resizableEnabled}
+        enableKeyboardNavigation={keyboardNavEnabled}
         groupDefinitions={groupedEnabled ? groupDefinitions : undefined}
         columnDisplay={groupedEnabled ? groupedColumnDisplay : undefined}
         selectionType={selectionEnabled ? 'multi' : undefined}

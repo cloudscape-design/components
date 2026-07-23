@@ -10,6 +10,8 @@ import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/table/header-cell/styles.css.js';
+
 interface Item {
   a: string;
   b: string;
@@ -18,7 +20,7 @@ interface Item {
 
 const comparatorC = (a: Item, b: Item) => a.c.localeCompare(b.c);
 
-const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+const defaultColumnDefinitions: TableProps.ColumnDefinition<Item>[] = [
   { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
   { id: 'b', header: 'B', cell: i => i.b, sortingField: 'b' },
   { id: 'c', header: 'C', cell: i => i.c, sortingComparator: comparatorC },
@@ -36,15 +38,17 @@ type Sort = ReadonlyArray<TableProps.SortingState<Item>>;
 function renderTable(
   sortingColumns: Sort,
   onChange = jest.fn(),
-  extraColumns?: TableProps.ColumnDefinition<Item>[],
-  ariaLabels?: TableProps.AriaLabels<Item>
+  columnDefinitions?: TableProps.ColumnDefinition<Item>[],
+  ariaLabels?: TableProps.AriaLabels<Item>,
+  options?: { enableKeyboardNavigation?: boolean }
 ) {
   const { container } = render(
     <Table
       items={items}
-      columnDefinitions={extraColumns ?? columnDefinitions}
+      columnDefinitions={columnDefinitions ?? defaultColumnDefinitions}
       multiColumnSort={{ sortingColumns, onChange }}
       ariaLabels={ariaLabels}
+      enableKeyboardNavigation={options?.enableKeyboardNavigation}
     />
   );
   return { wrapper: createWrapper(container).findTable()!, onChange };
@@ -95,6 +99,25 @@ describe('header click / keyboard', () => {
 
   test('Shift+Enter appends like Shift+click', () => {
     const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('with keyboard navigation enabled, Enter and Shift+Enter still emit the correct sort detail', () => {
+    const { wrapper, onChange } = renderTable(
+      [{ sortingColumn: { sortingField: 'a' }, isDescending: false }],
+      jest.fn(),
+      undefined,
+      undefined,
+      { enableKeyboardNavigation: true }
+    );
+    // Enter toggles the already-sorted column in place.
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_A)!.getElement(), { keyCode: KeyCode.enter });
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+    // Shift+Enter appends a second column to the sort.
     fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
     expect(emitted(onChange)).toEqual([
       { field: 'a', desc: false },
@@ -208,7 +231,7 @@ describe('sort menu dropdown actions', () => {
     openAndClick(wrapper, COL_C, menu => menu!.findAddToSortAscendingItem()!.click());
     expect(onChange.mock.calls[0][0].detail.sortingColumns).toEqual([
       ...initialSort,
-      { sortingColumn: columnDefinitions[2], isDescending: false },
+      { sortingColumn: defaultColumnDefinitions[2], isDescending: false },
     ]);
   });
 });
@@ -269,6 +292,9 @@ describe('column ariaLabel sortIndex', () => {
 });
 
 describe('sort menu gating', () => {
+  const hasWithMenuWrapper = (wrapper: TableWrapper, colIndex: number) =>
+    !!getHeaderCell(wrapper, colIndex).querySelector(`.${styles['header-cell-main-with-menu']}`);
+
   test('non-sortable columns do not render a sort menu', () => {
     const mixed: TableProps.ColumnDefinition<Item>[] = [
       { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
@@ -277,6 +303,30 @@ describe('sort menu gating', () => {
     const { wrapper } = renderTable([], jest.fn(), mixed);
     expect(wrapper.findColumnSortMenu(COL_A)).not.toBeNull();
     expect(wrapper.findColumnSortMenu(COL_B)).toBeNull();
+  });
+
+  test('the with-menu flex wrapper is applied only to columns that actually render a menu', () => {
+    const mixed: TableProps.ColumnDefinition<Item>[] = [
+      { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
+      { id: 'b', header: 'B', cell: i => i.b }, // no sortingField -> not sortable, no menu
+    ];
+    const { wrapper } = renderTable([], jest.fn(), mixed);
+    expect(hasWithMenuWrapper(wrapper, COL_A)).toBe(true);
+    expect(hasWithMenuWrapper(wrapper, COL_B)).toBe(false);
+  });
+
+  test('sortingDisabled removes the menu and the with-menu flex wrapper from all columns', () => {
+    const { container } = render(
+      <Table
+        items={items}
+        columnDefinitions={defaultColumnDefinitions}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+        sortingDisabled={true}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    expect(wrapper.findColumnSortMenu(COL_A)).toBeNull();
+    expect(hasWithMenuWrapper(wrapper, COL_A)).toBe(false);
   });
 });
 
@@ -332,7 +382,7 @@ describe('sort menu accessibility', () => {
     const { container } = render(
       <Table
         items={items}
-        columnDefinitions={columnDefinitions}
+        columnDefinitions={defaultColumnDefinitions}
         multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
       />
     );

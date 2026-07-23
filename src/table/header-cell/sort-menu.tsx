@@ -7,8 +7,6 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 import { useInternalI18n } from '../../i18n/context';
 import { TableProps } from '../interfaces';
 
-import styles from './styles.css.js';
-
 export type SortMenuAction =
   | 'sort-ascending'
   | 'sort-descending'
@@ -88,16 +86,14 @@ export function SortMenu<T>({
   ];
 
   return (
-    <span className={styles['sort-menu']} onClick={e => e.stopPropagation()}>
-      <InternalButtonDropdown
-        items={items}
-        variant="icon"
-        compactTrigger={true}
-        expandToViewport={true}
-        ariaLabel={i18n('ariaLabels.sortMenuTriggerLabel', ariaLabel) ?? ''}
-        ariaDescribedby={ariaDescribedby}
-        onItemClick={({ detail }) => onAction(detail.id as SortMenuAction)}
-      />
-    </span>
+    <InternalButtonDropdown
+      items={items}
+      variant="icon"
+      compactTrigger={true}
+      expandToViewport={true}
+      ariaLabel={i18n('ariaLabels.sortMenuTriggerLabel', ariaLabel) ?? ''}
+      ariaDescribedby={ariaDescribedby}
+      onItemClick={({ detail }) => onAction(detail.id as SortMenuAction)}
+    />
   );
 }

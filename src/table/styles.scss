@@ -38,8 +38,7 @@
   }
 
   &-clear-sort {
-    display: flex;
-    align-items: center;
+    align-self: center;
   }
 
   &-clear-sort + &-pagination,

@@ -101,7 +101,7 @@ export function SortLiveAnnouncement<T>({
   }
   return (
     <InternalLiveRegion hidden={true} tagName="span">
-      <span>{announcement}</span>
+      {announcement}
     </InternalLiveRegion>
   );
 }

@@ -156,15 +156,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 .sort-priority-badge {
-  display: inline-flex;
-  align-items: center;
   margin-inline-end: awsui.$space-xxs;
-  line-height: 1;
-}
-
-.sort-menu {
-  display: inline-flex;
-  align-items: center;
 }
 
 .edit-icon {
@@ -213,11 +205,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 .header-cell-main-with-menu {
   display: flex;
   align-items: center;
-  // stylelint-disable-next-line no-descending-specificity
-  & > .header-cell-content {
-    flex-grow: 1;
-    min-inline-size: 0;
-  }
+}
+
+.header-cell-content-with-menu {
+  flex-grow: 1;
+  min-inline-size: 0;
 }
 
 .header-cell-spans-rows {
