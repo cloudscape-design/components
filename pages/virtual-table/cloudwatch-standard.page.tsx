@@ -112,6 +112,10 @@ export default function VirtualTableCloudWatchStandardPage() {
   });
   const [filterText, setFilterText] = useState('');
   const [filterMode, setFilterMode] = useState<'subset' | 'mark-in-place'>('mark-in-place');
+  // Resize demo: controlled widths. Data columns are a fixed + flexible mix (@timestamp /
+  // level / @requestId / durationMs are fixed px, @message is the stretch column); enabling
+  // resizableColumns lets the fixed columns be dragged, freezing @message to px on first drag.
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
   const ref = useRef<VirtualTableProps.Ref>(null);
   const nextIndexRef = useRef(INITIAL_ITEMS.length);
 
@@ -205,6 +209,9 @@ export default function VirtualTableCloudWatchStandardPage() {
             estimatedRowHeight={23}
             overscan={20}
             stickyHeader={true}
+            resizableColumns={true}
+            columnWidths={columnWidths}
+            onColumnWidthsChange={event => setColumnWidths(event.detail.widths)}
             follow={following}
             onFollowChange={event => setFollowing(event.detail.follow)}
             expandedContentPreset="log-record"

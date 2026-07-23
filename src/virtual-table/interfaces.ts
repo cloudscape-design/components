@@ -184,8 +184,22 @@ export interface VirtualTableProps<T> extends BaseComponentProps {
   /** Fires on sort control activation (keyboard-operable — not pointer-only). */
   onSortingChange?: NonCancelableEventHandler<VirtualTableProps.SortingState<T>>;
 
-  /** Static per-column widths in px (by column id); the stretch-last column omits it. */
+  /**
+   * Controlled per-column widths in px (by column id); the stretch column omits it. Also
+   * the controlled source for `resizableColumns` — omit for uncontrolled resize.
+   */
   columnWidths?: Record<string, number>;
+
+  /**
+   * Enables draggable column resize handles on data-column headers (standard / patterns
+   * views). Freeze-on-first-resize: the first drag snapshots every column's rendered width to
+   * px so flexible columns become fixed and alignment stays stable; a `minWidth` clamps each
+   * column. Controlled via `columnWidths` + `onColumnWidthsChange`, or uncontrolled if both
+   * are omitted. @defaultValue false
+   */
+  resizableColumns?: boolean;
+  /** Fires with the full width map (px, by column id) after a resize drag. */
+  onColumnWidthsChange?: NonCancelableEventHandler<VirtualTableProps.ColumnWidthsDetail>;
 
   /** Sticky header with horizontal scroll synced to the body. @defaultValue true */
   stickyHeader?: boolean;
@@ -318,6 +332,9 @@ export namespace VirtualTableProps {
   export interface SortingState<T> {
     sortingColumn: ColumnDefinition<T>;
     sortingDescending: boolean;
+  }
+  export interface ColumnWidthsDetail {
+    widths: Record<string, number>;
   }
 
   export interface Ref {

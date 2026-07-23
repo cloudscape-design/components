@@ -75,9 +75,11 @@
 
 // Header treatment matches Table's thead: table-header surface + a default divider
 // under the header row (Table: border-block-end divider-list-width solid
-// color-border-divider-default).
+// color-border-divider-default). A grid (not flex) so the shared column template governs
+// every column's width identically to the body rows (columns align across rows
+// content-independently); the template is applied inline from internal.tsx.
 .header-row {
-  display: flex;
+  display: grid;
   background: awsui.$color-background-table-header;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
 }
@@ -98,6 +100,7 @@
 }
 
 .header-cell {
+  position: relative;
   min-inline-size: 0;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -108,9 +111,44 @@
   box-sizing: border-box;
 }
 
+// Column resize affordance (resizableColumns): a pointer-only handle pinned to the header
+// cell's inline-end edge (aria-hidden — it adds no semantics; the columnheader keeps its
+// role). Dragging it drives the shared column template's width map. It renders a VISIBLE
+// vertical divider on the trailing edge to match Table's header resizer: a thin rule in the
+// default divider colour that switches to the interactive-divider colour on hover/active.
+.resize-handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  // Comfortable grab area hanging just inside the trailing edge; the visible rule is drawn on
+  // the edge itself via ::after so the hit target is wider than the 1px divider.
+  inline-size: awsui.$space-m;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: 0;
+    // Small block gap top/bottom, like Table's column divider.
+    inset-block: awsui.$space-xxs;
+    inline-size: 0;
+    border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+  }
+
+  &:hover::after,
+  &:active::after {
+    border-inline-start-color: awsui.$color-border-divider-interactive-default;
+  }
+}
+
+// Fixed disclosure column. It carries an explicit inline-size (the $space-xl token) so the
+// shared grid template's leading `auto` track resolves to the SAME width in the header and
+// every body row.
 .disclosure-header,
 .disclosure-cell {
-  flex: 0 0 auto;
   inline-size: awsui.$space-xl;
   display: flex;
   align-items: center;
@@ -126,9 +164,13 @@
   inline-size: 100%;
 }
 
+// Header and body rows are CSS grids driven by the SAME grid-template-columns (applied inline
+// from internal.tsx), so every column aligns across rows deterministically. Rows stay
+// absolutely positioned vertically in the runway (windowing unchanged) — grid governs only
+// the horizontal column axis.
 .row,
 .expanded-row {
-  display: flex;
+  display: grid;
   inline-size: 100%;
   box-sizing: border-box;
 }
@@ -195,7 +237,8 @@
 }
 
 .expanded-cell {
-  flex: 1 1 auto;
+  // Span every column track (incl. disclosure + indicator) so the region is full width.
+  grid-column: 1 / -1;
   min-inline-size: 0;
   box-sizing: border-box;
 }
@@ -224,11 +267,11 @@
   color: awsui.$color-text-empty;
 }
 
-// Materialised mark-in-place match-indicator column (INDICATOR_COL_WIDTH=25). Present
-// only while highlighting; counted as a real columnheader so aria-colindex stays coherent.
+// Materialised mark-in-place match-indicator column (INDICATOR_COL_WIDTH=25). Present only
+// while highlighting; sized by the shared grid template's fixed px track. Counted as a real
+// columnheader so aria-colindex stays coherent.
 .indicator-header,
 .indicator-cell {
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
