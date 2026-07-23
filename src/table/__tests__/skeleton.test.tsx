@@ -174,6 +174,25 @@ describe('Table skeleton loading', () => {
       expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
     });
 
+    test('removes rows using document overflow when no ancestor scrolls', () => {
+      const originalScrollHeight = Object.getOwnPropertyDescriptor(document.documentElement, 'scrollHeight');
+      Object.defineProperty(document.documentElement, 'scrollHeight', {
+        configurable: true,
+        get: () => (document.querySelectorAll('tr[aria-hidden="true"]').length > 2 ? 401 : 400),
+      });
+
+      try {
+        const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto' } });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+      } finally {
+        if (originalScrollHeight) {
+          Object.defineProperty(document.documentElement, 'scrollHeight', originalScrollHeight);
+        } else {
+          delete (document.documentElement as { scrollHeight?: number }).scrollHeight;
+        }
+      }
+    });
+
     test('adds automatic skeleton rows after partial data', () => {
       const wrapper = renderTable({
         items: defaultItems,
