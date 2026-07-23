@@ -28940,6 +28940,90 @@ the table items array is empty.",
       "type": "boolean",
     },
     {
+      "description": "Configures a per-row actions menu (kebab / inline-icon ButtonDropdown) rendered as the last column.
+* \`items\` ((item: T) => ButtonDropdownProps.ItemOrGroup[]) - Returns the dropdown items for the given row.
+* \`onItemClick\` ((detail: ButtonDropdownProps.ItemClickDetails, item: T) => void) - Called when the user clicks an item.
+* \`ariaLabel\` ((item: T) => string) - Provides an accessible label for the trigger button of each row. Defaults to "Actions".
+* \`disabled\` ((item: T) => boolean) - Disables the actions menu trigger for a given row.",
+      "inlineType": {
+        "name": "TableProps.RowActionsConfig<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => boolean",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "boolean",
+              "type": "function",
+            },
+            "name": "disabled",
+            "optional": true,
+            "type": "((item: T) => boolean)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
+              "type": "function",
+            },
+            "name": "items",
+            "optional": false,
+            "type": "(item: T) => ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
+          },
+          {
+            "inlineType": {
+              "name": "(detail: ButtonDropdownProps.ItemClickDetails, item: T) => void",
+              "parameters": [
+                {
+                  "name": "detail",
+                  "type": "ButtonDropdownProps.ItemClickDetails",
+                },
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onItemClick",
+            "optional": false,
+            "type": "(detail: ButtonDropdownProps.ItemClickDetails, item: T) => void",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "rowActions",
+      "optional": true,
+      "type": "TableProps.RowActionsConfig<T>",
+    },
+    {
       "defaultValue": "[]",
       "description": "List of selected items.",
       "name": "selectedItems",

@@ -238,3 +238,21 @@ filter search icon.
   padding-inline: 0;
   border-block-end: none;
 }
+
+/* Row-actions column */
+.row-actions-cell {
+  inline-size: 54px;
+  min-inline-size: 54px;
+  text-align: center;
+  padding-inline: awsui.$space-xxs;
+}
+
+.row-actions-header-label {
+  /* Visually hidden — column is identified by position; screen readers read the aria-label on each button */
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

@@ -11,8 +11,10 @@ import { getGroupColumnIds, getGroupSplit } from './column-groups/split-utils';
 import { ColumnGroupsLayout } from './column-groups/utils';
 import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
+import { TableThElement } from './header-cell/th-element';
 import { TableProps } from './interfaces';
 import { InternalSelectionType } from './internal-interfaces';
+import { rowActionsColumnId } from './row-actions';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
 import { StickyColumnsModel } from './sticky-columns';
@@ -54,6 +56,7 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
+  rowActions?: TableProps.RowActionsConfig<any>;
 }
 
 const Thead = React.forwardRef(
@@ -89,6 +92,7 @@ const Thead = React.forwardRef(
       resizerTooltipText,
       isExpandable,
       setLastUserAction,
+      rowActions,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -189,10 +193,23 @@ const Thead = React.forwardRef(
                   resizerTooltipText={resizerTooltipText}
                   isExpandable={colIndex === 0 && isExpandable}
                   hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
-                  isLast={colIndex === columnDefinitions.length - 1}
+                  isLast={colIndex === columnDefinitions.length - 1 && !rowActions}
                 />
               );
             })}
+
+            {rowActions ? (
+              <TableThElement
+                {...commonCellProps}
+                columnId={rowActionsColumnId}
+                colIndex={selectionType ? columnDefinitions.length + 1 : columnDefinitions.length}
+                cellRef={node => setCell(sticky, rowActionsColumnId, node)}
+                sortingDisabled={true}
+                isLast={true}
+              >
+                <span className={styles['row-actions-header-label']}>Actions</span>
+              </TableThElement>
+            ) : null}
           </tr>
         </thead>
       );
