@@ -27985,6 +27985,11 @@ including the hidden via preferences columns. Use this event to persist the colu
         "name": "TableProps.ColumnWidthsChangeDetail",
         "properties": [
           {
+            "name": "columnDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
+          },
+          {
             "name": "widths",
             "optional": false,
             "type": "ReadonlyArray<number>",

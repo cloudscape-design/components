@@ -8,6 +8,7 @@ import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
+import { colorBackgroundContainerContent, colorTextBodyDefault } from '~design-tokens';
 
 /**
  * Dev page: Column width persistence via CollectionPreferences / contentDisplay.
@@ -114,7 +115,17 @@ export default function App() {
       />
       <Box>
         <strong>Current preferences.contentDisplay:</strong>
-        <pre id="preferences-state" style={{ fontSize: '12px', background: '#f4f4f4', padding: '8px' }}>
+        <pre
+          id="preferences-state"
+          style={{
+            fontSize: '12px',
+            // Use theme-aware design tokens so the code block keeps sufficient
+            // color contrast in both light and dark modes.
+            background: colorBackgroundContainerContent,
+            color: colorTextBodyDefault,
+            padding: '8px',
+          }}
+        >
           {JSON.stringify(preferences.contentDisplay, null, 2)}
         </pre>
       </Box>
