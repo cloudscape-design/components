@@ -83,6 +83,13 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    */
   disableContentPaddings?: boolean;
   /**
+   * Hides the close (×) button in the modal header.
+   * Use for forced-decision dialogs where the user must explicitly choose an action
+   * from the footer rather than dismissing the modal freely.
+   * When set to `true`, the dialog can still be dismissed programmatically.
+   */
+  hideCloseButton?: boolean;
+  /**
    * Called when a user closes the modal by using the close icon button,
    * clicking outside of the modal, or pressing ESC.
    * The event detail contains the `reason`, which can be any of the following:
