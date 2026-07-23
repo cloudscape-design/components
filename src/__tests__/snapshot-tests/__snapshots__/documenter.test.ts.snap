@@ -28082,6 +28082,38 @@ the default browser context menu behavior.",
     },
     {
       "cancelable": false,
+      "description": "Called when the user completes a row-reorder drag operation.
+Receives the full reordered \`items\` array and the \`movedItem\`.
+Update your \`items\` prop with \`detail.items\` to reflect the new order.",
+      "detailInlineType": {
+        "name": "TableProps.RowReorderDetail<T>",
+        "properties": [
+          {
+            "name": "items",
+            "optional": false,
+            "type": "Array<T>",
+          },
+          {
+            "inlineType": {
+              "name": "NonNullable<T>",
+              "type": "union",
+              "values": [
+                "T",
+                "{}",
+              ],
+            },
+            "name": "movedItem",
+            "optional": false,
+            "type": "NonNullable<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TableProps.RowReorderDetail<T>",
+      "name": "onRowReorder",
+    },
+    {
+      "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
 The event \`detail\` contains the new state for \`selectedItems\`.",
       "detailInlineType": {
@@ -28312,6 +28344,16 @@ in tables with data grouping.
             "type": "((item: T) => string)",
           },
           {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "inlineType": {
               "name": "(item: T) => string",
               "parameters": [
@@ -28368,6 +28410,79 @@ in tables with data grouping.
             "type": "((data: TableProps.SelectionState<T>, row: T) => string)",
           },
           {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(initialPosition: number, finalPosition: number, total: number) => string",
+              "parameters": [
+                {
+                  "name": "initialPosition",
+                  "type": "number",
+                },
+                {
+                  "name": "finalPosition",
+                  "type": "number",
+                },
+                {
+                  "name": "total",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "((initialPosition: number, finalPosition: number, total: number) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(initialPosition: number, currentPosition: number, total: number) => string",
+              "parameters": [
+                {
+                  "name": "initialPosition",
+                  "type": "number",
+                },
+                {
+                  "name": "currentPosition",
+                  "type": "number",
+                },
+                {
+                  "name": "total",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "((initialPosition: number, currentPosition: number, total: number) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(position: number, total: number) => string",
+              "parameters": [
+                {
+                  "name": "position",
+                  "type": "number",
+                },
+                {
+                  "name": "total",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "((position: number, total: number) => string)",
+          },
+          {
             "name": "resizerRoleDescription",
             "optional": true,
             "type": "string",
@@ -28376,6 +28491,22 @@ in tables with data grouping.
             "name": "resizerTooltipText",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "rowDragLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
           },
           {
             "name": "selectionGroupLabel",
@@ -28564,6 +28695,20 @@ When set to \`true\`, table cells become navigable with arrow keys, and the enti
 
 By default, the keyboard navigation is active for tables with expandable rows.",
       "name": "enableKeyboardNavigation",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "When set to \`true\`, each row displays a drag handle that allows the user to reorder
+rows via drag-and-drop (mouse/touch) or keyboard (Space/Enter to pick up, Arrow keys
+to move, Space/Enter to drop, Escape to cancel).
+
+Rows may contain interactive form controls (inputs, selects, checkboxes) without
+interfering with the drag interaction: the drag only activates when the user grabs
+the dedicated drag-handle icon, not when clicking into a form control.
+
+Provide \`onRowReorder\` to handle the reorder event and update your items array.",
+      "name": "enableRowDrag",
       "optional": true,
       "type": "boolean",
     },
