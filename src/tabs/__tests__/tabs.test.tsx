@@ -784,6 +784,50 @@ describe('Tabs', () => {
       expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
     });
 
+    test('wraps to the last enabled tab on left arrow when the last tab is disabled', () => {
+      const tabsWithDisabledLast: Array<TabsProps.Tab> = [
+        { id: 'first', label: 'First tab' },
+        { id: 'second', label: 'Second tab' },
+        { id: 'third', label: 'Third tab' },
+        { id: 'fourth', label: 'Fourth tab', disabled: true },
+      ];
+      const wrapper = renderTabs(<Tabs tabs={tabsWithDisabledLast} />).wrapper;
+      wrapper.findActiveTab()!.getElement().focus();
+
+      // Left from the first tab wraps around, skipping the disabled last tab, to the last enabled one.
+      pressLeft(wrapper);
+      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Third tab');
+      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+
+      // Right from the last enabled tab wraps back to the first tab.
+      pressRight(wrapper);
+      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');
+      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+    });
+
+    test('wraps to the first enabled tab on right arrow when the first tab is disabled', () => {
+      const tabsWithDisabledFirst: Array<TabsProps.Tab> = [
+        { id: 'first', label: 'First tab', disabled: true },
+        { id: 'second', label: 'Second tab' },
+        { id: 'third', label: 'Third tab' },
+        { id: 'fourth', label: 'Fourth tab' },
+      ];
+      const wrapper = renderTabs(<Tabs tabs={tabsWithDisabledFirst} />).wrapper;
+      // The default active/focused tab is the first enabled tab.
+      wrapper.findActiveTab()!.getElement().focus();
+      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
+
+      // Left from the first enabled tab wraps around, skipping the disabled first tab, to the last one.
+      pressLeft(wrapper);
+      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Fourth tab');
+      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+
+      // Right from the last tab wraps forward, skipping the disabled first tab, to the first enabled one.
+      pressRight(wrapper);
+      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
+      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+    });
+
     // eslint-disable-next-line jest/no-done-callback
     test('prevents the default anchor behaviour when clicked', done => {
       expect.assertions(1);

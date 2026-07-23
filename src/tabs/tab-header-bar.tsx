@@ -281,6 +281,10 @@ export function TabHeaderBar({
     handleKey(event as any, {
       onHome: () => focusElement(focusables[0]),
       onEnd: () => focusElement(focusables[focusables.length - 1]),
+      // Arrow-key navigation wraps around the ends of the tab strip: moving before the first
+      // focusable lands on the last, and moving past the last lands on the first. `focusables`
+      // only contains enabled/registered tabs (see getFocusablesFrom), so wrapping automatically
+      // skips disabled tabs, including when a disabled tab sits at either boundary.
       onInlineStart: () => focusElement(focusables[circleIndex(activeIndex - 1, [0, focusables.length - 1])]),
       onInlineEnd: () => focusElement(focusables[circleIndex(activeIndex + 1, [0, focusables.length - 1])]),
       onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
