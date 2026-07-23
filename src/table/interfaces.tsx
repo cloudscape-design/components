@@ -398,6 +398,22 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
+   * **(WIP - AWSUI-56121)** Opt-in configuration that enables bulk inline editing, allowing
+   * multiple editable cells to be edited simultaneously and committed together, rather than
+   * one cell at a time. This is additive to per-column `editConfig`: a column must define
+   * `editConfig` to participate in bulk editing.
+   *
+   * The configuration object consists of:
+   * * `onSubmit` ((detail: BulkEditSubmitDetail<T>) => Promise<void> | void) - Called when the user commits
+   *   all pending edits. Receives every changed cell as a `BulkEditChange`. Return a promise to keep the
+   *   table in a submitting state while the request is in progress.
+   * * `activateBulkEditLabel` (optional, string) - Label for the control that enters bulk-edit mode.
+   * * `submitBulkEditLabel` (optional, string) - Label for the control that commits all pending edits.
+   * * `cancelBulkEditLabel` (optional, string) - Label for the control that discards all pending edits.
+   */
+  bulkEdit?: TableProps.BulkEditConfig<T>;
+
+  /**
    * Use this property to activate advanced keyboard navigation and focusing behaviors.
    * When set to `true`, table cells become navigable with arrow keys, and the entire table has a single tab stop.
    *
@@ -641,6 +657,43 @@ export namespace TableProps {
     column: ColumnDefinition<ItemType>,
     newValue: ValueType
   ) => Promise<void> | void;
+
+  /**
+   * **(WIP - AWSUI-56121)** A single pending cell change collected during bulk inline editing.
+   */
+  export interface BulkEditChange<ItemType, ValueType = unknown> {
+    /** The item (row) whose cell was edited. */
+    item: ItemType;
+    /** The column definition of the edited cell. */
+    column: ColumnDefinition<ItemType>;
+    /** The pending value the user entered for the cell. */
+    newValue: ValueType;
+  }
+
+  /**
+   * **(WIP - AWSUI-56121)** Detail object passed to `bulkEdit.onSubmit` when the user commits all pending edits.
+   */
+  export interface BulkEditSubmitDetail<ItemType, ValueType = unknown> {
+    /** All cells that were changed while bulk-edit mode was active. */
+    changes: ReadonlyArray<BulkEditChange<ItemType, ValueType>>;
+  }
+
+  /**
+   * **(WIP - AWSUI-56121)** Configuration for the opt-in bulk inline editing mode.
+   */
+  export interface BulkEditConfig<ItemType, ValueType = unknown> {
+    /**
+     * Called when the user commits all pending edits. Return a promise to keep the table
+     * in a submitting state while the request is in progress.
+     */
+    onSubmit: (detail: BulkEditSubmitDetail<ItemType, ValueType>) => Promise<void> | void;
+    /** Label for the control that enters bulk-edit mode. */
+    activateBulkEditLabel?: string;
+    /** Label for the control that commits all pending edits. */
+    submitBulkEditLabel?: string;
+    /** Label for the control that discards all pending edits. */
+    cancelBulkEditLabel?: string;
+  }
 
   export interface ColumnDisplay {
     type?: 'column';
