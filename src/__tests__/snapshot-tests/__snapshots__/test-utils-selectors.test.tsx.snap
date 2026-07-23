@@ -659,6 +659,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_resizer_x7peu",
     "awsui_root_1s55x",
     "awsui_root_wih1l",
+    "awsui_row-match-highlight_wih1l",
     "awsui_row-selected_wih1l",
     "awsui_row_wih1l",
     "awsui_table_wih1l",

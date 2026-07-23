@@ -28587,7 +28587,12 @@ The value is passed as \`itemsCount\` property to the \`ariaLabels.allItemsSelec
 * \`getSelectedItemsCount\` (optional, (Item) => number) - Use it to indicate the number of selected resources nested under the given item.
 The value is passed as \`selectedItemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
 * \`totalSelectedItemsCount\` (optional, number) - Use it to indicate the total number of selected resources in the table.
-The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.",
+The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.
+* \`highlightMatched\` (optional, boolean) - When set to \`true\` (together with \`isItemMatched\`), the table keeps ancestor
+rows of matching descendants visible, automatically expands those ancestors so the matches are reachable, and visually
+highlights the matched rows. This is opt-in and backward compatible; when omitted the expandable rows behave as before.
+* \`isItemMatched\` (optional, (Item) => boolean) - A predicate returning \`true\` for items that match the currently applied
+filter. Used together with \`highlightMatched\` to determine which ancestors to auto-expand and which rows to highlight.",
       "inlineType": {
         "name": "TableProps.ExpandableRows<T>",
         "properties": [
@@ -28666,6 +28671,11 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "type": "TableProps.GroupSelectionState<T>",
           },
           {
+            "name": "highlightMatched",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
             "inlineType": {
               "name": "(item: T) => boolean",
               "parameters": [
@@ -28680,6 +28690,22 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "name": "isItemExpandable",
             "optional": false,
             "type": "(item: T) => boolean",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => boolean",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "boolean",
+              "type": "function",
+            },
+            "name": "isItemMatched",
+            "optional": true,
+            "type": "((item: T) => boolean)",
           },
           {
             "inlineType": {
@@ -44335,6 +44361,21 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns rows highlighted as matching the current filter. Only relevant for expandable tables
+using \`expandableRows.highlightMatched\`.",
+          "name": "findMatchedRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPagination",
           "parameters": [],
           "returnType": {
@@ -53752,6 +53793,21 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns rows highlighted as matching the current filter. Only relevant for expandable tables
+using \`expandableRows.highlightMatched\`.",
+          "name": "findMatchedRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
           },
         },
         {

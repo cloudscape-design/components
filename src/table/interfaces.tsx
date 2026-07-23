@@ -426,6 +426,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * The value is passed as `selectedItemsCount` property to the `columnDefinitions[index].counter` and `ariaLabels.itemSelectionLabel` functions.
    * * `totalSelectedItemsCount` (optional, number) - Use it to indicate the total number of selected resources in the table.
    * The value is passed as `selectedItemsCount` property to the `ariaLabels.allItemsSelectionLabel`.
+   * * `highlightMatched` (optional, boolean) - When set to `true` (together with `isItemMatched`), the table keeps ancestor
+   * rows of matching descendants visible, automatically expands those ancestors so the matches are reachable, and visually
+   * highlights the matched rows. This is opt-in and backward compatible; when omitted the expandable rows behave as before.
+   * * `isItemMatched` (optional, (Item) => boolean) - A predicate returning `true` for items that match the currently applied
+   * filter. Used together with `highlightMatched` to determine which ancestors to auto-expand and which rows to highlight.
    */
   expandableRows?: TableProps.ExpandableRows<T>;
 
@@ -668,6 +673,8 @@ export namespace TableProps {
     totalItemsCount?: number;
     getSelectedItemsCount?: (item: T) => number;
     totalSelectedItemsCount?: number;
+    highlightMatched?: boolean;
+    isItemMatched?: (item: T) => boolean;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<ExpandableItemToggleDetail<T>>;
