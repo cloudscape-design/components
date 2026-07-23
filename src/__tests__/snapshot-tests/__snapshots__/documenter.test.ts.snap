@@ -14297,7 +14297,27 @@ If you want to clear the selection, use empty array.",
 exports[`Components definition for flashbar matches the snapshot: flashbar 1`] = `
 {
   "dashCaseName": "flashbar",
-  "events": [],
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user expands or collapses the stacked notifications group
+by activating the notification bar. Only fires when \`stackItems\` is set to
+\`true\`. The event \`detail\` contains the new value of the expanded state.",
+      "detailInlineType": {
+        "name": "FlashbarProps.ToggleDetail",
+        "properties": [
+          {
+            "name": "expanded",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "FlashbarProps.ToggleDetail",
+      "name": "onToggle",
+    },
+  ],
   "functions": [],
   "name": "Flashbar",
   "properties": [
@@ -14307,6 +14327,15 @@ exports[`Components definition for flashbar matches the snapshot: flashbar 1`] =
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Determines whether the stacked notifications group is initially expanded.
+Only has an effect when \`stackItems\` is set to \`true\`. Defaults to \`false\`
+(the group starts collapsed). This property is applied on the initial
+render only; afterwards the expanded state is managed by the component.",
+      "name": "defaultExpanded",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component. The object should contain:

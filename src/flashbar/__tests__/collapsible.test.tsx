@@ -644,6 +644,48 @@ describe('Collapsible Flashbar', () => {
 });
 
 // Entire interactive element including the counter and the actual <button/> element
+describe('Collapsible Flashbar expand/collapse control', () => {
+  it('starts collapsed by default (defaultExpanded not set)', () => {
+    const flashbar = renderFlashbar();
+    expect(flashbar.findItems()).toHaveLength(1);
+    expect(flashbar.findToggleButton()!.getElement()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('starts expanded when defaultExpanded is true', () => {
+    const flashbar = renderFlashbar({ defaultExpanded: true });
+    expect(flashbar.findItems()).toHaveLength(defaultItems.length);
+    expect(flashbar.findToggleButton()!.getElement()).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('starts collapsed when defaultExpanded is false', () => {
+    const flashbar = renderFlashbar({ defaultExpanded: false });
+    expect(flashbar.findItems()).toHaveLength(1);
+    expect(flashbar.findToggleButton()!.getElement()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('fires onToggle with expanded=true when the user expands the stack', () => {
+    const onToggle = jest.fn();
+    const flashbar = renderFlashbar({ onToggle });
+    findNotificationBar(flashbar)!.click();
+    expect(onToggle).toHaveBeenCalledTimes(1);
+    expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { expanded: true } }));
+  });
+
+  it('fires onToggle with expanded=false when the user collapses the stack', () => {
+    const onToggle = jest.fn();
+    const flashbar = renderFlashbar({ defaultExpanded: true, onToggle });
+    findNotificationBar(flashbar)!.click();
+    expect(onToggle).toHaveBeenCalledTimes(1);
+    expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { expanded: false } }));
+  });
+
+  it('does not fire onToggle on initial render', () => {
+    const onToggle = jest.fn();
+    renderFlashbar({ defaultExpanded: true, onToggle });
+    expect(onToggle).not.toHaveBeenCalled();
+  });
+});
+
 function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
   const element = Array.from(flashbar.getElement().children).find(
     element => element instanceof HTMLElement && element.tagName !== 'UL'
