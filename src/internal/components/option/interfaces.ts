@@ -15,6 +15,12 @@ export interface DropdownOption {
   disabledReason?: string;
   option: OptionDefinition | OptionGroup;
   afterHeader?: boolean;
+  // Set on `parent` options when `collapsibleGroups` is enabled. Indicates the
+  // group header renders an expand/collapse affordance.
+  collapsible?: boolean;
+  // Expanded state for a collapsible `parent` option. When `false`, the group's
+  // child options are omitted from the rendered list.
+  expanded?: boolean;
 }
 
 export interface OptionProps extends BaseComponentProps {

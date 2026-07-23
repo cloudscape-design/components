@@ -112,6 +112,8 @@ const Item = (
 
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
+  const collapsible = !!option.collapsible;
+  const isExpanded = option.expanded;
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
   const disabledReason = disabled && wrappedOption.disabledReason ? wrappedOption.disabledReason : '';
@@ -164,6 +166,8 @@ const Item = (
       disabled={option.disabled}
       isParent={isParent}
       isChild={isChild}
+      collapsible={collapsible}
+      isExpanded={isExpanded}
       ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
@@ -178,6 +182,11 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
+        {isParent && collapsible && (
+          <div className={styles['expand-icon']} aria-hidden="true">
+            <InternalIcon name={isExpanded ? 'caret-down-filled' : 'caret-right-filled'} size="small" />
+          </div>
+        )}
         {!renderResult && hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />

@@ -149,6 +149,17 @@ export interface BaseSelectProps
    * user from both modifying the value and opening the dropdown. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  /**
+   * When set to `true`, option groups (defined via `OptionGroup` objects in `options`)
+   * become collapsible. The group header renders an expand/collapse control with
+   * `aria-expanded`, and collapsing a group hides its child options. All groups are
+   * expanded by default.
+   *
+   * This property is opt-in and backward compatible: when omitted or `false`, groups
+   * behave exactly as before.
+   */
+  collapsibleGroups?: boolean;
 }
 
 export interface SelectProps extends BaseSelectProps {

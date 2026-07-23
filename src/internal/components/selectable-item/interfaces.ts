@@ -30,6 +30,10 @@ export type SelectableItemProps = BaseComponentProps & {
   withScrollbar?: boolean;
   ariaSelected?: boolean | never;
   ariaChecked?: boolean | 'mixed' | never;
+  // When true, the item is a collapsible group header and exposes `aria-expanded`.
+  collapsible?: boolean;
+  // Expanded state of a collapsible group header.
+  isExpanded?: boolean;
 };
 
 export interface ItemDataAttributes {

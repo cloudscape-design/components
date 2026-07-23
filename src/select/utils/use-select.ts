@@ -17,8 +17,9 @@ import { useOpenState } from '../../internal/components/options-list/utils/use-o
 import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { KeyCode } from '../../internal/keycode';
 import { DropdownStatusProps } from '../../types/dropdown-status';
-import { NonCancelableEventHandler } from '../../types/events';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition, OptionGroup } from '../../types/option';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
@@ -44,6 +45,8 @@ interface UseSelectProps {
   isAllSelected?: boolean;
   isSomeSelected?: boolean;
   toggleAll?: () => void;
+  collapsibleGroups?: boolean;
+  onToggleGroupExpanded?: (option: DropdownOption) => void;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -67,10 +70,16 @@ export function useSelect({
   isAllSelected,
   isSomeSelected,
   toggleAll,
+  collapsibleGroups = false,
+  onToggleGroupExpanded,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
-  const isHighlightable = (option?: DropdownOption) => !!option && (useInteractiveGroups || option.type !== 'parent');
+  const isCollapsibleParent = (option?: DropdownOption) =>
+    collapsibleGroups && !!option && option.type === 'parent' && !!option.collapsible;
+
+  const isHighlightable = (option?: DropdownOption) =>
+    !!option && (useInteractiveGroups || collapsibleGroups || option.type !== 'parent');
 
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -128,8 +137,24 @@ export function useSelect({
     }
   };
 
+  const toggleGroupExpanded = (option?: DropdownOption) => {
+    const optionToToggle = option || highlightedOption;
+    if (!isCollapsibleParent(optionToToggle) || !onToggleGroupExpanded) {
+      return false;
+    }
+    onToggleGroupExpanded(optionToToggle!);
+    return true;
+  };
+
   const selectOption = (option?: DropdownOption) => {
     const optionToSelect = option || highlightedOption;
+    // When groups are collapsible, activating a group header toggles its expanded
+    // state instead of selecting it. This takes precedence over the interactive
+    // group (select-all) behaviour used by Multiselect.
+    if (isCollapsibleParent(optionToSelect)) {
+      toggleGroupExpanded(optionToSelect);
+      return;
+    }
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
@@ -144,7 +169,10 @@ export function useSelect({
   const activeKeyDownHandler = useMenuKeyboard({
     goUp: () => {
       if (
-        (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
+        (!useInteractiveGroups &&
+          !collapsibleGroups &&
+          highlightedOption?.type === 'child' &&
+          highlightedIndex === 1) ||
         highlightedIndex === 0
       ) {
         goEndWithKeyboard();
@@ -171,6 +199,26 @@ export function useSelect({
     },
     preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
   });
+
+  // Left/Right arrow keys collapse/expand the highlighted group header, matching the
+  // disclosure keyboard pattern. Enter/Space (handled via selectOption) also toggles.
+  const collapsibleKeyDownHandler: CancelableEventHandler<BaseKeyDetail> = event => {
+    if (collapsibleGroups && isCollapsibleParent(highlightedOption)) {
+      if (event.detail.keyCode === KeyCode.right && !highlightedOption!.expanded) {
+        event.preventDefault();
+        toggleGroupExpanded(highlightedOption);
+        return;
+      }
+      if (event.detail.keyCode === KeyCode.left && highlightedOption!.expanded) {
+        event.preventDefault();
+        toggleGroupExpanded(highlightedOption);
+        return;
+      }
+    }
+    activeKeyDownHandler(event);
+  };
+
+  const menuKeyDownHandler = collapsibleGroups ? collapsibleKeyDownHandler : activeKeyDownHandler;
 
   const triggerKeyDownHandler = useTriggerKeyboard({
     openDropdown: () => openDropdown(true),
@@ -215,7 +263,7 @@ export function useSelect({
 
     return {
       ref: filterRef,
-      onKeyDown: activeKeyDownHandler,
+      onKeyDown: menuKeyDownHandler,
       onChange: event => {
         setFilteringValue(event.detail.value);
         resetHighlightWithKeyboard();
@@ -249,7 +297,7 @@ export function useSelect({
       statusType,
     };
     if (!hasFilter) {
-      menuProps.onKeyDown = activeKeyDownHandler;
+      menuProps.onKeyDown = menuKeyDownHandler;
       menuProps.nativeAttributes = {
         'aria-activedescendant': highlightedOptionId,
       };

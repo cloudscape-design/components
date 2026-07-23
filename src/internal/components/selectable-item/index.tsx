@@ -41,6 +41,8 @@ const SelectableItem = (
     sticky,
     afterHeader,
     withScrollbar,
+    collapsible,
+    isExpanded,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -100,11 +102,16 @@ const SelectableItem = (
 
   const a11yProperties: Record<string, string | number | boolean | undefined> = {};
 
-  if (isParent && ariaChecked === undefined) {
+  if (isParent && ariaChecked === undefined && !collapsible) {
     a11yProperties.role = 'presentation';
   } else {
     a11yProperties.role = 'option';
     a11yProperties['aria-disabled'] = disabled;
+
+    // Collapsible group headers act as disclosure controls, so expose their expanded state.
+    if (collapsible) {
+      a11yProperties['aria-expanded'] = !!isExpanded;
+    }
 
     if (ariaSelected !== undefined) {
       a11yProperties['aria-selected'] = ariaSelected;
