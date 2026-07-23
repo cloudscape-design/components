@@ -82,6 +82,11 @@
 
 .header-cell {
   min-inline-size: 0;
+  // Opaque header surface per cell: when the header is sticky over the windowed (absolutely
+  // positioned) body rows, a transparent cell lets a body row composite behind the column
+  // label, dropping its contrast below WCAG AA in dark mode. Painting the table-header surface
+  // on the cell itself keeps the label on the dark header background (matches Table's cells).
+  background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
   line-height: awsui.$line-height-heading-xs;

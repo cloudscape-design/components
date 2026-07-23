@@ -33703,6 +33703,8 @@ specified in the \`i18nStrings\` property.",
 }
 `;
 
+exports[`Components definition for virtual-table matches the snapshot: virtual-table 1`] = `undefined`;
+
 exports[`Components definition for wizard matches the snapshot: wizard 1`] = `
 {
   "dashCaseName": "wizard",
@@ -46284,6 +46286,135 @@ Supported options:
     {
       "methods": [
         {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if the row is outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The header row element (returned regardless of the \`sticky\` prop).",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the row's
+\`aria-rowindex\`, which is the full-dataset index offset by the header row: the header is
+\`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`. Indexing this
+way (not by position in the windowed array) is correct under virtualization.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
+    },
+    {
+      "methods": [
+        {
           "inheritedFrom": {
             "name": "FormWrapper.findActions",
           },
@@ -55137,6 +55268,110 @@ Supported options:
         },
       ],
       "name": "TutorialTaskWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if the row is outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The header row element (returned regardless of the \`sticky\` prop).",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the row's
+\`aria-rowindex\`, which is the full-dataset index offset by the header row: the header is
+\`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`. Indexing this
+way (not by position in the windowed array) is correct under virtualization.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
     },
     {
       "methods": [
