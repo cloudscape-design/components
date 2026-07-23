@@ -226,11 +226,14 @@ describe('VirtualTable F2-A1 a11y', () => {
   });
 
   describe('keyboard navigation (aria-activedescendant grid model)', () => {
-    test('the grid is a single always-present tab stop and seeds an active descendant', () => {
+    test('the grid is a single always-present tab stop and seeds an active descendant once focused', () => {
       const { container, wrapper } = renderTable(makeLogs(20));
       const grid = getGrid(container);
       expect(grid.getAttribute('tabindex')).toBe('0');
       const firstRow = wrapper.findRowByIndex(0)!.getElement();
+      // F-ACTIVE: no active descendant is advertised until the grid actually holds focus.
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+      fireEvent.focus(grid);
       expect(grid.getAttribute('aria-activedescendant')).toBe(firstRow.id);
       expect(document.getElementById(firstRow.id)).not.toBeNull();
     });
@@ -238,6 +241,7 @@ describe('VirtualTable F2-A1 a11y', () => {
     test('Arrow/Home/End move the active row when the grid holds focus', () => {
       const { container, wrapper } = renderTable(makeLogs(20));
       const grid = getGrid(container);
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       expect(grid.getAttribute('aria-activedescendant')).toBe(wrapper.findRowByIndex(1)!.getElement().id);
@@ -252,6 +256,7 @@ describe('VirtualTable F2-A1 a11y', () => {
     test('does not hijack arrow keys originating inside the expanded region', () => {
       const { container, wrapper } = renderTable(makeLogs(20), { expandable: true, expandedItems: ['0'] });
       const grid = getGrid(container);
+      fireEvent.focus(grid);
       const before = grid.getAttribute('aria-activedescendant');
 
       const innerButton = wrapper.findExpandedRegion(0)!.getElement().querySelector('button')!;
@@ -270,6 +275,7 @@ describe('VirtualTable F2-A1 a11y', () => {
       // as an explicit a11y contract note.
       const { container, wrapper } = renderTable(makeLogs(20));
       const grid = getGrid(container);
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       const active = grid.getAttribute('aria-activedescendant');
@@ -279,6 +285,28 @@ describe('VirtualTable F2-A1 a11y', () => {
       expect(grid.getAttribute('aria-activedescendant')).toBe(active);
       fireEvent.keyDown(grid, { key: 'ArrowLeft' });
       expect(grid.getAttribute('aria-activedescendant')).toBe(active);
+    });
+
+    test('advertises no active descendant until the grid holds focus, and clears it on blur (F-ACTIVE)', () => {
+      const { container, wrapper } = renderTable(makeLogs(20));
+      const grid = getGrid(container);
+      const firstRowId = wrapper.findRowByIndex(0)!.getElement().id;
+      // No active row is advertised (or painted) on initial render — nothing before interaction.
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+      fireEvent.focus(grid);
+      expect(grid.getAttribute('aria-activedescendant')).toBe(firstRowId);
+      fireEvent.blur(grid);
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    test('focusing a descendant control does not advertise an active descendant on the grid', () => {
+      const { container, wrapper } = renderTable(makeLogs(20), { expandable: true });
+      const grid = getGrid(container);
+      const toggle = wrapper.findExpandToggle(0)!.getElement();
+      // focusin bubbles to the grid, but the target===currentTarget guard means a descendant
+      // control gaining focus must not activate the grid's active-row indication.
+      fireEvent.focus(toggle);
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
     });
   });
 

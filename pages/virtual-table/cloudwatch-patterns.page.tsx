@@ -391,15 +391,15 @@ export default function VirtualTableCloudWatchPatternsPage() {
         <Button onClick={toggleDiffMode}>{diffMode ? 'Exit compare mode' : 'Compare across time'}</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable<LogPattern>
             items={items}
             trackBy={item => item.id}
             viewConfig={{ type: 'patterns', columnDefinitions, histogramPeak, diffMode }}
+            height={480}
             estimatedRowHeight={23}
             overscan={20}
             stickyHeader={true}
-            resizableColumns={true}
             sortingColumn={sortingColumn}
             sortingDescending={sortingDescending}
             onSortingChange={event => handleSortingChange(event.detail)}

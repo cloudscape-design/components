@@ -196,15 +196,15 @@ export default function VirtualTableCloudWatchStandardPage() {
         </span>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable
             items={items}
             trackBy={item => item.id}
             viewConfig={{ type: 'standard', columnDefinitions }}
+            height={480}
             estimatedRowHeight={23}
             overscan={20}
             stickyHeader={true}
-            resizableColumns={true}
             follow={following}
             onFollowChange={event => setFollowing(event.detail.follow)}
             expandedContentPreset="log-record"

@@ -18,7 +18,6 @@ export { VirtualTableProps };
 export default function VirtualTable<T>({
   estimatedRowHeight = 23,
   follow = false,
-  resizableColumns = false,
   stickyHeader = true,
   sortingDescending = false,
   loading = false,
@@ -26,13 +25,12 @@ export default function VirtualTable<T>({
 }: VirtualTableProps<T>) {
   const overscan = props.overscan ?? (props.viewConfig.type === 'raw' ? 40 : 20);
   const baseComponentProps = useBaseComponent('VirtualTable', {
-    props: { view: props.viewConfig.type, estimatedRowHeight, overscan, follow, resizableColumns, stickyHeader },
+    props: { view: props.viewConfig.type, estimatedRowHeight, overscan, follow, stickyHeader },
   });
   return (
     <InternalVirtualTable
       estimatedRowHeight={estimatedRowHeight}
       follow={follow}
-      resizableColumns={resizableColumns}
       stickyHeader={stickyHeader}
       sortingDescending={sortingDescending}
       loading={loading}

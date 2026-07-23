@@ -267,7 +267,8 @@ The full typed API lives in `interfaces.ts` (`VirtualTableProps<T>` and the
   (`"standard"`, `"patterns"`, or `"raw"`) selects the built-in surface and
   supplies that view's `columnDefinitions` (or `renderLine` for raw, and
   `histogramPeak` / `diffMode` for patterns).
-- Virtualization: `estimatedRowHeight`, `getRowHeight` (fixed px or `"auto"` to
+- Virtualization: `height` / `maxHeight` (bound the scroll viewport — required for
+  windowing), `estimatedRowHeight`, `getRowHeight` (fixed px or `"auto"` to
   measure), `overscan`, and `onVisibleRangeChange`.
 - Live tail: `follow` / `onFollowChange` (controlled follow state) and
   `renderAppendAnnouncement` for the batched new-row announcement.
@@ -279,7 +280,7 @@ The full typed API lives in `interfaces.ts` (`VirtualTableProps<T>` and the
   and an optional per-cell `highlight`.
 - Columns, sorting, sizing: `sortingColumn` / `sortingDescending` /
   `onSortingChange` (VirtualTable reflects sort state and emits intent; it doesn't
-  sort the data), `resizableColumns`, `columnWidths`, and `stickyHeader`.
+  sort the data), `columnWidths` (static per-column px widths), and `stickyHeader`.
 - State and labels: `empty`, `loading` / `loadingText`, `ariaLabels`, and
   `i18nStrings`.
 - Imperative surface: `imperativeRef` exposing `scrollToEnd`, `scrollToItem`,

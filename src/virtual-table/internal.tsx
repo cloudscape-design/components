@@ -3,8 +3,9 @@
 import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -30,6 +31,8 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
     items,
     viewConfig,
     trackBy,
+    height,
+    maxHeight,
     estimatedRowHeight = 23,
     getRowHeight,
     getExpandedContent,
@@ -103,13 +106,20 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
     scrollContainerRef,
   });
 
-  // Fire the dataset-relative visible range for scroll-triggered prefetch (in an effect,
-  // never during render).
-  useEffect(() => {
-    if (onVisibleRangeChange && model.firstIndex >= 0) {
-      fireNonCancelableEvent(onVisibleRangeChange, { firstIndex: model.firstIndex, lastIndex: model.lastIndex });
+  // Fire the dataset-relative visible range for scroll-triggered prefetch (in an effect, never
+  // during render). Held in a stable callback so a consumer passing a fresh inline handler each
+  // render cannot re-run this effect (which would loop: fire -> setState -> re-render -> new
+  // handler identity -> fire...). The effect depends only on the range indices.
+  const fireVisibleRangeChange = useStableCallback((firstIndex: number, lastIndex: number) => {
+    if (onVisibleRangeChange) {
+      fireNonCancelableEvent(onVisibleRangeChange, { firstIndex, lastIndex });
     }
-  }, [model.firstIndex, model.lastIndex, onVisibleRangeChange]);
+  });
+  useEffect(() => {
+    if (model.firstIndex >= 0) {
+      fireVisibleRangeChange(model.firstIndex, model.lastIndex);
+    }
+  }, [model.firstIndex, model.lastIndex, fireVisibleRangeChange]);
 
   // Built-in live tail: pin-to-newest on append while following; release on scroll-away.
   useLiveTail({
@@ -150,13 +160,19 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
   }, [visibleItems, trackBy]);
 
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
+  const [hasFocus, setHasFocus] = useState(false);
   const windowedDataIds = new Set(
     model.slots.filter(slot => slot.type === 'data').map(slot => trackBy(visibleItems[slot.index]))
   );
   const effectiveActiveId =
     activeId && idToIndex.has(activeId) ? activeId : visibleItems.length ? trackBy(visibleItems[0]) : undefined;
+  // F-ACTIVE: gate the active-row indication on the grid actually holding focus. This single
+  // gate drives BOTH the visual .row-active outline and aria-activedescendant, so nothing is
+  // advertised or painted before any interaction (a seeded first row otherwise shows a ring on
+  // load). Keyboard nav still seeds from effectiveActiveId because it only fires while focused.
+  const gatedActiveId = hasFocus ? effectiveActiveId : undefined;
   const activeDescendant =
-    effectiveActiveId && windowedDataIds.has(effectiveActiveId) ? rowDomId(baseId, effectiveActiveId) : undefined;
+    gatedActiveId && windowedDataIds.has(gatedActiveId) ? rowDomId(baseId, gatedActiveId) : undefined;
 
   const moveActive = useCallback(
     (delta: number | 'first' | 'last') => {
@@ -228,6 +244,9 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
     }
     setActiveId(trackBy(visibleItems[visibleIndex]));
     model.scrollToIndex(visibleIndex);
+    // Move keyboard focus to the grid so the revealed match becomes the active descendant
+    // (under the F-ACTIVE focus gate) and arrow keys continue from it.
+    scrollContainerRef.current?.focus();
   };
 
   useImperativeHandle(
@@ -260,7 +279,7 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
   const showEmpty = !loading && visibleItems.length === 0;
   const regionLabel = (item: T) => i18nStrings?.expandedRegionLabel ?? ariaLabels?.expandRowLabel?.(item);
 
-  const renderDataRow = (index: number, start: number, auto: boolean) => {
+  const renderDataRow = (index: number, start: number, size: number, auto: boolean) => {
     const item = visibleItems[index];
     const id = trackBy(item);
     const expanded = expansion.isExpanded(id);
@@ -278,11 +297,19 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
       <div
         key={id}
         id={rowDomId(baseId, id)}
-        className={clsx(styles.row, effectiveActiveId === id && styles['row-active'])}
+        className={clsx(styles.row, gatedActiveId === id && styles['row-active'])}
         role="row"
         aria-rowindex={index + 2}
         ref={auto ? model.measureRef('d:' + id, auto) : undefined}
-        style={{ position: 'absolute', insetBlockStart: start, insetInlineStart: 0, inlineSize: '100%' }}
+        style={{
+          position: 'absolute',
+          insetBlockStart: start,
+          insetInlineStart: 0,
+          inlineSize: '100%',
+          // F-ROWH: clamp a fixed (non-measured) row to its windowed pitch so a content-taller
+          // row cannot overlap the next; measured ('auto') rows stay content-sized.
+          blockSize: auto ? undefined : size,
+        }}
       >
         {hasDisclosureColumn && (
           <span className={styles['disclosure-cell']} role="gridcell" aria-colindex={disclosureColIndex}>
@@ -294,7 +321,11 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
               aria-controls={expanded ? regionId : undefined}
               aria-label={expanded ? ariaLabels?.collapseRowLabel?.(item) : ariaLabels?.expandRowLabel?.(item)}
               onClick={() => expansion.toggle(item)}
-            />
+            >
+              {/* F-DISC: decorative caret so the expand control is visible; the button keeps
+                  its accessible name from aria-label (the icon is inert). */}
+              <InternalIcon name={expanded ? 'angle-down' : 'angle-right'} />
+            </button>
           </span>
         )}
         {hasIndicatorColumn && (
@@ -337,7 +368,7 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
     );
   };
 
-  const renderExpandedRow = (index: number, start: number, auto: boolean) => {
+  const renderExpandedRow = (index: number, start: number, size: number, auto: boolean) => {
     const item = visibleItems[index];
     const id = trackBy(item);
     const toggleId = `${baseId}-toggle-${id}`;
@@ -349,7 +380,14 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
         role="row"
         aria-rowindex={index + 2}
         ref={model.measureRef('e:' + id, auto)}
-        style={{ position: 'absolute', insetBlockStart: start, insetInlineStart: 0, inlineSize: '100%' }}
+        style={{
+          position: 'absolute',
+          insetBlockStart: start,
+          insetInlineStart: 0,
+          inlineSize: '100%',
+          // F-ROWH: a fixed-height expanded region clamps to its slot; measured regions stay auto.
+          blockSize: auto ? undefined : size,
+        }}
       >
         {/* Full-width gridcell keeps a valid grid child model; the arbitrary, non-tabular
             content lives in a labeled region inside it (design B2). A div (not a span)
@@ -399,6 +437,7 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
             <div className={styles['match-nav']} role="group" aria-label={ariaLabels?.matchNavigationLabel}>
               <button
                 type="button"
+                className={styles['match-nav-button']}
                 aria-label={ariaLabels?.previousMatchLabel}
                 onClick={() => revealMatch(filterModel.goToPreviousMatch())}
               >
@@ -406,6 +445,7 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
               </button>
               <button
                 type="button"
+                className={styles['match-nav-button']}
                 aria-label={ariaLabels?.nextMatchLabel}
                 onClick={() => revealMatch(filterModel.goToNextMatch())}
               >
@@ -425,7 +465,21 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
         aria-rowcount={visibleItems.length + 1}
         aria-colcount={columnCount}
         aria-activedescendant={activeDescendant}
+        style={{ blockSize: height, maxBlockSize: maxHeight }}
         onKeyDown={onGridKeyDown}
+        onFocus={event => {
+          // F-ACTIVE: only the grid container itself holding focus advertises an active row.
+          // focusin bubbles, so guard against a descendant control (disclosure / expanded
+          // content) false-activating the grid.
+          if (event.target === event.currentTarget) {
+            setHasFocus(true);
+          }
+        }}
+        onBlur={event => {
+          if (event.target === event.currentTarget) {
+            setHasFocus(false);
+          }
+        }}
       >
         <div className={styles['header-rowgroup']} role="rowgroup">
           <div className={styles['header-row']} role="row" aria-rowindex={1}>
@@ -457,6 +511,13 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
                     {sort ? (
                       <button type="button" className={styles['sort-button']} onClick={() => handleSort(column)}>
                         {column.header}
+                        {(sort === 'ascending' || sort === 'descending') && (
+                          // B3: visible sort-direction indicator on the active column (decorative
+                          // glyph; aria-sort on the columnheader carries the accessible cue).
+                          <span className={styles['sorting-icon']}>
+                            <InternalIcon name={sort === 'descending' ? 'caret-down-filled' : 'caret-up-filled'} />
+                          </span>
+                        )}
                       </button>
                     ) : (
                       column.header
@@ -472,8 +533,8 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
           <div className={styles.body} role="rowgroup" style={{ blockSize: model.totalSize, position: 'relative' }}>
             {model.slots.map(slot =>
               slot.type === 'data'
-                ? renderDataRow(slot.index, slot.start, slot.auto)
-                : renderExpandedRow(slot.index, slot.start, slot.auto)
+                ? renderDataRow(slot.index, slot.start, slot.size, slot.auto)
+                : renderExpandedRow(slot.index, slot.start, slot.size, slot.auto)
             )}
           </div>
         )}
@@ -485,7 +546,7 @@ export default function InternalVirtualTable<T>(props: InternalVirtualTableProps
         </div>
       )}
 
-      {showEmpty && <div className={styles.empty}>{empty}</div>}
+      {showEmpty && empty !== undefined && empty !== null && <div className={styles.empty}>{empty}</div>}
 
       <div className={styles['live-region']} aria-live="polite" aria-atomic="true">
         {appendMessage}

@@ -39,10 +39,11 @@ export default function VirtualTableCloudWatchRawPage() {
         expansion. Long lines wrap and are measured; short lines stay fixed at the 20&nbsp;px raw-line density.
       </p>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable
             items={rawItems}
             trackBy={item => item.id}
+            height={480}
             estimatedRowHeight={20}
             overscan={40}
             getRowHeight={item => (item.text.length > 120 ? 'auto' : 20)}

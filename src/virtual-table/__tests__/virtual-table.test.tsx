@@ -73,6 +73,35 @@ describe('VirtualTable (F2-A1)', () => {
     expect(wrapper.findRowByIndex(499)).toBeNull();
   });
 
+  test('does not re-fire onVisibleRangeChange in a loop when the consumer passes a fresh inline handler each render (F-LOOP regression)', () => {
+    // The handler identity changes every render AND it stores a new object in state (mirrors the
+    // standard dev page's `onVisibleRangeChange={e => setVisibleRange(e.detail)}`). Before the
+    // stable-callback fix this looped: the visible-range effect listed the handler in its deps, so
+    // fire -> setState -> re-render -> new handler identity -> effect re-runs -> fire..., throwing
+    // "Maximum update depth exceeded". The fix bounds the fire count to genuine range changes.
+    const fireCounts = { n: 0 };
+    function Harness() {
+      const [, setRange] = React.useState<{ firstIndex: number; lastIndex: number } | null>(null);
+      return (
+        <VirtualTable
+          items={makeLogs(500)}
+          trackBy={(log: Log) => log.id}
+          viewConfig={standardConfig}
+          ariaLabels={{ gridLabel: 'Log events' }}
+          onVisibleRangeChange={event => {
+            fireCounts.n += 1;
+            setRange(event.detail);
+          }}
+        />
+      );
+    }
+    render(<Harness />);
+    // Fires for the initial window only (the window does not change without scrolling), not once
+    // per render. A loop would blow past this bound long before the test could assert.
+    expect(fireCounts.n).toBeGreaterThanOrEqual(1);
+    expect(fireCounts.n).toBeLessThanOrEqual(3);
+  });
+
   test('sets full-dataset aria-rowcount (header counted once) and aria-colcount', () => {
     const { grid } = renderTable({}, 500);
     expect(grid().getAttribute('aria-rowcount')).toBe('501');

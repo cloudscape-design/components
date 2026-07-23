@@ -20,7 +20,10 @@
 .root {
   @include styles.styles-reset;
   position: relative;
-  display: block;
+  // F-WINDOW: a height-owning flex column so the scroll container can flex to a bounded
+  // viewport (from height/maxHeight OR a height-constrained parent) and actually window.
+  display: flex;
+  flex-direction: column;
   inline-size: 100%;
   // Sit on the container content surface, like a Table inside a Container.
   background: awsui.$color-background-container-content;
@@ -36,16 +39,30 @@
 .follow-toggle {
   @include styles.styles-reset;
   cursor: pointer;
+  padding-inline: awsui.$space-scaled-xxs;
+  // B5: a visible pressed/active state, not aria-pressed alone.
+  &[aria-pressed='true'] {
+    background: awsui.$color-background-item-selected;
+    font-weight: awsui.$font-weight-heading-s;
+  }
 }
 
 .scroll-container {
   position: relative;
+  // F-WINDOW: fill a bounded root so clientHeight is the viewport, not the full content
+  // height; min-block-size:0 lets it shrink inside the flex column. A direct height/maxHeight
+  // (applied inline from the props) bounds it equivalently.
+  flex: 1 1 auto;
+  min-block-size: 0;
   // Native scrollbar only — no ::-webkit-scrollbar / overlay / synthetic scrollbar.
   overflow: auto;
   inline-size: 100%;
 
-  // The scroll container is the single tab stop (active-descendant keyboard model), so
-  // it carries the focus ring; the active row is indicated via .row-active.
+  // The scroll container is the single tab stop (active-descendant keyboard model), so it
+  // carries the focus ring; the active row is indicated via .row-active. The 2px/-2px inset
+  // (colour is tokenised) is deliberate over styles.focus-highlight: the mixin forces
+  // position:relative + a ::before ring, which an overflow:auto container clips and an
+  // absolutely-positioned windowed row cannot host.
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
     outline-offset: -2px;
@@ -73,7 +90,9 @@
   & > .header-rowgroup {
     position: sticky;
     inset-block-start: 0;
-    z-index: 1;
+    // Table sticky-header stacking convention (798–800 band); a bare literal because the
+    // reused token set has no dedicated sticky-band token.
+    z-index: 800;
     background: awsui.$color-background-table-header;
   }
 }
@@ -135,7 +154,10 @@
 }
 
 // Active descendant highlight: the container holds the tab stop, this row is the
-// aria-activedescendant target moved by the arrow keys.
+// aria-activedescendant target moved by the arrow keys. Applied (via .row-active in
+// internal.tsx) only while the grid holds focus, so no ring paints on load (F-ACTIVE).
+// The 2px/-2px inset (tokenised colour) is deliberate over styles.focus-highlight, which
+// would force position:relative and break the row's required position:absolute windowing.
 .row-active {
   outline: 2px solid awsui.$color-border-item-focused;
   outline-offset: -2px;
@@ -149,7 +171,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-block: awsui.$space-scaled-xxs;
+  // Match Table body-cell vertical density ($space-scaled-xs). Only .cell changes; the
+  // header cell keeps $space-scaled-xxs, which already matches Table's header-cell.
+  padding-block: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
 }
@@ -195,6 +219,11 @@
   text-align: center;
 }
 
+.empty {
+  // Muted empty-state text, matching Table's empty slot.
+  color: awsui.$color-text-empty;
+}
+
 // Materialised mark-in-place match-indicator column (INDICATOR_COL_WIDTH=25). Present
 // only while highlighting; counted as a real columnheader so aria-colindex stays coherent.
 .indicator-header,
@@ -222,10 +251,17 @@
   background: awsui.$color-background-item-selected;
 }
 
-// Sortable header trigger: reuse Table's column-header typography so a sortable header
-// matches Table's look rather than a bespoke bold button.
+// Sortable header trigger: strip the native <button> chrome (styles-reset is typography
+// only — it does not touch appearance/background/border/padding) so the trigger is
+// transparent and reuses Table's column-header typography. Padding stays 0 so the label
+// aligns with the surrounding .header-cell inline padding, matching a real Table header.
 .sort-button {
   @include styles.styles-reset;
+  appearance: none;
+  background: transparent;
+  border-width: 0;
+  padding-block: 0;
+  padding-inline: 0;
   cursor: pointer;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -233,10 +269,32 @@
   text-align: start;
 }
 
+// B3: visible sort-direction indicator rendered after the header text on the active sort
+// column (decorative; aria-sort on the columnheader carries the accessible cue).
+.sorting-icon {
+  margin-inline-start: awsui.$space-scaled-xxs;
+}
+
 .match-nav {
   display: flex;
   align-items: center;
   gap: awsui.$space-scaled-xxs;
+}
+
+// B5: prev/next match-navigation buttons. styles-reset is typography only, so strip the
+// native <button> chrome (grey buttonface, 2px bevel, radius) explicitly with
+// appearance/background/border and add a compact token padding, giving a transparent
+// Cloudscape-consistent control. The chevron glyphs inside are decorative; the buttons
+// are named by aria-label and keyboard-operable.
+.match-nav-button {
+  @include styles.styles-reset;
+  appearance: none;
+  background: transparent;
+  border-width: 0;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xxs;
+  cursor: pointer;
+  color: awsui.$color-text-column-header;
 }
 
 .match-count {

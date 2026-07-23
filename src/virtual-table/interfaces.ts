@@ -26,9 +26,9 @@ export interface VirtualTableProps<T> extends BaseComponentProps {
    * view's column set / renderers. This is F2's opinionation made explicit —
    * VirtualTable ships three surfaces rather than being a raw grid:
    *  - "standard"  the results grid: dynamic columns, leading disclosure column,
-   *                fixed layout with a stretch-last column, keyboard-operable column
-   *                resize with persisted widths (no per-column sort — sort is a
-   *                patterns-view capability, CW-9).
+   *                fixed layout with a stretch-last column and static per-column
+   *                widths (no per-column sort — sort is a patterns-view capability,
+   *                CW-9).
    *  - "patterns"  the aggregation grid: its own column set, per-column sort,
    *                diff/compare mode, and a shared histogram y-scale computed across
    *                the FULL dataset.
@@ -51,6 +51,22 @@ export interface VirtualTableProps<T> extends BaseComponentProps {
   trackBy: (item: T) => string;
 
   // --- Virtualization ------------------------------------------------------
+
+  /**
+   * Bounds the scroll viewport to a fixed px block-size. Windowing REQUIRES a bounded
+   * viewport: without a `height`/`maxHeight` here (or a height-constrained parent, since
+   * the root is a flex column and the scroll container flexes to fill it) the scroll
+   * container reports the full content height and every row mounts. Use `height` for a
+   * fixed viewport that always scrolls.
+   */
+  height?: number;
+
+  /**
+   * Bounds the scroll viewport to a maximum px block-size: the table grows with its
+   * content up to this height, then windows + scrolls. Alternative to `height` for a
+   * grow-then-scroll viewport. See `height` for why a bound is required to window.
+   */
+  maxHeight?: number;
 
   /**
    * Estimated collapsed row height in px, used to size the scroll runway before a row
@@ -168,14 +184,7 @@ export interface VirtualTableProps<T> extends BaseComponentProps {
   /** Fires on sort control activation (keyboard-operable — not pointer-only). */
   onSortingChange?: NonCancelableEventHandler<VirtualTableProps.SortingState<T>>;
 
-  /**
-   * Enables keyboard-operable column resize on the active view. VirtualTable owns a
-   * fixed table layout with a stretch-last column; widths persist per view.
-   * @defaultValue false
-   */
-  resizableColumns?: boolean;
-
-  /** Persisted per-column widths (by column id). */
+  /** Static per-column widths in px (by column id); the stretch-last column omits it. */
   columnWidths?: Record<string, number>;
 
   /** Sticky header with horizontal scroll synced to the body. @defaultValue true */
