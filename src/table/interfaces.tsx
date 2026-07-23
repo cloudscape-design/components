@@ -337,6 +337,26 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onRowContextMenu?: CancelableEventHandler<TableProps.OnRowContextMenuDetail<T>>;
 
   /**
+   * When set to `true`, each row displays a drag handle that allows the user to reorder
+   * rows via drag-and-drop (mouse/touch) or keyboard (Space/Enter to pick up, Arrow keys
+   * to move, Space/Enter to drop, Escape to cancel).
+   *
+   * Rows may contain interactive form controls (inputs, selects, checkboxes) without
+   * interfering with the drag interaction: the drag only activates when the user grabs
+   * the dedicated drag-handle icon, not when clicking into a form control.
+   *
+   * Provide `onRowReorder` to handle the reorder event and update your items array.
+   */
+  enableRowDrag?: boolean;
+
+  /**
+   * Called when the user completes a row-reorder drag operation.
+   * Receives the full reordered `items` array and the `movedItem`.
+   * Update your `items` prop with `detail.items` to reflect the new order.
+   */
+  onRowReorder?: NonCancelableEventHandler<TableProps.RowReorderDetail<T>>;
+
+  /**
    * If set to `true`, the table header remains visible when the user scrolls down.
    *
    * Do not use `stickyHeader` conditionally. Instead, keep its value constant during the component lifecycle.
@@ -587,6 +607,31 @@ export namespace TableProps {
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
+    /**
+     * Accessible label for every row drag handle.
+     * Announced by screen readers when focus lands on the drag handle button.
+     * Provide a concise label such as "Drag handle".
+     */
+    dragHandleAriaLabel?: string;
+    /**
+     * Instructions for operating keyboard drag-and-drop.
+     * Announced once when a drag is activated via keyboard.
+     * Example: "Use Space or Enter to activate drag, Arrow keys to move, Space or Enter to drop, Escape to cancel."
+     */
+    dragHandleAriaDescription?: string;
+    /**
+     * Returns an accessible label that identifies a specific row's drag handle to screen readers.
+     * Receives the row item and should return a string such as "Drag handle for rule 3".
+     */
+    rowDragLabel?: (item: T) => string;
+    /** Announced when the user picks up a row. Receives position (1-based) and total. */
+    liveAnnouncementDndStarted?: (position: number, total: number) => string;
+    /** Announced as the user moves a row. Receives initial position, current position, and total. */
+    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
+    /** Announced when the user drops a row. Receives initial position, final position, and total. */
+    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
+    /** Announced when the drag is cancelled. */
+    liveAnnouncementDndDiscarded?: string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -610,6 +655,13 @@ export namespace TableProps {
     item: T;
     clientX: number;
     clientY: number;
+  }
+
+  export interface RowReorderDetail<T> {
+    /** The full items array in the new order after the drag. */
+    items: T[];
+    /** The item that was moved. */
+    movedItem: T;
   }
 
   export interface ColumnWidthsChangeDetail {
