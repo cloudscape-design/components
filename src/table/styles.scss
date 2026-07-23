@@ -238,3 +238,40 @@ filter search icon.
   padding-inline: 0;
   border-block-end: none;
 }
+
+/* ── Row drag-and-drop ─────────────────────────────────────────────────── */
+
+.drag-handle-cell {
+  /* Keep the drag-handle column narrow and non-resizable */
+  padding-block: 0;
+  padding-inline: awsui.$space-scaled-xxs;
+  vertical-align: middle;
+  white-space: nowrap;
+  inline-size: 44px;
+  min-inline-size: 44px;
+}
+
+.drag-handle-header {
+  /* Visually empty column header for the drag-handle column */
+  inline-size: 44px;
+  min-inline-size: 44px;
+  padding-block: 0;
+  padding-inline: awsui.$space-scaled-xxs;
+}
+
+/* The row being dragged shows as a semi-transparent placeholder in its original slot */
+.row-drag-placeholder {
+  opacity: 0.4;
+}
+
+/* Rows shift up/down while a drag is in progress */
+.row-drag-sorting {
+  /* No extra styles needed — dnd-kit handles the transform */
+}
+
+/* The floating ghost row rendered inside the DragOverlay */
+.row-drag-ghost {
+  background: awsui.$color-background-item-selected;
+  box-shadow: awsui.$shadow-dropdown;
+  opacity: 0.9;
+}

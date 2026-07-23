@@ -47,6 +47,7 @@ import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
+import { TableBodyWithDnd } from './row-drag-and-drop';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
@@ -152,6 +153,8 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      enableRowDrag,
+      onRowReorder,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -442,6 +445,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isExpandable,
       setLastUserAction,
+      enableRowDrag,
     };
 
     usePreventStickyClickScroll(wrapperRefObject);
@@ -471,7 +475,8 @@ const InternalTable = React.forwardRef(
     const toolsHeaderWrapper = useMergeRefs(toolsHeaderPerformanceMarkRef, toolsHeaderWrapperMeasureRef);
 
     const colIndexOffset = selectionType ? 1 : 0;
-    const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const hasDragColumn = !!enableRowDrag;
+    const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset + (hasDragColumn ? 1 : 0);
     const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
     return (
@@ -637,6 +642,119 @@ const InternalTable = React.forwardRef(
                             containerRef={wrapperMeasureRefObject}
                           />
                         </tr>
+                      ) : enableRowDrag ? (
+                        <TableBodyWithDnd
+                          items={allItems}
+                          trackBy={trackBy}
+                          ariaLabels={ariaLabels}
+                          onRowReorder={onRowReorder}
+                        >
+                          {(
+                            dndItem,
+                            dndRowIndex,
+                            { SortableRow: SR, rowId, isActiveRow, isKeyboardDrag, handleKeyDown, dragHandleAriaLabel }
+                          ) => {
+                            const rowIndex = dndRowIndex;
+                            const row = allRows[rowIndex];
+                            if (!row || row.type !== 'data') {
+                              return null;
+                            }
+                            const isFirstRow = rowIndex === 0;
+                            const hasSkeletonBelow2 =
+                              loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
+                            const isLastDataRow = rowIndex === allRows.length - 1;
+                            const isLastRow2 = isLastDataRow && !hasSkeletonBelow2;
+                            const rowExpandableProps2 = expandableRows.getExpandableItemProps(row.item);
+                            const sharedCellProps2 = {
+                              isFirstRow,
+                              isLastRow: isLastRow2,
+                              isSelected: hasSelection && isRowSelected(row),
+                              isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
+                              isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
+                              isEvenRow: rowIndex % 2 === 0,
+                              stripedRows,
+                              hasSelection,
+                              hasFooter,
+                              stickyState,
+                              tableRole,
+                            };
+                            return (
+                              <SR
+                                key={rowId}
+                                rowId={rowId}
+                                item={row.item}
+                                isActiveRow={isActiveRow}
+                                isKeyboardDrag={isKeyboardDrag}
+                                ariaLabel={dragHandleAriaLabel}
+                                onHandleKeyDown={handleKeyDown}
+                              >
+                                {dragHandleCell => (
+                                  <>
+                                    {dragHandleCell}
+                                    {selection.getItemSelectionProps && (
+                                      <TableBodySelectionCell
+                                        {...sharedCellProps2}
+                                        columnId={selectionColumnId}
+                                        selectionControlProps={{
+                                          ...selection.getItemSelectionProps(row.item),
+                                          onFocusDown: moveFocusDown,
+                                          onFocusUp: moveFocusUp,
+                                          rowIndex,
+                                          itemKey: rowId,
+                                        }}
+                                        verticalAlign={cellVerticalAlign}
+                                        tableVariant={computedVariant}
+                                      />
+                                    )}
+                                    {visibleColumnDefinitions.map((column, colIndex) => {
+                                      const colId2 = `${getColumnKey(column, colIndex)}`;
+                                      const cellId2 = { row: rowId, col: colId2 };
+                                      const isEditing2 = cellEditing.checkEditing(cellId2);
+                                      const successfulEdit2 = cellEditing.checkLastSuccessfulEdit(cellId2);
+                                      const isEditable2 = !!column.editConfig && !cellEditing.isLoading;
+                                      const cellExpandableProps2 =
+                                        isExpandable && colIndex === 0 ? rowExpandableProps2 : undefined;
+                                      const counter2 = column.counter?.({
+                                        item: row.item,
+                                        itemsCount: rowExpandableProps2?.itemsCount,
+                                        selectedItemsCount: rowExpandableProps2?.selectedItemsCount,
+                                      });
+                                      return (
+                                        <TableBodyCell
+                                          key={colId2}
+                                          {...sharedCellProps2}
+                                          resizableStyle={{
+                                            width: column.width,
+                                            minWidth: column.minWidth,
+                                            maxWidth: column.maxWidth,
+                                          }}
+                                          ariaLabels={ariaLabels}
+                                          column={column}
+                                          item={row.item}
+                                          wrapLines={wrapLines}
+                                          isEditable={isEditable2}
+                                          isEditing={isEditing2}
+                                          isRowHeader={column.isRowHeader}
+                                          successfulEdit={successfulEdit2}
+                                          resizableColumns={resizableColumns}
+                                          onEditStart={() => cellEditing.startEdit(cellId2)}
+                                          onEditEnd={editCancelled => cellEditing.completeEdit(cellId2, editCancelled)}
+                                          submitEdit={cellEditing.submitEdit}
+                                          columnId={column.id ?? colIndex}
+                                          colIndex={colIndex + colIndexOffset + 1}
+                                          verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                          tableVariant={computedVariant}
+                                          counter={counter2}
+                                          {...cellExpandableProps2}
+                                        />
+                                      );
+                                    })}
+                                  </>
+                                )}
+                              </SR>
+                            );
+                          }}
+                        </TableBodyWithDnd>
                       ) : (
                         allRows.map((row, rowIndex) => {
                           const isFirstRow = rowIndex === 0;

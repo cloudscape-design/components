@@ -54,6 +54,8 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
+  /** When true, render an empty drag-handle column header as the first column */
+  enableRowDrag?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -89,6 +91,7 @@ const Thead = React.forwardRef(
       resizerTooltipText,
       isExpandable,
       setLastUserAction,
+      enableRowDrag,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -147,6 +150,14 @@ const Thead = React.forwardRef(
             {...getTableHeaderRowRoleProps({ tableRole })}
             {...sharedTrProps}
           >
+            {enableRowDrag ? (
+              <th
+                className={styles['drag-handle-header']}
+                scope="col"
+                aria-label=""
+                style={{ width: 44, minWidth: 44 }}
+              />
+            ) : null}
             {selectionType ? (
               <TableHeaderSelectionCell
                 {...commonCellProps}
