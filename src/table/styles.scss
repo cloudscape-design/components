@@ -238,3 +238,12 @@ filter search icon.
   padding-inline: 0;
   border-block-end: none;
 }
+
+// Spacer rows used by the experimental windowed (virtual) scrolling mode to
+// preserve total scroll height while only the visible rows are rendered.
+.virtual-scroll-spacer {
+  padding-block: 0;
+  padding-inline: 0;
+  border-block: none;
+  border-inline: none;
+}
