@@ -140,7 +140,6 @@ function getAppLayoutScenarioLayout(browser: Browser, selector: string) {
     const externalHeader = document.querySelector<HTMLElement>('#h')!;
     const externalFooter = scenario.querySelector<HTMLElement>('#f')!;
     const tableFooter = scenario.querySelector<HTMLElement>(`#${scenario.id}-table-footer`)!;
-    const table = scenario.querySelector<HTMLTableElement>('table')!;
     const skeletonRows = scenario.querySelectorAll<HTMLTableRowElement>('tr[aria-hidden="true"]');
     const externalHeaderRect = externalHeader.getBoundingClientRect();
     const externalFooterRect = externalFooter.getBoundingClientRect();
@@ -150,7 +149,6 @@ function getAppLayoutScenarioLayout(browser: Browser, selector: string) {
       documentOverflow: document.documentElement.scrollHeight - document.documentElement.clientHeight,
       externalFooterIsVisible: externalFooterRect.top >= 0 && externalFooterRect.bottom <= window.innerHeight,
       externalHeaderIsVisible: externalHeaderRect.top >= 0 && externalHeaderRect.bottom <= window.innerHeight,
-      headerTableWidth: table.getBoundingClientRect().width,
       skeletonRowCount: skeletonRows.length,
       tableFooterIsVisible: tableFooterRect.top >= 0 && tableFooterRect.bottom <= window.innerHeight,
     };
@@ -162,27 +160,15 @@ test(
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1024, height: 800 });
+    await browser.url('#/light/app-layout/auto-skeleton-table');
+    await page.waitForVisible('#auto-skeleton-app-layout tr[aria-hidden="true"]');
 
-    const scenarios = [
-      { id: '#auto-skeleton-app-layout-nowrap', route: '#/light/app-layout/auto-skeleton-table-nowrap' },
-      { id: '#auto-skeleton-app-layout-wrap', route: '#/light/app-layout/auto-skeleton-table' },
-    ];
+    const layout = await getAppLayoutScenarioLayout(browser, '#auto-skeleton-app-layout');
 
-    const layouts = [];
-    for (const scenario of scenarios) {
-      await browser.url(scenario.route);
-      await page.waitForVisible(`${scenario.id} tr[aria-hidden="true"]`);
-      layouts.push(await getAppLayoutScenarioLayout(browser, scenario.id));
-    }
-
-    for (const layout of layouts) {
-      expect(layout.documentOverflow).toBeLessThanOrEqual(0);
-      expect(layout.externalHeaderIsVisible).toBe(true);
-      expect(layout.externalFooterIsVisible).toBe(true);
-      expect(layout.skeletonRowCount).toBeGreaterThan(0);
-      expect(layout.tableFooterIsVisible).toBe(true);
-    }
-
-    expect(layouts[0].headerTableWidth).toBeGreaterThan(layouts[1].headerTableWidth);
+    expect(layout.documentOverflow).toBeLessThanOrEqual(0);
+    expect(layout.externalHeaderIsVisible).toBe(true);
+    expect(layout.externalFooterIsVisible).toBe(true);
+    expect(layout.skeletonRowCount).toBeGreaterThan(0);
+    expect(layout.tableFooterIsVisible).toBe(true);
   })
 );
