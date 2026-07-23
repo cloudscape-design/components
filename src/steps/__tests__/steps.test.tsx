@@ -271,4 +271,45 @@ describe('Steps', () => {
       expect(wrapper.findItems()[0].findHeader()?.findStatusIndicator()).toBeNull();
     });
   });
+
+  describe('style API: connector color', () => {
+    test('applies connector color CSS variable to root element', () => {
+      const wrapper = renderSteps({ steps: successfulSteps, style: { connector: { color: '#ff0000' } } });
+      const rootStyle = wrapper.getElement().getAttribute('style') ?? '';
+      expect(rootStyle).toContain('#ff0000');
+    });
+
+    test('does not set a style attribute when style prop is not provided', () => {
+      const wrapper = renderSteps({ steps: successfulSteps });
+      const rootStyle = wrapper.getElement().getAttribute('style');
+      expect(rootStyle).toBeNull();
+    });
+
+    test('applies transparent connector color', () => {
+      const wrapper = renderSteps({ steps: successfulSteps, style: { connector: { color: 'transparent' } } });
+      const rootStyle = wrapper.getElement().getAttribute('style') ?? '';
+      expect(rootStyle).toContain('transparent');
+    });
+
+    test('applies connector color in horizontal orientation', () => {
+      const wrapper = renderSteps({
+        steps: successfulSteps,
+        orientation: 'horizontal',
+        style: { connector: { color: '#0073bb' } },
+      });
+      const rootStyle = wrapper.getElement().getAttribute('style') ?? '';
+      expect(rootStyle).toContain('#0073bb');
+    });
+
+    test('connector color does not prevent connector-hidden class when connectorLines is none', () => {
+      const wrapper = renderSteps({
+        steps: successfulSteps,
+        connectorLines: 'none',
+        style: { connector: { color: '#ff0000' } },
+      });
+      expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(4);
+      const rootStyle = wrapper.getElement().getAttribute('style') ?? '';
+      expect(rootStyle).toContain('#ff0000');
+    });
+  });
 });
