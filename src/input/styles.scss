@@ -224,3 +224,15 @@
 .inline-label {
   @include forms.inline-label;
 }
+
+.char-count-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: awsui.$space-xxs;
+  inline-size: 100%;
+}
+
+.char-count {
+  @include styles.font-body-s;
+  color: awsui.$color-text-form-secondary;
+}

@@ -43,6 +43,8 @@ const Input = React.forwardRef(
       controlId,
       clearAriaLabel,
       nativeInputAttributes,
+      maxLength,
+      showCharacterCount,
       style,
       ...rest
     }: InputProps,
@@ -100,6 +102,8 @@ const Input = React.forwardRef(
           controlId,
           clearAriaLabel,
           nativeInputAttributes,
+          maxLength,
+          showCharacterCount,
           style,
         }}
         className={clsx(styles.root, baseProps.className)}
