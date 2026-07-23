@@ -3,18 +3,23 @@
 import { TestSuite } from '../types';
 
 const suite: TestSuite = {
-  description: 'Toolbar',
+  description: 'AppLayout',
   componentName: 'app-layout',
   tests: [
     {
-      description: 'multiple nested instances (no breadcrumbs dedup)',
-      path: 'app-layout-toolbar/multi-layout-with-hidden-instances',
-      screenshotType: 'viewport',
-    },
-    {
-      description: 'no toolbar',
-      path: 'app-layout-toolbar/without-toolbar',
-      screenshotType: 'viewport',
+      description: 'Toolbar',
+      tests: [
+        {
+          description: 'multiple nested instances (no breadcrumbs dedup)',
+          path: 'app-layout-toolbar/multi-layout-with-hidden-instances',
+          screenshotType: 'viewport',
+        },
+        {
+          description: 'no toolbar',
+          path: 'app-layout-toolbar/without-toolbar',
+          screenshotType: 'viewport',
+        },
+      ],
     },
   ],
 };

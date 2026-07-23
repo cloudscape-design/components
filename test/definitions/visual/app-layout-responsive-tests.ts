@@ -9,7 +9,6 @@ import { TestSuite } from '../types';
 export function responsiveTests(width: number): TestSuite {
   return {
     description: `AppLayout responsive width ${width}px`,
-    componentName: 'app-layout',
     tests: [
       {
         description: 'default',
