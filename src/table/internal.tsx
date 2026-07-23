@@ -392,6 +392,7 @@ const InternalTable = React.forwardRef(
       visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
+      minScrollableWidth: stickyColumns?.minScrollableWidth,
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
