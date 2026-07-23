@@ -75,22 +75,30 @@ describe('Input — showCharacterCount prop', () => {
   });
 
   test('live region exists', () => {
-    const { container } = renderInput({ maxLength: 50, showCharacterCount: true, value: 'test' });
-    // InternalLiveRegion renders with aria-live attribute
-    const liveRegion = container.querySelector('[aria-live]');
+    renderInput({ maxLength: 50, showCharacterCount: true, value: 'test' });
+    // InternalLiveRegion mounts its announcer element (with aria-live) on the
+    // document body via the shared LiveRegionController, not inside the input's
+    // own DOM subtree, so we query the whole document for it.
+    const liveRegion = document.querySelector('[aria-live]');
     expect(liveRegion).not.toBeNull();
   });
 
   test('live region announces count after debounce', () => {
     jest.useFakeTimers();
-    const { container } = renderInput({ maxLength: 50, showCharacterCount: true, value: 'hi' });
-    const liveRegion = container.querySelector('[aria-live]');
+    // The live region prevents the initial announcement, so we render and then
+    // change the value to trigger a debounced count announcement.
+    const { rerender } = render(<Input value="hi" maxLength={50} showCharacterCount={true} onChange={jest.fn()} />);
+    rerender(<Input value="hip" maxLength={50} showCharacterCount={true} onChange={jest.fn()} />);
+
+    const liveRegion = document.querySelector('[aria-live]');
+    expect(liveRegion).not.toBeNull();
 
     act(() => {
+      // Default live-region delay is 1s; advance past it to flush the announcement.
       jest.advanceTimersByTime(1100);
     });
-    // The live region should contain the count text after the delay
-    expect(liveRegion).not.toBeNull();
+    // After the debounce delay, the live region announces the updated count.
+    expect(liveRegion!.textContent).toBe('3/50');
 
     jest.useRealTimers();
   });
