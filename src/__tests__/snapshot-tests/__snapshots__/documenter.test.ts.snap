@@ -29035,6 +29035,7 @@ to prevent the user from sorting before items are fully loaded.",
       "description": "Specifies the number of first and/or last columns that should be sticky.
 
 If the available scrollable space is less than a certain threshold, the feature is deactivated.
+Use \`minScrollableWidth\` to override that threshold.
 
 Use it in conjunction with the sticky columns preference of the
 [collection preferences](/components/collection-preferences/) component.",
@@ -29048,6 +29049,11 @@ Use it in conjunction with the sticky columns preference of the
           },
           {
             "name": "last",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "minScrollableWidth",
             "optional": true,
             "type": "number",
           },

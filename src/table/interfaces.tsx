@@ -248,6 +248,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Specifies the number of first and/or last columns that should be sticky.
    *
    * If the available scrollable space is less than a certain threshold, the feature is deactivated.
+   * Use `minScrollableWidth` to override that threshold.
    *
    * Use it in conjunction with the sticky columns preference of the
    * [collection preferences](/components/collection-preferences/) component.
@@ -556,6 +557,15 @@ export namespace TableProps {
   export interface StickyColumns {
     first?: number;
     last?: number;
+    /**
+     * Overrides the minimum scrollable width, in pixels, that must remain available next to the
+     * sticky columns for the feature to stay active. When the table's remaining scrollable space
+     * drops below this value, sticky columns are deactivated to preserve horizontal scrolling.
+     *
+     * Defaults to `148`. Lower it (for example to `0`) to keep the first column(s) pinned on
+     * narrower tables, or raise it to deactivate sticky columns sooner.
+     */
+    minScrollableWidth?: number;
   }
 
   export type VerticalAlign = 'middle' | 'top';
