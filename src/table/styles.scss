@@ -233,6 +233,21 @@ filter search icon.
   /* used in test-utils */
 }
 
+// v0: Hierarchical sticky rows (AWSUI-59346).
+// An expanded ancestor row stays pinned below the sticky header while the user
+// scrolls through its descendants. The inset-block-start offset and z-index are
+// supplied inline per row (see sticky-ancestor-rows/index.ts) so nested levels
+// stack. Cells get a background so scrolled content does not bleed through.
+.sticky-ancestor-row {
+  @supports (position: sticky) {
+    position: sticky;
+
+    > .body-cell {
+      background: awsui.$color-background-container-content;
+    }
+  }
+}
+
 .skeleton-loading-cell {
   padding-block: 0;
   padding-inline: 0;

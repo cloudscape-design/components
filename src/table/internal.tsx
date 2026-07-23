@@ -51,6 +51,7 @@ import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
 import { SkeletonRows } from './skeleton-rows';
+import { useStickyAncestorRows } from './sticky-ancestor-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -193,6 +194,11 @@ const InternalTable = React.forwardRef(
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
+    const { getStickyAncestorRowProps } = useStickyAncestorRows({
+      enabled: !!externalExpandableRows?.stickyAncestorRows && !!stickyHeader,
+      headerRef: theadRef,
+      headerVerticalOffset: stickyHeaderVerticalOffset,
+    });
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
@@ -670,10 +676,19 @@ const InternalTable = React.forwardRef(
                           };
                           if (row.type === 'data') {
                             const rowId = `${getTableItemKey(row.item)}`;
+                            const stickyAncestorRowProps = getStickyAncestorRowProps(
+                              rowExpandableProps?.level ?? 1,
+                              !!rowExpandableProps?.isExpanded
+                            );
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                className={clsx(
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected'],
+                                  stickyAncestorRowProps.className
+                                )}
+                                style={stickyAncestorRowProps.style}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click

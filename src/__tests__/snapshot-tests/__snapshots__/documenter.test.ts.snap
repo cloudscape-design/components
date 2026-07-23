@@ -28714,6 +28714,11 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "type": "TableProps.OnGroupSelectionChange<T>",
           },
           {
+            "name": "stickyAncestorRows",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
             "name": "totalItemsCount",
             "optional": true,
             "type": "number",
