@@ -12,7 +12,7 @@ export { ContentLayoutProps };
 
 export default function ContentLayout(props: ContentLayoutProps) {
   const baseComponentProps = useBaseComponent('ContentLayout', {
-    props: { disableOverlap: props.disableOverlap },
+    props: { disableOverlap: props.disableOverlap, fullBleedHeader: props.fullBleedHeader },
   });
   return <InternalContentLayout {...props} {...baseComponentProps} />;
 }
