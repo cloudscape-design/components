@@ -17408,7 +17408,48 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Content rendered in a shaded cell on the leading edge of the input field,
+before the editable value.
+
+Accepts any React node — plain text, a short symbol, an icon, or a badge.
+Use for contextual decorators such as currency symbols (\`$\`, \`€\`),
+URL schemes (\`https://\`), path prefixes (\`/api/v2/\`), or an icon that
+clarifies the expected data type.
+
+The adornment is purely decorative — it does not mutate the \`value\` prop
+or the \`onChange\` detail. Wrap any icon or custom element in
+\`aria-hidden="true"\` if it is already conveyed by the visible
+\`<FormField>\` label, so screen reader users are not double-announced.
+Ensure the unit or context is also reflected in the visible label
+(for example, label = "Amount in US dollars", not just "Amount").
+
+In RTL locales the \`prefix\` cell appears on the trailing edge.
+"prefix" means "before the value" semantically, not "on the left".
+
+Don't use \`prefix\` as a substitute for a visible label.",
+      "isDefault": false,
+      "name": "prefix",
+    },
+    {
+      "description": "Content rendered in a shaded cell on the trailing edge of the input field,
+after the editable value.
+
+Accepts any React node — plain text, a short unit abbreviation, an icon,
+or a badge. Use for units of measure (\`%\`, \`ms\`, \`TB/mo\`, \`GB\`, \`req/s\`,
+\`days\`), currency codes (\`USD\`, \`EUR\`), degree notation (\`°C\`, \`°E\`), or
+an icon indicating a secondary action.
+
+The adornment is purely decorative — it does not mutate the \`value\` prop
+or the \`onChange\` detail. Ensure the unit is also reflected in the visible
+\`<FormField>\` label (for example, label = "CPU utilization (percent)").
+
+In RTL locales the \`suffix\` cell appears on the leading edge.",
+      "isDefault": false,
+      "name": "suffix",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -35337,6 +35378,34 @@ Supported options:
           },
         },
         {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.focus",
           },
@@ -36991,6 +37060,23 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -37003,6 +37089,23 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -43293,6 +43396,23 @@ and this method will have no effect.",
           },
         },
         {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -43373,6 +43493,23 @@ and this method will have no effect.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -47372,6 +47509,24 @@ Supported options:
             "name": "ElementWrapper",
           },
         },
+        {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
       ],
       "name": "InputWrapper",
     },
@@ -48509,6 +48664,18 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -48523,6 +48690,18 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -53008,6 +53187,18 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the prefix adornment element, or null if no prefix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -53084,6 +53275,18 @@ In this case, use findContentEditableElement() instead.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the suffix adornment element, or null if no suffix is set.",
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

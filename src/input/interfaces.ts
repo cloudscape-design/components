@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
 import { BaseComponentProps } from '../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
@@ -188,6 +190,50 @@ export interface InputProps
    * @awsuiSystem core
    */
   style?: InputProps.Style;
+
+  /**
+   * Content rendered in a shaded cell on the leading edge of the input field,
+   * before the editable value.
+   *
+   * Accepts any React node — plain text, a short symbol, an icon, or a badge.
+   * Use for contextual decorators such as currency symbols (`$`, `€`),
+   * URL schemes (`https://`), path prefixes (`/api/v2/`), or an icon that
+   * clarifies the expected data type.
+   *
+   * The adornment is purely decorative — it does not mutate the `value` prop
+   * or the `onChange` detail. Wrap any icon or custom element in
+   * `aria-hidden="true"` if it is already conveyed by the visible
+   * `<FormField>` label, so screen reader users are not double-announced.
+   * Ensure the unit or context is also reflected in the visible label
+   * (for example, label = "Amount in US dollars", not just "Amount").
+   *
+   * In RTL locales the `prefix` cell appears on the trailing edge.
+   * "prefix" means "before the value" semantically, not "on the left".
+   *
+   * Don't use `prefix` as a substitute for a visible label.
+   *
+   * @see suffix
+   */
+  prefix?: React.ReactNode;
+
+  /**
+   * Content rendered in a shaded cell on the trailing edge of the input field,
+   * after the editable value.
+   *
+   * Accepts any React node — plain text, a short unit abbreviation, an icon,
+   * or a badge. Use for units of measure (`%`, `ms`, `TB/mo`, `GB`, `req/s`,
+   * `days`), currency codes (`USD`, `EUR`), degree notation (`°C`, `°E`), or
+   * an icon indicating a secondary action.
+   *
+   * The adornment is purely decorative — it does not mutate the `value` prop
+   * or the `onChange` detail. Ensure the unit is also reflected in the visible
+   * `<FormField>` label (for example, label = "CPU utilization (percent)").
+   *
+   * In RTL locales the `suffix` cell appears on the leading edge.
+   *
+   * @see prefix
+   */
+  suffix?: React.ReactNode;
 }
 
 export namespace InputProps {

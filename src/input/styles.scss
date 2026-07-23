@@ -224,3 +224,124 @@
 .inline-label {
   @include forms.inline-label;
 }
+
+// Adornment wrapper — owns border, radius, background, and focus ring
+// when prefix or suffix is present. Laid out as a single flex bar:
+// [prefix][divider][input][divider][suffix]
+.input-adorned-container {
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  box-sizing: border-box;
+  background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  min-block-size: awsui.$size-vertical-input;
+
+  &:focus-within {
+    @include styles.form-focus-element(
+      $border-color: awsui.$color-border-input-focused,
+      $box-shadow: foundation.$box-shadow-focused-light
+    );
+  }
+
+  &.input-adorned-container-invalid {
+    @include styles.form-invalid-control(
+      $color: awsui.$color-text-status-error,
+      $border-color: awsui.$color-text-status-error,
+      $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+    );
+  }
+
+  &.input-adorned-container-warning {
+    @include styles.form-warning-control(
+      $color: awsui.$color-text-status-warning,
+      $border-color: awsui.$color-text-status-warning,
+      $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+    );
+  }
+
+  &.input-adorned-container-disabled {
+    background-color: awsui.$color-background-input-disabled;
+    border-color: awsui.$color-border-input-disabled;
+    color: awsui.$color-text-input-disabled;
+    cursor: default;
+  }
+
+  &.input-adorned-container-readonly {
+    @include styles.form-readonly-element(
+      $background-color: awsui.$color-background-input-default,
+      $border-color: awsui.$color-border-input-disabled
+    );
+  }
+}
+
+// Adornment cell — no border, no background (inherits from wrapper)
+.input-prefix,
+.input-suffix {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: awsui.$color-text-form-secondary;
+  white-space: nowrap;
+  user-select: none;
+  cursor: default;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  @include styles.font-body-m;
+}
+
+// 1px divider — only rendered when an adornment is present on that side
+.input-adornment-divider {
+  display: block;
+  flex-shrink: 0;
+  inline-size: awsui.$border-width-field;
+  background-color: awsui.$color-border-divider-default;
+  align-self: stretch;
+}
+
+// Strip the native input's own border/radius/background when inside the adornment wrapper.
+// The .input-adorned modifier is applied to the input element by InternalInput when prefix or suffix is set.
+.input-adorned {
+  flex: 1;
+  min-inline-size: 0;
+  border-block: none;
+  border-inline: none;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  min-block-size: unset;
+
+  &:focus {
+    border-block: none;
+    border-inline: none;
+    box-shadow: none;
+    outline: none;
+  }
+
+  &:hover {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  &.input-readonly {
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
