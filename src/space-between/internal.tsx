@@ -22,6 +22,7 @@ const InternalSpaceBetween = forwardRef(
       size,
       children,
       alignItems,
+      divider,
       nativeAttributes,
       __internalRootRef,
       ...props
@@ -51,14 +52,16 @@ const InternalSpaceBetween = forwardRef(
         )}
         ref={mergedRef}
       >
-        {flattenedChildren.map(child => {
+        {flattenedChildren.map((child, index) => {
           // If this react child is a primitive value, the key will be undefined
           const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+          const isFirst = index === 0;
 
           return (
-            <div key={key ? String(key) : undefined} className={styles.child}>
-              {child}
-            </div>
+            <React.Fragment key={key ? String(key) : index}>
+              {divider && !isFirst && <div className={clsx(styles.divider, styles[`divider-${direction}`])} />}
+              <div className={styles.child}>{child}</div>
+            </React.Fragment>
           );
         })}
       </WithNativeAttributes>
