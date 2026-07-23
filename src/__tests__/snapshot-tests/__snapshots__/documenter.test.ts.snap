@@ -34106,6 +34106,16 @@ into measurement. Omitting the prop means every row is fixed at
       "type": "((item: T) => number | "auto")",
     },
     {
+      "description": "Fixed height (px) of the scrollable viewport. Windowing REQUIRES a bounded
+viewport: the visible range is computed from the scroll container's own height,
+so without a bound the container grows to the full content height and every row
+mounts. Set this (or \`maxHeight\`, or bound the component's parent — the root is a
+height-owning flex column) to enable windowing.",
+      "name": "height",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -34147,6 +34157,15 @@ is the streaming/live path (see \`imperativeRef\` and \`onVisibleRangeChange\`).
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Maximum height (px) of the scrollable viewport. The viewport grows with content
+up to this bound, then scrolls. Use instead of \`height\` when the table should be
+shorter than the bound for small datasets. Windowing needs \`height\`, \`maxHeight\`,
+or a height-bounded parent (see \`height\`).",
+      "name": "maxHeight",
+      "optional": true,
+      "type": "number",
     },
     {
       "defaultValue": "10",
