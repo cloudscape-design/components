@@ -128,6 +128,7 @@ export const Flash = React.forwardRef(
       dismissLabel,
       loading,
       action,
+      secondaryAction,
       buttonText,
       onButtonClick,
       onDismiss,
@@ -276,8 +277,13 @@ export const Flash = React.forwardRef(
           </div>
           <ActionsWrapper
             className={styles['action-button-wrapper']}
-            testUtilClasses={{ actionSlot: styles['action-slot'], actionButton: styles['action-button'] }}
+            testUtilClasses={{
+              actionSlot: styles['action-slot'],
+              actionButton: styles['action-button'],
+              secondaryActionSlot: styles['secondary-action-slot'],
+            }}
             action={action}
+            secondaryAction={secondaryAction}
             discoveredActions={discoveredActions}
             buttonText={buttonText}
             onButtonClick={onButtonClick}
