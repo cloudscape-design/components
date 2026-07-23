@@ -23,6 +23,10 @@ class PreferencesModalWrapper extends ModalWrapper {
     return this.findComponent(`.${styles['confirm-button']}`, ButtonWrapper);
   }
 
+  findResetButton(): ButtonWrapper | null {
+    return this.findComponent(`.${styles['reset-button']}`, ButtonWrapper);
+  }
+
   findWrapLinesPreference(): CheckboxWrapper | null {
     return this.findComponent(`.${styles['wrap-lines']}`, CheckboxWrapper);
   }

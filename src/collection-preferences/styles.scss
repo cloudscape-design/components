@@ -13,9 +13,18 @@
 .trigger-button,
 .cancel-button,
 .confirm-button,
+.reset-button,
 .custom,
 .content-before {
   /* used in test-utils */
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  gap: awsui.$space-xs;
 }
 
 .second-column-small {
