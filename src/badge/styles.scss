@@ -23,6 +23,14 @@
   padding-inline: awsui.$space-xs;
   color: awsui.$color-text-notification-default;
 
+  &.badge-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    // max-width defaults to 100% so the badge respects its parent container width
+    max-width: 100%;
+  }
+
   &.badge-color-grey {
     background-color: awsui.$color-background-badge-grey;
     border-color: awsui.$color-border-badge-grey;

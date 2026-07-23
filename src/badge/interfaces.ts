@@ -29,6 +29,13 @@ export interface BadgeProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
+   * When set to `true`, long text inside the badge will be truncated with an ellipsis
+   * instead of wrapping or overflowing. The badge respects the width of its parent container.
+   * Use this when the badge is placed inside a constrained layout and text length is variable.
+   */
+  truncate?: boolean;
+
+  /**
    * An object containing CSS properties to customize the badge's visual appearance.
    * Refer to the [style](/components/badge/?tabId=style) tab for more details.
    * @awsuiSystem core
