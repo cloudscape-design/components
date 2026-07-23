@@ -188,6 +188,8 @@ export function InternalRoot<T>(props: InternalRootProps<T>) {
     estimatedRowHeight,
     overscan,
     getRowHeight,
+    height,
+    maxHeight,
     expandedItems,
     defaultExpandedItems,
     onExpandChange,
@@ -329,7 +331,15 @@ export function InternalRoot<T>(props: InternalRootProps<T>) {
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
       {header && <div className={styles.header}>{header}</div>}
       <VirtualTableContextProvider value={contextValue as VirtualTableContextValue}>
-        <div {...gridRest} ref={gridRef} className={styles['scroll-container']}>
+        <div
+          {...gridRest}
+          ref={gridRef}
+          className={styles['scroll-container']}
+          // A bounded viewport is what makes the model window: the visible range is derived
+          // from this container's clientHeight, so an explicit height/maxHeight (or a
+          // height-bounded parent via the flex-column root) clips it to the visible rows.
+          style={{ blockSize: height, maxBlockSize: maxHeight }}
+        >
           {headerElement}
           {!loading && items.length > 0 && bodyElement}
         </div>

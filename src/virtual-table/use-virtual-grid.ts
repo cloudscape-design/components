@@ -188,6 +188,11 @@ export function useVirtualGrid<T>(config: VirtualGridConfig<T>): VirtualGrid<T> 
   // live-tail pinned-to-end. Arrow/Home/End move an active ROW (row-granular grid: the active
   // descendant is a role=row, not a cell cursor); Left/Right are inert (pinned APG deviation).
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
+  // The active row is a keyboard-navigation concept: only meaningful — and only advertised —
+  // while the grid container actually holds focus. Gating on real focus stops the default
+  // active row (items[0]) from emitting aria-activedescendant on initial load, before any
+  // interaction (a grid must not advertise an active descendant before it holds focus).
+  const [hasFocus, setHasFocus] = useState(false);
   const effectiveActiveId =
     activeId && itemById.has(activeId) ? activeId : items.length > 0 ? trackBy(items[0]) : undefined;
 
@@ -261,7 +266,16 @@ export function useVirtualGrid<T>(config: VirtualGridConfig<T>): VirtualGrid<T> 
             role: 'row',
             'aria-rowindex': slot.index + 2, // header counted as row 1
             id: rowDomId(id),
-            style: { position: 'absolute', insetBlockStart: slot.start, insetInlineStart: 0, inlineSize: '100%' },
+            style: {
+              position: 'absolute',
+              insetBlockStart: slot.start,
+              insetInlineStart: 0,
+              inlineSize: '100%',
+              // Clamp fixed rows to their model pitch so intrinsic content height cannot
+              // overflow the runway slot (overlapping the next row). 'auto' rows (wrapping raw
+              // lines, CW-15) stay unbounded so they measure at their real height.
+              blockSize: slot.auto ? undefined : slot.size,
+            },
             // 'auto' data rows (wrapping raw lines, CW-15) measure themselves here; fixed rows
             // pay no observer cost (measureRef early-returns when !auto).
             ref: model.measureRef(slot.key, slot.auto),
@@ -395,8 +409,20 @@ export function useVirtualGrid<T>(config: VirtualGridConfig<T>): VirtualGrid<T> 
     'aria-colcount': columnCount,
     'aria-label': ariaLabel,
     'aria-activedescendant':
-      effectiveActiveId && windowedDataIds.has(effectiveActiveId) ? rowDomId(effectiveActiveId) : undefined,
+      hasFocus && effectiveActiveId && windowedDataIds.has(effectiveActiveId) ? rowDomId(effectiveActiveId) : undefined,
     onKeyDown: onGridKeyDown,
+    // focusin/focusout bubble; only the grid container itself holding focus advertises an
+    // active row, so focusing a descendant control (disclosure / expanded content) does not.
+    onFocus: (event: React.FocusEvent<HTMLElement>) => {
+      if (event.target === event.currentTarget) {
+        setHasFocus(true);
+      }
+    },
+    onBlur: (event: React.FocusEvent<HTMLElement>) => {
+      if (event.target === event.currentTarget) {
+        setHasFocus(false);
+      }
+    },
   };
 
   // The body runway: a relative container sized to the full virtual height so the absolutely

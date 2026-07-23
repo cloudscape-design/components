@@ -221,10 +221,18 @@ describe('VirtualTable F3-A2 a11y', () => {
   });
 
   describe('keyboard navigation (aria-activedescendant grid model)', () => {
-    test('the grid is a single always-present tab stop and seeds an active descendant', () => {
+    test('the grid is a single always-present tab stop; active descendant is null until the grid holds focus', () => {
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
       expect(grid.getAttribute('tabindex')).toBe('0');
+
+      // null-until-focus contract: the core withholds aria-activedescendant until the grid
+      // container itself holds focus, so no row is advertised/outlined on initial load.
+      expect(grid.getAttribute('aria-activedescendant')).toBeNull();
+
+      // Focusing the grid container (target === currentTarget) flips the hasFocus gate and the
+      // grid then advertises the first windowed row as its active descendant.
+      fireEvent.focus(grid);
       const firstRow = wrapper.findRowByIndex(0)!.getElement();
       expect(grid.getAttribute('aria-activedescendant')).toBe(firstRow.id);
       expect(document.getElementById(firstRow.id)).not.toBeNull();
@@ -233,6 +241,10 @@ describe('VirtualTable F3-A2 a11y', () => {
     test('Arrow/Home/End move the active row when the grid holds focus', () => {
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
+
+      // The grid must hold focus before keyboard nav exposes the active descendant (the gate
+      // withholds it until focus); mirror a real user tabbing into the grid.
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       expect(grid.getAttribute('aria-activedescendant')).toBe(wrapper.findRowByIndex(1)!.getElement().id);
@@ -265,6 +277,10 @@ describe('VirtualTable F3-A2 a11y', () => {
       // impl-F3-A2-docs as an explicit a11y contract note.
       const { container, wrapper } = renderTable(makeItems(20));
       const grid = getGrid(container);
+
+      // Focus the grid first so the active descendant is exposed (null-until-focus gate), then
+      // confirm ArrowDown advances a row but ArrowLeft/ArrowRight leave it unchanged.
+      fireEvent.focus(grid);
 
       fireEvent.keyDown(grid, { key: 'ArrowDown' });
       const active = grid.getAttribute('aria-activedescendant');

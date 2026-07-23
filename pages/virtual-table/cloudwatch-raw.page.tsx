@@ -49,35 +49,34 @@ export default function CloudWatchRawHeadlessCorePage() {
       <h1>VirtualTable — CloudWatch file / raw view (headless core + compound skin)</h1>
       <p>{items.length.toLocaleString()} raw log lines · wrapping, expansion off</p>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
-          <VirtualTable.Root
-            items={items}
-            trackBy={item => item.id}
-            estimatedRowHeight={RAW_LINE_HEIGHT}
-            getRowHeight={item => (item.text.length > 120 ? 'auto' : RAW_LINE_HEIGHT)}
-            overscan={FILE_VIEW_OVERSCAN}
-            ariaLabels={{ tableLabel: 'Raw log events' }}
-          >
-            <VirtualTable.Header sticky={true}>
-              <VirtualTable.HeaderCell columnId="line" stretch={true}>
-                Log events
-              </VirtualTable.HeaderCell>
-            </VirtualTable.Header>
-            <VirtualTable.Body>
-              {(item: RawLine, api) => (
-                <VirtualTable.Row item={item} api={api}>
-                  <VirtualTable.Cell columnId="line">
-                    <span
-                      style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-                    >
-                      {item.text}
-                    </span>
-                  </VirtualTable.Cell>
-                </VirtualTable.Row>
-              )}
-            </VirtualTable.Body>
-          </VirtualTable.Root>
-        </div>
+        <VirtualTable.Root
+          items={items}
+          trackBy={item => item.id}
+          estimatedRowHeight={RAW_LINE_HEIGHT}
+          height={480}
+          getRowHeight={item => (item.text.length > 120 ? 'auto' : RAW_LINE_HEIGHT)}
+          overscan={FILE_VIEW_OVERSCAN}
+          ariaLabels={{ tableLabel: 'Raw log events' }}
+        >
+          <VirtualTable.Header sticky={true}>
+            <VirtualTable.HeaderCell columnId="line" stretch={true}>
+              Log events
+            </VirtualTable.HeaderCell>
+          </VirtualTable.Header>
+          <VirtualTable.Body>
+            {(item: RawLine, api) => (
+              <VirtualTable.Row item={item} api={api}>
+                <VirtualTable.Cell columnId="line">
+                  <span
+                    style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                  >
+                    {item.text}
+                  </span>
+                </VirtualTable.Cell>
+              </VirtualTable.Row>
+            )}
+          </VirtualTable.Body>
+        </VirtualTable.Root>
       </ScreenshotArea>
     </>
   );

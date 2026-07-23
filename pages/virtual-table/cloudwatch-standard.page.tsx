@@ -172,59 +172,58 @@ export default function CloudWatchStandardHeadlessCorePage() {
         <Button onClick={revealFirstError}>Reveal first error</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
-          <VirtualTable.Root
-            items={items}
-            trackBy={item => item.id}
-            estimatedRowHeight={23}
-            overscan={20}
-            resizableColumns={true}
-            expandedItems={expandedItems}
-            onExpandChange={({ detail }) => handleExpandChange(detail)}
-            onVisibleRangeChange={({ detail }) => setVisibleRange(detail)}
-            imperativeRef={ref}
-            ariaLabels={{
-              tableLabel: 'CloudWatch log records',
-              expandButtonLabel: (item, expanded) =>
-                `${expanded ? 'Collapse' : 'Expand'} record ${item.fields['@requestId']}`,
-              expandedRegionLabel: item => `Log record detail for ${item.fields['@requestId']}`,
-              appendAnnouncement: ({ addedCount, totalCount }) => `${addedCount} new log records, ${totalCount} total`,
-            }}
-          >
-            {/* CW-8: dynamic columns declared as HeaderCells; @message is the single
+        <VirtualTable.Root
+          items={items}
+          trackBy={item => item.id}
+          estimatedRowHeight={23}
+          height={480}
+          overscan={20}
+          resizableColumns={true}
+          expandedItems={expandedItems}
+          onExpandChange={({ detail }) => handleExpandChange(detail)}
+          onVisibleRangeChange={({ detail }) => setVisibleRange(detail)}
+          imperativeRef={ref}
+          ariaLabels={{
+            tableLabel: 'CloudWatch log records',
+            expandButtonLabel: (item, expanded) =>
+              `${expanded ? 'Collapse' : 'Expand'} record ${item.fields['@requestId']}`,
+            expandedRegionLabel: item => `Log record detail for ${item.fields['@requestId']}`,
+            appendAnnouncement: ({ addedCount, totalCount }) => `${addedCount} new log records, ${totalCount} total`,
+          }}
+        >
+          {/* CW-8: dynamic columns declared as HeaderCells; @message is the single
                 stretch-last column. No sortingField — per-column sort is a patterns-view
                 capability (CW-9); the standard view has no per-column sort. */}
-            <VirtualTable.Header sticky={true}>
-              {DISPLAYED_FIELDS.map(field => (
-                <VirtualTable.HeaderCell key={field} columnId={field} width={field === '@timestamp' ? 210 : 120}>
-                  {field}
-                </VirtualTable.HeaderCell>
-              ))}
-              <VirtualTable.HeaderCell columnId="@message" stretch={true}>
-                @message
+          <VirtualTable.Header sticky={true}>
+            {DISPLAYED_FIELDS.map(field => (
+              <VirtualTable.HeaderCell key={field} columnId={field} width={field === '@timestamp' ? 210 : 120}>
+                {field}
               </VirtualTable.HeaderCell>
-            </VirtualTable.Header>
-            <VirtualTable.Body>
-              {(item: LogRecord, api) => (
-                <VirtualTable.Row item={item} api={api}>
-                  {DISPLAYED_FIELDS.map(field => (
-                    <VirtualTable.Cell key={field} columnId={field}>
-                      <span style={{ fontFamily: 'monospace' }}>{item.fields[field]}</span>
-                    </VirtualTable.Cell>
-                  ))}
-                  <VirtualTable.Cell columnId="@message">
-                    <span style={{ fontFamily: 'monospace' }}>{item.message}</span>
+            ))}
+            <VirtualTable.HeaderCell columnId="@message" stretch={true}>
+              @message
+            </VirtualTable.HeaderCell>
+          </VirtualTable.Header>
+          <VirtualTable.Body>
+            {(item: LogRecord, api) => (
+              <VirtualTable.Row item={item} api={api}>
+                {DISPLAYED_FIELDS.map(field => (
+                  <VirtualTable.Cell key={field} columnId={field}>
+                    <span style={{ fontFamily: 'monospace' }}>{item.fields[field]}</span>
                   </VirtualTable.Cell>
-                  {/* R-EXPAND shape A: declared unconditionally (the core mounts it only for
+                ))}
+                <VirtualTable.Cell columnId="@message">
+                  <span style={{ fontFamily: 'monospace' }}>{item.message}</span>
+                </VirtualTable.Cell>
+                {/* R-EXPAND shape A: declared unconditionally (the core mounts it only for
                       expanded rows), arbitrary non-tabular detail, measured (~300 px). */}
-                  <VirtualTable.ExpandedContent estimatedHeight={300}>
-                    <LogRecordDetail record={item} />
-                  </VirtualTable.ExpandedContent>
-                </VirtualTable.Row>
-              )}
-            </VirtualTable.Body>
-          </VirtualTable.Root>
-        </div>
+                <VirtualTable.ExpandedContent estimatedHeight={300}>
+                  <LogRecordDetail record={item} />
+                </VirtualTable.ExpandedContent>
+              </VirtualTable.Row>
+            )}
+          </VirtualTable.Body>
+        </VirtualTable.Root>
       </ScreenshotArea>
     </>
   );

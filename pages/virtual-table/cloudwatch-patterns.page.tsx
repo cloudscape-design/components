@@ -400,62 +400,61 @@ export default function CloudWatchPatternsHeadlessCorePage() {
         <Button onClick={toggleDiffMode}>{diffMode ? 'Exit compare mode' : 'Compare across time'}</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
-          <VirtualTable.Root
-            items={items}
-            trackBy={item => item.id}
-            estimatedRowHeight={23}
-            overscan={20}
-            resizableColumns={true}
-            sortingColumn={sortingColumnId ? { columnId: sortingColumnId } : undefined}
-            sortingDescending={sortingDescending}
-            onSortingChange={({ detail }) => handleSortingChange(detail)}
-            expandedItems={expandedItems}
-            onExpandChange={({ detail }) => setExpandedItems(detail.expandedItems)}
-            ariaLabels={{
-              tableLabel: 'CloudWatch log patterns',
-              expandButtonLabel: (item, expanded) => `${expanded ? 'Collapse' : 'Expand'} pattern: ${item.pattern}`,
-              expandedRegionLabel: item => `Pattern detail for ${item.pattern}`,
-              activateSortLabel: columnId => {
-                const column = columns.find(candidate => candidate.columnId === columnId);
-                const label = typeof column?.header === 'string' ? column.header : columnId;
-                return `Sort by ${label}`;
-              },
-            }}
-          >
-            {/* CW-9: sortable columns declare a `sortingField`; the sticky header keeps
+        <VirtualTable.Root
+          items={items}
+          trackBy={item => item.id}
+          estimatedRowHeight={23}
+          height={480}
+          overscan={20}
+          resizableColumns={true}
+          sortingColumn={sortingColumnId ? { columnId: sortingColumnId } : undefined}
+          sortingDescending={sortingDescending}
+          onSortingChange={({ detail }) => handleSortingChange(detail)}
+          expandedItems={expandedItems}
+          onExpandChange={({ detail }) => setExpandedItems(detail.expandedItems)}
+          ariaLabels={{
+            tableLabel: 'CloudWatch log patterns',
+            expandButtonLabel: (item, expanded) => `${expanded ? 'Collapse' : 'Expand'} pattern: ${item.pattern}`,
+            expandedRegionLabel: item => `Pattern detail for ${item.pattern}`,
+            activateSortLabel: columnId => {
+              const column = columns.find(candidate => candidate.columnId === columnId);
+              const label = typeof column?.header === 'string' ? column.header : columnId;
+              return `Sort by ${label}`;
+            },
+          }}
+        >
+          {/* CW-9: sortable columns declare a `sortingField`; the sticky header keeps
                 the column labels visible while scrolling the windowed body. */}
-            <VirtualTable.Header sticky={true}>
-              {columns.map(column => (
-                <VirtualTable.HeaderCell
-                  key={column.columnId}
-                  columnId={column.columnId}
-                  sortingField={column.sortingField as string | undefined}
-                  width={column.width}
-                  stretch={column.stretch}
-                >
-                  {column.header}
-                </VirtualTable.HeaderCell>
-              ))}
-            </VirtualTable.Header>
-            <VirtualTable.Body>
-              {(item: LogPattern, api) => (
-                <VirtualTable.Row item={item} api={api}>
-                  {columns.map(column => (
-                    <VirtualTable.Cell key={column.columnId} columnId={column.columnId}>
-                      {column.renderCell(item)}
-                    </VirtualTable.Cell>
-                  ))}
-                  {/* R-EXPAND shape B: declared unconditionally (Root mounts it only for
+          <VirtualTable.Header sticky={true}>
+            {columns.map(column => (
+              <VirtualTable.HeaderCell
+                key={column.columnId}
+                columnId={column.columnId}
+                sortingField={column.sortingField as string | undefined}
+                width={column.width}
+                stretch={column.stretch}
+              >
+                {column.header}
+              </VirtualTable.HeaderCell>
+            ))}
+          </VirtualTable.Header>
+          <VirtualTable.Body>
+            {(item: LogPattern, api) => (
+              <VirtualTable.Row item={item} api={api}>
+                {columns.map(column => (
+                  <VirtualTable.Cell key={column.columnId} columnId={column.columnId}>
+                    {column.renderCell(item)}
+                  </VirtualTable.Cell>
+                ))}
+                {/* R-EXPAND shape B: declared unconditionally (Root mounts it only for
                       expanded rows), arbitrary non-tabular detail, measured (~150 px). */}
-                  <VirtualTable.ExpandedContent estimatedHeight={150}>
-                    <PatternDetail pattern={item} peak={histogramPeak} diffMode={diffMode} />
-                  </VirtualTable.ExpandedContent>
-                </VirtualTable.Row>
-              )}
-            </VirtualTable.Body>
-          </VirtualTable.Root>
-        </div>
+                <VirtualTable.ExpandedContent estimatedHeight={150}>
+                  <PatternDetail pattern={item} peak={histogramPeak} diffMode={diffMode} />
+                </VirtualTable.ExpandedContent>
+              </VirtualTable.Row>
+            )}
+          </VirtualTable.Body>
+        </VirtualTable.Root>
       </ScreenshotArea>
     </>
   );
