@@ -34056,7 +34056,7 @@ filter-count and append announcement templates, and loading/error text.",
       "type": "string",
     },
     {
-      "description": "Persisted per-column widths (by column id).",
+      "description": "Static per-column widths in px (by column id); the stretch-last column omits it.",
       "name": "columnWidths",
       "optional": true,
       "type": "Record<string, number>",
@@ -34245,6 +34245,16 @@ collapsed row is fixed at \`estimatedRowHeight\`; expanded rows are always measu
       "type": "((item: T) => number | "auto")",
     },
     {
+      "description": "Bounds the scroll viewport to a fixed px block-size. Windowing REQUIRES a bounded
+viewport: without a \`height\`/\`maxHeight\` here (or a height-constrained parent, since
+the root is a flex column and the scroll container flexes to fill it) the scroll
+container reports the full content height and every row mounts. Use \`height\` for a
+fixed viewport that always scrolls.",
+      "name": "height",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "inlineType": {
         "name": "VirtualTableProps.I18nStrings",
         "properties": [
@@ -34349,6 +34359,14 @@ path (see \`follow\`, \`onVisibleRangeChange\`, and the imperative ref).",
       "type": "string",
     },
     {
+      "description": "Bounds the scroll viewport to a maximum px block-size: the table grows with its
+content up to this height, then windows + scrolls. Alternative to \`height\` for a
+grow-then-scroll viewport. See \`height\` for why a bound is required to window.",
+      "name": "maxHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "description": "Rows rendered beyond the visible range on each side. CloudWatch uses 20 for the
 grid views and 40 for the raw view (TABLE_VIEW_OVERSCAN / FILE_VIEW_OVERSCAN).",
       "name": "overscan",
@@ -34374,14 +34392,6 @@ region during tail. When omitted, a default count-based message is used from
       "name": "renderAppendAnnouncement",
       "optional": true,
       "type": "((detail: VirtualTableProps.AppendDetail) => string)",
-    },
-    {
-      "defaultValue": "false",
-      "description": "Enables keyboard-operable column resize on the active view. VirtualTable owns a
-fixed table layout with a stretch-last column; widths persist per view.",
-      "name": "resizableColumns",
-      "optional": true,
-      "type": "boolean",
     },
     {
       "description": "Column currently sorted by (from the active view's column set).",
@@ -34505,9 +34515,9 @@ is active: the \`type\` discriminant selects the view, and the body supplies tha
 view's column set / renderers. This is F2's opinionation made explicit —
 VirtualTable ships three surfaces rather than being a raw grid:
  - "standard"  the results grid: dynamic columns, leading disclosure column,
-               fixed layout with a stretch-last column, keyboard-operable column
-               resize with persisted widths (no per-column sort — sort is a
-               patterns-view capability, CW-9).
+               fixed layout with a stretch-last column and static per-column
+               widths (no per-column sort — sort is a patterns-view capability,
+               CW-9).
  - "patterns"  the aggregation grid: its own column set, per-column sort,
                diff/compare mode, and a shared histogram y-scale computed across
                the FULL dataset.
