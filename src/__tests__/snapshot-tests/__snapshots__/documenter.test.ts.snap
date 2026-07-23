@@ -28940,6 +28940,62 @@ the table items array is empty.",
       "type": "boolean",
     },
     {
+      "description": "Visually groups table rows under non-selectable group header rows. Use it to organize the items
+into sections without changing the flat data structure of \`items\`.
+
+The configuration contains:
+* \`getGroupId\` ((Item) => string) - Returns the group identifier for the given item. Consecutive
+items that share the same identifier form a group. A group header row is rendered above the first
+item of every group.
+* \`renderGroupHeader\` ((TableProps.RowGroupHeaderDetail<Item>) => ReactNode) - Renders the content
+of a group header row. It is called once per group with the group identifier and the list of items
+belonging to the group.
+
+The group header row spans all columns and is not selectable, editable, or expandable.
+The feature is opt-in and does not change the behavior of tables that do not define it.",
+      "inlineType": {
+        "name": "TableProps.RowGrouping<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "getGroupId",
+            "optional": false,
+            "type": "(item: T) => string",
+          },
+          {
+            "inlineType": {
+              "name": "(detail: TableProps.RowGroupHeaderDetail<T>) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "detail",
+                  "type": "TableProps.RowGroupHeaderDetail<T>",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "renderGroupHeader",
+            "optional": false,
+            "type": "(detail: TableProps.RowGroupHeaderDetail<T>) => React.ReactNode",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "rowGrouping",
+      "optional": true,
+      "type": "TableProps.RowGrouping<T>",
+    },
+    {
       "defaultValue": "[]",
       "description": "List of selected items.",
       "name": "selectedItems",
@@ -44365,6 +44421,20 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns all group header rows rendered when the \`rowGrouping\` property is used.",
+          "name": "findRowGroupHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
           "name": "findRows",
           "parameters": [],
           "returnType": {
@@ -53777,6 +53847,20 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns all group header rows rendered when the \`rowGrouping\` property is used.",
+          "name": "findRowGroupHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
           },
         },
         {

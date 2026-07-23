@@ -233,6 +233,27 @@ filter search icon.
   /* used in test-utils */
 }
 
+.group-header-row {
+  /* used in test-utils */
+}
+
+.group-header-cell {
+  box-sizing: border-box;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-l;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  background-color: awsui.$color-background-cell-shaded;
+  color: awsui.$color-text-body-secondary;
+  font-weight: styles.$font-weight-bold;
+  text-align: start;
+}
+
+.group-header-content {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-xxs;
+}
+
 .skeleton-loading-cell {
   padding-block: 0;
   padding-inline: 0;

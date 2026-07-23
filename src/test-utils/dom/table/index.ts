@@ -102,7 +102,14 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findRows(): Array<ElementWrapper> {
-    return this.findNativeTable().findAll(`tr.${styles.row}:not([aria-hidden])`);
+    return this.findNativeTable().findAll(`tr.${styles.row}:not([aria-hidden]):not(.${styles['group-header-row']})`);
+  }
+
+  /**
+   * Returns all group header rows rendered when the `rowGrouping` property is used.
+   */
+  findRowGroupHeaders(): Array<ElementWrapper> {
+    return this.findNativeTable().findAll(`tr.${styles['group-header-row']}`);
   }
 
   findSelectedRows(): Array<ElementWrapper> {
