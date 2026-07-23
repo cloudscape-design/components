@@ -122,11 +122,11 @@ export default function BulkEditablePage() {
           Bulk inline edit (WIP)
         </Header>
 
-        {lastCommit && (
+        {lastCommit ? (
           <StatusIndicator type="success" data-testid="last-commit">
             {lastCommit}
           </StatusIndicator>
-        )}
+        ) : null}
 
         <Table
           trackBy="Id"
