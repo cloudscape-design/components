@@ -79,6 +79,16 @@ describe('Table skeleton loading', () => {
       expect(skeletonRows).toHaveLength(0);
     });
 
+    test('renders data rows before skeleton rows', () => {
+      const wrapper = renderTable({ items: defaultItems, loading: true, skeleton: { totalRows: 6 } });
+      const lastDataRow = wrapper.findTable()!.findRows().slice(-1)[0].getElement();
+      const skeletonRows = wrapper.findAll('tr[aria-hidden="true"]');
+      expect(skeletonRows).toHaveLength(3);
+      for (const skeletonRow of skeletonRows) {
+        expect(lastDataRow.compareDocumentPosition(skeletonRow.getElement())).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+      }
+    });
+
     test('does not render skeleton rows when loading is false', () => {
       const wrapper = renderTable({ items: defaultItems, loading: false, skeleton: { totalRows: 6 } });
       const skeletonRows = wrapper.findAll('tr[aria-hidden="true"]');
@@ -172,6 +182,21 @@ describe('Table skeleton loading', () => {
       });
 
       expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+    });
+
+    test('renders data rows before automatic skeleton rows', () => {
+      const wrapper = renderTable({
+        items: defaultItems,
+        loading: true,
+        skeleton: { totalRows: 'auto', maxAutoRows: 2 },
+      });
+
+      const lastDataRow = wrapper.findTable()!.findRows().slice(-1)[0].getElement();
+      const skeletonRows = wrapper.findAll('tr[aria-hidden="true"]');
+      expect(skeletonRows.length).toBeGreaterThan(0);
+      for (const skeletonRow of skeletonRows) {
+        expect(lastDataRow.compareDocumentPosition(skeletonRow.getElement())).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+      }
     });
   });
 });
