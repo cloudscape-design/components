@@ -614,6 +614,11 @@ export namespace TableProps {
 
   export interface ColumnWidthsChangeDetail {
     widths: ReadonlyArray<number>;
+    /**
+     * Updated `columnDisplay` array with persisted widths. When `columnDisplay` is provided,
+     * use this to update your preferences state so resized widths survive page reloads.
+     */
+    columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
   }
 
   export interface LiveAnnouncement {
@@ -646,6 +651,11 @@ export namespace TableProps {
     type?: 'column';
     id: string;
     visible: boolean;
+    /**
+     * Persisted column width in pixels. Set this from the `onColumnWidthsChange` event
+     * to restore resized widths across page reloads.
+     */
+    width?: number;
   }
 
   export interface GroupDisplay {
