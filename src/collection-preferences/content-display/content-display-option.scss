@@ -39,3 +39,9 @@
   border-end-start-radius: awsui.$border-radius-item;
   border-end-end-radius: awsui.$border-radius-item;
 }
+
+.content-display-option-lock-icon {
+  display: flex;
+  align-items: center;
+  color: awsui.$color-text-status-inactive;
+}
