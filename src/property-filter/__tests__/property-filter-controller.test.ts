@@ -68,6 +68,7 @@ const defaultFreeTextFiltering: InternalFreeTextFiltering = {
   disabled: false,
   operators: [':', '!:'],
   defaultOperator: ':',
+  getOperatorDescription: () => null,
 };
 
 const customGroupText: readonly GroupText[] = [
