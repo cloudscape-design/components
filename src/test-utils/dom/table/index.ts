@@ -110,6 +110,14 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns rows highlighted as matching the current filter. Only relevant for expandable tables
+   * using `expandableRows.highlightMatched`.
+   */
+  findMatchedRows(): Array<ElementWrapper> {
+    return this.findAllByClassName(styles['row-match-highlight']);
+  }
+
+  /**
    * Alias for findEmptySlot method for compatibility with previous versions
    * @deprecated
    */

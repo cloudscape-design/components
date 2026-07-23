@@ -36,6 +36,7 @@ export interface TableTdElementProps {
   onBlur?: () => void;
   children?: React.ReactNode;
   isEvenRow?: boolean;
+  isMatched?: boolean;
   stripedRows?: boolean;
   isSelection?: boolean;
   hasSelection?: boolean;
@@ -77,6 +78,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onFocus,
       onBlur,
       isEvenRow,
+      isMatched,
       stripedRows,
       isSelection,
       hasSelection,
@@ -132,6 +134,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
           isPrevSelected && styles['body-cell-prev-selected'],
+          isMatched && styles['body-cell-match-highlight'],
           !isEvenRow && stripedRows && styles['body-cell-shaded'],
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],

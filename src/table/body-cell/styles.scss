@@ -221,6 +221,12 @@ $cell-negative-space-vertical: 2px;
   &-shaded {
     background: awsui.$color-background-cell-shaded;
   }
+  // Highlight for rows that match the currently applied filter in expandable tables.
+  // Applied only when `expandableRows.highlightMatched` is enabled. Kept as a background-only
+  // treatment (no border changes) to avoid row height shifts. Selection takes precedence.
+  &-match-highlight:not(.body-cell-selected) {
+    background: awsui.$color-background-status-info;
+  }
   &.has-striped-rows:not(.body-cell-selected):not(.body-cell-last-row) {
     border-block-end-color: awsui.$color-border-cell-shaded;
   }
