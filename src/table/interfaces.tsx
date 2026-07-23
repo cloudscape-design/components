@@ -337,6 +337,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onRowContextMenu?: CancelableEventHandler<TableProps.OnRowContextMenuDetail<T>>;
 
   /**
+   * When set to `true`, clicking anywhere on a table row toggles its selection.
+   * Requires `selectionType` to be set. Interactive cells (such as inline-editable cells,
+   * expandable row toggles, and the selection control itself) are excluded from this behavior.
+   */
+  clickToSelect?: boolean;
+
+  /**
    * If set to `true`, the table header remains visible when the user scrolls down.
    *
    * Do not use `stickyHeader` conditionally. Instead, keep its value constant during the component lifecycle.

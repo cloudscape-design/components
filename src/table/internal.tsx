@@ -129,6 +129,7 @@ const InternalTable = React.forwardRef(
       stickyHeaderVerticalOffset,
       onRowClick,
       onRowContextMenu,
+      clickToSelect,
       wrapLines,
       stripedRows,
       contentDensity,
@@ -297,7 +298,21 @@ const InternalTable = React.forwardRef(
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
-    const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
+    // Build a toggleItem function for click-to-select
+    const onToggleItem = (item: T) => {
+      const selectionProps = selection.getItemSelectionProps?.(item);
+      if (selectionProps) {
+        selectionProps.onChange();
+      }
+    };
+
+    const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({
+      onRowClick,
+      onRowContextMenu,
+      clickToSelect,
+      selectionType: externalSelectionType,
+      onToggleItem,
+    });
 
     const visibleColumnDefinitions = useMemo(
       () => getVisibleColumnDefinitions({ columnDefinitions, columnDisplay, visibleColumns }),
@@ -673,7 +688,11 @@ const InternalTable = React.forwardRef(
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                className={clsx(
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected'],
+                                  clickToSelect && selectionType && styles['row-clickable']
+                                )}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click
