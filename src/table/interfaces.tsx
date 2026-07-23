@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 import { Optional } from '../types/utils';
@@ -462,6 +463,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Renders loader counter that is appended to the loader content in all loader states.
    */
   renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
+  /**
+   * Configures a per-row actions menu (kebab / inline-icon ButtonDropdown) rendered as the last column.
+   * * `items` ((item: T) => ButtonDropdownProps.ItemOrGroup[]) - Returns the dropdown items for the given row.
+   * * `onItemClick` ((detail: ButtonDropdownProps.ItemClickDetails, item: T) => void) - Called when the user clicks an item.
+   * * `ariaLabel` ((item: T) => string) - Provides an accessible label for the trigger button of each row. Defaults to "Actions".
+   * * `disabled` ((item: T) => boolean) - Disables the actions menu trigger for a given row.
+   */
+  rowActions?: TableProps.RowActionsConfig<T>;
 }
 
 export namespace TableProps {
@@ -539,6 +548,13 @@ export namespace TableProps {
     hasDynamicContent?: boolean;
     cell(item: T): React.ReactNode;
   } & SortingColumn<T>;
+
+  export interface RowActionsConfig<T> {
+    items: (item: T) => ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+    onItemClick: (detail: ButtonDropdownProps.ItemClickDetails, item: T) => void;
+    ariaLabel?: (item: T) => string;
+    disabled?: (item: T) => boolean;
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export interface GroupDefinition<T = any> {
