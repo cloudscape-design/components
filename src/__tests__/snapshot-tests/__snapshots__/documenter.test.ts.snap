@@ -23382,7 +23382,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
     {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 
-* operators [Array]: A list of all operators supported for free text filtering. Each entry is either an operator string, or an object with an \`operator\` string and an optional \`match\` function \`(item, text) => boolean\` for custom matching. Custom operator strings are supported and are appended after the built-in operators. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
+* operators [Array]: A list of all operators supported for free text filtering. Each entry is either an operator string, or an object with an \`operator\` string and the following optional properties: a \`match\` function \`(item, text) => boolean\` for custom matching, and a \`description\` string shown next to the operator in the operator dropdown. Custom operator strings are supported and are appended after the built-in operators. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
 * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.",
       "inlineType": {
         "name": "PropertyFilterFreeTextFiltering",
