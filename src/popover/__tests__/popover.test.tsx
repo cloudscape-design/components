@@ -466,3 +466,184 @@ test('does not add portal to the body unless visible', () => {
 
   expect(document.querySelectorAll('body > div')).toHaveLength(1);
 });
+
+describe('triggerType="no-wrapper"', () => {
+  describe('Rendering', () => {
+    it('clones the child element and does not add a wrapper element', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button" id="my-trigger">Open</button>,
+        content: 'Popover content',
+      });
+      // The trigger element should be the button itself, not a span wrapper
+      const trigger = wrapper.findTrigger().getElement();
+      expect(trigger.tagName).toBe('BUTTON');
+      expect(trigger.id).toBe('my-trigger');
+    });
+
+    it('injects aria-haspopup="dialog" onto the child element', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+      });
+      expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-haspopup', 'dialog');
+    });
+
+    it('uses the child element id when provided, rather than generating one', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button" id="custom-id">Open</button>,
+        content: 'Popover content',
+      });
+      expect(wrapper.findTrigger().getElement().id).toBe('custom-id');
+    });
+
+    it('generates a referrer id when child has no id', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+      });
+      expect(wrapper.findTrigger().getElement().id).toBeTruthy();
+    });
+  });
+
+  describe('Visibility', () => {
+    it('opens the popover when the trigger is clicked', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+      });
+      expect(wrapper.findBody()).toBeNull();
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).not.toBeNull();
+    });
+
+    it('closes the popover when a click is fired outside', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+        dismissButton: false,
+      });
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).not.toBeNull();
+      act(() => {
+        document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody()).toBeNull();
+    });
+  });
+
+  describe('Keyboard interaction', () => {
+    it('closes the popover on Escape key', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+        dismissButton: false,
+      });
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).not.toBeNull();
+      act(() => {
+        wrapper.findTrigger().keydown(KeyCode.escape);
+      });
+      expect(wrapper.findBody()).toBeNull();
+    });
+
+    it('closes the popover on Tab key', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+        dismissButton: false,
+      });
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).not.toBeNull();
+      act(() => {
+        wrapper.findTrigger().keydown(KeyCode.tab);
+      });
+      expect(wrapper.findBody()).toBeNull();
+    });
+  });
+
+  describe('Child handler composition', () => {
+    it('calls the child element own onClick in addition to the popover onClick', () => {
+      const childOnClick = jest.fn();
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button" onClick={childOnClick}>Open</button>,
+        content: 'Popover content',
+      });
+      wrapper.findTrigger().click();
+      expect(childOnClick).toHaveBeenCalledTimes(1);
+      expect(wrapper.findBody()).not.toBeNull();
+    });
+
+    it('calls the child element own onKeyDown in addition to the popover onKeyDown', () => {
+      const childOnKeyDown = jest.fn();
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button" onKeyDown={childOnKeyDown}>Open</button>,
+        content: 'Popover content',
+        dismissButton: false,
+      });
+      wrapper.findTrigger().click();
+      act(() => {
+        wrapper.findTrigger().keydown(KeyCode.escape);
+      });
+      expect(childOnKeyDown).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Focus behavior', () => {
+    it('moves focus back to the trigger element on dismiss', () => {
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+      });
+      act(() => {
+        wrapper.findTrigger().click();
+      });
+      act(() => {
+        wrapper.findDismissButton()?.click();
+      });
+      expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+    });
+  });
+
+  describe('ref support', () => {
+    it('focuses the trigger element when focus() is called on the ref', () => {
+      const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+        ref,
+      });
+      act(() => {
+        ref.current?.focus();
+      });
+      expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+    });
+
+    it('dismiss() closes the popover without focusing the trigger', () => {
+      const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+      const wrapper = renderPopover({
+        triggerType: 'no-wrapper',
+        children: <button type="button">Open</button>,
+        content: 'Popover content',
+        ref,
+      });
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody()).not.toBeNull();
+      act(() => {
+        ref.current?.dismiss();
+      });
+      expect(wrapper.findBody()).toBeNull();
+    });
+  });
+});
