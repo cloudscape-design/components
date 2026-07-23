@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Pagination, { PaginationProps } from '~components/pagination';
 import Table, { TableProps } from '~components/table';
 
 import { PermutationsPage } from '../app/templates';
@@ -68,16 +69,26 @@ const ariaLabels: TableProps.AriaLabels<Item> = {
   itemSelectionLabel: (_data, item) => `Select ${item.name}`,
 };
 
+const paginationLabels: PaginationProps.Labels = {
+  nextPageLabel: 'Next page',
+  previousPageLabel: 'Previous page',
+  pageLabel: pageNumber => `Page ${pageNumber} of all pages`,
+};
+
 function getTableLabel(permutation: TableProps<Item>, index: number) {
   const sortingCount = permutation.multiColumnSort?.sortingColumns.length ?? 0;
   const sortingDescription = sortingCount === 0 ? 'no active sort' : `${sortingCount}-column sort`;
   const selectionDescription = permutation.selectionType ? `${permutation.selectionType} selection` : 'no selection';
   const resizingDescription = permutation.resizableColumns ? 'resizable columns' : 'fixed columns';
   const wrappingDescription = permutation.wrapLines ? 'wrapped lines' : 'unwrapped lines';
+  const paginationDescription = permutation.pagination ? 'with pagination' : 'no pagination';
 
-  return `Multi-column sort example ${index + 1}: ${sortingDescription}, ${selectionDescription}, ${resizingDescription}, ${wrappingDescription}`;
+  return `Multi-column sort example ${index + 1}: ${sortingDescription}, ${selectionDescription}, ${resizingDescription}, ${wrappingDescription}, ${paginationDescription}`;
 }
 
+// createPermutations values are rendered by PermutationsView, not React array mapping, so JSX
+// nodes used as prop values (e.g. pagination) do not need a key. Matches table/permutations.page.tsx.
+/* eslint-disable react/jsx-key */
 const permutations = createPermutations<TableProps<Item>>([
   {
     selectionType: [undefined, 'multi'],
@@ -113,6 +124,25 @@ const permutations = createPermutations<TableProps<Item>>([
     columnDefinitions: [longColumnDefinitions],
     resizableColumns: [false, true],
     wrapLines: [false, true],
+  },
+  {
+    // Pagination alignment: the auto-rendered "Clear sort" button and Pagination share the header tools row.
+    selectionType: [undefined],
+    multiColumnSort: [
+      // Pagination alone (no active sort, so no "Clear sort" button).
+      { sortingColumns: [], onChange: noop },
+      // Active two-column sort renders "Clear sort" alongside Pagination.
+      {
+        sortingColumns: [
+          { sortingColumn: { sortingField: 'name' }, isDescending: false },
+          { sortingColumn: { sortingField: 'type' }, isDescending: true },
+        ],
+        onChange: noop,
+      },
+    ],
+    items: [items],
+    columnDefinitions: [columnDefinitions],
+    pagination: [<Pagination currentPageIndex={1} pagesCount={3} ariaLabels={paginationLabels} />],
   },
 ]);
 
