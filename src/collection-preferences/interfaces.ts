@@ -245,6 +245,12 @@ export namespace CollectionPreferencesProps {
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
     groups?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>;
     enableColumnFiltering?: boolean;
+    /**
+     * Specifies the number of leading items that cannot be reordered.
+     * When set, the first `lockedItemsCount` items in the list are pinned to the top
+     * and their drag handles are disabled.
+     */
+    lockedItemsCount?: number;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
     liveAnnouncementDndGroupLabel?: (label: string, count: number) => string;
   }
