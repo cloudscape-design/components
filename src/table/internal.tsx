@@ -180,7 +180,7 @@ const InternalTable = React.forwardRef(
       trackBy,
       ariaLabels,
     });
-    const { allItems, isExpandable } = expandableRows;
+    const { allItems, isExpandable, expandAllItems, collapseAllItems } = expandableRows;
     const { allRows } = useProgressiveLoadingProps({ getLoadingStatus, expandableRows });
     const selectionType = expandableRows.hasGroupSelection ? ('group' as const) : externalSelectionType;
 
@@ -289,8 +289,10 @@ const InternalTable = React.forwardRef(
       () => ({
         scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
         cancelEdit,
+        expandAll: expandAllItems,
+        collapseAll: collapseAllItems,
       }),
-      [cancelEdit]
+      [cancelEdit, expandAllItems, collapseAllItems]
     );
 
     const wrapperRefObject = useRef<HTMLDivElement>(null);

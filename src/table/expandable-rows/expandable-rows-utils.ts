@@ -28,6 +28,8 @@ export interface InternalExpandableRowsProps<T> {
   isExpandable: boolean;
   allItems: readonly T[];
   getExpandableItemProps(item: T): ExpandableItemProps<T>;
+  expandAllItems(): void;
+  collapseAllItems(): void;
   hasGroupSelection: boolean;
   groupSelection: TableProps.GroupSelectionState<T>;
   onGroupSelectionChange?: TableProps.OnGroupSelectionChange<T>;
@@ -113,10 +115,40 @@ export function useExpandableTableProps<T>({
     };
   };
 
+  // Collects every expandable node in the whole tree (regardless of the current expanded state), so that
+  // consumers can expand all rows at once. A node counts as expandable when `isItemExpandable` returns true
+  // for it and it actually has children to reveal.
+  const getAllExpandableItems = (): T[] => {
+    const result: T[] = [];
+    if (!isExpandable) {
+      return result;
+    }
+    const visit = (item: T) => {
+      const children = expandableRows.getItemChildren(item);
+      if ((expandableRows.isItemExpandable(item) ?? true) && children.length > 0) {
+        result.push(item);
+      }
+      children.forEach(visit);
+    };
+    items.forEach(visit);
+    return result;
+  };
+
+  const expandAllItems = () =>
+    fireNonCancelableEvent(expandableRows?.onExpandAllToggle, {
+      expanded: true,
+      expandedItems: getAllExpandableItems(),
+    });
+
+  const collapseAllItems = () =>
+    fireNonCancelableEvent(expandableRows?.onExpandAllToggle, { expanded: false, expandedItems: [] });
+
   return {
     isExpandable,
     allItems,
     getExpandableItemProps,
+    expandAllItems,
+    collapseAllItems,
     hasGroupSelection: !!expandableRows?.groupSelection,
     groupSelection: expandableRows?.groupSelection ?? { inverted: false, toggledItems: [] },
     onGroupSelectionChange: expandableRows?.onGroupSelectionChange,
