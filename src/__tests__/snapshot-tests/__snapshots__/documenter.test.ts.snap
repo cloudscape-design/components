@@ -30831,6 +30831,15 @@ scrolled out of the viewport.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
+      "description": "When \`true\`, the textarea automatically grows and shrinks to fit its content.
+Use \`maxRows\` to cap the maximum number of visible rows.
+When \`autoResize\` is enabled the \`rows\` prop is ignored.",
+      "name": "autoResize",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -30897,6 +30906,14 @@ single form field.",
       "type": "boolean",
     },
     {
+      "description": "The maximum number of rows the textarea will grow to when \`autoResize\` is \`true\`.
+Once the content exceeds this height a scrollbar appears.
+Has no effect when \`autoResize\` is \`false\` or not set.",
+      "name": "maxRows",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "description": "Specifies the name of the control used in HTML forms.",
       "name": "name",
       "optional": true,
@@ -30941,7 +30958,8 @@ Don't use read-only inputs outside a form.",
       "type": "boolean",
     },
     {
-      "description": "Specifies the number of lines of text to set the height to.",
+      "description": "Specifies the number of lines of text to set the height to.
+Ignored when \`autoResize\` is \`true\`.",
       "name": "rows",
       "optional": true,
       "type": "number",
