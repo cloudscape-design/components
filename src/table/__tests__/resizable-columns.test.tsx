@@ -270,7 +270,7 @@ test('should trigger the columnWidthsChange event after a column is resized', ()
   firePointerup(100);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300] });
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [100, 300] }));
 });
 
 test('should provide the value for the last column when it was not defined', () => {
@@ -286,7 +286,7 @@ test('should provide the value for the last column when it was not defined', () 
   firePointerup(100);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300, 120] });
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [100, 300, 120] }));
 });
 
 test('should include hidden columns into the event detail', () => {
@@ -307,7 +307,7 @@ test('should include hidden columns into the event detail', () => {
   firePointerup(140);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [150, 300, 120, 140] });
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [150, 300, 120, 140] }));
 });
 
 test('should update the value for the last column when it is resized', () => {
@@ -319,7 +319,7 @@ test('should update the value for the last column when it is resized', () => {
   firePointerup(400);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [150, 400] });
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [150, 400] }));
 });
 
 test('should not trigger if the previous and the current widths are the same', () => {
@@ -375,7 +375,7 @@ describe('resize with keyboard', () => {
     columnResizerWrapper.keydown(keyCode);
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [140, 300] }));
   });
 
   test('activates keyboard resize with click', () => {
@@ -389,7 +389,7 @@ describe('resize with keyboard', () => {
     columnResizerWrapper.keydown(KeyCode.enter);
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [160, 300] }));
   });
 
   test('submits resize with escape', () => {
@@ -403,7 +403,7 @@ describe('resize with keyboard', () => {
     columnResizerWrapper.keydown(KeyCode.escape);
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [160, 300] }));
   });
 
   test('submits resize on blur', () => {
@@ -417,7 +417,7 @@ describe('resize with keyboard', () => {
     wrapper.findColumnResizer(2)!.focus();
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [160, 300] }));
   });
 
   test('prevents resizing to below the min-width', () => {
@@ -681,7 +681,7 @@ describe('UAP buttons', () => {
 
     wrapper.findColumnResizer(1)!.click();
     findDragHandle().findVisibleDirectionButtonInlineStart()!.click();
-    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [130] }));
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [130] })));
   });
 
   test('resizes the column when inline-end button is pressed', async () => {
@@ -696,6 +696,95 @@ describe('UAP buttons', () => {
 
     wrapper.findColumnResizer(1)!.click();
     findDragHandle().findVisibleDirectionButtonInlineEnd()!.click();
-    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [170] }));
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ widths: [170] })));
+  });
+});
+
+describe('column width persistence via columnDisplay', () => {
+  beforeEach(() => {
+    // Reset direction in case previous describe blocks left it as 'rtl'
+    document.body.style.direction = '';
+  });
+
+  const columnDisplayProps: TableProps.ColumnDisplay[] = [
+    { id: 'id', visible: true },
+    { id: 'description', visible: true },
+  ];
+
+  test('event detail includes columnDisplay with updated widths when columnDisplay prop is provided', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDisplay={columnDisplayProps}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(100);
+    firePointerup(100);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const detail = onChange.mock.calls[0][0];
+    expect(detail.widths).toEqual([100, 300]);
+    expect(detail.columnDisplay).toEqual([
+      { id: 'id', visible: true, width: 100 },
+      { id: 'description', visible: true, width: 300 },
+    ]);
+  });
+
+  test('event detail has no columnDisplay when columnDisplay prop is not provided', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(100);
+    firePointerup(100);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const detail = onChange.mock.calls[0][0];
+    expect(detail.widths).toEqual([100, 300]);
+    expect(detail.columnDisplay).toBeUndefined();
+  });
+
+  test('persisted width from columnDisplay overrides columnDefinitions width on render', () => {
+    const columnDisplayWithWidths: TableProps.ColumnDisplay[] = [
+      { id: 'id', visible: true, width: 250 },
+      { id: 'description', visible: true, width: 350 },
+    ];
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDisplay={columnDisplayWithWidths} />);
+
+    // The first column header should reflect the persisted width
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '250px' });
+  });
+
+  test('hidden columns are excluded from visible definitions but their widths are preserved in the event', () => {
+    const onChange = jest.fn();
+    const columnDisplayWithHidden: TableProps.ColumnDisplay[] = [
+      { id: 'id', visible: true },
+      { id: 'description', visible: false },
+    ];
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDisplay={columnDisplayWithHidden}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(100);
+    firePointerup(100);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const detail = onChange.mock.calls[0][0];
+    // widths array covers all columnDefinitions (including hidden)
+    expect(detail.widths).toHaveLength(2);
+    // columnDisplay reflects the updated widths for all columns
+    expect(detail.columnDisplay).toEqual([
+      { id: 'id', visible: true, width: 100 },
+      { id: 'description', visible: false, width: 300 },
+    ]);
   });
 });
