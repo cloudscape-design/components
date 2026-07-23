@@ -52,6 +52,12 @@ export interface StepsProps extends BaseComponentProps {
    * Sets the `aria-describedby` property on the progress steps container.
    */
   ariaDescribedby?: string;
+  /**
+   * Style overrides for the Steps component.
+   * Refer to the [style](/components/steps/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: StepsProps.Style;
 }
 
 export namespace StepsProps {
@@ -67,4 +73,16 @@ export namespace StepsProps {
   export type Orientation = 'vertical' | 'horizontal';
 
   export type ConnectorLinesVariant = 'visible' | 'none';
+
+  export interface Style {
+    /**
+     * Style overrides for the connector lines between steps.
+     */
+    connector?: {
+      /**
+       * Sets the color of the connector lines. Accepts any valid CSS color value.
+       */
+      color?: string;
+    };
+  }
 }

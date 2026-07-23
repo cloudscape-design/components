@@ -9,6 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { SomeRequired } from '../internal/types';
 import InternalStatusIndicator, { InternalStatusIcon } from '../status-indicator/internal';
 import { StepsProps } from './interfaces';
+import { getStepsStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -116,6 +117,7 @@ const InternalSteps = ({
   steps,
   orientation,
   connectorLines,
+  style,
   renderStep,
   ariaLabel,
   ariaLabelledby,
@@ -128,6 +130,7 @@ const InternalSteps = ({
     <div
       {...props}
       className={clsx(styles.root, props.className, orientation === 'horizontal' ? styles.horizontal : styles.vertical)}
+      style={getStepsStyles(style)}
       ref={__internalRootRef}
     >
       <ol
