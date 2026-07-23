@@ -68,6 +68,7 @@ import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } fro
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
+import { useVirtualScroll } from './use-virtual-scroll';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 
 import buttonStyles from '../button/styles.css.js';
@@ -152,6 +153,7 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      virtualScroll,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -295,6 +297,21 @@ const InternalTable = React.forwardRef(
 
     const wrapperRefObject = useRef<HTMLDivElement>(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
+
+    // Experimental opt-in windowed (virtual) scrolling. Additive: when disabled the hook is a
+    // no-op and every row is rendered as before.
+    const virtualScrollConfig = virtualScroll === true ? {} : virtualScroll || undefined;
+    const virtualScrollState = useVirtualScroll({
+      enabled: !!virtualScroll,
+      itemCount: allRows.length,
+      containerRef: wrapperRefObject,
+      rowHeight: virtualScrollConfig?.rowHeight,
+      overscan: virtualScrollConfig?.overscan,
+    });
+    const renderStartIndex = virtualScrollState.enabled ? virtualScrollState.startIndex : 0;
+    const renderedRows = virtualScrollState.enabled
+      ? allRows.slice(virtualScrollState.startIndex, virtualScrollState.endIndex)
+      : allRows;
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
@@ -638,189 +655,210 @@ const InternalTable = React.forwardRef(
                           />
                         </tr>
                       ) : (
-                        allRows.map((row, rowIndex) => {
-                          const isFirstRow = rowIndex === 0;
-                          const hasSkeletonBelow =
-                            loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
-                          const isLastDataRow = rowIndex === allRows.length - 1;
-                          const isLastRow = isLastDataRow && !hasSkeletonBelow;
-                          const rowExpandableProps =
-                            row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
-                          const rowRoleProps = getTableRowRoleProps({
-                            tableRole,
-                            firstIndex,
-                            rowIndex,
-                            headerRowCount,
-                            level: row.type === 'loader' ? row.level : undefined,
-                            ...rowExpandableProps,
-                          });
-                          const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
-                          const sharedCellProps = {
-                            isFirstRow,
-                            isLastRow,
-                            isSelected: hasSelection && isRowSelected(row),
-                            isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
-                            isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
-                            isEvenRow: rowIndex % 2 === 0,
-                            stripedRows,
-                            hasSelection,
-                            hasFooter,
-                            stickyState,
-                            tableRole,
-                          };
-                          if (row.type === 'data') {
-                            const rowId = `${getTableItemKey(row.item)}`;
-                            return (
-                              <tr
-                                key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
-                                onFocus={({ currentTarget }) => {
-                                  // When an element inside table row receives focus we want to adjust the scroll.
-                                  // However, that behavior is unwanted when the focus is received as result of a click
-                                  // as it causes the click to never reach the target element.
-                                  if (!currentTarget.contains(getMouseDownTarget())) {
-                                    stickyHeaderRef.current?.scrollToRow(currentTarget);
+                        <>
+                          {virtualScrollState.enabled && virtualScrollState.topPadding > 0 && (
+                            <tr aria-hidden="true" className={styles['virtual-scroll-spacer']}>
+                              <td
+                                colSpan={totalColumnsCount}
+                                style={{ padding: 0, height: virtualScrollState.topPadding }}
+                              />
+                            </tr>
+                          )}
+                          {renderedRows.map((row, localRowIndex) => {
+                            const rowIndex = renderStartIndex + localRowIndex;
+                            const isFirstRow = rowIndex === 0;
+                            const hasSkeletonBelow =
+                              loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
+                            const isLastDataRow = rowIndex === allRows.length - 1;
+                            const isLastRow = isLastDataRow && !hasSkeletonBelow;
+                            const rowExpandableProps =
+                              row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
+                            const rowRoleProps = getTableRowRoleProps({
+                              tableRole,
+                              firstIndex,
+                              rowIndex,
+                              headerRowCount,
+                              level: row.type === 'loader' ? row.level : undefined,
+                              ...rowExpandableProps,
+                            });
+                            const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
+                            const sharedCellProps = {
+                              isFirstRow,
+                              isLastRow,
+                              isSelected: hasSelection && isRowSelected(row),
+                              isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
+                              isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
+                              isEvenRow: rowIndex % 2 === 0,
+                              stripedRows,
+                              hasSelection,
+                              hasFooter,
+                              stickyState,
+                              tableRole,
+                            };
+                            if (row.type === 'data') {
+                              const rowId = `${getTableItemKey(row.item)}`;
+                              return (
+                                <tr
+                                  key={rowId}
+                                  className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                  onFocus={({ currentTarget }) => {
+                                    // When an element inside table row receives focus we want to adjust the scroll.
+                                    // However, that behavior is unwanted when the focus is received as result of a click
+                                    // as it causes the click to never reach the target element.
+                                    if (!currentTarget.contains(getMouseDownTarget())) {
+                                      stickyHeaderRef.current?.scrollToRow(currentTarget);
+                                    }
+                                  }}
+                                  {...focusMarkers.item}
+                                  onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
+                                  onContextMenu={
+                                    onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
                                   }
-                                }}
-                                {...focusMarkers.item}
-                                onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
-                                onContextMenu={
-                                  onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
-                                }
-                                {...rowRoleProps}
-                              >
-                                {selection.getItemSelectionProps && (
-                                  <TableBodySelectionCell
-                                    {...sharedCellProps}
-                                    columnId={selectionColumnId}
-                                    selectionControlProps={{
-                                      ...selection.getItemSelectionProps(row.item),
-                                      onFocusDown: moveFocusDown,
-                                      onFocusUp: moveFocusUp,
-                                      rowIndex,
-                                      itemKey: rowId,
-                                    }}
-                                    verticalAlign={cellVerticalAlign}
-                                    tableVariant={computedVariant}
-                                  />
-                                )}
-
-                                {visibleColumnDefinitions.map((column, colIndex) => {
-                                  const colId = `${getColumnKey(column, colIndex)}`;
-                                  const cellId = { row: rowId, col: colId };
-                                  const isEditing = cellEditing.checkEditing(cellId);
-                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
-                                  const isEditable = !!column.editConfig && !cellEditing.isLoading;
-                                  const cellExpandableProps =
-                                    isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
-                                  const counter = column.counter?.({
-                                    item: row.item,
-                                    itemsCount: rowExpandableProps?.itemsCount,
-                                    selectedItemsCount: rowExpandableProps?.selectedItemsCount,
-                                  });
-
-                                  const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
-                                    component: {
-                                      innerContext: {
-                                        position: `${rowIndex + 1},${colIndex + 1}`,
-                                        columnId: column.id ? `${column.id}` : '',
-                                        columnLabel: {
-                                          selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
-                                          root: 'component',
-                                        },
-                                        item: rowId,
-                                      } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
-                                    },
-                                  };
-
-                                  return (
-                                    <TableBodyCell
-                                      key={colId}
+                                  {...rowRoleProps}
+                                >
+                                  {selection.getItemSelectionProps && (
+                                    <TableBodySelectionCell
                                       {...sharedCellProps}
-                                      resizableStyle={{
-                                        width: column.width,
-                                        minWidth: column.minWidth,
-                                        maxWidth: column.maxWidth,
+                                      columnId={selectionColumnId}
+                                      selectionControlProps={{
+                                        ...selection.getItemSelectionProps(row.item),
+                                        onFocusDown: moveFocusDown,
+                                        onFocusUp: moveFocusUp,
+                                        rowIndex,
+                                        itemKey: rowId,
                                       }}
-                                      ariaLabels={ariaLabels}
-                                      column={column}
-                                      item={row.item}
-                                      wrapLines={wrapLines}
-                                      isEditable={isEditable}
-                                      isEditing={isEditing}
-                                      isRowHeader={column.isRowHeader}
-                                      successfulEdit={successfulEdit}
-                                      resizableColumns={resizableColumns}
-                                      onEditStart={() => cellEditing.startEdit(cellId)}
-                                      onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
-                                      submitEdit={cellEditing.submitEdit}
+                                      verticalAlign={cellVerticalAlign}
+                                      tableVariant={computedVariant}
+                                    />
+                                  )}
+
+                                  {visibleColumnDefinitions.map((column, colIndex) => {
+                                    const colId = `${getColumnKey(column, colIndex)}`;
+                                    const cellId = { row: rowId, col: colId };
+                                    const isEditing = cellEditing.checkEditing(cellId);
+                                    const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
+                                    const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                    const cellExpandableProps =
+                                      isExpandable && colIndex === 0 ? rowExpandableProps : undefined;
+                                    const counter = column.counter?.({
+                                      item: row.item,
+                                      itemsCount: rowExpandableProps?.itemsCount,
+                                      selectedItemsCount: rowExpandableProps?.selectedItemsCount,
+                                    });
+
+                                    const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
+                                      component: {
+                                        innerContext: {
+                                          position: `${rowIndex + 1},${colIndex + 1}`,
+                                          columnId: column.id ? `${column.id}` : '',
+                                          columnLabel: {
+                                            selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
+                                            root: 'component',
+                                          },
+                                          item: rowId,
+                                        } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
+                                      },
+                                    };
+
+                                    return (
+                                      <TableBodyCell
+                                        key={colId}
+                                        {...sharedCellProps}
+                                        resizableStyle={{
+                                          width: column.width,
+                                          minWidth: column.minWidth,
+                                          maxWidth: column.maxWidth,
+                                        }}
+                                        ariaLabels={ariaLabels}
+                                        column={column}
+                                        item={row.item}
+                                        wrapLines={wrapLines}
+                                        isEditable={isEditable}
+                                        isEditing={isEditing}
+                                        isRowHeader={column.isRowHeader}
+                                        successfulEdit={successfulEdit}
+                                        resizableColumns={resizableColumns}
+                                        onEditStart={() => cellEditing.startEdit(cellId)}
+                                        onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
+                                        submitEdit={cellEditing.submitEdit}
+                                        columnId={column.id ?? colIndex}
+                                        colIndex={colIndex + colIndexOffset}
+                                        verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                        tableVariant={computedVariant}
+                                        counter={counter}
+                                        {...cellExpandableProps}
+                                        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+                                      />
+                                    );
+                                  })}
+                                </tr>
+                              );
+                            }
+                            const loaderSelectionProps =
+                              selection.getLoaderSelectionProps && selection.getLoaderSelectionProps(row.item);
+                            const rowSelection = selectionType === 'group' ? loaderSelectionProps : undefined;
+                            const loaderContent = getLoaderContent({
+                              item: row.item,
+                              loadingStatus: row.status,
+                              renderLoaderPending,
+                              renderLoaderLoading,
+                              renderLoaderError,
+                              renderLoaderEmpty,
+                            });
+                            const loaderCounter = renderLoaderCounter?.({
+                              item: row.item,
+                              loadingStatus: row.status,
+                              selected: !!rowSelection?.checked,
+                            });
+                            return (
+                              loaderContent && (
+                                <tr
+                                  key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                                  className={styles.row}
+                                  {...rowRoleProps}
+                                >
+                                  {selectionType ? (
+                                    <TableBodySelectionCell
+                                      {...sharedCellProps}
+                                      columnId={selectionColumnId}
+                                      verticalAlign={cellVerticalAlign}
+                                      tableVariant={computedVariant}
+                                      selectionControlProps={
+                                        selectionType === 'group' ? loaderSelectionProps : undefined
+                                      }
+                                      isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
+                                    />
+                                  ) : null}
+                                  {visibleColumnDefinitions.map((column, colIndex) => (
+                                    <TableLoaderCell
+                                      key={getColumnKey(column, colIndex)}
+                                      {...sharedCellProps}
+                                      wrapLines={false}
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
-                                      verticalAlign={column.verticalAlign ?? cellVerticalAlign}
-                                      tableVariant={computedVariant}
-                                      counter={counter}
-                                      {...cellExpandableProps}
-                                      {...getAnalyticsMetadataAttribute(analyticsMetadata)}
-                                    />
-                                  );
-                                })}
-                              </tr>
+                                      isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
+                                      isRowHeader={colIndex === 0}
+                                      level={row.level}
+                                      item={row.item}
+                                      trackBy={trackBy}
+                                      counter={loaderCounter}
+                                    >
+                                      {loaderContent}
+                                    </TableLoaderCell>
+                                  ))}
+                                </tr>
+                              )
                             );
-                          }
-                          const loaderSelectionProps =
-                            selection.getLoaderSelectionProps && selection.getLoaderSelectionProps(row.item);
-                          const rowSelection = selectionType === 'group' ? loaderSelectionProps : undefined;
-                          const loaderContent = getLoaderContent({
-                            item: row.item,
-                            loadingStatus: row.status,
-                            renderLoaderPending,
-                            renderLoaderLoading,
-                            renderLoaderError,
-                            renderLoaderEmpty,
-                          });
-                          const loaderCounter = renderLoaderCounter?.({
-                            item: row.item,
-                            loadingStatus: row.status,
-                            selected: !!rowSelection?.checked,
-                          });
-                          return (
-                            loaderContent && (
-                              <tr
-                                key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                                className={styles.row}
-                                {...rowRoleProps}
-                              >
-                                {selectionType ? (
-                                  <TableBodySelectionCell
-                                    {...sharedCellProps}
-                                    columnId={selectionColumnId}
-                                    verticalAlign={cellVerticalAlign}
-                                    tableVariant={computedVariant}
-                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
-                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
-                                  />
-                                ) : null}
-                                {visibleColumnDefinitions.map((column, colIndex) => (
-                                  <TableLoaderCell
-                                    key={getColumnKey(column, colIndex)}
-                                    {...sharedCellProps}
-                                    wrapLines={false}
-                                    columnId={column.id ?? colIndex}
-                                    colIndex={colIndex + colIndexOffset}
-                                    isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
-                                    isRowHeader={colIndex === 0}
-                                    level={row.level}
-                                    item={row.item}
-                                    trackBy={trackBy}
-                                    counter={loaderCounter}
-                                  >
-                                    {loaderContent}
-                                  </TableLoaderCell>
-                                ))}
-                              </tr>
-                            )
-                          );
-                        })
+                          })}
+                          {virtualScrollState.enabled && virtualScrollState.bottomPadding > 0 && (
+                            <tr aria-hidden="true" className={styles['virtual-scroll-spacer']}>
+                              <td
+                                colSpan={totalColumnsCount}
+                                style={{ padding: 0, height: virtualScrollState.bottomPadding }}
+                              />
+                            </tr>
+                          )}
+                        </>
                       )}
                       {loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0 && (
                         <SkeletonRows

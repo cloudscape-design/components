@@ -71,6 +71,21 @@ export interface TableProps<T = any> extends BaseComponentProps {
   skeleton?: TableProps.SkeletonConfig;
 
   /**
+   * Enables experimental windowed (virtual) scrolling for the table body. When set, only the
+   * rows within (and near) the visible viewport are rendered to the DOM, which keeps very large
+   * tables performant. Pass `true` to enable with defaults, or an object to configure it:
+   * * `rowHeight` (number) - Estimated height of a single row in pixels. Used to size the virtual
+   *    window. Defaults to `40`. **Note:** v0 assumes a uniform row height.
+   * * `overscan` (number) - Number of additional rows rendered above and below the viewport to
+   *    reduce blank areas while scrolling. Defaults to `5`.
+   *
+   * The table must be rendered inside a scroll container with a bounded height for virtualization
+   * to take effect. This API is currently experimental.
+   * @awsuiSystem core
+   */
+  virtualScroll?: boolean | TableProps.VirtualScrollConfig;
+
+  /**
    * Specifies a property that uniquely identifies an individual item.
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
@@ -708,6 +723,19 @@ export namespace TableProps {
 
   export interface SkeletonConfig {
     totalRows: number;
+  }
+
+  export interface VirtualScrollConfig {
+    /**
+     * Estimated height of a single row in pixels. Used to size the virtual window.
+     * Defaults to `40`. v0 assumes a uniform row height.
+     */
+    rowHeight?: number;
+    /**
+     * Number of additional rows rendered above and below the viewport to reduce
+     * blank areas while scrolling. Defaults to `5`.
+     */
+    overscan?: number;
   }
 }
 

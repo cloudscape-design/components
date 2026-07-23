@@ -29163,6 +29163,33 @@ It is also used in the following situations:
       "visualRefreshTag": "\`embedded\`, \`stacked\`, and \`full-page\` variants",
     },
     {
+      "description": "Enables experimental windowed (virtual) scrolling for the table body. When set, only the
+rows within (and near) the visible viewport are rendered to the DOM, which keeps very large
+tables performant. Pass \`true\` to enable with defaults, or an object to configure it:
+* \`rowHeight\` (number) - Estimated height of a single row in pixels. Used to size the virtual
+   window. Defaults to \`40\`. **Note:** v0 assumes a uniform row height.
+* \`overscan\` (number) - Number of additional rows rendered above and below the viewport to
+   reduce blank areas while scrolling. Defaults to \`5\`.
+
+The table must be rendered inside a scroll container with a bounded height for virtualization
+to take effect. This API is currently experimental.",
+      "inlineType": {
+        "name": "boolean | TableProps.VirtualScrollConfig",
+        "type": "union",
+        "values": [
+          "false",
+          "true",
+          "TableProps.VirtualScrollConfig",
+        ],
+      },
+      "name": "virtualScroll",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "boolean | TableProps.VirtualScrollConfig",
+    },
+    {
       "deprecatedTag": "Replaced by \`columnDisplay\`.",
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
 
