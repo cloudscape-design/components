@@ -668,6 +668,21 @@ export namespace TableProps {
     totalItemsCount?: number;
     getSelectedItemsCount?: (item: T) => number;
     totalSelectedItemsCount?: number;
+
+    /**
+     * When set to `true`, ancestor (expanded parent) rows remain stuck to the top of the
+     * table while the user scrolls through their descendant rows, similar to sticky section
+     * headers. As the user scrolls deeper, each expanded parent level stacks below the
+     * sticky header, reflecting the user's current position in the hierarchy.
+     *
+     * This is an experimental, opt-in enhancement (v0) built on top of the browser's native
+     * `position: sticky`. It is only effective together with `stickyHeader`. Row height is
+     * currently approximated, so rows with wrapped content may overlap slightly.
+     *
+     * Do not use `stickyAncestorRows` conditionally. Instead, keep its value constant during
+     * the component lifecycle.
+     */
+    stickyAncestorRows?: boolean;
   }
 
   export type OnExpandableItemToggle<T> = NonCancelableEventHandler<ExpandableItemToggleDetail<T>>;
