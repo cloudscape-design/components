@@ -148,6 +148,9 @@ export interface VirtualRow<T> {
     buttonProps: React.ButtonHTMLAttributes<HTMLButtonElement>;
     cellProps: React.HTMLAttributes<HTMLElement> & { 'aria-colindex': 1 };
     isExpanded: boolean;
+    /** Zero-arg toggle for the row's expansion, for skins that render a toggle component
+     *  (e.g. the shared `ExpandToggleButton`) rather than spreading `buttonProps`. */
+    onToggle: () => void;
   } | null;
   /** The VALID grid child model for arbitrary expanded content (`role="row"` ->
    *  full-width `role="gridcell"` `aria-colspan` -> labeled `role="region"`). Present only

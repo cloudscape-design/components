@@ -24,7 +24,7 @@ export default class VirtualTableWrapper extends ComponentWrapper {
 
   /** The disclosure toggle button for a data row, or null if the row is outside the window. */
   findExpandToggle(dataIndex: number): ElementWrapper | null {
-    return this.findRowByIndex(dataIndex)?.findByClassName(styles['disclosure-button']) ?? null;
+    return this.findRowByIndex(dataIndex)?.find(`.${styles['disclosure-cell']} button`) ?? null;
   }
 
   /** The labeled expanded region for a data row, or null if not expanded/windowed. */

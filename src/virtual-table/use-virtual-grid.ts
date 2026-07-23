@@ -300,6 +300,7 @@ export function useVirtualGrid<T>(config: VirtualGridConfig<T>): VirtualGrid<T> 
                   'aria-label': expandButtonLabel?.(item, isExpanded),
                   onClick: () => setExpanded(item, !isExpanded),
                 } as React.ButtonHTMLAttributes<HTMLButtonElement>,
+                onToggle: () => setExpanded(item, !isExpanded),
               }
             : null;
 
