@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 'use client';
 import React, { Ref, useRef } from 'react';
+import clsx from 'clsx';
 
 import { DateRangePickerProps } from '../date-range-picker/interfaces';
 import RelativeRangePicker from '../date-range-picker/relative-range';
@@ -11,6 +12,8 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { DateRangePickerPresetsProps } from './interfaces';
+
+import testutilStyles from '../date-range-picker/test-classes/styles.css.js';
 
 export { DateRangePickerPresetsProps };
 
@@ -43,7 +46,7 @@ const DateRangePickerPresets = React.forwardRef(
     };
 
     return (
-      <div ref={__internalRootRef} {...baseProps}>
+      <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, testutilStyles.root)}>
         <div ref={innerRef}>
           <RelativeRangePicker
             dateOnly={dateOnly}

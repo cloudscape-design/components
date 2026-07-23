@@ -12319,6 +12319,497 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for date-range-picker-presets matches the snapshot: date-range-picker-presets 1`] = `
+{
+  "dashCaseName": "date-range-picker-presets",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Fired whenever the user selects or modifies a relative range.
+The event \`detail.value\` contains the newly chosen range.",
+      "detailInlineType": {
+        "name": "DateRangePickerPresetsProps.ChangeDetail",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "DateRangePickerProps.RelativeValue",
+              "properties": [
+                {
+                  "name": "amount",
+                  "optional": false,
+                  "type": "number",
+                },
+                {
+                  "name": "key",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "relative",
+                    "type": "union",
+                    "values": [
+                      "relative",
+                    ],
+                  },
+                  "name": "type",
+                  "optional": false,
+                  "type": "string",
+                },
+                {
+                  "inlineType": {
+                    "name": "DateRangePickerProps.TimeUnit",
+                    "type": "union",
+                    "values": [
+                      "day",
+                      "hour",
+                      "minute",
+                      "month",
+                      "second",
+                      "year",
+                      "week",
+                    ],
+                  },
+                  "name": "unit",
+                  "optional": false,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "value",
+            "optional": false,
+            "type": "DateRangePickerProps.RelativeValue",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "DateRangePickerPresetsProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets browser focus onto the first interactive element inside the component.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "DateRangePickerPresets",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies which time units to allow in the custom relative range control.
+When omitted, all units appropriate for the \`dateOnly\` / \`granularity\` setting are shown.",
+      "name": "customRelativeRangeUnits",
+      "optional": true,
+      "type": "Array<DateRangePickerProps.TimeUnit>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Hides time-based units (seconds, minutes, hours) from the custom-range unit
+selector and restricts presets to date-only units.
+
+Default: \`false\`.",
+      "name": "dateOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'day'",
+      "description": "Specifies the granularity at which users will be able to select a date.
+Defaults to \`day\`.",
+      "inlineType": {
+        "name": "DateGranularity",
+        "type": "union",
+        "values": [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.
+Shares the same shape as \`DateRangePickerProps.I18nStrings\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "DateRangePickerProps.I18nStrings",
+        "properties": [
+          {
+            "name": "absoluteModeTitle",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "applyButtonLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaDescribedby",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabelledby",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "cancelButtonLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "clearButtonLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "customRelativeRangeDurationLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "customRelativeRangeDurationPlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "customRelativeRangeOptionDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "customRelativeRangeOptionLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "customRelativeRangeUnitLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "endDateLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "endMonthLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "endTimeLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(value: DateRangePickerProps.RelativeValue) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "DateRangePickerProps.RelativeValue",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "formatRelativeRange",
+            "optional": true,
+            "type": "((value: DateRangePickerProps.RelativeValue) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(unit: DateRangePickerProps.TimeUnit, value: number) => string",
+              "parameters": [
+                {
+                  "name": "unit",
+                  "type": "DateRangePickerProps.TimeUnit",
+                },
+                {
+                  "name": "value",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "formatUnit",
+            "optional": true,
+            "type": "((unit: DateRangePickerProps.TimeUnit, value: number) => string)",
+          },
+          {
+            "name": "isoDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "isoMonthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "modeSelectionLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "monthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "nextMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "previousYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "relativeModeTitle",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "relativeRangeSelectionHeading",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "relativeRangeSelectionMonthlyDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(startDate: string, endDate: string) => string",
+              "parameters": [
+                {
+                  "name": "startDate",
+                  "type": "string",
+                },
+                {
+                  "name": "endDate",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "renderSelectedAbsoluteRangeAriaLive",
+            "optional": true,
+            "type": "((startDate: string, endDate: string) => string)",
+          },
+          {
+            "name": "slashedDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedDateTimeConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedMonthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "startDateLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "startMonthLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "startTimeLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "timePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "todayAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DateRangePickerProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "[]",
+      "description": "A list of relative time ranges shown as preset options.",
+      "name": "relativeOptions",
+      "optional": false,
+      "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
+    },
+    {
+      "description": "Specifies custom content to fully override the presets UI.
+When provided, all default preset and custom-range controls are replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RelativeRangeControl",
+        "parameters": [
+          {
+            "name": "selectedRange",
+            "type": "DateRangePickerProps.RelativeValue | null",
+          },
+          {
+            "name": "setSelectedRange",
+            "type": "(value: DateRangePickerProps.RelativeValue) => void",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RelativeRangeControl",
+    },
+    {
+      "defaultValue": "null",
+      "description": "The current relative-range value. When \`null\` or \`undefined\`, no preset is selected.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RelativeValue",
+        "properties": [
+          {
+            "name": "amount",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "key",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "relative",
+              "type": "union",
+              "values": [
+                "relative",
+              ],
+            },
+            "name": "type",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "DateRangePickerProps.TimeUnit",
+              "type": "union",
+              "values": [
+                "day",
+                "hour",
+                "minute",
+                "month",
+                "second",
+                "year",
+                "week",
+              ],
+            },
+            "name": "unit",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "value",
+      "optional": false,
+      "type": "DateRangePickerProps.RelativeValue | null",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for divider matches the snapshot: divider 1`] = `
 {
   "dashCaseName": "divider",
@@ -40274,6 +40765,38 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the custom-range duration input.",
+          "name": "findCustomRelativeRangeDuration",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom-range unit select.",
+          "name": "findCustomRelativeRangeUnit",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "SelectWrapper",
+          },
+        },
+        {
+          "description": "Returns the radio group containing the preset options.",
+          "name": "findRelativeRangeRadioGroup",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "RadioGroupWrapper",
+          },
+        },
+      ],
+      "name": "DateRangePickerPresetsWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the label element, or \`null\` if no label is set.",
           "name": "findLabel",
           "parameters": [],
@@ -50864,6 +51387,38 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the custom-range duration input.",
+          "name": "findCustomRelativeRangeDuration",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "InputWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom-range unit select.",
+          "name": "findCustomRelativeRangeUnit",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "SelectWrapper",
+          },
+        },
+        {
+          "description": "Returns the radio group containing the preset options.",
+          "name": "findRelativeRangeRadioGroup",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "RadioGroupWrapper",
+          },
+        },
+      ],
+      "name": "DateRangePickerPresetsWrapper",
     },
     {
       "methods": [
