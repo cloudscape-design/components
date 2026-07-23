@@ -242,7 +242,7 @@ filter search icon.
   @supports (position: sticky) {
     position: sticky;
 
-    > * {
+    > .body-cell {
       background: awsui.$color-background-container-content;
     }
   }
