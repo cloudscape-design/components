@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
+import { getScrollableParents } from '../internal/utils/scrollable-containers';
+
 const AUTO_SKELETON_VIEWPORT_BUFFER = 16;
 const SKELETON_ROW_SELECTOR = 'tr[aria-hidden="true"]';
 
@@ -32,30 +34,15 @@ function getDocumentViewportBottom() {
   return document.documentElement.clientHeight || window.innerHeight;
 }
 
-function getScrollContainers(element: HTMLElement) {
-  const scrollContainers: HTMLElement[] = [];
-  let { parentElement: ancestor } = element;
-
-  while (ancestor) {
-    const { overflowY } = window.getComputedStyle(ancestor);
-    if (overflowY === 'auto' || overflowY === 'scroll') {
-      scrollContainers.push(ancestor);
-    }
-    ({ parentElement: ancestor } = ancestor);
-  }
-
-  return scrollContainers;
-}
-
 function getViewportBottom(element: HTMLElement) {
-  return getScrollContainers(element).reduce(
+  return getScrollableParents(element).reduce(
     (viewportBottom, scrollContainer) => Math.min(viewportBottom, scrollContainer.getBoundingClientRect().bottom),
     getDocumentViewportBottom()
   );
 }
 
 function getOverflowHeight(element: HTMLElement) {
-  const scrollContainer = getScrollContainers(element)[0];
+  const scrollContainer = getScrollableParents(element)[0];
   if (scrollContainer) {
     return Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
   }
@@ -66,7 +53,7 @@ function getOverflowHeight(element: HTMLElement) {
   );
 }
 
-export function calculateAutoSkeletonRows({
+function calculateAutoSkeletonRows({
   maxRows,
   rowHeight,
   skeletonRowBottom,
@@ -83,7 +70,7 @@ export function calculateAutoSkeletonRows({
   return Math.max(1, Math.min(maxRows ?? Number.POSITIVE_INFINITY, rows));
 }
 
-export function calculateAutoSkeletonRowReduction({
+function calculateAutoSkeletonRowReduction({
   currentRows,
   overflowHeight,
   rowHeight,
@@ -164,7 +151,7 @@ export function useAutoSkeletonRows({
     const resizeObserver = new ResizeObserver(updateRows);
     resizeObserver.observe(tableRoot);
     resizeObserver.observe(tableWrapper);
-    getScrollContainers(tableWrapper).forEach(scrollContainer => resizeObserver.observe(scrollContainer));
+    getScrollableParents(tableWrapper).forEach(scrollContainer => resizeObserver.observe(scrollContainer));
     window.addEventListener('resize', updateRows);
 
     return () => {
