@@ -369,12 +369,13 @@ export default function CloudWatchPatternsPage() {
         <Button onClick={toggleDiffMode}>{diffMode ? 'Exit compare mode' : 'Compare across time'}</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable<LogPattern>
             items={items}
             trackBy={item => item.id}
             columnDefinitions={columnDefinitions}
             estimatedRowHeight={23}
+            height={480}
             overscan={20}
             stickyHeader={true}
             resizableColumns={true}

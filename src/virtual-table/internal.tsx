@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -38,6 +39,8 @@ export default function InternalVirtualTable<T>({
   getRowHeight,
   getExpandedRowHeight,
   overscan = 10,
+  height,
+  maxHeight,
   onVisibleRangeChange,
   getExpandedContent,
   expandedItems,
@@ -125,6 +128,12 @@ export default function InternalVirtualTable<T>({
   // reference). Cell-level (2D) arrow navigation and focus-restore-on-recycle coverage
   // are exercised in impl-F1-A1-tests-a11y.
   const [activeId, setActiveId] = useState<string | null>(null);
+  // The active row is a keyboard-navigation concept: it is only meaningful — and
+  // only rendered — while the grid actually holds focus. Gating on real focus stops
+  // the default active row (items[0]) from advertising itself via
+  // aria-activedescendant and painting an active outline on initial load (before any
+  // user interaction), while keeping focus on the always-present container tab stop.
+  const [hasFocus, setHasFocus] = useState(false);
   const effectiveActiveId = activeId ?? (items.length > 0 ? trackBy(items[0]) : null);
   const rowDomId = (id: string) => `${baseId}-row-${id}`;
 
@@ -134,7 +143,7 @@ export default function InternalVirtualTable<T>({
     model.slots.filter(slot => slot.type === 'data').map(slot => trackBy(items[slot.index]))
   );
   const activeDescendantId =
-    effectiveActiveId && windowedDataIds.has(effectiveActiveId) ? rowDomId(effectiveActiveId) : undefined;
+    hasFocus && effectiveActiveId && windowedDataIds.has(effectiveActiveId) ? rowDomId(effectiveActiveId) : undefined;
 
   const moveActive = useCallback(
     (delta: number | 'start' | 'end') => {
@@ -207,7 +216,7 @@ export default function InternalVirtualTable<T>({
         id={rowDomId(id)}
         data-rowid={id}
         ref={model.measureRef('d:' + id, auto)}
-        className={styles.row}
+        className={clsx(styles.row, hasFocus && id === effectiveActiveId && styles['row-active'])}
         role="row"
         // Header row is aria-rowindex 1; data rows are dataset index + 2, so the header
         // is counted exactly once and SR "row X of Y" is coherent under windowing (B1).
@@ -224,7 +233,9 @@ export default function InternalVirtualTable<T>({
               aria-controls={expanded ? regionId : undefined}
               aria-label={ariaLabels?.expandButtonLabel?.(item, expanded)}
               onClick={() => expansion.toggle(item)}
-            />
+            >
+              <InternalIcon name={expanded ? 'angle-down' : 'angle-right'} />
+            </button>
           </span>
         )}
         {columnDefinitions.map((column, columnIndex) => (
@@ -299,6 +310,11 @@ export default function InternalVirtualTable<T>({
         ref={scrollRef}
         className={clsx(styles['scroll-container'], stickyHeader && styles['sticky-header'])}
         role={role}
+        // A bounded viewport is what makes the model window: the visible range is
+        // derived from this container's clientHeight, so an explicit height/maxHeight
+        // (or a height-bounded parent via the flex-column root) clips it to the visible
+        // rows instead of mounting the whole dataset.
+        style={{ blockSize: height, maxBlockSize: maxHeight }}
         // The scroll container is the single, always-present tab stop and drives an
         // active-descendant model, so the grid is Tab-reachable at any scroll offset,
         // including live-tail pinned-to-end (design B3). aria-rowcount counts the
@@ -308,6 +324,18 @@ export default function InternalVirtualTable<T>({
         aria-rowcount={items.length + 1}
         aria-colcount={columnCount}
         aria-activedescendant={activeDescendantId}
+        // focusin/focusout bubble; only the grid container itself holding focus
+        // advertises an active row, so focusing a descendant control does not.
+        onFocus={event => {
+          if (event.target === event.currentTarget) {
+            setHasFocus(true);
+          }
+        }}
+        onBlur={event => {
+          if (event.target === event.currentTarget) {
+            setHasFocus(false);
+          }
+        }}
         onKeyDown={onGridKeyDown}
       >
         <div className={styles['header-rowgroup']} role="rowgroup">

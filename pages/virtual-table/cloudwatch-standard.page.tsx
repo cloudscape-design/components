@@ -181,12 +181,13 @@ export default function CloudWatchStandardPage() {
         <Button onClick={revealFirstError}>Reveal first error</Button>
       </div>
       <ScreenshotArea>
-        <div style={{ blockSize: 480 }}>
+        <div>
           <VirtualTable<LogRecord>
             items={items}
             trackBy={item => item.id}
             columnDefinitions={columnDefinitions}
             estimatedRowHeight={23}
+            height={480}
             overscan={20}
             stickyHeader={true}
             resizableColumns={true}

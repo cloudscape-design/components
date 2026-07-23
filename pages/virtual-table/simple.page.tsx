@@ -31,6 +31,7 @@ export default function VirtualTableSimplePage() {
           items={items}
           trackBy={item => item.id}
           estimatedRowHeight={23}
+          height={480}
           columnDefinitions={[
             { id: 'name', header: 'Name', cell: item => item.name, isStretch: true },
             { id: 'status', header: 'Status', cell: item => item.status },
