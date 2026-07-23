@@ -10,7 +10,7 @@ import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const i18nStrings: DateRangePickerPresetsProps['i18nStrings'] = {
+const i18nStrings: NonNullable<DateRangePickerPresetsProps['i18nStrings']> = {
   formatRelativeRange: ({ amount, unit }) => `Last ${amount} ${amount === 1 ? unit : `${unit}s`}`,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
   relativeRangeSelectionHeading: 'Choose a range',
