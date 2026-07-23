@@ -29,6 +29,7 @@ export default function SecondaryActionPage() {
       content: 'This flash message only has a secondary action.',
       secondaryAction: <Button>Learn more</Button>,
       dismissible: true,
+      dismissLabel: 'Dismiss',
       onDismiss: () => setFlashItems(items => items.filter(i => i.id !== 'flash-2')),
     },
     {
