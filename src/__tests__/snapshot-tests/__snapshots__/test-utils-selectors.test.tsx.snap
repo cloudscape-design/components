@@ -596,6 +596,7 @@ exports[`test-utils selectors 1`] = `
   "side-navigation": [
     "awsui_divider_l0dv0",
     "awsui_expandable-link-group_l0dv0",
+    "awsui_external-icon_1fhsi",
     "awsui_header-link_l0dv0",
     "awsui_header_l0dv0",
     "awsui_info_1fhsi",

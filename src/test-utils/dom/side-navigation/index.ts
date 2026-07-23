@@ -67,6 +67,10 @@ export class SideNavigationItemWrapper extends ComponentWrapper {
     return this.findByClassName(testUtilStyles.info);
   }
 
+  findExternalIcon(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['external-icon']);
+  }
+
   findSectionTitle(): ElementWrapper | null {
     return this.findSection()?.findHeader() ?? null;
   }
