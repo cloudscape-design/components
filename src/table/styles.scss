@@ -247,14 +247,14 @@ filter search icon.
   padding-inline: awsui.$space-scaled-xxs;
   vertical-align: middle;
   white-space: nowrap;
-  width: 44px;
-  min-width: 44px;
+  inline-size: 44px;
+  min-inline-size: 44px;
 }
 
 .drag-handle-header {
   /* Visually empty column header for the drag-handle column */
-  width: 44px;
-  min-width: 44px;
+  inline-size: 44px;
+  min-inline-size: 44px;
   padding-block: 0;
   padding-inline: awsui.$space-scaled-xxs;
 }
