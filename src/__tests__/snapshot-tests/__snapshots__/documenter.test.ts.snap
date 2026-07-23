@@ -44573,6 +44573,19 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "name": "findExternalIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findInfo",
           "parameters": [],
           "returnType": {
@@ -53927,6 +53940,14 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           "returnType": {
             "isNullable": false,
             "name": "ExpandableSectionWrapper",
+          },
+        },
+        {
+          "name": "findExternalIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {
