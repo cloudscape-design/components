@@ -15,7 +15,7 @@ export { PaginationProps };
 
 const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>((props, ref) => {
   const baseComponentProps = useBaseComponent('Pagination', {
-    props: { openEnd: props.openEnd },
+    props: { openEnd: props.openEnd, pagesVariant: props.pagesVariant },
     metadata: { hasJumpToPage: !!props.jumpToPage },
   });
   return (

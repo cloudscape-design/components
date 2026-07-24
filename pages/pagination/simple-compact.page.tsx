@@ -8,48 +8,26 @@ import Pagination, { PaginationProps } from '~components/pagination';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const paginationLabels: PaginationProps.Labels = {
+const paginationLabelsWithout: PaginationProps.Labels = {
   nextPageLabel: 'Next page',
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => `Page ${pageNumber} of all pages`,
   jumpToPageButton: 'Go to page',
 };
 
-const i18nStrings: PaginationProps.I18nStrings = {
-  jumpToPageInputLabel: 'Page number',
-  jumpToPageError: 'Enter a valid page number',
-  jumpToPageLoadingText: 'Loading page',
-  pagesCompactText: ({ currentPage, pagesCount, openEnd }) => `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`,
+const paginationLabels: PaginationProps.Labels = {
+  paginationLabel: 'Pagination',
+  ...paginationLabelsWithout,
 };
 
 export default function PaginationSimplePage() {
-  const [basicPageIndex, setBasicPageIndex] = useState(1);
-  const [jumpPageIndex, setJumpPageIndex] = useState(1);
   const [compactPageIndex, setCompactPageIndex] = useState(1);
   const [compactJumpPageIndex, setCompactJumpPageIndex] = useState(1);
 
   return (
     <I18nProvider messages={[messages]} locale="en">
-      <h1>Pagination simple</h1>
       <ScreenshotArea>
-        <h2>Basic pagination with 20 pages</h2>
-        <Pagination
-          currentPageIndex={basicPageIndex}
-          pagesCount={20}
-          ariaLabels={paginationLabels}
-          onChange={event => setBasicPageIndex(event.detail.currentPageIndex)}
-        />
-
-        <h2>Basic pagination with jump to page</h2>
-        <Pagination
-          currentPageIndex={jumpPageIndex}
-          pagesCount={20}
-          ariaLabels={paginationLabels}
-          i18nStrings={i18nStrings}
-          jumpToPage={{}}
-          onChange={event => setJumpPageIndex(event.detail.currentPageIndex)}
-        />
-
+        <h1>Pagination simple compact</h1>
         <h2>Compact pagination with 20 pages (default &quot;# of #&quot; format)</h2>
         <Pagination
           pagesVariant="compact"
@@ -59,14 +37,12 @@ export default function PaginationSimplePage() {
           onChange={event => setCompactPageIndex(event.detail.currentPageIndex)}
         />
 
-        <h2>Compact pagination with jump to page (custom &quot;# / #&quot; format)</h2>
+        <h2>Compact pagination with 20 pages without the paginationLabel</h2>
         <Pagination
           pagesVariant="compact"
           currentPageIndex={compactJumpPageIndex}
           pagesCount={20}
-          ariaLabels={paginationLabels}
-          i18nStrings={i18nStrings}
-          jumpToPage={{}}
+          ariaLabels={paginationLabelsWithout}
           onChange={event => setCompactJumpPageIndex(event.detail.currentPageIndex)}
         />
       </ScreenshotArea>

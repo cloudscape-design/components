@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
 import InputWrapper from '../input';
 import PopoverWrapper from '../popover';
 
 import styles from '../../../pagination/styles.selectors.js';
+import paginationTestUtilsStyles from '../../../pagination/test-classes/styles.selectors.js';
 
 export class PaginationButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   @usesDom
@@ -45,6 +46,14 @@ export default class PaginationWrapper extends ComponentWrapper {
 
   findNextPageButton(): PaginationButtonWrapper {
     return this.findComponent(`li:last-child .${styles.button}`, PaginationButtonWrapper)!;
+  }
+
+  /**
+   * Returns the visible text for compact pages (for example, `3 of 12` or `3 of 12+`),
+   * or `null` when `pagesVariant` is not set to `compact`.
+   */
+  findPagesCompactText(): ElementWrapper | null {
+    return this.findByClassName(paginationTestUtilsStyles['pages-compact-text']);
   }
 
   /**

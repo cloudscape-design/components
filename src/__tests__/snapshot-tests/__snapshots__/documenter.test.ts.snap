@@ -20424,6 +20424,12 @@ from changing page before items are loaded.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the necessary localized strings required by the component:
+* \`jumpToPageInputLabel\` (string) - Accessible label for the jump-to-page number input.
+* \`jumpToPageError\` (string) - Error message displayed when the entered page number is invalid.
+* \`jumpToPageLoadingText\` (string) - Loading text displayed while the jump-to-page action is in progress.
+* \`pagesCompactText\` ((options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string) -
+  Visible text for compact pages.",
       "i18nTag": true,
       "inlineType": {
         "name": "PaginationProps.I18nStrings",
@@ -20442,6 +20448,22 @@ from changing page before items are loaded.",
             "name": "jumpToPageLoadingText",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(options: { currentPage: number; pagesCount: number; openEnd: boolean; }) => string",
+              "parameters": [
+                {
+                  "name": "options",
+                  "type": "{ currentPage: number; pagesCount: number; openEnd: boolean; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "pagesCompactText",
+            "optional": true,
+            "type": "((options: { currentPage: number; pagesCount: number; openEnd: boolean; }) => string)",
           },
         ],
         "type": "object",
@@ -20468,20 +20490,37 @@ from changing page before items are loaded.",
       "type": "PaginationProps.JumpToPageProps",
     },
     {
-      "description": "Sets the pagination variant. It can be either default (when setting it to \`false\`) or open ended (when setting it
-to \`true\`). Default pagination navigates you through the items list. The open-end variant enables you
-to lazy-load your items because it always displays three dots before the next page icon. The next page button is
-never disabled. When the user clicks on it but there are no more items to show, the
-\`onNextPageClick\` handler is called with \`requestedPageAvailable: false\` in the event detail.",
+      "description": "Specifies whether the total number of pages is unknown. The next page button remains enabled on the last
+available page. If the user requests a page beyond \`pagesCount\`, \`onNextPageClick\` is called with
+\`requestedPageAvailable: false\`.",
       "name": "openEnd",
       "optional": true,
       "type": "boolean",
     },
     {
-      "description": "Sets the total number of pages. Only positive integers are allowed.",
+      "description": "Sets the total number of pages. When \`openEnd\` is \`true\`, this is the number of pages currently available.
+Only positive integers are allowed.",
       "name": "pagesCount",
       "optional": false,
       "type": "number",
+    },
+    {
+      "description": "Specifies how pages are displayed:
+* \`normal\` - Displays page number buttons. For larger page ranges, the displayed range is truncated with
+  ellipses.
+* \`compact\` - Displays the current page and page count between the previous and next buttons. When \`openEnd\` is
+  \`true\`, a plus sign after the page count indicates that more pages are available.",
+      "inlineType": {
+        "name": "PaginationProps.PagesVariant",
+        "type": "union",
+        "values": [
+          "normal",
+          "compact",
+        ],
+      },
+      "name": "pagesVariant",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": [],
@@ -38201,6 +38240,21 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Returns the visible text for compact pages (for example, \`3 of 12\` or \`3 of 12+\`),
+or \`null\` when \`pagesVariant\` is not set to \`compact\`.",
+          "name": "findPagesCompactText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findPreviousPageButton",
           "parameters": [],
           "returnType": {
@@ -49433,6 +49487,16 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
                 "name": "PaginationButtonWrapper",
               },
             ],
+          },
+        },
+        {
+          "description": "Returns the visible text for compact pages (for example, \`3 of 12\` or \`3 of 12+\`),
+or \`null\` when \`pagesVariant\` is not set to \`compact\`.",
+          "name": "findPagesCompactText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {

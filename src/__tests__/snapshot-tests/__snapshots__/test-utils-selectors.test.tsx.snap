@@ -498,6 +498,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_jump-to-page-input_fvjdu",
     "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
+    "awsui_pages-compact-text_lmd86",
     "awsui_root_fvjdu",
   ],
   "panel-layout": [

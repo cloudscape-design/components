@@ -9,18 +9,30 @@ export interface PaginationProps {
   currentPageIndex: number;
 
   /**
-   * Sets the total number of pages. Only positive integers are allowed.
+   * Sets the total number of pages. When `openEnd` is `true`, this is the number of pages currently available.
+   * Only positive integers are allowed.
    */
   pagesCount: number;
 
   /**
-   * Sets the pagination variant. It can be either default (when setting it to `false`) or open ended (when setting it
-   * to `true`). Default pagination navigates you through the items list. The open-end variant enables you
-   * to lazy-load your items because it always displays three dots before the next page icon. The next page button is
-   * never disabled. When the user clicks on it but there are no more items to show, the
-   * `onNextPageClick` handler is called with `requestedPageAvailable: false` in the event detail.
+   * Specifies whether the total number of pages is unknown. The next page button remains enabled on the last
+   * available page. If the user requests a page beyond `pagesCount`, `onNextPageClick` is called with
+   * `requestedPageAvailable: false`.
+   *
+   * @default false
    */
   openEnd?: boolean;
+
+  /**
+   * Specifies how pages are displayed:
+   * * `normal` - Displays page number buttons. For larger page ranges, the displayed range is truncated with
+   *   ellipses.
+   * * `compact` - Displays the current page and page count between the previous and next buttons. When `openEnd` is
+   *   `true`, a plus sign after the page count indicates that more pages are available.
+   *
+   * @default 'normal'
+   */
+  pagesVariant?: PaginationProps.PagesVariant;
 
   /**
    * If set to `true`, the pagination links will be disabled. Use it, for example, if you want to prevent the user
@@ -49,6 +61,12 @@ export interface PaginationProps {
    */
   ariaLabels?: PaginationProps.Labels;
   /**
+   * An object containing all the necessary localized strings required by the component:
+   * * `jumpToPageInputLabel` (string) - Accessible label for the jump-to-page number input.
+   * * `jumpToPageError` (string) - Error message displayed when the entered page number is invalid.
+   * * `jumpToPageLoadingText` (string) - Loading text displayed while the jump-to-page action is in progress.
+   * * `pagesCompactText` ((options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string) -
+   *   Visible text for compact pages.
    * @i18n
    */
   i18nStrings?: PaginationProps.I18nStrings;
@@ -79,6 +97,8 @@ export interface PaginationProps {
 }
 
 export namespace PaginationProps {
+  export type PagesVariant = 'normal' | 'compact';
+
   export interface Labels {
     nextPageLabel?: string;
     paginationLabel?: string;
@@ -88,12 +108,15 @@ export namespace PaginationProps {
   }
 
   export interface I18nStrings {
-    /** @i18n */
     jumpToPageInputLabel?: string;
-    /** @i18n */
     jumpToPageError?: string;
-    /** @i18n */
     jumpToPageLoadingText?: string;
+    /**
+     * Visible text for compact pages. Receives the current page, page count, and whether pagination is open-ended.
+     * @param options The page state used to format the text.
+     * @returns The text displayed for compact pages.
+     */
+    pagesCompactText?: (options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string;
   }
 
   export interface ChangeDetail {

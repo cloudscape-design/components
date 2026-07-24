@@ -26,6 +26,7 @@ import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface PageButtonProps {
   className?: string;
@@ -114,6 +115,7 @@ const InternalPagination = React.forwardRef(
       i18nStrings,
       pagesCount,
       disabled,
+      pagesVariant = 'normal',
       onChange,
       onNextPageClick,
       onPreviousPageClick,
@@ -150,6 +152,17 @@ const InternalPagination = React.forwardRef(
     const pageNumberLabelFn =
       i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
       ((pageNumber: number) => `${pageNumber}`);
+
+    const pagesCompactText = i18n(
+      'i18nStrings.pagesCompactText',
+      i18nStrings?.pagesCompactText,
+      format => options =>
+        format({
+          currentPage: options.currentPage,
+          pagesCount: options.pagesCount,
+          openEnd: `${options.openEnd}`,
+        })
+    );
 
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
@@ -248,33 +261,47 @@ const InternalPagination = React.forwardRef(
         >
           <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
         </PageButton>
-        <PageNumber
-          pageIndex={1}
-          isCurrent={currentPageIndex === 1}
-          disabled={disabled}
-          ariaLabel={pageNumberLabelFn(1)}
-          onClick={handlePageClick}
-        />
-        {leftDots && <li className={styles.dots}>...</li>}
-        {range(leftIndex, rightIndex).map(pageIndex => (
-          <PageNumber
-            key={pageIndex}
-            isCurrent={currentPageIndex === pageIndex}
-            pageIndex={pageIndex}
-            disabled={disabled}
-            ariaLabel={pageNumberLabelFn(pageIndex)}
-            onClick={handlePageClick}
-          />
-        ))}
-        {rightDots && <li className={styles.dots}>...</li>}
-        {!openEnd && pagesCount > 1 && (
-          <PageNumber
-            isCurrent={currentPageIndex === pagesCount}
-            pageIndex={pagesCount}
-            disabled={disabled}
-            ariaLabel={pageNumberLabelFn(pagesCount)}
-            onClick={handlePageClick}
-          />
+        {pagesVariant === 'compact' ? (
+          <li aria-disabled={disabled} className={styles['pages-compact']}>
+            <span className={testUtilStyles['pages-compact-text']}>
+              {pagesCompactText?.({
+                currentPage: Math.min(currentPageIndex, pagesCount),
+                pagesCount,
+                openEnd: !!openEnd,
+              })}
+            </span>
+          </li>
+        ) : (
+          <>
+            <PageNumber
+              pageIndex={1}
+              isCurrent={currentPageIndex === 1}
+              disabled={disabled}
+              ariaLabel={pageNumberLabelFn(1)}
+              onClick={handlePageClick}
+            />
+            {leftDots && <li className={styles.dots}>...</li>}
+            {range(leftIndex, rightIndex).map(pageIndex => (
+              <PageNumber
+                key={pageIndex}
+                isCurrent={currentPageIndex === pageIndex}
+                pageIndex={pageIndex}
+                disabled={disabled}
+                ariaLabel={pageNumberLabelFn(pageIndex)}
+                onClick={handlePageClick}
+              />
+            ))}
+            {rightDots && <li className={styles.dots}>...</li>}
+            {!openEnd && pagesCount > 1 && (
+              <PageNumber
+                isCurrent={currentPageIndex === pagesCount}
+                pageIndex={pagesCount}
+                disabled={disabled}
+                ariaLabel={pageNumberLabelFn(pagesCount)}
+                onClick={handlePageClick}
+              />
+            )}
+          </>
         )}
         <PageButton
           className={styles.arrow}
