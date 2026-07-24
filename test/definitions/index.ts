@@ -43,13 +43,6 @@ import dateInputSuite from './visual/date-input';
 import datePickerSuite from './visual/date-picker';
 import dateRangePickerSuite from './visual/date-range-picker';
 import expandableSectionSuite from './visual/expandable-section';
-import flashbarSuite from './visual/flashbar';
-import flashbarStackedSuite from './visual/flashbar-stacked';
-import formSuite from './visual/form';
-import formFieldSuite from './visual/form-field';
-import headerSuite from './visual/header';
-import inputSuite from './visual/input';
-import itemCardSuite from './visual/item-card';
 import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
@@ -90,12 +83,6 @@ export const dateInput: TestSuite[] = [dateInputSuite];
 export const datePicker: TestSuite[] = [datePickerSuite];
 export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
 export const expandableSection: TestSuite[] = [expandableSectionSuite];
-export const flashbar: TestSuite[] = [flashbarSuite, flashbarStackedSuite];
-export const form: TestSuite[] = [formSuite];
-export const formField: TestSuite[] = [formFieldSuite];
-export const header: TestSuite[] = [headerSuite];
-export const input: TestSuite[] = [inputSuite];
-export const itemCard: TestSuite[] = [itemCardSuite];
 export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
@@ -124,11 +111,5 @@ export const allSuites: TestSuite[] = [
   ...datePicker,
   ...dateRangePicker,
   ...expandableSection,
-  ...flashbar,
-  ...form,
-  ...formField,
-  ...header,
-  ...input,
-  ...itemCard,
   ...table,
 ];
