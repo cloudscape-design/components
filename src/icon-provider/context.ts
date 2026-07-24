@@ -11,3 +11,9 @@ import { IconProviderProps } from './interfaces';
  * This allows the Icon component to have these icons available in the context even when no IconProvider is used.
  */
 export const InternalIconContext = createContext<IconProviderProps.Icons>(generatedIcons);
+
+/**
+ * Holds icon overrides (role-based, higher-precedence icon overrides). Empty by default: with no
+ * override registered, components render the icon that `icons` (or the default set) provides.
+ */
+export const InternalIconOverrideContext = createContext<IconProviderProps.Overrides>({});

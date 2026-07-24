@@ -173,6 +173,43 @@ export type DefineIconsInput = Partial<Record<BuiltInIconName | (string & {}), R
 /** Extracts the keys of a `defineIcons` result into the shape that {@link IconRegistry} expects. */
 export type IconMap<T> = { [K in keyof T & string]: T[K] };
 
+/**
+ * Maps each icon override name to the state object passed to its renderer.
+ *
+ * Augment this interface using `declare module` to register overrides for your own components.
+ *
+ * @example
+ * declare module "@cloudscape-design/components/icon-provider" {
+ *   interface IconOverrideStates {
+ *     "my-app.tree-toggle": { expanded: boolean };
+ *   }
+ * }
+ */
+export interface IconOverrideStates {
+  /**
+   * The expand/collapse toggle shared by Table (expandable rows), Tree View, and Expandable Section.
+   * `expanded` is `true` when the item is currently expanded.
+   */
+  'expand-toggle': { expanded: boolean };
+  /**
+   * The sorting indicator rendered in Table column headers.
+   * `sortingState` reflects the column's current sorting status.
+   */
+  'sorting-indicator': { sortingState: 'sortable' | 'ascending' | 'descending' };
+}
+
+/** Union of all registered icon override names. */
+export type IconOverrideName = keyof IconOverrideStates & string;
+
+/**
+ * Renders the icon for a given override. Receives the override's current state and returns the node
+ * to display. Return `null` (or `undefined`) to fall back to the icon that `icons` (or the default
+ * set) would render for that state.
+ */
+export type IconOverrideRenderer<K extends IconOverrideName = IconOverrideName> = (
+  state: IconOverrideStates[K]
+) => ReactNode | null | undefined;
+
 export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;
 
@@ -190,10 +227,44 @@ export interface IconProviderProps extends BaseComponentProps {
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
+
+  /**
+   * Higher-precedence, role-based icon overrides applied *on top* of `icons`.
+   *
+   * While `icons` replaces a glyph by name wherever it appears (including carets), `overrides` target
+   * specific, stateful roles — such as the expand/collapse toggle (`expand-toggle`) or the sorting
+   * indicator (`sorting-indicator`) — for cases when more precision is needed. An override only
+   * affects its role, so overriding `sorting-indicator` never changes an unrelated caret used in a
+   * cell or header.
+   *
+   * Each override is a render function that receives the role's current state and returns the icon to
+   * display. Use `size="inherit"` on a custom `<Icon>` so it matches the surrounding icon size.
+   * Because the override replaces the default rendering entirely, the returned node is responsible for
+   * representing every state (including any expand/collapse animation). Return `null` from a renderer
+   * to fall back to what `icons` (or the default set) would render for that state.
+   *
+   * Overrides are inherited by nested providers (closest provider wins). Set a specific override to
+   * `null` to reset it, or set the whole property to `null` to reset all overrides.
+   *
+   * @example
+   * <IconProvider
+   *   icons={null}
+   *   overrides={{
+   *     'expand-toggle': ({ expanded }) => (
+   *       <Icon size="inherit" name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
+   *     ),
+   *   }}
+   * >
+   */
+  overrides?: IconProviderProps.Overrides | null;
 }
 
 export namespace IconProviderProps {
   export type Icons = {
     [name in IconProps.Name]?: ReactNode | null;
+  };
+
+  export type Overrides = {
+    [name in IconOverrideName]?: IconOverrideRenderer<name> | null;
   };
 }

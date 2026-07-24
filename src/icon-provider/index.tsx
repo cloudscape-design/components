@@ -10,7 +10,7 @@ import InternalIconProvider from './internal';
 
 export { IconProviderProps } from './interfaces';
 export { defineIcons } from './define-icons';
-export type { IconRegistry, IconMap } from './interfaces';
+export type { IconRegistry, IconMap, IconOverrideStates, IconOverrideName, IconOverrideRenderer } from './interfaces';
 
 export default function IconProvider(props: IconProviderProps) {
   useBaseComponent('IconProvider');
