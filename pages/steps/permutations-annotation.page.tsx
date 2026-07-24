@@ -43,6 +43,7 @@ export const varyingLengthAnnotationsSteps: ReadonlyArray<StepsProps.Step> = [
       </time>
     ),
     status: 'log',
+    details: 'One or more resources could not be validated. A detail in the middle',
     header: 'Long timestamp',
   },
   {
@@ -64,7 +65,18 @@ const stepsPermutations = createPermutations<StepsProps>([
         details: step.details && <i>Custom details for {step.details}</i>,
         icon: <Icon ariaLabel="log" name="dot" variant="normal" />,
       }),
+      step => ({
+        annotation: step.annotation,
+        header: <b>This step header ({step.header}) is wrapped in a custom HTML tag and has very long content</b>,
+        details: step.details && <i>Custom details for {step.details}</i>,
+      }),
     ],
+  },
+  {
+    connectorLines: ['none'],
+    orientation: ['vertical', 'horizontal'],
+    steps: [varyingLengthAnnotationsSteps],
+    ariaLabel: ['test label'],
   },
 ]);
 

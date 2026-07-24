@@ -71,41 +71,6 @@
   }
 }
 
-.vertical {
-  > .list {
-    // The continuation starts below the rendered StatusIndicator and fills only extra height created
-    // by a wrapped annotation. The main connector remains in row 2 to span the details area.
-    > .container > .header {
-      display: grid;
-      grid-template-columns: subgrid;
-      grid-template-rows: auto 1fr;
-      gap: awsui.$space-xxs 0;
-
-      > :first-child {
-        grid-column: 1 / -1;
-      }
-
-      > .connector-continuation {
-        grid-row: 2;
-        grid-column: 1;
-        justify-self: center;
-        margin-block: 0;
-        margin-inline: 0;
-        border-block: 0;
-        border-inline: 0;
-        inline-size: awsui.$border-divider-list-width;
-        block-size: auto;
-        position: relative;
-        inset-inline-end: awsui.$space-static-xxxs;
-      }
-    }
-
-    > :last-of-type > .header > .connector-continuation {
-      display: none;
-    }
-  }
-}
-
 .horizontal {
   > .list {
     display: grid;
@@ -163,6 +128,47 @@
       > .header > .connector {
         display: none;
       }
+    }
+  }
+}
+
+.vertical {
+  > .list {
+    // Status and details share this nested grid so annotation height does not affect their spacing.
+    // The continuation runs beside details and fills any extra annotation height.
+    > .container > .header {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+
+      > :first-child {
+        grid-column: 1 / -1;
+      }
+
+      > .details {
+        grid-row: 2;
+        grid-column: 2;
+        margin-block-end: awsui.$space-static-xs;
+      }
+
+      > .connector-continuation {
+        grid-row: 2;
+        grid-column: 1;
+        justify-self: center;
+        margin-block: 0;
+        margin-inline: 0;
+        border-block: 0;
+        border-inline: 0;
+        inline-size: awsui.$border-divider-list-width;
+        block-size: auto;
+        position: relative;
+        inset-inline-end: awsui.$space-static-xxxs;
+      }
+    }
+
+    > :last-of-type > .header > .connector-continuation {
+      display: none;
     }
   }
 }
