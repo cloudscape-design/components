@@ -28,6 +28,27 @@ import breadcrumbGroupSuite from './visual/breadcrumb-group';
 import buttonSuite from './visual/button';
 import buttonDropdownSuite from './visual/button-dropdown';
 import buttonGroupSuite from './visual/button-group';
+import cardsSuite from './visual/cards';
+import checkboxSuite from './visual/checkbox';
+import codeEditorSuite from './visual/code-editor';
+import collectionPreferencesSuite from './visual/collection-preferences';
+import columnLayoutSuite from './visual/column-layout';
+import containerSuite from './visual/container';
+import containerStickySuite from './visual/container-sticky';
+import contentLayoutSuite from './visual/content-layout';
+import contentLayoutPermutationsSuite from './visual/content-layout-permutations';
+import copyToClipboardSuite from './visual/copy-to-clipboard';
+import dateInputSuite from './visual/date-input';
+import datePickerSuite from './visual/date-picker';
+import dateRangePickerSuite from './visual/date-range-picker';
+import expandableSectionSuite from './visual/expandable-section';
+import flashbarSuite from './visual/flashbar';
+import flashbarStackedSuite from './visual/flashbar-stacked';
+import formSuite from './visual/form';
+import formFieldSuite from './visual/form-field';
+import headerSuite from './visual/header';
+import inputSuite from './visual/input';
+import itemCardSuite from './visual/item-card';
 
 // Per-component exports (grouped by component)
 export const actionCard: TestSuite[] = [actionCardSuite];
@@ -54,6 +75,24 @@ export const breadcrumbGroup: TestSuite[] = [breadcrumbGroupSuite];
 export const button: TestSuite[] = [buttonSuite];
 export const buttonDropdown: TestSuite[] = [buttonDropdownSuite];
 export const buttonGroup: TestSuite[] = [buttonGroupSuite];
+export const cards: TestSuite[] = [cardsSuite];
+export const checkbox: TestSuite[] = [checkboxSuite];
+export const codeEditor: TestSuite[] = [codeEditorSuite];
+export const collectionPreferences: TestSuite[] = [collectionPreferencesSuite];
+export const columnLayout: TestSuite[] = [columnLayoutSuite];
+export const container: TestSuite[] = [containerSuite, containerStickySuite];
+export const contentLayout: TestSuite[] = [contentLayoutSuite, contentLayoutPermutationsSuite];
+export const copyToClipboard: TestSuite[] = [copyToClipboardSuite];
+export const dateInput: TestSuite[] = [dateInputSuite];
+export const datePicker: TestSuite[] = [datePickerSuite];
+export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
+export const expandableSection: TestSuite[] = [expandableSectionSuite];
+export const flashbar: TestSuite[] = [flashbarSuite, flashbarStackedSuite];
+export const form: TestSuite[] = [formSuite];
+export const formField: TestSuite[] = [formFieldSuite];
+export const header: TestSuite[] = [headerSuite];
+export const input: TestSuite[] = [inputSuite];
+export const itemCard: TestSuite[] = [itemCardSuite];
 
 export const allSuites: TestSuite[] = [
   ...actionCard,
@@ -69,4 +108,22 @@ export const allSuites: TestSuite[] = [
   ...button,
   ...buttonDropdown,
   ...buttonGroup,
+  ...cards,
+  ...checkbox,
+  ...codeEditor,
+  ...collectionPreferences,
+  ...columnLayout,
+  ...container,
+  ...contentLayout,
+  ...copyToClipboard,
+  ...dateInput,
+  ...datePicker,
+  ...dateRangePicker,
+  ...expandableSection,
+  ...flashbar,
+  ...form,
+  ...formField,
+  ...header,
+  ...input,
+  ...itemCard,
 ];
