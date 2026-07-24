@@ -14,6 +14,7 @@ import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
 import { InternalTooltipProps } from './internal-interfaces';
 
+import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 type InternalTooltipComponentProps = InternalTooltipProps &
@@ -70,7 +71,7 @@ export default function InternalTooltip({
     <Portal>
       <div
         {...baseProps}
-        className={clsx(testUtilStyles.root, baseProps.className)}
+        className={clsx(testUtilStyles.root, styles.root)}
         ref={__internalRootRef}
         data-awsui-referrer-id={referrerId}
         role="tooltip"
