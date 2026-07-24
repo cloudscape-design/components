@@ -164,7 +164,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 
   &--collapsed {
-    // Collapsed items only render when they have an icon, so they always use the icon gap.
     margin-block: awsui.$space-side-navigation-item-icon-gap;
     display: flex;
     justify-content: center;
