@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { paletteTokens } from '../core/color-palette.js';
 import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
@@ -376,42 +377,76 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
 
   // ── Visual accent ───────────────────────────────────
-  colorBackgroundAccentRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
-  colorBackgroundAccentYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
-  colorBackgroundAccentIndigo: { light: '{colorInfo100}', dark: 'rgba(0, 153, 255, 0.2)' },
-  colorBackgroundAccentGreen: { light: '{colorSuccess100}', dark: 'rgba(43, 181, 52, 0.2)' },
-  colorBackgroundAccentOrange: { light: '{colorOrange100}', dark: 'rgba(255, 75, 20, 0.2)' },
-  colorBackgroundAccentPurple: { light: '{colorPurple100}', dark: 'rgba(173, 92, 255, 0.2)' },
-  colorBackgroundAccentMint: { light: '{colorMint100}', dark: 'rgba(0, 189, 107, 0.2)' },
-  colorBackgroundAccentLime: { light: '{colorLime100}', dark: 'rgba(49, 184, 0, 0.2)' },
-  colorBackgroundAccentGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
-  colorBackgroundAccentTeal: { light: '{colorTeal100}', dark: 'rgba(0, 173, 162, 0.2)' },
-  colorBackgroundAccentCyan: { light: '{colorCyan100}', dark: 'rgba(0, 164, 189, 0.2)' },
-  colorBackgroundAccentBlue: { light: '{colorInfo100}', dark: 'rgba(0, 153, 255, 0.2)' },
-  colorBackgroundAccentViolet: { light: '{colorViolet100}', dark: 'rgba(133, 117, 255, 0.2)' },
-  colorBackgroundAccentFuchsia: { light: '{colorFuchsia100}', dark: 'rgba(228, 51, 255, 0.2)' },
-  colorBackgroundAccentMagenta: { light: '{colorMagenta100}', dark: 'rgba(255, 26, 224, 0.2)' },
-  colorBackgroundAccentPink: { light: '{colorPink100}', dark: 'rgba(255, 51, 153, 0.2)' },
-  colorBackgroundAccentRose: { light: '{colorRose100}', dark: 'rgba(255, 56, 106, 0.2)' },
-  colorBackgroundAccentAmber: { light: '{colorAmber100}', dark: 'rgba(250, 111, 0, 0.2)' },
-  colorTextAccentRed: { light: '{colorError800}', dark: '{colorError400}' },
-  colorTextAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning400}' },
-  colorTextAccentIndigo: { light: '{colorInfo800}', dark: '{colorInfo400}' },
-  colorTextAccentGreen: { light: '{colorSuccess800}', dark: '{colorSuccess400}' },
-  colorTextAccentOrange: { light: '{colorOrange800}', dark: '{colorOrange400}' },
-  colorTextAccentPurple: { light: '{colorPurple800}', dark: '{colorPurple400}' },
-  colorTextAccentMint: { light: '{colorMint800}', dark: '{colorMint400}' },
-  colorTextAccentLime: { light: '{colorLime800}', dark: '{colorLime400}' },
-  colorTextAccentGrey: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorTextAccentTeal: { light: '{colorTeal800}', dark: '{colorTeal400}' },
-  colorTextAccentCyan: { light: '{colorCyan800}', dark: '{colorCyan400}' },
-  colorTextAccentBlue: { light: '{colorInfo800}', dark: '{colorInfo400}' },
-  colorTextAccentViolet: { light: '{colorViolet800}', dark: '{colorViolet400}' },
-  colorTextAccentFuchsia: { light: '{colorFuchsia800}', dark: '{colorFuchsia400}' },
-  colorTextAccentMagenta: { light: '{colorMagenta800}', dark: '{colorMagenta400}' },
-  colorTextAccentPink: { light: '{colorPink800}', dark: '{colorPink400}' },
-  colorTextAccentRose: { light: '{colorRose800}', dark: '{colorRose400}' },
-  colorTextAccentAmber: { light: '{colorAmber800}', dark: '{colorAmber400}' },
+  colorBackgroundVisualAccentRed: {
+    light: paletteTokens.colorRed100!,
+    dark: 'rgba(255, 61, 61, 0.2)',
+  },
+  colorBackgroundVisualAccentYellow: {
+    light: paletteTokens.colorYellow100!,
+    dark: 'rgba(251, 211, 50, 0.2)',
+  },
+  colorBackgroundVisualAccentIndigo: {
+    light: paletteTokens.colorIndigo100!,
+    dark: 'rgba(92, 127, 255, 0.2)',
+  },
+  colorBackgroundVisualAccentGreen: {
+    light: paletteTokens.colorGreen100!,
+    dark: 'rgba(43, 181, 52, 0.2)',
+  },
+  colorBackgroundVisualAccentOrange: {
+    light: 'rgba(255, 224, 214, 0.6)',
+    dark: 'rgba(255, 75, 20, 0.2)',
+  },
+  colorBackgroundVisualAccentPurple: {
+    light: 'rgba(242, 229, 255, 0.6)',
+    dark: 'rgba(173, 92, 255, 0.2)',
+  },
+  colorBackgroundVisualAccentLime: {
+    light: '{colorLime100}',
+    dark: 'rgba(49, 184, 0, 0.2)',
+  },
+  colorBackgroundVisualAccentGrey: {
+    light: '{colorNeutral250}',
+    dark: '{colorNeutral700}',
+  },
+  colorBackgroundVisualAccentTeal: {
+    light: 'rgba(204, 255, 252, 0.7)',
+    dark: 'rgba(0, 173, 162, 0.2)',
+  },
+  colorBackgroundVisualAccentBlue: {
+    light: 'rgba(209, 241, 255, 0.6)',
+    dark: 'rgba(0, 153, 255, 0.2)',
+  },
+  colorBackgroundVisualAccentViolet: {
+    light: 'rgba(232, 229, 255, 0.6)',
+    dark: 'rgba(133, 117, 255, 0.2)',
+  },
+  colorBackgroundVisualAccentMagenta: {
+    light: 'rgba(255, 224, 251, 0.6)',
+    dark: 'rgba(255, 26, 224, 0.2)',
+  },
+  colorBackgroundVisualAccentPink: {
+    light: 'rgba(255, 224, 240, 0.7)',
+    dark: 'rgba(255, 51, 153, 0.2)',
+  },
+  colorBackgroundVisualAccentAmber: {
+    light: 'rgba(255, 232, 189, 0.7)',
+    dark: 'rgba(250, 111, 0, 0.2)',
+  },
+  colorTextVisualAccentRed: { light: '{colorError700}', dark: '{colorError400}' },
+  colorTextVisualAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning200}' },
+  colorTextVisualAccentIndigo: { light: '{colorInfo800}', dark: '{colorInfo300}' },
+  colorTextVisualAccentGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
+  colorTextVisualAccentOrange: { light: paletteTokens.colorOrange700!, dark: paletteTokens.colorOrange300! },
+  colorTextVisualAccentPurple: { light: paletteTokens.colorPurple600!, dark: paletteTokens.colorPurple300! },
+  colorTextVisualAccentLime: { light: paletteTokens.colorLime700!, dark: paletteTokens.colorLime300! },
+  colorTextVisualAccentGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
+  colorTextVisualAccentTeal: { light: paletteTokens.colorTeal600!, dark: paletteTokens.colorTeal300! },
+  colorTextVisualAccentBlue: { light: paletteTokens.colorBlue600!, dark: paletteTokens.colorBlue300! },
+  colorTextVisualAccentViolet: { light: paletteTokens.colorViolet600!, dark: paletteTokens.colorViolet300! },
+  colorTextVisualAccentMagenta: { light: paletteTokens.colorMagenta700!, dark: paletteTokens.colorMagenta400! },
+  colorTextVisualAccentPink: { light: paletteTokens.colorPink700!, dark: paletteTokens.colorPink300! },
+  colorTextVisualAccentAmber: { light: paletteTokens.colorAmber700!, dark: paletteTokens.colorAmber300! },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

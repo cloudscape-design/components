@@ -199,7 +199,6 @@ describe('Box', () => {
         'green',
         'orange',
         'purple',
-        'mint',
         'lime',
         'grey',
       ];
