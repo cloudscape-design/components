@@ -171,9 +171,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   padding-inline-end: awsui.$space-s;
   @include cell-offset(awsui.$space-s);
 
-  .header-cell-group > &,
-  .header-cell-grouped > &,
-  .header-cell-spans-rows > & {
+  .header-cell-group > & {
     padding-block: awsui.$space-xxxs;
   }
 
@@ -183,6 +181,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 
   @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
+
+  .header-cell-grouped > .header-cell-main > &,
+  .header-cell-spans-rows > .header-cell-main > & {
+    padding-block: awsui.$space-xxxs;
+  }
 
   .header-cell-sortable > .header-cell-main > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
@@ -276,7 +279,7 @@ settings icon in the pagination slot.
   &:first-child {
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
-  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-content {
+  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-main > .header-cell-content {
     @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }

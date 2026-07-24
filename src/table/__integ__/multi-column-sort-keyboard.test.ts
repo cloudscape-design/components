@@ -82,7 +82,6 @@ test(
   setupTest(async page => {
     await page.click('h1');
     await page.keys(TABS_INTO_GRID);
-    console.log(sortControl(1));
     await expect(page.isFocused(sortControl(1))).resolves.toBe(true);
 
     // Each sortable header cell exposes two focusables in order: the sort control, then its sort menu.
