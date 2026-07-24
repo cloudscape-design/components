@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "顯示路徑"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} 個項目 (共 {totalCount} 個）",
+    "noMatch": "沒有相符的動作",
+    "i18nStrings.filteringItemAriaDescription": "繼續輸入以篩選結果。"
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "在新索引標籤中開啟"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "清除篩選條件",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}，0 個項目} one {{label}，1 個項目} other {{label}，{count} 個項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
   },
   "copy-to-clipboard": {
@@ -163,14 +169,14 @@
     "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
-    "i18nStrings.dateConstraintText": "對於日期，請使用 YYYY/MM/DD。",
+    "i18nStrings.dateConstraintText": "日期請使用 YYYY/MM/DD 格式。",
     "i18nStrings.slashedDateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
     "i18nStrings.isoDateTimeConstraintText": "日期請使用 YYYY-MM-DD 格式。時間請使用 24 小時格式。",
     "i18nStrings.slashedDateConstraintText": "日期請使用 YYYY/MM/DD 格式。",
     "i18nStrings.isoDateConstraintText": "日期請使用 YYYY-MM-DD 格式。",
     "i18nStrings.slashedMonthConstraintText": "月份請使用 YYYY/MM 格式。",
     "i18nStrings.isoMonthConstraintText": "月份請使用 YYYY-MM 格式。",
-    "i18nStrings.monthConstraintText": "對於月份，請使用 YYYY/MM。",
+    "i18nStrings.monthConstraintText": "月份請使用 YYYY/MM 格式。",
     "i18nStrings.errorIconAriaLabel": "錯誤",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "已選取從 {startDate} 到 {endDate} 的範圍",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {最後{amount}秒} one {最後{amount}秒} other {最後{amount}秒}}} minute {{amount, plural, zero {最後{amount}分鐘} one {最後{amount}分鐘} other {最後{amount}分鐘}}} hour {{amount, plural, zero {最後{amount}小時} one {最後{amount}小時} other {最後{amount}小時}}} day {{amount, plural, zero {最後{amount}天} one {最後{amount}天} other {最後{amount}天}}} week {{amount, plural, zero {最後{amount}週} one {最後{amount}週} other {最後{amount}週}}} month {{amount, plural, zero {最後{amount}個月} one {最後{amount}個月} other {最後{amount}個月}}} year {{amount, plural, zero {最後{amount}年} one {最後{amount}年} other {最後{amount}年}}} other {}}",
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
     "i18nStrings.jumpToPageInputLabel": "頁面",
     "i18nStrings.jumpToPageError": "頁面超出範圍。顯示最後一個可用頁面。",
-    "i18nStrings.jumpToPageLoadingText": "正在載入"
+    "i18nStrings.jumpToPageLoadingText": "正在載入",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "展開",
     "ariaLabels.collapseButtonLabel": "摺疊",
     "columnDefinitions.editConfig.errorIconAriaLabel": "錯誤",
-    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯"
+    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯",
+    "i18nStrings.sortDropdownSortAscending": "遞增排序",
+    "i18nStrings.sortDropdownSortDescending": "遞減排序",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "多欄排序 (Shift + 按一下)",
+    "i18nStrings.sortDropdownAddToSortAscending": "新增至排序 (遞增)",
+    "i18nStrings.sortDropdownAddToSortDescending": "新增至排序 (遞減)",
+    "i18nStrings.sortDropdownRemoveFromSort": "從排序中移除",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "此欄已排序",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "此欄未排序",
+    "i18nStrings.clearSort": "清除排序",
+    "ariaLabels.sortAscending": "升序",
+    "ariaLabels.sortDescending": "降序",
+    "ariaLabels.liveAnnouncementSortOrder": "資料表依 {columns} 排序",
+    "ariaLabels.liveAnnouncementSortCleared": "已清除排序",
+    "ariaLabels.sortPriority": "排序優先順序 {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "排序選項"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "向左捲動",

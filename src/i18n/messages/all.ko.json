@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "경로 표시"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount}개 항목 중 {matchesCount}개",
+    "noMatch": "일치하는 작업 없음",
+    "i18nStrings.filteringItemAriaDescription": "결과를 필터링하려면 계속 입력하세요."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "새 탭에서 열림"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "필터 지우기",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0개 항목} one {{label}, 1개 항목} other {{label}, {count}개 항목}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0개 일치} one {1개 일치} other {{count}개 일치}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
     "i18nStrings.jumpToPageInputLabel": "페이지",
     "i18nStrings.jumpToPageError": "페이지가 범위를 벗어났습니다. 마지막으로 사용 가능한 페이지를 표시합니다.",
-    "i18nStrings.jumpToPageLoadingText": "로드 중"
+    "i18nStrings.jumpToPageLoadingText": "로드 중",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",
@@ -307,7 +314,7 @@
     "i18nStrings.operatorsText": "연산자",
     "i18nStrings.propertyText": "속성",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__formattedText} 필터 제거",
-    "i18nStrings.tokenEditorTokenActionsAriaLabel": "필터 작업, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "필터 작업, {token__formattedText} ",
     "i18nStrings.tokenEditorTokenRemoveAriaLabel": "필터 {token__formattedText} 제거",
     "i18nStrings.tokenEditorTokenRemoveLabel": "필터 제거",
     "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "그룹에서 필터 제거",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "확장",
     "ariaLabels.collapseButtonLabel": "축소",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",
-    "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능"
+    "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능",
+    "i18nStrings.sortDropdownSortAscending": "오름차순 정렬",
+    "i18nStrings.sortDropdownSortDescending": "내림차순 정렬",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "복수 열 정렬(Shift 키를 누른 채 클릭)",
+    "i18nStrings.sortDropdownAddToSortAscending": "정렬에 추가(오름차순)",
+    "i18nStrings.sortDropdownAddToSortDescending": "정렬에 추가 (내림차순)",
+    "i18nStrings.sortDropdownRemoveFromSort": "정렬에서 제거",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "이 열은 이미 정렬되었습니다.",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "이 열은 정렬되지 않았습니다.",
+    "i18nStrings.clearSort": "정렬 지우기",
+    "ariaLabels.sortAscending": "오름차순",
+    "ariaLabels.sortDescending": "내림차순",
+    "ariaLabels.liveAnnouncementSortOrder": "{columns} 기준 테이블 정렬",
+    "ariaLabels.liveAnnouncementSortCleared": "정렬이 지워졌습니다.",
+    "ariaLabels.sortPriority": "정렬 우선 순위 {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "정렬 옵션"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "왼쪽으로 스크롤",

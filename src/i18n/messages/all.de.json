@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Pfad anzeigen"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} von {totalCount} Artikeln",
+    "noMatch": "Keine übereinstimmenden Aktionen",
+    "i18nStrings.filteringItemAriaDescription": "Tippen Sie weiter, um die Ergebnisse zu filtern."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filter löschen",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 Elemente} one {{label}, 1 Element} other {{label}, {count} Elemente}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 Übereinstimmungen} one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
   },
   "copy-to-clipboard": {
@@ -164,13 +170,13 @@
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
-    "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
+    "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.isoDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
-    "i18nStrings.slashedDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT.",
+    "i18nStrings.slashedDateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
     "i18nStrings.isoDateConstraintText": "Verwenden Sie für das Datum das Format JJJJ-MM-TT.",
     "i18nStrings.slashedMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ/MM.",
     "i18nStrings.isoMonthConstraintText": "Verwenden Sie für den Monat das Format JJJJ-MM.",
-    "i18nStrings.monthConstraintText": "Verwenden Sie für Monat JJJJ/MM.",
+    "i18nStrings.monthConstraintText": "Verwenden Sie für den Monat das Format JJJJ/MM.",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Letzte {amount} Sekunden} one {Letzte {amount} Sekunde} other {Letzte {amount} Sekunden}}} minute {{amount, plural, zero {Letzte {amount} Minuten} one {Letzte {amount} Minute} other {Letzte {amount} Minuten}}} hour {{amount, plural, zero {Letzte {amount} Stunden} one {Letzte {amount} Stunde} other {Letzte {amount} Stunden}}} day {{amount, plural, zero {Letzte {amount} Tage} one {Letzter {amount} Tag} other {Letzte {amount} Tage}}} week {{amount, plural, zero {Letzte {amount} Wochen} one {Letzte {amount} Woche} other {Letzte {amount} Wochen}}} month {{amount, plural, zero {Letzte {amount} Monate} one {Letzter {amount} Monat} other {Letzte {amount} Monate}}} year {{amount, plural, zero {Letzte {amount} Jahre} one {Letztes {amount} Jahr} other {Letzte {amount} Jahre}}} other {}}",
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Zur Seite springen",
     "i18nStrings.jumpToPageInputLabel": "Seite",
     "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an.",
-    "i18nStrings.jumpToPageLoadingText": "Wird geladen"
+    "i18nStrings.jumpToPageLoadingText": "Wird geladen",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} von {pagesCount}+} false {{currentPage} von {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Erweitern",
     "ariaLabels.collapseButtonLabel": "Minimieren",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",
-    "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar"
+    "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar",
+    "i18nStrings.sortDropdownSortAscending": "Aufsteigend sortieren",
+    "i18nStrings.sortDropdownSortDescending": "Absteigend sortieren",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Sortieren nach mehreren Spalten (Umschalttaste + Klick)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Zur Sortierung hinzufügen (aufsteigend)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Zur Sortierung hinzufügen (absteigend)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Aus Sortierung entfernen",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Diese Spalte ist bereits sortiert",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Diese Spalte ist nicht sortiert",
+    "i18nStrings.clearSort": "Sortierung löschen",
+    "ariaLabels.sortAscending": "aufsteigend",
+    "ariaLabels.sortDescending": "absteigend",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabelle sortiert nach {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Sortierung gelöscht",
+    "ariaLabels.sortPriority": "Sortierpriorität {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Sortieroptionen"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Nach links scrollen",

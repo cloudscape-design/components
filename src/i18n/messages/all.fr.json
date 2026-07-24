@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Afficher le chemin"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} sur {totalCount} éléments",
+    "noMatch": "Aucune action correspondante",
+    "i18nStrings.filteringItemAriaDescription": "Continuez à taper pour filtrer les résultats."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Effacer le filtre",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 éléments} one {{label}, 1 élément} other {{label}, {count} éléments}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 correspondances} one {1 correspondance} other {{count} correspondances}}"
   },
   "copy-to-clipboard": {
@@ -158,18 +164,18 @@
     "i18nStrings.endMonthLabel": "Mois de fin",
     "i18nStrings.endDateLabel": "Date de fin",
     "i18nStrings.endTimeLabel": "Heure de fin",
-    "i18nStrings.datePlaceholder": "JJ/MM/AAAA",
-    "i18nStrings.isoDatePlaceholder": "AAAA-MM-JJ",
+    "i18nStrings.datePlaceholder": "AAAA-MM-JJ",
+    "i18nStrings.isoDatePlaceholder": "JJ-MM-AAAA",
     "i18nStrings.slashedDatePlaceholder": "AAAA/MM/JJ",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
-    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
+    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
     "i18nStrings.dateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
-    "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA. Pour l’heure, utilisez le format 24 heures.",
-    "i18nStrings.isoDateTimeConstraintText": "Pour la date, utilisez le format JJ-MM-AAAA. Pour l’heure, utilisez le format 24 heures.",
-    "i18nStrings.slashedDateConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA.",
-    "i18nStrings.isoDateConstraintText": "Pour la date, utilisez le format JJ-MM-AAAA.",
-    "i18nStrings.slashedMonthConstraintText": "Pour le mois, utilisez le format MM/AAAA.",
-    "i18nStrings.isoMonthConstraintText": "Pour le mois, utilisez le format MM-AAAA.",
+    "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
+    "i18nStrings.isoDateTimeConstraintText": "Pour la date, utilisez le format AAAA-MM-JJ. Pour l’heure, utilisez le format 24 heures.",
+    "i18nStrings.slashedDateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
+    "i18nStrings.isoDateConstraintText": "Pour la date, utilisez le format AAAA-MM-JJ.",
+    "i18nStrings.slashedMonthConstraintText": "Pour le mois, utilisez le format AAAA/MM.",
+    "i18nStrings.isoMonthConstraintText": "Pour le mois, utilisez le format YYYY-MM.",
     "i18nStrings.monthConstraintText": "Pour le mois, utilisez le format AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
@@ -195,7 +201,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",
     "i18nStrings.limitShowMore": "Afficher plus",
-    "i18nStrings.removeFileAriaLabel": "Supprimer le fichier {fileIndex}, {fileName}",
+    "i18nStrings.removeFileAriaLabel": "Supprimer le fichier {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Aller à la page",
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page hors de portée. Affichage de la dernière page disponible.",
-    "i18nStrings.jumpToPageLoadingText": "Chargement en cours"
+    "i18nStrings.jumpToPageLoadingText": "Chargement en cours",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} sur plus de {pagesCount}} false {{currentPage} sur {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement du panneau",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Élargir",
     "ariaLabels.collapseButtonLabel": "Réduire",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erreur",
-    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable",
+    "i18nStrings.sortDropdownSortAscending": "Trier par ordre croissant",
+    "i18nStrings.sortDropdownSortDescending": "Trier par ordre décroissant",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Tri sur plusieurs colonnes (Maj + clic)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Ajouter au tri (par ordre croissant)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Ajouter au tri (par ordre décroissant)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Supprimer du tri",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Cette colonne est déjà triée",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Cette colonne n’est pas triée",
+    "i18nStrings.clearSort": "Effacer le tri",
+    "ariaLabels.sortAscending": "croissant",
+    "ariaLabels.sortDescending": "décroissant",
+    "ariaLabels.liveAnnouncementSortOrder": "Tableau trié selon {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Tri supprimé",
+    "ariaLabels.sortPriority": "priorité de tri {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Options de tri"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Faire défiler vers la gauche",

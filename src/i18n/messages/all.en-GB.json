@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} out of {totalCount} items",
+    "noMatch": "No matching actions",
+    "i18nStrings.filteringItemAriaDescription": "Keep typing to filter results."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Opens in a new tab"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Clear filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 items} one {{label}, 1 item} other {{label}, {count} items}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 matches} one {1 match} other {{count} matches}}"
   },
   "copy-to-clipboard": {
@@ -158,23 +164,23 @@
     "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
-    "i18nStrings.datePlaceholder": "DD/MM/YYYY",
-    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "DD-MM-YYYY",
     "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
-    "i18nStrings.dateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
+    "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
-    "i18nStrings.slashedDateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
-    "i18nStrings.isoDateTimeConstraintText": "For date, use DD-MM-YYYY. For time, use 24-hr format.",
-    "i18nStrings.slashedDateConstraintText": "For date, use DD/MM/YYYY.",
-    "i18nStrings.isoDateConstraintText": "For date, use DD-MM-YYYY.",
-    "i18nStrings.slashedMonthConstraintText": "For month, use MM/YYYY.",
-    "i18nStrings.isoMonthConstraintText": "For month, use MM-YYYY.",
+    "i18nStrings.slashedDateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
+    "i18nStrings.isoDateTimeConstraintText": "For date, use YYYY-MM-DD. For time, use 24 hr format.",
+    "i18nStrings.slashedDateConstraintText": "For date, use YYYY/MM/DD.",
+    "i18nStrings.isoDateConstraintText": "For date, use YYYY-MM-DD.",
+    "i18nStrings.slashedMonthConstraintText": "For month, use YYYY/MM.",
+    "i18nStrings.isoMonthConstraintText": "For month, use YYYY-MM.",
     "i18nStrings.monthConstraintText": "For month, use YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Last {amount} seconds} one {Last {amount} second} other {Last {amount} seconds}}} minute {{amount, plural, zero {Last {amount} minutes} one {Last {amount} minute} other {Last {amount} minutes}}} hour {{amount, plural, zero {Last {amount} hours} one {Last {amount} hour} other {Last {amount} hours}}} day {{amount, plural, zero {Last {amount} days} one {Last {amount} day} other {Last {amount} days}}} week {{amount, plural, zero {Last {amount} weeks} one {Last {amount} week} other {Last {amount} weeks}}} month {{amount, plural, zero {Last {amount} months} one {Last {amount} month} other {Last {amount} months}}} year {{amount, plural, zero {Last {amount} years} one {Last {amount} year} other {Last {amount} years}}} other {}}",
-    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {seconds} one {second} other {seconds}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {hours} one {hour} other {hours}}} day {{amount, plural, zero {days} one {day} other {days}}} week {{amount, plural, zero {weeks} one {week} other {weeks}}} month {{amount, plural, zero {months} one {Month} other {months}}} year {{amount, plural, zero {years} one {year} other {years}}} other {}}"
+    "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {seconds} one {second} other {seconds}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {hours} one {hour} other {hours}}} day {{amount, plural, zero {days} one {day} other {days}}} week {{amount, plural, zero {weeks} one {week} other {weeks}}} month {{amount, plural, zero {months} one {month} other {months}}} year {{amount, plural, zero {years} one {year} other {years}}} other {}}"
   },
   "drawer": {
     "i18nStrings.loadingText": "Loading content"
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Jump to page",
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page.",
-    "i18nStrings.jumpToPageLoadingText": "Loading"
+    "i18nStrings.jumpToPageLoadingText": "Loading",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} of {pagesCount}+} false {{currentPage} of {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Expand",
     "ariaLabels.collapseButtonLabel": "Collapse",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdownSortAscending": "Sort ascending",
+    "i18nStrings.sortDropdownSortDescending": "Sort descending",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Multi-column sort (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Add to sort (ascending)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Add to sort (descending)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Remove from sort",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "This column is not sorted",
+    "i18nStrings.clearSort": "Clear sort",
+    "ariaLabels.sortAscending": "ascending",
+    "ariaLabels.sortDescending": "descending",
+    "ariaLabels.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Sorting cleared",
+    "ariaLabels.sortPriority": "sort priority {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Sort options"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",
