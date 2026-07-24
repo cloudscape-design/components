@@ -33831,6 +33831,855 @@ specified in the \`i18nStrings\` property.",
 }
 `;
 
+exports[`Components definition for virtual-table matches the snapshot: virtual-table 1`] = `
+{
+  "dashCaseName": "virtual-table",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Fires when a row's expansion is toggled (keyboard or pointer).",
+      "detailInlineType": {
+        "name": "VirtualTableProps.ExpandChangeDetail<T>",
+        "properties": [
+          {
+            "name": "expanded",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "expandedItems",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+          {
+            "inlineType": {
+              "name": "NonNullable<T>",
+              "type": "union",
+              "values": [
+                "T",
+                "{}",
+              ],
+            },
+            "name": "item",
+            "optional": false,
+            "type": "NonNullable<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.ExpandChangeDetail<T>",
+      "name": "onExpandChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Fires when the follow state should change — on user scroll-away (false) or on
+reaching bottom / pressing the follow control (true).",
+      "detailInlineType": {
+        "name": "VirtualTableProps.FollowChangeDetail",
+        "properties": [
+          {
+            "name": "follow",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "inlineType": {
+              "name": ""control" | "scroll-away" | "reached-bottom"",
+              "type": "union",
+              "values": [
+                "control",
+                "scroll-away",
+                "reached-bottom",
+              ],
+            },
+            "name": "reason",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.FollowChangeDetail",
+      "name": "onFollowChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Fires on sort control activation (keyboard-operable — not pointer-only).",
+      "detailInlineType": {
+        "name": "VirtualTableProps.SortingState<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "VirtualTableProps.ColumnDefinition<T>",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "item",
+                        "type": "T",
+                      },
+                      {
+                        "name": "context",
+                        "type": "VirtualTableProps.CellContext",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "cell",
+                  "optional": false,
+                  "type": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+                },
+                {
+                  "name": "header",
+                  "optional": true,
+                  "type": "React.ReactNode",
+                },
+                {
+                  "name": "id",
+                  "optional": false,
+                  "type": "string",
+                },
+                {
+                  "name": "isStretch",
+                  "optional": true,
+                  "type": "boolean",
+                },
+                {
+                  "name": "minWidth",
+                  "optional": true,
+                  "type": "number",
+                },
+                {
+                  "inlineType": {
+                    "name": "(a: T, b: T) => number",
+                    "parameters": [
+                      {
+                        "name": "a",
+                        "type": "T",
+                      },
+                      {
+                        "name": "b",
+                        "type": "T",
+                      },
+                    ],
+                    "returnType": "number",
+                    "type": "function",
+                  },
+                  "name": "sortingComparator",
+                  "optional": true,
+                  "type": "((a: T, b: T) => number)",
+                },
+                {
+                  "name": "sortingField",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "width",
+                  "optional": true,
+                  "type": "number",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "sortingColumn",
+            "optional": false,
+            "type": "VirtualTableProps.ColumnDefinition<T>",
+          },
+          {
+            "name": "sortingDescending",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.SortingState<T>",
+      "name": "onSortingChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Fires when the windowed visible range changes. Variable heights break a linear
+scrollTop estimate, so the accurate dataset-relative range is surfaced here for
+scroll-triggered prefetch. \`firstIndex\`/\`lastIndex\` index into \`items\`.",
+      "detailInlineType": {
+        "name": "VirtualTableProps.VisibleRangeDetail",
+        "properties": [
+          {
+            "name": "firstIndex",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "lastIndex",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.VisibleRangeDetail",
+      "name": "onVisibleRangeChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Whether the view is currently pinned to the last row.",
+      "name": "isPinnedToEnd",
+      "parameters": [],
+      "returnType": "boolean",
+    },
+    {
+      "description": "Expand + highlight + scroll a row into view (CW-13 reveal). In \`mark-in-place\`
+mode (or with no filter) the row is present, so it is expanded, highlighted, and
+scrolled into view. If a \`subset\` filter currently hides the target row, reveal
+is a no-op for that row — the console should clear or widen the filter first
+(VirtualTable does not silently drop a consumer-owned filter).",
+      "name": "revealItem",
+      "parameters": [
+        {
+          "name": "key",
+          "type": "string",
+        },
+      ],
+      "returnType": "void",
+    },
+    {
+      "description": "Scroll to and (optionally) pin to the newest row.",
+      "name": "scrollToEnd",
+      "parameters": [
+        {
+          "name": "options",
+          "type": "{ pin?: boolean | undefined; }",
+        },
+      ],
+      "returnType": "void",
+    },
+    {
+      "description": "Scroll a row (by trackBy key) into view.",
+      "name": "scrollToItem",
+      "parameters": [
+        {
+          "name": "key",
+          "type": "string",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
+  "name": "VirtualTable",
+  "properties": [
+    {
+      "description": "Accessibility labels and the ARIA/announcement string set: the grid label,
+per-view labels, the expand/collapse trigger label, the follow toggle label,
+filter-count and append announcement templates, and loading/error text.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "VirtualTableProps.AriaLabels<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "collapseRowLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "expandRowLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "filterMatchLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
+          },
+          {
+            "name": "followToggleLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "gridLabel",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "matchNavigationLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "nextMatchLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "previousMatchLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(view: VirtualTableProps.View) => string",
+              "parameters": [
+                {
+                  "name": "view",
+                  "type": "VirtualTableProps.View",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "viewLabel",
+            "optional": true,
+            "type": "((view: VirtualTableProps.View) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "ariaLabels",
+      "optional": true,
+      "type": "VirtualTableProps.AriaLabels<T>",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Static per-column widths in px (by column id); the stretch-last column omits it.",
+      "name": "columnWidths",
+      "optional": true,
+      "type": "Record<string, number>",
+    },
+    {
+      "description": "Uncontrolled initial set of expanded row keys.",
+      "name": "defaultExpandedItems",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "defaultValue": "23",
+      "description": "Estimated collapsed row height in px, used to size the scroll runway before a row
+is measured. Defaults to the logs density; CloudWatch standard/patterns use 23
+(ROW_HEIGHT), raw uses 20 (RAW_LINE_HEIGHT).",
+      "name": "estimatedRowHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Selects a built-in expanded-content layout, used as the default under
+\`getExpandedContent\`. "log-record" = shape A (~300 px key/value detail);
+"pattern-detail" = shape B (~150 px histogram + tokens + actions). Returning
+custom content from \`getExpandedContent\` overrides it for that row (override-seam).",
+      "inlineType": {
+        "name": "VirtualTableProps.ExpandedContentPreset",
+        "type": "union",
+        "values": [
+          "log-record",
+          "pattern-detail",
+        ],
+      },
+      "name": "expandedContentPreset",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Controlled set of expanded row keys (trackBy values).",
+      "name": "expandedItems",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "description": "The two-mode logs filter (CW-10), packaged as a component feature with the console
+supplying only the predicate (override-seam). VirtualTable owns the mechanism:
+match-indicator column, per-cell highlight styling, total-vs-filtered counts,
+keyboard next/previous-match, and a NON-VISUAL match conveyance (text/ARIA on the
+indicator, not colour alone; WCAG 1.4.1).
+ - mode "subset"          renders only matching rows (filtered count).
+ - mode "mark-in-place"   renders all rows, marks matches in place + a match
+                          indicator column, so context is preserved.
+Omitting \`filter\` disables filtering entirely.",
+      "inlineType": {
+        "name": "VirtualTableProps.Filter<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(item: T, columnId: string) => boolean",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+                {
+                  "name": "columnId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "boolean",
+              "type": "function",
+            },
+            "name": "highlight",
+            "optional": true,
+            "type": "((item: T, columnId: string) => boolean)",
+          },
+          {
+            "inlineType": {
+              "name": ""subset" | "mark-in-place"",
+              "type": "union",
+              "values": [
+                "subset",
+                "mark-in-place",
+              ],
+            },
+            "name": "mode",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => boolean",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "boolean",
+              "type": "function",
+            },
+            "name": "predicate",
+            "optional": false,
+            "type": "(item: T) => boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "filter",
+      "optional": true,
+      "type": "VirtualTableProps.Filter<T>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Controlled follow (stick-to-bottom) state. When true, appended rows pin the
+viewport to newest; when the user scrolls away VirtualTable calls
+\`onFollowChange(false)\` and stops auto-scrolling. Controlled by design
+(override-seam): the console owns follow policy, the component owns the
+pin-to-newest mechanics, scroll-anchoring, and the accessible append announcement.",
+      "name": "follow",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Renders arbitrary, non-tabular content for an expanded row. This is the R-EXPAND
+SUBSTRATE (goal 6): whatever it returns is hosted in the measured expanded region
+and inherits the full disclosure a11y + measurement contract. The two built-in
+presets (shape A log-record detail, shape B pattern detail) are DEFAULTS layered
+on this slot via \`expandedContentPreset\` — they are not a closed set. Presence of
+this prop (or a preset) enables the leading disclosure column.",
+      "inlineType": {
+        "name": "(item: T, context: VirtualTableProps.RowContext) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+          {
+            "name": "context",
+            "type": "VirtualTableProps.RowContext",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "getExpandedContent",
+      "optional": true,
+      "type": "((item: T, context: VirtualTableProps.RowContext) => React.ReactNode)",
+    },
+    {
+      "description": "Estimated expanded height in px per row, seeding the runway before the expanded
+region is measured. Defaults follow the active preset (300 log-record, 150
+pattern-detail); the real height is always measured.",
+      "inlineType": {
+        "name": "(item: T) => number",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "number",
+        "type": "function",
+      },
+      "name": "getExpandedRowHeight",
+      "optional": true,
+      "type": "((item: T) => number)",
+    },
+    {
+      "description": "Per-row height strategy. Return a fixed px height, or \`"auto"\` to opt that row
+into measurement (ResizeObserver-backed, measure-on-first-window-entry with a
+cached height and incremental offset correction). Omitting the prop means every
+collapsed row is fixed at \`estimatedRowHeight\`; expanded rows are always measured.",
+      "inlineType": {
+        "name": "(item: T) => number | "auto"",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "number | "auto"",
+        "type": "function",
+      },
+      "name": "getRowHeight",
+      "optional": true,
+      "type": "((item: T) => number | "auto")",
+    },
+    {
+      "description": "Bounds the scroll viewport to a fixed px block-size. Windowing REQUIRES a bounded
+viewport: without a \`height\`/\`maxHeight\` here (or a height-constrained parent, since
+the root is a flex column and the scroll container flexes to fill it) the scroll
+container reports the full content height and every row mounts. Use \`height\` for a
+fixed viewport that always scrolls.",
+      "name": "height",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "inlineType": {
+        "name": "VirtualTableProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(count: number) => string",
+              "parameters": [
+                {
+                  "name": "count",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "appendAnnouncementText",
+            "optional": true,
+            "type": "((count: number) => string)",
+          },
+          {
+            "name": "expandedRegionLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(matched: number, total: number) => string",
+              "parameters": [
+                {
+                  "name": "matched",
+                  "type": "number",
+                },
+                {
+                  "name": "total",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "filterCountText",
+            "optional": true,
+            "type": "((matched: number, total: number) => string)",
+          },
+          {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "VirtualTableProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Imperative handle for consumer-composed streaming controls the component does not
+render (e.g. a "jump to newest" button in console chrome): scroll to newest,
+scroll a specific row into view, reveal (expand + highlight) a row, and query
+whether the view is pinned to the end.",
+      "inlineType": {
+        "name": "((instance: VirtualTableProps.Ref | null) => void) | React.RefObject<VirtualTableProps.Ref>",
+        "type": "union",
+        "values": [
+          "(instance: VirtualTableProps.Ref | null) => void",
+          "React.RefObject<VirtualTableProps.Ref>",
+        ],
+      },
+      "name": "imperativeRef",
+      "optional": true,
+      "type": "((instance: VirtualTableProps.Ref | null) => void) | React.RefObject<VirtualTableProps.Ref>",
+    },
+    {
+      "description": "The full dataset for the current view. VirtualTable windows this to the visible
+range; the array is never fully rendered. Appending to it is the streaming/live
+path (see \`follow\`, \`onVisibleRangeChange\`, and the imperative ref).",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Loading state (initial fetch). SR-announced via i18nStrings.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Loading text rendered/announced while \`loading\` is true.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Bounds the scroll viewport to a maximum px block-size: the table grows with its
+content up to this height, then windows + scrolls. Alternative to \`height\` for a
+grow-then-scroll viewport. See \`height\` for why a bound is required to window.",
+      "name": "maxHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Rows rendered beyond the visible range on each side. CloudWatch uses 20 for the
+grid views and 40 for the raw view (TABLE_VIEW_OVERSCAN / FILE_VIEW_OVERSCAN).",
+      "name": "overscan",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Optional accessible summary for a batch of appended rows, announced politely and
+rate-limited (~500 ms debounce, summarized) on the component-owned aria-live
+region during tail. When omitted, a default count-based message is used from
+\`i18nStrings\`.",
+      "inlineType": {
+        "name": "(detail: VirtualTableProps.AppendDetail) => string",
+        "parameters": [
+          {
+            "name": "detail",
+            "type": "VirtualTableProps.AppendDetail",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "renderAppendAnnouncement",
+      "optional": true,
+      "type": "((detail: VirtualTableProps.AppendDetail) => string)",
+    },
+    {
+      "description": "Column currently sorted by (from the active view's column set).",
+      "inlineType": {
+        "name": "VirtualTableProps.ColumnDefinition<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+                {
+                  "name": "context",
+                  "type": "VirtualTableProps.CellContext",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "cell",
+            "optional": false,
+            "type": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+          },
+          {
+            "name": "header",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "isStretch",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "minWidth",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "inlineType": {
+              "name": "(a: T, b: T) => number",
+              "parameters": [
+                {
+                  "name": "a",
+                  "type": "T",
+                },
+                {
+                  "name": "b",
+                  "type": "T",
+                },
+              ],
+              "returnType": "number",
+              "type": "function",
+            },
+            "name": "sortingComparator",
+            "optional": true,
+            "type": "((a: T, b: T) => number)",
+          },
+          {
+            "name": "sortingField",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "width",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "sortingColumn",
+      "optional": true,
+      "type": "VirtualTableProps.ColumnDefinition<T>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Sort direction.",
+      "name": "sortingDescending",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Sticky header with horizontal scroll synced to the body.",
+      "name": "stickyHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Stable identity per row. REQUIRED (unlike Table, where it is optional): row
+virtualization recycles DOM nodes, so a stable key is mandatory for correct focus
+retention, expansion state, and measurement caching across recycling and live
+append.",
+      "inlineType": {
+        "name": "(item: T) => string",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "trackBy",
+      "optional": false,
+      "type": "(item: T) => string",
+    },
+    {
+      "description": "Per-view configuration AND the single source of truth for which built-in surface
+is active: the \`type\` discriminant selects the view, and the body supplies that
+view's column set / renderers. This is F2's opinionation made explicit —
+VirtualTable ships three surfaces rather than being a raw grid:
+ - "standard"  the results grid: dynamic columns, leading disclosure column,
+               fixed layout with a stretch-last column and static per-column
+               widths (no per-column sort — sort is a patterns-view capability,
+               CW-9).
+ - "patterns"  the aggregation grid: its own column set, per-column sort,
+               diff/compare mode, and a shared histogram y-scale computed across
+               the FULL dataset.
+ - "raw"       the monospaced raw log-line view (single column, no expansion), at
+               RAW_LINE_HEIGHT density.
+The console owns the tab/segmented control that swaps the config; VirtualTable
+owns each view's grid, virtualization, a11y, and expansion. Kept as one object
+(rather than a flat columnDefinitions array) so a console can hold all three view
+configs and swap without re-shaping props.",
+      "inlineType": {
+        "name": "VirtualTableProps.ViewConfig<T>",
+        "type": "union",
+        "values": [
+          "VirtualTableProps.StandardViewConfig<T>",
+          "VirtualTableProps.PatternsViewConfig<T>",
+          "VirtualTableProps.RawViewConfig<T>",
+        ],
+      },
+      "name": "viewConfig",
+      "optional": false,
+      "type": "VirtualTableProps.ViewConfig<T>",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Rendered when \`items\` is empty for the active view.",
+      "isDefault": false,
+      "name": "empty",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for wizard matches the snapshot: wizard 1`] = `
 {
   "dashCaseName": "wizard",
@@ -46429,6 +47278,164 @@ Supported options:
     {
       "methods": [
         {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The live-tail follow toggle, or null when the live-tail seam is not wired.",
+          "name": "findFollowToggle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The header row element (returned regardless of the stickyHeader prop).",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The total-vs-filtered match-count region, or null when no filter is set. Rendered
+for both filter modes (subset shows the filtered length, mark-in-place the match
+count) under the \`match-count\` class.",
+          "name": "findMatchCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the row's
+\`aria-rowindex\`, which is the full-dataset index offset by the header row: header
+is \`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
+    },
+    {
+      "methods": [
+        {
           "inheritedFrom": {
             "name": "FormWrapper.findActions",
           },
@@ -55299,6 +56306,129 @@ Supported options:
         },
       ],
       "name": "TutorialTaskWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The live-tail follow toggle, or null when the live-tail seam is not wired.",
+          "name": "findFollowToggle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The header row element (returned regardless of the stickyHeader prop).",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The total-vs-filtered match-count region, or null when no filter is set. Rendered
+for both filter modes (subset shows the filtered length, mark-in-place the match
+count) under the \`match-count\` class.",
+          "name": "findMatchCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the row's
+\`aria-rowindex\`, which is the full-dataset index offset by the header row: header
+is \`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
     },
     {
       "methods": [
