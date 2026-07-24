@@ -95,14 +95,18 @@ const InternalStep = ({
   hideConnectors,
 }: StepsProps.Step & { orientation: StepsProps.Orientation; hideConnectors: boolean }) => {
   const connectorClassName = clsx(styles.connector, hideConnectors && styles['connector-hidden']);
+  const hasAnnotation = annotation !== undefined && annotation !== null;
   return (
     <li className={styles.container}>
       <StepAnnotation>{annotation}</StepAnnotation>
       <div className={styles.header}>
         {orientation === 'vertical' ? (
-          <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-            {header}
-          </InternalStatusIndicator>
+          <>
+            <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              {header}
+            </InternalStatusIndicator>
+            {hasAnnotation && <hr className={clsx(connectorClassName, styles['connector-continuation'])} role="none" />}
+          </>
         ) : (
           <>
             <InternalBox color={statusToColor[status]}>
