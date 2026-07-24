@@ -19,6 +19,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { filterByAccept } from '../internal/utils/accept-filter';
 import { joinStrings } from '../internal/utils/strings';
 import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
 import { FileInputProps } from './interfaces';
@@ -38,6 +39,7 @@ const InternalFileInput = React.forwardRef(
       ariaRequired,
       ariaLabel,
       multiple = false,
+      mode = 'file',
       value,
       onChange,
       variant = 'button',
@@ -60,6 +62,9 @@ const InternalFileInput = React.forwardRef(
     const selfControlId = useUniqueId('upload-input');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
+    // In folder mode, always enable multiple selection
+    const effectiveMultiple = mode === 'folder' ? true : multiple;
+
     useForwardFocus(ref, uploadInputRef);
 
     const [isFocused, setIsFocused] = useState(false);
@@ -70,7 +75,14 @@ const InternalFileInput = React.forwardRef(
     const onUploadInputBlur = () => setIsFocused(false);
 
     const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-      fireNonCancelableEvent(onChange, { value: target.files ? Array.from(target.files) : [] });
+      let files = target.files ? Array.from(target.files) : [];
+
+      // In folder mode, filter files by accept criteria since native accept doesn't work with webkitdirectory
+      if (mode === 'folder' && accept) {
+        files = filterByAccept(files, accept);
+      }
+
+      fireNonCancelableEvent(onChange, { value: files });
     };
 
     checkControlled('FileInput', 'value', value, 'onChange', onChange);
@@ -134,13 +146,14 @@ const InternalFileInput = React.forwardRef(
           ref={uploadInputRef}
           type="file"
           hidden={false}
-          multiple={multiple}
-          accept={accept}
+          multiple={effectiveMultiple}
+          accept={mode === 'folder' ? undefined : accept}
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
           className={clsx(styles['file-input'], styles.hidden, __inputClassName)}
           tabIndex={tabIndex}
+          {...(mode === 'folder' && { webkitdirectory: '' })}
           {...nativeAttributes}
         />
 
