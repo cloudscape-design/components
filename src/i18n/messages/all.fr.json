@@ -408,7 +408,22 @@
     "ariaLabels.expandButtonLabel": "Élargir",
     "ariaLabels.collapseButtonLabel": "Réduire",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erreur",
-    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable",
+    "i18nStrings.sortDropdownSortAscending": "Trier par ordre croissant",
+    "i18nStrings.sortDropdownSortDescending": "Trier par ordre décroissant",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Tri sur plusieurs colonnes (Maj + clic)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Ajouter au tri (par ordre croissant)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Ajouter au tri (par ordre décroissant)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Supprimer du tri",
+    "i18nStrings.clearSort": "Effacer le tri",
+    "ariaLabels.sortMenuTriggerLabel": "Options de tri",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Cette colonne est déjà triée",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Cette colonne n’est pas triée",
+    "ariaLabels.sortAscending": "croissant",
+    "ariaLabels.sortDescending": "décroissant",
+    "ariaLabels.liveAnnouncementSortOrder": "Tableau trié selon {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Tri supprimé",
+    "ariaLabels.sortPriority": "priorité de tri {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Faire défiler vers la gauche",
