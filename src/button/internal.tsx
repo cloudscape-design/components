@@ -58,6 +58,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __title?: string;
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
+  __compact?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -102,6 +103,7 @@ export const InternalButton = React.forwardRef(
       __title,
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
+      __compact = false,
       analyticsAction = 'click',
       ...props
     }: InternalButtonProps,
@@ -188,6 +190,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
+      [styles['button-compact']]: __compact,
       [styles.link]: isAnchor,
     });
 

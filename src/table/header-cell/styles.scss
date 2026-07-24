@@ -150,6 +150,15 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   color: awsui.$color-text-column-sorting-icon;
 }
 
+.header-cell-main {
+  /* When the wrapper is present without a sort menu, behave as if it weren't there. */
+  display: contents;
+}
+
+.sort-priority-badge {
+  margin-inline-end: awsui.$space-xxs;
+}
+
 .edit-icon {
   margin-inline-start: awsui.$space-xxs;
   margin-block-start: awsui.$space-scaled-xxs;
@@ -162,15 +171,10 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   padding-inline-end: awsui.$space-s;
   @include cell-offset(awsui.$space-s);
 
-  .header-cell-group > &,
-  .header-cell-grouped > &,
-  .header-cell-spans-rows > & {
+  .header-cell-group > & {
     padding-block: awsui.$space-xxxs;
   }
 
-  .header-cell-sortable > & {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
-  }
   &:focus {
     outline: none;
     text-decoration: none;
@@ -178,18 +182,44 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
   @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
 
-  .header-cell-disabled.header-cell-sorted > & {
+  .header-cell-grouped > .header-cell-main > &,
+  .header-cell-spans-rows > .header-cell-main > & {
+    padding-block: awsui.$space-xxxs;
+  }
+
+  .header-cell-sortable > .header-cell-main > & {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
+
+  // The multi-sort priority badge renders alongside the sort arrow inside the
+  // absolutely-positioned sort icon. Reserve extra inline-end space for it so it
+  // does not overlap long, non-truncated header text (e.g. resizable columns off).
+  .header-cell-sortable > .header-cell-main > &.header-cell-content-multi-sorted {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs} + #{awsui.$space-m});
+  }
+
+  .header-cell-disabled.header-cell-sorted > .header-cell-main > & {
     & > .sorting-icon {
       color: awsui.$color-text-interactive-disabled;
     }
   }
 }
 
+.header-cell-main-with-menu {
+  display: flex;
+  align-items: center;
+}
+
+.header-cell-content-with-menu {
+  flex-grow: 1;
+  min-inline-size: 0;
+}
+
 .header-cell-spans-rows {
   block-size: 100%;
   vertical-align: bottom;
 
-  > .header-cell-content {
+  > .header-cell-main > .header-cell-content {
     block-size: 100%;
     box-sizing: border-box;
     display: flex;
@@ -206,11 +236,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 .header-cell-sortable:not(.header-cell-disabled) {
-  & > .header-cell-content {
-    cursor: pointer;
-  }
-  & > .header-cell-content:hover,
-  &.header-cell-sorted > .header-cell-content {
+  cursor: pointer;
+  & > .header-cell-main > .header-cell-content:hover,
+  &.header-cell-sorted > .header-cell-main > .header-cell-content {
     color: awsui.$color-text-interactive-active;
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;
@@ -251,7 +279,7 @@ settings icon in the pagination slot.
   &:first-child {
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
-  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-content {
+  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-main > .header-cell-content {
     @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
