@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.with-motion {
+    animation: awsui-motion-fade-in-tooltip awsui.$motion-duration-tooltip-enter awsui.$motion-easing-tooltip-enter;
+
+    @keyframes awsui-motion-fade-in-tooltip {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
