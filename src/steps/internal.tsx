@@ -105,7 +105,10 @@ const InternalStep = ({
             <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
               {header}
             </InternalStatusIndicator>
-            {hasAnnotation && <hr className={clsx(connectorClassName, styles['connector-continuation'])} role="none" />}
+            {details && <div className={styles.details}>{details}</div>}
+            {(hasAnnotation || details) && (
+              <hr className={clsx(connectorClassName, styles['connector-continuation'])} role="none" />
+            )}
           </>
         ) : (
           <>
@@ -119,11 +122,13 @@ const InternalStep = ({
       {orientation === 'vertical' ? (
         <hr className={connectorClassName} role="none" />
       ) : (
-        <div className={styles['horizontal-header']}>
-          <InternalBox color={statusToColor[status]}>{header}</InternalBox>
-        </div>
+        <>
+          <div className={styles['horizontal-header']}>
+            <InternalBox color={statusToColor[status]}>{header}</InternalBox>
+          </div>
+          {details && <div className={styles.details}>{details}</div>}
+        </>
       )}
-      {details && <div className={styles.details}>{details}</div>}
     </li>
   );
 };
