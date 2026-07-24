@@ -145,7 +145,7 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConf
       enableKeyboardNavigation:
         config?.enableKeyboardNavigation !== undefined ? String(config.enableKeyboardNavigation) : 'false',
     }).toString();
-    await browser.url(`#/light/table/resizable-columns?${params}`);
+    await browser.url(`#/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
     await testFn(page);
   });
@@ -341,8 +341,8 @@ test(
 test(
   'should recover column widths when the inner state is reset',
   setupTest(async page => {
-    await page.resizeColumn(2, 100);
     const oldWidth = await page.getColumnWidth(2);
+    await page.resizeColumn(2, 100);
     await page.click('#reset-state');
     await page.assertColumnWidth(2, oldWidth);
   })
