@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { paletteTokens } from '../core/color-palette.js';
-import { expandColorDictionary, hexToRgba } from '../utils/index.js';
+import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
@@ -379,59 +379,59 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Visual accent ───────────────────────────────────
   colorBackgroundVisualAccentRed: {
     light: paletteTokens.colorRed100!,
-    dark: hexToRgba(paletteTokens.colorRed500!, 0.2),
+    dark: 'rgba(255, 61, 61, 0.2)',
   },
   colorBackgroundVisualAccentYellow: {
     light: paletteTokens.colorYellow100!,
-    dark: hexToRgba(paletteTokens.colorYellow500!, 0.2),
+    dark: 'rgba(251, 211, 50, 0.2)',
   },
   colorBackgroundVisualAccentIndigo: {
     light: paletteTokens.colorIndigo100!,
-    dark: hexToRgba(paletteTokens.colorIndigo500!, 0.2),
+    dark: 'rgba(92, 127, 255, 0.2)',
   },
   colorBackgroundVisualAccentGreen: {
     light: paletteTokens.colorGreen100!,
-    dark: hexToRgba(paletteTokens.colorGreen500!, 0.2),
+    dark: 'rgba(43, 181, 52, 0.2)',
   },
   colorBackgroundVisualAccentOrange: {
-    light: hexToRgba(paletteTokens.colorOrange100!, 0.6),
-    dark: hexToRgba(paletteTokens.colorOrange500!, 0.2),
+    light: 'rgba(255, 224, 214, 0.6)',
+    dark: 'rgba(255, 75, 20, 0.2)',
   },
   colorBackgroundVisualAccentPurple: {
-    light: hexToRgba(paletteTokens.colorPurple100!, 0.6),
-    dark: hexToRgba(paletteTokens.colorPurple500!, 0.2),
+    light: 'rgba(242, 229, 255, 0.6)',
+    dark: 'rgba(173, 92, 255, 0.2)',
   },
   colorBackgroundVisualAccentLime: {
     light: '{colorLime100}',
-    dark: hexToRgba(paletteTokens.colorLime500!, 0.2),
+    dark: 'rgba(49, 184, 0, 0.2)',
   },
   colorBackgroundVisualAccentGrey: {
     light: '{colorNeutral250}',
     dark: '{colorNeutral700}',
   },
   colorBackgroundVisualAccentTeal: {
-    light: hexToRgba(paletteTokens.colorTeal100!, 0.7),
-    dark: hexToRgba(paletteTokens.colorTeal500!, 0.2),
+    light: 'rgba(204, 255, 252, 0.7)',
+    dark: 'rgba(0, 173, 162, 0.2)',
   },
   colorBackgroundVisualAccentBlue: {
-    light: hexToRgba(paletteTokens.colorBlue100!, 0.6),
-    dark: hexToRgba(paletteTokens.colorBlue500!, 0.2),
+    light: 'rgba(209, 241, 255, 0.6)',
+    dark: 'rgba(0, 153, 255, 0.2)',
   },
   colorBackgroundVisualAccentViolet: {
-    light: hexToRgba(paletteTokens.colorViolet100!, 0.6),
-    dark: hexToRgba(paletteTokens.colorViolet500!, 0.2),
+    light: 'rgba(232, 229, 255, 0.6)',
+    dark: 'rgba(133, 117, 255, 0.2)',
   },
   colorBackgroundVisualAccentMagenta: {
-    light: hexToRgba(paletteTokens.colorMagenta100!, 0.6),
-    dark: hexToRgba(paletteTokens.colorMagenta500!, 0.15),
+    light: 'rgba(255, 224, 251, 0.6)',
+    dark: 'rgba(255, 26, 224, 0.2)',
   },
   colorBackgroundVisualAccentPink: {
-    light: hexToRgba(paletteTokens.colorPink100!, 0.7),
-    dark: hexToRgba(paletteTokens.colorPink500!, 0.2),
+    light: 'rgba(255, 224, 240, 0.7)',
+    dark: 'rgba(255, 51, 153, 0.2)',
   },
   colorBackgroundVisualAccentAmber: {
-    light: hexToRgba(paletteTokens.colorAmber100!, 0.7),
-    dark: hexToRgba(paletteTokens.colorAmber500!, 0.2),
+    light: 'rgba(255, 232, 189, 0.7)',
+    dark: 'rgba(250, 111, 0, 0.2)',
   },
   colorTextVisualAccentRed: { light: '{colorError700}', dark: '{colorError400}' },
   colorTextVisualAccentYellow: { light: '{colorWarning900}', dark: '{colorWarning200}' },
