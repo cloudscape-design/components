@@ -35,6 +35,13 @@ const StepAnnotation = ({ children }: { children: StepsProps.Step['annotation'] 
   return <div className={styles.annotation}>{children}</div>;
 };
 
+const StepDetails = ({ children }: { children: StepsProps.Step['details'] }) => {
+  if (children === undefined || children === null) {
+    return null;
+  }
+  return <div className={styles.details}>{children}</div>;
+};
+
 const CustomStep = ({
   step,
   orientation,
@@ -60,7 +67,7 @@ const CustomStep = ({
           <hr className={connectorClassName} role="none" />
         </div>
         <div className={styles['horizontal-header']}>{header}</div>
-        {details && <div className={styles.details}>{details}</div>}
+        <StepDetails>{details}</StepDetails>
       </li>
     );
   }
@@ -79,7 +86,7 @@ const CustomStep = ({
       </div>
       <div className={styles.content}>
         <div className={styles.header}>{header}</div>
-        {details && <div className={styles.details}>{details}</div>}
+        <StepDetails>{details}</StepDetails>
       </div>
     </li>
   );
@@ -105,7 +112,7 @@ const InternalStep = ({
             <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
               {header}
             </InternalStatusIndicator>
-            {details && <div className={styles.details}>{details}</div>}
+            <StepDetails>{details}</StepDetails>
             {(hasAnnotation || details) && (
               <hr className={clsx(connectorClassName, styles['connector-continuation'])} role="none" />
             )}
@@ -126,7 +133,7 @@ const InternalStep = ({
           <div className={styles['horizontal-header']}>
             <InternalBox color={statusToColor[status]}>{header}</InternalBox>
           </div>
-          {details && <div className={styles.details}>{details}</div>}
+          <StepDetails>{details}</StepDetails>
         </>
       )}
     </li>
