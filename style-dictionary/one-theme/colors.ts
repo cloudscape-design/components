@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
-import { paletteTokens } from '../core/color-palette.js';
-import { expandColorDictionary, hexToRgba } from '../utils/index.js';
+import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/colors.js';
 
@@ -131,10 +130,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
 
   // ── Badge ─────────────────────────────────────────────────────────
-  colorBackgroundBadgeGreen: { light: '{colorSuccess100}', dark: hexToRgba(paletteTokens.colorGreen500!, 0.2) },
-  colorBackgroundBadgeBlue: { light: '{colorInfo100}', dark: hexToRgba(paletteTokens.colorIndigo500!, 0.2) },
-  colorBackgroundBadgeRed: { light: '{colorError100}', dark: hexToRgba(paletteTokens.colorRed500!, 0.2) },
-  colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: hexToRgba(paletteTokens.colorYellow500!, 0.2) },
+  colorBackgroundBadgeGreen: { light: '{colorSuccess100}', dark: 'rgba(43, 181, 52, 0.2)' },
+  colorBackgroundBadgeBlue: { light: '{colorInfo100}', dark: 'rgba(92, 127, 255, 0.2)' },
+  colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
+  colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
 

@@ -95,16 +95,3 @@ export const pickState = (tokenCategory: TokenCategory<string, Record<string, st
     })
   );
 };
-
-/**
- * Converts a 6-digit hex color string and an alpha value to an rgba() CSS string.
- * @param hex - A 6-digit hex color (with or without leading '#').
- * @param alpha - Opacity value between 0 and 1.
- */
-export const hexToRgba = (hex: string, alpha: number): string => {
-  const normalized = hex.replace('#', '');
-  const r = parseInt(normalized.slice(0, 2), 16);
-  const g = parseInt(normalized.slice(2, 4), 16);
-  const b = parseInt(normalized.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
