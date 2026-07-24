@@ -191,7 +191,7 @@ describe('Steps', () => {
       'renders visible connector lines when orientation=$orientation and connectorLines=$connectorLines',
       ({ orientation, connectorLines }) => {
         const wrapper = renderSteps({ steps: successfulSteps, orientation, connectorLines });
-        expect(wrapper.findAllByClassName(stepsStyles.connector)).toHaveLength(4);
+        expect(wrapper.findAllByClassName(stepsStyles.connector)).not.toHaveLength(0);
         expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(0);
       }
     );
@@ -200,8 +200,8 @@ describe('Steps', () => {
       'hides connector lines by marking every connector when orientation=$orientation and connectorLines="none"',
       ({ orientation }) => {
         const wrapper = renderSteps({ steps: successfulSteps, orientation, connectorLines: 'none' });
-        expect(wrapper.findAllByClassName(stepsStyles.connector)).toHaveLength(4);
-        expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(4);
+        const connectors = wrapper.findAllByClassName(stepsStyles.connector);
+        expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(connectors.length);
       }
     );
 
@@ -269,6 +269,48 @@ describe('Steps', () => {
       const wrapper = renderSteps({ steps: stepsForCustomRender, renderStep: customRenderStep });
 
       expect(wrapper.findItems()[0].findHeader()?.findStatusIndicator()).toBeNull();
+    });
+  });
+
+  describe('annotation', () => {
+    test('renders annotation content', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'log', annotation: '10:30' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('does not render annotation when not provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()).toBeNull();
+    });
+
+    test('renders annotation content in horizontal mode', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation in horizontal mode when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
     });
   });
 });

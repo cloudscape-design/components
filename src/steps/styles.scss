@@ -27,6 +27,11 @@
       grid-template-columns: awsui.$space-static-l 1fr;
       grid-template-rows: minmax(awsui.$space-static-l, auto);
 
+      > .annotation {
+        min-inline-size: 0;
+        color: awsui.$color-text-status-inactive;
+      }
+
       > .header {
         display: flex;
         gap: awsui.$space-xxs;
@@ -71,18 +76,23 @@
     display: grid;
     align-items: flex-start;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    // Shared rows: annotation | icon and connector | header | details.
+    grid-template-rows: auto minmax(awsui.$space-static-l, auto) auto auto;
     grid-auto-flow: column;
 
     > .container {
-      display: grid;
-      grid-template-columns: awsui.$space-static-l 1fr;
-      grid-template-rows: minmax(awsui.$space-static-l, auto);
+      // Spanning the subgrid rows keeps steps with different-height annotations aligned.
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
       align-items: center;
 
-      > .header {
-        display: flex;
+      > .annotation {
         grid-row: 1;
         grid-column: 1 / span 2;
+      }
+
+      > .header {
+        grid-row: 2;
         align-items: center;
 
         > .connector {
@@ -102,13 +112,13 @@
       }
 
       > .horizontal-header {
-        grid-row: 2;
+        grid-row: 3;
         grid-column: 1 / span 3;
         padding-inline-end: awsui.$space-xs;
       }
 
       > .details {
-        grid-row: 3;
+        grid-row: 4;
         grid-column: 1 / span 3;
         padding-inline-end: awsui.$space-xs;
       }
@@ -118,6 +128,47 @@
       > .header > .connector {
         display: none;
       }
+    }
+  }
+}
+
+.vertical {
+  > .list {
+    // Status and details share this nested grid so annotation height does not affect their spacing.
+    // The continuation runs beside details and fills any extra annotation height.
+    > .container > .header {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+
+      > :first-child {
+        grid-column: 1 / -1;
+      }
+
+      > .details {
+        grid-row: 2;
+        grid-column: 2;
+        margin-block-end: awsui.$space-static-xs;
+      }
+
+      > .connector-continuation {
+        grid-row: 2;
+        grid-column: 1;
+        justify-self: center;
+        margin-block: 0;
+        margin-inline: 0;
+        border-block: 0;
+        border-inline: 0;
+        inline-size: awsui.$border-divider-list-width;
+        block-size: auto;
+        position: relative;
+        inset-inline-end: awsui.$space-static-xxxs;
+      }
+    }
+
+    > :last-of-type > .header > .connector-continuation {
+      display: none;
     }
   }
 }
@@ -156,6 +207,50 @@
   }
 }
 
+// Shared columns via subgrid: widest annotation | icon and connector | remaining content.
+.root > .list.with-annotation {
+  display: grid;
+  grid-template-columns: fit-content(50%) awsui.$space-static-l 1fr;
+
+  > .container {
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+
+    > .annotation {
+      grid-row: 1;
+      grid-column: 1;
+      padding-inline-end: awsui.$space-xxs;
+    }
+  }
+
+  // Header spans the icon and content columns; connector and details align beneath each part.
+  > .container:not(.custom-vertical) {
+    > .header {
+      grid-column: 2 / span 2;
+    }
+
+    > .connector {
+      grid-column: 2;
+    }
+
+    > .details {
+      grid-column: 3;
+    }
+  }
+
+  // Custom DOM: rail in the icon column, header and details in the content column.
+  > .container.custom-vertical {
+    > .rail {
+      grid-column: 2;
+    }
+
+    > .content {
+      grid-column: 3;
+    }
+  }
+}
+
+// Hide the connector after the final custom/rail step. Placed last so its higher specificity
 .root > .list > .container.custom-vertical:last-of-type > .rail > .connector {
   display: none;
 }
