@@ -28964,17 +28964,16 @@ the table items array is empty.",
       "description": "Renders skeleton placeholder rows to fill the table while data is loading. Accepts:
 - \`totalRows\` (number) - The total number of rows that should be rendered. If \`items\`
    are also provided, those items will be rendered first, and \`totalRows - items.length\`
-   additional skeleton rows rendered after.",
+   additional skeleton rows rendered after.
+- \`totalRows\` ('auto') - The number of skeleton rows is calculated from the available viewport height.
+- \`maxAutoRows\` (number) - Limits the number of rows rendered when \`totalRows\` is set to \`'auto'\`.",
       "inlineType": {
         "name": "TableProps.SkeletonConfig",
-        "properties": [
-          {
-            "name": "totalRows",
-            "optional": false,
-            "type": "number",
-          },
+        "type": "union",
+        "values": [
+          "{ totalRows: number; maxAutoRows?: undefined; }",
+          "{ totalRows: "auto"; maxAutoRows?: number | undefined; }",
         ],
-        "type": "object",
       },
       "name": "skeleton",
       "optional": true,
