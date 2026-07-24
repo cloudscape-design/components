@@ -77,7 +77,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
     return this.findActiveTHead().find(
-      `th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}, tr:not([data-group-level]) > th:nth-child(${columnIndex}) .${resizerStyles.resizer}`
+      `:is(th[data-column-index="${columnIndex}"], tr:not([data-group-level]) > th:nth-child(${columnIndex})) .${resizerStyles.resizer}`
     );
   }
 
@@ -134,7 +134,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
     return this.findActiveTHead().find(
-      `th[data-column-index="${colIndex}"] [role=button], tr:not([data-group-level]) > *:nth-child(${colIndex}) [role=button]`
+      `:is(th[data-column-index="${colIndex}"], tr:not([data-group-level]) > *:nth-child(${colIndex})) [role=button]`
     );
   }
 
@@ -160,7 +160,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findColumnSortMenu(columnIndex: number): TableColumnSortMenuWrapper | null {
     return this.findActiveTHead().findComponent(
-      `th[data-column-index="${columnIndex}"] .${ButtonDropdownWrapper.rootSelector}, tr:not([data-group-level]) > *:nth-child(${columnIndex}) .${ButtonDropdownWrapper.rootSelector}`,
+      `:is(th[data-column-index="${columnIndex}"], tr:not([data-group-level]) > *:nth-child(${columnIndex})) .${ButtonDropdownWrapper.rootSelector}`,
       TableColumnSortMenuWrapper
     );
   }
@@ -174,7 +174,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findColumnSortPriorityBadge(columnIndex: number): ElementWrapper | null {
     return this.findActiveTHead().find(
-      `th[data-column-index="${columnIndex}"] .${headerCellStyles['sort-priority-badge']}, tr:not([data-group-level]) > *:nth-child(${columnIndex}) .${headerCellStyles['sort-priority-badge']}`
+      `:is(th[data-column-index="${columnIndex}"], tr:not([data-group-level]) > *:nth-child(${columnIndex})) .${headerCellStyles['sort-priority-badge']}`
     );
   }
 

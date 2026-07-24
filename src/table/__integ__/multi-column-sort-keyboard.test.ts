@@ -12,7 +12,7 @@ const sortControl = (colIndex: number) => tableWrapper.findColumnSortingArea(col
 // The per-column sort menu renders a single <button> trigger in the header cell (the sort control
 // itself is a role="button" div, not a <button>), so this uniquely targets the sort menu trigger.
 const sortMenuTrigger = (colIndex: number) =>
-  tableWrapper.find(`th[data-column-index="${colIndex}"] button`).toSelector();
+  tableWrapper.findColumnSortMenu(colIndex).findTriggerButton().toSelector();
 const bodyCell = (rowIndex: number, colIndex: number) => tableWrapper.findBodyCell(rowIndex, colIndex).toSelector();
 const sortPriorityBadge = (colIndex: number) => tableWrapper.findColumnSortPriorityBadge(colIndex).toSelector();
 // The sort menu opts into expandToViewport, so the open dropdown is portaled to the body and matched globally.
@@ -82,6 +82,7 @@ test(
   setupTest(async page => {
     await page.click('h1');
     await page.keys(TABS_INTO_GRID);
+    console.log(sortControl(1));
     await expect(page.isFocused(sortControl(1))).resolves.toBe(true);
 
     // Each sortable header cell exposes two focusables in order: the sort control, then its sort menu.
