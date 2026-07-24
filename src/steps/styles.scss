@@ -167,7 +167,7 @@
 // Shared columns via subgrid: widest annotation | icon and connector | remaining content.
 .root > .list.with-annotation {
   display: grid;
-  grid-template-columns: max-content awsui.$space-static-l 1fr;
+  grid-template-columns: fit-content(50%) awsui.$space-static-l 1fr;
 
   > .container {
     grid-column: 1 / -1;
