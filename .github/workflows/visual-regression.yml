@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     steps:
       - uses: actions/checkout@v4
 
@@ -111,7 +111,7 @@ jobs:
       - name: Run visual regression tests
         run: |
           echo "NEW_HOST=${NEW_HOST}"
-          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/2"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/10"
         env:
           TZ: UTC
           SHARD: ${{ matrix.shard }}
