@@ -33831,6 +33831,626 @@ specified in the \`i18nStrings\` property.",
 }
 `;
 
+exports[`Components definition for virtual-table matches the snapshot: virtual-table 1`] = `
+{
+  "dashCaseName": "virtual-table",
+  "events": [
+    {
+      "cancelable": false,
+      "detailInlineType": {
+        "name": "VirtualTableProps.ColumnWidthsDetail",
+        "properties": [
+          {
+            "name": "widths",
+            "optional": false,
+            "type": "Record<string, number>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.ColumnWidthsDetail",
+      "name": "onColumnWidthsChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Fires on a disclosure toggle with the row and the resulting expanded set.",
+      "detailInlineType": {
+        "name": "VirtualTableProps.ExpandChangeDetail<T>",
+        "properties": [
+          {
+            "name": "expanded",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "expandedItems",
+            "optional": false,
+            "type": "Array<string>",
+          },
+          {
+            "inlineType": {
+              "name": "NonNullable<T>",
+              "type": "union",
+              "values": [
+                "T",
+                "{}",
+              ],
+            },
+            "name": "item",
+            "optional": false,
+            "type": "NonNullable<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.ExpandChangeDetail<T>",
+      "name": "onExpandChange",
+    },
+    {
+      "cancelable": false,
+      "description": "VirtualTable does not sort data; it reflects sort state and emits intent.",
+      "detailInlineType": {
+        "name": "VirtualTableProps.SortingDetail<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "VirtualTableProps.ColumnDefinition<T>",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(data: { sorted: boolean; descending: boolean; }) => string",
+                    "parameters": [
+                      {
+                        "name": "data",
+                        "type": "{ sorted: boolean; descending: boolean; }",
+                      },
+                    ],
+                    "returnType": "string",
+                    "type": "function",
+                  },
+                  "name": "ariaLabel",
+                  "optional": true,
+                  "type": "((data: { sorted: boolean; descending: boolean; }) => string)",
+                },
+                {
+                  "inlineType": {
+                    "name": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "item",
+                        "type": "T",
+                      },
+                      {
+                        "name": "context",
+                        "type": "VirtualTableProps.CellContext",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "cell",
+                  "optional": false,
+                  "type": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+                },
+                {
+                  "name": "header",
+                  "optional": true,
+                  "type": "React.ReactNode",
+                },
+                {
+                  "name": "id",
+                  "optional": false,
+                  "type": "string",
+                },
+                {
+                  "name": "isStretch",
+                  "optional": true,
+                  "type": "boolean",
+                },
+                {
+                  "name": "minWidth",
+                  "optional": true,
+                  "type": "number",
+                },
+                {
+                  "name": "sortingField",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "width",
+                  "optional": true,
+                  "type": "number",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "sortingColumn",
+            "optional": false,
+            "type": "VirtualTableProps.ColumnDefinition<T>",
+          },
+          {
+            "name": "sortingDescending",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.SortingDetail<T>",
+      "name": "onSortingChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Fires when the windowed visible range changes. \`firstIndex\`/\`lastIndex\` index
+into \`items\`.",
+      "detailInlineType": {
+        "name": "VirtualTableProps.VisibleRangeDetail",
+        "properties": [
+          {
+            "name": "firstIndex",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "lastIndex",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "VirtualTableProps.VisibleRangeDetail",
+      "name": "onVisibleRangeChange",
+    },
+  ],
+  "functions": [
+    {
+      "description": "True when the viewport is pinned to the last row (at the bottom edge).",
+      "name": "isPinnedToEnd",
+      "parameters": [],
+      "returnType": "boolean",
+    },
+    {
+      "description": "Pin the viewport to the last row (compose stick-to-bottom live tail on top).",
+      "name": "scrollToEnd",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Scroll a row into view; optionally expand it (\`reveal\`). Any highlight is consumer-composed.",
+      "name": "scrollToItem",
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+        },
+        {
+          "name": "options",
+          "type": "{ reveal?: boolean | undefined; }",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
+  "name": "VirtualTable",
+  "properties": [
+    {
+      "description": "Localized accessibility strings and label functions.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "VirtualTableProps.AriaLabels<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(column: VirtualTableProps.ColumnDefinition<T>) => string",
+              "parameters": [
+                {
+                  "name": "column",
+                  "type": "VirtualTableProps.ColumnDefinition<T>",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "activateSortLabel",
+            "optional": true,
+            "type": "((column: VirtualTableProps.ColumnDefinition<T>) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(detail: { addedCount: number; totalCount: number; }) => string",
+              "parameters": [
+                {
+                  "name": "detail",
+                  "type": "{ addedCount: number; totalCount: number; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "appendAnnouncement",
+            "optional": true,
+            "type": "((detail: { addedCount: number; totalCount: number; }) => string | undefined)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T, expanded: boolean) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+                {
+                  "name": "expanded",
+                  "type": "boolean",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "expandButtonLabel",
+            "optional": true,
+            "type": "((item: T, expanded: boolean) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => string",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "expandedRegionLabel",
+            "optional": true,
+            "type": "((item: T) => string)",
+          },
+          {
+            "name": "tableLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "ariaLabels",
+      "optional": true,
+      "type": "VirtualTableProps.AriaLabels<T>",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Column configuration. Mirrors Table's \`ColumnDefinition\` so the model transfers.
+\`cell\` receives row-relative context (dataset row index, total count, expansion)
+in addition to the item; cross-row scale is computed consumer-side over \`items\`.",
+      "name": "columnDefinitions",
+      "optional": false,
+      "type": "ReadonlyArray<VirtualTableProps.ColumnDefinition<T>>",
+    },
+    {
+      "defaultValue": "'fixed'",
+      "description": "Column layout. \`"fixed"\` (default) applies fixed table layout with per-cell
+truncation and stretch-last-column. \`"auto"\` sizes to content.",
+      "inlineType": {
+        "name": "VirtualTableProps.ColumnLayout",
+        "type": "union",
+        "values": [
+          "fixed",
+          "auto",
+        ],
+      },
+      "name": "columnLayout",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Controlled per-column widths (px), keyed by column id. Uncontrolled if omitted.",
+      "name": "columnWidths",
+      "optional": true,
+      "type": "Record<string, number>",
+    },
+    {
+      "description": "Uncontrolled initial expansion.",
+      "name": "defaultExpandedItems",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "defaultValue": "40",
+      "description": "Estimated collapsed row height in px, used to size the scroll runway before a
+row is measured. Set to the design's row density (CloudWatch: 23).",
+      "name": "estimatedRowHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Controlled set of expanded row ids (as returned by \`trackBy\`).",
+      "name": "expandedItems",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "description": "Renders arbitrary, non-tabular content for an expanded row (key/value detail,
+raw/JSON record, nested panels). Presence of this prop enables the leading
+disclosure column. The returned node is not constrained to the column set.",
+      "inlineType": {
+        "name": "(item: T) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "getExpandedContent",
+      "optional": true,
+      "type": "((item: T) => React.ReactNode)",
+    },
+    {
+      "description": "Height strategy for the expanded region, mirroring \`getRowHeight\`.",
+      "inlineType": {
+        "name": "(item: T) => number | "auto"",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "number | "auto"",
+        "type": "function",
+      },
+      "name": "getExpandedRowHeight",
+      "optional": true,
+      "type": "((item: T) => number | "auto")",
+    },
+    {
+      "description": "Per-row height strategy. Return a fixed px height, or \`"auto"\` to opt that row
+into measurement. Omitting the prop means every row is fixed at
+\`estimatedRowHeight\` — the cheap large-dataset default.",
+      "inlineType": {
+        "name": "(item: T) => number | "auto"",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "number | "auto"",
+        "type": "function",
+      },
+      "name": "getRowHeight",
+      "optional": true,
+      "type": "((item: T) => number | "auto")",
+    },
+    {
+      "description": "Fixed height (px) of the scrollable viewport. Windowing REQUIRES a bounded
+viewport: the visible range is computed from the scroll container's own height,
+so without a bound the container grows to the full content height and every row
+mounts. Set this (or \`maxHeight\`, or bound the component's parent — the root is a
+height-owning flex column) to enable windowing.",
+      "name": "height",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Imperative handle for scroll anchoring, live tail, and reveal.",
+      "inlineType": {
+        "name": "((instance: VirtualTableProps.Ref | null) => void) | React.RefObject<VirtualTableProps.Ref>",
+        "type": "union",
+        "values": [
+          "(instance: VirtualTableProps.Ref | null) => void",
+          "React.RefObject<VirtualTableProps.Ref>",
+        ],
+      },
+      "name": "imperativeRef",
+      "optional": true,
+      "type": "((instance: VirtualTableProps.Ref | null) => void) | React.RefObject<VirtualTableProps.Ref>",
+    },
+    {
+      "description": "The full dataset to render. VirtualTable windows this to the visible range;
+the array itself is never fully rendered to the DOM. Appending to this array
+is the streaming/live path (see \`imperativeRef\` and \`onVisibleRangeChange\`).",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Loading state for the whole grid.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Maximum height (px) of the scrollable viewport. The viewport grows with content
+up to this bound, then scrolls. Use instead of \`height\` when the table should be
+shorter than the bound for small datasets. Windowing needs \`height\`, \`maxHeight\`,
+or a height-bounded parent (see \`height\`).",
+      "name": "maxHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "10",
+      "description": "Number of rows rendered beyond the visible range on each side, to avoid blank
+flashes on fast scroll.",
+      "name": "overscan",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Enables column resize handles. Emits via \`onColumnWidthsChange\`.",
+      "name": "resizableColumns",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'grid'",
+      "description": "Semantic role of the grid. \`"grid"\` (default) for interactive grids with
+keyboard cell/row navigation; \`"table"\` for static, non-interactive data.",
+      "inlineType": {
+        "name": "VirtualTableProps.Role",
+        "type": "union",
+        "values": [
+          "grid",
+          "table",
+        ],
+      },
+      "name": "role",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "VirtualTableProps.ColumnDefinition<T>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(data: { sorted: boolean; descending: boolean; }) => string",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "{ sorted: boolean; descending: boolean; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "((data: { sorted: boolean; descending: boolean; }) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+                {
+                  "name": "context",
+                  "type": "VirtualTableProps.CellContext",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "cell",
+            "optional": false,
+            "type": "(item: T, context: VirtualTableProps.CellContext) => React.ReactNode",
+          },
+          {
+            "name": "header",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "isStretch",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "minWidth",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "sortingField",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "width",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "sortingColumn",
+      "optional": true,
+      "type": "VirtualTableProps.ColumnDefinition<T>",
+    },
+    {
+      "name": "sortingDescending",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Renders a sticky header with horizontal scroll synced to the body.",
+      "name": "stickyHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Stable identity per row. Required (unlike Table, where it is optional): row
+virtualization recycles DOM nodes, so a stable key is mandatory for correct
+focus retention, expansion state, and measurement caching across recycling.",
+      "inlineType": {
+        "name": "(item: T) => string",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "trackBy",
+      "optional": false,
+      "type": "(item: T) => string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Rendered when \`items\` is empty.",
+      "isDefault": false,
+      "name": "empty",
+    },
+    {
+      "description": "Header slot above the grid (title, counter, actions), like Table's \`header\`.",
+      "isDefault": false,
+      "name": "header",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for wizard matches the snapshot: wizard 1`] = `
 {
   "dashCaseName": "wizard",
@@ -46429,6 +47049,137 @@ Supported options:
     {
       "methods": [
         {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if the row is outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The header row element. Renamed from \`findStickyHeader\` — it returns the header
+row regardless of the \`stickyHeader\` prop, so it must not imply sticky state.",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the
+row's \`aria-rowindex\`, which is the full-dataset index offset by the header row:
+header is \`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`.
+Indexing this way (not by position in the windowed array) is correct under
+virtualization.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
+    },
+    {
+      "methods": [
+        {
           "inheritedFrom": {
             "name": "FormWrapper.findActions",
           },
@@ -55299,6 +56050,112 @@ Supported options:
         },
       ],
       "name": "TutorialTaskWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "The labeled expanded region for a data row, or null if not expanded/windowed.",
+          "name": "findExpandedRegion",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The disclosure toggle button for a data row, or null if the row is outside the window.",
+          "name": "findExpandToggle",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The header row element. Renamed from \`findStickyHeader\` — it returns the header
+row regardless of the \`stickyHeader\` prop, so it must not imply sticky state.",
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "The polite append aria-live node.",
+          "name": "findLiveRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns null for rows outside the current window (by design). Locates by the
+row's \`aria-rowindex\`, which is the full-dataset index offset by the header row:
+header is \`aria-rowindex=1\`, so data row \`dataIndex\` is \`aria-rowindex=dataIndex+2\`.
+Indexing this way (not by position in the windowed array) is correct under
+virtualization.",
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "dataIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Rendered (windowed) rows only.",
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "VirtualTableWrapper",
     },
     {
       "methods": [

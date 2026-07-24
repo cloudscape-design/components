@@ -766,6 +766,16 @@ exports[`test-utils selectors 1`] = `
     "awsui_tutorial-description_ig8mp",
     "awsui_tutorial-panel_1oin5",
   ],
+  "virtual-table": [
+    "awsui_disclosure-button_gg9im",
+    "awsui_expanded-region_gg9im",
+    "awsui_expanded-row_gg9im",
+    "awsui_header-cell_gg9im",
+    "awsui_header-row_gg9im",
+    "awsui_live-region_gg9im",
+    "awsui_root_gg9im",
+    "awsui_row_gg9im",
+  ],
   "wizard": [
     "awsui_cancel-button_1xupv",
     "awsui_form-header-component_1xupv",
