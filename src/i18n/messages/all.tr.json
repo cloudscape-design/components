@@ -44,7 +44,7 @@
   },
   "attribute-editor": {
     "removeButtonText": "Kaldır",
-    "i18nStrings.itemRemovedAriaLive": "Öğe kaldırıldı"
+    "i18nStrings.itemRemovedAriaLive": "Öge kaldırıldı"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Hata",
@@ -54,6 +54,11 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Yolu göster"
+  },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount}/{totalCount} öge",
+    "noMatch": "Eşleşen eylem yok",
+    "i18nStrings.filteringItemAriaDescription": "Sonuçları filtrelemek için yazmaya devam edin."
   },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
@@ -67,7 +72,7 @@
     "i18nStrings.currentMonthAriaLabel": "Geçerli ay"
   },
   "cards": {
-    "ariaLabels.selectionGroupLabel": "Öğe seçimi"
+    "ariaLabels.selectionGroupLabel": "Öge seçimi"
   },
   "code-editor": {
     "i18nStrings.loadingState": "Kod düzenleyici yükleniyor",
@@ -116,15 +121,16 @@
     "contentDisplayPreference.title": "Sütun tercihleri",
     "contentDisplayPreference.description": "Sütunların görünürlüğünü ve sırasını özelleştirin.",
     "contentDisplayPreference.dragHandleAriaLabel": "Sürükleme tutamacı",
-    "contentDisplayPreference.dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve öğenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için Boşluk veya Enter tuşunu ya da taşıma işlemini iptal etmek için ESC tuşunu kullanın.",
-    "contentDisplayPreference.liveAnnouncementDndStarted": "Öğe {position}/{total} konumundan alındı",
+    "contentDisplayPreference.dragHandleAriaDescription": "Bir öğenin sürüklemesini etkinleştirmek için Boşluk veya Enter tuşlarını kullanın, ardından öğenin konumunu taşımak için ok tuşlarını kullanın. Konum hareketini tamamlamak için Boşluk veya Enter tuşunu kullanın veya hareketi iptal etmek için Escape öğesini kullanın. Ekran okuyucunuzda tarama modunuzu değiştirmeniz gerekebilir.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Öge {position}/{total} konumundan alındı",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Yeniden sıralama iptal edildi",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtre sütunları",
     "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filtre sütunları",
     "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "Eşleşme bulunamadı",
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filtreyi temizle",
-    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öge {currentPosition}/{total} konumuna geri taşınıyor} false {Öge {currentPosition}/{total} konumuna taşınıyor} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öge ilk {initialPosition}/{total} konumuna geri taşındı} false {Öge {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 öğe} one {{label}, 1 öğe} other {{label}, {count} öğe}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 eşleşme} one {1 eşleşme} other {{count} eşleşme}}"
   },
   "copy-to-clipboard": {
@@ -158,15 +164,15 @@
     "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
-    "i18nStrings.datePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.datePlaceholder": "YYYY-AA-GG",
     "i18nStrings.isoDatePlaceholder": "YYYY-AA-GG",
     "i18nStrings.slashedDatePlaceholder": "YYYY/AA/GG",
-    "i18nStrings.timePlaceholder": "sa: dk: sn",
+    "i18nStrings.timePlaceholder": "sa:dk:sn",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
-    "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
+    "i18nStrings.dateConstraintText": "Tarih için YYYY/AA/GG kullanın.",
     "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.isoDateTimeConstraintText": "Tarih için YYYY-AA-GG kullanın. Zaman için 24 saat biçimini kullanın.",
-    "i18nStrings.slashedDateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
+    "i18nStrings.slashedDateConstraintText": "Tarih için YYYY/AA/GG kullanın.",
     "i18nStrings.isoDateConstraintText": "Tarih için YYYYY-AA-GG kullanın.",
     "i18nStrings.slashedMonthConstraintText": "Ay için YYYY/AA kullanın.",
     "i18nStrings.isoMonthConstraintText": "Ay için YYYY-AA kullanın.",
@@ -236,17 +242,17 @@
   },
   "list": {
     "dragHandleAriaLabel": "Sürükleme tutamacı",
-    "dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve ögenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için \"Boşluk\" veya \"Enter\" tuşunu ya da taşıma işlemini iptal etmek için \"ESC\" tuşunu kullanın.",
+    "dragHandleAriaDescription": "Bir öge için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve ögenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için \"Boşluk\" veya \"Enter\" tuşunu ya da taşıma işlemini iptal etmek için \"ESC\" tuşunu kullanın.",
     "liveAnnouncementDndStarted": "Öge {position}/{total} konumundan alındı",
     "liveAnnouncementDndDiscarded": "Yeniden sıralama iptal edildi",
     "liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öge {currentPosition}/{total} konumuna geri taşınıyor} false {Öge {currentPosition}/{total} konumuna taşınıyor} other {}}",
-    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öge ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öge ilk {initialPosition}/{total} konumuna geri taşındı} false {Öge {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
   },
   "modal": {
     "closeAriaLabel": "Kalıcı iletişim kutusunu kapat"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} öğesini kaldır",
+    "deselectAriaLabel": "{option__label} ögesini kaldır",
     "i18nStrings.selectAllText": "Tümünü seç"
   },
   "pagination": {
@@ -255,8 +261,9 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
-    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
+    "i18nStrings.jumpToPageError": "Sayfa aralık dışında. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",
@@ -275,9 +282,9 @@
     "i18nStrings.actionButtonAriaLabel": "İstemi gönder",
     "i18nStrings.menuErrorIconAriaLabel": "Hata",
     "i18nStrings.menuRecoveryText": "Yeniden dene",
-    "i18nStrings.menuLoadingText": "Öğeler yükleniyor",
+    "i18nStrings.menuLoadingText": "Ögeler yükleniyor",
     "i18nStrings.menuFinishedText": "Sonuçların sonu",
-    "i18nStrings.menuErrorText": "Öğeler getirilirken bir hata oluştu",
+    "i18nStrings.menuErrorText": "Ögeler getirilirken bir hata oluştu",
     "i18nStrings.selectedMenuItemAriaLabel": "Seçildi",
     "i18nStrings.tokenInsertedAriaLabel": "{token__label} eklendi",
     "i18nStrings.tokenPinnedAriaLabel": "{token__label} sabitlendi",
@@ -303,12 +310,12 @@
     "i18nStrings.operatorLessText": "Küçüktür",
     "i18nStrings.operatorStartsWithText": "İle başlar",
     "i18nStrings.operatorDoesNotStartWithText": "Şununla başlamıyor:",
-    "i18nStrings.operatorText": "Operatör",
-    "i18nStrings.operatorsText": "Operatörler",
+    "i18nStrings.operatorText": "İşleç",
+    "i18nStrings.operatorsText": "İşleçler",
     "i18nStrings.propertyText": "Özellik",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__formattedText} filtresini kaldır",
     "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filtre eylemleri, {token__formattedText}",
-    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Filtreyi kaldır, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "{token__formattedText} filtresini kaldır",
     "i18nStrings.tokenEditorTokenRemoveLabel": "Filtreyi kaldır",
     "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Filtreyi gruptan kaldır",
     "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "Filtre ekleme eylemleri",
@@ -386,7 +393,7 @@
     "recoveryText": "Yeniden dene"
   },
   "slider": {
-    "i18nStrings.valueTextRange": "{value},{previousValue} ve {nextValue} arasında"
+    "i18nStrings.valueTextRange": "{value}, {previousValue} ve {nextValue} arasında"
   },
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": "Paneli kapat",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Genişlet",
     "ariaLabels.collapseButtonLabel": "Daralt",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",
-    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir"
+    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir",
+    "i18nStrings.sortDropdownSortAscending": "Artan sıralama",
+    "i18nStrings.sortDropdownSortDescending": "Azalan sıralama",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Çok sütunlu sıralama (Shift + Tıklama)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Sıralamaya ekle (artan)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Sıralamaya ekle (azalan)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Sıralamadan kaldır",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Bu sütun zaten sıralandı",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Bu sütun sıralanmadı",
+    "i18nStrings.clearSort": "Sıralamayı temizle",
+    "ariaLabels.sortAscending": "artan",
+    "ariaLabels.sortDescending": "azalan",
+    "ariaLabels.liveAnnouncementSortOrder": "Tablo {columns} ölçütüne göre sıralandı",
+    "ariaLabels.liveAnnouncementSortCleared": "Sıralama temizlendi",
+    "ariaLabels.sortPriority": "sıralama önceliği {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Sıralama seçenekleri"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Sola kaydır",
@@ -416,11 +438,11 @@
     "i18nStrings.tabsWithActionsAriaRoleDescription": "Eylem içeren sekmeler"
   },
   "tag-editor": {
-    "i18nStrings.keyPlaceholder": "Enter tuşu",
+    "i18nStrings.keyPlaceholder": "Anahtar girin",
     "i18nStrings.valuePlaceholder": "Değer girin",
     "i18nStrings.addButton": "Yeni etiket ekle",
     "i18nStrings.removeButton": "Kaldır",
-    "i18nStrings.removeButtonAriaLabel": "{tag__key} öğesini kaldır",
+    "i18nStrings.removeButtonAriaLabel": "{tag__key} ögesini kaldır",
     "i18nStrings.undoButton": "Geri al",
     "i18nStrings.undoPrompt": "Değişiklikler kaydedildikten sonra bu etiket kaldırılacaktır",
     "i18nStrings.loading": "Bu kaynakla ilişkilendirilmiş etiketler yükleniyor",
@@ -454,7 +476,7 @@
   "top-navigation": {
     "i18nStrings.searchIconAriaLabel": "Ara",
     "i18nStrings.searchDismissIconAriaLabel": "Aramayı kapat",
-    "i18nStrings.overflowMenuTriggerText": "Daha",
+    "i18nStrings.overflowMenuTriggerText": "Daha fazla",
     "i18nStrings.overflowMenuDismissIconAriaLabel": "Menüyü kapat",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Geri",
     "i18nStrings.overflowMenuTitleText": "Tümü"

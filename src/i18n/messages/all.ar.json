@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "عرض المسار"
   },
+  "button-dropdown": {
+    "filteringResultsText": "تم نفاد عدد {matchesCount} من {totalCount} من العناصر",
+    "noMatch": "لا توجد إجراءات مطابقة",
+    "i18nStrings.filteringItemAriaDescription": "استمر في الكتابة لتصفية النتائج."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "تفتح الصفحة في علامة تبويب جديدة"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "مسح عامل التصفية",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {نقل العنصر مرة أخرى إلى الموضع {currentPosition} من أصل {total}} false {نقل العنصر إلى الموضع {currentPosition} من أصل {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {تم نقل العنصر مرة أخرى إلى موضعه الأصلي {initialPosition} من أصل {total}} false {تم نقل العنصر من الموضع {initialPosition} إلى الموضع {finalPosition} من أصل {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}، 0 عنصر} one {{label}، عنصر واحد} other {{label}، {count} عناصر}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {لا توجد تطابقات} one {تطابق واحد} other {{count} تطابق}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "الانتقال إلى الصفحة",
     "i18nStrings.jumpToPageInputLabel": "صفحة",
     "i18nStrings.jumpToPageError": "الصفحة خارج نطاق الوصول. جارٍ عرض آخر صفحة متاحة.",
-    "i18nStrings.jumpToPageLoadingText": "جار التحميل"
+    "i18nStrings.jumpToPageLoadingText": "جار التحميل",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} من {pagesCount} +} false {{currentPage} من {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "مقبض تغيير حجم اللوحة",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "توسيع",
     "ariaLabels.collapseButtonLabel": "تحجيم",
     "columnDefinitions.editConfig.errorIconAriaLabel": "خطأ",
-    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل"
+    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل",
+    "i18nStrings.sortDropdownSortAscending": "الترتيب تصاعديًّا",
+    "i18nStrings.sortDropdownSortDescending": "الترتيب تنازليًّا",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "ترتيب متعدد الأعمدة (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "إضافة إلى الترتيب (تصاعديًا)",
+    "i18nStrings.sortDropdownAddToSortDescending": "إضافة إلى الترتيب (تنازليًّا)",
+    "i18nStrings.sortDropdownRemoveFromSort": "إزالة من الترتيب",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "تم بالفعل ترتيب هذا العمود",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "لم يتم ترتيب هذا العمود",
+    "i18nStrings.clearSort": "مسح الترتيب",
+    "ariaLabels.sortAscending": "تصاعديًا",
+    "ariaLabels.sortDescending": "تنازليًا",
+    "ariaLabels.liveAnnouncementSortOrder": "تم فرز الجدول حسب {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "تم إلغاء الفرز",
+    "ariaLabels.sortPriority": "أولوية الفرز {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "خيارات الترتيب"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "التمرير إلى اليسار",

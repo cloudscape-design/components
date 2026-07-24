@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "パスの表示"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount} 件のうち {matchesCount} 件の商品",
+    "noMatch": "一致するアクションなし",
+    "i18nStrings.filteringItemAriaDescription": "入力を続けると結果が絞り込まれます。"
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "フィルターをクリア",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}、0 個の項目} one {{label}、1 個の項目} other {{label}、{count} 個の項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
   },
   "copy-to-clipboard": {
@@ -158,19 +164,19 @@
     "i18nStrings.endMonthLabel": "終了月",
     "i18nStrings.endDateLabel": "終了日",
     "i18nStrings.endTimeLabel": "終了時刻",
-    "i18nStrings.datePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
     "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
     "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
-    "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",
+    "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用します。",
     "i18nStrings.slashedDateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.isoDateTimeConstraintText": "日付には YYYY-MM-DD を使用します。時刻には 24 時間形式を使用します。",
-    "i18nStrings.slashedDateConstraintText": "日付には YYYY/MM/DD を使用してください。",
-    "i18nStrings.isoDateConstraintText": "日付には YYYY-MM-DD を使用してください。",
-    "i18nStrings.slashedMonthConstraintText": "月には YYYY/MM を使用してください。",
-    "i18nStrings.isoMonthConstraintText": "月には YYYY-MM を使用してください。",
-    "i18nStrings.monthConstraintText": "月には YYYY/MM を使用してください。",
+    "i18nStrings.slashedDateConstraintText": "日付には YYYY/MM/DD を使用します。",
+    "i18nStrings.isoDateConstraintText": "日付には YYYY-MM-DD を使用します。",
+    "i18nStrings.slashedMonthConstraintText": "月には YYYY/MM を使用します。",
+    "i18nStrings.isoMonthConstraintText": "月には YYYY-MM を使用します。",
+    "i18nStrings.monthConstraintText": "月には YYYY/MM を使用します。",
     "i18nStrings.errorIconAriaLabel": "エラー",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {直近 {amount} 秒間} one {直近 {amount} 秒間} other {直近 {amount} 秒間}}} minute {{amount, plural, zero {直近 {amount} 分間} one {直近 {amount} 分間} other {直近 {amount} 分間}}} hour {{amount, plural, zero {直近 {amount} 時間} one {直近 {amount} 時間} other {直近 {amount} 時間}}} day {{amount, plural, zero {直近 {amount} 日間} one {直近 {amount} 日間} other {直近 {amount} 日間}}} week {{amount, plural, zero {直近 {amount} 週間} one {直近 {amount} 週間} other {直近 {amount} 週間}}} month {{amount, plural, zero {直近 {amount} か月間} one {直近 {amount} か月間} other {直近 {amount} か月間}}} year {{amount, plural, zero {直近 {amount} 年間} one {直近 {amount} 年間} other {直近 {amount} 年間}}} other {}}",
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "i18nStrings.jumpToPageInputLabel": "ページ",
     "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。",
-    "i18nStrings.jumpToPageLoadingText": "ロード中"
+    "i18nStrings.jumpToPageLoadingText": "ロード中",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "展開する",
     "ariaLabels.collapseButtonLabel": "折りたたむ",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
-    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
+    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能",
+    "i18nStrings.sortDropdownSortAscending": "昇順にソート",
+    "i18nStrings.sortDropdownSortDescending": "降順にソート",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "複数列ソート (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "ソートに追加 (昇順)",
+    "i18nStrings.sortDropdownAddToSortDescending": "ソートに追加 (降順)",
+    "i18nStrings.sortDropdownRemoveFromSort": "ソートから削除",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "この列は既にソートされています",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "この列はソートされていません",
+    "i18nStrings.clearSort": "ソートをクリア",
+    "ariaLabels.sortAscending": "昇順",
+    "ariaLabels.sortDescending": "降順",
+    "ariaLabels.liveAnnouncementSortOrder": "表は {columns}でソートされています",
+    "ariaLabels.liveAnnouncementSortCleared": "ソートがクリアされました",
+    "ariaLabels.sortPriority": "ソートの優先順位 {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "ソートオプション"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",

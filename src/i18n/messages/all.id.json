@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Tampilkan jalur"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} dari {totalCount} item",
+    "noMatch": "Tidak ada tindakan yang cocok",
+    "i18nStrings.filteringItemAriaDescription": "Terus mengetik untuk memfilter hasil."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Buka di tab baru"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Hapus filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Memindahkan item kembali ke posisi {currentPosition} dari {total}} false {Memindahkan item ke posisi {currentPosition} dari {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 item} one {{label}, 1 item} other {{label}, {count} item}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 kecocokan} one {1 kecocokan} other {{count} kecocokan}}"
   },
   "copy-to-clipboard": {
@@ -158,19 +164,19 @@
     "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
-    "i18nStrings.datePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.datePlaceholder": "TTTT-BB-HH",
     "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
     "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
     "i18nStrings.timePlaceholder": "jj:mm:dd",
-    "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
-    "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
-    "i18nStrings.slashedDateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
-    "i18nStrings.isoDateTimeConstraintText": "Untuk tanggal, gunakan HH-BB-TTTT. Untuk waktu, gunakan format 24 jam.",
-    "i18nStrings.slashedDateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
-    "i18nStrings.isoDateConstraintText": "Untuk tanggal, gunakan HH-BB-TTTT.",
-    "i18nStrings.slashedMonthConstraintText": "Untuk bulan, gunakan BB/TTTT.",
+    "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan TTTT/BB/HH. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan TTTT/BB/HH.",
+    "i18nStrings.slashedDateTimeConstraintText": "Untuk tanggal, gunakan TTTT/BB/HH. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.isoDateTimeConstraintText": "Untuk tanggal, gunakan TTTT-BB-HH. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.slashedDateConstraintText": "Untuk tanggal, gunakan TTTT/BB/HH.",
+    "i18nStrings.isoDateConstraintText": "Untuk tanggal, gunakan TTTT-BB-HH.",
+    "i18nStrings.slashedMonthConstraintText": "Untuk bulan, gunakan TTTT/BB.",
     "i18nStrings.isoMonthConstraintText": "Untuk bulan, gunakan BB-TTTT.",
-    "i18nStrings.monthConstraintText": "Untuk bulan, gunakan BB/TTTT.",
+    "i18nStrings.monthConstraintText": "Untuk bulan, gunakan TTTT/BB.",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rentang dipilih dari {startDate} hingga {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {{amount} detik terakhir} one {{amount} detik terakhir} other {{amount} detik terakhir}}} minute {{amount, plural, zero {{amount} menit terakhir} one {{amount} menit terakhir} other {{amount} menit terakhir}}} hour {{amount, plural, zero {{amount} jam terakhir} one {{amount} jam terakhir} other {{amount} jam terakhir}}} day {{amount, plural, zero {{amount} hari terakhir} one {{amount} hari terakhir} other {{amount} hari terakhir}}} week {{amount, plural, zero {{amount} minggu terakhir} one {{amount} minggu terakhir} other {{amount} minggu terakhir}}} month {{amount, plural, zero {{amount} bulan terakhir} one {{amount} bulan terakhir} other {{amount} bulan terakhir}}} year {{amount, plural, zero {{amount} tahun terakhir} one {{amount} tahun terakhir} other {{amount} tahun terakhir}}} other {}}",
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
     "i18nStrings.jumpToPageInputLabel": "Halaman",
     "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia.",
-    "i18nStrings.jumpToPageLoadingText": "Memuat"
+    "i18nStrings.jumpToPageLoadingText": "Memuat",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} dari {pagesCount}+} false {{currentPage} dari {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Luaskan",
     "ariaLabels.collapseButtonLabel": "Ciutkan",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",
-    "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit"
+    "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit",
+    "i18nStrings.sortDropdownSortAscending": "Urutkan naik",
+    "i18nStrings.sortDropdownSortDescending": "Urutkan turun",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Urutan multikolom (Shift + Klik)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Tambahkan untuk mengurutkan (naik)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Tambahkan untuk mengurutkan (turun)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Hapus dari urutan",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Kolom ini sudah diurutkan",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Kolom ini belum diurutkan",
+    "i18nStrings.clearSort": "Hapus urutan",
+    "ariaLabels.sortAscending": "naik",
+    "ariaLabels.sortDescending": "turun",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabel diurutkan berdasarkan {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Pengurutan telah dihapus",
+    "ariaLabels.sortPriority": "urutkan prioritas {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Opsi urutan"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",

@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Mostrar ruta"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} de {totalCount} elementos",
+    "noMatch": "No hay acciones coincidentes",
+    "i18nStrings.filteringItemAriaDescription": "Siga escribiendo para filtrar los resultados."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva"
   },
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Quitar filtro",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Mover el elemento de nuevo a la posición {currentPosition} de {total}} false {Mover el elemento a la posición {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 elementos} one {{label}, 1 elemento} other {{label}, {count} elementos}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 coincidencias} one {1 coincidencia} other {{count} coincidencias}}"
   },
   "copy-to-clipboard": {
@@ -158,13 +164,13 @@
     "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
-    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.datePlaceholder": "AAAA-MM-DD",
     "i18nStrings.isoDatePlaceholder": "AAAA-MM-DD",
     "i18nStrings.slashedDatePlaceholder": "AAAA/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
-    "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
+    "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.isoDateTimeConstraintText": "Para la fecha, use AAAA-MM-DD. Para la hora, use el formato de 24 horas.",
     "i18nStrings.slashedDateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
     "i18nStrings.isoDateConstraintText": "Para la fecha, use el formato AAAA-MM-DD.",
@@ -256,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Ir a la página",
     "i18nStrings.jumpToPageInputLabel": "Página",
     "i18nStrings.jumpToPageError": "Página fuera de rango. Se muestra la última página disponible.",
-    "i18nStrings.jumpToPageLoadingText": "Cargando"
+    "i18nStrings.jumpToPageLoadingText": "Cargando",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} de {pagesCount}+} false {{currentPage} de {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",
@@ -408,7 +415,22 @@
     "ariaLabels.expandButtonLabel": "Ampliar",
     "ariaLabels.collapseButtonLabel": "Contraer",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdownSortAscending": "Ordenar de forma ascendente",
+    "i18nStrings.sortDropdownSortDescending": "Ordenar de forma descendente",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Ordenar por varias columnas (Mayús y clic)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Agregar a la ordenación (ascendente)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Agregar a la ordenación (descendente)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Eliminar de la ordenación",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Esta columna ya está ordenada",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Esta columna no está ordenada",
+    "i18nStrings.clearSort": "Borrar ordenación",
+    "ariaLabels.sortAscending": "ascendente",
+    "ariaLabels.sortDescending": "descendente",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabla ordenada por {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Ordenación borrada",
+    "ariaLabels.sortPriority": "prioridad de ordenación {priority}",
+    "ariaLabels.sortMenuTriggerLabel": "Opciones de ordenación"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Desplácese hacia la izquierda",
