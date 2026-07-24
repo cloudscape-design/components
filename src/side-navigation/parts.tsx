@@ -108,6 +108,7 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
 interface NavigationItemsListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
+  withIcons?: boolean;
 }
 
 interface Item {
@@ -124,6 +125,7 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   collapsed,
+  withIcons,
   activeTooltip,
   setActiveTooltip,
 }: NavigationItemsListProps) {
@@ -276,6 +278,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -299,6 +302,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -322,6 +326,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -346,6 +351,7 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 collapsed={collapsed}
+                withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -399,6 +405,7 @@ export function NavigationItemsList({
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
                 [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles['list--with-icons']]: withIcons,
               })}
             >
               {list.items.map(item => item.element)}
@@ -574,9 +581,19 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
 interface SectionProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Section;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
+  withIcons?: boolean;
 }
 
-function Section({ definition, activeHref, fireFollow, fireChange, variant, position, collapsed }: SectionProps) {
+function Section({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  variant,
+  position,
+  collapsed,
+  withIcons,
+}: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
 
@@ -617,6 +634,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        withIcons={withIcons}
       />
     </InternalExpandableSection>
   );
@@ -624,9 +642,18 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
 
 interface SectionGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionGroup;
+  withIcons?: boolean;
 }
 
-function SectionGroup({ definition, activeHref, fireFollow, fireChange, position, collapsed }: SectionGroupProps) {
+function SectionGroup({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  position,
+  collapsed,
+  withIcons,
+}: SectionGroupProps) {
   const isOneTheme = useOneTheme();
   if (collapsed) {
     return null;
@@ -647,6 +674,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange, position
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        withIcons={withIcons}
       />
     </div>
   );
@@ -654,6 +682,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange, position
 
 interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
+  withIcons?: boolean;
 }
 
 function LinkGroup({
@@ -663,6 +692,7 @@ function LinkGroup({
   fireChange,
   position,
   collapsed,
+  withIcons,
   activeTooltip,
   setActiveTooltip,
 }: LinkGroupProps) {
@@ -694,6 +724,7 @@ function LinkGroup({
           fireChange={fireChange}
           activeHref={activeHref}
           position={position}
+          withIcons={withIcons}
         />
       )}
     </>
@@ -703,6 +734,7 @@ function LinkGroup({
 interface ExpandableLinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.ExpandableLinkGroup;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
+  withIcons?: boolean;
 }
 
 function ExpandableLinkGroup({
@@ -713,6 +745,7 @@ function ExpandableLinkGroup({
   variant,
   position,
   collapsed,
+  withIcons,
   activeTooltip,
   setActiveTooltip,
 }: ExpandableLinkGroupProps) {
@@ -801,6 +834,7 @@ function ExpandableLinkGroup({
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        withIcons={withIcons}
       />
     </InternalExpandableSection>
   );

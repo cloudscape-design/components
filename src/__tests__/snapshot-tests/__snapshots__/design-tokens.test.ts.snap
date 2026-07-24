@@ -3532,11 +3532,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -7154,11 +7161,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -10776,11 +10790,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -14398,11 +14419,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -18020,11 +18048,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -21642,11 +21677,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -25264,11 +25306,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "0px",
       },
     },
-    "space-side-navigation-item-gap": {
-      "$description": "The vertical gap between side navigation items.",
+    "space-side-navigation-item-default-gap": {
+      "$description": "The vertical gap between side navigation items when no item has an icon.",
       "$value": {
         "comfortable": "0px",
         "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-icon-gap": {
+      "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-static-l": {
@@ -28891,11 +28940,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -32513,11 +32569,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -36135,11 +36198,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -39757,11 +39827,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -43379,11 +43456,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -47001,11 +47085,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -50623,11 +50714,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -54245,11 +54343,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -57867,11 +57972,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "compact": "0px",
       },
     },
-    "space-side-navigation-item-gap": {
-      "$description": "The vertical gap between side navigation items.",
+    "space-side-navigation-item-default-gap": {
+      "$description": "The vertical gap between side navigation items when no item has an icon.",
       "$value": {
         "comfortable": "0px",
         "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-icon-gap": {
+      "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-static-l": {

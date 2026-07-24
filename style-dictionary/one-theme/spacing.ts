@@ -14,8 +14,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTokenVertical: '1px',
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceStatusIndicatorPaddingHorizontal: '2px',
-  spaceSideNavigationItemGap: '5px',
-  spaceSideNavigationItemCollapsedGap: '5px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
