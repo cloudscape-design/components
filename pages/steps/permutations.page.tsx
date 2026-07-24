@@ -23,8 +23,6 @@ const stepsPermutations = createPermutations<StepsProps>([
       variants.failedSteps,
       variants.allStatusesSteps,
       variants.logSteps,
-      variants.timelineSteps,
-      variants.timelineStepsWithVaryingAnnotations,
       variants.initialStepsInteractive,
       variants.loadingStepsInteractive,
       variants.loadingSteps2Interactive,
