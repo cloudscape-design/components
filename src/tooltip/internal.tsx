@@ -71,7 +71,7 @@ export default function InternalTooltip({
     <Portal>
       <div
         {...baseProps}
-        className={clsx(testUtilStyles.root, styles.root)}
+        className={clsx(testUtilStyles.root, styles.root, baseProps.className)}
         ref={__internalRootRef}
         data-awsui-referrer-id={referrerId}
         role="tooltip"
