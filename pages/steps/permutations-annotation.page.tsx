@@ -20,6 +20,7 @@ export const stepsWithAnnotation: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
     statusIconAriaLabel: 'Success',
     header: 'Created environment',
+    details: 'Environment created successfully.',
   },
   {
     annotation: <time dateTime="2024-05-01T15:04:45Z">3:04:45 PM</time>,
@@ -35,6 +36,7 @@ export const varyingLengthAnnotationsSteps: ReadonlyArray<StepsProps.Step> = [
     annotation: <time dateTime="2024-05-01T09:00:00Z">May 05, 2024, 9:00 AM</time>,
     status: 'log',
     header: 'Shorter timestamp',
+    details: 'This is used to test the shorter timestamp and and we have detail here',
   },
   {
     annotation: (
@@ -49,6 +51,7 @@ export const varyingLengthAnnotationsSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     header: 'No annotation yet',
+    details: 'This is used to test without annotation.',
   },
 ];
 
