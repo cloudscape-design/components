@@ -66,8 +66,10 @@ const CustomStep = ({
           {iconNode}
           <hr className={connectorClassName} role="none" />
         </div>
-        <div className={styles['horizontal-header']}>{header}</div>
-        <StepDetails>{details}</StepDetails>
+        <div className={styles.content}>
+          <div className={styles['horizontal-header']}>{header}</div>
+          <StepDetails>{details}</StepDetails>
+        </div>
       </li>
     );
   }
@@ -124,12 +126,12 @@ const InternalStep = ({
         )}
       </div>
       {orientation === 'horizontal' && (
-        <>
+        <div className={styles.content}>
           <div className={styles['horizontal-header']}>
             <InternalBox color={statusToColor[status]}>{header}</InternalBox>
           </div>
           <StepDetails>{details}</StepDetails>
-        </>
+        </div>
       )}
     </li>
   );
