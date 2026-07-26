@@ -46,23 +46,6 @@
         grid-column: 2;
         margin-block-end: awsui.$space-static-xs;
       }
-
-      > .connector {
-        grid-row: 2;
-        grid-column: 1;
-        margin-block: 0;
-        border-block: 0;
-        border-inline: 0;
-        inline-size: awsui.$border-divider-list-width;
-        block-size: auto;
-        min-block-size: awsui.$space-static-xs;
-        position: relative;
-        inset-inline-end: awsui.$space-static-xxxs;
-      }
-    }
-
-    > :last-of-type > .connector {
-      display: none;
     }
 
     &.custom > .details {
@@ -140,8 +123,7 @@
 
 .vertical {
   > .list {
-    // Status and details share this nested grid so annotation height does not affect their spacing.
-    // The continuation runs beside details and fills any extra annotation height.
+    // A single connector fills extra annotation/details height and provides the default spacing otherwise.
     > .container > .header {
       display: grid;
       grid-template-columns: subgrid;
@@ -168,6 +150,7 @@
         border-inline: 0;
         inline-size: awsui.$border-divider-list-width;
         block-size: auto;
+        min-block-size: awsui.$space-static-xs;
         position: relative;
         inset-inline-end: awsui.$space-static-xxxs;
       }
@@ -233,10 +216,6 @@
   > .container:not(.custom-vertical) {
     > .header {
       grid-column: 2 / span 2;
-    }
-
-    > .connector {
-      grid-column: 2;
     }
 
     > .details {
