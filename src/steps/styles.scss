@@ -97,16 +97,19 @@
         }
       }
 
-      > .horizontal-header {
-        grid-row: 3;
+      > .horizontal-header,
+      > .details {
+        align-self: flex-start;
         grid-column: 1 / span 3;
         padding-inline-end: awsui.$space-xs;
       }
 
+      > .horizontal-header {
+        grid-row: 3;
+      }
+
       > .details {
         grid-row: 4;
-        grid-column: 1 / span 3;
-        padding-inline-end: awsui.$space-xs;
       }
     }
 
