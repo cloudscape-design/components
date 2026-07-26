@@ -28,6 +28,7 @@
       grid-template-rows: minmax(awsui.$space-static-l, auto);
 
       > .annotation {
+        justify-self: flex-end;
         min-inline-size: 0;
         color: awsui.$color-text-status-inactive;
       }
@@ -87,6 +88,8 @@
       align-items: center;
 
       > .annotation {
+        justify-self: flex-start;
+        align-self: flex-end;
         grid-row: 1;
         grid-column: 1 / span 2;
       }
@@ -111,16 +114,19 @@
         }
       }
 
-      > .horizontal-header {
-        grid-row: 3;
+      > .horizontal-header,
+      > .details {
+        align-self: flex-start;
         grid-column: 1 / span 3;
         padding-inline-end: awsui.$space-xs;
       }
 
+      > .horizontal-header {
+        grid-row: 3;
+      }
+
       > .details {
         grid-row: 4;
-        grid-column: 1 / span 3;
-        padding-inline-end: awsui.$space-xs;
       }
     }
 
