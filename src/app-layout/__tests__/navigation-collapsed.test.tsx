@@ -52,6 +52,43 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       const closeButton = wrapper.findNavigationClose().getElement();
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
     });
+
+    test('close button opens navigation when collapsed (navigationCloseBehavior="collapse")', () => {
+      const onNavigationChange = jest.fn();
+      const { wrapper } = renderComponent(
+        <AppLayout
+          navigationCloseBehavior="collapse"
+          navigationOpen={false}
+          onNavigationChange={onNavigationChange}
+          navigation={<>Nav content</>}
+        />
+      );
+      wrapper.findNavigationClose().click();
+      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
+    });
+
+    test('close button closes navigation when open (navigationCloseBehavior="collapse")', () => {
+      const onNavigationChange = jest.fn();
+      const { wrapper } = renderComponent(
+        <AppLayout
+          navigationCloseBehavior="collapse"
+          navigationOpen={true}
+          onNavigationChange={onNavigationChange}
+          navigation={<>Nav content</>}
+        />
+      );
+      wrapper.findNavigationClose().click();
+      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
+    });
+
+    test('close button does not open non-collapsible navigation when already closed', () => {
+      const onNavigationChange = jest.fn();
+      const { wrapper } = renderComponent(
+        <AppLayout navigationOpen={false} onNavigationChange={onNavigationChange} navigation={<>Nav content</>} />
+      );
+      wrapper.findNavigationClose().click();
+      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
+    });
   });
 
   describe('aria-expanded', () => {
