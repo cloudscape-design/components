@@ -4,8 +4,21 @@ import VisualTestPageObject from '../page-object';
 import { TestSuite } from '../types';
 
 async function waitForAceTheme(page: VisualTestPageObject) {
+  // Force a full page reload so that the CSP meta tag is re-evaluated
+  // with the code-editor hash (which adds worker-src: blob:).
+  // Without this, hash-only navigation from a prior test leaves the old CSP
+  // in place and ace's web worker is blocked.
+  const browser = (page as any).browser;
+  // Navigate away and back to guarantee a fresh document load.
+  // Unlike location.reload(), this is synchronous from WebdriverIO's
+  // perspective — the subsequent browser.url() won't execute until
+  // about:blank has fully loaded, ensuring no stale DOM races.
+  const currentUrl = await browser.getUrl();
+  await browser.url('about:blank');
+  await browser.url(currentUrl);
+  await page.waitForVisible('.screenshot-area');
   await page.waitForAssertion(async () => {
-    const found = await (page as any).browser.execute(() => {
+    const found = await browser.execute(() => {
       const el: HTMLElement | null = document.querySelector(
         '.ace_editor.ace-dawn, .ace_editor.ace-tomorrow-night-bright'
       );
