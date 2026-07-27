@@ -200,6 +200,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_media_14iqq",
     "awsui_root_14iqq",
   ],
+  "content-display-preference": [
+    "awsui_root_1bte3",
+  ],
   "content-layout": [
     "awsui_breadcrumbs_64tge",
     "awsui_content_5gtk3",

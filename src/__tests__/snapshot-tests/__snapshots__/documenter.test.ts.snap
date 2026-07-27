@@ -10551,6 +10551,270 @@ Refer to the [style](/components/container/?tabId=style) tab for more details.",
 }
 `;
 
+exports[`Components definition for content-display-preference matches the snapshot: content-display-preference 1`] = `
+{
+  "dashCaseName": "content-display-preference",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called whenever the user reorders items or toggles their visibility.
+
+Unlike \`CollectionPreferences\`, the standalone component emits changes immediately, allowing you to
+react to selection before the user confirms (for example, to enforce a maximum number of visible columns).
+
+The event \`detail\` contains the following:
+- \`value\` (ReadonlyArray<ContentDisplayItem>) - The updated ordered list of items and their visibility.",
+      "detailInlineType": {
+        "name": "ContentDisplayPreferenceProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "value",
+            "optional": false,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ContentDisplayPreferenceProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [],
+  "name": "ContentDisplayPreference",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the description displayed below the title.",
+      "i18nTag": true,
+      "name": "description",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "dragHandleAriaDescription",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "dragHandleAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds a columns filter to the control.",
+      "name": "enableColumnFiltering",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Specifies an array of column group definitions for multi-level content display. Each group contains:
+- \`id\` (string) - A unique identifier for the group.
+- \`label\` (string) - The text displayed as the group label.",
+      "name": "groups",
+      "optional": true,
+      "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
+        "properties": [
+          {
+            "name": "columnFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "columnFilteringClearFilterText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(count: number) => string",
+              "parameters": [
+                {
+                  "name": "count",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "columnFilteringCountText",
+            "optional": true,
+            "type": "((count: number) => string)",
+          },
+          {
+            "name": "columnFilteringNoMatchText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "columnFilteringPlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "liveAnnouncementDndDiscarded",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds a label for a group item to be announced by screen readers during drag and drop operations.",
+      "inlineType": {
+        "name": "(label: string, count: number) => string",
+        "parameters": [
+          {
+            "name": "label",
+            "type": "string",
+          },
+          {
+            "name": "count",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "liveAnnouncementDndGroupLabel",
+      "optional": true,
+      "type": "((label: string, count: number) => string)",
+    },
+    {
+      "inlineType": {
+        "name": "(initialPosition: number, finalPosition: number, total: number) => string",
+        "parameters": [
+          {
+            "name": "initialPosition",
+            "type": "number",
+          },
+          {
+            "name": "finalPosition",
+            "type": "number",
+          },
+          {
+            "name": "total",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "liveAnnouncementDndItemCommitted",
+      "optional": true,
+      "type": "((initialPosition: number, finalPosition: number, total: number) => string)",
+    },
+    {
+      "inlineType": {
+        "name": "(initialPosition: number, currentPosition: number, total: number) => string",
+        "parameters": [
+          {
+            "name": "initialPosition",
+            "type": "number",
+          },
+          {
+            "name": "currentPosition",
+            "type": "number",
+          },
+          {
+            "name": "total",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "liveAnnouncementDndItemReordered",
+      "optional": true,
+      "type": "((initialPosition: number, currentPosition: number, total: number) => string)",
+    },
+    {
+      "inlineType": {
+        "name": "(position: number, total: number) => string",
+        "parameters": [
+          {
+            "name": "position",
+            "type": "number",
+          },
+          {
+            "name": "total",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "liveAnnouncementDndStarted",
+      "optional": true,
+      "type": "((position: number, total: number) => string)",
+    },
+    {
+      "description": "Specifies an array of options for reordering and visible content selection.
+
+Each option contains the following:
+- \`id\` (string) - Corresponds to a table column \`id\`.
+- \`label\` (string) - Specifies a short description of the content.
+- \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.",
+      "name": "options",
+      "optional": false,
+      "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
+    },
+    {
+      "description": "Specifies the text displayed at the top of the preference.",
+      "i18nTag": true,
+      "name": "title",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The current, ordered list of content items and their visibility. The order of the elements influences the display.
+
+Each content display item is one of the following:
+- \`ContentDisplayColumn\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`ContentDisplayGroup\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ContentDisplayItem>) - The columns or nested groups within this group.
+
+When not provided, all options are shown as visible in their original order.",
+      "name": "value",
+      "optional": true,
+      "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for content-layout matches the snapshot: content-layout 1`] = `
 {
   "dashCaseName": "content-layout",
