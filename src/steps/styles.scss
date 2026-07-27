@@ -75,6 +75,7 @@
         align-self: flex-end;
         grid-row: 1;
         grid-column: 1 / span 2;
+        padding-inline-end: awsui.$space-xs;
       }
 
       > .header {
