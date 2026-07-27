@@ -17,17 +17,19 @@ async function waitForAceTheme(page: VisualTestPageObject) {
   await browser.url('about:blank');
   await browser.url(currentUrl);
   await page.waitForVisible('.screenshot-area');
-  await page.waitForAssertion(async () => {
-    const found = await browser.execute(() => {
-      const el: HTMLElement | null = document.querySelector(
-        '.ace_editor.ace-dawn, .ace_editor.ace-tomorrow-night-bright'
-      );
-      return el !== null && el.offsetHeight > 0;
-    });
-    if (!found) {
-      throw new Error('Ace editor with theme class not found or not visible');
-    }
-  });
+  // Ace loads asynchronously and needs time to initialize + apply theme.
+  // waitForAssertion only retries 5 times (~500ms) which isn't enough in CI.
+  // Use waitUntil with a generous timeout instead.
+  await browser.waitUntil(
+    () =>
+      browser.execute(() => {
+        const el: HTMLElement | null = document.querySelector(
+          '.ace_editor.ace-dawn, .ace_editor.ace-tomorrow-night-bright'
+        );
+        return el !== null && el.offsetHeight > 0;
+      }),
+    { timeout: 30000, timeoutMsg: 'Ace editor with theme class not found or not visible within 30s' }
+  );
 }
 
 const suite: TestSuite = {
