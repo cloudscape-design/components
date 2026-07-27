@@ -1119,6 +1119,8 @@ export type MotionTokenName =
   | 'motionDurationResponsive'
   | 'motionDurationExpressive'
   | 'motionDurationComplex'
+  | 'motionDurationTooltipEnter'
+  | 'motionEasingTooltipEnter'
   | 'motionKeyframesFadeIn'
   | 'motionKeyframesFadeOut'
   | 'motionKeyframesStatusIconError'
