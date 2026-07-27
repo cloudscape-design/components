@@ -68,8 +68,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *    are also provided, those items will be rendered first, and `totalRows - items.length`
    *    additional skeleton rows rendered after.
    * - `totalRows` ('auto') - The number of skeleton rows is calculated from the available viewport height.
-   * - `maxAutoRows` (number) - Limits the number of rows rendered when `totalRows` is set to `'auto'`.
-   * - `minAutoRows` (number) - Sets the minimum number of rows rendered when `totalRows` is set to `'auto'`.
+   * - `maxAutoRows` (number) - Limits the number of skeleton rows rendered when `totalRows` is set to `'auto'`.
+   * - `minAutoRows` (number) - Sets the minimum number of skeleton rows rendered when `totalRows` is set to `'auto'`.
    *    Defaults to 1. Useful for tables rendered off-screen, where the calculated available height would
    *    otherwise yield a single row.
    */

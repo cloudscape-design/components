@@ -180,6 +180,12 @@ describe('Table skeleton loading', () => {
       expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(5);
     });
 
+    test('clamps minAutoRows to at least 1 so auto-sizing is not stalled', () => {
+      const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto', minAutoRows: 0 } });
+
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+    });
+
     test('does not reduce below minAutoRows when the viewport overflows', () => {
       const originalOverflowY = document.body.style.overflowY;
       const originalClientHeight = Object.getOwnPropertyDescriptor(document.body, 'clientHeight');

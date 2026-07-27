@@ -94,7 +94,7 @@ export function useAutoSkeletonRows({
   tableRootRef,
   tableWrapperRef,
 }: UseAutoSkeletonRowsProps) {
-  const minRowsValue = minRows ?? 1;
+  const minRowsValue = Math.max(1, minRows ?? 1);
   const [rows, setRows] = useState(minRowsValue);
   const rowHeightRef = useRef<number>();
 
