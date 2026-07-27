@@ -53,41 +53,15 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
     });
 
-    test('close button opens navigation when collapsed (navigationCloseBehavior="collapse")', () => {
-      const onNavigationChange = jest.fn();
+    test('close button toggles navigation open and closed when collapsible', () => {
       const { wrapper } = renderComponent(
-        <AppLayout
-          navigationCloseBehavior="collapse"
-          navigationOpen={false}
-          onNavigationChange={onNavigationChange}
-          navigation={<>Nav content</>}
-        />
+        <AppLayout navigationCloseBehavior="collapse" navigation={<>Nav content</>} />
       );
+      expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
       wrapper.findNavigationClose().click();
-      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
-    });
-
-    test('close button closes navigation when open (navigationCloseBehavior="collapse")', () => {
-      const onNavigationChange = jest.fn();
-      const { wrapper } = renderComponent(
-        <AppLayout
-          navigationCloseBehavior="collapse"
-          navigationOpen={true}
-          onNavigationChange={onNavigationChange}
-          navigation={<>Nav content</>}
-        />
-      );
+      expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
       wrapper.findNavigationClose().click();
-      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
-    });
-
-    test('close button does not open non-collapsible navigation when already closed', () => {
-      const onNavigationChange = jest.fn();
-      const { wrapper } = renderComponent(
-        <AppLayout navigationOpen={false} onNavigationChange={onNavigationChange} navigation={<>Nav content</>} />
-      );
-      wrapper.findNavigationClose().click();
-      expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
+      expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
     });
   });
 
