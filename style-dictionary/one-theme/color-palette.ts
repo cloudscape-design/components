@@ -5,7 +5,7 @@ import pick from 'lodash/pick.js';
 
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
 
-import { paletteTokens as brand } from '../core/color-palette.js';
+import { paletteTokens as brand } from '../core/palette-values.js';
 import { expandColorDictionary, expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '../visual-refresh/color-palette.js';
