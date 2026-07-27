@@ -62,12 +62,12 @@ const CustomStep = ({
     return (
       <li className={styles.container}>
         <StepAnnotation>{annotation}</StepAnnotation>
-        <div className={styles.header}>
+        <div className={styles['step-layout']}>
           {iconNode}
           <hr className={connectorClassName} role="none" />
         </div>
         <div className={styles.content}>
-          <div className={styles['horizontal-header']}>{header}</div>
+          <div className={styles.header}>{header}</div>
           <StepDetails>{details}</StepDetails>
         </div>
       </li>
@@ -107,12 +107,14 @@ const InternalStep = ({
   return (
     <li className={styles.container}>
       <StepAnnotation>{annotation}</StepAnnotation>
-      <div className={styles.header}>
+      <div className={styles['step-layout']}>
         {orientation === 'vertical' ? (
           <>
-            <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
-              {header}
-            </InternalStatusIndicator>
+            <div className={styles.header}>
+              <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+                {header}
+              </InternalStatusIndicator>
+            </div>
             <StepDetails>{details}</StepDetails>
             <hr className={clsx(connectorClassName, styles['connector-continuation'])} role="none" />
           </>
@@ -127,7 +129,7 @@ const InternalStep = ({
       </div>
       {orientation === 'horizontal' && (
         <div className={styles.content}>
-          <div className={styles['horizontal-header']}>
+          <div className={styles.header}>
             <InternalBox color={statusToColor[status]}>{header}</InternalBox>
           </div>
           <StepDetails>{details}</StepDetails>

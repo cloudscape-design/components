@@ -13,6 +13,10 @@
   background-color: transparent;
 }
 
+.header {
+  min-inline-size: 0;
+}
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -33,7 +37,7 @@
         color: awsui.$color-text-status-inactive;
       }
 
-      > .header {
+      > .step-layout {
         display: flex;
         gap: awsui.$space-xxs;
         grid-row: 1;
@@ -78,7 +82,7 @@
         padding-inline-end: awsui.$space-xs;
       }
 
-      > .header {
+      > .step-layout {
         grid-row: 2;
         align-items: center;
 
@@ -112,7 +116,7 @@
     }
 
     > .container:last-child {
-      > .header > .connector {
+      > .step-layout > .connector {
         display: none;
       }
     }
@@ -122,7 +126,7 @@
 .vertical {
   > .list {
     // A single connector fills extra annotation/details height and provides the default spacing otherwise.
-    > .container > .header {
+    > .container > .step-layout {
       display: grid;
       grid-template-columns: subgrid;
       grid-template-rows: auto 1fr;
@@ -154,7 +158,7 @@
       }
     }
 
-    > :last-of-type > .header > .connector-continuation {
+    > :last-of-type > .step-layout > .connector-continuation {
       display: none;
     }
   }
@@ -210,9 +214,9 @@
     }
   }
 
-  // Header spans the icon and content columns; connector and details align beneath each part.
+  // The step layout spans the icon and content columns.
   > .container:not(.custom-vertical) {
-    > .header {
+    > .step-layout {
       grid-column: 2 / span 2;
     }
 
