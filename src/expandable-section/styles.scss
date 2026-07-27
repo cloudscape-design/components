@@ -198,6 +198,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex: 1;
+    min-inline-size: 0;
   }
 
   &-button,
@@ -301,4 +303,98 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &:not(.wrapper-container):not(.header-container-button):hover {
     color: awsui.$color-text-expandable-section-hover;
   }
+}
+
+// When the expand/collapse icon is rendered at the end of the header.
+// For non-container variants the icon is rendered at the end of the headerButton
+// (taking the full width of the header). For the container variant the icon is
+// rendered as a sibling of the InternalHeader so it appears past any actions.
+.header-icon-end {
+  &.wrapper-default,
+  &.wrapper-inline,
+  &.wrapper-footer,
+  &.wrapper-compact {
+    padding-inline-start: 0;
+  }
+
+  &.wrapper-navigation {
+    justify-content: space-between;
+  }
+
+  &.wrapper-container,
+  &.wrapper-default {
+    display: flex;
+    align-items: flex-start;
+    column-gap: awsui.$space-m;
+  }
+
+  &.wrapper-container {
+    &:not(.header-deprecated) {
+      padding-inline-start: container.$header-padding-horizontal;
+    }
+  }
+}
+
+.header-button-icon-end {
+  margin-inline-start: 0;
+  column-gap: awsui.$space-xs;
+  justify-content: space-between;
+
+  // For non-container variants the icon lives inside this button, so it
+  // needs to be a full-width flex row to push the icon to the inline-end.
+  // The container variant renders the icon outside InternalHeader, so
+  // making this element a block-level flex container with 100% width would
+  // force the title to consume all available space and push the info slot
+  // (rendered as a sibling inside InternalHeader) to a new line.
+  &:not(.header-container-button) {
+    display: flex;
+    inline-size: 100%;
+
+    > .header-text {
+      flex: 1;
+      min-inline-size: 0;
+    }
+  }
+}
+
+.icon-container-end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  flex-shrink: 0;
+
+  // Reset native <button> chrome for the outside caret in end-icon-position.
+  // The navigation variant already has its own reset via .header-navigation > .icon-container
+  // so this is harmless-but-redundant for that path, and necessary for default/container.
+  border-block: none;
+  border-inline: none;
+  background: none;
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+
+  // In the end layout the icon is a flex child governed by the parent's
+  // align-items: flex-start. Reset the inset-block-start offsets that the
+  // start layout uses (they assume relative positioning within text flow)
+  // so the icon aligns with the first line of header text via flex.
+  @include theming.one-theme-only {
+    &:not(.icon-container-container) {
+      inset-block-start: $icon-offset-block;
+    }
+    > .icon {
+      inset-block-start: 0;
+    }
+  }
+}
+
+// Semantic wrapper around HeadingTag + actions in non-container variants
+.header-icon-end > .header-content {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.header-icon-end > .header-navigation-content {
+  flex: 1;
+  min-inline-size: 0;
 }

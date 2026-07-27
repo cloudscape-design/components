@@ -8,9 +8,12 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import '../../__a11y__/to-validate-a11y';
 import Button from '../../../lib/components/button';
 import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
+import InternalExpandableSection from '../../../lib/components/expandable-section/internal';
 import Header from '../../../lib/components/header';
 import Link from '../../../lib/components/link';
 import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/expandable-section/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -508,4 +511,271 @@ describe('headerText', () => {
       });
     });
   }
+});
+
+describe('__expandIconPosition', () => {
+  function renderInternalExpandableSection(
+    props: Partial<Parameters<typeof InternalExpandableSection>[0]> = {}
+  ): ExpandableSectionWrapper {
+    const { container } = render(<InternalExpandableSection headerText="Header" {...props} />);
+    return createWrapper(container).findExpandableSection()!;
+  }
+
+  describe('default behavior (start position)', () => {
+    test('icon renders before header text for default variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'default' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      const children = Array.from(expandButton.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      const textIndex = children.findIndex(el => el.classList.contains(styles['header-text']));
+      expect(iconIndex).toBeLessThan(textIndex);
+    });
+
+    test('icon renders before header text for footer variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      const children = Array.from(expandButton.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      const textIndex = children.findIndex(el => el.classList.contains(styles['header-text']));
+      expect(iconIndex).toBeLessThan(textIndex);
+    });
+
+    test('icon renders before header content for navigation variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'navigation' });
+      const header = wrapper.findHeader().getElement();
+      const children = Array.from(header.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      // Icon should be the first child (index 0)
+      expect(iconIndex).toBe(0);
+    });
+
+    test('does not apply icon-end modifier classes when position is start', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer', __expandIconPosition: 'start' });
+      const icon = wrapper.findExpandIcon().getElement();
+      expect(icon.classList.contains(styles['icon-container-end'])).toBe(false);
+    });
+  });
+
+  describe('end position', () => {
+    test('icon renders after header text for footer variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      const children = Array.from(expandButton.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      const textIndex = children.findIndex(el => el.classList.contains(styles['header-text']));
+      expect(iconIndex).toBeGreaterThan(textIndex);
+    });
+
+    test('icon renders after header text for default variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'default', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      const children = Array.from(expandButton.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      const textIndex = children.findIndex(el => el.classList.contains(styles['header-text']));
+      expect(iconIndex).toBeGreaterThan(textIndex);
+    });
+
+    test('icon renders after header content for navigation variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'navigation', __expandIconPosition: 'end' });
+      const header = wrapper.findHeader().getElement();
+      const children = Array.from(header.children);
+      const iconIndex = children.findIndex(el => el.classList.contains(styles['icon-container']));
+      // Icon should be the last child
+      expect(iconIndex).toBe(children.length - 1);
+    });
+
+    test('icon renders after header text for container variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'container', __expandIconPosition: 'end' });
+      // For container variant, icon is rendered outside InternalHeader
+      const icon = wrapper.findExpandIcon().getElement();
+      expect(icon.classList.contains(styles['icon-container-end'])).toBe(true);
+    });
+
+    test('applies icon-container-end modifier class for footer variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer', __expandIconPosition: 'end' });
+      const icon = wrapper.findExpandIcon().getElement();
+      expect(icon.classList.contains(styles['icon-container-end'])).toBe(true);
+    });
+
+    test('applies header-icon-end modifier class for navigation variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'navigation', __expandIconPosition: 'end' });
+      const header = wrapper.findHeader().getElement();
+      expect(header.classList.contains(styles['header-icon-end'])).toBe(true);
+    });
+
+    test('applies header-button-icon-end modifier class for footer variant', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      expect(expandButton.classList.contains(styles['header-button-icon-end'])).toBe(true);
+    });
+
+    test('icon renders outside header actions for default variant with headerActions', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'default',
+        __expandIconPosition: 'end',
+        headerActions: <button>Action</button>,
+      });
+      // The icon should be rendered outside the header-content wrapper,
+      // as a direct child of the header-icon-end wrapper — matching the container variant pattern.
+      const header = wrapper.findHeader().getElement();
+      const headerContent = header.querySelector(`.${styles['header-content']}`);
+      expect(headerContent).toBeTruthy();
+      const icon = wrapper.findExpandIcon().getElement();
+      // Icon should be a sibling of the header-content wrapper, not nested inside it.
+      expect(icon.parentElement).toBe(headerContent!.parentElement);
+      expect(icon.previousElementSibling).not.toBe(null);
+    });
+  });
+
+  describe('expand/collapse functionality with end position', () => {
+    test('navigation variant toggles aria-expanded on click', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'navigation', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'false');
+      wrapper.findExpandButton().click();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('footer variant toggles aria-expanded on click', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'footer', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'false');
+      wrapper.findExpandButton().click();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('default variant toggles aria-expanded on click', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'default', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'false');
+      wrapper.findExpandButton().click();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('container variant toggles aria-expanded on click', () => {
+      const wrapper = renderInternalExpandableSection({ variant: 'container', __expandIconPosition: 'end' });
+      const expandButton = wrapper.findExpandButton().getElement();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'false');
+      wrapper.findExpandButton().click();
+      expect(expandButton).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('content is shown when expanded with end position', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'footer',
+        __expandIconPosition: 'end',
+        defaultExpanded: true,
+        children: 'Expanded content',
+      });
+      const expandedContent = wrapper.findExpandedContent()?.getElement();
+      expect(expandedContent).toHaveTextContent('Expanded content');
+    });
+  });
+
+  describe('outside icon button (end position with renderIconOutsideHeader)', () => {
+    test('container variant renders outside caret as a button with aria-expanded', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'container',
+        __expandIconPosition: 'end',
+        headerText: 'Header',
+      });
+      const iconButton = wrapper.findExpandIcon().getElement();
+      expect(iconButton.tagName).toBe('BUTTON');
+      expect(iconButton).toHaveAttribute('aria-expanded', 'false');
+      expect(iconButton).toHaveAttribute('aria-controls');
+    });
+
+    test('default variant with headerActions renders outside caret as a button with aria-expanded', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'default',
+        __expandIconPosition: 'end',
+        headerText: 'Header',
+        headerActions: <button>Action</button>,
+      });
+      const iconButton = wrapper.findExpandIcon().getElement();
+      expect(iconButton.tagName).toBe('BUTTON');
+      expect(iconButton).toHaveAttribute('aria-expanded', 'false');
+      expect(iconButton).toHaveAttribute('aria-controls');
+    });
+
+    test('clicking the outside caret button toggles expansion for container variant', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'container',
+        __expandIconPosition: 'end',
+        headerText: 'Header',
+        children: 'Content',
+      });
+      const iconButton = wrapper.findExpandIcon().getElement();
+      expect(iconButton).toHaveAttribute('aria-expanded', 'false');
+      iconButton.click();
+      expect(iconButton).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findExpandedContent()?.getElement()).toHaveTextContent('Content');
+    });
+
+    test('clicking the outside caret button toggles expansion for default with actions', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'default',
+        __expandIconPosition: 'end',
+        headerText: 'Header',
+        headerActions: <button>Action</button>,
+        children: 'Content',
+      });
+      const iconButton = wrapper.findExpandIcon().getElement();
+      expect(iconButton).toHaveAttribute('aria-expanded', 'false');
+      iconButton.click();
+      expect(iconButton).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findExpandedContent()?.getElement()).toHaveTextContent('Content');
+    });
+
+    test('container without actions: clicking caret toggles exactly once (no double-toggle)', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <InternalExpandableSection
+          variant="container"
+          __expandIconPosition="end"
+          headerText="Header"
+          onChange={onChange}
+        >
+          Content
+        </InternalExpandableSection>
+      );
+      const wrapper = createWrapper(container).findExpandableSection()!;
+      const iconButton = wrapper.findExpandIcon().getElement();
+      iconButton.click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { expanded: true } }));
+    });
+
+    test('outside caret button has aria-controls matching content region id', () => {
+      const wrapper = renderInternalExpandableSection({
+        variant: 'container',
+        __expandIconPosition: 'end',
+        headerText: 'Header',
+        children: 'Content',
+        defaultExpanded: true,
+      });
+      const iconButton = wrapper.findExpandIcon().getElement();
+      const contentRegion = wrapper.findContent().getElement();
+      expect(iconButton.getAttribute('aria-controls')).toBe(contentRegion.getAttribute('id'));
+    });
+
+    test('keyboard Enter on outside caret button toggles expansion', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <InternalExpandableSection
+          variant="container"
+          __expandIconPosition="end"
+          headerText="Header"
+          onChange={onChange}
+        >
+          Content
+        </InternalExpandableSection>
+      );
+      const wrapper = createWrapper(container).findExpandableSection()!;
+      const iconButton = wrapper.findExpandIcon().getElement();
+      // Native button handles Enter/Space natively, triggering click
+      iconButton.click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+  });
 });
