@@ -85,7 +85,7 @@ const stepsPermutations = createPermutations<StepsProps>([
 
 export default function StepsPermutations() {
   return (
-    <SimplePage screenshotArea={{ disableAnimations: true }} title="Steps permutations: custom steps">
+    <SimplePage screenshotArea={{ disableAnimations: true }} title="Steps permutations with annotation">
       <PermutationsView
         permutations={stepsPermutations}
         render={permutation => <div>{<Steps {...permutation} />}</div>}
