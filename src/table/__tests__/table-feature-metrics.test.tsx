@@ -45,7 +45,14 @@ test('reports cellVerticalAlign and columnDefinitionsVerticalAlign correctly', (
   );
 });
 test('reports automatic skeleton configuration', () => {
-  render(<Table columnDefinitions={[]} items={[]} loading={true} skeleton={{ totalRows: 'auto', maxAutoRows: 10 }} />);
+  render(
+    <Table
+      columnDefinitions={[]}
+      items={[]}
+      loading={true}
+      skeleton={{ totalRows: 'auto', maxAutoRows: 10, minAutoRows: 2 }}
+    />
+  );
 
   expect(useBaseComponentSpy).toHaveBeenCalledWith(
     'Table',
@@ -55,6 +62,7 @@ test('reports automatic skeleton configuration', () => {
         hasSkeleton: true,
         skeletonAutoRows: true,
         skeletonMaxAutoRows: 10,
+        skeletonMinAutoRows: 2,
         skeletonTotalRows: null,
       }),
     },
@@ -72,6 +80,7 @@ test('does not report an automatic row cap for fixed skeleton rows', () => {
       metadata: expect.objectContaining({
         skeletonAutoRows: false,
         skeletonMaxAutoRows: null,
+        skeletonMinAutoRows: null,
         skeletonTotalRows: 5,
       }),
     },

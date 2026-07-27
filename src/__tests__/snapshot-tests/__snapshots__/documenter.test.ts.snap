@@ -28966,13 +28966,16 @@ the table items array is empty.",
    are also provided, those items will be rendered first, and \`totalRows - items.length\`
    additional skeleton rows rendered after.
 - \`totalRows\` ('auto') - The number of skeleton rows is calculated from the available viewport height.
-- \`maxAutoRows\` (number) - Limits the number of rows rendered when \`totalRows\` is set to \`'auto'\`.",
+- \`maxAutoRows\` (number) - Limits the number of rows rendered when \`totalRows\` is set to \`'auto'\`.
+- \`minAutoRows\` (number) - Sets the minimum number of rows rendered when \`totalRows\` is set to \`'auto'\`.
+   Defaults to 1. Useful for tables rendered off-screen, where the calculated available height would
+   otherwise yield a single row.",
       "inlineType": {
         "name": "TableProps.SkeletonConfig",
         "type": "union",
         "values": [
-          "{ totalRows: number; maxAutoRows?: undefined; }",
-          "{ totalRows: "auto"; maxAutoRows?: number | undefined; }",
+          "TableProps.FixedSkeletonConfig",
+          "TableProps.AutoSkeletonConfig",
         ],
       },
       "name": "skeleton",

@@ -9,6 +9,7 @@ const SKELETON_ROW_SELECTOR = 'tr[aria-hidden="true"]';
 
 interface AutoSkeletonRowsCalculation {
   maxRows?: number;
+  minRows: number;
   rowHeight: number;
   skeletonRowBottom: number;
   skeletonRowTop: number;
@@ -18,6 +19,7 @@ interface AutoSkeletonRowsCalculation {
 
 interface AutoSkeletonRowReductionCalculation {
   currentRows: number;
+  minRows: number;
   overflowHeight: number;
   rowHeight: number;
 }
@@ -25,6 +27,7 @@ interface AutoSkeletonRowReductionCalculation {
 interface UseAutoSkeletonRowsProps {
   enabled: boolean;
   maxRows?: number;
+  minRows?: number;
   tableBodyRef: React.RefObject<HTMLTableSectionElement>;
   tableRootRef: React.RefObject<HTMLElement>;
   tableWrapperRef: React.RefObject<HTMLElement>;
@@ -55,6 +58,7 @@ function getOverflowHeight(element: HTMLElement) {
 
 function calculateAutoSkeletonRows({
   maxRows,
+  minRows,
   rowHeight,
   skeletonRowBottom,
   skeletonRowTop,
@@ -67,16 +71,17 @@ function calculateAutoSkeletonRows({
     viewportBottom - skeletonRowTop - staticHeightBelowSkeletonRow - AUTO_SKELETON_VIEWPORT_BUFFER
   );
   const rows = Math.floor(availableHeight / rowHeight);
-  return Math.max(1, Math.min(maxRows ?? Number.POSITIVE_INFINITY, rows));
+  return Math.max(minRows, Math.min(maxRows ?? Number.POSITIVE_INFINITY, rows));
 }
 
 function calculateAutoSkeletonRowReduction({
   currentRows,
+  minRows,
   overflowHeight,
   rowHeight,
 }: AutoSkeletonRowReductionCalculation) {
   return Math.min(
-    currentRows - 1,
+    currentRows - minRows,
     Math.max(1, Math.ceil((overflowHeight + AUTO_SKELETON_VIEWPORT_BUFFER) / rowHeight))
   );
 }
@@ -84,11 +89,13 @@ function calculateAutoSkeletonRowReduction({
 export function useAutoSkeletonRows({
   enabled,
   maxRows,
+  minRows,
   tableBodyRef,
   tableRootRef,
   tableWrapperRef,
 }: UseAutoSkeletonRowsProps) {
-  const [rows, setRows] = useState(1);
+  const minRowsValue = minRows ?? 1;
+  const [rows, setRows] = useState(minRowsValue);
   const rowHeightRef = useRef<number>();
 
   const updateRows = useCallback(() => {
@@ -110,6 +117,7 @@ export function useAutoSkeletonRows({
     rowHeightRef.current = rowHeight;
     const nextRows = calculateAutoSkeletonRows({
       maxRows,
+      minRows: minRowsValue,
       rowHeight,
       skeletonRowBottom: lastSkeletonRowRect.bottom,
       skeletonRowTop: firstSkeletonRowRect.top,
@@ -117,14 +125,14 @@ export function useAutoSkeletonRows({
       viewportBottom: getViewportBottom(tableWrapper),
     });
     setRows(currentRows => (currentRows === nextRows ? currentRows : nextRows));
-  }, [enabled, maxRows, tableBodyRef, tableRootRef, tableWrapperRef]);
+  }, [enabled, maxRows, minRowsValue, tableBodyRef, tableRootRef, tableWrapperRef]);
 
   useLayoutEffect(updateRows, [updateRows]);
 
   useLayoutEffect(() => {
     const tableWrapper = tableWrapperRef.current;
     const rowHeight = rowHeightRef.current;
-    if (!enabled || rows === 1 || !tableWrapper || !rowHeight) {
+    if (!enabled || rows <= minRowsValue || !tableWrapper || !rowHeight) {
       return;
     }
 
@@ -133,9 +141,14 @@ export function useAutoSkeletonRows({
       return;
     }
 
-    const rowsToRemove = calculateAutoSkeletonRowReduction({ currentRows: rows, overflowHeight, rowHeight });
+    const rowsToRemove = calculateAutoSkeletonRowReduction({
+      currentRows: rows,
+      minRows: minRowsValue,
+      overflowHeight,
+      rowHeight,
+    });
     setRows(currentRows => currentRows - rowsToRemove);
-  }, [enabled, rows, tableWrapperRef]);
+  }, [enabled, rows, minRowsValue, tableWrapperRef]);
 
   useLayoutEffect(() => {
     if (!enabled || typeof ResizeObserver === 'undefined') {

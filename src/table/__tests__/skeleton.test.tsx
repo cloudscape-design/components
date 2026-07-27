@@ -174,6 +174,41 @@ describe('Table skeleton loading', () => {
       expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
     });
 
+    test('respects minAutoRows when the calculated height yields fewer rows', () => {
+      const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto', minAutoRows: 5 } });
+
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(5);
+    });
+
+    test('does not reduce below minAutoRows when the viewport overflows', () => {
+      const originalOverflowY = document.body.style.overflowY;
+      const originalClientHeight = Object.getOwnPropertyDescriptor(document.body, 'clientHeight');
+      const originalScrollHeight = Object.getOwnPropertyDescriptor(document.body, 'scrollHeight');
+      document.body.style.overflowY = 'auto';
+      Object.defineProperty(document.body, 'clientHeight', { configurable: true, value: 400 });
+      Object.defineProperty(document.body, 'scrollHeight', {
+        configurable: true,
+        get: () => (document.querySelectorAll('tr[aria-hidden="true"]').length > 2 ? 401 : 400),
+      });
+
+      try {
+        const wrapper = renderTable({ items: [], loading: true, skeleton: { totalRows: 'auto', minAutoRows: 3 } });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+      } finally {
+        document.body.style.overflowY = originalOverflowY;
+        if (originalClientHeight) {
+          Object.defineProperty(document.body, 'clientHeight', originalClientHeight);
+        } else {
+          delete (document.body as { clientHeight?: number }).clientHeight;
+        }
+        if (originalScrollHeight) {
+          Object.defineProperty(document.body, 'scrollHeight', originalScrollHeight);
+        } else {
+          delete (document.body as { scrollHeight?: number }).scrollHeight;
+        }
+      }
+    });
+
     test('removes rows using document overflow when no ancestor scrolls', () => {
       const originalScrollHeight = Object.getOwnPropertyDescriptor(document.documentElement, 'scrollHeight');
       Object.defineProperty(document.documentElement, 'scrollHeight', {

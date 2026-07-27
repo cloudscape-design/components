@@ -58,6 +58,7 @@ const Table = React.forwardRef(
           skeletonTotalRows: typeof props.skeleton?.totalRows === 'number' ? props.skeleton.totalRows : null,
           skeletonAutoRows: props.skeleton?.totalRows === 'auto',
           skeletonMaxAutoRows: props.skeleton?.totalRows === 'auto' ? (props.skeleton.maxAutoRows ?? null) : null,
+          skeletonMinAutoRows: props.skeleton?.totalRows === 'auto' ? (props.skeleton.minAutoRows ?? null) : null,
           groupSelection: !!props.expandableRows?.groupSelection,
           columnGroups: !!props.groupDefinitions?.length,
           columnGroupsDepth: getColumnGroupsDepth(props.columnDisplay),

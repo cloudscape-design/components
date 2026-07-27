@@ -455,6 +455,7 @@ const InternalTable = React.forwardRef(
     const autoSkeletonRows = useAutoSkeletonRows({
       enabled: !!loading && skeleton?.totalRows === 'auto',
       maxRows: skeleton?.maxAutoRows,
+      minRows: skeleton?.minAutoRows,
       tableBodyRef,
       tableRootRef: tableRootRefObject,
       tableWrapperRef: wrapperRefObject,
