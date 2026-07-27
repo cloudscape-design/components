@@ -22,6 +22,8 @@ const InternalButtonGroup = forwardRef(
       items = [],
       onItemClick,
       onFilesChange,
+      onCopySuccess,
+      onCopyFailure,
       ariaLabel,
       dropdownExpandToViewport,
       style,
@@ -61,6 +63,8 @@ const InternalButtonGroup = forwardRef(
                 setTooltip={setTooltip}
                 onItemClick={onItemClick}
                 onFilesChange={onFilesChange}
+                onCopySuccess={onCopySuccess}
+                onCopyFailure={onCopyFailure}
                 ref={element => (itemsRef.current[item.id] = element)}
                 position={position}
                 style={style}

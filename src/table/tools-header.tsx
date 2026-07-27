@@ -13,12 +13,20 @@ import styles from './styles.css.js';
 interface ToolsHeaderProps {
   header: React.ReactNode;
   filter?: React.ReactNode;
+  clearSort?: React.ReactNode;
   pagination?: React.ReactNode;
   preferences?: React.ReactNode;
   setLastUserAction?: (name: string) => void;
 }
 
-export default function ToolsHeader({ header, filter, pagination, preferences, setLastUserAction }: ToolsHeaderProps) {
+export default function ToolsHeader({
+  header,
+  filter,
+  clearSort,
+  pagination,
+  preferences,
+  setLastUserAction,
+}: ToolsHeaderProps) {
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const isHeaderString = typeof header === 'string';
   const assignHeaderId = useContext(CollectionLabelContext).assignId;
@@ -27,8 +35,8 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
     assignHeaderId(headingId);
   }
   const isSmall = breakpoint === 'default';
-  const hasTools = filter || pagination || preferences;
-  const hasRightAlignedTools = !!(pagination || preferences);
+  const hasTools = filter || clearSort || pagination || preferences;
+  const hasRightAlignedTools = !!(clearSort || pagination || preferences);
   return (
     <>
       {isHeaderString ? <span id={headingId}>{header}</span> : header}
@@ -45,6 +53,7 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
           )}
           {hasRightAlignedTools && (
             <div className={styles['tools-align-right']}>
+              {clearSort && <div className={styles['tools-clear-sort']}>{clearSort}</div>}
               {pagination && (
                 <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('pagination')}>
                   {pagination}

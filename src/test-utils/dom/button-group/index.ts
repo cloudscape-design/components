@@ -57,6 +57,15 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
   }
 
   /**
+   * Finds a copy-to-clipboard item by its id.
+   */
+  findCopyToClipboardById(id: string): null | ButtonWrapper {
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${CSS.escape(id)}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
+    return wrapper && new ButtonWrapper(wrapper.getElement());
+  }
+
+  /**
    * Finds the currently opened tooltip.
    */
   findTooltip(): null | ElementWrapper {

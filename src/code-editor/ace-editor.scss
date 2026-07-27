@@ -20,7 +20,7 @@
 }
 
 .code-editor :global .ace_editor {
-  font-family: Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace;
+  font-family: awsui.$font-family-monospace;
   font-size: 14px;
   line-height: 20px;
 

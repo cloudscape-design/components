@@ -22,6 +22,13 @@ export interface TableThElementProps {
   resizableStyle?: ColumnWidthStyle;
   sortingStatus?: SortingStatus;
   sortingDisabled?: boolean;
+  /**
+   * When true, the visual caret driven by `sortingStatus` is preserved but the
+   * `aria-sort` attribute is omitted. Used for non-primary columns in a
+   * multi-column sort, where ARIA only allows one column to declare itself
+   * sorted.
+   */
+  suppressAriaSort?: boolean;
   focusedComponent?: null | string;
   stuck?: boolean;
   sticky?: boolean;
@@ -54,6 +61,7 @@ export function TableThElement({
   resizableStyle,
   sortingStatus,
   sortingDisabled,
+  suppressAriaSort,
   focusedComponent,
   stuck,
   sticky,
@@ -122,7 +130,11 @@ export function TableThElement({
       rowSpan={rowSpan}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      {...getTableColHeaderRoleProps({
+        tableRole,
+        sortingStatus: suppressAriaSort ? undefined : sortingStatus,
+        colIndex,
+      })}
       scope={scope ?? 'col'}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}

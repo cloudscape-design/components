@@ -408,7 +408,22 @@
     "ariaLabels.expandButtonLabel": "Ampliar",
     "ariaLabels.collapseButtonLabel": "Contraer",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdownSortAscending": "Ordenar de forma ascendente",
+    "i18nStrings.sortDropdownSortDescending": "Ordenar de forma descendente",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Ordenar por varias columnas (Mayús y clic)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Agregar a la ordenación (ascendente)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Agregar a la ordenación (descendente)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Eliminar de la ordenación",
+    "i18nStrings.clearSort": "Borrar ordenación",
+    "ariaLabels.sortMenuTriggerLabel": "Opciones de ordenación",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Esta columna ya está ordenada",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Esta columna no está ordenada",
+    "ariaLabels.sortAscending": "ascendente",
+    "ariaLabels.sortDescending": "descendente",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabla ordenada por {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Ordenación borrada",
+    "ariaLabels.sortPriority": "prioridad de ordenación {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Desplácese hacia la izquierda",
