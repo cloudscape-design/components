@@ -148,6 +148,7 @@ const referenceTokens: ReferenceTokens = {
     warning: {
       50: brand.colorYellow50,
       100: brand.colorYellow100,
+      200: brand.colorYellow200,
       300: brand.colorYellow300,
       400: brand.colorYellow400,
       500: brand.colorYellow500,
