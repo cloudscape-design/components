@@ -146,11 +146,17 @@
   @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
-    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    border-inline-end: awsui.$border-width-layout-side-navigation solid awsui.$color-border-layout-side-navigation;
   }
 
   @include mobile-only {
     z-index: constants.$drawer-z-index-mobile;
+  }
+
+  &.navigation-collapsed {
+    @include desktop-only {
+      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+    }
   }
 }
 

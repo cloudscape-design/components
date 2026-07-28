@@ -57,7 +57,7 @@ export default function SideNavigationCollapsedPage() {
         style={{
           inlineSize: `${panelWidth}px`,
           flexShrink: 0,
-          transition: reducedMotion ? undefined : 'inline-size 400ms cubic-bezier(0, 0, 0, 1)',
+          transition: reducedMotion ? undefined : 'inline-size 130ms cubic-bezier(0, 0, 0, 1)',
           overflow: 'hidden',
           borderInlineEnd: `1px solid ${colorBorderDividerDefault}`,
           display: 'flex',

@@ -2,9 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
-// visual-refresh/color-palette and core/color-palette form an import cycle; evaluating
-// visual-refresh first ensures core's `brand` is initialized before one-theme/color-palette.ts.
-import '../visual-refresh/color-palette.js';
 import {
   createAlertContext,
   createAppLayoutToolbarContext,

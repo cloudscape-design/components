@@ -63,6 +63,15 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
   });
 
+  test('close button does not open navigation when already closed', () => {
+    const { wrapper } = renderComponent(<AppLayout navigation={<>Mock Navigation</>} />);
+    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+    wrapper.findNavigationToggle().click();
+    expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
+    wrapper.findNavigationClose().click();
+    expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
+  });
+
   test(`Sets aria-expanded=false on toggle when navigation is closed`, () => {
     const { wrapper } = renderComponent(
       <AppLayout navigation={<>Mock Navigation</>} navigationOpen={false} content={<>Content</>} />

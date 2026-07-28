@@ -639,6 +639,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1cbgc",
   ],
   "steps": [
+    "awsui_annotation_gxp9y",
     "awsui_container_gxp9y",
     "awsui_details_gxp9y",
     "awsui_header_gxp9y",
@@ -661,8 +662,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_wih1l",
     "awsui_row-selected_wih1l",
     "awsui_row_wih1l",
+    "awsui_sort-priority-badge_1spae",
     "awsui_table_wih1l",
     "awsui_thead-active_wih1l",
+    "awsui_tools-clear-sort_wih1l",
     "awsui_tools-filtering_wih1l",
     "awsui_tools-pagination_wih1l",
     "awsui_tools-preferences_wih1l",

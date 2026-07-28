@@ -12,6 +12,7 @@ export interface StepsProps extends BaseComponentProps {
    *  * `statusIconAriaLabel` - (string) - (Optional) Alternative text for the status icon.
    *  * `header` (ReactNode) - Summary corresponding to the step.
    *  * `details` (ReactNode) - (Optional) Additional information corresponding to the step.
+   *  * `annotation` (ReactNode) - (Optional) Content rendered at the start of the step, before the icon. Typically a timestamp in a timeline view.
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
@@ -62,6 +63,7 @@ export namespace StepsProps {
     statusIconAriaLabel?: string;
     header: React.ReactNode;
     details?: React.ReactNode;
+    annotation?: React.ReactNode;
   }
 
   export type Orientation = 'vertical' | 'horizontal';

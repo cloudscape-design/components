@@ -61,6 +61,7 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
+      toolbar.navigationCollapsible = props.navigationCollapsible;
       toolbar.navigationFocusRef = props.navigationFocusRef;
       toolbar.onNavigationToggle = props.onNavigationToggle;
     }
@@ -93,6 +94,7 @@ export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: A
     ariaLabels: state ? state.ariaLabels : props.ariaLabels,
     navigation: !props.navigationTriggerHide && !props.navigationHide,
     navigationOpen: state ? state.navigationOpen : props.navigationOpen,
+    navigationCollapsible: state?.navigationCollapsible,
     onNavigationToggle: state?.onNavigationToggle,
     navigationFocusRef: state?.navigationFocusControl.refs.toggle,
     activeDrawerId: state?.activeDrawer?.id ?? null,

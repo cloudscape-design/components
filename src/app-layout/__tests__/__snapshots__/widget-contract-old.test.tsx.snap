@@ -192,6 +192,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
+      "navigationCollapsible": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -354,6 +355,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
+    "navigationCollapsible": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {
@@ -1053,6 +1055,7 @@ Map {
       },
       "hasBreadcrumbsPortal": true,
       "hasNavigation": true,
+      "navigationCollapsible": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -1221,6 +1224,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
+    "navigationCollapsible": false,
   },
   "AppLayoutNotificationsImplementation" => {
     "appLayoutInternals": {
@@ -2112,6 +2116,7 @@ Map {
         "current": null,
       },
       "hasNavigation": true,
+      "navigationCollapsible": false,
       "navigationFocusRef": {
         "current": null,
       },
@@ -2290,6 +2295,7 @@ Map {
       },
     },
     "bottomDrawerReportedSize": 0,
+    "navigationCollapsible": false,
   },
   "AppLayoutSplitPanelDrawerBottomImplementation" => {
     "appLayoutInternals": {

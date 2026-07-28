@@ -326,6 +326,28 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       expect(getGeneratedAnalyticsMetadata(area)).toEqual(getMetadata({}, 'visibleContent'));
     });
 
+    test('resolves the column label for a visibleContent option toggle', () => {
+      const wrapper = renderCollectionPreferences({
+        visibleContentPreference,
+      });
+
+      wrapper.findTriggerButton().click();
+
+      const area = wrapper
+        .findModal()!
+        .findVisibleContentPreference()!
+        .findToggleByIndex(1, 2)!
+        .findNativeInput()
+        .getElement();
+      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
+        action: 'select',
+        detail: {
+          label: 'Domain name',
+        },
+        ...getMetadata({}, 'visibleContent'),
+      });
+    });
+
     test('with contentDisplay preference', () => {
       const wrapper = renderCollectionPreferences({
         contentDisplayPreference,

@@ -7,6 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
+  LabelIdentifier,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import customCssProps from '../../../internal/generated/custom-css-properties';
@@ -97,6 +98,13 @@ export default function AbstractSwitch({
     ariaDescriptions.push(descriptionId);
   }
 
+  // Resolve the interaction label from the associated `<label for>` when there is no inline label, for example when used in collection preferences.
+  const interactionLabel: string | LabelIdentifier = label
+    ? `.${analyticsSelectors.label}`
+    : !ariaLabel && !ariaLabelledby && controlId
+      ? { root: 'body', selector: `label[for="${controlId}"]` }
+      : `.${analyticsSelectors['native-input']}`;
+
   return (
     <span
       {...rest}
@@ -114,7 +122,7 @@ export default function AbstractSwitch({
             : {
                 action: 'select',
                 detail: {
-                  label: label ? `.${analyticsSelectors.label}` : `.${analyticsSelectors['native-input']}`,
+                  label: interactionLabel,
                 },
               }
         )}
