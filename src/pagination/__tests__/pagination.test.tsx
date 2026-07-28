@@ -334,6 +334,20 @@ describe('jump to page', () => {
     expect(wrapper.findJumpToPageButton()).toBeTruthy();
   });
 
+  test('findNextPageButton returns the next arrow when jumpToPage is present', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={3} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findNextPageButton()).not.toBeNull();
+    expect(wrapper.findNextPageButton().getElement().tagName.toLowerCase()).toBe('button');
+  });
+
+  test('findPreviousPageButton returns the previous arrow when jumpToPage is present', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={3} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findPreviousPageButton()).not.toBeNull();
+    expect(wrapper.findPreviousPageButton().getElement().tagName.toLowerCase()).toBe('button');
+  });
+
   test('should disable jump to page input and button when pagination is disabled', () => {
     const { wrapper } = renderPagination(
       <Pagination currentPageIndex={1} pagesCount={10} disabled={true} jumpToPage={{}} />

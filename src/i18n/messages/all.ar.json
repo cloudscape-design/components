@@ -408,7 +408,22 @@
     "ariaLabels.expandButtonLabel": "توسيع",
     "ariaLabels.collapseButtonLabel": "تحجيم",
     "columnDefinitions.editConfig.errorIconAriaLabel": "خطأ",
-    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل"
+    "columnDefinitions.editConfig.editIconAriaLabel": "قابل للتعديل",
+    "i18nStrings.sortDropdownSortAscending": "الترتيب تصاعديًّا",
+    "i18nStrings.sortDropdownSortDescending": "الترتيب تنازليًّا",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "ترتيب متعدد الأعمدة (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "إضافة إلى الترتيب (تصاعديًا)",
+    "i18nStrings.sortDropdownAddToSortDescending": "إضافة إلى الترتيب (تنازليًّا)",
+    "i18nStrings.sortDropdownRemoveFromSort": "إزالة من الترتيب",
+    "i18nStrings.clearSort": "مسح الترتيب",
+    "ariaLabels.sortMenuTriggerLabel": "خيارات الترتيب",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "تم بالفعل ترتيب هذا العمود",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "لم يتم ترتيب هذا العمود",
+    "ariaLabels.sortAscending": "تصاعديًا",
+    "ariaLabels.sortDescending": "تنازليًا",
+    "ariaLabels.liveAnnouncementSortOrder": "تم فرز الجدول حسب {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "تم إلغاء الفرز",
+    "ariaLabels.sortPriority": "أولوية الفرز {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "التمرير إلى اليسار",

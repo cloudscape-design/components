@@ -408,7 +408,22 @@
     "ariaLabels.expandButtonLabel": "Genişlet",
     "ariaLabels.collapseButtonLabel": "Daralt",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",
-    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir"
+    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir",
+    "i18nStrings.sortDropdownSortAscending": "Artan sıralama",
+    "i18nStrings.sortDropdownSortDescending": "Azalan sıralama",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Çok sütunlu sıralama (Shift + Tıklama)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Sıralamaya ekle (artan)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Sıralamaya ekle (azalan)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Sıralamadan kaldır",
+    "i18nStrings.clearSort": "Sıralamayı temizle",
+    "ariaLabels.sortMenuTriggerLabel": "Sıralama seçenekleri",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Bu sütun zaten sıralandı",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Bu sütun sıralanmadı",
+    "ariaLabels.sortAscending": "artan",
+    "ariaLabels.sortDescending": "azalan",
+    "ariaLabels.liveAnnouncementSortOrder": "Tablo {columns} ölçütüne göre sıralandı",
+    "ariaLabels.liveAnnouncementSortCleared": "Sıralama temizlendi",
+    "ariaLabels.sortPriority": "sıralama önceliği {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Sola kaydır",

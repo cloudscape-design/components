@@ -3273,6 +3273,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -3299,6 +3306,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -3532,11 +3546,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -6895,6 +6916,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -6921,6 +6949,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -7154,11 +7189,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -10517,6 +10559,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -10543,6 +10592,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -10776,11 +10832,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -14139,6 +14202,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -14165,6 +14235,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -14398,11 +14475,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -17761,6 +17845,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -17787,6 +17878,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -18020,11 +18118,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -21383,6 +21488,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -21409,6 +21521,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "ease-out",
             "disabled": "ease-out",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -21642,11 +21761,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -25005,6 +25131,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "disabled": "0ms",
       },
     },
+    "motion-duration-tooltip-enter": {
+      "$description": "The duration for the tooltip enter transition.",
+      "$value": {
+        "default": "0ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-easing-avatar-gen-ai-gradient": {
       "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": {
@@ -25031,6 +25164,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "default": "ease-out",
         "disabled": "ease-out",
+      },
+    },
+    "motion-easing-tooltip-enter": {
+      "$description": "The easing curve for the tooltip enter transition.",
+      "$value": {
+        "default": "cubic-bezier(0, 0, 0, 1)",
+        "disabled": "cubic-bezier(0, 0, 0, 1)",
       },
     },
     "motion-keyframes-fade-in": {
@@ -25264,11 +25404,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "0px",
       },
     },
-    "space-side-navigation-item-gap": {
-      "$description": "The vertical gap between side navigation items.",
+    "space-side-navigation-item-default-gap": {
+      "$description": "The vertical gap between side navigation items when no item has an icon.",
       "$value": {
         "comfortable": "0px",
         "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-icon-gap": {
+      "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-static-l": {
@@ -28632,6 +28779,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -28658,6 +28812,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -28891,11 +29052,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -32254,6 +32422,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -32280,6 +32455,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -32513,11 +32695,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -35876,6 +36065,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -35902,6 +36098,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -36135,11 +36338,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -39498,6 +39708,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -39524,6 +39741,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -39757,11 +39981,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -43120,6 +43351,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -43146,6 +43384,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -43379,11 +43624,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -46742,6 +46994,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -46768,6 +47027,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -47001,11 +47267,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -50364,6 +50637,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -50390,6 +50670,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -50623,11 +50910,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -53986,6 +54280,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -54012,6 +54313,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(1, 0, 0.83, 1)",
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+          },
+        },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
           },
         },
         "motion-keyframes-fade-in": {
@@ -54245,11 +54553,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "0px",
           },
         },
-        "space-side-navigation-item-gap": {
-          "$description": "The vertical gap between side navigation items.",
+        "space-side-navigation-item-default-gap": {
+          "$description": "The vertical gap between side navigation items when no item has an icon.",
           "$value": {
             "comfortable": "0px",
             "compact": "0px",
+          },
+        },
+        "space-side-navigation-item-icon-gap": {
+          "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-static-l": {
@@ -57608,6 +57923,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "disabled": "0ms",
       },
     },
+    "motion-duration-tooltip-enter": {
+      "$description": "The duration for the tooltip enter transition.",
+      "$value": {
+        "default": "115ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-easing-avatar-gen-ai-gradient": {
       "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": {
@@ -57634,6 +57956,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "default": "cubic-bezier(1, 0, 0.83, 1)",
         "disabled": "cubic-bezier(1, 0, 0.83, 1)",
+      },
+    },
+    "motion-easing-tooltip-enter": {
+      "$description": "The easing curve for the tooltip enter transition.",
+      "$value": {
+        "default": "cubic-bezier(0, 0, 0, 1)",
+        "disabled": "cubic-bezier(0, 0, 0, 1)",
       },
     },
     "motion-keyframes-fade-in": {
@@ -57867,11 +58196,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "compact": "0px",
       },
     },
-    "space-side-navigation-item-gap": {
-      "$description": "The vertical gap between side navigation items.",
+    "space-side-navigation-item-default-gap": {
+      "$description": "The vertical gap between side navigation items when no item has an icon.",
       "$value": {
         "comfortable": "0px",
         "compact": "0px",
+      },
+    },
+    "space-side-navigation-item-icon-gap": {
+      "$description": "The vertical gap between side navigation items when at least one item has an icon.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-static-l": {

@@ -46,6 +46,9 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExpressive: '{motionDurationRefreshOnlyMedium}',
   motionDurationComplex: '{motionDurationRefreshOnlySlow}',
 
+  motionDurationTooltipEnter: '{motionDurationRefreshOnlyFast}',
+  motionEasingTooltipEnter: '{motionEasingRefreshOnlyA}',
+
   motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
   motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
   motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
