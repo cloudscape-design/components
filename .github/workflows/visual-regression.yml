@@ -71,22 +71,33 @@ jobs:
         id: hosts
         run: |
           DEPLOY_ENV="dev-pages-react18"
-          echo "Looking for deployment with environment '${DEPLOY_ENV}'..."
-          DEPLOY_ID=$(gh api \
-            "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
-            --jq '.[0].id // empty' 2>/dev/null || true)
-          NEW_URL=""
-          if [ -n "$DEPLOY_ID" ]; then
-            NEW_URL=$(gh api \
-              "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
-              --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
-            echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
-          fi
-          if [ -z "$NEW_URL" ]; then
-            echo "::error::Could not resolve PR deployment URL"
-            exit 1
-          fi
-          echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+          MAX_ATTEMPTS=10
+          DELAY=15
+
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: looking for deployment with environment '${DEPLOY_ENV}'..."
+            DEPLOY_ID=$(gh api \
+              "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
+              --jq '.[0].id // empty' 2>/dev/null || true)
+            NEW_URL=""
+            if [ -n "$DEPLOY_ID" ]; then
+              NEW_URL=$(gh api \
+                "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
+                --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            fi
+            if [ -n "$NEW_URL" ]; then
+              echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
+              echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+              echo "Deployment URL not available yet (ID=${DEPLOY_ID:-not found}). Retrying in ${DELAY}s..."
+              sleep $DELAY
+            fi
+          done
+
+          echo "::error::Could not resolve PR deployment URL after ${MAX_ATTEMPTS} attempts"
+          exit 1
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}

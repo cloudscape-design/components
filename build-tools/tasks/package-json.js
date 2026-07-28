@@ -51,6 +51,11 @@ function getComponentsExports() {
     result[`./${component}`] = `./${component}/index.js`;
   }
 
+  // Per-component test-utils DOM wrappers (e.g. `.../test-utils/dom/button`).
+  for (const component of listPublicItems('src/test-utils/dom')) {
+    result[`./test-utils/dom/${component}`] = `./test-utils/dom/${component}/index.js`;
+  }
+
   // Internationalization and messages
   result['./i18n'] = './i18n/index.js';
   result[`./i18n/messages/all.all`] = `./i18n/messages/all.all.js`;

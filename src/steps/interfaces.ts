@@ -8,10 +8,11 @@ export interface StepsProps extends BaseComponentProps {
    * An array of individual steps
    *
    * Each step definition has the following properties:
-   *  * `status` (string) - Status of the step corresponding to a status indicator.
+   *  * `status` (string) - Status of the step corresponding to a status indicator. The `log` status renders a neutral dot marker.
    *  * `statusIconAriaLabel` - (string) - (Optional) Alternative text for the status icon.
    *  * `header` (ReactNode) - Summary corresponding to the step.
    *  * `details` (ReactNode) - (Optional) Additional information corresponding to the step.
+   *  * `annotation` (ReactNode) - (Optional) Content rendered at the start of the step, before the icon. Typically a timestamp in a timeline view.
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
@@ -19,6 +20,12 @@ export interface StepsProps extends BaseComponentProps {
    * By default the orientation is vertical.
    */
   orientation?: StepsProps.Orientation;
+  /**
+   * Determines whether the connector lines between steps are displayed. The following variants are available:
+   * * `visible` - Shows connector lines between consecutive steps.
+   * * `none` - Hides the connector lines between steps.
+   */
+  connectorLines?: StepsProps.ConnectorLinesVariant;
   /**
    * Render a step. This overrides the default icon, header, and details provided by the component.
    * The function is called for each step and should return an object with the following keys:
@@ -49,14 +56,17 @@ export interface StepsProps extends BaseComponentProps {
 }
 
 export namespace StepsProps {
-  export type Status = StatusIndicatorProps.Type;
+  export type Status = StatusIndicatorProps.Type | 'log';
 
   export interface Step {
     status: Status;
     statusIconAriaLabel?: string;
     header: React.ReactNode;
     details?: React.ReactNode;
+    annotation?: React.ReactNode;
   }
 
   export type Orientation = 'vertical' | 'horizontal';
+
+  export type ConnectorLinesVariant = 'visible' | 'none';
 }

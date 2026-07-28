@@ -137,10 +137,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
 
-  colorTextBadgeGreen: { light: '{colorSuccess800}', dark: '{colorSuccess200}' },
-  colorTextBadgeBlue: { light: '{colorInfo800}', dark: '{colorInfo300}' },
-  colorTextBadgeRed: { light: '{colorError800}', dark: '{colorError400}' },
-  colorTextBadgeGrey: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
+  colorTextBadgeGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
+  colorTextBadgeBlue: { light: '{colorInfo600}', dark: '{colorInfo300}' },
+  colorTextBadgeRed: { light: '{colorError700}', dark: '{colorError400}' },
+  colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 
   // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
   colorBackgroundFlashbarSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },

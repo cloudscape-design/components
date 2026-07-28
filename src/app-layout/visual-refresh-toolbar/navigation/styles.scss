@@ -8,6 +8,14 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
+$collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+
+.hide-navigation {
+  position: absolute;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
+}
+
 // This wrapper clips the actual navigation content during the enter animation.
 .navigation-container {
   position: sticky;
@@ -19,13 +27,6 @@
   pointer-events: auto;
   display: flex;
   flex-direction: column;
-
-  // All content is hidden by the overflow-x property
-  &:not(.is-navigation-open) {
-    inline-size: 0px;
-    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
-    display: none;
-  }
 
   & > .navigation {
     flex-grow: 1;
@@ -39,15 +40,44 @@
     position: relative;
   }
 
+  // Closed panel: collapsed to zero width and removed from the layout so its
+  // focusable children are no longer reachable. The .is-navigation-collapsed
+  // rule below overrides this to render the icon rail instead.
+  &:not(.is-navigation-open) {
+    inline-size: 0px;
+    display: none;
+  }
+
+  // Closed but showing the collapsed icon rail. This class is only ever set while
+  // the panel is closed, so it always overrides the rule above (equal specificity,
+  // later in source order).
+  &.is-navigation-collapsed {
+    display: flex;
+    align-items: center;
+    inline-size: $collapsed-width;
+
+    & > .navigation {
+      inline-size: $collapsed-width;
+      overflow-x: hidden;
+    }
+
+    // In the rail, replace the top-right close button with a centered expand toggle.
+    & > .navigation > .hide-navigation {
+      display: none;
+
+      &.expand-navigation-toggle {
+        display: flex;
+        position: static;
+        align-items: center;
+        justify-content: center;
+        padding-block: awsui.$space-s;
+      }
+    }
+  }
+
   // The Navigation drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$navigationWidth}: 100vw;
     z-index: constants.$drawer-z-index-mobile;
   }
-}
-
-.hide-navigation {
-  position: absolute;
-  inset-inline-end: awsui.$space-m;
-  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
 }

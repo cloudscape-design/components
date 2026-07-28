@@ -12,12 +12,23 @@ import InternalSteps from './internal';
 
 export { StepsProps };
 
-const Steps = ({ steps, ...props }: StepsProps) => {
+const Steps = ({ steps, orientation = 'vertical', connectorLines = 'visible', ...props }: StepsProps) => {
   const baseProps = getBaseProps(props);
-  const baseComponentProps = useBaseComponent('Steps');
+  const baseComponentProps = useBaseComponent('Steps', {
+    props: { orientation, connectorLines },
+  });
   const externalProps = getExternalProps(props);
 
-  return <InternalSteps {...baseProps} {...baseComponentProps} {...externalProps} steps={steps} />;
+  return (
+    <InternalSteps
+      {...baseProps}
+      {...baseComponentProps}
+      {...externalProps}
+      steps={steps}
+      orientation={orientation}
+      connectorLines={connectorLines}
+    />
+  );
 };
 
 applyDisplayName(Steps, 'Steps');

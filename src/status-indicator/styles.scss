@@ -20,6 +20,7 @@ $_status-colors: (
   'in-progress': awsui.$color-text-status-inactive,
   'loading': awsui.$color-text-status-inactive,
   'not-started': awsui.$color-text-status-inactive,
+  'log': awsui.$color-text-status-inactive,
 );
 
 $_color-overrides: (
@@ -40,6 +41,7 @@ $_status-backgrounds: (
   'in-progress': awsui.$color-background-status-indicator-neutral,
   'loading': awsui.$color-background-status-indicator-neutral,
   'not-started': awsui.$color-background-status-indicator-neutral,
+  'log': awsui.$color-background-status-indicator-neutral,
 );
 
 $_background-overrides: (
@@ -106,7 +108,7 @@ $_background-overrides: (
     word-break: break-all;
     @include theming.one-theme-only {
       display: inline-flex;
-      align-items: flex-start;
+      vertical-align: top;
     }
 
     > .icon {
@@ -115,7 +117,7 @@ $_background-overrides: (
       @include theming.one-theme-only {
         display: inline-flex;
         align-items: center;
-        margin-block-start: awsui.$space-xxxs;
+        block-size: awsui.$line-height-body-m;
       }
     }
   }

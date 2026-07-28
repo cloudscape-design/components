@@ -9,7 +9,8 @@
 
 // ==========================================================================
 // Item sizing — single source of truth for navigation density.
-// Adjust awsui.$size-side-navigation-item-height and awsui.$space-side-navigation-item-gap/awsui.$space-side-navigation-item-collapsed-gap to scale all items uniformly.
+// Adjust awsui.$size-side-navigation-item-height and the item gap tokens
+// (awsui.$space-side-navigation-item-default-gap / awsui.$space-side-navigation-item-icon-gap) to scale all items uniformly.
 // ==========================================================================
 $item-icon-text-gap: awsui.$space-xs;
 // Padding is calculated to be able to horizontally align items without having to use align-items: center for wrapping
@@ -45,13 +46,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-
-  &--collapsed {
-    padding-inline: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .header-link {
@@ -95,6 +89,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .items-control,
 .list-container {
   margin-block-start: calc(#{awsui.$space-panel-content-top} - #{$item-padding-block});
+  .root--collapsed > & {
+    margin-block-start: awsui.$space-xs;
+  }
+
   // Toolbar removes margin and item padding for whatever comes first after the header
   .with-toolbar > .divider-header + & {
     margin-block-start: calc(-1 * #{$item-padding-block});
@@ -150,17 +148,23 @@ $expandable-icon-negative-margin: awsui.$space-l;
 // ==========================================================================
 .list-item {
   margin-inline: 0;
-  margin-block: awsui.$space-side-navigation-item-gap;
+  margin-block: awsui.$space-side-navigation-item-default-gap;
   padding-block: 0;
   padding-inline: $item-padding-inline;
   list-style: none;
+
+  // When any top-level item has an icon, use the wider icon gap between items.
+  .list--with-icons > & {
+    margin-block: awsui.$space-side-navigation-item-icon-gap;
+  }
+
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
   }
 
   &--collapsed {
-    margin-block: awsui.$space-side-navigation-item-collapsed-gap;
+    margin-block: awsui.$space-side-navigation-item-icon-gap;
     display: flex;
     justify-content: center;
     padding-block: 0;

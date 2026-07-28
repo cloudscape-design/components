@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
@@ -11,7 +11,7 @@ import { isDevelopment } from '../internal/is-development';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { SideNavigationProps } from './interfaces';
 import { Header, NavigationItemsList } from './parts';
-import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util';
+import { checkDuplicateHrefs, generateExpandableItemsMapping, hasNavigationIcons } from './util';
 
 import styles from './styles.css.js';
 
@@ -31,6 +31,8 @@ export function SideNavigationImplementation({
   const baseProps = getBaseProps(props);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
+  const withIcons = useMemo(() => hasNavigationIcons(items), [items]);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   if (isDevelopment) {
     // This code should be wiped in production anyway.
@@ -63,7 +65,12 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.root, baseProps.className, isToolbar && styles['with-toolbar'])}
+      className={clsx(
+        styles.root,
+        baseProps.className,
+        isToolbar && styles['with-toolbar'],
+        collapsed && styles['root--collapsed']
+      )}
       ref={__internalRootRef}
     >
       {header && (
@@ -85,6 +92,9 @@ export function SideNavigationImplementation({
             fireChange={onChangeHandler}
             activeHref={activeHref}
             collapsed={collapsed}
+            withIcons={withIcons}
+            activeTooltip={activeTooltip}
+            setActiveTooltip={setActiveTooltip}
           />
         </div>
       )}

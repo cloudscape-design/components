@@ -15,7 +15,7 @@ const defaultProps: StepsProps = {
   ariaDescribedby: 'steps-description',
 };
 
-const successfullSteps: ReadonlyArray<StepsProps.Step> = [
+const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
@@ -93,13 +93,22 @@ describe('Steps', () => {
   });
 
   test('renders correct count of steps', () => {
-    const wrapper = renderSteps({ steps: successfullSteps });
+    const wrapper = renderSteps({ steps: successfulSteps });
 
     expect(wrapper.findItems()).toHaveLength(4);
   });
 
   test('renders correct steps headers', () => {
-    const wrapper = renderSteps({ steps: successfullSteps });
+    const wrapper = renderSteps({ steps: successfulSteps });
+
+    expect(wrapper.findItems()[0]!.findHeader()!.getElement()).toHaveTextContent('Listed EC2 instances');
+    expect(wrapper.findItems()[1]!.findHeader()!.getElement()).toHaveTextContent('Gathered Security Group IDs');
+    expect(wrapper.findItems()[2]!.findHeader()!.getElement()).toHaveTextContent('Checked Cross Region Consent');
+    expect(wrapper.findItems()[3]!.findHeader()!.getElement()).toHaveTextContent('Analyzing security rules');
+  });
+
+  test('renders correct steps headers in horizontal orientation', () => {
+    const wrapper = renderSteps({ steps: successfulSteps, orientation: 'horizontal' });
 
     expect(wrapper.findItems()[0]!.findHeader()!.getElement()).toHaveTextContent('Listed EC2 instances');
     expect(wrapper.findItems()[1]!.findHeader()!.getElement()).toHaveTextContent('Gathered Security Group IDs');
@@ -108,7 +117,7 @@ describe('Steps', () => {
   });
 
   test('renders correct steps details', () => {
-    const wrapper = renderSteps({ steps: successfullSteps });
+    const wrapper = renderSteps({ steps: successfulSteps });
 
     expect(wrapper.findItems()[0]!.findDetails()!.getElement()).toHaveTextContent('EC2 Instances IDs:');
     expect(wrapper.findItems()[1]!.findDetails()!.getElement()).toHaveTextContent('Security Groups IDs:');
@@ -116,17 +125,59 @@ describe('Steps', () => {
     expect(wrapper.findItems()[3]!.findDetails()).toBeNull();
   });
 
+  describe('annotation', () => {
+    test('renders annotation content', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'log', annotation: '10:30' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('does not render annotation when not provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()).toBeNull();
+    });
+
+    test('renders annotation content in horizontal mode', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation in horizontal mode when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+  });
+
   describe('Accessibility', () => {
     test('applies ARIA label to steps', () => {
       const testAriaLabel = 'Test aria label';
-      const wrapper = renderSteps({ steps: successfullSteps, ariaLabel: testAriaLabel });
+      const wrapper = renderSteps({ steps: successfulSteps, ariaLabel: testAriaLabel });
 
       expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAccessibleName(testAriaLabel);
     });
 
     test('applies ARIA labelledby to steps', () => {
       const testAriaLabelledBy = 'test-id';
-      const wrapper = renderSteps({ steps: successfullSteps, ariaLabelledby: testAriaLabelledBy });
+      const wrapper = renderSteps({ steps: successfulSteps, ariaLabelledby: testAriaLabelledBy });
 
       expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAttribute(
         'aria-labelledby',
@@ -136,7 +187,7 @@ describe('Steps', () => {
 
     test('applies ARIA describedby to steps', () => {
       const testAriaDescribedBy = 'test-id';
-      const wrapper = renderSteps({ steps: successfullSteps, ariaDescribedby: testAriaDescribedBy });
+      const wrapper = renderSteps({ steps: successfulSteps, ariaDescribedby: testAriaDescribedBy });
 
       expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAttribute(
         'aria-describedby',
@@ -157,14 +208,14 @@ describe('Steps', () => {
 
   describe('orientation', () => {
     test('renders with default vertical orientation', () => {
-      const wrapper = renderSteps({ steps: successfullSteps });
+      const wrapper = renderSteps({ steps: successfulSteps });
 
       expect(wrapper.getElement()).not.toHaveClass(stepsStyles.horizontal);
     });
 
     test('renders with horizontal orientation when explicitly set', () => {
       const wrapper = renderSteps({
-        steps: successfullSteps,
+        steps: successfulSteps,
         orientation: 'horizontal',
       });
 
@@ -173,12 +224,51 @@ describe('Steps', () => {
 
     test('renders with vertical orientation', () => {
       const wrapper = renderSteps({
-        steps: successfullSteps,
+        steps: successfulSteps,
         orientation: 'vertical',
       });
 
       expect(wrapper.getElement()).not.toHaveClass(stepsStyles.horizontal);
     });
+  });
+
+  describe('connectorLines', () => {
+    test.each([
+      { orientation: 'vertical', connectorLines: undefined },
+      { orientation: 'horizontal', connectorLines: undefined },
+      { orientation: 'vertical', connectorLines: 'visible' },
+      { orientation: 'horizontal', connectorLines: 'visible' },
+    ] as const)(
+      'renders visible connector lines when orientation=$orientation and connectorLines=$connectorLines',
+      ({ orientation, connectorLines }) => {
+        const wrapper = renderSteps({ steps: successfulSteps, orientation, connectorLines });
+        expect(wrapper.findAllByClassName(stepsStyles.connector)).toHaveLength(4);
+        expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(0);
+      }
+    );
+
+    test.each([{ orientation: 'vertical' }, { orientation: 'horizontal' }] as const)(
+      'hides connector lines by marking every connector when orientation=$orientation and connectorLines="none"',
+      ({ orientation }) => {
+        const wrapper = renderSteps({ steps: successfulSteps, orientation, connectorLines: 'none' });
+        expect(wrapper.findAllByClassName(stepsStyles.connector)).toHaveLength(4);
+        expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(4);
+      }
+    );
+
+    test.each([{ orientation: 'vertical' }, { orientation: 'horizontal' }] as const)(
+      'hides connector lines also when custom steps are used and orientation=$orientation',
+      ({ orientation }) => {
+        const wrapper = renderSteps({
+          steps: stepsForCustomRender,
+          orientation,
+          connectorLines: 'none',
+          renderStep: (step: StepsProps.Step) => ({ header: step.header, details: step.details }),
+        });
+        expect(wrapper.findAllByClassName(stepsStyles.connector)).toHaveLength(2);
+        expect(wrapper.findAllByClassName(stepsStyles['connector-hidden'])).toHaveLength(2);
+      }
+    );
   });
 
   describe('renderStep', () => {
@@ -224,6 +314,19 @@ describe('Steps', () => {
       expect(wrapper.findAll('[data-testid="custom-header"]')).not.toHaveLength(0);
       expect(wrapper.findAll('[data-testid="custom-details"]')).not.toHaveLength(0);
       expect(wrapper.findAll('[data-testid="custom-icon"]')).not.toHaveLength(0);
+    });
+
+    test('renders correct custom step headers in horizontal orientation', () => {
+      const wrapper = renderSteps({
+        steps: stepsForCustomRender,
+        orientation: 'horizontal',
+        renderStep: customRenderStep,
+      });
+
+      expect(wrapper.findItems()[0].findHeader()!.getElement()).toHaveTextContent(
+        'Custom: Checked Cross Region Consent'
+      );
+      expect(wrapper.findItems()[1].findHeader()!.getElement()).toHaveTextContent('Custom: Analyzing security rules');
     });
 
     test('does not render status indicators when using renderStep with icon', () => {
