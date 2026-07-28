@@ -581,6 +581,7 @@ export type ColorsTokenName =
   | 'colorBackgroundItemSelected'
   | 'colorBackgroundSideNavigationItemActive'
   | 'colorBackgroundSideNavigationItemActiveCollapsed'
+  | 'colorBackgroundSideNavigationItemIconHover'
   | 'colorBackgroundLayoutMain'
   | 'colorBackgroundLayoutAiDrawer'
   | 'colorBackgroundDrawer'

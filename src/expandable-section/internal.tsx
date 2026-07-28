@@ -31,6 +31,13 @@ export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'varia
      * content and pushed to the inline-end of a full-width header.
      */
     __expandIconPosition?: 'start' | 'end';
+    /**
+     * Removes default padding from the header wrapper and content wrapper.
+     * Used by side-navigation to zero out expandable-section's own padding so the
+     * parent can control spacing directly, eliminating brittle cross-component
+     * positional selectors.
+     */
+    __disableHeaderPaddings?: boolean;
   };
 
 export default function InternalExpandableSection({
@@ -51,6 +58,7 @@ export default function InternalExpandableSection({
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   __expandIconPosition = 'start',
+  __disableHeaderPaddings = false,
   ...props
 }: InternalExpandableSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -119,7 +127,12 @@ export default function InternalExpandableSection({
         <ExpandableSectionHeader
           id={triggerControlId}
           descriptionId={descriptionId}
-          className={clsx(styles.header, styles[`header-${baseVariant}`], screenReaderTextClass)}
+          className={clsx(
+            styles.header,
+            styles[`header-${baseVariant}`],
+            screenReaderTextClass,
+            __disableHeaderPaddings && styles['disable-header-paddings']
+          )}
           variant={baseVariant}
           expanded={!!expanded}
           header={header}
@@ -139,7 +152,12 @@ export default function InternalExpandableSection({
         <div
           id={controlId}
           ref={ref}
-          className={clsx(styles.content, styles[`content-${baseVariant}`], expanded && styles['content-expanded'])}
+          className={clsx(
+            styles.content,
+            styles[`content-${baseVariant}`],
+            expanded && styles['content-expanded'],
+            disableContentPaddings && styles['disable-content-paddings']
+          )}
           role="group"
           aria-label={triggerProps.ariaLabel}
           aria-labelledby={triggerProps.ariaLabelledBy}

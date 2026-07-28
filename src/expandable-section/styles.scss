@@ -287,6 +287,20 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
+// Internal-only class: zeros header wrapper padding when __disableHeaderPaddings is set.
+// Allows parent components to control spacing without brittle positional selectors.
+.disable-header-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+// Internal-only class: zeros content wrapper padding when the disableContentPaddings prop is set.
+// Paired with disable-header-paddings for consistent zero-padding on both wrapper divs.
+.disable-content-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
 .focusable {
   &:focus {
     outline: none;
@@ -319,6 +333,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
   &.wrapper-navigation {
     justify-content: space-between;
+    align-items: flex-start;
+    column-gap: awsui.$space-xs;
   }
 
   &.wrapper-container,
@@ -374,11 +390,23 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   font: inherit;
   color: inherit;
 
+  // Align the navigation end-layout caret to the first line of header text.
+  // The header link has padding-block equal to (item-height - line-height) / 2
+  // (set by side-navigation). Mirror that on the caret so it sits at the same
+  // vertical position as the first text line — identical to the start layout.
+  .header-icon-end.wrapper-navigation > & {
+    padding-block-start: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
+  }
+
   // In the end layout the icon is a flex child governed by the parent's
   // align-items: flex-start. Reset the inset-block-start offsets that the
   // start layout uses (they assume relative positioning within text flow)
   // so the icon aligns with the first line of header text via flex.
   @include theming.one-theme-only {
+    // Override the base .icon-container one-theme rule that re-introduces
+    // margin-inline-end via the margin-inline shorthand (equal specificity,
+    // later source order wins).
+    margin-inline-end: 0;
     &:not(.icon-container-container) {
       inset-block-start: $icon-offset-block;
     }
@@ -397,4 +425,13 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .header-icon-end > .header-navigation-content {
   flex: 1;
   min-inline-size: 0;
+}
+
+// Navigation variant, start icon: align the expand caret to the first line of text
+// when header paddings are disabled (side-navigation use case).
+// Mirrors the end-icon alignment at .icon-container-end (same formula).
+.disable-header-paddings.wrapper-navigation:not(.header-icon-end) > .icon-container {
+  display: grid;
+  align-items: flex-start;
+  padding-block: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
 }

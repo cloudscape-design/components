@@ -672,6 +672,25 @@ describe('__expandIconPosition', () => {
     });
   });
 
+  describe('disableContentPaddings', () => {
+    test('applies disable-content-paddings class when disableContentPaddings is true', () => {
+      const wrapper = renderExpandableSection({
+        disableContentPaddings: true,
+        defaultExpanded: true,
+        children: 'Content',
+      });
+      expect(wrapper.findContent().getElement()).toHaveClass(styles['disable-content-paddings']);
+    });
+
+    test('does not apply disable-content-paddings class by default', () => {
+      const wrapper = renderExpandableSection({
+        defaultExpanded: true,
+        children: 'Content',
+      });
+      expect(wrapper.findContent().getElement()).not.toHaveClass(styles['disable-content-paddings']);
+    });
+  });
+
   describe('outside icon button (end position with renderIconOutsideHeader)', () => {
     test('container variant renders outside caret as a button with aria-expanded', () => {
       const wrapper = renderInternalExpandableSection({
