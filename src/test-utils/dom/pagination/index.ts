@@ -40,11 +40,11 @@ export default class PaginationWrapper extends ComponentWrapper {
   }
 
   findPreviousPageButton(): PaginationButtonWrapper {
-    return this.findComponent(`li:first-child .${styles.button}`, PaginationButtonWrapper)!;
+    return this.findComponent(`li:first-child .${styles.arrow}`, PaginationButtonWrapper)!;
   }
 
   findNextPageButton(): PaginationButtonWrapper {
-    return this.findComponent(`li:last-child .${styles.button}`, PaginationButtonWrapper)!;
+    return this.findComponent(`li:not(:first-child) .${styles.arrow}`, PaginationButtonWrapper)!;
   }
 
   /**

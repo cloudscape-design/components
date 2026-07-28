@@ -493,6 +493,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_efqlv",
   ],
   "pagination": [
+    "awsui_arrow_fvjdu",
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
     "awsui_jump-to-page-input_fvjdu",
