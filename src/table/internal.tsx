@@ -65,6 +65,7 @@ import {
 } from './table-role';
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
+import { useAutoSkeletonRows } from './use-auto-skeleton-rows';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
@@ -297,6 +298,8 @@ const InternalTable = React.forwardRef(
       [cancelEdit]
     );
 
+    const tableRootRefObject = useRef<HTMLDivElement>(null);
+    const tableBodyRef = useRef<HTMLTableSectionElement>(null);
     const wrapperRefObject = useRef<HTMLDivElement>(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
@@ -460,8 +463,19 @@ const InternalTable = React.forwardRef(
 
     usePreventStickyClickScroll(wrapperRefObject);
 
+    const tableRootRef = useMergeRefs(__internalRootRef, tableRootRefObject);
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
+    const autoSkeletonRows = useAutoSkeletonRows({
+      enabled: !!loading && skeleton?.totalRows === 'auto',
+      maxRows: skeleton?.maxAutoRows,
+      minRows: skeleton?.minAutoRows,
+      tableBodyRef,
+      tableRootRef: tableRootRefObject,
+      tableWrapperRef: wrapperRefObject,
+    });
+    const skeletonRowsCount =
+      skeleton?.totalRows === 'auto' ? allItems.length + autoSkeletonRows : (skeleton?.totalRows ?? 0);
 
     // When the clear-sort button is activated it unmounts (there is no longer a sort to clear),
     // which would drop keyboard focus to the document body. Move focus to the first sortable
@@ -508,7 +522,7 @@ const InternalTable = React.forwardRef(
             <InternalContainer
               {...baseProps}
               {...tableInteractionAttributes}
-              __internalRootRef={__internalRootRef}
+              __internalRootRef={tableRootRef}
               className={clsx(baseProps.className, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
@@ -648,10 +662,10 @@ const InternalTable = React.forwardRef(
                       onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
                       {...theadProps}
                     />
-                    <tbody>
+                    <tbody ref={tableBodyRef}>
                       {skeleton && allItems.length === 0 && loading ? (
                         <SkeletonRows
-                          count={skeleton.totalRows}
+                          count={skeletonRowsCount}
                           hasDataRows={false}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
@@ -683,7 +697,7 @@ const InternalTable = React.forwardRef(
                         allRows.map((row, rowIndex) => {
                           const isFirstRow = rowIndex === 0;
                           const hasSkeletonBelow =
-                            loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0;
+                            loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0;
                           const isLastDataRow = rowIndex === allRows.length - 1;
                           const isLastRow = isLastDataRow && !hasSkeletonBelow;
                           const rowExpandableProps =
@@ -864,9 +878,9 @@ const InternalTable = React.forwardRef(
                           );
                         })
                       )}
-                      {loading && skeleton && allItems.length > 0 && skeleton.totalRows - allItems.length > 0 && (
+                      {loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0 && (
                         <SkeletonRows
-                          count={skeleton.totalRows - allItems.length}
+                          count={skeletonRowsCount - allItems.length}
                           hasDataRows={true}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
