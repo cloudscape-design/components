@@ -94,7 +94,8 @@ export function useAutoSkeletonRows({
   tableRootRef,
   tableWrapperRef,
 }: UseAutoSkeletonRowsProps) {
-  const minRowsValue = Math.max(1, minRows ?? 1);
+  const maxRowsValue = maxRows === undefined ? undefined : Math.max(1, maxRows);
+  const minRowsValue = Math.min(Math.max(1, minRows ?? 1), maxRowsValue ?? Number.POSITIVE_INFINITY);
   const [rows, setRows] = useState(minRowsValue);
   const rowHeightRef = useRef<number>();
 
@@ -116,7 +117,7 @@ export function useAutoSkeletonRows({
 
     rowHeightRef.current = rowHeight;
     const nextRows = calculateAutoSkeletonRows({
-      maxRows,
+      maxRows: maxRowsValue,
       minRows: minRowsValue,
       rowHeight,
       skeletonRowBottom: lastSkeletonRowRect.bottom,
@@ -125,7 +126,7 @@ export function useAutoSkeletonRows({
       viewportBottom: getViewportBottom(tableWrapper),
     });
     setRows(currentRows => (currentRows === nextRows ? currentRows : nextRows));
-  }, [enabled, maxRows, minRowsValue, tableBodyRef, tableRootRef, tableWrapperRef]);
+  }, [enabled, maxRowsValue, minRowsValue, tableBodyRef, tableRootRef, tableWrapperRef]);
 
   useLayoutEffect(updateRows, [updateRows]);
 
