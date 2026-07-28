@@ -8,6 +8,7 @@ const suite: TestSuite = {
   tests: [
     {
       description: 'Toolbar',
+      visualRefreshOnly: true,
       tests: [
         {
           description: 'multiple nested instances (no breadcrumbs dedup)',

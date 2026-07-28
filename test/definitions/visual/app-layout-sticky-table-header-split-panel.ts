@@ -8,6 +8,7 @@ const suite: TestSuite = {
   tests: [
     {
       description: 'Sticky header with split panel',
+      visualRefreshOnly: true,
       tests: [
         {
           description: 'scrolling to bottom with closed split panel (1 table row)',
