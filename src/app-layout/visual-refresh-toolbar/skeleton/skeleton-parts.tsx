@@ -35,14 +35,18 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
           <div
             className={clsx(
               styles.navigation,
-              !toolbarProps?.navigationOpen && styles['panel-hidden'],
+              !toolbarProps?.navigationOpen && !toolbarProps?.navigationCollapsible && styles['panel-hidden'],
+              !toolbarProps?.navigationOpen && toolbarProps?.navigationCollapsible && styles['navigation-collapsed'],
               !!toolbarProps?.activeDrawerId && styles['unfocusable-mobile']
             )}
           >
             <div
               className={clsx(
                 navStyles['navigation-container'],
-                toolbarProps?.navigationOpen && navStyles['is-navigation-open']
+                toolbarProps?.navigationOpen && navStyles['is-navigation-open'],
+                !toolbarProps?.navigationOpen &&
+                  toolbarProps?.navigationCollapsible &&
+                  navStyles['is-navigation-collapsed']
               )}
             >
               <nav className={navStyles.navigation}>

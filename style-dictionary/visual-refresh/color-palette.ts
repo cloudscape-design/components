@@ -4,7 +4,7 @@ import pick from 'lodash/pick.js';
 
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
 
-import { paletteTokens as brand } from '../core/color-palette.js';
+import { paletteTokens as brand } from '../core/palette-values.js';
 import { expandColorDictionary, expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
@@ -200,6 +200,7 @@ const referenceTokens: ReferenceTokens = {
       100: brand.colorRed100,
       400: brand.colorRed400,
       600: brand.colorRed600,
+      700: brand.colorRed700,
       800: brand.colorRed800,
       900: brand.colorRed900,
       950: brand.colorRed950,
@@ -208,6 +209,7 @@ const referenceTokens: ReferenceTokens = {
     success: {
       50: brand.colorGreen50,
       100: brand.colorGreen100,
+      200: brand.colorGreen200,
       400: brand.colorGreen400,
       500: brand.colorGreen500,
       600: brand.colorGreen600,
@@ -218,6 +220,7 @@ const referenceTokens: ReferenceTokens = {
     warning: {
       50: brand.colorYellow50,
       100: brand.colorYellow100,
+      200: brand.colorYellow200,
       400: brand.colorYellow400,
       500: brand.colorYellow500,
       600: brand.colorYellow600,

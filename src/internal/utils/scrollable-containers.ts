@@ -3,6 +3,8 @@
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
+import { isHTMLElement } from './dom';
+
 export interface BoundingBox {
   blockSize: number;
   inlineSize: number;
@@ -115,6 +117,22 @@ export function scrollRectangleIntoView(box: BoundingBox, scrollableParent?: HTM
   if (scrollAmount) {
     (scrollableParent || window).scrollBy(0, scrollAmount);
   }
+}
+
+/**
+ * Returns the element's ancestors whose computed `overflow-y` is `auto` or `scroll`,
+ * ordered nearest-first. These are the ancestors capable of producing a vertical scrollbar.
+ */
+export function getScrollableParents(element: HTMLElement): HTMLElement[] {
+  const parents: HTMLElement[] = [];
+  let node = element.parentElement;
+  while (node) {
+    if (isHTMLElement(node) && ['auto', 'scroll'].includes(getComputedStyle(node).overflowY)) {
+      parents.push(node);
+    }
+    node = node.parentElement;
+  }
+  return parents;
 }
 
 export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {

@@ -7,6 +7,8 @@ import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-for
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
   navigationWidth: number;
+  navigationCollapsible: boolean;
+  navigationCollapsedWidth: number;
   placement: AppLayoutPropsWithDefaults['placement'];
   minContentWidth: number;
   activeDrawerSize: number;
@@ -23,6 +25,8 @@ export const CONTENT_PADDING = 2 * 24; // space-xl
 export function computeHorizontalLayout({
   navigationOpen,
   navigationWidth,
+  navigationCollapsible,
+  navigationCollapsedWidth,
   placement,
   minContentWidth,
   activeDrawerSize,
@@ -33,7 +37,7 @@ export function computeHorizontalLayout({
   activeGlobalDrawersSizes,
   activeAiDrawerSize,
 }: HorizontalLayoutInput) {
-  const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
+  const activeNavigationWidth = navigationOpen ? navigationWidth : navigationCollapsible ? navigationCollapsedWidth : 0;
 
   let resizableSpaceAvailable =
     placement.inlineSize - minContentWidth - CONTENT_PADDING - activeNavigationWidth - activeAiDrawerSize;

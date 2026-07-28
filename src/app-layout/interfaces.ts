@@ -75,6 +75,23 @@ export interface BaseLayoutProps extends BaseComponentProps {
   navigationWidth?: number;
 
   /**
+   * Determines whether the navigation panel collapses or hides completely when closed.
+   * Defaults to `hide` if not specified.
+   *
+   * When set to `collapse`, closing the navigation shows a collapsed icon-only navigation rail
+   * at `navigationCollapsedWidth` instead of hiding the panel. Use it together with the
+   * `collapsed` property of the side navigation component. On mobile viewports the rail
+   * is not available and the closed navigation is completely hidden.
+   */
+  navigationCloseBehavior?: 'collapse' | 'hide';
+
+  /**
+   * Width of the collapsed navigation rail in pixels.
+   * Only applies when `navigationCloseBehavior` is `collapse` and `navigationOpen` is `false`.
+   */
+  navigationCollapsedWidth?: number;
+
+  /**
    * If `true`, the navigation drawer is not displayed at all.
    */
   navigationHide?: boolean;
@@ -361,7 +378,13 @@ export namespace AppLayoutProps {
 
 export type AppLayoutPropsWithDefaults = SomeRequired<
   Omit<AppLayoutProps, 'headerSelector' | 'footerSelector'>,
-  'contentType' | 'navigationWidth' | 'toolsWidth' | 'minContentWidth' | 'navigationOpen' | 'onNavigationChange'
+  | 'contentType'
+  | 'navigationWidth'
+  | 'navigationCollapsedWidth'
+  | 'toolsWidth'
+  | 'minContentWidth'
+  | 'navigationOpen'
+  | 'onNavigationChange'
 > & {
   placement: {
     insetBlockStart: number;

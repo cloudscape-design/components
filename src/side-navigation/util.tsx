@@ -24,6 +24,12 @@ export function hasActiveLink(items: ReadonlyArray<SideNavigationProps.Item>, ac
   return false;
 }
 
+// Determines whether any top-level navigation item has an icon.
+export function hasNavigationIcons(items: ReadonlyArray<SideNavigationProps.Item>): boolean {
+  const iconKey: keyof SideNavigationProps.Link = 'icon';
+  return items.some(item => iconKey in item && !!item.icon);
+}
+
 export function generateExpandableItemsMapping(
   items: ReadonlyArray<SideNavigationProps.Item>,
   mapping: WeakMap<SideNavigationProps.Item, ReadonlyArray<ExpandableItem>> = new WeakMap(),
