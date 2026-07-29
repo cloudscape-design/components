@@ -18,7 +18,7 @@ const variablesMap = {
   shadowModal: 'shadow-modal',
 };
 
-test('versions border tokens matched by the default groups and leaves others (incl. border colors) version-less', () => {
+test('versions border + typography tokens matched by the default groups and leaves others (incl. border colors) version-less', () => {
   expect(getTokenVersions(variablesMap)).toEqual({
     borderRadiusButton: 'v3-1',
     borderWidthField: 'v3-1',
