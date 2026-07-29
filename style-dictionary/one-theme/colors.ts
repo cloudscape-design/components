@@ -143,9 +143,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 
   // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
-  colorBackgroundFlashbarSuccess: { light: '#e9fce7', dark: '#03220d' },
   colorBackgroundFlashbarError: { light: '#fceded', dark: '#460303' },
-  colorBackgroundFlashbarInfo: { light: '#eaeffc', dark: '#030f49' },
+  colorBackgroundFlashbarInfo: { light: '#eaeffc', dark: '#08144f' },
+  colorBackgroundFlashbarSuccess: { light: '#e9fce7', dark: '#03220d' },
   colorBackgroundFlashbarWarning: { light: '#fcfadb', dark: '#372603' },
 
   // ── Status border ───────────────────────────────────────────────────────────
