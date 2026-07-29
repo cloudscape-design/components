@@ -4,9 +4,14 @@ import { TestSuite } from '../types';
 import { responsiveTests } from './app-layout-responsive-tests';
 
 const suite: TestSuite = {
-  description: 'Responsive',
+  description: 'AppLayout',
   componentName: 'app-layout',
-  tests: [600, 1280, 1400, 1920, 2540].map(width => responsiveTests(width)),
+  tests: [
+    {
+      description: 'Responsive',
+      tests: [600, 1280, 1400, 1920, 2540].map(width => responsiveTests(width)),
+    },
+  ],
 };
 
 export default suite;

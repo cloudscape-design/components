@@ -13,6 +13,7 @@ import appLayoutContentPaddings from './visual/app-layout-content-paddings';
 import appLayoutDrawers from './visual/app-layout-drawers';
 import appLayoutFlashbar from './visual/app-layout-flashbar';
 import appLayoutHeader from './visual/app-layout-header';
+import appLayoutMaxContentWidth from './visual/app-layout-max-content-width';
 import appLayoutMulti from './visual/app-layout-multi';
 import appLayoutResponsive from './visual/app-layout-responsive';
 import appLayoutStickyTableHeaderSplitPanel from './visual/app-layout-sticky-table-header-split-panel';
@@ -38,6 +39,7 @@ export const appLayout: TestSuite[] = [
   appLayoutDrawers,
   appLayoutFlashbar,
   appLayoutHeader,
+  appLayoutMaxContentWidth,
   appLayoutMulti,
   appLayoutResponsive,
   appLayoutStickyTableHeaderSplitPanel,
