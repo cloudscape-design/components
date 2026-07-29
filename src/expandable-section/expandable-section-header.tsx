@@ -88,7 +88,7 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
-  expandIconPosition?: 'start' | 'end';
+  expandIconPosition: 'start' | 'end';
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -174,7 +174,7 @@ const ExpandableNavigationHeader = ({
   expanded,
   children,
   icon,
-  expandIconPosition = 'start',
+  expandIconPosition,
 }: ExpandableNavigationHeaderProps) => {
   const expandButton = (
     <ExpandIconButton
@@ -230,7 +230,7 @@ const ExpandableHeaderTextWrapper = ({
   headingTagOverride,
   onKeyUp,
   onKeyDown,
-  expandIconPosition = 'start',
+  expandIconPosition,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
