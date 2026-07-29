@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "フィルターをクリア",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}、0 個の項目} one {{label}、1 個の項目} other {{label}、{count} 個の項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
   },
   "copy-to-clipboard": {
