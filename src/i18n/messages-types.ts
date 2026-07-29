@@ -144,8 +144,8 @@ export interface I18nFormatArgTypes {
     };
     'contentDisplayPreference.liveAnnouncementDndDiscarded': never;
     'contentDisplayPreference.liveAnnouncementDndGroupLabel': {
-      label: string;
       count: number;
+      label: string;
     };
     'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder': never;
     'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel': never;

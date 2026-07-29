@@ -7,18 +7,17 @@ const suite: TestSuite = {
   componentName: 'app-layout',
   tests: [
     {
-      description: 'Toolbar',
+      description: 'maxContentWidth',
       visualRefreshOnly: true,
       tests: [
         {
-          description: 'multiple nested instances (no breadcrumbs dedup)',
-          path: 'app-layout-toolbar/multi-layout-with-hidden-instances',
+          description: 'maxContentWidth set to Number.MAX_VALUE',
+          path: 'app-layout/refresh-content-width',
           screenshotType: 'viewport',
-        },
-        {
-          description: 'no toolbar',
-          path: 'app-layout-toolbar/without-toolbar',
-          screenshotType: 'viewport',
+          configuration: { width: 1280, height: 700 },
+          setup: async ({ page }) => {
+            await page.click('[data-test-id="button_width-number-max_value"]');
+          },
         },
       ],
     },

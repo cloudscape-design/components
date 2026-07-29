@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "مسح عامل التصفية",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {نقل العنصر مرة أخرى إلى الموضع {currentPosition} من أصل {total}} false {نقل العنصر إلى الموضع {currentPosition} من أصل {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {تم نقل العنصر مرة أخرى إلى موضعه الأصلي {initialPosition} من أصل {total}} false {تم نقل العنصر من الموضع {initialPosition} إلى الموضع {finalPosition} من أصل {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}، 0 عنصر} one {{label}، عنصر واحد} other {{label}، {count} عناصر}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {لا توجد تطابقات} one {تطابق واحد} other {{count} تطابق}}"
   },
   "copy-to-clipboard": {
