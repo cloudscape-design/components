@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Cancella filtro",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Spostamento dell'elemento di nuovo nella posizione {currentPosition} di {total}} false {Spostamento dell'elemento nella posizione {currentPosition} di {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'elemento è stato spostato di nuovo nella posizione originale {initialPosition} di {total}} false {Elemento spostato da una posizione {initialPosition} alla posizione {finalPosition} di {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 elementi} one {{label}, 1 elemento} other {{label}, {count} elementi}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 corrispondenze} one {1 corrispondenza} other {{count} corrispondenze}}"
   },
   "copy-to-clipboard": {
