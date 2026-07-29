@@ -397,8 +397,8 @@ $expandable-icon-negative-margin: awsui.$space-l;
 
 // --- Expanded icon layout (gated by .list--with-icons) ---
 .list--with-icons {
-  // Plain links: hover background.
-  > .list-item > .link:hover {
+  // Plain links: hover background (exclude active collapsed links to preserve their active background).
+  > .list-item > .link:not(.link-active.link--collapsed):hover {
     @include icon-layout-hover-background;
   }
 
