@@ -29,6 +29,7 @@ import breadcrumbGroupSuite from './visual/breadcrumb-group';
 import buttonSuite from './visual/button';
 import buttonDropdownSuite from './visual/button-dropdown';
 import buttonGroupSuite from './visual/button-group';
+import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
 export const actionCard: TestSuite[] = [actionCardSuite];
@@ -56,6 +57,7 @@ export const breadcrumbGroup: TestSuite[] = [breadcrumbGroupSuite];
 export const button: TestSuite[] = [buttonSuite];
 export const buttonDropdown: TestSuite[] = [buttonDropdownSuite];
 export const buttonGroup: TestSuite[] = [buttonGroupSuite];
+export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
   ...actionCard,
@@ -71,4 +73,5 @@ export const allSuites: TestSuite[] = [
   ...button,
   ...buttonDropdown,
   ...buttonGroup,
+  ...table,
 ];
