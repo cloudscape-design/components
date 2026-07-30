@@ -16,11 +16,9 @@ const suite: TestSuite = {
       path: 'copy-to-clipboard/scenario-split-panel',
       screenshotType: 'screenshotArea',
       configuration: { width: 1280, height: 900 },
-      setup: async ({ page, browser }) => {
+      setup: async ({ page }) => {
         await page.click('[aria-label="Copy dummy text"]');
-        await browser!.execute((sel: string) => {
-          document.querySelector(sel)?.scrollIntoView();
-        }, '[data-testid="scroll-me"]');
+        await page.scrollIntoView('[data-testid="scroll-me"]');
       },
     },
   ],

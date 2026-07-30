@@ -16,13 +16,13 @@ const suite: TestSuite = {
     {
       description: `column-layout at "${breakpoint}"`,
       path: 'column-layout/simple',
-      screenshotType: 'screenshotArea' as const,
+      screenshotType: 'screenshotArea',
       configuration: { width },
     },
     {
       description: `permutations at "${breakpoint}"`,
       path: 'column-layout/permutations',
-      screenshotType: 'permutations' as const,
+      screenshotType: 'permutations',
       configuration: { width },
     },
   ]),

@@ -34,11 +34,11 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       queryParams: { position: 'top', height: '150px', content: '4-3' },
     },
-    ...(['side', 'top'] as const).flatMap(position =>
+    ...['side', 'top'].flatMap(position =>
       [465, 688, 1120].map<TestDefinition>(width => ({
         description: `media ${position} permutations at ${width}`,
         path: `container/media-${position}-permutations`,
-        screenshotType: 'permutations' as const,
+        screenshotType: 'permutations',
         configuration: { width },
       }))
     ),

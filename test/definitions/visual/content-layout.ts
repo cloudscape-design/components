@@ -35,14 +35,13 @@ const suite: TestSuite = {
         await page.click('[data-testid="toggle-content-layout"] input');
       },
     },
-    // without header (from content-layout.test.ts)
     ...[1400, 600].flatMap(width =>
       [false, true].flatMap(hasBreadcrumbs =>
         [false, true].flatMap(hasNotifications =>
           [true, false].map<TestDefinition>(hasOverlap => ({
             description: `without header at ${width} ${hasBreadcrumbs ? 'with' : 'without'} breadcrumbs, ${hasNotifications ? 'with' : 'without'} notifications, ${hasOverlap ? 'with' : 'without'} overlap`,
             path: 'content-layout/without-header',
-            screenshotType: 'screenshotArea' as const,
+            screenshotType: 'screenshotArea',
             configuration: { width },
             queryParams: {
               hasBreadcrumbs: `${hasBreadcrumbs}`,

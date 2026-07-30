@@ -9,11 +9,11 @@ const suite: TestSuite = {
     {
       description: 'Z-index',
       tests: [
-        ...[600, 1280].flatMap(width => [
+        ...[600, 1280].flatMap<TestDefinition>(width => [
           {
             description: `button dropdown (${width}px)`,
             path: 'app-layout/with-absolute-components',
-            screenshotType: 'viewport' as const,
+            screenshotType: 'viewport',
             configuration: { width },
             setup: async ({ page }) => {
               await page.click('button=Button dropdown');
@@ -24,7 +24,7 @@ const suite: TestSuite = {
           {
             description: `select (${width}px)`,
             path: 'app-layout/with-absolute-components',
-            screenshotType: 'viewport' as const,
+            screenshotType: 'viewport',
             configuration: { width, height: 800 },
             setup: async ({ page }) => {
               await page.click('[data-testid="select-demo"] button');
@@ -34,7 +34,7 @@ const suite: TestSuite = {
           {
             description: `split-panel and full-page table (${width}px)`,
             path: 'app-layout/with-full-page-table-and-split-panel',
-            screenshotType: 'viewport' as const,
+            screenshotType: 'viewport',
             configuration: { width },
           },
         ]),
@@ -63,7 +63,7 @@ const suite: TestSuite = {
         {
           description: 'split-panel and full-page with open navigation (600px)',
           path: 'app-layout/with-full-page-table-and-split-panel',
-          screenshotType: 'viewport' as const,
+          screenshotType: 'viewport',
           configuration: { width: 600 },
           setup: async ({ page }) => {
             await page.click('button[aria-label="Open navigation"]');
@@ -72,7 +72,7 @@ const suite: TestSuite = {
         {
           description: 'split-panel and full-page with open tools (600px)',
           path: 'app-layout/with-full-page-table-and-split-panel',
-          screenshotType: 'viewport' as const,
+          screenshotType: 'viewport',
           configuration: { width: 600 },
           setup: async ({ page }) => {
             await page.click('button[aria-label="Open tools"]');

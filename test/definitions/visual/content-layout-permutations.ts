@@ -56,8 +56,8 @@ const suite: TestSuite = {
       )
     ),
     // maxContentWidth variants
-    ...(['default', 'high-contrast'] as const).flatMap(headerVariant =>
-      (['none', 'gradient', 'image'] as const).map<TestDefinition>(headerBackgroundStyle =>
+    ...['default', 'high-contrast'].flatMap(headerVariant =>
+      ['none', 'gradient', 'image'].map<TestDefinition>(headerBackgroundStyle =>
         contentLayoutPermutation({
           headerVariant,
           headerBackgroundStyle,
@@ -195,7 +195,7 @@ const suite: TestSuite = {
     // without header
     ...[1400, 600].flatMap(width =>
       [true, false].flatMap(defaultPadding =>
-        (['default', 'high-contrast', 'divider'] as const).map<TestDefinition>(headerVariant =>
+        ['default', 'high-contrast', 'divider'].map<TestDefinition>(headerVariant =>
           contentLayoutPermutation(
             {
               headerVariant,

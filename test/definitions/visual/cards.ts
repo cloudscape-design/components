@@ -8,7 +8,7 @@ const suite: TestSuite = {
   tests: [2200, 1920, 1400, 1200, 992, 768].map(width => ({
     description: `permutations at ${width}`,
     path: 'cards/permutations',
-    screenshotType: 'permutations' as const,
+    screenshotType: 'permutations',
     configuration: { width },
   })),
 };
