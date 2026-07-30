@@ -31,7 +31,6 @@ import buttonDropdownSuite from './visual/button-dropdown';
 import buttonGroupSuite from './visual/button-group';
 import cardsSuite from './visual/cards';
 import checkboxSuite from './visual/checkbox';
-import codeEditorSuite from './visual/code-editor';
 import collectionPreferencesSuite from './visual/collection-preferences';
 import columnLayoutSuite from './visual/column-layout';
 import containerSuite from './visual/container';
@@ -73,7 +72,6 @@ export const buttonDropdown: TestSuite[] = [buttonDropdownSuite];
 export const buttonGroup: TestSuite[] = [buttonGroupSuite];
 export const cards: TestSuite[] = [cardsSuite];
 export const checkbox: TestSuite[] = [checkboxSuite];
-export const codeEditor: TestSuite[] = [codeEditorSuite];
 export const collectionPreferences: TestSuite[] = [collectionPreferencesSuite];
 export const columnLayout: TestSuite[] = [columnLayoutSuite];
 export const container: TestSuite[] = [containerSuite, containerStickySuite];
@@ -101,7 +99,6 @@ export const allSuites: TestSuite[] = [
   ...buttonGroup,
   ...cards,
   ...checkbox,
-  ...codeEditor,
   ...collectionPreferences,
   ...columnLayout,
   ...container,
