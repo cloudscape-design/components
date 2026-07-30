@@ -25,7 +25,6 @@ const suite: TestSuite = {
           description: `visible content only at ${width}x${height}`,
           path: 'collection-preferences/simple',
           screenshotType: 'viewport',
-          configuration: { width, height },
           setup: async ({ page }) => {
             await page.click('.cp-4 button');
           },
