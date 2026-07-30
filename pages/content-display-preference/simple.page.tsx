@@ -46,6 +46,7 @@ export default function ContentDisplayPreferencePage() {
       <Box padding="l">
         <h1>Standalone ContentDisplayPreference</h1>
         <SpaceBetween size="m">
+          <h2>Content display example</h2>
           <Box>
             Reacts to changes immediately (no confirm step). This example rejects turning on more than {MAX_VISIBLE}{' '}
             columns.
