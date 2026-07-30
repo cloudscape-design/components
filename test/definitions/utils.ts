@@ -60,79 +60,81 @@ async function preparePage(
 }
 
 export function runTestSuites(suites: Array<TestDefinition | TestSuite>) {
-  registerSuites(suites);
+  let browser: WebdriverIO.Browser;
+
+  beforeAll(async () => {
+    const { default: getBrowserCreator } = await import('@cloudscape-design/browser-test-tools/browser');
+    const creator = getBrowserCreator('ChromeHeadlessIntegration', 'local', {
+      seleniumUrl: 'http://localhost:9515',
+    });
+    browser = await creator.getBrowser({ width: defaultWindowSize.width, height: defaultWindowSize.height });
+  });
+
+  afterAll(async () => {
+    await browser?.deleteSession();
+  });
+
+  registerSuites(suites, () => browser);
 }
 
-function registerSuites(suites: Array<TestDefinition | TestSuite>) {
+function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: () => WebdriverIO.Browser) {
   for (const item of suites) {
     if (isTestDefinition(item)) {
-      registerTest(item);
+      registerTest(item, getBrowser);
     } else {
       describe(item.description, () => {
-        registerSuites(item.tests);
+        registerSuites(item.tests, getBrowser);
       });
     }
   }
 }
 
-function registerTest(testDef: TestDefinition) {
+function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
-    const { default: getBrowserCreator } = await import('@cloudscape-design/browser-test-tools/browser');
-    const creator = getBrowserCreator('ChromeHeadlessIntegration', 'local', {
-      seleniumUrl: 'http://localhost:9515',
-    });
-    const windowSize = {
-      width: testDef.configuration?.width ?? defaultWindowSize.width,
-      height: testDef.configuration?.height ?? defaultWindowSize.height,
-    };
-    const browser = await creator.getBrowser(windowSize);
-    try {
-      const page = new VisualTestPageObject(browser);
+    const browser = getBrowser();
+    const page = new VisualTestPageObject(browser);
 
-      const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
-      const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
+    const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
+    const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-      const tolerance = testDef.pixelDiffTolerance ?? 0;
+    const tolerance = testDef.pixelDiffTolerance ?? 0;
 
-      if (testDef.screenshotType === 'permutations') {
-        await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-        const newPermutations = await page.capturePermutations();
-
-        await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-        const oldPermutations = await page.capturePermutations();
-
-        expect(newPermutations.length).toBe(oldPermutations.length);
-
-        // Compare each permutation individually, wrapping each in an Allure step.
-        let failures = 0;
-        for (let i = 0; i < newPermutations.length; i++) {
-          const id = newPermutations[i].id || '';
-          const index = `#${(i + 1).toString().padStart(3, '0')}`;
-          await step(`Permutation ${index}`, async () => {
-            const permResult = await compareScreenshots(newPermutations[i], oldPermutations[i]);
-            await attachDiffImages(permResult, index);
-            if (permResult.diffPixels > tolerance) {
-              failures++;
-              throw new Error(`Permutation ${index} differs by ${permResult.diffPixels} pixels\n${id}`);
-            }
-          });
-        }
-        expect(failures).toBe(0);
-        return;
-      }
-
-      // Non-permutation: single screenshot comparison
+    if (testDef.screenshotType === 'permutations') {
       await preparePage(browser, page, newUrl, testDef, testDef.configuration);
-      const newRaw = await captureSingleScreenshot(page, testDef);
+      const newPermutations = await page.capturePermutations();
 
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
-      const oldRaw = await captureSingleScreenshot(page, testDef);
+      const oldPermutations = await page.capturePermutations();
 
-      const result = await compareScreenshots(newRaw, oldRaw);
-      await attachDiffImages(result, testDef.description);
-      expect(result.diffPixels).toBeLessThanOrEqual(tolerance);
-    } finally {
-      await browser.deleteSession();
+      expect(newPermutations.length).toBe(oldPermutations.length);
+
+      // Compare each permutation individually, wrapping each in an Allure step.
+      let failures = 0;
+      for (let i = 0; i < newPermutations.length; i++) {
+        const id = newPermutations[i].id || '';
+        const index = `#${(i + 1).toString().padStart(3, '0')}`;
+        await step(`Permutation ${index}`, async () => {
+          const permResult = await compareScreenshots(newPermutations[i], oldPermutations[i]);
+          await attachDiffImages(permResult, index);
+          if (permResult.diffPixels > tolerance) {
+            failures++;
+            throw new Error(`Permutation ${index} differs by ${permResult.diffPixels} pixels\n${id}`);
+          }
+        });
+      }
+      expect(failures).toBe(0);
+      return;
     }
+
+    // Non-permutation: single screenshot comparison
+    await preparePage(browser, page, newUrl, testDef, testDef.configuration);
+    const newRaw = await captureSingleScreenshot(page, testDef);
+
+    await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
+    const oldRaw = await captureSingleScreenshot(page, testDef);
+
+    const result = await compareScreenshots(newRaw, oldRaw);
+    await attachDiffImages(result, testDef.description);
+    expect(result.diffPixels).toBeLessThanOrEqual(tolerance);
   });
 }
