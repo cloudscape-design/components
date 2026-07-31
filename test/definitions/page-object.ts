@@ -23,6 +23,11 @@ export default class VisualTestPageObject extends RawScreenshotPageObject {
     await this.waitForJsTimers(500);
   }
 
+  async doubleClick(selector: string): Promise<void> {
+    const element = this.browser.$(selector);
+    await element.doubleClick();
+  }
+
   /**
    * Scrolls the element matching the given selector into view.
    */
