@@ -70,3 +70,62 @@ export function checkDuplicateHrefs(items: ReadonlyArray<SideNavigationProps.Ite
     }
   }
 }
+
+/**
+ * Warns when a collapsed-rail link (root-level link, link-group, ELG, or
+ * promoted root-section child) would render without an icon, making it
+ * invisible in the collapsed state.
+ *
+ * Plain links without icons are hidden entirely. Link-groups and ELGs without
+ * icons render with no visual indicator. Root-level sections/section-groups
+ * promote their direct children, so icon-less children there are also hidden.
+ */
+export function checkCollapsedIconSupport(items: ReadonlyArray<SideNavigationProps.Item>, collapsed: boolean) {
+  if (!collapsed) {
+    return;
+  }
+
+  function warnMissingIcon(
+    item: SideNavigationProps.Link | SideNavigationProps.LinkGroup | SideNavigationProps.ExpandableLinkGroup,
+    context?: string
+  ) {
+    if (item.icon) {
+      return;
+    }
+    const article = item.type === 'expandable-link-group' ? 'An' : 'A';
+    const consequence = item.type === 'link' ? 'will be hidden' : 'will have no visual indicator';
+    const prefix =
+      item.type === 'link' && !context ? `${article} root-level "${item.type}"` : `${article} "${item.type}"`;
+    const suffix = context ? ` inside ${context}` : '';
+
+    warnOnce(
+      'SideNavigation',
+      `${prefix} ("${item.text}")${suffix} has no icon and ${consequence} when collapsed. ` +
+        'Add an icon to make it visible in the collapsed rail.'
+    );
+  }
+
+  for (const item of items) {
+    switch (item.type) {
+      case 'link':
+      case 'link-group':
+      case 'expandable-link-group':
+        warnMissingIcon(item);
+        break;
+      case 'section':
+        for (const child of item.items) {
+          if (child.type === 'link' || child.type === 'link-group' || child.type === 'expandable-link-group') {
+            warnMissingIcon(child, `section "${item.text}"`);
+          }
+        }
+        break;
+      case 'section-group':
+        for (const child of item.items) {
+          if (child.type === 'link' || child.type === 'link-group' || child.type === 'expandable-link-group') {
+            warnMissingIcon(child, `section-group "${item.title}"`);
+          }
+        }
+        break;
+    }
+  }
+}

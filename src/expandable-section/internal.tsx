@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEvent, useCallback, useRef } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -34,10 +33,15 @@ export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'varia
     /**
      * Removes default padding from the header wrapper and content wrapper.
      * Used by side-navigation to zero out expandable-section's own padding so the
-     * parent can control spacing directly, eliminating brittle cross-component
-     * positional selectors.
+     * parent can control spacing directly.
      */
     __disableHeaderPaddings?: boolean;
+    /**
+     * When true, the expand/collapse icon button is hidden from assistive technology
+     * and removed from the tab order. Used by side-navigation when the nav is collapsed
+     * and the caret is visually clipped but still present in the DOM.
+     */
+    __hideExpandIcon?: boolean;
   };
 
 export default function InternalExpandableSection({
@@ -59,9 +63,15 @@ export default function InternalExpandableSection({
   __injectAnalyticsComponentMetadata,
   __expandIconPosition = 'start',
   __disableHeaderPaddings = false,
+  __hideExpandIcon = false,
   ...props
 }: InternalExpandableSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const contentInnerRef = useRef<HTMLDivElement>(null);
+  // Start settled when the section is initially expanded — no transition will
+  // fire, so the transitionEnd handler would never switch overflow to visible.
+  // This prevents permanent clipping of negative-margin backgrounds (e.g. nav
+  // active/hover states) in initially-expanded sections and reduced-motion mode.
+  const [contentSettled, setContentSettled] = useState(() => !!(controlledExpanded ?? defaultExpanded));
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
@@ -74,9 +84,9 @@ export default function InternalExpandableSection({
   });
 
   const onExpandChange = useCallback(
-    (expanded: boolean) => {
-      setExpanded(expanded);
-      fireNonCancelableEvent(onChange, { expanded });
+    (newExpanded: boolean) => {
+      setExpanded(newExpanded);
+      fireNonCancelableEvent(onChange, { expanded: newExpanded });
     },
     [onChange, setExpanded]
   );
@@ -98,10 +108,38 @@ export default function InternalExpandableSection({
 
   const onKeyDown = useCallback((event: KeyboardEvent<Element>) => {
     if (event.keyCode === KeyCode.space) {
-      // Prevent the page from scrolling when toggling the component with the space bar.
       event.preventDefault();
     }
   }, []);
+
+  // Set inert on collapsed content to block pointer/focus events and hide from
+  // assistive technology. Direct DOM manipulation needed until React supports
+  // the inert attribute natively. https://github.com/facebook/react/issues/17157
+  useEffect(() => {
+    if (contentInnerRef.current) {
+      contentInnerRef.current.inert = !expanded;
+    }
+  }, [expanded]);
+
+  // When collapsing, immediately reset settled so overflow:hidden is re-applied
+  // before the grid transition starts (prevents content spill during close).
+  useEffect(() => {
+    if (!expanded) {
+      setContentSettled(false);
+    }
+  }, [expanded]);
+
+  // After the expand transition finishes, mark content as settled so
+  // overflow can switch to visible (prevents clipping of active-state backgrounds
+  // and focus rings that extend beyond the content box).
+  const handleContentTransitionEnd = useCallback(
+    (event: React.TransitionEvent<HTMLDivElement>) => {
+      if (event.propertyName === 'grid-template-rows' && expanded) {
+        setContentSettled(true);
+      }
+    },
+    [expanded]
+  );
 
   const triggerProps = {
     ariaControls: controlId,
@@ -112,7 +150,6 @@ export default function InternalExpandableSection({
     onClick,
   };
 
-  // Map stacked variant to container to avoid code duplication
   const baseVariant: InternalVariant = variant === 'stacked' ? 'container' : variant;
 
   return (
@@ -121,7 +158,6 @@ export default function InternalExpandableSection({
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
-      disableContentPaddings={disableContentPaddings}
       __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
@@ -143,29 +179,45 @@ export default function InternalExpandableSection({
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
+          hideExpandIcon={__hideExpandIcon}
           {...triggerProps}
         />
       }
       __internalRootRef={__internalRootRef}
     >
-      <CSSTransition in={expanded} timeout={30} classNames={{ enter: styles['content-enter'] }} nodeRef={ref}>
+      <div
+        id={controlId}
+        className={clsx(
+          styles.content,
+          styles[`content-${baseVariant}`],
+          expanded && styles['content-expanded'],
+          disableContentPaddings && styles['disable-content-paddings']
+        )}
+        role="group"
+        aria-label={triggerProps.ariaLabel}
+        aria-labelledby={triggerProps.ariaLabelledBy}
+        aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
+        onTransitionEnd={handleContentTransitionEnd}
+      >
         <div
-          id={controlId}
-          ref={ref}
+          ref={contentInnerRef}
           className={clsx(
-            styles.content,
-            styles[`content-${baseVariant}`],
-            expanded && styles['content-expanded'],
-            disableContentPaddings && styles['disable-content-paddings']
+            styles['content-inner'],
+            expanded && styles['content-inner-expanded'],
+            contentSettled && styles['content-inner-settled']
           )}
-          role="group"
-          aria-label={triggerProps.ariaLabel}
-          aria-labelledby={triggerProps.ariaLabelledBy}
-          aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
         >
-          {children}
+          <div
+            className={clsx(
+              styles['content-inner-body'],
+              styles[`content-inner-body-${baseVariant}`],
+              disableContentPaddings && styles['disable-content-paddings']
+            )}
+          >
+            {children}
+          </div>
         </div>
-      </CSSTransition>
+      </div>
     </ExpandableSectionContainer>
   );
 }

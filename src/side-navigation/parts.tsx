@@ -36,6 +36,7 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   collapsed?: boolean;
+  contentSettled?: boolean;
   activeTooltip?: string | null;
   setActiveTooltip?: (position: string | null) => void;
 }
@@ -109,6 +110,7 @@ interface NavigationItemsListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
   withIcons?: boolean;
+  ariaLabel?: string;
 }
 
 interface Item {
@@ -125,7 +127,9 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   collapsed,
+  contentSettled,
   withIcons,
+  ariaLabel,
   activeTooltip,
   setActiveTooltip,
 }: NavigationItemsListProps) {
@@ -145,7 +149,7 @@ export function NavigationItemsList({
       lists.push({
         listVariant: variant,
         element: (
-          <div data-itemid={`item-${itemid}`}>
+          <div data-itemid={`item-${itemid}`} className={clsx(collapsed && styles['list-item--group'])}>
             <Divider variant="default" collapsed={collapsed} />
           </div>
         ),
@@ -157,81 +161,16 @@ export function NavigationItemsList({
         }) - 1;
     }
 
-    // Renders icon-bearing children of a container item as a collapsed group.
-    // The inner <ul> carries the group label so list semantics are preserved
-    // for screen readers even when the visual header is hidden.
-    function pushCollapsedGroup(
-      children: ReadonlyArray<SideNavigationProps.Item>,
-      label: string,
-      { leadingDivider = false }: { leadingDivider?: boolean } = {}
+    // In collapsed mode, hide plain links without icons (they have no visual representation).
+    // Exception: link-group / expandable-link-group children must stay rendered so
+    // the grid-template-rows collapse animation has content to transition.
+    if (
+      collapsed &&
+      item.type === 'link' &&
+      !(item as SideNavigationProps.Link).icon &&
+      variant !== 'link-group' &&
+      variant !== 'expandable-link-group'
     ) {
-      const iconChildren = children.filter(child => (child as SideNavigationProps.Link).icon);
-      if (iconChildren.length === 0) {
-        return;
-      }
-      // A section's title is hidden when collapsed; render a divider in its place
-      if (leadingDivider) {
-        pushDivider();
-      }
-      const groupElements = iconChildren.map((child, childIndex) => {
-        const childPosition = `${position ? `${position},` : ''}${itemid},${childIndex + 1}`;
-        return (
-          <li key={childPosition} className={clsx(styles['list-item'], styles['list-item--collapsed'])}>
-            <Link
-              definition={child as SideNavigationProps.Link}
-              activeHref={activeHref}
-              fireFollow={fireFollow}
-              fireChange={fireChange}
-              position={childPosition}
-              collapsed={collapsed}
-              activeTooltip={activeTooltip}
-              setActiveTooltip={setActiveTooltip}
-            />
-          </li>
-        );
-      });
-      const prevItem = index > 0 ? items[index - 1] : null;
-      const nextItem = index < items.length - 1 ? items[index + 1] : null;
-      lists[currentListIndex].items?.push({
-        element: (
-          <li
-            key={`group-${itemid}`}
-            className={clsx(
-              styles['list-item--group'],
-              (leadingDivider || prevItem?.type === 'divider') && styles['list-item--group-no-padding-start'],
-              nextItem?.type === 'divider' && styles['list-item--group-no-padding-end']
-            )}
-          >
-            <ul className={styles['list--collapsed-group']} aria-label={label}>
-              {groupElements}
-            </ul>
-          </li>
-        ),
-      });
-    }
-
-    // In collapsed mode, flatten container items to show only icon-bearing children.
-    if (collapsed && (item.type === 'expandable-link-group' || item.type === 'link-group') && !item.icon) {
-      const group = item as SideNavigationProps.ExpandableLinkGroup | SideNavigationProps.LinkGroup;
-      pushCollapsedGroup(group.items, group.text);
-      return;
-    }
-    if (collapsed && (item.type === 'section' || item.type === 'section-group')) {
-      const sectionLabel =
-        item.type === 'section'
-          ? (item as SideNavigationProps.Section).text
-          : (item as SideNavigationProps.SectionGroup).title;
-      // Section-groups may contain nested sections — flatten one level.
-      const childItems =
-        item.type === 'section'
-          ? (item as SideNavigationProps.Section).items
-          : (item as SideNavigationProps.SectionGroup).items.flatMap(child =>
-              child.type === 'section' ? (child as SideNavigationProps.Section).items : [child]
-            );
-      pushCollapsedGroup(childItems, sectionLabel, { leadingDivider: true });
-      return;
-    }
-    if (collapsed && item.type !== 'divider' && !(item as SideNavigationProps.Link).icon) {
       return;
     }
     switch (item.type) {
@@ -254,6 +193,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                contentSettled={contentSettled}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -268,7 +208,11 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+              className={clsx(
+                styles['list-item'],
+                collapsed && styles['list-item--collapsed'],
+                collapsed && styles['list-item--group']
+              )}
             >
               <Section
                 definition={item}
@@ -278,6 +222,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -293,7 +238,11 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+              className={clsx(
+                styles['list-item'],
+                collapsed && styles['list-item--collapsed'],
+                collapsed && styles['list-item--group']
+              )}
             >
               <SectionGroup
                 definition={item}
@@ -302,7 +251,9 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                contentSettled={contentSettled}
                 withIcons={withIcons}
+                variant={variant}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -317,7 +268,11 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+              className={clsx(
+                styles['list-item'],
+                collapsed && styles['list-item--collapsed'],
+                collapsed && styles['list-item--group']
+              )}
             >
               <LinkGroup
                 definition={item}
@@ -326,6 +281,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -341,7 +297,11 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+              className={clsx(
+                styles['list-item'],
+                collapsed && styles['list-item--collapsed'],
+                collapsed && styles['list-item--group']
+              )}
             >
               <ExpandableLinkGroup
                 definition={item}
@@ -351,6 +311,7 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 collapsed={collapsed}
+                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -392,7 +353,7 @@ export function NavigationItemsList({
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles[`list-variant-${list.listVariant}--collapsed`]]: collapsed,
                 [styles['list--with-icons']]: withIcons,
               })}
             >
@@ -405,9 +366,10 @@ export function NavigationItemsList({
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles[`list-variant-${list.listVariant}--collapsed`]]: collapsed,
                 [styles['list--with-icons']]: withIcons,
               })}
+              aria-label={ariaLabel}
             >
               {list.items.map(item => item.element)}
             </ul>
@@ -505,16 +467,46 @@ function useCollapsedTooltip<T extends HTMLElement>({
   return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({ definition, activeHref, fireFollow, position, collapsed, activeTooltip, setActiveTooltip }: LinkProps) {
+function Link({
+  definition,
+  activeHref,
+  fireFollow,
+  position,
+  collapsed,
+  contentSettled,
+  activeTooltip,
+  setActiveTooltip,
+}: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>({
     label: definition.text,
     position,
     activeTooltip,
     setActiveTooltip,
   });
+
+  // Make icon-less collapsed links inert (they collapse to 0×0 and must
+  // not be focusable or visible to assistive technology).
+  const isIconLess = !definition.icon;
+  useEffect(() => {
+    if (linkRef.current) {
+      linkRef.current.inert = !!(collapsed && isIconLess);
+    }
+  }, [collapsed, isIconLess]);
+
+  // Merge linkRef with collapsedTooltip.triggerRef so both can track the <a>.
+  const mergedRef = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      (linkRef as React.MutableRefObject<HTMLAnchorElement | null>).current = node;
+      if (collapsed) {
+        (collapsedTooltip.triggerRef as React.MutableRefObject<HTMLAnchorElement | null>).current = node;
+      }
+    },
+    [collapsed, collapsedTooltip.triggerRef]
+  );
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -541,7 +533,7 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
 
   const internalLink = (
     <a
-      ref={collapsed ? collapsedTooltip.triggerRef : undefined}
+      ref={mergedRef}
       href={definition.href}
       className={clsx(styles.link, {
         [styles['link-active']]: isActive,
@@ -556,8 +548,16 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
       {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
     >
       <ItemIcon icon={definition.icon} collapsed={collapsed} aria-hidden={collapsed ? true : undefined} />
-      {!collapsed && (
-        <span className={styles['link-text-wrapper']}>
+      <span
+        className={clsx(styles['link-text-wrapper'], collapsed && styles['link-text-wrapper--collapsed'])}
+        aria-hidden={collapsed ? true : undefined}
+      >
+        <span
+          className={clsx(
+            styles['link-text-wrapper-content'],
+            contentSettled && styles['link-text-wrapper-content--settled']
+          )}
+        >
           <span className={analyticsSelectors['link-text']}>{definition.text}</span>
           {definition.external && (
             <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
@@ -565,7 +565,7 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
             </span>
           )}
         </span>
-      )}
+      </span>
       {collapsed && collapsedTooltip.tooltip}
     </a>
   );
@@ -593,10 +593,14 @@ function Section({
   variant,
   position,
   collapsed,
+  contentSettled,
   withIcons,
+  activeTooltip,
+  setActiveTooltip,
 }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const onExpandedChange = useCallback(
     (e: NonCancelableCustomEvent<ExpandableSectionProps.ChangeDetail>) => {
@@ -610,25 +614,54 @@ function Section({
     setExpanded(definition.defaultExpanded ?? true);
   }, [definition]);
 
-  if (collapsed) {
-    return null;
-  }
+  // Apply inert to the section header wrapper when collapsed so the hidden
+  // expand toggle (<span role="button" tabIndex={0}>) is removed from the
+  // tab order and assistive technology. The header is the first child of the
+  // InternalExpandableSection root div.
+  // Sections are always transparent — they promote their children in the collapsed
+  // rail regardless of nesting depth. Only the section header is made inert so
+  // child links remain focusable. Parent link-group/ELG containers independently
+  // hide their children when collapsed, so no extra hiding is needed here.
+  useEffect(() => {
+    const el = sectionRef.current as HTMLElement | null;
+    if (el) {
+      el.inert = false;
+      const header = el.firstElementChild as HTMLElement | null;
+      if (header) {
+        header.inert = !!collapsed;
+      }
+    }
+  }, [collapsed]);
 
   const isInSectionGroup = variant === 'section-group';
 
   return (
     <InternalExpandableSection
       variant="footer"
-      expanded={expanded}
+      expanded={collapsed ? true : expanded}
       onChange={onExpandedChange}
       disableContentPaddings={true}
+      __internalRootRef={sectionRef}
       className={clsx(
         styles.section,
         isInSectionGroup && styles['section--no-ident'],
         withIcons && styles['section--expand-icon-end'],
-        isVisualRefresh && styles.refresh
+        isVisualRefresh && styles.refresh,
+        collapsed && styles['section--collapsed']
       )}
-      headerText={<span className={styles['section-header']}>{definition.text}</span>}
+      headerText={
+        <span
+          className={clsx(
+            styles['section-header'],
+            styles['label-text'],
+            contentSettled && styles['label-text--settled'],
+            collapsed && styles['label-text--collapsed']
+          )}
+          aria-hidden={collapsed ? true : undefined}
+        >
+          {definition.text}
+        </span>
+      }
       __expandIconPosition={withIcons ? 'end' : 'start'}
     >
       <NavigationItemsList
@@ -638,7 +671,11 @@ function Section({
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        collapsed={collapsed}
+        contentSettled={contentSettled}
         withIcons={withIcons}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
     </InternalExpandableSection>
   );
@@ -646,6 +683,7 @@ function Section({
 
 interface SectionGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionGroup;
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
   withIcons?: boolean;
 }
 
@@ -656,20 +694,40 @@ function SectionGroup({
   fireChange,
   position,
   collapsed,
+  contentSettled,
   withIcons,
+  activeTooltip,
+  setActiveTooltip,
 }: SectionGroupProps) {
   const isOneTheme = useOneTheme();
-  if (collapsed) {
-    return null;
-  }
+  const sectionGroupRef = useRef<HTMLDivElement>(null);
+
+  // Section-groups are always transparent — they promote their children in the
+  // collapsed rail regardless of nesting depth. Parent link-group/ELG containers
+  // independently hide their children when collapsed, so no extra hiding is needed.
+  useEffect(() => {
+    if (sectionGroupRef.current) {
+      sectionGroupRef.current.inert = false;
+    }
+  }, [collapsed]);
+
   return (
-    <div className={styles['section-group']}>
+    <div ref={sectionGroupRef} className={clsx(styles['section-group'])}>
       <InternalBox
-        className={styles['section-group-title']}
+        className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
         variant="h3"
         fontSize={isOneTheme ? 'heading-s' : undefined}
       >
-        {definition.title}
+        <span
+          className={clsx(
+            styles['label-text'],
+            contentSettled && styles['label-text--settled'],
+            collapsed && styles['label-text--collapsed']
+          )}
+          aria-hidden={collapsed ? true : undefined}
+        >
+          {definition.title}
+        </span>
       </InternalBox>
       <NavigationItemsList
         variant="section-group"
@@ -678,7 +736,12 @@ function SectionGroup({
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        collapsed={collapsed}
+        contentSettled={contentSettled}
         withIcons={withIcons}
+        ariaLabel={collapsed ? definition.title : undefined}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
     </div>
   );
@@ -696,11 +759,21 @@ function LinkGroup({
   fireChange,
   position,
   collapsed,
+  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
 }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
+  const childrenRef = useRef<HTMLDivElement>(null);
+
+  // Mirror the ELG mechanism: set inert on the children container when collapsed
+  // so collapsed children are non-focusable and hidden from assistive technology.
+  useEffect(() => {
+    if (childrenRef.current) {
+      childrenRef.current.inert = !!collapsed;
+    }
+  }, [collapsed]);
 
   return (
     <>
@@ -717,20 +790,34 @@ function LinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        contentSettled={contentSettled}
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
       />
-      {!collapsed && (
-        <NavigationItemsList
-          variant="link-group"
-          items={definition.items}
-          fireFollow={fireFollow}
-          fireChange={fireChange}
-          activeHref={activeHref}
-          position={position}
-          withIcons={withIcons}
-        />
-      )}
+      <div className={clsx(styles['link-group-children'], collapsed && styles['link-group-children--collapsed'])}>
+        <div
+          ref={childrenRef}
+          className={clsx(
+            styles['link-group-children-inner'],
+            !collapsed && styles['link-group-children-inner--expanded']
+          )}
+        >
+          <NavigationItemsList
+            variant="link-group"
+            items={definition.items}
+            fireFollow={fireFollow}
+            fireChange={fireChange}
+            activeHref={activeHref}
+            position={position}
+            collapsed={collapsed}
+            contentSettled={contentSettled}
+            withIcons={withIcons}
+            ariaLabel={collapsed ? definition.text : undefined}
+            activeTooltip={activeTooltip}
+            setActiveTooltip={setActiveTooltip}
+          />
+        </div>
+      </div>
     </>
   );
 }
@@ -749,6 +836,7 @@ function ExpandableLinkGroup({
   variant,
   position,
   collapsed,
+  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
@@ -796,35 +884,22 @@ function ExpandableLinkGroup({
     }
   };
 
-  if (collapsed) {
-    return (
-      <Link
-        definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
-        fireFollow={onHeaderFollow}
-        fireChange={fireChange}
-        activeHref={activeHref}
-        position={position}
-        collapsed={collapsed}
-        activeTooltip={activeTooltip}
-        setActiveTooltip={setActiveTooltip}
-      />
-    );
-  }
-
   return (
     <InternalExpandableSection
       className={clsx(
         styles['expandable-link-group'],
         variant === 'section-group' && styles['expandable-link-group--no-ident'],
         withIcons && styles['expandable-link-group--expand-icon-end'],
-        definition.href === activeHref && styles['expandable-link-group--active']
+        definition.href === activeHref && styles['expandable-link-group--active'],
+        collapsed && styles['expandable-link-group--collapsed']
       )}
       variant="navigation"
-      expanded={userExpanded ?? expanded}
+      expanded={collapsed ? false : (userExpanded ?? expanded)}
       onChange={onExpandedChange}
       disableContentPaddings={true}
       __disableHeaderPaddings={true}
       __expandIconPosition={withIcons ? 'end' : 'start'}
+      __hideExpandIcon={!!collapsed}
       headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
@@ -832,6 +907,10 @@ function ExpandableLinkGroup({
           fireChange={fireChange}
           activeHref={activeHref}
           position={position}
+          collapsed={collapsed}
+          contentSettled={contentSettled}
+          activeTooltip={activeTooltip}
+          setActiveTooltip={setActiveTooltip}
         />
       }
     >
@@ -842,7 +921,11 @@ function ExpandableLinkGroup({
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        collapsed={collapsed}
+        contentSettled={contentSettled}
         withIcons={withIcons}
+        activeTooltip={activeTooltip}
+        setActiveTooltip={setActiveTooltip}
       />
     </InternalExpandableSection>
   );

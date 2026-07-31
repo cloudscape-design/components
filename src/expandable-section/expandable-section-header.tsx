@@ -104,6 +104,7 @@ interface ExpandableDefaultHeaderProps {
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
   ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
 }
 
 interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
@@ -123,6 +124,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headerActions?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -186,8 +188,9 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
   expandIconPosition,
+  hideExpandIcon,
 }: ExpandableNavigationHeaderProps) => {
-  const expandButton = (
+  const expandButton = hideExpandIcon ? null : (
     <ExpandIconButton
       icon={icon}
       ariaLabelledBy={ariaLabelledBy}
@@ -401,6 +404,7 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
   expandIconPosition,
+  hideExpandIcon,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
@@ -446,6 +450,7 @@ export const ExpandableSectionHeader = ({
       <ExpandableNavigationHeader
         className={clsx(className, wrapperClassName)}
         ariaLabelledBy={ariaLabelledBy}
+        hideExpandIcon={hideExpandIcon}
         {...defaultHeaderProps}
       >
         <span className={styles['header-navigation-content']}>{headerText ?? header}</span>
