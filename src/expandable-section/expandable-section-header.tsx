@@ -53,27 +53,38 @@ const ExpandIconButton = ({
   onClick,
   stopPropagation,
   className,
-}: ExpandIconButtonProps) => (
-  <button
-    className={clsx(styles['icon-container'], styles['expand-button'], className)}
-    type="button"
-    aria-label={ariaLabel}
-    aria-labelledby={ariaLabelledBy}
-    aria-controls={ariaControls}
-    aria-expanded={expanded}
-    onClick={
-      stopPropagation
-        ? event => {
-            event.stopPropagation();
-            onClick(event);
-          }
-        : onClick
-    }
-    {...getExpandActionAnalyticsMetadataAttribute(expanded)}
-  >
-    {icon}
-  </button>
-);
+}: ExpandIconButtonProps) => {
+  const stopKeyPropagation = stopPropagation
+    ? (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.stopPropagation();
+        }
+      }
+    : undefined;
+  return (
+    <button
+      className={clsx(styles['icon-container'], styles['expand-button'], className)}
+      type="button"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+      onClick={
+        stopPropagation
+          ? event => {
+              event.stopPropagation();
+              onClick(event);
+            }
+          : onClick
+      }
+      onKeyUp={stopKeyPropagation}
+      onKeyDown={stopKeyPropagation}
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+    >
+      {icon}
+    </button>
+  );
+};
 
 interface ExpandableDefaultHeaderProps {
   id: string;

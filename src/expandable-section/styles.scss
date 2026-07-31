@@ -378,6 +378,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   margin-inline-end: 0;
   flex-shrink: 0;
 
+  // Stretch the button to fill the parent's block-size so the entire caret
+  // column is clickable/hoverable, matching start-position behavior.
+  align-self: stretch;
+  align-items: flex-start;
+
   // Reset native <button> chrome for the outside caret in end-icon-position.
   // The navigation variant already has its own reset via .header-navigation > .icon-container
   // so this is harmless-but-redundant for that path, and necessary for default/container.
@@ -389,6 +394,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   cursor: pointer;
   font: inherit;
   color: inherit;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(2px);
+  }
 
   // Align the navigation end-layout caret to the first line of header text.
   // The header link has padding-block equal to (item-height - line-height) / 2

@@ -219,10 +219,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .expandable-link-group {
   margin-inline-start: calc(-1 * #{$expandable-icon-negative-margin});
 
-  &--no-ident {
-    margin-inline-start: 0;
-  }
-
+  &--no-ident,
   &--expand-icon-end {
     margin-inline-start: 0;
   }
