@@ -89,7 +89,8 @@ const suite: TestSuite = {
         await page.keys(['Tab']);
         await page.keys(['Tab']);
         await page.keys(['ArrowRight']);
-        await page.keys(['Shift', 'Tab']);
+        // 'Null' releases Shift so the next ArrowRight isn't interpreted as Shift+ArrowRight in Safari.
+        await page.keys(['Shift', 'Tab', 'Null']);
         await page.keys(['ArrowRight']);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
