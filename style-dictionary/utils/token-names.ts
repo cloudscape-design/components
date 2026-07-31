@@ -1128,7 +1128,9 @@ export type SizesTokenName =
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
   | 'sizeVerticalPanelIconOffset'
-  | 'sizeSideNavigationItemHeight';
+  | 'sizeSideNavigationItemHeight'
+  | 'sizeSideNavigationItemCollapsed'
+  | 'sizeSideNavigationCollapsedWidth';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'

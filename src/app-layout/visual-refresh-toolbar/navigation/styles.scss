@@ -8,7 +8,7 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
-$collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+$collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width);
 
 .hide-navigation {
   position: absolute;

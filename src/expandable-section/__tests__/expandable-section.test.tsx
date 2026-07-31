@@ -618,6 +618,27 @@ describe('__expandIconPosition', () => {
       });
       expect(wrapper.findContent().getElement()).not.toHaveClass(styles['disable-content-paddings']);
     });
+
+    test('applies disable-content-paddings class for container variant', () => {
+      const wrapper = renderExpandableSection({
+        variant: 'container',
+        disableContentPaddings: true,
+        defaultExpanded: true,
+        headerText: 'Header',
+        children: 'Content',
+      });
+      expect(wrapper.findContent().getElement()).toHaveClass(styles['disable-content-paddings']);
+    });
+
+    test('does not apply disable-content-paddings class for container variant by default', () => {
+      const wrapper = renderExpandableSection({
+        variant: 'container',
+        defaultExpanded: true,
+        headerText: 'Header',
+        children: 'Content',
+      });
+      expect(wrapper.findContent().getElement()).not.toHaveClass(styles['disable-content-paddings']);
+    });
   });
 
   describe('outside icon button (end position with renderIconOutsideHeader)', () => {

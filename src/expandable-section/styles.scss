@@ -8,7 +8,11 @@
 @use '../container/shared' as container;
 @use '../internal/styles/utils/theming';
 
-@use './motion';
+// Show/hide animation (show = height leads, opacity trails; hide = equal, no delay).
+$reveal-duration-show: awsui.$motion-duration-show-paced;
+$reveal-duration-hide: awsui.$motion-duration-show-quick;
+$reveal-easing: awsui.$motion-easing-show-paced;
+$reveal-show-delay: calc(#{$reveal-duration-show} / 3);
 
 $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
@@ -28,7 +32,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
-  display: block;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .expand-button {
@@ -37,6 +42,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon {
   transform: rotate(-90deg);
+
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+  }
 
   &.expanded {
     transform: rotate(0deg);
@@ -126,9 +135,20 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     &:not(.header-deprecated) {
       padding-inline-start: $icon-total-space-normal;
     }
+
+    // HIDE (collapsed): quick collapse, no delay
+    @include styles.with-motion {
+      transition: border-block-end-color $reveal-duration-hide $reveal-easing;
+    }
+
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
       border-block-end-color: awsui.$color-border-expandable-section-default;
+
+      // SHOW (expanded): border fades in with the same delay as content opacity so both appear together
+      @include styles.with-motion {
+        transition: border-block-end-color $reveal-duration-show $reveal-easing $reveal-show-delay;
+      }
     }
   }
 
@@ -150,6 +170,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-container {
     padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
     padding-inline-end: container.$header-padding-horizontal;
+
+    @include styles.with-motion {
+      transition: padding-block-end $reveal-duration-hide $reveal-easing;
+    }
 
     &:not(.wrapper-expanded) {
       // Equal top and bottom padding so standalone header has vertical symmetry.
@@ -265,25 +289,79 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 .content {
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
 
-  &-default,
-  &-inline {
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: 0;
-  }
-
-  &-footer {
-    padding-block: awsui.$space-xs;
-    padding-inline: 0;
+  // HIDE (collapsed state): quick collapse, no delay
+  @include styles.with-motion {
+    transition: grid-template-rows $reveal-duration-hide $reveal-easing;
   }
 
   &-expanded {
-    display: block;
+    grid-template-rows: 1fr;
+
+    // SHOW (expanded state): paced height opening, no delay — height leads.
+    @include styles.with-motion {
+      transition: grid-template-rows $reveal-duration-show $reveal-easing;
+    }
   }
 
   &-compact {
     padding-inline-start: $icon-total-space-normal;
+  }
+}
+
+// Inner wrapper that collapses to 0 height via the grid-row track.
+// NO padding-block here — padding lives on .content-inner-body so the grid
+// track can fully collapse to zero at 0fr.
+.content-inner {
+  // Use overflow-y: clip (not hidden) so the grid-row track can still collapse
+  // content vertically, while overflow-x: visible lets negative-margin
+  // backgrounds (e.g. side-navigation active/hover states) bleed past the
+  // inline edges without being cut off. `clip` does not coerce the other axis
+  // to `auto` like `hidden` does, so this combination is safe from scrollbars.
+  overflow-x: visible;
+  overflow-y: clip;
+  min-block-size: 0;
+  opacity: 0;
+
+  // HIDE (collapsed state): quick opacity collapse, no delay.
+  @include styles.with-motion {
+    transition: opacity $reveal-duration-hide $reveal-easing;
+  }
+
+  &-expanded {
+    opacity: 1;
+
+    // SHOW (expanded state): opacity fades in AFTER height has partially
+    // opened, creating a perceptible fade in the revealed space.
+    @include styles.with-motion {
+      transition: opacity $reveal-duration-show $reveal-easing $reveal-show-delay;
+    }
+  }
+
+  // Applied after the expand transition settles. Switches overflow to visible
+  // so active-state backgrounds and focus rings that extend beyond the content
+  // box (via negative margins or outline-offset) are not clipped.
+  &-settled {
+    overflow: visible;
+  }
+}
+
+// Padded child inside .content-inner that carries variant vertical spacing.
+.content-inner-body {
+  &-default,
+  &-inline {
+    padding-block: awsui.$space-scaled-xs;
+  }
+
+  &-footer {
+    padding-block: awsui.$space-xs;
+  }
+
+  &-container {
+    padding-block: awsui.$space-container-content-top awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
   }
 }
 
@@ -425,12 +503,21 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
-// Semantic wrapper around HeadingTag + actions in non-container variants
-.header-icon-end > .header-content {
-  flex: 1;
-  min-inline-size: 0;
+// Semantic wrapper around HeadingTag + actions in non-container variants.
+// min-block-size: 0 allows this element (a grid item) to collapse to zero
+// height when an ancestor uses grid-template-rows: 0fr (side-navigation
+// section header collapse). Without it, min-block-size: auto (the default)
+// holds the row open at content height.
+// IMPORTANT: This rule must remain GLOBAL (not scoped to .header-icon-end)
+// because the side-nav section collapse applies grid-template-rows: 0fr on
+// the header wrapper regardless of icon position (withIcons may be false).
+.header-content {
+  min-block-size: 0;
 }
 
+// In the end-icon layout, header content elements are flex children that must
+// shrink without overflowing (flex: 1 + min-inline-size: 0).
+.header-icon-end > .header-content,
 .header-icon-end > .header-navigation-content {
   flex: 1;
   min-inline-size: 0;
