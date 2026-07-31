@@ -71,17 +71,12 @@ const suite: TestSuite = {
       description: 'selects text when double-clicking calendar header',
       path: 'date-range-picker/with-value',
       screenshotType: 'screenshotArea',
-      setup: async ({ page, wrapper, browser }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focusable-before');
         await page.focusNextElement();
         await page.keys(['Enter']);
         const headerSelector = wrapper.findDateRangePicker().findDropdown().findHeader().find('h2 span').toSelector();
-        await browser!.execute((sel: string) => {
-          const el = document.querySelector(sel);
-          if (el) {
-            el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
-          }
-        }, headerSelector);
+        await page.doubleClick(headerSelector);
       },
     },
     {
