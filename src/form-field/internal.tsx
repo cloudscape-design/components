@@ -22,6 +22,7 @@ import { getBaseProps } from '../internal/base-component';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { joinStrings } from '../internal/utils/strings';
 import InternalLiveRegion from '../live-region/internal';
@@ -183,7 +184,9 @@ export default function InternalFormField({
   const debounceTimeoutRef = useRef<number | undefined>();
   const [debouncedCharacterCountText, setDebouncedCharacterCountText] = useState(characterCountText);
 
-  useEffect(() => {
+  // Don't schedule a debounce when the component first renders, only when
+  // characterCountText changes.
+  useEffectOnUpdate(() => {
     debounceTimeoutRef.current = setTimeout(() => {
       setDebouncedCharacterCountText(characterCountText);
     }, CHARACTER_COUNT_DEBOUNCE_MS);

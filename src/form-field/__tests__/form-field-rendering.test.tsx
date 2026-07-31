@@ -198,6 +198,12 @@ describe('FormField component', () => {
         expect(wrapper.findCharacterCount()!.getElement()).toHaveTextContent('this is a string');
       });
 
+      test('does not schedule a debounce timer on initial mount', () => {
+        const setTimeoutSpy = jest.spyOn(window, 'setTimeout');
+        renderFormField({ characterCountText: 'this is a string' });
+        expect(setTimeoutSpy).not.toHaveBeenCalledWith(expect.anything(), DEBOUNCE_TIME_MS);
+      });
+
       test("wrapper.findCharacterCount() doesn't return the debounced version of the slot", () => {
         const { wrapper, rerender } = renderFormField({ characterCountText: 'this is a string' });
         expect(wrapper.findCharacterCount()!.getElement()).toHaveTextContent('this is a string');
