@@ -41,7 +41,26 @@ import copyToClipboardSuite from './visual/copy-to-clipboard';
 import dateInputSuite from './visual/date-input';
 import datePickerSuite from './visual/date-picker';
 import dateRangePickerSuite from './visual/date-range-picker';
+import dividerSuite from './visual/divider';
+import errorBoundarySuite from './visual/error-boundary';
 import expandableSectionSuite from './visual/expandable-section';
+import fileDropzoneSuite from './visual/file-dropzone';
+import fileInputSuite from './visual/file-input';
+import fileTokenGroupSuite from './visual/file-token-group';
+import fileUploadSuite from './visual/file-upload';
+import flashbarSuite from './visual/flashbar';
+import flashbarStackedSuite from './visual/flashbar-stacked';
+import formSuite from './visual/form';
+import formFieldSuite from './visual/form-field';
+import gridSuite from './visual/grid';
+import headerSuite from './visual/header';
+import helpPanelSuite from './visual/help-panel';
+import iconSuite from './visual/icon';
+import inputSuite from './visual/input';
+import linkSuite from './visual/link';
+import paginationSuite from './visual/pagination';
+import progressBarSuite from './visual/progress-bar';
+import radioGroupSuite from './visual/radio-group';
 import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
@@ -81,6 +100,24 @@ export const dateInput: TestSuite[] = [dateInputSuite];
 export const datePicker: TestSuite[] = [datePickerSuite];
 export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
 export const expandableSection: TestSuite[] = [expandableSectionSuite];
+export const divider: TestSuite[] = [dividerSuite];
+export const errorBoundary: TestSuite[] = [errorBoundarySuite];
+export const fileDropzone: TestSuite[] = [fileDropzoneSuite];
+export const fileInput: TestSuite[] = [fileInputSuite];
+export const fileTokenGroup: TestSuite[] = [fileTokenGroupSuite];
+export const fileUpload: TestSuite[] = [fileUploadSuite];
+export const flashbar: TestSuite[] = [flashbarSuite, flashbarStackedSuite];
+export const form: TestSuite[] = [formSuite];
+export const formField: TestSuite[] = [formFieldSuite];
+export const grid: TestSuite[] = [gridSuite];
+export const header: TestSuite[] = [headerSuite];
+export const helpPanel: TestSuite[] = [helpPanelSuite];
+export const icon: TestSuite[] = [iconSuite];
+export const input: TestSuite[] = [inputSuite];
+export const link: TestSuite[] = [linkSuite];
+export const pagination: TestSuite[] = [paginationSuite];
+export const progressBar: TestSuite[] = [progressBarSuite];
+export const radioGroup: TestSuite[] = [radioGroupSuite];
 export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
@@ -108,5 +145,23 @@ export const allSuites: TestSuite[] = [
   ...datePicker,
   ...dateRangePicker,
   ...expandableSection,
+  ...divider,
+  ...errorBoundary,
+  ...fileDropzone,
+  ...fileInput,
+  ...fileTokenGroup,
+  ...fileUpload,
+  ...flashbar,
+  ...form,
+  ...formField,
+  ...grid,
+  ...header,
+  ...helpPanel,
+  ...icon,
+  ...input,
+  ...link,
+  ...pagination,
+  ...progressBar,
+  ...radioGroup,
   ...table,
 ];
