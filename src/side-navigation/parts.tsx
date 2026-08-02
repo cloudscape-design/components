@@ -36,7 +36,6 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   collapsed?: boolean;
-  contentSettled?: boolean;
   activeTooltip?: string | null;
   setActiveTooltip?: (position: string | null) => void;
 }
@@ -127,7 +126,6 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   collapsed,
-  contentSettled,
   withIcons,
   ariaLabel,
   activeTooltip,
@@ -193,7 +191,6 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
-                contentSettled={contentSettled}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -222,7 +219,6 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
-                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -251,9 +247,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
-                contentSettled={contentSettled}
                 withIcons={withIcons}
-                variant={variant}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
               />
@@ -281,7 +275,6 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
-                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -311,7 +304,6 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 collapsed={collapsed}
-                contentSettled={contentSettled}
                 withIcons={withIcons}
                 activeTooltip={activeTooltip}
                 setActiveTooltip={setActiveTooltip}
@@ -467,16 +459,7 @@ function useCollapsedTooltip<T extends HTMLElement>({
   return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({
-  definition,
-  activeHref,
-  fireFollow,
-  position,
-  collapsed,
-  contentSettled,
-  activeTooltip,
-  setActiveTooltip,
-}: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position, collapsed, activeTooltip, setActiveTooltip }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
@@ -552,12 +535,7 @@ function Link({
         className={clsx(styles['link-text-wrapper'], collapsed && styles['link-text-wrapper--collapsed'])}
         aria-hidden={collapsed ? true : undefined}
       >
-        <span
-          className={clsx(
-            styles['link-text-wrapper-content'],
-            contentSettled && styles['link-text-wrapper-content--settled']
-          )}
-        >
+        <span className={clsx(styles['link-text-wrapper-content'])}>
           <span className={analyticsSelectors['link-text']}>{definition.text}</span>
           {definition.external && (
             <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
@@ -593,7 +571,6 @@ function Section({
   variant,
   position,
   collapsed,
-  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
@@ -614,14 +591,9 @@ function Section({
     setExpanded(definition.defaultExpanded ?? true);
   }, [definition]);
 
-  // Apply inert to the section header wrapper when collapsed so the hidden
-  // expand toggle (<span role="button" tabIndex={0}>) is removed from the
-  // tab order and assistive technology. The header is the first child of the
-  // InternalExpandableSection root div.
-  // Sections are always transparent — they promote their children in the collapsed
-  // rail regardless of nesting depth. Only the section header is made inert so
-  // child links remain focusable. Parent link-group/ELG containers independently
-  // hide their children when collapsed, so no extra hiding is needed here.
+  // Sections are transparent in the collapsed rail — only the header is made inert
+  // so child links remain focusable. The header hosts the expand toggle that must
+  // leave the tab order when collapsed.
   useEffect(() => {
     const el = sectionRef.current as HTMLElement | null;
     if (el) {
@@ -651,12 +623,7 @@ function Section({
       )}
       headerText={
         <span
-          className={clsx(
-            styles['section-header'],
-            styles['label-text'],
-            contentSettled && styles['label-text--settled'],
-            collapsed && styles['label-text--collapsed']
-          )}
+          className={clsx(styles['section-header'], styles['label-text'], collapsed && styles['label-text--collapsed'])}
           aria-hidden={collapsed ? true : undefined}
         >
           {definition.text}
@@ -672,7 +639,6 @@ function Section({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
-        contentSettled={contentSettled}
         withIcons={withIcons}
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
@@ -683,7 +649,6 @@ function Section({
 
 interface SectionGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionGroup;
-  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
   withIcons?: boolean;
 }
 
@@ -694,7 +659,6 @@ function SectionGroup({
   fireChange,
   position,
   collapsed,
-  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
@@ -702,9 +666,7 @@ function SectionGroup({
   const isOneTheme = useOneTheme();
   const sectionGroupRef = useRef<HTMLDivElement>(null);
 
-  // Section-groups are always transparent — they promote their children in the
-  // collapsed rail regardless of nesting depth. Parent link-group/ELG containers
-  // independently hide their children when collapsed, so no extra hiding is needed.
+  // Section-groups are transparent — children are always promoted in the collapsed rail.
   useEffect(() => {
     if (sectionGroupRef.current) {
       sectionGroupRef.current.inert = false;
@@ -712,18 +674,14 @@ function SectionGroup({
   }, [collapsed]);
 
   return (
-    <div ref={sectionGroupRef} className={clsx(styles['section-group'])}>
+    <div ref={sectionGroupRef} className={styles['section-group']}>
       <InternalBox
         className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
         variant="h3"
         fontSize={isOneTheme ? 'heading-s' : undefined}
       >
         <span
-          className={clsx(
-            styles['label-text'],
-            contentSettled && styles['label-text--settled'],
-            collapsed && styles['label-text--collapsed']
-          )}
+          className={clsx(styles['label-text'], collapsed && styles['label-text--collapsed'])}
           aria-hidden={collapsed ? true : undefined}
         >
           {definition.title}
@@ -737,7 +695,6 @@ function SectionGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
-        contentSettled={contentSettled}
         withIcons={withIcons}
         ariaLabel={collapsed ? definition.title : undefined}
         activeTooltip={activeTooltip}
@@ -759,7 +716,6 @@ function LinkGroup({
   fireChange,
   position,
   collapsed,
-  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
@@ -767,8 +723,8 @@ function LinkGroup({
   checkSafeUrl('SideNavigation', definition.href);
   const childrenRef = useRef<HTMLDivElement>(null);
 
-  // Mirror the ELG mechanism: set inert on the children container when collapsed
-  // so collapsed children are non-focusable and hidden from assistive technology.
+  // Set inert on the children container when collapsed so they leave
+  // the tab order and assistive technology.
   useEffect(() => {
     if (childrenRef.current) {
       childrenRef.current.inert = !!collapsed;
@@ -790,7 +746,6 @@ function LinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
-        contentSettled={contentSettled}
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
       />
@@ -810,7 +765,6 @@ function LinkGroup({
             activeHref={activeHref}
             position={position}
             collapsed={collapsed}
-            contentSettled={contentSettled}
             withIcons={withIcons}
             ariaLabel={collapsed ? definition.text : undefined}
             activeTooltip={activeTooltip}
@@ -836,7 +790,6 @@ function ExpandableLinkGroup({
   variant,
   position,
   collapsed,
-  contentSettled,
   withIcons,
   activeTooltip,
   setActiveTooltip,
@@ -908,7 +861,6 @@ function ExpandableLinkGroup({
           activeHref={activeHref}
           position={position}
           collapsed={collapsed}
-          contentSettled={contentSettled}
           activeTooltip={activeTooltip}
           setActiveTooltip={setActiveTooltip}
         />
@@ -922,7 +874,6 @@ function ExpandableLinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
-        contentSettled={contentSettled}
         withIcons={withIcons}
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
