@@ -61,6 +61,21 @@ export interface ComponentFormatFunction<ComponentName extends StringKeyOf<I18nF
   ): ReturnValue;
 }
 
+export type I18nFormatFunction = (
+  key: string,
+  provided: string | undefined,
+  customHandler?: CustomHandler<string | undefined, Record<string, string | number>>
+) => string | undefined;
+
+/**
+ * Public hook for third-party component libraries to resolve translations
+ * through I18nProvider under their own namespace.
+ */
+export function useI18n(namespace: string, component: string): I18nFormatFunction {
+  const { format } = useContext(InternalI18nContext) ?? defaultContextValue;
+  return (key, provided, customHandler) => format(namespace, component, key, provided, customHandler);
+}
+
 export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
   componentName: ComponentName
 ): ComponentFormatFunction<ComponentName> {
