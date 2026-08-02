@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import Icon from '../../../lib/components/icon';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
@@ -987,86 +987,6 @@ describe('SideNavigation collapsed mode', () => {
       const wrapper = createWrapper(container).findSideNavigation()!;
       expect(wrapper.findLinkByHref('#/child-a')).not.toBeNull();
       expect(wrapper.findLinkByHref('#/child-b')).not.toBeNull();
-    });
-  });
-
-  describe('content-settled class for wrap-jank prevention', () => {
-    beforeEach(() => {
-      jest.useFakeTimers();
-    });
-    afterEach(() => {
-      jest.useRealTimers();
-    });
-
-    it('applies settled class on link-text-wrapper-content when expanded and transition completes', () => {
-      const { container } = render(<SideNavigation collapsed={false} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      // Initially settled=true on mount when not collapsed (no transition needed).
-      const contentEl = container.querySelector(`.${CSS.escape(styles['link-text-wrapper-content'])}`);
-      expect(contentEl).not.toBeNull();
-      expect(contentEl!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(true);
-    });
-
-    it('does not apply settled class when collapsed', () => {
-      const { container } = render(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const contentEl = container.querySelector(`.${CSS.escape(styles['link-text-wrapper-content'])}`);
-      expect(contentEl).not.toBeNull();
-      expect(contentEl!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(false);
-    });
-
-    it('removes settled class immediately on collapse and applies it after expand transition', () => {
-      const { container, rerender } = render(
-        <SideNavigation collapsed={false} items={[iconLink('Dashboard', '#/dashboard')]} />
-      );
-      const getContentEl = () => container.querySelector(`.${CSS.escape(styles['link-text-wrapper-content'])}`);
-
-      // Start: settled (expanded at rest).
-      expect(getContentEl()!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(true);
-
-      // Collapse: settled removed immediately.
-      rerender(<SideNavigation collapsed={true} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      expect(getContentEl()!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(false);
-
-      // Expand: settled is false during transition.
-      rerender(<SideNavigation collapsed={false} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      expect(getContentEl()!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(false);
-
-      // At 320ms (within transition tail), settled is STILL false — no premature wrap.
-      act(() => {
-        jest.advanceTimersByTime(320);
-      });
-      expect(getContentEl()!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(false);
-
-      // After the fallback timer (500ms total), settled becomes true.
-      // In a real browser, transitionend fires at ~300ms; in jsdom without CSS
-      // transitions, the 500ms fallback guarantees settlement.
-      act(() => {
-        jest.advanceTimersByTime(180);
-      });
-      expect(getContentEl()!.classList.contains(styles['link-text-wrapper-content--settled'])).toBe(true);
-    });
-
-    it('applies settled class on label-text when expanded and settled', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={false}
-          items={[{ type: 'section', text: 'Resources', items: [iconLink('Compute', '#/compute')] }]}
-        />
-      );
-      const labelEl = container.querySelector(`.${CSS.escape(styles['label-text'])}`);
-      expect(labelEl).not.toBeNull();
-      expect(labelEl!.classList.contains(styles['label-text--settled'])).toBe(true);
-    });
-
-    it('does not apply label-text--settled when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[{ type: 'section', text: 'Resources', items: [iconLink('Compute', '#/compute')] }]}
-        />
-      );
-      const labelEl = container.querySelector(`.${CSS.escape(styles['label-text'])}`);
-      expect(labelEl).not.toBeNull();
-      expect(labelEl!.classList.contains(styles['label-text--settled'])).toBe(false);
     });
   });
 

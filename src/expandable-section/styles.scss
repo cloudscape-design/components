@@ -289,62 +289,78 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 .content {
-  display: grid;
-  grid-template-rows: 0fr;
-
-  // HIDE (collapsed state): quick collapse, no delay
-  @include styles.with-motion {
-    transition: grid-template-rows $reveal-duration-hide $reveal-easing;
-  }
+  display: none;
 
   &-expanded {
-    grid-template-rows: 1fr;
-
-    // SHOW (expanded state): paced height opening, no delay — height leads.
-    @include styles.with-motion {
-      transition: grid-template-rows $reveal-duration-show $reveal-easing;
-    }
+    display: block;
   }
 
   &-compact {
     padding-inline-start: $icon-total-space-normal;
   }
-}
 
-// Inner wrapper that collapses to 0 height via the grid-row track.
-// NO padding-block here — padding lives on .content-inner-body so the grid
-// track can fully collapse to zero at 0fr.
-.content-inner {
-  // Use overflow-y: clip (not hidden) so the grid-row track can still collapse
-  // content vertically, while overflow-x: visible lets negative-margin
-  // backgrounds (e.g. side-navigation active/hover states) bleed past the
-  // inline edges without being cut off. `clip` does not coerce the other axis
-  // to `auto` like `hidden` does, so this combination is safe from scrollbars.
-  overflow-x: visible;
-  overflow-y: clip;
-  min-block-size: 0;
-  opacity: 0;
+  // One-theme only: replace the display:none/block toggle above with an animated
+  // grid-template-rows reveal. Scoped to one-theme (opt-in) so Visual Refresh and
+  // classic keep the pre-existing instantaneous display toggle — preserving the DOM
+  // visibility timing that existing consumer test suites (unit and e2e/webdriver
+  // isDisplayed()/isExisting() checks written against the old contract) rely on.
+  @include theming.one-theme-only {
+    display: grid;
+    grid-template-rows: 0fr;
 
-  // HIDE (collapsed state): quick opacity collapse, no delay.
-  @include styles.with-motion {
-    transition: opacity $reveal-duration-hide $reveal-easing;
-  }
-
-  &-expanded {
-    opacity: 1;
-
-    // SHOW (expanded state): opacity fades in AFTER height has partially
-    // opened, creating a perceptible fade in the revealed space.
+    // HIDE (collapsed state): quick collapse, no delay
     @include styles.with-motion {
-      transition: opacity $reveal-duration-show $reveal-easing $reveal-show-delay;
+      transition: grid-template-rows $reveal-duration-hide $reveal-easing;
+    }
+
+    &-expanded {
+      grid-template-rows: 1fr;
+
+      // SHOW (expanded state): paced height opening, no delay — height leads.
+      @include styles.with-motion {
+        transition: grid-template-rows $reveal-duration-show $reveal-easing;
+      }
     }
   }
+}
 
-  // Applied after the expand transition settles. Switches overflow to visible
-  // so active-state backgrounds and focus rings that extend beyond the content
-  // box (via negative margins or outline-offset) are not clipped.
-  &-settled {
-    overflow: visible;
+// One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
+// NO padding-block here — padding lives on .content-inner-body so the grid
+// track can fully collapse to zero at 0fr. Unused (no-op) outside one-theme, since
+// .content itself is display:none/block there and never establishes a grid track.
+.content-inner {
+  @include theming.one-theme-only {
+    // Use overflow-y: clip (not hidden) so the grid-row track can still collapse
+    // content vertically, while overflow-x: visible lets negative-margin
+    // backgrounds (e.g. side-navigation active/hover states) bleed past the
+    // inline edges without being cut off. `clip` does not coerce the other axis
+    // to `auto` like `hidden` does, so this combination is safe from scrollbars.
+    overflow-x: visible;
+    overflow-y: clip;
+    min-block-size: 0;
+    opacity: 0;
+
+    // HIDE (collapsed state): quick opacity collapse, no delay.
+    @include styles.with-motion {
+      transition: opacity $reveal-duration-hide $reveal-easing;
+    }
+
+    &-expanded {
+      opacity: 1;
+
+      // SHOW (expanded state): opacity fades in AFTER height has partially
+      // opened, creating a perceptible fade in the revealed space.
+      @include styles.with-motion {
+        transition: opacity $reveal-duration-show $reveal-easing $reveal-show-delay;
+      }
+    }
+
+    // Applied after the expand transition settles. Switches overflow to visible
+    // so active-state backgrounds and focus rings that extend beyond the content
+    // box (via negative margins or outline-offset) are not clipped.
+    &-settled {
+      overflow: visible;
+    }
   }
 }
 

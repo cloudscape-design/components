@@ -1,93 +1,103 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
-import { Box, Button, Icon, SpaceBetween } from '~components';
+import { Box, Button, Icon, RadioGroup, SpaceBetween, Toggle } from '~components';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
-import {
-  colorBackgroundCellShaded,
-  colorBackgroundStatusInfo,
-  colorBackgroundStatusSuccess,
-  colorBackgroundStatusWarning,
-  colorBorderDividerDefault,
-  colorTextBodyDefault,
-  colorTextStatusInfo,
-  colorTextStatusSuccess,
-  colorTextStatusWarning,
-  fontFamilyBase,
-} from '~design-tokens';
+import { colorBorderDividerDefault } from '~design-tokens';
 
-const items: SideNavigationProps.Item[] = [
+import AppContext, { AppContextType } from '../app/app-context';
+
+type CollapsedNavDemoContext = React.Context<
+  AppContextType<{
+    itemsSet: string;
+  }>
+>;
+
+const kitchenSink: SideNavigationProps.Item[] = [
+  { type: 'link', text: 'Dashboard', href: '#/dashboard', icon: <Icon name="grid-view" /> },
   { type: 'link', text: 'Calendar', href: '#/calendar', icon: <Icon name="calendar" /> },
   { type: 'link', text: 'Settings', href: '#/settings', icon: <Icon name="settings" /> },
   {
-    type: 'section',
-    text: 'Section',
-    items: [
-      { type: 'link', text: 'Announcements', href: '#/announcements', icon: <Icon name="announcement" /> },
-      { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="group" /> },
-      { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="share" /> },
-    ],
-  },
-  { type: 'divider' },
-  {
     type: 'link-group',
-    text: 'Link group',
+    text: 'Account',
     icon: <Icon name="user-profile" />,
-    href: '#/',
+    href: '#/account',
     items: [
-      { type: 'link', text: 'Announcements', href: '#/announcements3' },
-      { type: 'link', text: 'Team', href: '#/team3' },
-      { type: 'link', text: 'Networking', href: '#/networking3' },
+      { type: 'link', text: 'Billing', href: '#/account/billing' },
+      { type: 'link', text: 'Users', href: '#/account/users' },
+      { type: 'link', text: 'Access keys', href: '#/account/access-keys' },
     ],
   },
   {
     type: 'expandable-link-group',
-    text: 'Expandable link group',
-    href: '#/projects',
+    text: 'Buckets',
+    href: '#/buckets',
     icon: <Icon name="folder" />,
     items: [
-      { type: 'link', text: 'Project 1', href: '#/projects/1' },
-      { type: 'link', text: 'Project 2', href: '#/projects/2' },
-      { type: 'link', text: 'Project 3', href: '#/projects/3' },
+      { type: 'link', text: 'Photos backup', href: '#/buckets/photos-backup' },
+      { type: 'link', text: 'Static assets', href: '#/buckets/static-assets' },
+      { type: 'link', text: 'Server logs', href: '#/buckets/server-logs' },
+    ],
+  },
+  { type: 'divider' },
+  {
+    type: 'section',
+    text: 'Monitoring',
+    items: [
+      { type: 'link', text: 'Alarms', href: '#/monitoring/alarms', icon: <Icon name="status-warning" /> },
+      { type: 'link', text: 'Dashboards', href: '#/monitoring/dashboards', icon: <Icon name="grid-view" /> },
+      { type: 'link', text: 'Metrics', href: '#/monitoring/metrics', icon: <Icon name="share" /> },
+      {
+        type: 'link-group',
+        text: 'Log groups',
+        icon: <Icon name="user-profile" />,
+        href: '#/monitoring/log-groups',
+        items: [
+          { type: 'link', text: 'API access logs', href: '#/monitoring/log-groups/api-access' },
+          { type: 'link', text: 'Application logs', href: '#/monitoring/log-groups/application' },
+          { type: 'link', text: 'Audit logs', href: '#/monitoring/log-groups/audit' },
+        ],
+      },
     ],
   },
   { type: 'link', text: 'Documentation', href: '#/docs', external: true },
+  { type: 'divider' },
   {
     type: 'section-group',
-    title: 'Section group',
+    title: 'Data management',
     items: [
-      { type: 'link', text: 'Announcements', href: '#/announcements2', icon: <Icon name="announcement" /> },
-      { type: 'link', text: 'Team', href: '#/team2', icon: <Icon name="group" /> },
-      { type: 'link', text: 'Networking', href: '#/networking2', icon: <Icon name="share" /> },
+      { type: 'link', text: 'Replication rules', href: '#/data/replication-rules', icon: <Icon name="announcement" /> },
+      { type: 'link', text: 'Lifecycle rules', href: '#/data/lifecycle-rules', icon: <Icon name="group" /> },
+      { type: 'link', text: 'Transfer jobs', href: '#/data/transfer-jobs', icon: <Icon name="share" /> },
       {
         type: 'section',
-        text: 'Section',
+        text: 'Backups',
         items: [
-          { type: 'link', text: 'Announcements', href: '#/announcements', icon: <Icon name="file" /> },
-          { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="file" /> },
-          { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="file" /> },
+          { type: 'link', text: 'Backup plans', href: '#/data/backups/plans', icon: <Icon name="file" /> },
+          { type: 'link', text: 'Backup vaults', href: '#/data/backups/vaults', icon: <Icon name="file" /> },
+          { type: 'link', text: 'Restore jobs', href: '#/data/backups/restore-jobs', icon: <Icon name="file" /> },
           {
             type: 'expandable-link-group',
-            href: '',
-            text: 'Section',
+            href: '#/data/backups/schedules',
+            text: 'Schedules',
             icon: <Icon name="settings" />,
             items: [
-              { type: 'link', text: 'Announcements', href: '#/announcements', icon: <Icon name="file" /> },
-              { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="file" /> },
-              { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="file" /> },
+              { type: 'link', text: 'Daily snapshot', href: '#/data/backups/schedules/daily' },
+              { type: 'link', text: 'Weekly snapshot', href: '#/data/backups/schedules/weekly' },
+              { type: 'link', text: 'Monthly snapshot', href: '#/data/backups/schedules/monthly' },
               {
                 type: 'expandable-link-group',
-                href: '',
-                text: 'Section',
+                href: '#/data/backups/schedules/retention',
+                text: 'Retention policies',
                 icon: <Icon name="settings" />,
                 items: [
-                  { type: 'link', text: 'Announcements', href: '#/announcements', icon: <Icon name="file" /> },
-                  { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="file" /> },
-                  { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="file" /> },
+                  { type: 'link', text: 'Short-term policy', href: '#/data/backups/schedules/retention/short-term' },
+                  { type: 'link', text: 'Long-term policy', href: '#/data/backups/schedules/retention/long-term' },
+                  { type: 'link', text: 'Compliance policy', href: '#/data/backups/schedules/retention/compliance' },
                 ],
               },
             ],
@@ -98,11 +108,11 @@ const items: SideNavigationProps.Item[] = [
   },
 ];
 
-const demoItemsWithIcons: SideNavigationProps.Item[] = [
+const simpleItems: SideNavigationProps.Item[] = [
   {
     type: 'link',
     text: 'Dashboard',
-    href: '#/page1',
+    href: '#/dashboard',
     icon: (
       <Icon
         svg={
@@ -119,7 +129,7 @@ const demoItemsWithIcons: SideNavigationProps.Item[] = [
   {
     type: 'link',
     text: 'Storage',
-    href: '#/page2',
+    href: '#/storage',
     icon: (
       <Icon
         svg={
@@ -172,11 +182,11 @@ const demoItemsWithIcons: SideNavigationProps.Item[] = [
   },
 ];
 
-const demoServiceItemsWithIcons: SideNavigationProps.Item[] = [
+const navWithSections: SideNavigationProps.Item[] = [
   {
     type: 'link',
     text: 'Dashboard',
-    href: '#/page1',
+    href: '#/dashboard',
     icon: (
       <Icon
         svg={
@@ -192,8 +202,8 @@ const demoServiceItemsWithIcons: SideNavigationProps.Item[] = [
   },
   {
     type: 'link',
-    text: 'Deployments',
-    href: '#/page2',
+    text: 'Instances',
+    href: '#/instances',
     icon: (
       <Icon
         svg={
@@ -272,11 +282,11 @@ const demoServiceItemsWithIcons: SideNavigationProps.Item[] = [
   },
 ];
 
-const demoLinkGroupsWithIcons: SideNavigationProps.Item[] = [
+const navWithELGs: SideNavigationProps.Item[] = [
   {
     type: 'link',
-    text: 'Home',
-    href: '#/page1',
+    text: 'Dashboard',
+    href: '#/dashboard',
     icon: (
       <Icon
         svg={
@@ -369,337 +379,6 @@ const demoLinkGroupsWithIcons: SideNavigationProps.Item[] = [
   },
 ];
 
-/**
- * IATreeVisualizer renders an SVG-based node-link tree diagram showing the
- * information architecture of a SideNavigation item set.
- *
- * - Plain links, and items inside a `section`/`section-group`, are flattened
- *   to a single depth: they all branch directly off the main trunk. A
- *   `section`/`section-group` has no href (it's just a label), so it does not
- *   get a node — instead its title is drawn as a text label beside the trunk,
- *   with extra vertical spacing inserted before its first child to set the
- *   group apart.
- * - `link-group` / `expandable-link-group` items ARE real nodes (they have
- *   their own href), so they keep their nested children on a genuine
- *   sub-trunk/sub-branch one depth deeper.
- * - Divider items are silently skipped.
- *
- * Nodes are colored and lettered by depth (root = "A", depth 1 = "B", depth 2
- * = "C", ...), not by sibling group, so every node at the same indentation
- * level shares a color and a letter.
- *
- * Color tokens used (all from the public design-tokens surface):
- * - Root node (depth 0): colorBackgroundCellShaded (neutral grey fill) + colorBorderInputDefault (border)
- * - Depth 1: colorBackgroundStatusInfo (light blue fill) + colorBorderStatusInfo (blue stroke)
- * - Depth 2: colorBackgroundStatusSuccess (light green fill) + colorBorderStatusSuccess (green stroke)
- * - Depth 3+: colorBackgroundStatusWarning (light amber fill) + colorBorderStatusWarning (amber stroke), repeating
- */
-const CONNECTOR_STROKE_WIDTH = 2;
-const NODE_STROKE_WIDTH = 1;
-
-const DEPTH_COLORS = [
-  { fill: colorBackgroundCellShaded, stroke: colorTextBodyDefault }, // depth 0 (root)
-  { fill: colorBackgroundStatusInfo, stroke: colorTextStatusInfo }, // depth 1
-  { fill: colorBackgroundStatusSuccess, stroke: colorTextStatusSuccess }, // depth 2
-  { fill: colorBackgroundStatusWarning, stroke: colorTextStatusWarning }, // depth 3+
-];
-
-function depthColor(depth: number) {
-  return DEPTH_COLORS[Math.min(depth, DEPTH_COLORS.length - 1)];
-}
-
-function depthLetter(depth: number) {
-  return String.fromCharCode('A'.charCodeAt(0) + depth);
-}
-
-// Items whose header is a label only (no href) — their children flatten to
-// the parent's depth instead of nesting on a sub-branch.
-function isLabelOnlyGroup(
-  item: SideNavigationProps.Item
-): item is SideNavigationProps.Section | SideNavigationProps.SectionGroup {
-  return item.type === 'section' || item.type === 'section-group';
-}
-
-// Items that are real nodes (have an href) whose children genuinely nest one
-// depth deeper on their own sub-branch.
-function getNestedChildren(item: SideNavigationProps.Item): ReadonlyArray<SideNavigationProps.Item> | null {
-  switch (item.type) {
-    case 'link-group':
-    case 'expandable-link-group':
-      return item.items;
-    default:
-      return null;
-  }
-}
-
-function groupTitle(item: SideNavigationProps.Section | SideNavigationProps.SectionGroup): string {
-  return item.type === 'section' ? item.text : item.title;
-}
-
-// A flat row in the tree: either a real node (with optional nested children)
-// or a label-only group boundary that introduces extra spacing before its
-// (already-flattened) children. `dividerBefore` marks a row that was
-// immediately preceded by a real `divider` item in the source data — this is
-// the ONLY thing that produces a dashed trunk segment (dashes represent an
-// actual divider, not a generic "list is long" cue).
-interface TreeRow {
-  isNode: boolean;
-  label: string | null;
-  extraGapBefore: boolean;
-  dividerBefore: boolean;
-  nestedChildren: ReadonlyArray<SideNavigationProps.Item> | null;
-}
-
-// Flattens a list of items to depth-1 tree rows. Label-only groups (section /
-// section-group) contribute no node of their own — their children are
-// recursively flattened into the same row list, with the group's title
-// attached to the first child row and an extra gap inserted before it.
-// Divider items contribute no node either, but mark the following row as
-// `dividerBefore` so it renders with a dashed (not solid) trunk segment above it.
-function buildRows(items: ReadonlyArray<SideNavigationProps.Item>): TreeRow[] {
-  const rows: TreeRow[] = [];
-  let pendingDivider = false;
-  items.forEach(item => {
-    if (item.type === 'divider') {
-      pendingDivider = true;
-      return;
-    }
-    if (isLabelOnlyGroup(item)) {
-      const childRows = buildRows(item.items);
-      if (childRows.length > 0) {
-        childRows[0] = {
-          ...childRows[0],
-          label: groupTitle(item),
-          extraGapBefore: true,
-          dividerBefore: pendingDivider,
-        };
-        pendingDivider = false;
-      }
-      rows.push(...childRows);
-      return;
-    }
-    rows.push({
-      isNode: true,
-      label: null,
-      extraGapBefore: false,
-      dividerBefore: pendingDivider,
-      nestedChildren: getNestedChildren(item),
-    });
-    pendingDivider = false;
-  });
-  return rows;
-}
-
-function IATreeVisualizer({ items }: { items: SideNavigationProps.Item[] }) {
-  const rows = buildRows(items);
-
-  // Layout constants (condensed)
-  const nodeSize = 24;
-  const nodeRadius = 6;
-  const rowSpacing = 36;
-  const groupGap = 24; // extra vertical space inserted before a label-only group's first child
-  const edgeMargin = NODE_STROKE_WIDTH; // breathing room on every edge so stroked node borders never get clipped by the viewBox
-  const trunkX = edgeMargin + nodeSize / 2;
-  const branchOffset = 36;
-  const nestedBranchOffset = 36;
-  const rootGap = 28; // vertical gap from the root node down to the first branch point (larger than a regular row gap)
-  const fontSize = 12;
-
-  interface NodePosition {
-    x: number;
-    y: number;
-    depth: number;
-    parentY: number;
-  }
-
-  const positions: NodePosition[] = [];
-  const rowPositions: {
-    y: number;
-    label: string | null;
-    dividerBefore: boolean;
-    nestedChildren: ReadonlyArray<SideNavigationProps.Item> | null;
-  }[] = [];
-
-  const rootY = edgeMargin;
-  let currentY = rootY + nodeSize + rootGap;
-  let maxDepth = 1;
-
-  rows.forEach(row => {
-    // A divider and a label-only group boundary both introduce the same
-    // extra vertical breathing room before the row that follows them.
-    if (row.extraGapBefore || row.dividerBefore) {
-      currentY += groupGap;
-    }
-    const y = currentY;
-    rowPositions.push({ y, label: row.label, dividerBefore: row.dividerBefore, nestedChildren: row.nestedChildren });
-    positions.push({ x: branchOffset, y, depth: 1, parentY: y });
-    currentY += rowSpacing;
-
-    if (row.nestedChildren && row.nestedChildren.length > 0) {
-      maxDepth = Math.max(maxDepth, 2);
-      row.nestedChildren
-        .filter(child => child.type !== 'divider')
-        .forEach(() => {
-          positions.push({ x: branchOffset + nestedBranchOffset, y: currentY, depth: 2, parentY: y });
-          currentY += rowSpacing;
-        });
-    }
-  });
-
-  // The trunk ends at the vertical center of the last top-level row — not at
-  // the running layout cursor, which may have advanced past it (e.g. through
-  // trailing nested-child rows or a group gap) and no longer reflects that point.
-  const lastRowY = rowPositions.length > 0 ? rowPositions[rowPositions.length - 1].y : rootY + nodeSize;
-  const trunkEndY = lastRowY + nodeSize / 2;
-  // contentBottomY is the center of the last positioned node (top-level or
-  // nested child, whichever comes last) — the drawing must extend past its
-  // full bottom edge (+ nodeSize / 2), not just its center.
-  const contentBottomY = currentY - rowSpacing / 2;
-  const svgHeight = Math.max(trunkEndY, contentBottomY) + nodeSize / 2 + edgeMargin;
-
-  // Compute the drawing width from actual content: branchOffset/nestedBranchOffset
-  // are already absolute x-coordinates (they include the left edgeMargin via
-  // trunkX), so the rightmost content edge is the deepest branch column's node
-  // plus a matching right margin.
-  const rightmostBranchX = maxDepth > 1 ? branchOffset + nestedBranchOffset : branchOffset;
-  const svgWidth = rightmostBranchX + nodeSize + edgeMargin;
-
-  // Curved connector path from trunk to node (S-curve bezier)
-  function connectorPath(fromX: number, fromY: number, toX: number, toY: number, stroke: string) {
-    const midX = fromX + (toX - fromX) * 0.4;
-    const d = `M ${fromX} ${fromY} C ${midX} ${fromY}, ${midX} ${toY}, ${toX} ${toY}`;
-    return (
-      <path
-        key={`conn-${fromX}-${fromY}-${toX}-${toY}`}
-        d={d}
-        fill="none"
-        stroke={stroke}
-        strokeWidth={CONNECTOR_STROKE_WIDTH}
-        strokeLinecap="round"
-      />
-    );
-  }
-
-  function node(x: number, y: number, depth: number, key: string) {
-    const colors = depthColor(depth);
-    return (
-      <g key={key}>
-        <rect
-          x={x}
-          y={y}
-          width={nodeSize}
-          height={nodeSize}
-          rx={nodeRadius}
-          ry={nodeRadius}
-          fill={colors.fill}
-          stroke={colors.stroke}
-          strokeWidth={NODE_STROKE_WIDTH}
-        />
-        <text
-          x={x + nodeSize / 2}
-          y={y + nodeSize / 2}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize={fontSize}
-          fill={colors.stroke}
-        >
-          {depthLetter(depth)}
-        </text>
-      </g>
-    );
-  }
-
-  // Trunk segments: split into solid runs, with a dashed run wherever a row
-  // is marked `dividerBefore` — dashes represent an actual `divider` item
-  // from the source data, spanning the full gap between that row and the one
-  // before it (not a generic "list is long" cue).
-  const trunkSegments: { y1: number; y2: number; dashed: boolean }[] = [];
-  let segmentStartY = rootY + nodeSize;
-  rowPositions.forEach((row, idx) => {
-    if (row.dividerBefore && idx > 0) {
-      const gapStartY = rowPositions[idx - 1].y + nodeSize / 2;
-      const gapEndY = row.y + nodeSize / 2;
-      trunkSegments.push({ y1: segmentStartY, y2: gapStartY, dashed: false });
-      trunkSegments.push({ y1: gapStartY, y2: gapEndY, dashed: true });
-      segmentStartY = gapEndY;
-    }
-  });
-  trunkSegments.push({ y1: segmentStartY, y2: trunkEndY, dashed: false });
-
-  return (
-    <svg
-      width={svgWidth}
-      height={svgHeight}
-      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-      style={{ display: 'block', fontFamily: fontFamilyBase }}
-      aria-hidden="true"
-      role="img"
-    >
-      {/* Root node */}
-      {node(trunkX - nodeSize / 2, rootY, 0, 'root-node')}
-
-      {/* Main trunk line, with an optional dashed segment spanning one full inter-row gap */}
-      {trunkSegments.map((segment, idx) => (
-        <line
-          key={`trunk-${idx}`}
-          x1={trunkX}
-          y1={segment.y1}
-          x2={trunkX}
-          y2={segment.y2}
-          stroke={DEPTH_COLORS[1].stroke}
-          strokeWidth={CONNECTOR_STROKE_WIDTH}
-          strokeLinecap="round"
-          strokeDasharray={segment.dashed ? '4 4' : undefined}
-        />
-      ))}
-
-      {/* Top-level connectors, nodes, and group labels */}
-      {rowPositions.map((row, idx) => {
-        const nodeY = row.y;
-        const nodeCenterY = nodeY + nodeSize / 2;
-        const elements: React.ReactNode[] = [];
-
-        // Connector from trunk to top-level node
-        elements.push(connectorPath(trunkX, nodeCenterY, branchOffset, nodeCenterY, DEPTH_COLORS[1].stroke));
-
-        // Top-level node
-        elements.push(node(branchOffset, nodeY, 1, `tl-node-${idx}`));
-
-        // If this node has real nested children (link-group / expandable-link-group), draw sub-trunk and children
-        if (row.nestedChildren && row.nestedChildren.length > 0) {
-          const colors = depthColor(2);
-          const subTrunkX = branchOffset + nodeSize / 2;
-          const childNodes = positions.filter(p => p.depth === 2 && p.parentY === nodeY);
-          const subTrunkStartY = nodeY + nodeSize;
-          const subTrunkEndY =
-            childNodes.length > 0 ? childNodes[childNodes.length - 1].y + nodeSize / 2 : subTrunkStartY;
-
-          elements.push(
-            <line
-              key={`sub-trunk-${idx}`}
-              x1={subTrunkX}
-              y1={subTrunkStartY}
-              x2={subTrunkX}
-              y2={subTrunkEndY}
-              stroke={colors.stroke}
-              strokeWidth={CONNECTOR_STROKE_WIDTH}
-              strokeLinecap="round"
-            />
-          );
-
-          childNodes.forEach((child, childIdx) => {
-            const childCenterY = child.y + nodeSize / 2;
-            elements.push(connectorPath(subTrunkX, childCenterY, child.x, childCenterY, colors.stroke));
-            elements.push(node(child.x, child.y, 2, `child-${idx}-${childIdx}`));
-          });
-        }
-
-        return <g key={`group-${idx}`}>{elements}</g>;
-      })}
-    </svg>
-  );
-}
-
 function stripIcons(items: ReadonlyArray<SideNavigationProps.Item>): SideNavigationProps.Item[] {
   return items.map((item): SideNavigationProps.Item => {
     switch (item.type) {
@@ -727,59 +406,24 @@ function stripIcons(items: ReadonlyArray<SideNavigationProps.Item>): SideNavigat
   });
 }
 
-function renderSideNavConfigs(
-  itemsWithIcons: SideNavigationProps.Item[],
-  activeHref: string,
-  setActiveHref: (href: string) => void,
-  header: SideNavigationProps['header']
-) {
-  const onFollow: SideNavigationProps['onFollow'] = event => {
-    if (!event.detail.external) {
-      event.preventDefault();
-      setActiveHref(event.detail.href);
-    }
-  };
-
-  return (
-    <>
-      <SpaceBetween direction="vertical" size="s" alignItems="center">
-        <Box variant="h5">Standard navigation</Box>
-        <SideNavigation activeHref={'#/page1'} header={header} onFollow={onFollow} items={stripIcons(itemsWithIcons)} />
-      </SpaceBetween>
-      <div style={{ paddingInlineStart: '60px' }}></div>
-      <SpaceBetween direction="vertical" size="s" alignItems="center">
-        <Box variant="h5">Collapsible navigation</Box>
-        <SpaceBetween size="l" direction="horizontal">
-          <SideNavigation activeHref={'#/page1'} header={header} onFollow={onFollow} items={itemsWithIcons} />
-          <div style={{ minWidth: '52px', maxWidth: '56px', marginBlockStart: '80px' }}>
-            <SideNavigation
-              activeHref={'#/page1'}
-              collapsed={true}
-              header={header}
-              onFollow={onFollow}
-              items={itemsWithIcons}
-            />
-          </div>
-        </SpaceBetween>
-      </SpaceBetween>
-      <div style={{ paddingInlineStart: '60px' }}></div>
-      <SpaceBetween direction="vertical" size="s" alignItems="center">
-        <Box variant="h5">Example IA</Box>
-        <div style={{ marginBlockStart: '20px' }}>
-          <IATreeVisualizer items={itemsWithIcons} />
-        </div>
-      </SpaceBetween>
-    </>
-  );
-}
-
 const COLLAPSED_WIDTH = 52;
 const EXPANDED_WIDTH = 220;
 
+const itemsByRadioValue: Record<string, SideNavigationProps.Item[]> = {
+  first: simpleItems,
+  second: navWithSections,
+  third: navWithELGs,
+  fourth: kitchenSink,
+};
+
 export default function SideNavigationCollapsedPage() {
-  const [activeHref, setActiveHref] = useState('#/calendar');
+  const { urlParams, setUrlParams } = useContext(AppContext as CollapsedNavDemoContext);
+  const { itemsSet = 'first' } = urlParams;
+  const [activeHref, setActiveHref] = useState('#/dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [panelWidth, setPanelWidth] = useState(EXPANDED_WIDTH);
+  const [iconLayout, setIconLayout] = useState(true);
+  const items = itemsByRadioValue[itemsSet];
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const reducedMotion = useReducedMotion(navRef);
@@ -860,7 +504,7 @@ export default function SideNavigationCollapsedPage() {
             //   },
             // }}
             activeHref={activeHref}
-            items={items}
+            items={iconLayout ? items : stripIcons(items)}
             collapsed={collapsed}
             onFollow={e => {
               e.preventDefault();
@@ -879,23 +523,19 @@ export default function SideNavigationCollapsedPage() {
             Toggle the navigation panel using the button. Items without icons are hidden in collapsed mode. Sections
             show their icon-bearing children as a flat list, and the section title becomes a divider in its place.
           </Box>
-          <SpaceBetween size="l" direction="horizontal">
-            {renderSideNavConfigs(demoItemsWithIcons, activeHref, setActiveHref, { href: '#/', text: 'Simple' })}
-          </SpaceBetween>
-
-          <SpaceBetween size="l" direction="horizontal">
-            {renderSideNavConfigs(demoServiceItemsWithIcons, activeHref, setActiveHref, {
-              href: '#/',
-              text: 'Service name',
-            })}
-          </SpaceBetween>
-
-          <SpaceBetween size="l" direction="horizontal">
-            {renderSideNavConfigs(demoLinkGroupsWithIcons, activeHref, setActiveHref, {
-              href: '#/',
-              text: 'Service name',
-            })}
-          </SpaceBetween>
+          <RadioGroup
+            onChange={({ detail }) => setUrlParams({ itemsSet: detail.value })}
+            value={itemsSet}
+            items={[
+              { value: 'first', label: 'Simple' },
+              { value: 'second', label: 'With sections' },
+              { value: 'third', label: 'With ELGs' },
+              { value: 'fourth', label: 'Kitchen sink' },
+            ]}
+          />
+          <Toggle onChange={({ detail }) => setIconLayout(detail.checked)} checked={iconLayout}>
+            Icon layout
+          </Toggle>
         </SpaceBetween>
       </div>
     </div>
