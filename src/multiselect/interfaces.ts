@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 
 import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
-import { BaseSelectProps } from '../select/interfaces';
+import { BaseSelectProps, SelectProps } from '../select/interfaces';
 import { NonCancelableEventHandler } from '../types/events';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../types/option';
 
@@ -86,6 +86,14 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+
+  /**
+   * The argument passed to the dropdown render functions (`renderDropdownHeader`,
+   * `renderDropdownFooter`, and `renderFilteringActions`).
+   */
+  export type DropdownContentProps = SelectProps.DropdownContentProps;
+  export type DropdownRole = SelectProps.DropdownRole;
+  export type DropdownContentRenderer = SelectProps.DropdownContentRenderer;
   /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
    * Required to create a distinct named type for the documenter.
    **/

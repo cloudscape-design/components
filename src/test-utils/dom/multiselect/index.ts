@@ -46,6 +46,33 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
   }
 
   /**
+   * Returns the custom dropdown header region rendered by `renderDropdownHeader`, if present.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findDropdownHeader(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(multiselectStyles['dropdown-header']);
+  }
+
+  /**
+   * Returns the custom dropdown footer region rendered by `renderDropdownFooter`, if present.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findDropdownFooter(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(multiselectStyles['dropdown-footer']);
+  }
+
+  /**
+   * Returns the custom filtering actions region rendered by `renderFilteringActions`, if present.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findFilteringActions(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(multiselectStyles['filtering-actions']);
+  }
+
+  /**
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */

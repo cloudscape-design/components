@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../select/dropdown-customization' as dropdownCustomization;
 
 .root {
   @include styles.styles-reset;
@@ -17,4 +18,21 @@
 
 .tokens {
   margin-block-start: awsui.$space-scaled-xs;
+}
+
+.filter-row {
+  @include dropdownCustomization.filter-row;
+}
+
+.filter-input {
+  @include dropdownCustomization.filter-input;
+}
+
+.filtering-actions {
+  @include dropdownCustomization.filtering-actions;
+}
+
+.dropdown-header,
+.dropdown-footer {
+  @include dropdownCustomization.dropdown-region;
 }

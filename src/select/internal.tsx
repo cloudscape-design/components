@@ -26,6 +26,7 @@ import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
 import { checkOptionValueField } from './utils/check-option-value-field';
+import { composeDropdownContent } from './utils/dropdown-customization';
 import { useAnnouncement } from './utils/use-announcement';
 import { useLoadItems } from './utils/use-load-items';
 import { useNativeSearch } from './utils/use-native-search';
@@ -71,6 +72,11 @@ const InternalSelect = React.forwardRef(
       __inFilteringToken,
       __internalRootRef,
       renderOption,
+      renderDropdownHeader,
+      renderDropdownFooter,
+      renderFilteringActions,
+      dropdownRole,
+      dropdownAriaDescribedby,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -131,6 +137,7 @@ const InternalSelect = React.forwardRef(
       selectOption,
       announceSelected,
       focusActiveRef,
+      closeDropdown,
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
@@ -142,6 +149,7 @@ const InternalSelect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       statusType,
+      dropdownRole,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -169,6 +177,12 @@ const InternalSelect = React.forwardRef(
         {...getFilterProps()}
       />
     );
+
+    const hasFilter = filteringType !== 'none';
+    const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
+    const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
+    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
+    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
     const trigger = (
       <Trigger
@@ -214,11 +228,24 @@ const InternalSelect = React.forwardRef(
       hasRecoveryCallback: !!onLoadItems,
     });
 
+    const statusFooter = dropdownStatus.isSticky ? (
+      <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+    ) : null;
+    const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
+      filter,
+      hasFilter,
+      filteringActions,
+      customDropdownHeader,
+      customDropdownFooter,
+      statusFooter,
+      styles,
+    });
+
     const menuProps = {
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
-      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+      ariaDescribedby: joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby),
       ariaRequired,
     };
 
@@ -258,19 +285,19 @@ const InternalSelect = React.forwardRef(
         <Dropdown
           {...dropdownProps}
           ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
+          ariaDescribedby={
+            dropdownProps.ariaRole
+              ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+              : undefined
+          }
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
           minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
-          header={filter}
+          header={dropdownHeader}
           onMouseDown={handleMouseDown}
-          footer={
-            dropdownStatus.isSticky ? (
-              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-            ) : null
-          }
+          footer={dropdownFooter}
           expandToViewport={expandToViewport}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}

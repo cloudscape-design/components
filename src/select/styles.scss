@@ -4,8 +4,25 @@
 */
 
 @use '../internal/styles' as styles;
-@use '../internal/styles/tokens' as awsui;
+@use './dropdown-customization' as dropdownCustomization;
 
 .root {
   @include styles.styles-reset;
+}
+
+.filter-row {
+  @include dropdownCustomization.filter-row;
+}
+
+.filter-input {
+  @include dropdownCustomization.filter-input;
+}
+
+.filtering-actions {
+  @include dropdownCustomization.filtering-actions;
+}
+
+.dropdown-header,
+.dropdown-footer {
+  @include dropdownCustomization.dropdown-region;
 }

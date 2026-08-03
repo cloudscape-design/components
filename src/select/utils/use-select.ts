@@ -20,6 +20,7 @@ import { usePrevious } from '../../internal/hooks/use-previous';
 import { DropdownStatusProps } from '../../types/dropdown-status';
 import { NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition, OptionGroup } from '../../types/option';
+import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -44,6 +45,7 @@ interface UseSelectProps {
   isAllSelected?: boolean;
   isSomeSelected?: boolean;
   toggleAll?: () => void;
+  dropdownRole?: SelectProps.DropdownRole;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -67,6 +69,7 @@ export function useSelect({
   isAllSelected,
   isSomeSelected,
   toggleAll,
+  dropdownRole,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -76,6 +79,8 @@ export function useSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
+  // Filtering always renders a dialog; `dropdownRole` can additionally force dialog semantics without a filter.
+  const isDialog = hasFilter || dropdownRole === 'dialog';
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedOptionsSet = new Set(__selectedOptions);
@@ -184,7 +189,7 @@ export function useSelect({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
-    ariaRole: hasFilter ? 'dialog' : undefined,
+    ariaRole: isDialog ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {
@@ -192,8 +197,8 @@ export function useSelect({
       ref: triggerRef,
       onFocus: () => closeDropdown(),
       autoFocus,
-      ariaHasPopup: hasFilter ? 'dialog' : 'listbox',
-      ariaControls: isOpen ? (hasFilter ? dialogId : menuId) : undefined,
+      ariaHasPopup: isDialog ? 'dialog' : 'listbox',
+      ariaControls: isOpen ? (isDialog ? dialogId : menuId) : undefined,
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {
@@ -359,6 +364,13 @@ export function useSelect({
   const announceSelected =
     !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 
+  // Closes the dropdown and returns focus to the trigger, matching the normal close behavior.
+  // Exposed to the public dropdown-customization render props via `DropdownContentProps.closeDropdown`.
+  const closeDropdownAndRefocus = useCallback(() => {
+    triggerRef.current?.focus();
+    closeDropdown();
+  }, [closeDropdown]);
+
   return {
     isOpen,
     highlightedOption,
@@ -372,6 +384,7 @@ export function useSelect({
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
+    closeDropdown: closeDropdownAndRefocus,
     dialogId,
     focusActiveRef,
   };

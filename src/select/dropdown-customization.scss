@@ -1,0 +1,43 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+// Property blocks shared by Select and Multiselect for the dropdown-customization render props
+// (renderFilteringActions, renderDropdownHeader, renderDropdownFooter). These are property-only
+// mixins: each component declares the class selectors itself and includes these, so no selectors
+// live in this shared file and the styles stay identical across both components.
+
+// Filter row: the built-in filter input grows to fill the space, custom filtering actions take
+// their intrinsic width alongside it and wrap to the next line when the row is too narrow.
+@mixin filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: awsui.$space-scaled-xs;
+  row-gap: awsui.$space-scaled-xs;
+  // Lift the filter row (and any focusable filtering actions) above the option rows so their
+  // focus rings are not clipped by the list below. Mirrors the z-index: 4 the built-in filter
+  // input already relies on.
+  position: relative;
+  z-index: 4;
+}
+
+@mixin filter-input {
+  flex: 1 1 auto;
+}
+
+@mixin filtering-actions {
+  flex: 0 0 auto;
+}
+
+// Custom header region (pinned below the filter row and above the options list) and custom footer
+// region (pinned at the bottom of the dropdown, always sticky). Same z-index rationale as the
+// filter row: keep focus rings of any focusable content painted above the adjacent option rows.
+@mixin dropdown-region {
+  inline-size: 100%;
+  position: relative;
+  z-index: 4;
+}
