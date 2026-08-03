@@ -8,6 +8,8 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
+const longAdornment = 'A long decorative prefix or suffix that must not cover the editable value';
+
 const permutations = createPermutations<InputProps>([
   {
     disabled: [false, true],
@@ -47,6 +49,16 @@ const permutations = createPermutations<InputProps>([
     value: ['100000000'],
     placeholder: ['Short placeholder'],
   },
+  { value: ['10'], prefix: ['$'], suffix: [undefined] },
+  { value: ['10'], prefix: [undefined], suffix: ['USD'] },
+  { value: ['10'], prefix: ['$'], suffix: ['USD'], disabled: [false, true], readOnly: [false, true] },
+  { value: ['10'], prefix: ['$'], suffix: ['USD'], invalid: [true], warning: [false] },
+  { value: ['10'], prefix: ['$'], suffix: ['USD'], invalid: [false], warning: [true] },
+  { type: ['search'], value: ['', 'query'], prefix: ['$'], suffix: ['USD'], clearAriaLabel: ['Clear'] },
+  { value: ['10'], prefix: [0], suffix: [0] },
+  { value: ['10'], prefix: [longAdornment], suffix: [longAdornment] },
+  { value: ['10'], prefix: ['$'], suffix: ['USD'] },
+  { value: ['10'], prefix: ['$'], suffix: ['USD'] },
 ]);
 
 export default function InputPermutations() {

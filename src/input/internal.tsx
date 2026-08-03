@@ -3,7 +3,7 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -18,6 +18,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { isDevelopment } from '../internal/is-development';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
@@ -101,6 +102,8 @@ function InternalInput(
     __inlineLabelText,
     __fullWidth,
     style,
+    prefix,
+    suffix,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -120,10 +123,37 @@ function InternalInput(
   __rightIcon = __rightIcon ?? searchProps.__rightIcon;
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
 
+  // Search inputs use built-in search and clear icons that would overlap adornments.
+  const isSearch = type === 'search' || type === 'visualSearch';
+  if (isDevelopment) {
+    if (isSearch && (prefix !== undefined || suffix !== undefined)) {
+      warnOnce('Input', 'prefix and suffix are ignored when type is search.');
+    }
+  }
+  if (isSearch) {
+    prefix = undefined;
+    suffix = undefined;
+  }
+
   const formFieldContext = useFormFieldContext(rest);
   const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = __inheritFormFieldProps
     ? formFieldContext
     : rest;
+
+  const hasAdornmentContent = (content: React.ReactNode) =>
+    content !== null && content !== undefined && typeof content !== 'boolean' && content !== '';
+  const hasPrefix = hasAdornmentContent(prefix);
+  const hasSuffix = hasAdornmentContent(suffix);
+  const hasPrefixOrSuffix = hasPrefix || hasSuffix;
+  const inputStyles = getInputStyles(style);
+  const nativeInputStyles =
+    hasPrefixOrSuffix && inputStyles
+      ? { ...inputStyles, borderRadius: undefined, borderWidth: undefined }
+      : inputStyles;
+  const adornedContainerStyles =
+    hasPrefixOrSuffix && inputStyles
+      ? { ...inputStyles, paddingBlock: undefined, paddingInline: undefined }
+      : undefined;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -142,10 +172,11 @@ function InternalInput(
       __rightIcon && styles['input-has-icon-right'],
       __leftIcon && styles['input-has-icon-left'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
-        [styles['input-invalid']]: invalid,
-        [styles['input-warning']]: warning && !invalid,
+        [styles['input-invalid']]: invalid && !hasPrefixOrSuffix,
+        [styles['input-warning']]: warning && !invalid && !hasPrefixOrSuffix,
       }
     ),
     autoComplete: convertAutoComplete(autoComplete),
@@ -211,9 +242,49 @@ function InternalInput(
       nativeAttributes={nativeInputAttributes}
       skipWarnings={__skipNativeAttributesWarnings}
       ref={mergedRef}
-      style={getInputStyles(style)}
+      style={nativeInputStyles}
     />
   );
+
+  const inputWithLabel = __inlineLabelText ? (
+    <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
+      <label htmlFor={controlId} className={styles['inline-label']}>
+        {__inlineLabelText}
+      </label>
+      <div
+        className={clsx(
+          styles['inline-label-trigger-wrapper'],
+          __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+        )}
+      >
+        {mainInput}
+      </div>
+    </div>
+  ) : (
+    mainInput
+  );
+
+  const rightIcon = __rightIcon ? (
+    <span
+      className={styles['input-icon-right']}
+      {...(__rightIcon === 'close'
+        ? getAnalyticsMetadataAttribute({
+            action: 'clearInput',
+          } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
+        : {})}
+    >
+      <InternalButton
+        // Used for test utils
+        className={styles['input-button-right']}
+        variant="inline-icon-pointer-target"
+        formAction="none"
+        iconName={__rightIcon}
+        onClick={__onRightIconClick}
+        ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
+        disabled={disabled}
+      />
+    </span>
+  ) : null;
 
   return (
     <div
@@ -230,44 +301,41 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      {__inlineLabelText ? (
-        <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
-          <label htmlFor={controlId} className={styles['inline-label']}>
-            {__inlineLabelText}
-          </label>
-          <div
-            className={clsx(
-              styles['inline-label-trigger-wrapper'],
-              __fullWidth && styles['inline-label-trigger-wrapper-full-width']
-            )}
-          >
-            {mainInput}
-          </div>
+      {hasPrefixOrSuffix ? (
+        // [prefix][divider][input][divider][suffix] - one flex bar owns the border and focus ring.
+        <div
+          className={clsx(
+            styles['input-adorned-container'],
+            invalid && styles['input-adorned-container-invalid'],
+            warning && !invalid && styles['input-adorned-container-warning'],
+            disabled && styles['input-adorned-container-disabled'],
+            readOnly && !disabled && styles['input-adorned-container-readonly']
+          )}
+          style={adornedContainerStyles}
+        >
+          {hasPrefix && (
+            <>
+              <span className={styles['input-prefix']} aria-hidden="true">
+                {prefix}
+              </span>
+              <span className={styles['input-adornment-divider']} />
+            </>
+          )}
+          {inputWithLabel}
+          {hasSuffix && (
+            <>
+              <span className={styles['input-adornment-divider']} />
+              <span className={styles['input-suffix']} aria-hidden="true">
+                {suffix}
+              </span>
+            </>
+          )}
+          {rightIcon}
         </div>
       ) : (
-        mainInput
+        inputWithLabel
       )}
-      {__rightIcon && (
-        <span
-          className={styles['input-icon-right']}
-          {...(__rightIcon === 'close'
-            ? getAnalyticsMetadataAttribute({
-                action: 'clearInput',
-              } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
-            : {})}
-        >
-          <InternalButton
-            // Used for test utils
-            className={styles['input-button-right']}
-            variant="inline-icon-pointer-target"
-            formAction="none"
-            iconName={__rightIcon}
-            onClick={__onRightIconClick}
-            ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
-            disabled={disabled}
-          />
-        </span>
-      )}
+      {!hasPrefixOrSuffix && rightIcon}
     </div>
   );
 }

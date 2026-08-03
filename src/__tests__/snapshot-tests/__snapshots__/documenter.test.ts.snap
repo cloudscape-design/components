@@ -17404,7 +17404,18 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Use for content rendered before the editable value.",
+      "isDefault": false,
+      "name": "prefix",
+    },
+    {
+      "description": "Use for content rendered after the editable value.",
+      "isDefault": false,
+      "name": "suffix",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -35506,6 +35517,32 @@ Supported options:
           },
         },
         {
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.focus",
           },
@@ -37160,6 +37197,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -37172,6 +37225,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -43462,6 +43531,22 @@ and this method will have no effect.",
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -43542,6 +43627,22 @@ and this method will have no effect.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -48000,6 +48101,22 @@ Supported options:
             "name": "ElementWrapper",
           },
         },
+        {
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
       ],
       "name": "InputWrapper",
     },
@@ -49137,6 +49254,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -49151,6 +49279,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -53636,6 +53775,17 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -53712,6 +53862,17 @@ In this case, use findContentEditableElement() instead.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
