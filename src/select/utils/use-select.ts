@@ -366,9 +366,16 @@ export function useSelect({
 
   // Closes the dropdown and returns focus to the trigger, matching the normal close behavior.
   // Exposed to the public dropdown-customization render props via `DropdownContentProps.closeDropdown`.
+  // Focusing the trigger fires its onFocus handler, which already closes the dropdown; only close
+  // explicitly when the trigger is already focused (re-focusing it does not fire onFocus), so the
+  // close side effects run exactly once.
   const closeDropdownAndRefocus = useCallback(() => {
-    triggerRef.current?.focus();
-    closeDropdown();
+    const trigger = triggerRef.current;
+    if (trigger && trigger === document.activeElement) {
+      closeDropdown();
+    } else {
+      trigger?.focus();
+    }
   }, [closeDropdown]);
 
   return {
