@@ -327,8 +327,6 @@
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
   color: inherit;
-  user-select: text;
-  cursor: text;
   @include styles.font-body-m;
 }
 
