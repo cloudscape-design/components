@@ -22,6 +22,7 @@ test('versions border + typography tokens matched by the default groups and leav
   expect(getTokenVersions(variablesMap)).toEqual({
     borderRadiusButton: 'v3-1',
     borderWidthField: 'v3-1',
+    colorChartsPurple300: 'v3-1',
     fontFamilyBase: 'v3-1',
   });
 });
