@@ -13,13 +13,13 @@ import Toggle from '~components/toggle';
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-type AdornmentMode = 'none' | 'short' | 'long' | 'icon';
+type PrefixSuffixMode = 'none' | 'short' | 'long' | 'icon';
 
 type PageContext = React.Context<
   AppContextType<{
     type?: InputProps.Type;
-    prefix?: AdornmentMode;
-    suffix?: AdornmentMode;
+    prefix?: PrefixSuffixMode;
+    suffix?: PrefixSuffixMode;
     disabled?: boolean;
     readOnly?: boolean;
     invalid?: boolean;
@@ -37,14 +37,14 @@ const typeOptions: ReadonlyArray<SelectProps.Option> = [
   { value: 'search', label: 'Search' },
 ];
 
-const adornmentOptions: ReadonlyArray<SelectProps.Option> = [
+const prefixSuffixOptions: ReadonlyArray<SelectProps.Option> = [
   { value: 'none', label: 'None' },
   { value: 'short', label: 'Short text' },
   { value: 'long', label: 'Long text' },
   { value: 'icon', label: 'Icon' },
 ];
 
-function getPrefix(mode: AdornmentMode): React.ReactNode {
+function getPrefix(mode: PrefixSuffixMode): React.ReactNode {
   switch (mode) {
     case 'short':
       return '$';
@@ -57,7 +57,7 @@ function getPrefix(mode: AdornmentMode): React.ReactNode {
   }
 }
 
-function getSuffix(mode: AdornmentMode): React.ReactNode {
+function getSuffix(mode: PrefixSuffixMode): React.ReactNode {
   switch (mode) {
     case 'short':
       return '%';
@@ -70,7 +70,7 @@ function getSuffix(mode: AdornmentMode): React.ReactNode {
   }
 }
 
-export default function AdornmentsPage() {
+export default function PrefixSuffixPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const type = urlParams.type ?? 'text';
   const prefixMode = urlParams.prefix ?? 'short';
@@ -93,15 +93,15 @@ export default function AdornmentsPage() {
           />
           <Select
             inlineLabelText="Prefix"
-            selectedOption={adornmentOptions.find(option => option.value === prefixMode) ?? null}
-            options={adornmentOptions}
-            onChange={({ detail }) => setUrlParams({ prefix: detail.selectedOption.value as AdornmentMode })}
+            selectedOption={prefixSuffixOptions.find(option => option.value === prefixMode) ?? null}
+            options={prefixSuffixOptions}
+            onChange={({ detail }) => setUrlParams({ prefix: detail.selectedOption.value as PrefixSuffixMode })}
           />
           <Select
             inlineLabelText="Suffix"
-            selectedOption={adornmentOptions.find(option => option.value === suffixMode) ?? null}
-            options={adornmentOptions}
-            onChange={({ detail }) => setUrlParams({ suffix: detail.selectedOption.value as AdornmentMode })}
+            selectedOption={prefixSuffixOptions.find(option => option.value === suffixMode) ?? null}
+            options={prefixSuffixOptions}
+            onChange={({ detail }) => setUrlParams({ suffix: detail.selectedOption.value as PrefixSuffixMode })}
           />
           <Toggle checked={disabled} onChange={({ detail }) => setUrlParams({ disabled: detail.checked })}>
             Disabled
