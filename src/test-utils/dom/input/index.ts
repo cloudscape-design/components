@@ -10,7 +10,7 @@ export default class InputWrapper extends BaseInputWrapper {
   static rootSelector: string = inputSelectors.root;
 
   findClearButton(): ElementWrapper | null {
-    return this.find(`.${inputSelectors['input-button-right']}`);
+    return this.find(`.${inputSelectors['input-button-end']}`);
   }
 
   findPrefix(): ElementWrapper | null {

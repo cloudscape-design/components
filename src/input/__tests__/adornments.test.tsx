@@ -92,13 +92,13 @@ describe('prefix and suffix adornments', () => {
     expect(nativeInput.style.paddingInline).toBe('16px');
   });
 
-  test('contains the right icon within the adorned focus container', () => {
-    const { container } = render(<InternalInput value="" onChange={() => {}} prefix="$" __rightIcon="settings" />);
+  test('contains the end icon within the adorned focus container', () => {
+    const { container } = render(<InternalInput value="" onChange={() => {}} prefix="$" __endIcon="settings" />);
     const adornedContainer = container.querySelector(`.${styles['input-adorned-container']}`)!;
-    const rightIcon = container.querySelector(`.${styles['input-icon-right']}`)!;
+    const endIcon = container.querySelector(`.${styles['input-icon-end']}`)!;
 
-    expect(adornedContainer).toContainElement(rightIcon as HTMLElement);
-    rightIcon.querySelector('button')!.focus();
+    expect(adornedContainer).toContainElement(endIcon as HTMLElement);
+    endIcon.querySelector('button')!.focus();
     expect(adornedContainer.contains(document.activeElement)).toBe(true);
   });
 

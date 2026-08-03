@@ -41,12 +41,12 @@ export interface InternalInputProps
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
   type?: InputProps['type'] | 'visualSearch';
-  __leftIcon?: IconProps['name'];
-  __leftIconVariant?: IconProps['variant'];
-  __onLeftIconClick?: () => void;
+  __startIcon?: IconProps['name'];
+  __startIconVariant?: IconProps['variant'];
+  __onStartIconClick?: () => void;
 
-  __rightIcon?: IconProps['name'];
-  __onRightIconClick?: () => void;
+  __endIcon?: IconProps['name'];
+  __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
 
@@ -78,14 +78,14 @@ function InternalInput(
     spellcheck,
     __noBorderRadius,
 
-    __leftIcon,
-    __leftIconVariant = 'subtle',
-    __onLeftIconClick,
+    __startIcon,
+    __startIconVariant = 'subtle',
+    __onStartIconClick,
 
     ariaRequired,
 
-    __rightIcon,
-    __onRightIconClick,
+    __endIcon,
+    __onEndIconClick,
 
     onKeyDown,
     onKeyUp,
@@ -119,9 +119,9 @@ function InternalInput(
 
   const inputRef = useRef<HTMLInputElement>(null);
   const searchProps = useSearchProps(type, disabled, readOnly, value, inputRef, handleChange);
-  __leftIcon = __leftIcon ?? searchProps.__leftIcon;
-  __rightIcon = __rightIcon ?? searchProps.__rightIcon;
-  __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
+  __startIcon = __startIcon ?? searchProps.__startIcon;
+  __endIcon = __endIcon ?? searchProps.__endIcon;
+  __onEndIconClick = __onEndIconClick ?? searchProps.__onEndIconClick;
 
   // Search inputs use built-in search and clear icons that would overlap adornments.
   const isSearch = type === 'search' || type === 'visualSearch';
@@ -169,8 +169,8 @@ function InternalInput(
     className: clsx(
       styles.input,
       type && styles[`input-type-${type}`],
-      __rightIcon && styles['input-has-icon-right'],
-      __leftIcon && styles['input-has-icon-left'],
+      __endIcon && styles['input-has-icon-end'],
+      __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
@@ -264,10 +264,10 @@ function InternalInput(
     mainInput
   );
 
-  const rightIcon = __rightIcon ? (
+  const endIcon = __endIcon ? (
     <span
-      className={styles['input-icon-right']}
-      {...(__rightIcon === 'close'
+      className={styles['input-icon-end']}
+      {...(__endIcon === 'close'
         ? getAnalyticsMetadataAttribute({
             action: 'clearInput',
           } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
@@ -275,11 +275,11 @@ function InternalInput(
     >
       <InternalButton
         // Used for test utils
-        className={styles['input-button-right']}
+        className={styles['input-button-end']}
         variant="inline-icon-pointer-target"
         formAction="none"
-        iconName={__rightIcon}
-        onClick={__onRightIconClick}
+        iconName={__endIcon}
+        onClick={__onEndIconClick}
         ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
         disabled={disabled}
       />
@@ -296,9 +296,9 @@ function InternalInput(
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
         : copyAnalyticsMetadataAttribute(rest))}
     >
-      {__leftIcon && (
-        <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
-          <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
+      {__startIcon && (
+        <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
+          <InternalIcon name={__startIcon} variant={disabled || readOnly ? 'disabled' : __startIconVariant} />
         </span>
       )}
       {hasPrefixOrSuffix ? (
@@ -330,12 +330,12 @@ function InternalInput(
               </span>
             </>
           )}
-          {rightIcon}
+          {endIcon}
         </div>
       ) : (
         inputWithLabel
       )}
-      {!hasPrefixOrSuffix && rightIcon}
+      {!hasPrefixOrSuffix && endIcon}
     </div>
   );
 }

@@ -149,7 +149,7 @@
       $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
       $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
-    &.input-has-icon-left {
+    &.input-has-icon-start {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
           (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
@@ -163,7 +163,7 @@
       $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
       $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
-    &.input-has-icon-left {
+    &.input-has-icon-start {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
           (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
@@ -184,10 +184,10 @@
       display: none;
     }
   }
-  &.input-has-icon-left {
+  &.input-has-icon-start {
     padding-inline-start: styles.$control-icon-horizontal-padding;
   }
-  &.input-has-icon-right {
+  &.input-has-icon-end {
     padding-inline-end: styles.$control-icon-horizontal-padding;
   }
   &.input-has-no-border-radius {
@@ -203,20 +203,20 @@
   position: relative;
 }
 
-.input-icon-left {
+.input-icon-start {
   position: absolute;
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
 }
 
-.input-icon-right {
+.input-icon-end {
   position: absolute;
   inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
 }
 
-.input-button-right {
+.input-button-end {
   /* used in test-utils */
 }
 
