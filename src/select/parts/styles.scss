@@ -51,29 +51,6 @@ $checkbox-size: awsui.$size-control;
   flex-shrink: 0;
 }
 
-// Filter row rendered when custom filtering actions are provided: the built-in filter input grows to
-// fill the space and the custom actions take their intrinsic width alongside it, wrapping to the next
-// line when the row is too narrow.
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: awsui.$space-scaled-xs;
-  row-gap: awsui.$space-scaled-xs;
-  // Lift the filter row above the option rows so any focusable action's focus ring is not clipped by
-  // the list below. Mirrors the z-index the filter input already relies on.
-  position: relative;
-  z-index: 4;
-}
-
-.filter-input {
-  flex: 1 1 auto;
-}
-
-.filtering-actions {
-  flex: 0 0 auto;
-}
-
 .trigger {
   @include styles.text-overflow-ellipsis;
 }

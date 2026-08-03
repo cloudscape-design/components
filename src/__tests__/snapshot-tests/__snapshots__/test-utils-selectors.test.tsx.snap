@@ -593,7 +593,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_disabled-reason-tooltip_dwuol",
     "awsui_dropdown-footer_r2vco",
     "awsui_dropdown-header_r2vco",
-    "awsui_filtering-actions_dwuol",
     "awsui_inline-label_dwuol",
     "awsui_inline-token-list_dwuol",
     "awsui_placeholder_dwuol",

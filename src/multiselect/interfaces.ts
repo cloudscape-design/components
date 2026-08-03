@@ -88,8 +88,8 @@ export namespace MultiselectProps {
   export type Options = ReadonlyArray<Option | OptionGroup>;
 
   /**
-   * The argument passed to the dropdown render functions (`renderDropdownHeader`,
-   * `renderDropdownFooter`, and `renderFilteringActions`).
+   * The argument passed to the dropdown render functions (`renderDropdownHeader`
+   * and `renderDropdownFooter`).
    */
   export type DropdownContentProps = SelectProps.DropdownContentProps;
   export type DropdownRole = SelectProps.DropdownRole;

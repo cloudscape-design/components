@@ -66,7 +66,6 @@ const InternalMultiselect = React.forwardRef(
       renderOption,
       renderDropdownHeader,
       renderDropdownFooter,
-      renderFilteringActions,
       dropdownRole,
       dropdownAriaDescribedby,
       ...restProps
@@ -102,12 +101,10 @@ const InternalMultiselect = React.forwardRef(
       ...restProps,
     });
 
-    const hasFilter = filteringType !== 'none';
     const dropdownContentProps: MultiselectProps.DropdownContentProps = {
       filterText: filteringValue,
       closeDropdown: multiselectProps.closeDropdown,
     };
-    const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
     const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
     const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
@@ -115,7 +112,6 @@ const InternalMultiselect = React.forwardRef(
       <Filter
         clearAriaLabel={filteringClearAriaLabel}
         filteringType={filteringType}
-        filteringActions={filteringActions}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}

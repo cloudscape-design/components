@@ -20085,25 +20085,6 @@ finished).",
       "type": "SelectProps.DropdownContentRenderer",
     },
     {
-      "description": "Renders custom controls next to the built-in filter input, on the same row (for example, a filter-type
-segmented control). It does not replace the input and is only called when filtering is enabled. Receives the
-current filtering state and a callback to close the dropdown.",
-      "inlineType": {
-        "name": "SelectProps.DropdownContentRenderer",
-        "parameters": [
-          {
-            "name": "props",
-            "type": "SelectProps.DropdownContentProps",
-          },
-        ],
-        "returnType": "React.ReactNode",
-        "type": "function",
-      },
-      "name": "renderFilteringActions",
-      "optional": true,
-      "type": "SelectProps.DropdownContentRenderer",
-    },
-    {
       "description": "Overrides the element that is announced to screen readers
 when the highlighted option changes. By default, this announces
 the option's name and properties, and its selected state if
@@ -26419,25 +26400,6 @@ finished).",
         "type": "function",
       },
       "name": "renderDropdownHeader",
-      "optional": true,
-      "type": "SelectProps.DropdownContentRenderer",
-    },
-    {
-      "description": "Renders custom controls next to the built-in filter input, on the same row (for example, a filter-type
-segmented control). It does not replace the input and is only called when filtering is enabled. Receives the
-current filtering state and a callback to close the dropdown.",
-      "inlineType": {
-        "name": "SelectProps.DropdownContentRenderer",
-        "parameters": [
-          {
-            "name": "props",
-            "type": "SelectProps.DropdownContentProps",
-          },
-        ],
-        "returnType": "React.ReactNode",
-        "type": "function",
-      },
-      "name": "renderFilteringActions",
       "optional": true,
       "type": "SelectProps.DropdownContentRenderer",
     },
@@ -40470,30 +40432,6 @@ wrapper.clickSelectAll();
           },
         },
         {
-          "description": "Returns the custom filtering actions region rendered by \`renderFilteringActions\`, if present.",
-          "name": "findFilteringActions",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
           "description": "Returns the input that is used for filtering.",
           "name": "findFilteringInput",
           "parameters": [
@@ -42670,30 +42608,6 @@ wrapper.clickSelectAll();
         },
         {
           "name": "findErrorRecoveryButton",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the custom filtering actions region rendered by \`renderFilteringActions\`, if present.",
-          "name": "findFilteringActions",
           "parameters": [
             {
               "defaultValue": "{ expandToViewport: false }",
@@ -51774,27 +51688,6 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
-          "description": "Returns the custom filtering actions region rendered by \`renderFilteringActions\`, if present.",
-          "name": "findFilteringActions",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
           "description": "Returns the input that is used for filtering.",
           "name": "findFilteringInput",
           "parameters": [
@@ -53344,27 +53237,6 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
         {
           "name": "findErrorRecoveryButton",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the custom filtering actions region rendered by \`renderFilteringActions\`, if present.",
-          "name": "findFilteringActions",
           "parameters": [
             {
               "defaultValue": "{

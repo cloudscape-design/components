@@ -5,7 +5,6 @@ import * as React from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
-import SegmentedControl from '~components/segmented-control';
 
 const options: MultiselectProps.Options = [
   { label: 'Apples', value: 'apples' },
@@ -16,7 +15,6 @@ const options: MultiselectProps.Options = [
 
 export default function MultiselectDropdownCustomizationPage() {
   const [selectedOptions, setSelectedOptions] = React.useState<ReadonlyArray<MultiselectProps.Option>>([]);
-  const [filterType, setFilterType] = React.useState('all');
 
   return (
     <article>
@@ -35,17 +33,6 @@ export default function MultiselectDropdownCustomizationPage() {
           options={options}
           selectedOptions={selectedOptions}
           onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-          renderFilteringActions={() => (
-            <SegmentedControl
-              selectedId={filterType}
-              onChange={({ detail }) => setFilterType(detail.selectedId)}
-              label="Filter type"
-              options={[
-                { id: 'all', text: 'All' },
-                { id: 'fav', text: 'Favorites' },
-              ]}
-            />
-          )}
           renderDropdownHeader={({ filterText }) => (
             <Box padding={{ horizontal: 's', vertical: 'xxs' }} color="text-body-secondary" fontSize="body-s">
               {filterText ? `Showing results for "${filterText}"` : 'Start typing to filter fruit'}
@@ -86,36 +73,6 @@ export default function MultiselectDropdownCustomizationPage() {
           )}
         />
 
-        <h2>Filtering actions wrapping (actions exceed the dropdown width)</h2>
-        <Box margin={{ bottom: 'xxs' }} color="text-label">
-          <label htmlFor="fruits-narrow">Fruits (narrow)</label>
-        </Box>
-        <div style={{ width: 220 }}>
-          <Multiselect
-            controlId="fruits-narrow"
-            filteringType="auto"
-            filteringPlaceholder="Find fruit"
-            filteringAriaLabel="Find fruit"
-            placeholder="Choose fruit"
-            ariaLabel="Choose fruit"
-            options={options}
-            selectedOptions={selectedOptions}
-            onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-            renderFilteringActions={() => (
-              <SegmentedControl
-                selectedId={filterType}
-                onChange={({ detail }) => setFilterType(detail.selectedId)}
-                label="Filter type"
-                options={[
-                  { id: 'all', text: 'All fruit' },
-                  { id: 'fav', text: 'Favorites' },
-                  { id: 'recent', text: 'Recently added' },
-                ]}
-              />
-            )}
-          />
-        </div>
-
         <h2>Custom header without a filter</h2>
         <Box margin={{ bottom: 'xxs' }} color="text-label">
           <label htmlFor="fruits-header-no-filter">Fruits (header, no filter)</label>
@@ -150,17 +107,6 @@ export default function MultiselectDropdownCustomizationPage() {
           options={options}
           selectedOptions={selectedOptions}
           onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-          renderFilteringActions={() => (
-            <SegmentedControl
-              selectedId={filterType}
-              onChange={({ detail }) => setFilterType(detail.selectedId)}
-              label="Filter type"
-              options={[
-                { id: 'all', text: 'All' },
-                { id: 'fav', text: 'Favorites' },
-              ]}
-            />
-          )}
           renderDropdownHeader={({ filterText }) => (
             <Box padding={{ horizontal: 's', vertical: 'xxs' }} color="text-body-secondary" fontSize="body-s">
               {filterText ? `Showing results for "${filterText}"` : 'Start typing to filter fruit'}

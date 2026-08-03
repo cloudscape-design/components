@@ -15,17 +15,15 @@ function renderSelect(props?: Partial<SelectProps>) {
 }
 
 describe('Select dropdown customization', () => {
-  test('renders custom header, footer, and filtering actions', () => {
+  test('renders custom header and footer', () => {
     const wrapper = renderSelect({
       renderDropdownHeader: () => <div>custom-header</div>,
       renderDropdownFooter: () => <div>custom-footer</div>,
-      renderFilteringActions: () => <div>custom-actions</div>,
     });
     wrapper.openDropdown();
 
     expect(wrapper.findDropdownHeader()!.getElement()).toHaveTextContent('custom-header');
     expect(wrapper.findDropdownFooter()!.getElement()).toHaveTextContent('custom-footer');
-    expect(wrapper.findFilteringActions()!.getElement()).toHaveTextContent('custom-actions');
   });
 
   test('render functions receive the current filterText', () => {
@@ -53,13 +51,12 @@ describe('Select dropdown customization', () => {
     expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
   });
 
-  test('omitting all three props preserves current behavior', () => {
+  test('omitting the props preserves current behavior', () => {
     const wrapper = renderSelect();
     wrapper.openDropdown();
 
     expect(wrapper.findDropdownHeader()).toBeNull();
     expect(wrapper.findDropdownFooter()).toBeNull();
-    expect(wrapper.findFilteringActions()).toBeNull();
     // The built-in filter input is still rendered in the header.
     expect(wrapper.findFilteringInput()).not.toBeNull();
   });
@@ -84,15 +81,13 @@ describe('Select dropdown customization', () => {
       return createWrapper(container).findSelect()!;
     }
 
-    test('renders the custom header but gates out filtering actions and the filter input', () => {
+    test('renders the custom header but gates out the filter input', () => {
       const wrapper = renderNoFilter({
         renderDropdownHeader: () => <div>custom-header</div>,
-        renderFilteringActions: () => <div>custom-actions</div>,
       });
       wrapper.openDropdown();
 
       expect(wrapper.findDropdownHeader()!.getElement()).toHaveTextContent('custom-header');
-      expect(wrapper.findFilteringActions()).toBeNull();
       expect(wrapper.findFilteringInput()).toBeNull();
     });
 
@@ -203,12 +198,10 @@ describe('Select dropdown customization', () => {
       expandToViewport: true,
       renderDropdownHeader: () => <div>custom-header</div>,
       renderDropdownFooter: () => <div>custom-footer</div>,
-      renderFilteringActions: () => <div>custom-actions</div>,
     });
     wrapper.openDropdown();
 
     expect(wrapper.findDropdownHeader({ expandToViewport: true })!.getElement()).toHaveTextContent('custom-header');
     expect(wrapper.findDropdownFooter({ expandToViewport: true })!.getElement()).toHaveTextContent('custom-footer');
-    expect(wrapper.findFilteringActions({ expandToViewport: true })!.getElement()).toHaveTextContent('custom-actions');
   });
 });

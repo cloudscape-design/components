@@ -62,15 +62,6 @@ export default class SelectWrapper extends DropdownHostComponentWrapper {
     return this.findDropdown(options).findByClassName(selectStyles['dropdown-footer']);
   }
 
-  /**
-   * Returns the custom filtering actions region rendered by `renderFilteringActions`, if present.
-   * @param options
-   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
-   */
-  findFilteringActions(options = { expandToViewport: false }): ElementWrapper | null {
-    return this.findDropdown(options).findByClassName(selectPartsStyles['filtering-actions']);
-  }
-
   findPlaceholder(): ElementWrapper | null {
     return this.findByClassName(selectPartsStyles.placeholder);
   }

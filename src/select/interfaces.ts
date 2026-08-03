@@ -165,13 +165,6 @@ export interface BaseSelectProps
   renderDropdownFooter?: SelectProps.DropdownContentRenderer;
 
   /**
-   * Renders custom controls next to the built-in filter input, on the same row (for example, a filter-type
-   * segmented control). It does not replace the input and is only called when filtering is enabled. Receives the
-   * current filtering state and a callback to close the dropdown.
-   */
-  renderFilteringActions?: SelectProps.DropdownContentRenderer;
-
-  /**
    * Determines the ARIA role of the dropdown.
    *
    * - `auto` (default): the dropdown uses a listbox role, or a dialog role when built-in filtering is enabled.
@@ -233,8 +226,8 @@ export namespace SelectProps {
   export type TriggerVariant = 'label' | 'option';
 
   /**
-   * The argument passed to the dropdown render functions (`renderDropdownHeader`,
-   * `renderDropdownFooter`, and `renderFilteringActions`).
+   * The argument passed to the dropdown render functions (`renderDropdownHeader`
+   * and `renderDropdownFooter`).
    */
   export interface DropdownContentProps {
     filterText: string;
@@ -245,8 +238,8 @@ export namespace SelectProps {
   export type DropdownRole = 'auto' | 'dialog';
 
   /**
-   * A render function for custom dropdown content, used by `renderDropdownHeader`, `renderDropdownFooter`, and
-   * `renderFilteringActions`. Receives the current filtering state and a callback to close the dropdown.
+   * A render function for custom dropdown content, used by `renderDropdownHeader` and `renderDropdownFooter`.
+   * Receives the current filtering state and a callback to close the dropdown.
    */
   export type DropdownContentRenderer = (props: DropdownContentProps) => ReactNode | null;
 

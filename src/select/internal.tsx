@@ -74,7 +74,6 @@ const InternalSelect = React.forwardRef(
       renderOption,
       renderDropdownHeader,
       renderDropdownFooter,
-      renderFilteringActions,
       dropdownRole,
       dropdownAriaDescribedby,
       ...restProps
@@ -166,9 +165,7 @@ const InternalSelect = React.forwardRef(
       scrollToIndex.current?.(highlightedIndex);
     }, [highlightedIndex]);
 
-    const hasFilter = filteringType !== 'none';
     const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
-    const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
     const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
     const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
@@ -176,7 +173,6 @@ const InternalSelect = React.forwardRef(
       <Filter
         clearAriaLabel={filteringClearAriaLabel}
         filteringType={filteringType}
-        filteringActions={filteringActions}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}

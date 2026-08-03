@@ -64,15 +64,6 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
   }
 
   /**
-   * Returns the custom filtering actions region rendered by `renderFilteringActions`, if present.
-   * @param options
-   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
-   */
-  findFilteringActions(options = { expandToViewport: false }): ElementWrapper | null {
-    return this.findDropdown(options).findByClassName(selectPartsStyles['filtering-actions']);
-  }
-
-  /**
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */

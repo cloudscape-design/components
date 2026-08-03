@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
-import SegmentedControl from '~components/segmented-control';
 import Select, { SelectProps } from '~components/select';
 
 const options: SelectProps.Options = [
@@ -16,7 +15,6 @@ const options: SelectProps.Options = [
 
 export default function SelectDropdownCustomizationPage() {
   const [selectedOption, setSelectedOption] = React.useState<SelectProps.Option | null>(null);
-  const [filterType, setFilterType] = React.useState('all');
 
   return (
     <article>
@@ -125,17 +123,6 @@ export default function SelectDropdownCustomizationPage() {
           options={options}
           selectedOption={selectedOption}
           onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-          renderFilteringActions={() => (
-            <SegmentedControl
-              selectedId={filterType}
-              onChange={({ detail }) => setFilterType(detail.selectedId)}
-              label="Filter type"
-              options={[
-                { id: 'all', text: 'All' },
-                { id: 'fav', text: 'Favorites' },
-              ]}
-            />
-          )}
           renderDropdownHeader={({ filterText }) => (
             <Box padding={{ horizontal: 's', vertical: 'xxs' }} color="text-body-secondary" fontSize="body-s">
               {filterText ? `Showing results for "${filterText}"` : 'Start typing to filter fruit'}
@@ -176,36 +163,6 @@ export default function SelectDropdownCustomizationPage() {
           )}
         />
 
-        <h2>Filtering actions wrapping (actions exceed the dropdown width)</h2>
-        <Box margin={{ bottom: 'xxs' }} color="text-label">
-          <label htmlFor="fruit-narrow">Fruit (narrow)</label>
-        </Box>
-        <div style={{ width: 220 }}>
-          <Select
-            controlId="fruit-narrow"
-            filteringType="auto"
-            filteringPlaceholder="Find a fruit"
-            filteringAriaLabel="Find a fruit"
-            placeholder="Choose a fruit"
-            ariaLabel="Choose a fruit"
-            options={options}
-            selectedOption={selectedOption}
-            onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-            renderFilteringActions={() => (
-              <SegmentedControl
-                selectedId={filterType}
-                onChange={({ detail }) => setFilterType(detail.selectedId)}
-                label="Filter type"
-                options={[
-                  { id: 'all', text: 'All fruit' },
-                  { id: 'fav', text: 'Favorites' },
-                  { id: 'recent', text: 'Recently added' },
-                ]}
-              />
-            )}
-          />
-        </div>
-
         <h2>Custom header without a filter</h2>
         <Box margin={{ bottom: 'xxs' }} color="text-label">
           <label htmlFor="fruit-header-no-filter">Fruit (header, no filter)</label>
@@ -240,17 +197,6 @@ export default function SelectDropdownCustomizationPage() {
           options={options}
           selectedOption={selectedOption}
           onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
-          renderFilteringActions={() => (
-            <SegmentedControl
-              selectedId={filterType}
-              onChange={({ detail }) => setFilterType(detail.selectedId)}
-              label="Filter type"
-              options={[
-                { id: 'all', text: 'All' },
-                { id: 'fav', text: 'Favorites' },
-              ]}
-            />
-          )}
           renderDropdownHeader={({ filterText }) => (
             <Box padding={{ horizontal: 's', vertical: 'xxs' }} color="text-body-secondary" fontSize="body-s">
               {filterText ? `Showing results for "${filterText}"` : 'Start typing to filter fruit'}
