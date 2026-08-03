@@ -4,8 +4,13 @@
 const DEFAULT_TOKEN_VERSION = 'v3-1';
 
 // Groups map a token-name pattern (matched against the token's CSS variable name) to a version.
-// Tokens matching no group stay version-less and keep the legacy value-based hashes.
-const versionGroups = [{ pattern: /^border-/, version: DEFAULT_TOKEN_VERSION }];
+// Tokens matching no group stay version-less and keep the legacy value-based hashes. Tokens are
+// being migrated in batches (one batch per line), and eventually all tokens will be migrated to
+// the new format.
+const versionGroups = [
+  { pattern: /^border-/, version: DEFAULT_TOKEN_VERSION },
+  { pattern: /^(font|letter-spacing|line-height)-/, version: DEFAULT_TOKEN_VERSION },
+];
 
 // Builds the token -> version allowlist from the full token -> cssName map.
 function getTokenVersions(variablesMap, groups = versionGroups) {
