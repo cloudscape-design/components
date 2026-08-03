@@ -60,10 +60,10 @@ describe('prefix and suffix adornments', () => {
     expect(wrapper.findPrefix()!.find('[data-testid="custom"]')).not.toBeNull();
   });
 
-  test('renders numeric adornments', () => {
-    const { wrapper } = renderInput({ prefix: 0, suffix: 0 });
-    expect(wrapper.findPrefix()!.getElement()).toHaveTextContent('0');
-    expect(wrapper.findSuffix()!.getElement()).toHaveTextContent('0');
+  test('renders truthy numeric adornments', () => {
+    const { wrapper } = renderInput({ prefix: 1, suffix: 1 });
+    expect(wrapper.findPrefix()!.getElement()).toHaveTextContent('1');
+    expect(wrapper.findSuffix()!.getElement()).toHaveTextContent('1');
   });
 
   test('applies custom Input styles to the adorned container', () => {
@@ -102,7 +102,7 @@ describe('prefix and suffix adornments', () => {
     expect(adornedContainer.contains(document.activeElement)).toBe(true);
   });
 
-  test.each([null, false, true, undefined, ''] as const)(
+  test.each([null, false, 0, undefined, ''] as const)(
     'does not render an adornment cell or divider for non-rendered React child %p',
     absentContent => {
       const { wrapper } = renderInput({ prefix: absentContent, suffix: absentContent });

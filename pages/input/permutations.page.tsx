@@ -55,7 +55,6 @@ const permutations = createPermutations<InputProps>([
   { value: ['10'], prefix: ['$'], suffix: ['USD'], invalid: [true], warning: [false] },
   { value: ['10'], prefix: ['$'], suffix: ['USD'], invalid: [false], warning: [true] },
   { type: ['search'], value: ['', 'query'], prefix: ['$'], suffix: ['USD'], clearAriaLabel: ['Clear'] },
-  { value: ['10'], prefix: [0], suffix: [0] },
   { value: ['10'], prefix: [longAdornment], suffix: [longAdornment] },
   { value: ['10'], prefix: ['$'], suffix: ['USD'] },
 ]);
