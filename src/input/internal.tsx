@@ -316,7 +316,7 @@ function InternalInput(
           {hasPrefix && (
             <>
               <span className={styles['input-prefix']} aria-hidden="true">
-                {prefix}
+                <span className={styles['input-adornment-content']}>{prefix}</span>
               </span>
               <span className={styles['input-adornment-divider']} />
             </>
@@ -326,7 +326,7 @@ function InternalInput(
             <>
               <span className={styles['input-adornment-divider']} />
               <span className={styles['input-suffix']} aria-hidden="true">
-                {suffix}
+                <span className={styles['input-adornment-content']}>{suffix}</span>
               </span>
             </>
           )}
