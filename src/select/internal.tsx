@@ -166,10 +166,17 @@ const InternalSelect = React.forwardRef(
       scrollToIndex.current?.(highlightedIndex);
     }, [highlightedIndex]);
 
+    const hasFilter = filteringType !== 'none';
+    const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
+    const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
+    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
+    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
+
     const filter = (
       <Filter
         clearAriaLabel={filteringClearAriaLabel}
         filteringType={filteringType}
+        filteringActions={filteringActions}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
@@ -177,12 +184,6 @@ const InternalSelect = React.forwardRef(
         {...getFilterProps()}
       />
     );
-
-    const hasFilter = filteringType !== 'none';
-    const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
-    const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
-    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
-    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
     const trigger = (
       <Trigger
@@ -233,8 +234,6 @@ const InternalSelect = React.forwardRef(
     ) : null;
     const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
       filter,
-      hasFilter,
-      filteringActions,
       customDropdownHeader,
       customDropdownFooter,
       statusFooter,

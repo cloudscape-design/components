@@ -68,7 +68,7 @@ export default class SelectWrapper extends DropdownHostComponentWrapper {
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   findFilteringActions(options = { expandToViewport: false }): ElementWrapper | null {
-    return this.findDropdown(options).findByClassName(selectStyles['filtering-actions']);
+    return this.findDropdown(options).findByClassName(selectPartsStyles['filtering-actions']);
   }
 
   findPlaceholder(): ElementWrapper | null {

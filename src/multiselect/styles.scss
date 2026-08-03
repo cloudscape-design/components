@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../select/dropdown-customization' as dropdownCustomization;
 
 .root {
   @include styles.styles-reset;
@@ -20,19 +19,16 @@
   margin-block-start: awsui.$space-scaled-xs;
 }
 
-.filter-row {
-  @include dropdownCustomization.filter-row;
+// Custom dropdown header/footer regions (renderDropdownHeader / renderDropdownFooter). Duplicated in the
+// Select stylesheet. The header can sit directly above the options list, so it is lifted with z-index to
+// keep focusable content's focus ring above the list; the footer sits below the list with natural
+// clearance and needs no lift.
+.dropdown-header {
+  inline-size: 100%;
+  position: relative;
+  z-index: 4;
 }
 
-.filter-input {
-  @include dropdownCustomization.filter-input;
-}
-
-.filtering-actions {
-  @include dropdownCustomization.filtering-actions;
-}
-
-.dropdown-header,
 .dropdown-footer {
-  @include dropdownCustomization.dropdown-region;
+  inline-size: 100%;
 }

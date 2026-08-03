@@ -69,7 +69,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   findFilteringActions(options = { expandToViewport: false }): ElementWrapper | null {
-    return this.findDropdown(options).findByClassName(multiselectStyles['filtering-actions']);
+    return this.findDropdown(options).findByClassName(selectPartsStyles['filtering-actions']);
   }
 
   /**

@@ -102,18 +102,6 @@ const InternalMultiselect = React.forwardRef(
       ...restProps,
     });
 
-    const filter = (
-      <Filter
-        clearAriaLabel={filteringClearAriaLabel}
-        filteringType={filteringType}
-        placeholder={filteringPlaceholder}
-        ariaLabel={filteringAriaLabel}
-        ariaRequired={ariaRequired}
-        value={filteringValue}
-        {...multiselectProps.getFilterProps()}
-      />
-    );
-
     const hasFilter = filteringType !== 'none';
     const dropdownContentProps: MultiselectProps.DropdownContentProps = {
       filterText: filteringValue,
@@ -122,6 +110,19 @@ const InternalMultiselect = React.forwardRef(
     const filteringActions = hasFilter ? renderFilteringActions?.(dropdownContentProps) : undefined;
     const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
     const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
+
+    const filter = (
+      <Filter
+        clearAriaLabel={filteringClearAriaLabel}
+        filteringType={filteringType}
+        filteringActions={filteringActions}
+        placeholder={filteringPlaceholder}
+        ariaLabel={filteringAriaLabel}
+        ariaRequired={ariaRequired}
+        value={filteringValue}
+        {...multiselectProps.getFilterProps()}
+      />
+    );
 
     const triggerRef = useRef<HTMLButtonElement>(null);
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
@@ -182,8 +183,6 @@ const InternalMultiselect = React.forwardRef(
     ) : null;
     const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
       filter,
-      hasFilter,
-      filteringActions,
       customDropdownHeader,
       customDropdownFooter,
       statusFooter,

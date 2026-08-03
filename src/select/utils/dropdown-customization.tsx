@@ -3,9 +3,8 @@
 import React from 'react';
 
 interface ComposeDropdownContentProps {
+  // The filter node (already includes any custom filtering actions, composed by the Filter component).
   filter: React.ReactNode;
-  hasFilter: boolean;
-  filteringActions: React.ReactNode;
   customDropdownHeader: React.ReactNode;
   customDropdownFooter: React.ReactNode;
   statusFooter: React.ReactNode;
@@ -13,14 +12,12 @@ interface ComposeDropdownContentProps {
 }
 
 /**
- * Builds the dropdown `header` and `footer` nodes shared by Select and Multiselect. When no custom header,
- * custom footer, or filtering actions are provided, the header is just the filter input and the footer is the
- * built-in sticky status, so the output is identical to the component's original behavior.
+ * Builds the dropdown `header` and `footer` nodes shared by Select and Multiselect. When no custom header or
+ * custom footer is provided, the header is just the filter and the footer is the built-in sticky status, so the
+ * output is identical to the component's original behavior.
  */
 export function composeDropdownContent({
   filter,
-  hasFilter,
-  filteringActions,
   customDropdownHeader,
   customDropdownFooter,
   statusFooter,
@@ -29,19 +26,14 @@ export function composeDropdownContent({
   // A render prop that is not provided yields undefined; one that opts out can return null. Normalize both
   // to null so presence checks below use strict equality.
   const headerNode = customDropdownHeader ?? null;
-  const actionsNode = filteringActions ?? null;
   const footerNode = customDropdownFooter ?? null;
 
+  // Custom header renders at the top of the dropdown, above the filter (and options list).
   const header =
-    headerNode !== null || actionsNode !== null ? (
+    headerNode !== null ? (
       <>
-        {headerNode !== null ? <div className={styles['dropdown-header']}>{headerNode}</div> : null}
-        {hasFilter ? (
-          <div className={styles['filter-row']}>
-            <div className={styles['filter-input']}>{filter}</div>
-            {actionsNode !== null ? <div className={styles['filtering-actions']}>{actionsNode}</div> : null}
-          </div>
-        ) : null}
+        <div className={styles['dropdown-header']}>{headerNode}</div>
+        {filter}
       </>
     ) : (
       filter
