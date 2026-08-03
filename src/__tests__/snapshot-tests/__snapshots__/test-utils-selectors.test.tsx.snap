@@ -376,7 +376,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_icon_h11ix",
   ],
   "input": [
-    "awsui_input-button-end_2rhyz",
+    "awsui_input-button-right_2rhyz",
     "awsui_input-container_2rhyz",
     "awsui_input-prefix_2rhyz",
     "awsui_input-suffix_2rhyz",

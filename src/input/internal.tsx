@@ -140,10 +140,8 @@ function InternalInput(
     ? formFieldContext
     : rest;
 
-  const hasAdornmentContent = (content: React.ReactNode) =>
-    content !== null && content !== undefined && typeof content !== 'boolean' && content !== '';
-  const hasPrefix = hasAdornmentContent(prefix);
-  const hasSuffix = hasAdornmentContent(suffix);
+  const hasPrefix = !!prefix;
+  const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
@@ -275,7 +273,7 @@ function InternalInput(
     >
       <InternalButton
         // Used for test utils
-        className={styles['input-button-end']}
+        className={styles['input-button-right']}
         variant="inline-icon-pointer-target"
         formAction="none"
         iconName={__endIcon}
