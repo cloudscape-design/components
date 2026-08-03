@@ -311,6 +311,7 @@ function InternalInput(
             disabled && styles['input-adorned-container-disabled'],
             readOnly && !disabled && styles['input-adorned-container-readonly']
           )}
+          aria-disabled={disabled || undefined}
           style={adornedContainerStyles}
         >
           {hasPrefix && (
