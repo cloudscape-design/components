@@ -20497,8 +20497,7 @@ never disabled. When the user clicks on it but there are no more items to show, 
       "type": "boolean",
     },
     {
-      "description": "Sets the total number of pages. When \`openEnd\` is \`true\`, this is the number of pages currently available.
-Only positive integers are allowed.",
+      "description": "Sets the total number of pages. Only positive integers are allowed.",
       "name": "pagesCount",
       "optional": false,
       "type": "number",
