@@ -56,7 +56,7 @@ export interface StepsProps extends BaseComponentProps {
 }
 
 export namespace StepsProps {
-  export type Status = StatusIndicatorProps.Type | 'log';
+  export type Status = StatusIndicatorProps.Type;
 
   export interface Step {
     status: Status;

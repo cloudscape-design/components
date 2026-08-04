@@ -8,7 +8,8 @@ import { NativeAttributes } from '../types/native-attributes';
 
 export interface StatusIndicatorProps extends BaseComponentProps {
   /**
-   * Specifies the status type.
+   * Specifies the status type. The `log` type renders a neutral dot for events that don't
+   * imply success, error, or progress.
    */
   type?: StatusIndicatorProps.Type;
   /**
@@ -54,6 +55,7 @@ export namespace StatusIndicatorProps {
     | 'pending'
     | 'in-progress'
     | 'loading'
-    | 'not-started';
+    | 'not-started'
+    | 'log';
   export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
 }
