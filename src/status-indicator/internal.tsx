@@ -9,22 +9,19 @@ import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SomeRequired } from '../internal/types';
 /**
  * @awsuiSystem core
  */
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalSpinner from '../spinner/internal';
 import { StatusIndicatorProps } from './interfaces';
-import { InternalStatusIndicatorType } from './internal-interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalStatusIndicatorProps extends Omit<StatusIndicatorProps, 'type'>, InternalBaseComponentProps {
-  /**
-   * Status type. The internal `log` value renders a plain dot for Steps.
-   */
-  type: InternalStatusIndicatorType;
-
+export interface InternalStatusIndicatorProps
+  extends SomeRequired<StatusIndicatorProps, 'type'>,
+    InternalBaseComponentProps {
   /**
    * Play an animation on the error icon when first rendered
    */
@@ -41,7 +38,7 @@ export interface InternalStatusIndicatorProps extends Omit<StatusIndicatorProps,
   __display?: 'inline' | 'inline-block';
 }
 
-const typeToIcon: (size: IconProps.Size) => Record<InternalStatusIndicatorType, JSX.Element> = size => ({
+const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
   error: <InternalIcon name="status-negative" size={size} />,
   warning: <InternalIcon name="status-warning" size={size} />,
   success: <InternalIcon name="status-positive" size={size} />,

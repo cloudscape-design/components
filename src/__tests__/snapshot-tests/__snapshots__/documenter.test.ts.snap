@@ -27824,6 +27824,7 @@ We do not support using this attribute to apply custom styling.",
           "loading",
           "pending",
           "success",
+          "log",
           "warning",
           "info",
           "not-started",
@@ -27955,7 +27956,7 @@ The function is called for each step and should return an object with the follow
       "description": "An array of individual steps
 
 Each step definition has the following properties:
- * \`status\` (string) - Status of the step corresponding to a status indicator. The \`log\` status renders a neutral dot marker.
+ * \`status\` (string) - Status of the step corresponding to a status indicator.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
  * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
