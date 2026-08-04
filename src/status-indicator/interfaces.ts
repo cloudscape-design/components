@@ -8,8 +8,7 @@ import { NativeAttributes } from '../types/native-attributes';
 
 export interface StatusIndicatorProps extends BaseComponentProps {
   /**
-   * Specifies the status type. The `log` type renders a neutral dot for events that don't
-   * imply success, error, or progress.
+   * Specifies the status type.
    */
   type?: StatusIndicatorProps.Type;
   /**
