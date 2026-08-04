@@ -45188,6 +45188,19 @@ Supported options:
           },
         },
         {
+          "name": "findExternalIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findInfo",
           "parameters": [],
           "returnType": {
@@ -54903,6 +54916,14 @@ Supported options:
           "returnType": {
             "isNullable": false,
             "name": "ExpandableSectionWrapper",
+          },
+        },
+        {
+          "name": "findExternalIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {
