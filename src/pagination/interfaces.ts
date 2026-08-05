@@ -104,13 +104,9 @@ export namespace PaginationProps {
   }
 
   export interface I18nStrings {
-    /** @i18n */
     jumpToPageInputLabel?: string;
-    /** @i18n */
     jumpToPageError?: string;
-    /** @i18n */
     jumpToPageLoadingText?: string;
-    /** @i18n */
     pagesCompactText?: (options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string;
   }
 
