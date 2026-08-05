@@ -28,6 +28,47 @@
   }
 }
 
+%input-default-styles {
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+}
+
+%input-hover-styles {
+  border-color: var(
+    #{custom-props.$styleBorderColorHover},
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  );
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+}
+
+%input-readonly-styles {
+  @include styles.form-readonly-element(
+    $background-color: var(
+        #{custom-props.$styleBackgroundReadonly},
+        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      ),
+    $border-color: var(
+        #{custom-props.$styleBorderColorReadonly},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+      )
+  );
+}
+
+%input-focus-styles {
+  @include styles.form-focus-element(
+    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+  );
+}
+
 .root {
   /* used in test-utils for component to distinguish input from other input-like components, for example autosuggest */
 }
@@ -40,54 +81,31 @@
   inline-size: 100%;
   cursor: text;
   box-sizing: border-box;
-  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
 
-  border-block: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-  border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-
-  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
-
   @include styles.font-body-m;
   min-block-size: awsui.$size-vertical-input;
 
+  @extend %input-default-styles;
+
   &:hover {
-    border-color: var(
-      #{custom-props.$styleBorderColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
-    );
     color: var(
       #{custom-props.$styleColorHover},
       var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
     );
-    background-color: var(
-      #{custom-props.$styleBackgroundHover},
-      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-    );
-    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+    @extend %input-hover-styles;
   }
 
   &.input-readonly {
-    @include styles.form-readonly-element(
-      $background-color: var(
-          #{custom-props.$styleBackgroundReadonly},
-          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-        ),
-      $border-color: var(
-          #{custom-props.$styleBorderColorReadonly},
-          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
-        )
-    );
     color: var(
       #{custom-props.$styleColorReadonly},
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
     );
     box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+    @extend %input-readonly-styles;
   }
 
   @include placeholder {
@@ -100,12 +118,9 @@
   }
 
   &:focus {
-    @include styles.form-focus-element(
-      $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-    );
     color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    @extend %input-focus-styles;
   }
 
   &:disabled {
@@ -134,7 +149,7 @@
       $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
       $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
-    &.input-has-icon-left {
+    &.input-has-icon-start {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
           (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
@@ -148,7 +163,7 @@
       $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
       $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
     );
-    &.input-has-icon-left {
+    &.input-has-icon-start {
       padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} -
           (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
@@ -169,10 +184,10 @@
       display: none;
     }
   }
-  &.input-has-icon-left {
+  &.input-has-icon-start {
     padding-inline-start: styles.$control-icon-horizontal-padding;
   }
-  &.input-has-icon-right {
+  &.input-has-icon-end {
     padding-inline-end: styles.$control-icon-horizontal-padding;
   }
   &.input-has-no-border-radius {
@@ -188,14 +203,14 @@
   position: relative;
 }
 
-.input-icon-left {
+.input-icon-start {
   position: absolute;
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
 }
 
-.input-icon-right {
+.input-icon-end {
   position: absolute;
   inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
@@ -223,4 +238,183 @@
 
 .inline-label {
   @include forms.inline-label;
+}
+
+.input-adorned-container {
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  box-sizing: border-box;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary);
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  min-block-size: awsui.$size-vertical-input;
+
+  @extend %input-default-styles;
+
+  &:hover {
+    @extend %input-hover-styles;
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+  }
+
+  &.input-adorned-container-readonly {
+    @extend %input-readonly-styles;
+    color: var(
+      #{custom-props.$styleColorReadonly},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+  }
+
+  &:focus-within {
+    @extend %input-focus-styles;
+    color: var(
+      #{custom-props.$styleColorFocus},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+  }
+
+  &.input-adorned-container-invalid {
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    ) {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within {
+      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  &.input-adorned-container-warning {
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    ) {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within {
+      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  &.input-adorned-container-disabled {
+    @include styles.form-disabled-element(
+      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
+      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+  }
+}
+
+.input-prefix,
+.input-suffix {
+  display: flex;
+  align-items: center;
+  flex-shrink: 1;
+  max-inline-size: max(0px, calc((100% - 12rem) / 2));
+  min-inline-size: 0;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: inherit;
+  @include styles.font-body-m;
+}
+
+.input-adornment-content {
+  display: block;
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.input-adornment-divider {
+  display: block;
+  flex-shrink: 0;
+  inline-size: awsui.$border-width-field;
+  background-color: awsui.$color-border-divider-default;
+  align-self: stretch;
+}
+
+.input-adorned {
+  flex: 1;
+  min-inline-size: 0;
+  border-block: none;
+  border-inline: none;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  min-block-size: unset;
+
+  &.input:focus {
+    border-block: 0;
+    border-inline: 0;
+    box-shadow: none;
+    outline: none;
+  }
+
+  &:hover {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border-color: transparent;
+    border-block: 0;
+    border-inline: 0;
+  }
+
+  &.input-readonly {
+    background-color: transparent;
+    border-color: transparent;
+    border-block: 0;
+    border-inline: 0;
+  }
+
+  &.input-invalid,
+  &.input-warning {
+    padding-inline-start: styles.$control-padding-horizontal;
+    border-block: 0;
+    border-inline: 0;
+    border-inline-start-width: 0;
+    box-shadow: none;
+
+    &:focus {
+      border-block: 0;
+      border-inline: 0;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}
+
+.input-adorned-container-invalid,
+.input-adorned-container-warning {
+  > .input-prefix,
+  > .input-adorned:first-child {
+    padding-inline-start: styles.$invalid-control-left-padding;
+  }
+
+  > .input-prefix,
+  > .input-suffix {
+    max-inline-size: max(
+      0px,
+      calc((100% - 12rem + #{styles.$invalid-control-left-border} - #{awsui.$border-width-field}) / 2)
+    );
+  }
 }

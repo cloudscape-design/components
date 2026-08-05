@@ -18,11 +18,11 @@ export const useSearchProps = (
     onChange('');
   }, [inputRef, onChange]);
   if (type === 'search' || type === 'visualSearch') {
-    searchProps.__leftIcon = 'search';
+    searchProps.__startIcon = 'search';
 
     if (!disabled && !readOnly && value) {
-      searchProps.__rightIcon = 'close';
-      searchProps.__onRightIconClick = handleIconClick;
+      searchProps.__endIcon = 'close';
+      searchProps.__onEndIconClick = handleIconClick;
     }
   }
   return searchProps;
