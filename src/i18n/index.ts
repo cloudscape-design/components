@@ -4,5 +4,5 @@
 'use client';
 export { I18nProvider as default, I18nProvider, I18nProviderProps } from './provider';
 export { importMessages } from './dynamic';
-export { useI18n } from './context';
+export { useCustomI18n } from './context';
 export type { I18nFormatFunction } from './context';
