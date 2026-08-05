@@ -9,16 +9,25 @@
 // The surface is FLAT: `BasicTable` (the root, default export) plus the `BasicTable*` parts as named
 // exports, so each part is individually importable, tree-shakeable, and documentable.
 
-export { default, BasicTableHeader, BasicTableHeaderCell, BasicTableBody, BasicTableRow, BasicTableCell, BasicTableExpandedContent, useBasicTable, useVirtualization, useColumnVirtualization } from './basic-table';
+export { default } from './basic-table';
+export { default as BasicTableHeader } from './basic-table-header';
+export { default as BasicTableHeaderCell } from './basic-table-header-cell';
+export { default as BasicTableBody } from './basic-table-body';
+export { default as BasicTableRow } from './basic-table-row';
+export { default as BasicTableCell } from './basic-table-cell';
+export { default as BasicTableExpandedContent } from './basic-table-expanded-content';
+
+export { useBasicTable, useVirtualization, useColumnVirtualization } from './basic-table';
+
+export type { BasicTableProps } from './basic-table';
+export type { BasicTableHeaderProps } from './basic-table-header';
+export type { BasicTableHeaderCellProps } from './basic-table-header-cell';
+export type { BasicTableBodyProps } from './basic-table-body';
+export type { BasicTableRowProps } from './basic-table-row';
+export type { BasicTableCellProps } from './basic-table-cell';
+export type { BasicTableExpandedContentProps } from './basic-table-expanded-content';
 
 export type {
-  BasicTableProps,
-  BasicTableHeaderProps,
-  BasicTableHeaderCellProps,
-  BasicTableBodyProps,
-  BasicTableRowProps,
-  BasicTableCellProps,
-  BasicTableExpandedContentProps,
   UseBasicTableConfig,
   UseBasicTableResult,
   BasicTableGetters,
