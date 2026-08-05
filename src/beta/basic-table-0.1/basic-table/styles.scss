@@ -3,8 +3,8 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles' as styles;
-@use '../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/index' as styles;
+@use '../../../internal/styles/tokens' as awsui;
 
 // Styles the BasicTable to visually match the Cloudscape `Table` by default. Every colour /
 // border / spacing value below is a Cloudscape design token rather than a bespoke value, so the

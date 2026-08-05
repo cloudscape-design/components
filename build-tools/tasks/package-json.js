@@ -56,6 +56,10 @@ function getComponentsExports() {
   // to the top-level barrel.
   for (const betaItem of listBetaItems('src')) {
     result[`./${betaItem}`] = `./${betaItem}/index.js`;
+    // Beta components ship their own self-contained test-utils at their versioned subpath.
+    if (fs.existsSync(path.join('src', betaItem, 'test-utils', 'dom', 'index.ts'))) {
+      result[`./${betaItem}/test-utils/dom`] = `./${betaItem}/test-utils/dom/index.js`;
+    }
   }
 
   // Per-component test-utils wrappers, both DOM and selectors

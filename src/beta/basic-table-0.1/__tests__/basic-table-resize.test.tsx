@@ -10,7 +10,7 @@ import BasicTable, {
   BasicTableRow,
   BasicTableCell,
   BasicTableProps,
-} from '../index';
+} from '../../../../lib/components/beta/basic-table-0.1';
 
 // Keyboard and screen-reader tests for the column resize handle. Each HeaderCell renders its own
 // resize handle when resizableColumns is set. The handle has a two-element model: a focusable toggle

@@ -9,9 +9,9 @@ import { GridNavigationProvider } from '../../../table/table-role';
 import LiveRegion from '../../../live-region/internal';
 import StatusIndicator from '../../../status-indicator/internal';
 
-import { getBaseProps } from '../internal/base-component';
+import { getBaseProps } from '../../../internal/base-component';
 import DragHandleWrapper from '../../../internal/components/drag-handle-wrapper';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { InternalBaseComponentProps } from '../../../internal/hooks/use-base-component';
 import { StickyColumnsCellState, useStickyCellStyles } from '../../../table/sticky-columns';
 import {
   BasicRowContextProvider,
