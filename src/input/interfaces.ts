@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
+
 import { BaseComponentProps } from '../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 import { FormFieldValidationControlProps } from '../types/form-field';
@@ -188,6 +190,16 @@ export interface InputProps
    * @awsuiSystem core
    */
   style?: InputProps.Style;
+
+  /**
+   * Use for content rendered before the editable value.
+   */
+  prefix?: ReactNode;
+
+  /**
+   * Use for content rendered after the editable value.
+   */
+  suffix?: ReactNode;
 }
 
 export namespace InputProps {
