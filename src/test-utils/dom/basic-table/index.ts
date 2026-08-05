@@ -24,7 +24,7 @@ export default class BasicTableWrapper extends ComponentWrapper {
 
   // The body row at the given zero-based index, or null when out of range.
   findRowByIndex(index: number): ElementWrapper | null {
-    return this.findRows()[index] ?? null;
+    return this.find(`.${styles.body} > .${styles.row}:nth-child(${index + 1})`);
   }
 
   // The loading status text shown while the table is loading.
