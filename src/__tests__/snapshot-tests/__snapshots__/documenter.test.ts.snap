@@ -31111,6 +31111,30 @@ Don't use read-only inputs outside a form.",
       "type": "boolean",
     },
     {
+      "defaultValue": "'both'",
+      "description": "Specifies the directions in which the user can resize the textarea:
+
+* \`both\` (default) - The user can change both the width and the height.
+* \`vertical\` - The user can only change the height. Use this when the textarea
+  is next to other content that a width change would disrupt.
+* \`horizontal\` - The user can only change the width.
+* \`none\` - The user can't resize the textarea. Longer content scrolls instead.
+  Consider using the \`rows\` property to make the initial height fit the expected content.",
+      "inlineType": {
+        "name": "TextareaProps.Resize",
+        "type": "union",
+        "values": [
+          "none",
+          "both",
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "resize",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the number of lines of text to set the height to.",
       "name": "rows",
       "optional": true,
