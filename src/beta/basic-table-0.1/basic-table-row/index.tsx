@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Row } from '../basic-table/internal';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { applyDisplayName } from '../../../internal/utils/apply-display-name';
 import { BasicTableProps } from '../basic-table/interfaces';
 
 export type BasicTableRowProps = BasicTableProps.RowProps;

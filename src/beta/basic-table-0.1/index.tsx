@@ -19,8 +19,6 @@ export { default as BasicTableCell } from './basic-table-cell';
 export { default as BasicTableExpandedContent } from './basic-table-expanded-content';
 
 export { useBasicTable } from './basic-table/use-basic-table';
-export { useVirtualization } from './use-virtualization/use-virtualization';
-export { useColumnVirtualization } from './use-virtualization/use-column-window';
 
 export type { BasicTableProps, UseBasicTableConfig, BasicTableGetters } from './basic-table/interfaces';
 export type { UseBasicTableResult } from './basic-table/use-basic-table';
@@ -31,12 +29,3 @@ export type { BasicTableBodyProps } from './basic-table-body';
 export type { BasicTableRowProps } from './basic-table-row';
 export type { BasicTableCellProps } from './basic-table-cell';
 export type { BasicTableExpandedContentProps } from './basic-table-expanded-content';
-export type {
-  VirtualizationConfig,
-  VirtualizationResult,
-  VirtualizationWindowItem,
-  VirtualizationRowProps,
-  VirtualizationVisibleRange,
-  ColumnVirtualizationConfig,
-  ColumnVirtualizationResult,
-} from './use-virtualization/interfaces';

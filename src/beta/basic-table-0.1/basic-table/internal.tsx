@@ -36,7 +36,7 @@ const getVisualContextClassname = (contextType: string) => `awsui-context-${cont
 // from the hook's prop-getters (read from context) and binds to the Nth column via a positional
 // `ColumnIndexContext`, or by an explicit `columnId`. Per-element concerns that need a hook each —
 // roving tabindex (`useSingleTabStopNavigation`) and per-cell sticky (`useStickyCellStyles`) — run
-// inside Cell / HeaderCell. A virtualizing consumer spreads `useVirtualization` `rowProps`
+// inside Cell / HeaderCell. A virtualizing consumer spreads their own `rowProps`
 // (absolute offset + measure ref) onto `Row`.
 
 // Maps the sticky store's per-cell state to this component's sticky style keys.
@@ -241,8 +241,8 @@ export const Header = ({ sticky, children }: BasicTableProps.HeaderProps): React
 
 // --- Body --------------------------------------------------------------------
 
-// Renders the mapped Row children directly (no harvesting) and carries the runway ref/style spread
-// from `useVirtualization` in the virtual case.
+// Renders the mapped Row children directly (no harvesting) and carries a consumer's own runway
+// ref/style spread when windowing.
 export const Body = React.forwardRef<HTMLTableSectionElement, BasicTableProps.BodyProps>(function Body(
   { children, className, ...rest },
   ref

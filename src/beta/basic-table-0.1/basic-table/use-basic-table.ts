@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../../../internal/events';
 import { StickyColumnsModel, useStickyColumns } from '../../../table/sticky-columns';
 import { BasicTableGetters, BasicTableProps, UseBasicTableConfig } from './interfaces';
 

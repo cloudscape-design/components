@@ -10,11 +10,11 @@ empty/loading states, density, styling, and the grid accessibility semantics. It
 the header and rows it is *given* as declarative children: it has no `items` prop and does
 not own the data.
 
-Two more capabilities ship alongside it, each opt-in and wired by hand:
+Two more capabilities are wired by hand, each opt-in and owned by the consumer:
 
-- **Virtualization** is a separate primitive, `useVirtualization`, not a BasicTable prop. It
-  windows a large or streaming dataset over a BasicTable so only the visible rows render.
-  `useColumnVirtualization` does the same for the horizontal axis.
+- **Virtualization** is not built in and ships no export: BasicTable is windowing-free. To window a
+  large or streaming dataset, bring your own virtualizer and spread its positioning props onto
+  `Body` / `Row` (see *Virtualization (bring your own)* below).
 - **Sorting** is composed on top by the consumer. The core carries no sort state; the consumer
   owns its sort state, sorts its own data, and marks the sorted column. A ready-made `SortToggle`
   pattern is shown in the composed-sorting demo.
@@ -29,17 +29,15 @@ The package (default export `BasicTable`, plus named exports) provides three thi
 - **Headless hook** — `useBasicTable`. A positional `columns` config plus table state in, pure
   prop-getters out. Use it directly only to build a table surface the compound parts can't
   render for you.
-- **Virtualization primitives** — `useVirtualization` and `useColumnVirtualization`. Standalone
-  count-based windowing hooks the consumer spreads onto a BasicTable.
 
 Also exported: the props type `BasicTableProps`, `UseBasicTableConfig`, `UseBasicTableResult`,
-`BasicTableGetters`, and the virtualization config/result types.
+and `BasicTableGetters`.
 
 ## When to use
 
 - Use BasicTable when you want to own how each row and its cells are assembled — the parts
   read like markup, and expanded detail stays next to the row it belongs to.
-- Add `useVirtualization` when the dataset is large enough that rendering every row hurts
+- Bring your own virtualization when the dataset is large enough that rendering every row hurts
   responsiveness, or when rows arrive continuously (a live log stream) and the view must keep
   up. BasicTable itself renders exactly the rows you pass it.
 - Use the built-in row expansion when a row expands into detail that doesn't match the column
@@ -82,7 +80,7 @@ no config harvested from the JSX.
   space. A **fixed** column sets `width`.
 - `minWidth` is the `minmax` floor for a flexible column and the floor a resize cannot drop below.
 - `id` is optional. Supply it only to bind a `HeaderCell` / `Cell` by `columnId` instead of by
-  position, or when `useColumnVirtualization` targets the column.
+  position.
 
 The `columns` list is the single source of column *width* authority; the header cells are the
 source of column *order and count*.
@@ -129,70 +127,18 @@ A row can expand into arbitrary non-tabular content. Nest a `BasicTable.Expanded
 - Give `ExpandedContent` a `label` so screen-reader users navigating by region know which row they
   are reading.
 
-## Virtualization
+## Virtualization (bring your own)
 
-`useVirtualization` windows a dataset over a BasicTable. It knows nothing about data, columns, or
-expansion — it takes a row `count` and a height strategy and returns positioning props to spread:
-
-```tsx
-const v = useVirtualization({ count: items.length, estimatedRowHeight: 40 });
-
-<BasicTable.Root columns={columns} totalRowCount={items.length} maxHeight={480}>
-  <BasicTable.Header>{/* header cells */}</BasicTable.Header>
-  <BasicTable.Body {...v.runwayProps}>
-    {v.window.map(({ index, offset }) => (
-      <BasicTable.Row key={items[index].id} index={index} {...v.rowProps(index, offset)}>
-        {/* cells */}
-      </BasicTable.Row>
-    ))}
-  </BasicTable.Body>
-</BasicTable.Root>
-```
-
-Config (`VirtualizationConfig`):
-
-- `count` — total row count of the full dataset.
-- `estimatedRowHeight` — runway height per row before measurement.
-- `getRowHeight?(index)` — return a fixed px height, or `'auto'` to measure the row (wrapping
-  lines, or a row expanded into nested content). Omit for uniform fixed rows (the fast path, no row
-  is observed). Keep the reference stable.
-- `overscan?` — rows rendered beyond the visible range on each side (default 10).
-- `getExpandedRowHeight?(index)` — a pre-measurement runway seed for an `'auto'` row so the runway
-  does not jump on first entry.
-- `onVisibleRangeChange?` — fires when the windowed index range changes.
-
-Result (`VirtualizationResult`):
-
-- `window` — the `[{ index, offset }]` slice to iterate (visible range plus overscan), *not* the
-  whole dataset.
-- `runwayProps` — spread onto `Body`; sizes the runway to the full virtual height and provides the
-  ref used to locate the scroll viewport.
-- `rowProps(index, offset)` — spread onto each windowed `Row`; sets absolute offset positioning,
-  the `aria-rowindex` override, and a measure ref for `'auto'` rows. Fixed rows are clamped to their
-  model height; `'auto'` rows are left unbounded so they measure their real height.
-- `scrollToIndex(index)` — scroll a row into view; releases the live-tail pin.
-- `scrollToEnd()` — pin the viewport to the last row (compose stick-to-bottom live tail on top).
-- `isPinnedToEnd()` — true when the viewport is pinned to the last row.
-- `visibleRange` — the current `{ firstIndex, lastIndex }`.
+BasicTable is windowing-free and ships no virtualization primitive. To window a large or streaming
+dataset, bring your own virtualization: render only the visible slice of `Row`s and spread your
+virtualizer's positioning props onto `Body` (the runway height + scroll-container ref) and each
+`Row` (absolute offset, an `aria-rowindex` override, and a measure ref for auto-height rows). Keep
+the horizontal axis simple by giving windowed `Cell`s a `columnId` and a `grid-column-start` style so
+each lands on its real track.
 
 Bound the viewport (a `height` / `maxHeight` on `Root`, or a bounded parent) so the table windows
-instead of mounting every row. Set `totalRowCount` on `Root` to the full dataset size so the grid's
-`aria-rowcount` and empty detection are correct even though only a slice is rendered.
-
-### Column virtualization
-
-`useColumnVirtualization` windows the horizontal axis. It only makes sense when every column has a
-fixed px width (deterministic offsets); flexible (`1fr`) columns should not use it.
-
-Config (`ColumnVirtualizationConfig`): `widths` (fixed px widths in column order), `leadingOffset?`
-(width of any leading track before the first column, default 0), `overscan?` (default 3),
-`pinnedFirst?` / `pinnedLast?` (leading/trailing columns always rendered, default 0).
-
-Result (`ColumnVirtualizationResult`): `visibleColumns` (the `Set<number>` of column indices to
-render this frame), `ref` (attach to the horizontal scroll container), and `trackStart(columnIndex)`
-(the absolute grid line the column starts at, spread as `grid-column-start` so a windowed cell lands
-on its real track). Render only the cells whose index is in `visibleColumns` and give each a
-`columnId` (from its `columns` entry) so it binds to the right column.
+instead of mounting every row, and set `totalRowCount` on `Root` to the full dataset size so the
+grid's `aria-rowcount` and empty detection stay correct even though only a slice is rendered.
 
 ## The headless hook
 
@@ -227,8 +173,8 @@ Beyond the shared config above, `BasicTable.Root` adds the presentational shell:
 - Keyboard model: `role="grid"` (the default) gives cell-by-cell roving-tabindex navigation; the
   grid is a single tab stop. Use `role="table"` for static, non-interactive data.
 - `totalRowCount` on `Root` is authoritative for the grid's `aria-rowcount` and empty detection —
-  set it to the full dataset size, especially under virtualization where only a slice is rendered.
-  The header is row 1, so data rows carry `aria-rowindex` of index + 2.
+  set it to the full dataset size, especially when a consumer windows the data so only a slice is
+  rendered. The header is row 1, so data rows carry `aria-rowindex` of index + 2.
 - Supply the accessible names the component needs: `i18nStrings.tableLabel` for the table,
   `ExpandedContent`'s `label` for each expanded region, and (when resizing)
   `i18nStrings.resizerRoleDescription` for the resize handle.
