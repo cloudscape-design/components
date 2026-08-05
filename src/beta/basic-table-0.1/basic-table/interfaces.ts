@@ -112,6 +112,25 @@ export interface BasicTableProps extends BaseComponentProps, UseBasicTableConfig
   loadingText?: string;
 }
 
+/** Arbitrary `data-*` attributes forwarded to a part's root element — e.g. the `data-index`
+ *  measurement hook a 3rd-party virtualization library (react-window, TanStack Virtual, …) sets on
+ *  each row. */
+interface DataAttributes {
+  [key: `data-${string}`]: string | number | boolean | undefined;
+}
+
+/** Minimal DOM pass-through shared by BasicTable's structural parts. Deliberately NOT the full
+ *  `HTMLAttributes` surface: it omits the event-handler grab-bag (which the documenter can't
+ *  serialize and which over-exposes the DOM), keeping only what a consumer — or a 3rd-party
+ *  virtualization library — actually forwards: styling hooks and `data-*` measurement attributes. */
+interface StructuralPartProps extends DataAttributes {
+  /** Extra CSS class applied to the part's root element. */
+  className?: string;
+  /** Inline styles applied to the part's root element — e.g. the absolute-offset / `transform`
+   *  a consumer's own virtualization spreads onto each row or onto the body runway. */
+  style?: React.CSSProperties;
+}
+
 export namespace BasicTableProps {
   export type Role = 'grid' | 'table';
   export type ColumnLayout = 'fixed' | 'auto';
@@ -141,15 +160,18 @@ export namespace BasicTableProps {
    *  default (Nth HeaderCell = Nth column); pass `columnId` to bind by id. To make a column
    *  sortable, set `aria-sort` here (spread through) and render your own sort control in the
    *  children — the table holds no sort state. */
-  export interface HeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  export interface HeaderCellProps extends StructuralPartProps {
     /** Bind to a column by id instead of by position. */
     columnId?: string;
+    /** Sort indicator for a sortable column, forwarded to the header cell's `aria-sort`. BasicTable
+     *  holds no sort state — render your own sort control in `children` and manage sorting yourself. */
+    'aria-sort'?: React.AriaAttributes['aria-sort'];
     children?: React.ReactNode;
   }
 
   /** Props for `BasicTable.Body`. Renders ELEMENT children (Row elements) — not a function-child.
    *  Accepts a consumer's own virtualization runway props (style + ref) when windowing. */
-  export interface BodyProps extends React.HTMLAttributes<HTMLElement> {
+  export interface BodyProps extends StructuralPartProps {
     children?: React.ReactNode;
   }
 
@@ -157,7 +179,7 @@ export namespace BasicTableProps {
    *  data index (drives `aria-rowindex` and cell wiring). Accepts standard row HTML attributes
    *  (including a `style`/`aria-rowindex` a consumer's own virtualization spreads); a `ref` (e.g. a
    *  virtualization measure ref) forwards to the underlying `<tr>`. */
-  export interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  export interface RowProps extends StructuralPartProps {
     /** Zero-based data index of this row. */
     index: number;
     /** Stable identity for the row's expansion/region wiring. Required for accessible expansion:
@@ -166,15 +188,19 @@ export namespace BasicTableProps {
     id?: string;
     /** Whether the row's `ExpandedContent` region is shown (consumer-controlled). */
     expanded?: boolean;
-    /** Invoked when the row's expansion is toggled from within (e.g. Escape in the region). */
-    onToggleExpand?: () => void;
+    /** Fired when the row's expansion is toggled from within — e.g. Escape pressed inside the
+     *  region when there is no disclosure toggle to return focus to. Detail is empty. */
+    onToggleExpand?: NonCancelableEventHandler;
+    /** Absolute row position for `aria-rowindex`, forwarded so a consumer's own virtualization can
+     *  report a windowed row's true position in the full dataset (overrides the computed value). */
+    'aria-rowindex'?: number;
     children?: React.ReactNode; // Cells + optional ExpandedContent
   }
 
   /** Props for `BasicTable.Cell`. Positional by default (Nth Cell = Nth column); pass `columnId`
    *  to bind by id. May carry a `style` (e.g. a `gridColumnStart` from a consumer's own column
    *  windowing) and standard cell HTML attributes. */
-  export interface CellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  export interface CellProps extends StructuralPartProps {
     /** Bind to a column by id instead of by position. */
     columnId?: string;
     children?: React.ReactNode;
