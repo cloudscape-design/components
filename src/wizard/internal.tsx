@@ -43,6 +43,7 @@ export default function InternalWizard({
   submitButtonText,
   isLoadingNextStep = false,
   allowSkipTo = false,
+  allowNonLinearNavigation = false,
   customPrimaryActions,
   secondaryActions,
   onCancel,
@@ -187,6 +188,7 @@ export default function InternalWizard({
           activeStepIndex={actualActiveStepIndex}
           farthestStepIndex={farthestStepIndex.current}
           allowSkipTo={allowSkipTo}
+          allowNonLinearNavigation={allowNonLinearNavigation}
           hidden={smallContainer}
           i18nStrings={i18nStrings}
           isLoadingNextStep={isLoadingNextStep}
@@ -200,6 +202,7 @@ export default function InternalWizard({
               activeStepIndex={actualActiveStepIndex}
               farthestStepIndex={farthestStepIndex.current}
               allowSkipTo={allowSkipTo}
+              allowNonLinearNavigation={allowNonLinearNavigation}
               i18nStrings={i18nStrings}
               isLoadingNextStep={isLoadingNextStep}
               onStepClick={onStepClick}

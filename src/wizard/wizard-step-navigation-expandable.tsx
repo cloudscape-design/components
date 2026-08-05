@@ -13,6 +13,7 @@ interface WizardStepNavigationExpandableProps {
   activeStepIndex: number;
   farthestStepIndex: number;
   allowSkipTo: boolean;
+  allowNonLinearNavigation: boolean;
   i18nStrings: WizardProps.I18nStrings;
   isLoadingNextStep: boolean;
   onStepClick: (stepIndex: number) => void;
@@ -26,6 +27,7 @@ export default function WizardStepNavigationExpandable({
   activeStepIndex,
   farthestStepIndex,
   allowSkipTo,
+  allowNonLinearNavigation,
   i18nStrings,
   isLoadingNextStep,
   onStepClick,
@@ -55,6 +57,7 @@ export default function WizardStepNavigationExpandable({
           activeStepIndex={activeStepIndex}
           farthestStepIndex={farthestStepIndex}
           allowSkipTo={allowSkipTo}
+          allowNonLinearNavigation={allowNonLinearNavigation}
           i18nStrings={i18nStrings}
           isLoadingNextStep={isLoadingNextStep}
           onStepClick={onStepClick}
