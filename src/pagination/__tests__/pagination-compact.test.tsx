@@ -3,10 +3,18 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import I18nProvider from '../../../lib/components/i18n';
-import messages from '../../../lib/components/i18n/messages/all.en';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Pagination from '../../../lib/components/pagination';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+// A controlled catalog so the tests exercise pagination's substitution and the
+// openEnd `select` branch, independent of the real shipped strings.
+const i18nMessages = {
+  pagination: {
+    'i18nStrings.pagesCompactText':
+      '{openEnd, select, true {{currentPage} of {pagesCount}+} false {{currentPage} of {pagesCount}} other {}}',
+  },
+};
 
 function renderPagination(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -15,23 +23,19 @@ function renderPagination(jsx: React.ReactElement) {
 }
 
 function renderWithI18n(jsx: React.ReactElement) {
-  const { container, rerender } = render(
-    <I18nProvider messages={[messages]} locale="en">
-      {jsx}
-    </I18nProvider>
-  );
+  const { container, rerender } = render(<TestI18nProvider messages={i18nMessages}>{jsx}</TestI18nProvider>);
   const wrapper = createWrapper(container).findPagination()!;
   return { wrapper, rerender };
 }
 
 describe('compact variant', () => {
   describe('visible counter text', () => {
-    test('uses i18n catalog "# of #" format when i18n provider is present', () => {
+    test('substitutes the page state into the i18n string when a provider is present', () => {
       const { wrapper } = renderWithI18n(<Pagination pagesVariant="compact" currentPageIndex={3} pagesCount={12} />);
       expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('3 of 12');
     });
 
-    test('appends "+" to the localized text when openEnd is true', () => {
+    test('selects the openEnd branch of the i18n string when openEnd is true', () => {
       const { wrapper } = renderWithI18n(
         <Pagination pagesVariant="compact" currentPageIndex={3} pagesCount={12} openEnd={true} />
       );
@@ -57,18 +61,16 @@ describe('compact variant', () => {
       expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('3 / 12+');
     });
 
-    test('visible text updates when currentPageIndex changes', () => {
-      const { wrapper, rerender } = renderWithI18n(
-        <Pagination pagesVariant="compact" currentPageIndex={1} pagesCount={10} />
+    test('consumer override takes precedence over the i18n provider string', () => {
+      const { wrapper } = renderWithI18n(
+        <Pagination
+          pagesVariant="compact"
+          currentPageIndex={3}
+          pagesCount={12}
+          i18nStrings={{ pagesCompactText: ({ currentPage, pagesCount }) => `${currentPage} / ${pagesCount}` }}
+        />
       );
-      expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('1 of 10');
-
-      rerender(
-        <I18nProvider messages={[messages]} locale="en">
-          <Pagination pagesVariant="compact" currentPageIndex={7} pagesCount={10} />
-        </I18nProvider>
-      );
-      expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('7 of 10');
+      expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('3 / 12');
     });
   });
 });
