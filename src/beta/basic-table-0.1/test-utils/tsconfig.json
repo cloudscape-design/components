@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/test-utils",
+    "rootDir": ".",
+    "declaration": true,
+    "tsBuildInfoFile": "../../dist/.cache/test-utils.tsbuildinfo"
+  },
+  "include": ["./", "./types"],
+  "exclude": []
+}
