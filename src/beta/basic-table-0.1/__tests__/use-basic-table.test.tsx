@@ -3,7 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { act, renderHook } from '@testing-library/react';
+import { act } from '@testing-library/react';
+import { renderHook } from '../../../__tests__/render-hook';
 import { BasicTableProps, UseBasicTableConfig } from '../basic-table/interfaces';
 import { useBasicTable, UseBasicTableResult } from '../basic-table/use-basic-table';
 

@@ -10,9 +10,9 @@ import BasicTable, {
   BasicTableRow,
   BasicTableCell,
   BasicTableProps,
-} from '../index';
+} from '../../../../lib/components/beta/basic-table-0.1';
 
-import styles from '../basic-table/styles.css.js';
+import styles from '../../../../lib/components/beta/basic-table-0.1/basic-table/styles.css.js';
 
 // Tests for sticky (pinned) columns. Sticky styling comes from the shared sticky-columns primitive:
 // useStickyColumns measures cumulative offsets and disables itself when the table is not scrollable

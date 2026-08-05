@@ -10,7 +10,7 @@ import BasicTable, {
   BasicTableRow,
   BasicTableCell,
   BasicTableProps,
-} from '../index';
+} from '../../../../lib/components/beta/basic-table-0.1';
 
 // Localization is prop-driven: the consumer passes already-localized strings through the typed
 // `i18nStrings` object and the component reads them directly. There is no I18nProvider runtime in

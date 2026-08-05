@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import createWrapper from '../test-utils/dom';
+import createWrapper from '../../../../lib/components/beta/basic-table-0.1/test-utils/dom';
 import BasicTable, {
   BasicTableHeader,
   BasicTableHeaderCell,
@@ -11,9 +11,9 @@ import BasicTable, {
   BasicTableRow,
   BasicTableCell,
   BasicTableProps,
-} from '../index';
+} from '../../../../lib/components/beta/basic-table-0.1';
 
-import styles from '../basic-table/styles.css.js';
+import styles from '../../../../lib/components/beta/basic-table-0.1/basic-table/styles.css.js';
 
 // Tests for the BasicTable compound components (Root/Header/HeaderCell/Body/Row/Cell) over the
 // headless useBasicTable hook, accessed through the generated test-utils wrapper. Columns are a
