@@ -6,8 +6,9 @@
 // breaking API changes bump the directory (…-0.2) rather than the package semver. Beta is opt-in via
 // this explicit path and is intentionally NOT part of the stable top-level package barrel.
 //
-// The surface is FLAT: `BasicTable` (the root, default export) plus the `BasicTable*` parts as named
-// exports, so each part is individually importable, tree-shakeable, and documentable.
+// FLAT surface: `BasicTable` (root, default export) + the `BasicTable*` parts as named exports (each
+// individually importable, tree-shakeable, and documented as its own component). This entry also owns
+// the hook + shared type re-exports so the per-component dirs stay single-component for the documenter.
 
 export { default } from './basic-table';
 export { default as BasicTableHeader } from './basic-table-header';
@@ -17,21 +18,20 @@ export { default as BasicTableRow } from './basic-table-row';
 export { default as BasicTableCell } from './basic-table-cell';
 export { default as BasicTableExpandedContent } from './basic-table-expanded-content';
 
-export { useBasicTable, useVirtualization, useColumnVirtualization } from './basic-table';
+export { useBasicTable } from './basic-table/use-basic-table';
+export { useVirtualization } from './use-virtualization/use-virtualization';
+export { useColumnVirtualization } from './use-virtualization/use-column-window';
 
-export type { BasicTableProps } from './basic-table';
+export type { BasicTableProps, UseBasicTableConfig, BasicTableGetters } from './basic-table/interfaces';
+export type { UseBasicTableResult } from './basic-table/use-basic-table';
+export type { StickyColumnsModel } from '../../table/sticky-columns';
 export type { BasicTableHeaderProps } from './basic-table-header';
 export type { BasicTableHeaderCellProps } from './basic-table-header-cell';
 export type { BasicTableBodyProps } from './basic-table-body';
 export type { BasicTableRowProps } from './basic-table-row';
 export type { BasicTableCellProps } from './basic-table-cell';
 export type { BasicTableExpandedContentProps } from './basic-table-expanded-content';
-
 export type {
-  UseBasicTableConfig,
-  UseBasicTableResult,
-  BasicTableGetters,
-  StickyColumnsModel,
   VirtualizationConfig,
   VirtualizationResult,
   VirtualizationWindowItem,
@@ -39,4 +39,4 @@ export type {
   VirtualizationVisibleRange,
   ColumnVirtualizationConfig,
   ColumnVirtualizationResult,
-} from './basic-table';
+} from './use-virtualization/interfaces';

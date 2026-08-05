@@ -8,9 +8,12 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { BasicTableProps } from './interfaces';
 import { InternalRoot } from './internal';
 
-// `BasicTable` is the base component: it takes the positional `columns` config, drives the headless
-// `useBasicTable` hook, provides its instance to the self-rendering parts, and renders the grid shell
-// around the declarative header + rows it is given.
+// The root BasicTable component (the beta module's default export). Documented as `BasicTable` (this
+// dir's basename). The parts (BasicTableRow, …) live in sibling dirs; the hooks + shared types are
+// re-exported from the beta entry (../index), not here, so the documenter treats this dir as a single
+// component with a single props type.
+export type { BasicTableProps };
+
 function BasicTable({
   columnLayout = 'fixed',
   role = 'grid',
@@ -36,24 +39,3 @@ function BasicTable({
 applyDisplayName(BasicTable, 'BasicTable');
 
 export default BasicTable;
-
-export { useBasicTable } from './use-basic-table';
-export { useVirtualization } from '../use-virtualization/use-virtualization';
-export { useColumnVirtualization } from '../use-virtualization/use-column-window';
-
-// Root + headless types.
-export type { BasicTableProps };
-export type { UseBasicTableConfig, BasicTableGetters } from './interfaces';
-export type { UseBasicTableResult } from './use-basic-table';
-export type { StickyColumnsModel } from '../../../table/sticky-columns';
-
-// Virtualization primitive types.
-export type {
-  VirtualizationConfig,
-  VirtualizationResult,
-  VirtualizationWindowItem,
-  VirtualizationRowProps,
-  VirtualizationVisibleRange,
-  ColumnVirtualizationConfig,
-  ColumnVirtualizationResult,
-} from '../use-virtualization/interfaces';
