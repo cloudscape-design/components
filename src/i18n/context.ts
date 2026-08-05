@@ -94,7 +94,7 @@ export function useCustomI18n<
     provided: ValueType,
     customHandler?: CustomHandler<ValueType, NamespaceTypes[ComponentName][MessageKey]>
   ) => format(namespace, componentName, key, provided, customHandler);
-  return formatFunction as I18nFormatFunction<NamespaceTypes, ComponentName>;
+  return formatFunction;
 }
 
 export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
