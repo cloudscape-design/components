@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../basic-table/styles.selectors.js';
+import styles from '../../../beta/basic-table-0.1/basic-table/styles.selectors.js';
 
 export default class BasicTableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

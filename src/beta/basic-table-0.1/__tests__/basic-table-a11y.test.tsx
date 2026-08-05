@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-import createWrapper from '../../../../lib/components/beta/basic-table-0.1/test-utils/dom';
+import createWrapper from '../../../../lib/components/test-utils/dom';
 import BasicTable, {
   BasicTableHeader,
   BasicTableHeaderCell,

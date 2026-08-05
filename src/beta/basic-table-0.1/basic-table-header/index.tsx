@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Header } from '../basic-table/internal';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { applyDisplayName } from '../../../internal/utils/apply-display-name';
 import { BasicTableProps } from '../basic-table/interfaces';
 
 export type BasicTableHeaderProps = BasicTableProps.HeaderProps;

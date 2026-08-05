@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BaseComponentProps } from '../types/base-component';
-import { NonCancelableEventHandler } from '../types/events';
+import { BaseComponentProps } from '../../../internal/base-component';
+import { NonCancelableEventHandler } from '../../../internal/events';
 
 // Public types for BasicTable: the headless `useBasicTable` hook config and the compound-component
 // props. BasicTable renders the header and rows it is given (declarative `Header` / `HeaderCell` /
 // `Body` / `Row` / `Cell` / `ExpandedContent` children; there is no `items` prop) and owns no data.
-// It is windowing-free — to window a large dataset, a consumer composes the separate
-// `useVirtualization` primitive on top (its types live in `../use-virtualization/interfaces`).
+// It is windowing-free and owns no virtualization — to window a large dataset, a consumer brings
+// their own virtualization and spreads the resulting offset/measure props onto `Body` / `Row`.
 //
 // Columns are a positional width list: `columns: [{ width?, minWidth?, id? }, ...]`, matched to
 // cells by position (Nth HeaderCell/Cell = Nth column). A flexible column omits `width`
 // (`minmax(minWidth, 1fr)`); a fixed column sets `width`. A stable `id` is only needed to bind a
-// cell by id or to use `useColumnVirtualization`.
+// cell by id rather than by position.
 
 /** Config for the headless `useBasicTable` hook and, by extension, `BasicTable.Root`. */
 export interface UseBasicTableConfig {
@@ -118,14 +118,14 @@ export namespace BasicTableProps {
 
   /** A column's layout authority — a positional entry (order is the identity). A flexible column
    *  omits `width` (`minmax(minWidth, 1fr)`); a fixed column sets `width`. A stable `id` is only
-   *  needed when the column-virtualization primitive is used. */
+   *  needed to bind a cell by id rather than by position. */
   export interface ColumnDefinition {
     /** Fixed track width (px). Omit for a flexible track that shares remaining space. */
     width?: number;
     /** Minimum track width (px) — the `minmax` floor for a flexible track, and the resize floor. */
     minWidth?: number;
-    /** Stable column identifier — only required when `useColumnVirtualization` binds to this
-     *  column (and to bind a `HeaderCell`/`Cell` by id instead of position). */
+    /** Stable column identifier — only needed to bind a `HeaderCell`/`Cell` by id
+     * rather than by position. */
     id?: string;
   }
 
@@ -142,20 +142,20 @@ export namespace BasicTableProps {
    *  sortable, set `aria-sort` here (spread through) and render your own sort control in the
    *  children — the table holds no sort state. */
   export interface HeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
-    /** Bind to a column by id instead of by position (only needed with column virtualization). */
+    /** Bind to a column by id instead of by position. */
     columnId?: string;
     children?: React.ReactNode;
   }
 
   /** Props for `BasicTable.Body`. Renders ELEMENT children (Row elements) — not a function-child.
-   *  Accepts the runway props spread from `useVirtualization` (style + ref) in the virtual case. */
+   *  Accepts a consumer's own virtualization runway props (style + ref) when windowing. */
   export interface BodyProps extends React.HTMLAttributes<HTMLElement> {
     children?: React.ReactNode;
   }
 
   /** Props for `BasicTable.Row`. Structural — carries NO `item`/data. `index` is the row's
    *  data index (drives `aria-rowindex` and cell wiring). Accepts standard row HTML attributes
-   *  (including the `style`/`aria-rowindex` spread from `useVirtualization`); a `ref` (e.g. the
+   *  (including a `style`/`aria-rowindex` a consumer's own virtualization spreads); a `ref` (e.g. a
    *  virtualization measure ref) forwards to the underlying `<tr>`. */
   export interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
     /** Zero-based data index of this row. */
@@ -172,10 +172,10 @@ export namespace BasicTableProps {
   }
 
   /** Props for `BasicTable.Cell`. Positional by default (Nth Cell = Nth column); pass `columnId`
-   *  to bind by id. May carry a `style` (e.g. a `gridColumnStart` from `useColumnVirtualization`)
-   *  and standard cell HTML attributes. */
+   *  to bind by id. May carry a `style` (e.g. a `gridColumnStart` from a consumer's own column
+   *  windowing) and standard cell HTML attributes. */
   export interface CellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
-    /** Bind to a column by id instead of by position (only needed with column virtualization). */
+    /** Bind to a column by id instead of by position. */
     columnId?: string;
     children?: React.ReactNode;
   }
