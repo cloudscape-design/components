@@ -171,6 +171,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
     padding-inline-end: container.$header-padding-horizontal;
 
+    // HIDE (collapsed state): padding settles back to symmetric top/bottom.
     @include styles.with-motion {
       transition: padding-block-end $reveal-duration-hide $reveal-easing;
     }
@@ -299,11 +300,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding-inline-start: $icon-total-space-normal;
   }
 
-  // One-theme only: replace the display:none/block toggle above with an animated
-  // grid-template-rows reveal. Scoped to one-theme (opt-in) so Visual Refresh and
-  // classic keep the pre-existing instantaneous display toggle — preserving the DOM
-  // visibility timing that existing consumer test suites (unit and e2e/webdriver
-  // isDisplayed()/isExisting() checks written against the old contract) rely on.
+  // One-theme only: animated grid-template-rows reveal instead of the display
+  // toggle above. Visual Refresh and classic keep instantaneous display toggling,
+  // since consumers of those themes rely on synchronous isDisplayed()/isExisting()
+  // DOM visibility checks.
   @include theming.one-theme-only {
     display: grid;
     grid-template-rows: 0fr;
@@ -519,14 +519,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
-// Semantic wrapper around HeadingTag + actions in non-container variants.
-// min-block-size: 0 allows this element (a grid item) to collapse to zero
-// height when an ancestor uses grid-template-rows: 0fr (side-navigation
-// section header collapse). Without it, min-block-size: auto (the default)
-// holds the row open at content height.
-// IMPORTANT: This rule must remain GLOBAL (not scoped to .header-icon-end)
-// because the side-nav section collapse applies grid-template-rows: 0fr on
-// the header wrapper regardless of icon position (withIcons may be false).
+// min-block-size: 0 lets this grid item collapse to zero height when an ancestor
+// uses grid-template-rows: 0fr (side-navigation section header collapse).
+// Must remain global (not scoped to .header-icon-end) because the side-nav
+// collapse targets the header wrapper regardless of icon position.
 .header-content {
   min-block-size: 0;
 }

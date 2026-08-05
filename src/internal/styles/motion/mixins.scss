@@ -22,13 +22,10 @@
 }
 /* stylelint-enable @cloudscape-design/no-motion-outside-of-mixin, selector-combinator-disallowed-list, selector-pseudo-class-no-unknown, selector-class-pattern */
 
-// Variant of with-motion for animations that are only offered in one-theme (opt-in).
-// Outside one-theme, no transition/animation is declared at all, so the surrounding
-// property changes apply instantly — same final CSS values, no animated reveal. Use
-// this (instead of with-motion) for animation-only additions so that Visual Refresh
-// and classic keep their pre-existing instantaneous state changes.
-// Named to end in "with-motion" so it satisfies the no-motion-outside-of-mixin stylelint
-// rule, which only recognizes @include params ending in that exact suffix.
+// Like with-motion, but scoped to one-theme only — outside that context no
+// transition/animation is declared, so property changes apply instantly.
+// Use for animation-only additions where VR/classic must remain instantaneous.
+// Named "…with-motion" to satisfy the no-motion-outside-of-mixin stylelint rule.
 /* stylelint-disable @cloudscape-design/no-motion-outside-of-mixin, selector-combinator-disallowed-list, selector-pseudo-class-no-unknown, selector-class-pattern */
 @mixin one-theme-with-motion($selector: '') {
   :global(#{$selector}.awsui-one-theme) & {
