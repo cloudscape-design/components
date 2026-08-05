@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useSingleTabStopNavigation, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { GridNavigationProvider } from '../../../table/table-role';
-import LiveRegion from '../../../live-region/internal';
-import StatusIndicator from '../../../status-indicator/internal';
-
 import { getBaseProps } from '../../../internal/base-component';
 import DragHandleWrapper from '../../../internal/components/drag-handle-wrapper';
+import { fireNonCancelableEvent } from '../../../internal/events';
 import { InternalBaseComponentProps } from '../../../internal/hooks/use-base-component';
+import LiveRegion from '../../../live-region/internal';
+import StatusIndicator from '../../../status-indicator/internal';
 import { StickyColumnsCellState, useStickyCellStyles } from '../../../table/sticky-columns';
+import { GridNavigationProvider } from '../../../table/table-role';
 import {
   BasicRowContextProvider,
   BasicRowContextValue,
@@ -356,7 +356,12 @@ export const Row = React.forwardRef<HTMLTableRowElement, BasicTableProps.RowProp
   const ctx = useBasicTableContext('Row');
   const rowProps = ctx.getRowProps(index);
   const rowContext = useMemo<BasicRowContextValue>(
-    () => ({ index, id, expanded, onToggleExpand }),
+    () => ({
+      index,
+      id,
+      expanded,
+      onToggleExpand: onToggleExpand ? () => fireNonCancelableEvent(onToggleExpand) : undefined,
+    }),
     [index, id, expanded, onToggleExpand]
   );
   return (

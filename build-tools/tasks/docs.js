@@ -15,15 +15,16 @@ module.exports = function docs() {
       TagEditor: ['getTagsDiff'],
     },
   });
-  // TODO(beta): document the beta BasicTable components. The per-component dirs + this glob are ready
-  // (glob matches exactly the 7 component dirs), but the documenter cannot serialize the parts' props
-  // while they `extends React.*HTMLAttributes` (fails on ReactEventHandler<T>). Re-enable once the part
-  // interfaces are minimized to explicit, consumer-facing props.
-  // writeComponentsDocumentation({
-  //   outDir: path.join(workspace.apiDocsPath, 'components'),
-  //   tsconfigPath: require.resolve('../../tsconfig.json'),
-  //   publicFilesGlob: 'src/beta/*/*/index.tsx',
-  // });
+  // Beta components live under versioned dirs (src/beta/<name>-<major.minor>/). Document each part
+  // dir's default export as its own component into a SEPARATE definitions folder: each
+  // writeComponentsDocumentation call rewrites the index barrel from its own glob, so sharing the
+  // stable `components` outDir would clobber the stable index. The glob matches exactly the
+  // per-component dirs. The website opts into these beta definitions via this separate folder.
+  writeComponentsDocumentation({
+    outDir: path.join(workspace.apiDocsPath, 'components-beta'),
+    tsconfigPath: require.resolve('../../tsconfig.json'),
+    publicFilesGlob: 'src/beta/*/*/index.tsx',
+  });
   writeTestUtilsDocumentation({
     outDir: path.join(workspace.apiDocsPath, 'test-utils-doc'),
     tsconfigPath: require.resolve('../../src/test-utils/tsconfig.json'),
