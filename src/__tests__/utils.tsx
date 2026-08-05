@@ -22,6 +22,7 @@ export function getAllComponents(): string[] {
         name !== 'plugins' &&
         name !== 'i18n' &&
         name !== 'types' &&
+        name !== 'beta' &&
         !name.includes('.') &&
         !name.includes('LICENSE') &&
         !name.includes('NOTICE')
