@@ -115,7 +115,7 @@ describe('useBasicTable getters (index-based, refined API)', () => {
   });
 
   test('adjustColumnWidth: keyboard step clamps at the resize floor (controlled, index-keyed)', () => {
-    const onColumnWidthsChange = vi.fn();
+    const onColumnWidthsChange = jest.fn();
     const { result } = renderTableHook({ columnWidths: { 0: 200 }, onColumnWidthsChange });
 
     // +10 from 200.

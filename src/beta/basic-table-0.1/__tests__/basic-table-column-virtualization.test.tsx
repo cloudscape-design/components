@@ -22,7 +22,7 @@ const WIDTHS = Array.from({ length: 30 }, () => 150);
 // (recompute is driven by the scroll event below). requestAnimationFrame is made synchronous so
 // the rAF-throttled scroll recompute resolves within the act().
 const OriginalResizeObserver = window.ResizeObserver;
-let rafSpy: ReturnType<typeof vi.spyOn>;
+let rafSpy: jest.SpyInstance;
 beforeEach(() => {
   class MockResizeObserver {
     observe() {}
@@ -30,7 +30,7 @@ beforeEach(() => {
     disconnect() {}
   }
   window.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
-  rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
+  rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
     cb(0);
     return 1;
   });

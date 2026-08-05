@@ -128,7 +128,7 @@ describe('useVirtualization (count-based primitive)', () => {
     });
 
     test('recomputes the visible range + fires onVisibleRangeChange when the container scrolls', () => {
-      const onVisibleRangeChange = vi.fn();
+      const onVisibleRangeChange = jest.fn();
       const h = renderVirtual(
         { count: 1000, estimatedRowHeight: 20, overscan: 5, onVisibleRangeChange },
         { clientHeight: 0, scrollHeight: 20000, scrollTop: 0 }

@@ -3,8 +3,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import createWrapper from '../../dist/test-utils/dom';
-import BasicTable, { BasicTableProps } from '../basic-table';
+import createWrapper from '../test-utils/dom';
+import BasicTable, {
+  BasicTableHeader,
+  BasicTableHeaderCell,
+  BasicTableBody,
+  BasicTableRow,
+  BasicTableCell,
+  BasicTableProps,
+} from '../index';
 
 import styles from '../basic-table/styles.css.js';
 
@@ -44,7 +51,7 @@ interface RenderOptions {
 function BasicTableHarness({ options }: { options: RenderOptions }) {
   const items = options.items ?? makeItems(options.count ?? 5);
   return (
-    <BasicTable.Root
+    <BasicTable
       columns={COLUMNS}
       totalRowCount={items.length}
       contentDensity={options.contentDensity}
@@ -53,19 +60,19 @@ function BasicTableHarness({ options }: { options: RenderOptions }) {
       empty={options.empty}
       i18nStrings={{ tableLabel: 'Resources' }}
     >
-      <BasicTable.Header sticky={options.stickyHeader}>
-        <BasicTable.HeaderCell>Name</BasicTable.HeaderCell>
-        <BasicTable.HeaderCell>Status</BasicTable.HeaderCell>
-      </BasicTable.Header>
-      <BasicTable.Body>
+      <BasicTableHeader sticky={options.stickyHeader}>
+        <BasicTableHeaderCell>Name</BasicTableHeaderCell>
+        <BasicTableHeaderCell>Status</BasicTableHeaderCell>
+      </BasicTableHeader>
+      <BasicTableBody>
         {items.map((item, index) => (
-          <BasicTable.Row key={item.id} index={index} id={item.id}>
-            <BasicTable.Cell>{item.name}</BasicTable.Cell>
-            <BasicTable.Cell>{item.status}</BasicTable.Cell>
-          </BasicTable.Row>
+          <BasicTableRow key={item.id} index={index} id={item.id}>
+            <BasicTableCell>{item.name}</BasicTableCell>
+            <BasicTableCell>{item.status}</BasicTableCell>
+          </BasicTableRow>
         ))}
-      </BasicTable.Body>
-    </BasicTable.Root>
+      </BasicTableBody>
+    </BasicTable>
   );
 }
 

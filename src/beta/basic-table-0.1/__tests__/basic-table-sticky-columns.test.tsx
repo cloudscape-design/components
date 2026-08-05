@@ -3,7 +3,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import BasicTable, { BasicTableProps } from '../basic-table';
+import BasicTable, {
+  BasicTableHeader,
+  BasicTableHeaderCell,
+  BasicTableBody,
+  BasicTableRow,
+  BasicTableCell,
+  BasicTableProps,
+} from '../index';
 
 import styles from '../basic-table/styles.css.js';
 
@@ -45,7 +52,7 @@ function rect(width: number): DOMRect {
 }
 
 function mockLayout() {
-  return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+  return jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
     if (this.tagName === 'TABLE') {
       return rect(TABLE_WIDTH);
     }
@@ -63,32 +70,32 @@ function renderTable(stickyColumns?: BasicTableProps.StickyColumns) {
   }));
   const items = makeItems(20);
   const { container } = render(
-    <BasicTable.Root
+    <BasicTable
       columns={columns}
       totalRowCount={items.length}
       height={300}
       stickyColumns={stickyColumns}
       i18nStrings={i18nStrings}
     >
-      <BasicTable.Header>
+      <BasicTableHeader>
         {COLUMNS.map(id => (
-          <BasicTable.HeaderCell key={id} columnId={id}>
+          <BasicTableHeaderCell key={id} columnId={id}>
             {id.toUpperCase()}
-          </BasicTable.HeaderCell>
+          </BasicTableHeaderCell>
         ))}
-      </BasicTable.Header>
-      <BasicTable.Body>
+      </BasicTableHeader>
+      <BasicTableBody>
         {items.map((item, index) => (
-          <BasicTable.Row key={item.id} index={index} id={item.id}>
+          <BasicTableRow key={item.id} index={index} id={item.id}>
             {COLUMNS.map(id => (
-              <BasicTable.Cell key={id} columnId={id}>
+              <BasicTableCell key={id} columnId={id}>
                 {item[id]}
-              </BasicTable.Cell>
+              </BasicTableCell>
             ))}
-          </BasicTable.Row>
+          </BasicTableRow>
         ))}
-      </BasicTable.Body>
-    </BasicTable.Root>
+      </BasicTableBody>
+    </BasicTable>
   );
   const grid = container.querySelector('[role="grid"]') as HTMLElement;
   const headers = Array.from(grid.querySelectorAll('[role="columnheader"]')) as HTMLElement[];
@@ -100,7 +107,7 @@ function renderTable(stickyColumns?: BasicTableProps.StickyColumns) {
 const STICKY = styles['sticky-cell'];
 
 describe('BasicTable sticky columns (#6)', () => {
-  let layoutSpy: ReturnType<typeof vi.spyOn>;
+  let layoutSpy: ReturnType<typeof jest.spyOn>;
   beforeEach(() => {
     layoutSpy = mockLayout();
   });

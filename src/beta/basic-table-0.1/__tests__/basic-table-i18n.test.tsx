@@ -3,7 +3,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import BasicTable, { BasicTableProps } from '../basic-table';
+import BasicTable, {
+  BasicTableHeader,
+  BasicTableHeaderCell,
+  BasicTableBody,
+  BasicTableRow,
+  BasicTableCell,
+  BasicTableProps,
+} from '../index';
 
 // Localization is prop-driven: the consumer passes already-localized strings through the typed
 // `i18nStrings` object and the component reads them directly. There is no I18nProvider runtime in
@@ -27,20 +34,20 @@ function buildTree(i18nStrings?: BasicTableProps.I18nStrings) {
   ];
   const items = makeItems(10);
   return (
-    <BasicTable.Root columns={columns} totalRowCount={items.length} resizableColumns={true} i18nStrings={i18nStrings}>
-      <BasicTable.Header>
-        <BasicTable.HeaderCell columnId="name">Name</BasicTable.HeaderCell>
-        <BasicTable.HeaderCell columnId="status">Status</BasicTable.HeaderCell>
-      </BasicTable.Header>
-      <BasicTable.Body>
+    <BasicTable columns={columns} totalRowCount={items.length} resizableColumns={true} i18nStrings={i18nStrings}>
+      <BasicTableHeader>
+        <BasicTableHeaderCell columnId="name">Name</BasicTableHeaderCell>
+        <BasicTableHeaderCell columnId="status">Status</BasicTableHeaderCell>
+      </BasicTableHeader>
+      <BasicTableBody>
         {items.map((item, index) => (
-          <BasicTable.Row key={item.id} index={index} id={item.id}>
-            <BasicTable.Cell columnId="name">{item.name}</BasicTable.Cell>
-            <BasicTable.Cell columnId="status">{item.status}</BasicTable.Cell>
-          </BasicTable.Row>
+          <BasicTableRow key={item.id} index={index} id={item.id}>
+            <BasicTableCell columnId="name">{item.name}</BasicTableCell>
+            <BasicTableCell columnId="status">{item.status}</BasicTableCell>
+          </BasicTableRow>
         ))}
-      </BasicTable.Body>
-    </BasicTable.Root>
+      </BasicTableBody>
+    </BasicTable>
   );
 }
 
