@@ -3,7 +3,14 @@
 import React, { useState } from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
-import BasicTable, { BasicTableProps } from '../basic-table';
+import BasicTable, {
+  BasicTableHeader,
+  BasicTableHeaderCell,
+  BasicTableBody,
+  BasicTableRow,
+  BasicTableCell,
+  BasicTableProps,
+} from '../index';
 
 // Keyboard and screen-reader tests for the column resize handle. Each HeaderCell renders its own
 // resize handle when resizableColumns is set. The handle has a two-element model: a focusable toggle
@@ -31,14 +38,14 @@ const NAME_MIN_WIDTH = 120;
 
 // A controlled harness that feeds onColumnWidthsChange back into columnWidths, so aria-valuenow
 // and the freeze-on-resize basis track the latest width across repeated keyboard steps.
-function ResizableTable({ onWidths, nameMinWidth }: { onWidths: ReturnType<typeof vi.fn>; nameMinWidth?: number }) {
+function ResizableTable({ onWidths, nameMinWidth }: { onWidths: jest.Mock; nameMinWidth?: number }) {
   const [widths, setWidths] = useState<Record<number, number>>({ 0: NAME_START_WIDTH, 1: STATUS_WIDTH });
   const columns: BasicTableProps.ColumnDefinition[] = [
     { id: 'name', minWidth: nameMinWidth },
     { id: 'status' }, // flexible (no width → shares remaining space)
   ];
   return (
-    <BasicTable.Root
+    <BasicTable
       columns={columns}
       totalRowCount={20}
       resizableColumns={true}
@@ -49,24 +56,24 @@ function ResizableTable({ onWidths, nameMinWidth }: { onWidths: ReturnType<typeo
       }}
       i18nStrings={i18nStrings}
     >
-      <BasicTable.Header>
-        <BasicTable.HeaderCell columnId="name">Name</BasicTable.HeaderCell>
-        <BasicTable.HeaderCell columnId="status">Status</BasicTable.HeaderCell>
-      </BasicTable.Header>
-      <BasicTable.Body>
+      <BasicTableHeader>
+        <BasicTableHeaderCell columnId="name">Name</BasicTableHeaderCell>
+        <BasicTableHeaderCell columnId="status">Status</BasicTableHeaderCell>
+      </BasicTableHeader>
+      <BasicTableBody>
         {makeItems(20).map((item, index) => (
-          <BasicTable.Row key={item.id} index={index} id={item.id}>
-            <BasicTable.Cell columnId="name">{item.name}</BasicTable.Cell>
-            <BasicTable.Cell columnId="status">{item.status}</BasicTable.Cell>
-          </BasicTable.Row>
+          <BasicTableRow key={item.id} index={index} id={item.id}>
+            <BasicTableCell columnId="name">{item.name}</BasicTableCell>
+            <BasicTableCell columnId="status">{item.status}</BasicTableCell>
+          </BasicTableRow>
         ))}
-      </BasicTable.Body>
-    </BasicTable.Root>
+      </BasicTableBody>
+    </BasicTable>
   );
 }
 
 function renderResizable(opts: { nameMinWidth?: number } = { nameMinWidth: NAME_MIN_WIDTH }) {
-  const onWidths = vi.fn();
+  const onWidths = jest.fn();
   const { container } = render(<ResizableTable onWidths={onWidths} nameMinWidth={opts.nameMinWidth} />);
   const grid = container.querySelector('[role="grid"]') as HTMLElement;
   // The declarative header renders one columnheader per column; the first is the "name" column.

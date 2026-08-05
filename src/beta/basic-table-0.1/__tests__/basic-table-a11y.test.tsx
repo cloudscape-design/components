@@ -3,9 +3,19 @@
 import React, { useState } from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
-import { KeyCode } from '@amzn/awsui-component-toolkit/internal';
-import createWrapper from '../../dist/test-utils/dom';
-import BasicTable, { BasicTableProps } from '../basic-table';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+import createWrapper from '../test-utils/dom';
+import BasicTable, {
+  BasicTableHeader,
+  BasicTableHeaderCell,
+  BasicTableBody,
+  BasicTableRow,
+  BasicTableCell,
+  BasicTableExpandedContent,
+  BasicTableProps,
+} from '../index';
+
+import './setup';
 
 // Accessibility tests for the compound BasicTable. The sub-components spread the useBasicTable hook's
 // role/ARIA getters onto native <table>/<thead>/<tr>/<th>/<tbody>/<td>, so the whole compound
@@ -74,7 +84,7 @@ function LogTable({ items, options }: { items: Item[]; options: TreeOptions }) {
   const columns: BasicTableProps.ColumnDefinition[] = options.singleColumn ? [{}] : [{}, {}];
 
   return (
-    <BasicTable.Root
+    <BasicTable
       columns={columns}
       totalRowCount={items.length}
       loading={options.loading}
@@ -82,22 +92,22 @@ function LogTable({ items, options }: { items: Item[]; options: TreeOptions }) {
       empty={options.empty}
       i18nStrings={i18nStrings}
     >
-      <BasicTable.Header>
-        <BasicTable.HeaderCell>Name</BasicTable.HeaderCell>
-        {!options.singleColumn && <BasicTable.HeaderCell>Status</BasicTable.HeaderCell>}
-      </BasicTable.Header>
-      <BasicTable.Body>
+      <BasicTableHeader>
+        <BasicTableHeaderCell>Name</BasicTableHeaderCell>
+        {!options.singleColumn && <BasicTableHeaderCell>Status</BasicTableHeaderCell>}
+      </BasicTableHeader>
+      <BasicTableBody>
         {items.map((item, index) => {
           const isExpanded = expanded.has(item.id);
           return (
-            <BasicTable.Row
+            <BasicTableRow
               key={item.id}
               index={index}
               id={item.id}
               expanded={isExpanded}
               onToggleExpand={() => toggle(item.id)}
             >
-              <BasicTable.Cell>
+              <BasicTableCell>
                 {options.expandable && (
                   <button
                     type="button"
@@ -111,18 +121,18 @@ function LogTable({ items, options }: { items: Item[]; options: TreeOptions }) {
                   </button>
                 )}
                 {item.name}
-              </BasicTable.Cell>
-              {!options.singleColumn && <BasicTable.Cell>{item.status}</BasicTable.Cell>}
+              </BasicTableCell>
+              {!options.singleColumn && <BasicTableCell>{item.status}</BasicTableCell>}
               {options.expandable && (
-                <BasicTable.ExpandedContent label={`Details for ${item.name}`}>
+                <BasicTableExpandedContent label={`Details for ${item.name}`}>
                   {detail(item)}
-                </BasicTable.ExpandedContent>
+                </BasicTableExpandedContent>
               )}
-            </BasicTable.Row>
+            </BasicTableRow>
           );
         })}
-      </BasicTable.Body>
-    </BasicTable.Root>
+      </BasicTableBody>
+    </BasicTable>
   );
 }
 
