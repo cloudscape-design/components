@@ -15,6 +15,11 @@ module.exports = function docs() {
       TagEditor: ['getTagsDiff'],
     },
   });
+  writeComponentsDocumentation({
+    outDir: path.join(workspace.apiDocsPath, 'components'),
+    tsconfigPath: require.resolve('../../tsconfig.json'),
+    publicFilesGlob: 'src/beta/*/*/index.tsx',
+  });
   writeTestUtilsDocumentation({
     outDir: path.join(workspace.apiDocsPath, 'test-utils-doc'),
     tsconfigPath: require.resolve('../../src/test-utils/tsconfig.json'),
