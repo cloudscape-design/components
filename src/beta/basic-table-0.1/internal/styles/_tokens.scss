@@ -1,0 +1,31 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Forwards the Cloudscape design tokens so component SCSS can reference them as `awsui.$token`.
+// The relative node_modules path mirrors the proven reference-package approach (Sass resolves the
+// forwarded partial without a configured load path).
+@forward '../../../node_modules/@amzn/awsui-design-tokens/polaris.scss';
+
+// The shipped polaris.scss is the classic/scaled token subset and omits the contextual tokens the
+// ported table and drag-handle SCSS reference. These are the standard visual-refresh declarations
+// (custom-property name, hash and light-mode fallback), matching how Cloudscape emits them, so the
+// component styles resolve against a themed console at runtime and fall back to sensible values
+// otherwise.
+$color-background-table-header: var(--color-background-table-header-unjmda, #ffffff);
+$color-text-column-header: var(--color-text-column-header-wyzs6v, #424650);
+$color-border-divider-interactive-default: var(--color-border-divider-interactive-default-8k07mh, #8c8c94);
+$border-divider-list-width: var(--border-divider-list-width-tdfx1x, 1px);
+$shadow-dropdown: var(--shadow-dropdown-isf0w4, 0px 4px 20px 1px rgba(0, 7, 22, 0.1));
+$shadow-sticky-column-first: var(--shadow-sticky-column-first-trcd2o, 4px 0px 8px 1px rgba(0, 7, 22, 0.1));
+$shadow-sticky-column-last: var(--shadow-sticky-column-last-qgh697, -4px 0 8px 1px rgba(0, 28, 36, 0.1));
+$color-background-direction-button-active: var(--color-background-direction-button-active-lvo0dy, #232b37);
+$color-background-direction-button-default: var(--color-background-direction-button-default-bvhbsn, #424650);
+$color-background-direction-button-disabled: var(--color-background-direction-button-disabled-uad4xk, #ebebf0);
+$color-background-direction-button-hover: var(--color-background-direction-button-hover-74n5o1, #333843);
+$color-text-direction-button-default: var(--color-text-direction-button-default-p88lvb, #ffffff);
+$color-text-direction-button-disabled: var(--color-text-direction-button-disabled-t86kvg, #b4b4bb);
+$space-m: var(--space-m-dsumyt, 16px);
+$space-xl: var(--space-xl-jfy3x4, 24px);
+$space-xxs: var(--space-xxs-hwfkai, 4px);
