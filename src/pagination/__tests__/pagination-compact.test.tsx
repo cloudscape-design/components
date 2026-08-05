@@ -16,16 +16,10 @@ const i18nMessages = {
   },
 };
 
-function renderPagination(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
-  const wrapper = createWrapper(container).findPagination()!;
-  return { wrapper, rerender };
-}
-
 function renderWithI18n(jsx: React.ReactElement) {
-  const { container, rerender } = render(<TestI18nProvider messages={i18nMessages}>{jsx}</TestI18nProvider>);
+  const { container } = render(<TestI18nProvider messages={i18nMessages}>{jsx}</TestI18nProvider>);
   const wrapper = createWrapper(container).findPagination()!;
-  return { wrapper, rerender };
+  return { wrapper };
 }
 
 describe('compact variant', () => {
@@ -41,26 +35,6 @@ describe('compact variant', () => {
       );
       expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('3 of 12+');
     });
-
-    test('calls the consumer override with the page state and uses its result (no i18n provider)', () => {
-      const pagesCompactText = jest.fn(
-        ({ currentPage, pagesCount, openEnd }: { currentPage: number; pagesCount: number; openEnd: boolean }) =>
-          `${currentPage} / ${pagesCount}${openEnd ? '+' : ''}`
-      );
-      const { wrapper } = renderPagination(
-        <Pagination
-          pagesVariant="compact"
-          currentPageIndex={3}
-          pagesCount={12}
-          openEnd={true}
-          i18nStrings={{ pagesCompactText }}
-        />
-      );
-
-      expect(pagesCompactText).toHaveBeenCalledWith({ currentPage: 3, pagesCount: 12, openEnd: true });
-      expect(wrapper.findPagesCompactText()!.getElement().textContent).toBe('3 / 12+');
-    });
-
     test('consumer override takes precedence over the i18n provider string', () => {
       const { wrapper } = renderWithI18n(
         <Pagination

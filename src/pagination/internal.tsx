@@ -160,7 +160,7 @@ const InternalPagination = React.forwardRef(
         format({
           currentPage: options.currentPage,
           pagesCount: options.pagesCount,
-          openEnd: options.openEnd ? "true" : "false",
+          openEnd: options.openEnd ? 'true' : 'false',
         })
     );
 
