@@ -8,7 +8,7 @@ export interface StepsProps extends BaseComponentProps {
    * An array of individual steps
    *
    * Each step definition has the following properties:
-   *  * `status` (string) - Status of the step corresponding to a status indicator. The `log` status renders a neutral dot marker.
+   *  * `status` (string) - Status of the step corresponding to a status indicator.
    *  * `statusIconAriaLabel` - (string) - (Optional) Alternative text for the status icon.
    *  * `header` (ReactNode) - Summary corresponding to the step.
    *  * `details` (ReactNode) - (Optional) Additional information corresponding to the step.
@@ -56,7 +56,7 @@ export interface StepsProps extends BaseComponentProps {
 }
 
 export namespace StepsProps {
-  export type Status = StatusIndicatorProps.Type | 'log';
+  export type Status = StatusIndicatorProps.Type;
 
   export interface Step {
     status: Status;
