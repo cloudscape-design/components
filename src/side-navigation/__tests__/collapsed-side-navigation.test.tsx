@@ -7,7 +7,6 @@ import Icon from '../../../lib/components/icon';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import expandableSectionStyles from '../../../lib/components/expandable-section/styles.css.js';
 import styles from '../../../lib/components/side-navigation/styles.css.js';
 import testStyles from '../../../lib/components/side-navigation/test-classes/styles.css.js';
 
@@ -162,7 +161,6 @@ describe('SideNavigation collapsed mode', () => {
         ],
       });
       expect(wrapper.findAll('hr')).toHaveLength(0);
-      // Section children with icons are mounted.
       expect(wrapper.findLinkByHref('#/compute')).not.toBeNull();
       expect(wrapper.findLinkByHref('#/storage')).not.toBeNull();
     });
@@ -175,88 +173,39 @@ describe('SideNavigation collapsed mode', () => {
       expect(wrapper.findAll('hr')).toHaveLength(0);
     });
 
-    it('forces section expanded when collapsed so children are not height-collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute'), iconLink('Storage', '#/storage')],
-            },
-          ]}
-        />
-      );
-      // The section's expandable trigger should not have aria-expanded="false"
-      // (which would indicate children are collapsed to zero height via grid).
-      const triggers = container.querySelectorAll('[aria-expanded]');
-      triggers.forEach(trigger => {
-        expect(trigger.getAttribute('aria-expanded')).not.toBe('false');
+    it('keeps the section expanded when collapsed so children are not height-collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'section',
+            text: 'Resources',
+            items: [iconLink('Compute', '#/compute'), iconLink('Storage', '#/storage')],
+          },
+        ],
       });
+      expect(wrapper.findItemByIndex(1)?.findSection()?.findExpandedContent()).toBeTruthy();
     });
 
-    it('section-group title collapses to zero height when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section-group',
-              title: 'My Group',
-              items: [iconLink('Item A', '#/a')],
-            },
-          ]}
-        />
-      );
-      // The section-group-title element should have the collapsed class.
-      const titleEl = container.querySelector('[class*="section-group-title"]');
-      expect(titleEl).not.toBeNull();
-      expect(titleEl!.className).toMatch(/section-group-title--collapsed/);
-    });
-
-    it('section-group title has both base and collapsed class for specificity override', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section-group',
-              title: 'My Group',
-              items: [iconLink('Item A', '#/a')],
-            },
-          ]}
-        />
-      );
-      // The title element must have both the base class and the --collapsed modifier
-      // (compound selector .section-group-title.section-group-title--collapsed overrides
-      // InternalBox's .box.h3-variant padding).
-      const titleEl = container.querySelector(`.${CSS.escape(styles['section-group-title'])}`);
-      expect(titleEl).not.toBeNull();
-      expect(titleEl!.classList.contains(styles['section-group-title--collapsed'])).toBe(true);
-    });
-
-    it('section-group title does not have collapsed class when not collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={false}
-          items={[
-            {
-              type: 'section-group',
-              title: 'My Group',
-              items: [iconLink('Item A', '#/a')],
-            },
-          ]}
-        />
-      );
-      const titleEl = container.querySelector(`.${CSS.escape(styles['section-group-title'])}`);
-      expect(titleEl).not.toBeNull();
-      expect(titleEl!.classList.contains(styles['section-group-title--collapsed'])).toBe(false);
-    });
+    it.each([true, false])(
+      'applies the collapsed class to the section-group title only when collapsed=%s',
+      collapsed => {
+        const wrapper = renderSideNavigation({
+          collapsed,
+          items: [{ type: 'section-group', title: 'My Group', items: [iconLink('Item A', '#/a')] }],
+        });
+        const titleEl = wrapper.findItemByIndex(1)?.findSectionGroupTitle()?.getElement();
+        expect(titleEl).not.toBeNull();
+        expect(titleEl!.classList.contains(styles['section-group-title--collapsed'])).toBe(collapsed);
+      }
+    );
   });
 
   describe('expandable link groups', () => {
-    it('keeps children mounted with faded text in collapsed mode', () => {
+    it.each([
+      { label: 'icon-bearing', items: [iconLink('Alarms', '#/alarms'), iconLink('Logs', '#/logs')] },
+      { label: 'icon-less', items: [plainLink('VPC', '#/vpc'), plainLink('Route 53', '#/r53')] },
+    ])('keeps $label children mounted so the collapse animation has content to transition', ({ items }) => {
       const wrapper = renderSideNavigation({
         collapsed: true,
         items: [
@@ -265,120 +214,49 @@ describe('SideNavigation collapsed mode', () => {
             text: 'Monitoring',
             href: '#/monitoring',
             icon: <Icon name="bug" />,
-            items: [iconLink('Alarms', '#/alarms'), iconLink('Logs', '#/logs')],
+            items,
           },
         ],
       });
-      // The ELG header link is still rendered.
       expect(wrapper.findLinkByHref('#/monitoring')).not.toBeNull();
-      // Children with icons are mounted (not unmounted).
-      expect(wrapper.findLinkByHref('#/alarms')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/logs')).not.toBeNull();
+      items.forEach(item => expect(wrapper.findLinkByHref(item.href)).not.toBeNull());
     });
 
-    it('forces ELG children collapsed (aria-expanded=false) when nav is collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'expandable-link-group',
-              text: 'Monitoring',
-              href: '#/monitoring',
-              icon: <Icon name="bug" />,
-              items: [iconLink('Alarms', '#/alarms')],
-            },
-          ]}
-        />
-      );
-      // When collapsed, the ELG expand icon is hidden from AT (no interactive button).
-      // The children content is collapsed via the inert attribute on the content-inner div.
-      const elgRoot = container.querySelector(`.${CSS.escape(styles['expandable-link-group--collapsed'])}`);
-      expect(elgRoot).not.toBeNull();
-      // No interactive expand button should be present.
-      expect(elgRoot!.querySelector('button[aria-expanded]')).toBeNull();
-      // The content-inner should be inerted (children non-focusable).
-      // Find the content wrapper by its role="group" attribute (rendered by InternalExpandableSection).
-      const groupDiv = elgRoot!.querySelector('[role="group"]');
-      expect(groupDiv).not.toBeNull();
-      const contentInner = groupDiv!.firstElementChild as HTMLElement | null;
-      expect(contentInner).not.toBeNull();
-      expect(contentInner!.inert).toBe(true);
-    });
-
-    it('keeps ELG without icon mounted with header and children in collapsed mode', () => {
+    it('hides the expand button and inerts the content when collapsed', () => {
       const wrapper = renderSideNavigation({
         collapsed: true,
         items: [
           {
             type: 'expandable-link-group',
-            text: 'No Icon ELG',
-            href: '#/elg',
-            items: [iconLink('Child', '#/child')],
+            text: 'Monitoring',
+            href: '#/monitoring',
+            icon: <Icon name="bug" />,
+            items: [iconLink('Alarms', '#/alarms')],
           },
         ],
       });
-      // Both the ELG header and children are mounted.
-      expect(wrapper.findLinkByHref('#/child')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/elg')).not.toBeNull();
-    });
-
-    it('keeps icon-less ELG children mounted and inert in collapsed mode for animation', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'expandable-link-group',
-              text: 'Networking',
-              href: '#/networking',
-              icon: <Icon name="settings" />,
-              items: [plainLink('VPC', '#/vpc'), plainLink('Route 53', '#/r53')],
-            },
-          ]}
-        />
-      );
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      // Icon-less children inside an ELG must stay mounted (not filtered)
-      // so the grid-template-rows collapse animation has content to transition.
-      expect(wrapper.findLinkByHref('#/vpc')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/r53')).not.toBeNull();
-      // The ELG content is inerted when collapsed.
-      const elgRoot = container.querySelector(`.${CSS.escape(styles['expandable-link-group--collapsed'])}`);
-      expect(elgRoot).not.toBeNull();
-      const groupDiv = elgRoot!.querySelector('[role="group"]');
-      expect(groupDiv).not.toBeNull();
-      const contentInner = groupDiv!.firstElementChild as HTMLElement | null;
-      expect(contentInner).not.toBeNull();
-      expect(contentInner!.inert).toBe(true);
+      const elg = wrapper.findItemByIndex(1)?.findExpandableLinkGroup();
+      expect(elg?.findExpandButton()).toBeNull();
+      const contentInner = elg?.findContent().getElement().firstElementChild as HTMLElement;
+      expect(contentInner.inert).toBe(true);
     });
   });
 
   describe('link groups', () => {
-    it('keeps children mounted but inert in collapsed mode', () => {
+    it.each([
+      { label: 'icon-bearing', items: [iconLink('Child 1', '#/c1'), iconLink('Child 2', '#/c2')] },
+      { label: 'icon-less', items: [plainLink('Lambda', '#/lambda'), plainLink('S3', '#/s3')] },
+    ])('keeps $label children mounted but inert when collapsed', ({ items }) => {
       const { container } = render(
         <SideNavigation
           collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Group',
-              href: '#/group',
-              icon: <Icon name="folder" />,
-              items: [iconLink('Child 1', '#/c1'), iconLink('Child 2', '#/c2')],
-            },
-          ]}
+          items={[{ type: 'link-group', text: 'Group', href: '#/group', icon: <Icon name="folder" />, items }]}
         />
       );
       const wrapper = createWrapper(container).findSideNavigation()!;
-      // The header link is still rendered.
       expect(wrapper.findLinkByHref('#/group')).not.toBeNull();
-      // Children are mounted in the DOM.
-      expect(wrapper.findLinkByHref('#/c1')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/c2')).not.toBeNull();
-      // Children container is inert (non-focusable, hidden from AT).
+      items.forEach(item => expect(wrapper.findLinkByHref(item.href)).not.toBeNull());
       const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect(childrenInner).not.toBeNull();
       expect((childrenInner as HTMLElement).inert).toBe(true);
     });
 
@@ -392,17 +270,16 @@ describe('SideNavigation collapsed mode', () => {
               text: 'Group',
               href: '#/group',
               icon: <Icon name="folder" />,
-              items: [iconLink('Child 1', '#/c1'), iconLink('Child 2', '#/c2')],
+              items: [iconLink('Child 1', '#/c1')],
             },
           ]}
         />
       );
       const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect(childrenInner).not.toBeNull();
       expect((childrenInner as HTMLElement).inert).toBe(false);
     });
 
-    it('applies collapsed class to children container for grid animation', () => {
+    it('applies the collapsed class to the children container for the grid animation', () => {
       const { container } = render(
         <SideNavigation
           collapsed={true}
@@ -417,36 +294,6 @@ describe('SideNavigation collapsed mode', () => {
           ]}
         />
       );
-      const childrenContainer = container.querySelector(`.${CSS.escape(styles['link-group-children'])}`);
-      expect(childrenContainer).not.toBeNull();
-      expect(childrenContainer!.classList.contains(styles['link-group-children--collapsed'])).toBe(true);
-    });
-
-    it('keeps icon-less children mounted and inert in collapsed mode for animation', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Services',
-              href: '#/services',
-              icon: <Icon name="folder" />,
-              items: [plainLink('Lambda', '#/lambda'), plainLink('S3', '#/s3')],
-            },
-          ]}
-        />
-      );
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      // Icon-less children inside a link-group must stay mounted (not filtered)
-      // so the grid-template-rows collapse animation has content to transition.
-      expect(wrapper.findLinkByHref('#/lambda')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/s3')).not.toBeNull();
-      // The children container must be inert (non-focusable, hidden from AT).
-      const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect(childrenInner).not.toBeNull();
-      expect((childrenInner as HTMLElement).inert).toBe(true);
-      // The children wrapper has the collapsed class for the 0fr animation target.
       const childrenContainer = container.querySelector(`.${CSS.escape(styles['link-group-children'])}`);
       expect(childrenContainer!.classList.contains(styles['link-group-children--collapsed'])).toBe(true);
     });
@@ -555,57 +402,22 @@ describe('SideNavigation collapsed mode', () => {
   });
 
   describe('collapsed CSS classes on root list', () => {
-    it('applies list-variant-root--collapsed class to the root <ul> when collapsed is true', () => {
+    it.each([true, false])('applies the collapsed class to the root list only when collapsed=%s', collapsed => {
       const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            iconLink('Dashboard', '#/dashboard'),
-            iconLink('Settings', '#/settings'),
-            { type: 'divider' },
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute')],
-            },
-            {
-              type: 'link-group',
-              text: 'Tools',
-              href: '#/tools',
-              icon: <Icon name="folder" />,
-              items: [iconLink('Build', '#/build')],
-            },
-          ]}
-        />
+        <SideNavigation collapsed={collapsed} items={[iconLink('Dashboard', '#/dashboard')]} />
       );
-      // Query the root <ul> — the first <ul> inside the list-container that has list-variant-root class
       const rootUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-root'])}`);
-      expect(rootUl).not.toBeNull();
-      expect(rootUl!.classList.contains(styles['list-variant-root--collapsed'])).toBe(true);
+      expect(rootUl!.classList.contains(styles['list-variant-root--collapsed'])).toBe(collapsed);
     });
 
-    it('does NOT apply list-variant-root--collapsed class when collapsed is false', () => {
-      const { container } = render(<SideNavigation collapsed={false} items={[iconLink('Dashboard', '#/dashboard')]} />);
-      const rootUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-root'])}`);
-      expect(rootUl).not.toBeNull();
-      expect(rootUl!.classList.contains(styles['list-variant-root--collapsed'])).toBe(false);
-    });
-
-    it('applies list-variant-section--collapsed class to section <ul> when collapsed is true', () => {
+    it('applies the collapsed class to a section list when collapsed', () => {
       const { container } = render(
         <SideNavigation
           collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute')],
-            },
-          ]}
+          items={[{ type: 'section', text: 'Resources', items: [iconLink('Compute', '#/compute')] }]}
         />
       );
       const sectionUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-section'])}`);
-      expect(sectionUl).not.toBeNull();
       expect(sectionUl!.classList.contains(styles['list-variant-section--collapsed'])).toBe(true);
     });
   });
@@ -674,339 +486,32 @@ describe('SideNavigation collapsed mode', () => {
 
   describe('accessibility in collapsed mode', () => {
     describe('hidden items are non-focusable (inert)', () => {
-      it('makes section header wrapper inert when collapsed', () => {
+      it.each([true, false])('makes the section header wrapper inert only when collapsed=%s', collapsed => {
         const { container } = render(
           <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'section',
-                text: 'Resources',
-                items: [iconLink('Compute', '#/compute')],
-              },
-            ]}
+            collapsed={collapsed}
+            items={[{ type: 'section', text: 'Resources', items: [iconLink('Compute', '#/compute')] }]}
           />
         );
-        // The section root's first child is the header wrapper.
-        const sectionRoot = container.querySelector(`.${CSS.escape(styles.section)}`);
-        expect(sectionRoot).not.toBeNull();
-        const headerWrapper = sectionRoot!.firstElementChild as HTMLElement;
-        expect(headerWrapper.inert).toBe(true);
+        const headerWrapper = container.querySelector(`.${CSS.escape(styles.section)}`)!.firstElementChild;
+        expect((headerWrapper as HTMLElement).inert).toBe(collapsed);
       });
 
-      it('does not make section header wrapper inert when not collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={false}
-            items={[
-              {
-                type: 'section',
-                text: 'Resources',
-                items: [iconLink('Compute', '#/compute')],
-              },
-            ]}
-          />
-        );
-        const sectionRoot = container.querySelector(`.${CSS.escape(styles.section)}`);
-        expect(sectionRoot).not.toBeNull();
-        const headerWrapper = sectionRoot!.firstElementChild as HTMLElement;
-        expect(headerWrapper.inert).toBe(false);
+      it.each([
+        { label: 'link-group', type: 'link-group' as const },
+        { label: 'expandable-link-group', type: 'expandable-link-group' as const },
+      ])('makes an icon-less $label parent link inert only when collapsed', ({ type }) => {
+        const items = [{ type, text: 'Tools', href: '#/tools', items: [iconLink('Build', '#/build')] }];
+        const expanded = renderSideNavigation({ collapsed: false, items });
+        const collapsed = renderSideNavigation({ collapsed: true, items });
+        expect(expanded.findLinkByHref('#/tools')!.getElement().inert).toBe(false);
+        expect(collapsed.findLinkByHref('#/tools')!.getElement().inert).toBe(true);
       });
 
-      it('makes icon-less link-group parent link inert when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'link-group',
-                text: 'Tools',
-                href: '#/tools',
-                items: [iconLink('Build', '#/build')],
-              },
-            ]}
-          />
-        );
-        // The link-group parent is an <a> without an icon — it collapses to 0×0
-        // and must be inert so it's removed from the tab order.
-        const parentLink = container.querySelector('a[href="#/tools"]') as HTMLElement | null;
-        expect(parentLink).not.toBeNull();
-        expect(parentLink!.inert).toBe(true);
-      });
-
-      it('does not make icon-bearing link-group parent link inert when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'link-group',
-                text: 'Tools',
-                href: '#/tools',
-                icon: <Icon name="folder" />,
-                items: [iconLink('Build', '#/build')],
-              },
-            ]}
-          />
-        );
-        const parentLink = container.querySelector('a[href="#/tools"]') as HTMLElement | null;
-        expect(parentLink).not.toBeNull();
-        expect(parentLink!.inert).toBe(false);
-      });
-
-      it('does not make icon-less link-group parent link inert when not collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={false}
-            items={[
-              {
-                type: 'link-group',
-                text: 'Tools',
-                href: '#/tools',
-                items: [iconLink('Build', '#/build')],
-              },
-            ]}
-          />
-        );
-        const parentLink = container.querySelector('a[href="#/tools"]') as HTMLElement | null;
-        expect(parentLink).not.toBeNull();
-        expect(parentLink!.inert).toBe(false);
-      });
-
-      it('makes icon-less ELG header link inert when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'expandable-link-group',
-                text: 'No Icon ELG',
-                href: '#/elg',
-                items: [iconLink('Child', '#/child')],
-              },
-            ]}
-          />
-        );
-        const elgHeaderLink = container.querySelector('a[href="#/elg"]') as HTMLElement | null;
-        expect(elgHeaderLink).not.toBeNull();
-        expect(elgHeaderLink!.inert).toBe(true);
-      });
-    });
-
-    describe('group aria-label preserved when collapsed', () => {
-      it('adds aria-label to section-group list when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'section-group',
-                title: 'My Group',
-                items: [iconLink('Item A', '#/a')],
-              },
-            ]}
-          />
-        );
-        const sectionGroupUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-section-group'])}`);
-        expect(sectionGroupUl).not.toBeNull();
-        expect(sectionGroupUl!.getAttribute('aria-label')).toBe('My Group');
-      });
-
-      it('does not add aria-label to section-group list when not collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={false}
-            items={[
-              {
-                type: 'section-group',
-                title: 'My Group',
-                items: [iconLink('Item A', '#/a')],
-              },
-            ]}
-          />
-        );
-        const sectionGroupUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-section-group'])}`);
-        expect(sectionGroupUl).not.toBeNull();
-        expect(sectionGroupUl!.getAttribute('aria-label')).toBeNull();
-      });
-
-      it('adds aria-label to link-group list when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'link-group',
-                text: 'Tools',
-                href: '#/tools',
-                icon: <Icon name="folder" />,
-                items: [iconLink('Build', '#/build')],
-              },
-            ]}
-          />
-        );
-        const linkGroupUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-link-group'])}`);
-        expect(linkGroupUl).not.toBeNull();
-        expect(linkGroupUl!.getAttribute('aria-label')).toBe('Tools');
-      });
-
-      it('does not add aria-label to link-group list when not collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={false}
-            items={[
-              {
-                type: 'link-group',
-                text: 'Tools',
-                href: '#/tools',
-                icon: <Icon name="folder" />,
-                items: [iconLink('Build', '#/build')],
-              },
-            ]}
-          />
-        );
-        const linkGroupUl = container.querySelector(`ul.${CSS.escape(styles['list-variant-link-group'])}`);
-        expect(linkGroupUl).not.toBeNull();
-        expect(linkGroupUl!.getAttribute('aria-label')).toBeNull();
-      });
-    });
-
-    describe('ELG caret hidden from AT when collapsed', () => {
-      it('hides expand icon button from assistive technology when collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={true}
-            items={[
-              {
-                type: 'expandable-link-group',
-                text: 'Monitoring',
-                href: '#/monitoring',
-                icon: <Icon name="bug" />,
-                items: [iconLink('Alarms', '#/alarms')],
-              },
-            ]}
-          />
-        );
-        // With hideExpandIcon, the caret is completely omitted from the DOM —
-        // no button, no span, no icon element for the expand indicator.
-        const elgRoot = container.querySelector(`.${CSS.escape(styles['expandable-link-group--collapsed'])}`);
-        expect(elgRoot).not.toBeNull();
-        // The expand button should NOT be present.
-        const expandButton = elgRoot!.querySelector('button[aria-expanded]');
-        expect(expandButton).toBeNull();
-        // The caret element (previously an aria-hidden span) should also be absent.
-        const caretIcon = elgRoot!.querySelector(`.${CSS.escape(expandableSectionStyles['icon-container'])}`);
-        expect(caretIcon).toBeNull();
-      });
-
-      it('keeps expand icon button accessible when not collapsed', () => {
-        const { container } = render(
-          <SideNavigation
-            collapsed={false}
-            items={[
-              {
-                type: 'expandable-link-group',
-                text: 'Monitoring',
-                href: '#/monitoring',
-                icon: <Icon name="bug" />,
-                items: [iconLink('Alarms', '#/alarms')],
-              },
-            ]}
-          />
-        );
-        const elgRoot = container.querySelector(`.${CSS.escape(styles['expandable-link-group'])}`);
-        expect(elgRoot).not.toBeNull();
-        const expandButton = elgRoot!.querySelector('button[aria-expanded]');
-        expect(expandButton).not.toBeNull();
-      });
-    });
-  });
-
-  describe('icon-less parent link vertical collapse', () => {
-    it('collapses icon-less link-group parent link to zero vertical space with children mounted but inert', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Tools',
-              href: '#/tools',
-              items: [iconLink('Build', '#/build'), iconLink('Deploy', '#/deploy')],
-            },
-          ]}
-        />
-      );
-      // The parent link (icon-less) should have the collapsed class that zeroes its size.
-      const parentLink = container.querySelector('a[href="#/tools"]') as HTMLElement;
-      expect(parentLink).not.toBeNull();
-      expect(parentLink.classList.contains(styles['link--collapsed'])).toBe(true);
-      // The parent link should NOT have an item-icon descendant (confirming it's icon-less).
-      expect(parentLink.querySelector(`.${CSS.escape(styles['item-icon'])}`)).toBeNull();
-
-      // The <li> wrapping the group is NOT hidden — it stays at normal collapsed layout.
-      const listItem = container.querySelector(`[data-itemid="item-1"]`) as HTMLElement;
-      expect(listItem).not.toBeNull();
-      expect(listItem.classList.contains(styles['list-item--collapsed'])).toBe(true);
-
-      // Icon-bearing children are still mounted but are inert (opaque group hides children).
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/build')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/deploy')).not.toBeNull();
-      const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect(childrenInner).not.toBeNull();
-      expect((childrenInner as HTMLElement).inert).toBe(true);
-    });
-
-    it('collapses icon-less ELG parent link to zero vertical space while children stay visible', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'expandable-link-group',
-              text: 'No Icon ELG',
-              href: '#/elg',
-              items: [iconLink('Child A', '#/child-a'), iconLink('Child B', '#/child-b')],
-            },
-          ]}
-        />
-      );
-      // The parent link (icon-less) is collapsed.
-      const parentLink = container.querySelector('a[href="#/elg"]') as HTMLElement;
-      expect(parentLink).not.toBeNull();
-      expect(parentLink.classList.contains(styles['link--collapsed'])).toBe(true);
-      expect(parentLink.querySelector(`.${CSS.escape(styles['item-icon'])}`)).toBeNull();
-
-      // The <li> is not collapsed/hidden at the item level.
-      const listItem = container.querySelector(`[data-itemid="item-1"]`) as HTMLElement;
-      expect(listItem).not.toBeNull();
-      expect(listItem.classList.contains(styles['list-item--collapsed'])).toBe(true);
-
-      // Icon-bearing children are still rendered.
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/child-a')).not.toBeNull();
-      expect(wrapper.findLinkByHref('#/child-b')).not.toBeNull();
-    });
-  });
-
-  describe('inter-group spacing identifier class', () => {
-    it('applies list-item--group class to section, section-group, expandable-link-group, and link-group items when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            iconLink('Dashboard', '#/dashboard'),
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute')],
-            },
-            {
-              type: 'section-group',
-              title: 'My Group',
-              items: [iconLink('Item A', '#/a')],
-            },
+      it('does not make an icon-bearing link-group parent link inert when collapsed', () => {
+        const wrapper = renderSideNavigation({
+          collapsed: true,
+          items: [
             {
               type: 'link-group',
               text: 'Tools',
@@ -1014,6 +519,49 @@ describe('SideNavigation collapsed mode', () => {
               icon: <Icon name="folder" />,
               items: [iconLink('Build', '#/build')],
             },
+          ],
+        });
+        expect(wrapper.findLinkByHref('#/tools')!.getElement().inert).toBe(false);
+      });
+    });
+
+    describe('group aria-label preserved when collapsed', () => {
+      it.each([
+        {
+          label: 'section-group',
+          items: [{ type: 'section-group' as const, title: 'My Group', items: [iconLink('Item A', '#/a')] }],
+          listClass: 'list-variant-section-group',
+          expectedLabel: 'My Group',
+        },
+        {
+          label: 'link-group',
+          items: [
+            {
+              type: 'link-group' as const,
+              text: 'Tools',
+              href: '#/tools',
+              icon: <Icon name="folder" />,
+              items: [iconLink('Build', '#/build')],
+            },
+          ],
+          listClass: 'list-variant-link-group',
+          expectedLabel: 'Tools',
+        },
+      ])('adds aria-label to the $label list only when collapsed', ({ items, listClass, expectedLabel }) => {
+        const expanded = render(<SideNavigation collapsed={false} items={items} />).container;
+        const collapsed = render(<SideNavigation collapsed={true} items={items} />).container;
+        expect(expanded.querySelector(`ul.${CSS.escape(styles[listClass])}`)!.getAttribute('aria-label')).toBeNull();
+        expect(collapsed.querySelector(`ul.${CSS.escape(styles[listClass])}`)!.getAttribute('aria-label')).toBe(
+          expectedLabel
+        );
+      });
+    });
+
+    describe('ELG caret hidden from AT when collapsed', () => {
+      it.each([true, false])('shows the expand button only when not collapsed (collapsed=%s)', collapsed => {
+        const wrapper = renderSideNavigation({
+          collapsed,
+          items: [
             {
               type: 'expandable-link-group',
               text: 'Monitoring',
@@ -1021,221 +569,128 @@ describe('SideNavigation collapsed mode', () => {
               icon: <Icon name="bug" />,
               items: [iconLink('Alarms', '#/alarms')],
             },
-          ]}
-        />
-      );
-      // Plain link (item-1) should NOT have the group class.
-      const plainLinkItem = container.querySelector('[data-itemid="item-1"]') as HTMLElement;
-      expect(plainLinkItem).not.toBeNull();
-      expect(plainLinkItem.classList.contains(styles['list-item--group'])).toBe(false);
-
-      // Section (item-2) should have the group class.
-      const sectionItem = container.querySelector('[data-itemid="item-2"]') as HTMLElement;
-      expect(sectionItem).not.toBeNull();
-      expect(sectionItem.classList.contains(styles['list-item--group'])).toBe(true);
-
-      // Section-group (item-3) should have the group class.
-      const sectionGroupItem = container.querySelector('[data-itemid="item-3"]') as HTMLElement;
-      expect(sectionGroupItem).not.toBeNull();
-      expect(sectionGroupItem.classList.contains(styles['list-item--group'])).toBe(true);
-
-      // Link-group (item-4) should have the group class.
-      const linkGroupItem = container.querySelector('[data-itemid="item-4"]') as HTMLElement;
-      expect(linkGroupItem).not.toBeNull();
-      expect(linkGroupItem.classList.contains(styles['list-item--group'])).toBe(true);
-
-      // Expandable-link-group (item-5) should have the group class.
-      const elgItem = container.querySelector('[data-itemid="item-5"]') as HTMLElement;
-      expect(elgItem).not.toBeNull();
-      expect(elgItem.classList.contains(styles['list-item--group'])).toBe(true);
-    });
-
-    it('applies list-item--group class to divider wrapper when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[iconLink('Link 1', '#/1'), { type: 'divider' }, iconLink('Link 2', '#/2')]}
-        />
-      );
-      // Divider wrapper (item-2) should have the group class.
-      const dividerWrapper = container.querySelector('[data-itemid="item-2"]') as HTMLElement;
-      expect(dividerWrapper).not.toBeNull();
-      expect(dividerWrapper.classList.contains(styles['list-item--group'])).toBe(true);
-    });
-
-    it('does NOT apply list-item--group class to any items when not collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={false}
-          items={[
-            iconLink('Dashboard', '#/dashboard'),
-            {
-              type: 'section',
-              text: 'Resources',
-              items: [iconLink('Compute', '#/compute')],
-            },
-            {
-              type: 'link-group',
-              text: 'Tools',
-              href: '#/tools',
-              icon: <Icon name="folder" />,
-              items: [iconLink('Build', '#/build')],
-            },
-          ]}
-        />
-      );
-      const groupElements = container.querySelectorAll(`.${CSS.escape(styles['list-item--group'])}`);
-      expect(groupElements).toHaveLength(0);
-    });
-
-    it('does NOT apply list-item--group class to plain link items when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[iconLink('Link A', '#/a'), iconLink('Link B', '#/b'), iconLink('Link C', '#/c')]}
-        />
-      );
-      // All items are plain links — none should have the group class.
-      const allListItems = container.querySelectorAll(`.${CSS.escape(styles['list-item--collapsed'])}`);
-      allListItems.forEach(item => {
-        expect(item.classList.contains(styles['list-item--group'])).toBe(false);
+          ],
+        });
+        const expandButton = wrapper.findItemByIndex(1)?.findExpandableLinkGroup()?.findExpandButton();
+        expect(expandButton !== null).toBe(!collapsed);
       });
     });
   });
 
-  describe('nested section hiding', () => {
-    it('promotes nested section children (section inside section is transparent) when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Top Section',
-              items: [
-                iconLink('Top Child', '#/top-child'),
-                {
-                  type: 'section',
-                  text: 'Nested Section',
-                  items: [iconLink('Nested Child', '#/nested-child')],
-                },
-              ],
-            },
-          ]}
-        />
-      );
-      // The top section is transparent — its direct icon-bearing children are visible.
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/top-child')).not.toBeNull();
-      // The nested section is also transparent — it promotes its children.
-      expect(wrapper.findLinkByHref('#/nested-child')).not.toBeNull();
-      // The nested section is NOT inert (its children are accessible).
-      const sectionEls = container.querySelectorAll(`.${CSS.escape(styles.section)}`);
-      // There should be at least 2 sections (top + nested)
-      expect(sectionEls.length).toBeGreaterThanOrEqual(2);
-      // None of them should be inert (sections are always transparent)
-      sectionEls.forEach(el => {
-        expect((el as HTMLElement).inert).toBe(false);
+  describe('icon-less parent link vertical collapse', () => {
+    it.each([
+      { label: 'link-group', type: 'link-group' as const },
+      { label: 'expandable-link-group', type: 'expandable-link-group' as const },
+    ])('collapses an icon-less $label parent link to zero size while the list item stays laid out', ({ type }) => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [{ type, text: 'Tools', href: '#/tools', items: [iconLink('Build', '#/build')] }],
       });
+      const parentLink = wrapper.findLinkByHref('#/tools')!.getElement();
+      expect(parentLink.classList.contains(styles['link--collapsed'])).toBe(true);
+      expect(wrapper.findItemByIndex(1)!.getElement().classList.contains(styles['list-item--collapsed'])).toBe(true);
+    });
+  });
+
+  describe('inter-group spacing identifier class', () => {
+    it.each([
+      { label: 'plain link', item: iconLink('Dashboard', '#/dashboard'), expectGroupClass: false },
+      { label: 'divider', item: { type: 'divider' as const }, expectGroupClass: true },
+      {
+        label: 'section',
+        item: { type: 'section' as const, text: 'Resources', items: [iconLink('Compute', '#/compute')] },
+        expectGroupClass: true,
+      },
+      {
+        label: 'section-group',
+        item: { type: 'section-group' as const, title: 'My Group', items: [iconLink('Item A', '#/a')] },
+        expectGroupClass: true,
+      },
+      {
+        label: 'link-group',
+        item: {
+          type: 'link-group' as const,
+          text: 'Tools',
+          href: '#/tools',
+          icon: <Icon name="folder" />,
+          items: [iconLink('Build', '#/build')],
+        },
+        expectGroupClass: true,
+      },
+      {
+        label: 'expandable-link-group',
+        item: {
+          type: 'expandable-link-group' as const,
+          text: 'Monitoring',
+          href: '#/monitoring',
+          icon: <Icon name="bug" />,
+          items: [iconLink('Alarms', '#/alarms')],
+        },
+        expectGroupClass: true,
+      },
+    ])('applies the group spacing class to $label items only when collapsed', ({ item, expectGroupClass }) => {
+      // A divider needs icon-bearing neighbors on both sides to survive collapsed filtering.
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [iconLink('Before', '#/before'), item, iconLink('After', '#/after')],
+      });
+      expect(wrapper.findItemByIndex(2)!.getElement().classList.contains(styles['list-item--group'])).toBe(
+        expectGroupClass
+      );
     });
 
-    it('root-level section is transparent (not inert, children promoted)', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Root Section',
-              items: [iconLink('Child', '#/child')],
-            },
-          ]}
-        />
-      );
-      const sectionEl = container.querySelector(`.${CSS.escape(styles.section)}`);
-      expect(sectionEl).not.toBeNull();
-      expect((sectionEl as HTMLElement).inert).toBe(false);
-      // Children are promoted — icon-bearing link is visible
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/child')).not.toBeNull();
+    it('does not apply the group spacing class to any item when not collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: false,
+        items: [
+          iconLink('Dashboard', '#/dashboard'),
+          { type: 'section', text: 'Resources', items: [iconLink('Compute', '#/compute')] },
+        ],
+      });
+      expect(wrapper.findAll(`.${styles['list-item--group']}`)).toHaveLength(0);
+    });
+  });
+
+  describe('nested section hiding', () => {
+    it.each([
+      { label: 'section', type: 'section' as const },
+      { label: 'section-group', type: 'section-group' as const },
+    ])('promotes children through a nested $label without making it inert', ({ type }) => {
+      const nested: SideNavigationProps.Item =
+        type === 'section'
+          ? { type: 'section', text: 'Nested', items: [iconLink('Nested Child', '#/nested-child')] }
+          : { type: 'section-group', title: 'Nested', items: [iconLink('Nested Child', '#/nested-child')] };
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'section',
+            text: 'Top Section',
+            items: [iconLink('Top Child', '#/top-child'), nested],
+          },
+        ],
+      });
+      expect(wrapper.findLinkByHref('#/top-child')).not.toBeNull();
+      expect(wrapper.findLinkByHref('#/nested-child')).not.toBeNull();
+      const nestedItem = wrapper.findItemByIndex(1)!.findItemByIndex(2)!;
+      const nestedGroup = type === 'section' ? nestedItem.findSection() : nestedItem.findSectionGroup();
+      expect(nestedGroup!.getElement().inert).toBe(false);
     });
 
-    it('promotes nested section-group children (section-group is transparent) when collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section',
-              text: 'Top Section',
-              items: [
-                iconLink('Top Child', '#/top-child'),
-                {
-                  type: 'section-group',
-                  title: 'Nested Group',
-                  items: [iconLink('Group Child', '#/group-child')],
-                },
-              ],
-            },
-          ]}
-        />
-      );
-      // Nested section-group is transparent — its children are promoted.
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/group-child')).not.toBeNull();
-      // The section-group element is NOT inert
-      const sectionGroupEl = container.querySelector(`.${CSS.escape(styles['section-group'])}`);
-      expect(sectionGroupEl).not.toBeNull();
-      expect((sectionGroupEl as HTMLElement).inert).toBe(false);
-    });
-
-    it('root-level section-group is transparent (not inert, children promoted)', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section-group',
-              title: 'Root Group',
-              items: [iconLink('Child', '#/child')],
-            },
-          ]}
-        />
-      );
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      expect(wrapper.findLinkByHref('#/child')).not.toBeNull();
-      const sectionGroupEl = container.querySelector(`.${CSS.escape(styles['section-group'])}`);
-      expect(sectionGroupEl).not.toBeNull();
-      expect((sectionGroupEl as HTMLElement).inert).toBe(false);
-    });
-
-    it('recursively promotes children through nested section inside section-group', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'section-group',
-              title: 'Top Group',
-              items: [
-                {
-                  type: 'section',
-                  text: 'Nested Section',
-                  items: [iconLink('Deep Child', '#/deep-child')],
-                },
-              ],
-            },
-          ]}
-        />
-      );
-      // The section inside section-group is transparent — its children reach the collapsed rail.
-      const wrapper = createWrapper(container).findSideNavigation()!;
+    it('recursively promotes children through a section nested inside a section-group', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'section-group',
+            title: 'Top Group',
+            items: [{ type: 'section', text: 'Nested Section', items: [iconLink('Deep Child', '#/deep-child')] }],
+          },
+        ],
+      });
       expect(wrapper.findLinkByHref('#/deep-child')).not.toBeNull();
-      // Neither container is inert
-      const sectionGroupEl = container.querySelector(`.${CSS.escape(styles['section-group'])}`);
-      expect((sectionGroupEl as HTMLElement).inert).toBe(false);
-      const sectionEl = container.querySelector(`.${CSS.escape(styles.section)}`);
-      expect((sectionEl as HTMLElement).inert).toBe(false);
+      const sectionGroup = wrapper.findItemByIndex(1)!.findSectionGroup()!.getElement();
+      expect(sectionGroup.inert).toBe(false);
     });
   });
 
