@@ -122,6 +122,7 @@ const InternalButtonDropdown = React.forwardRef(
       onItemActivate,
       onGroupToggle,
       onDropdownFocusLeave,
+      onDropdownBlur,
       toggleDropdown,
       closeDropdown,
       setIsUsingMouse,
@@ -456,6 +457,7 @@ const InternalButtonDropdown = React.forwardRef(
           preferredAlignment={preferCenter ? 'center' : 'start'}
           onOutsideClick={() => toggleDropdown()}
           onFocusLeave={onDropdownFocusLeave}
+          onBlur={onDropdownBlur}
           trigger={trigger}
           dropdownId={dropdownId}
           header={filterElement}
