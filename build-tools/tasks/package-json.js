@@ -3,7 +3,7 @@
 const { parallel } = require('gulp');
 const path = require('path');
 const fs = require('fs');
-const { writeFile, listPublicItems } = require('../utils/files');
+const { writeFile, listPublicItems, listBetaItems } = require('../utils/files');
 const themes = require('../utils/themes');
 const { task, copyTask } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
@@ -49,6 +49,13 @@ function getComponentsExports() {
 
   for (const component of components) {
     result[`./${component}`] = `./${component}/index.js`;
+  }
+
+  // Versioned beta components, published only at their explicit subpath (e.g.
+  // `@cloudscape-design/components/beta/basic-table-0.1`) — the versioning escape-hatch. Not added
+  // to the top-level barrel.
+  for (const betaItem of listBetaItems('src')) {
+    result[`./${betaItem}`] = `./${betaItem}/index.js`;
   }
 
   // Per-component test-utils wrappers, both DOM and selectors
