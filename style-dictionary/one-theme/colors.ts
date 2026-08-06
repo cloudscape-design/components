@@ -42,7 +42,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: { light: '{colorNeutral700}', dark: '{colorNeutral350}' },
   colorTextButtonNormalHover: { light: '{colorNeutral850}', dark: '{colorNeutral250}' },
   colorTextButtonNormalActive: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
-  colorTextButtonNormalDisabled: { light: '{colorNeutral450}', dark: '{colorNeutral600}' },
+  colorTextButtonNormalDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
 
   // Inline-link and icon buttons adopt the link hover color in one-theme.
   colorTextButtonInlineLinkHover: '{colorTextLinkHover}',
