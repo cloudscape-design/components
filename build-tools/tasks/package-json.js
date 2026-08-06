@@ -74,7 +74,9 @@ function getSideEffects() {
     '*.css',
     // this file exposes `awsuiVersions` object
     './internal/base-component/index.js',
-    // this file contains css-variables overrides for dark and other modes
+    // this file contains the base theme css-variables and overrides for dark and other modes
+    './internal/base-theme/styles.css.js',
+    // this file contains other global styles and tokens
     './internal/base-component/styles.css.js',
   ];
 }
