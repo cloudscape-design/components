@@ -164,7 +164,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextAlertDefault: '{colorTextNotificationDefault}',
 
   // ── Status border ───────────────────────────────────────────────────────────
-  colorBorderStatusError: { light: '{colorError600}', dark: '{colorError400}' },
+  colorBorderStatusError: { light: '{colorError600}', dark: '{colorError500}' },
   colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess300}' },
   colorBorderStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
