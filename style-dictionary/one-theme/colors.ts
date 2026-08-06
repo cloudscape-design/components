@@ -157,7 +157,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Status text ───────────────────────────────────────────────────────────
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
-  colorTextStatusWarning: { light: '{colorWarning800}', dark: '{colorWarning300}' },
+  colorTextStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
   colorTextStatusInactive: { light: '{colorNeutral650}', dark: '{colorNeutral450}' },
 
