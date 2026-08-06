@@ -703,7 +703,6 @@ export type ColorsTokenName =
   | 'colorBorderControlDisabled'
   | 'colorBorderDividerActive'
   | 'colorBorderDividerDefault'
-  | 'colorBorderDividerNotification'
   | 'colorBorderDividerSecondary'
   | 'colorBorderDividerTableGroup'
   | 'colorBorderDividerPanelBottom'

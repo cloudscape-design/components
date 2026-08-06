@@ -19,8 +19,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonNormalDefault: 'transparent',
   colorBackgroundButtonNormalHover: 'rgba(0, 0, 0, 0.05)',
   colorBackgroundButtonNormalActive: 'rgba(0, 0, 0, 0.1)',
-  colorTextBodyDefault: '{colorTextNotificationDefault}',
-  colorBorderDividerDefault: '{colorBorderDividerNotification}',
   colorBorderItemFocused: {
     light: '{colorTextInteractiveInvertedDefault}',
     dark: '{colorTextInteractiveInvertedHover}',
