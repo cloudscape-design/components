@@ -25,8 +25,23 @@ export interface TextareaProps
     FormFieldValidationControlProps {
   /**
    * Specifies the number of lines of text to set the height to.
+   * Ignored when `autoResize` is `true`.
    */
   rows?: number;
+
+  /**
+   * When `true`, the textarea automatically grows and shrinks to fit its content.
+   * Use `maxRows` to cap the maximum number of visible rows.
+   * When `autoResize` is enabled the `rows` prop is ignored.
+   */
+  autoResize?: boolean;
+
+  /**
+   * The maximum number of rows the textarea will grow to when `autoResize` is `true`.
+   * Once the content exceeds this height a scrollbar appears.
+   * Has no effect when `autoResize` is `false` or not set.
+   */
+  maxRows?: number;
 
   /**
    * Specifies whether to disable browser spellcheck feature.

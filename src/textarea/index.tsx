@@ -17,6 +17,7 @@ import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { GeneratedAnalyticsMetadataTextareaComponent } from './analytics-metadata/interfaces';
 import { TextareaProps } from './interfaces';
 import { getTextareaStyles } from './styles';
+import { useAutoResize } from './use-auto-resize';
 
 import styles from './styles.css.js';
 
@@ -40,6 +41,8 @@ const Textarea = React.forwardRef(
       ariaRequired,
       name,
       rows,
+      autoResize = false,
+      maxRows,
       placeholder,
       autoFocus,
       ariaLabel,
@@ -50,7 +53,15 @@ const Textarea = React.forwardRef(
     ref: Ref<TextareaProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('Textarea', {
-      props: { autoComplete, autoFocus, disableBrowserAutocorrect, disableBrowserSpellcheck, readOnly, spellcheck },
+      props: {
+        autoComplete,
+        autoFocus,
+        autoResize,
+        disableBrowserAutocorrect,
+        disableBrowserSpellcheck,
+        readOnly,
+        spellcheck,
+      },
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
@@ -58,6 +69,14 @@ const Textarea = React.forwardRef(
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     useForwardFocus(ref, textareaRef);
+
+    const autoResizeRefCallback = useAutoResize(autoResize, value || '', maxRows);
+
+    // Merge our auto-resize ref-callback with the internal textareaRef.
+    const mergedRef = (node: HTMLTextAreaElement | null) => {
+      (textareaRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+      autoResizeRefCallback(node);
+    };
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,
@@ -72,12 +91,13 @@ const Textarea = React.forwardRef(
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
         [styles['textarea-warning']]: warning && !invalid,
+        [styles['textarea-auto-resize']]: autoResize,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
-      rows: rows || 3,
+      rows: autoResize ? 1 : rows || 3,
       onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
       // We set a default value on the component in order to force it into the controlled mode.
@@ -116,7 +136,7 @@ const Textarea = React.forwardRef(
           tag="textarea"
           componentName="Textarea"
           nativeAttributes={nativeTextareaAttributes}
-          ref={textareaRef}
+          ref={mergedRef}
           id={controlId}
           style={getTextareaStyles(style)}
         />
