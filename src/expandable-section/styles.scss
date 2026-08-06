@@ -299,10 +299,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding-inline-start: $icon-total-space-normal;
   }
 
-  // One-theme only: animated grid-template-rows reveal instead of the display
-  // toggle above. Visual Refresh and classic keep instantaneous display toggling,
-  // since consumers of those themes rely on synchronous isDisplayed()/isExisting()
-  // DOM visibility checks.
+  // One-theme only: animated grid-template-rows reveal instead of the true/false display:none. VR keeps
+  // instantaneous display toggling, to prevent breaking reliance on synchronous isDisplayed()/isExisting() checks.
   @include theming.one-theme-only {
     display: grid;
     grid-template-rows: 0fr;
@@ -324,17 +322,12 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 // One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
-// NO padding-block here — padding lives on .content-inner-body so the grid
-// track can fully collapse to zero at 0fr. Unused (no-op) outside one-theme, since
-// .content itself is display:none/block there and never establishes a grid track.
 .content-inner {
   @include theming.one-theme-only {
-    // Use overflow-y: clip (not hidden) so the grid-row track can still collapse
-    // content vertically, while overflow-x: visible lets negative-margin
-    // backgrounds (e.g. side-navigation active/hover states) bleed past the
-    // inline edges without being cut off. `clip` does not coerce the other axis
-    // to `auto` like `hidden` does, so this combination is safe from scrollbars.
+    // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
+    // active/hover/focus states) bleed past the inline edges.
     overflow-x: visible;
+    // overflow: clip (not hidden, which would coerce x-axis to auto) still lets the grid-row track collapse.
     overflow-y: clip;
     min-block-size: 0;
     opacity: 0;
@@ -354,16 +347,13 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       }
     }
 
-    // Applied after the expand transition settles. Switches overflow to visible
-    // so active-state backgrounds and focus rings that extend beyond the content
-    // box (via negative margins or outline-offset) are not clipped.
     &-settled {
       overflow: visible;
     }
   }
 }
 
-// Padded child inside .content-inner that carries variant vertical spacing.
+// Padding lives here rather than outer content wrapper so the grid track can fully collapse to zero at 0fr.
 .content-inner-body {
   &-default,
   &-inline {
@@ -412,7 +402,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
-// When the expand/collapse icon is rendered at the end of the header.
 // For non-container variants the icon is rendered at the end of the headerButton
 // (taking the full width of the header). For the container variant the icon is
 // rendered as a sibling of the InternalHeader so it appears past any actions.
@@ -526,8 +515,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   min-block-size: 0;
 }
 
-// In the end-icon layout, header content elements are flex children that must
-// shrink without overflowing (flex: 1 + min-inline-size: 0).
+// In the end-icon layout, header content elements must shrink without overflowing.
 .header-icon-end > .header-content,
 .header-icon-end > .header-navigation-content {
   flex: 1;

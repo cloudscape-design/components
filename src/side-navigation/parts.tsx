@@ -640,6 +640,7 @@ function Section({
         position={position}
         collapsed={collapsed}
         withIcons={withIcons}
+        ariaLabel={collapsed ? definition.text : undefined}
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
       />
