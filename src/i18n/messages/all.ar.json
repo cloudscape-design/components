@@ -257,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "الانتقال إلى الصفحة",
     "i18nStrings.jumpToPageInputLabel": "صفحة",
     "i18nStrings.jumpToPageError": "الصفحة خارج نطاق الوصول. جارٍ عرض آخر صفحة متاحة.",
-    "i18nStrings.jumpToPageLoadingText": "جار التحميل"
+    "i18nStrings.jumpToPageLoadingText": "جار التحميل",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} من {pagesCount} +} false {{currentPage} من {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "مقبض تغيير حجم اللوحة",

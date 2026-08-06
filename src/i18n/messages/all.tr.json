@@ -256,8 +256,9 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
-    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
+    "i18nStrings.jumpToPageError": "Sayfa aralık dışında. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",
