@@ -128,6 +128,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSliderRangeDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundSliderHandleDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundProgressBarValueFlash: '{colorTextNotificationDefault}',
+  colorBackgroundProgressBarFlash: { light: '{colorGreyOpaque10}', dark: '{colorGreyOpaque25}' },
 
   // ── Badge ─────────────────────────────────────────────────────────
   colorBackgroundBadgeGreen: { light: '{colorSuccess100}', dark: 'rgba(43, 181, 52, 0.2)' },
@@ -135,18 +137,31 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
   colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
-  colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
+  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextNotificationYellow: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextLinkInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
+  colorTextInteractiveInvertedDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
   colorTextBadgeGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextBadgeBlue: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextBadgeRed: { light: '{colorError700}', dark: '{colorError400}' },
   colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 
-  // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
+  // Flashbar
   colorBackgroundFlashbarError: { light: '#fceded', dark: '#460303' },
   colorBackgroundFlashbarInfo: { light: '#eaeffc', dark: '#08144f' },
   colorBackgroundFlashbarSuccess: { light: '#e9fce7', dark: '#03220d' },
   colorBackgroundFlashbarWarning: { light: '#fcfadb', dark: '#372603' },
+  colorTextFlashbarIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextFlashbarIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
+
+  // Alert
+  colorBackgroundAlertError: { light: '#fceded', dark: '#460303' },
+  colorBackgroundAlertInfo: { light: '#eaeffc', dark: '#08144f' },
+  colorBackgroundAlertSuccess: { light: '#e9fce7', dark: '#03220d' },
+  colorBackgroundAlertWarning: { light: '#fcfadb', dark: '#372603' },
+  colorTextAlertDefault: '{colorTextNotificationDefault}',
 
   // ── Status border ───────────────────────────────────────────────────────────
   colorBorderStatusError: { light: '{colorError600}', dark: '{colorError400}' },
@@ -155,6 +170,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
+  colorTextAlertIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextAlertIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
