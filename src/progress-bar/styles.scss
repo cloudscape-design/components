@@ -129,6 +129,26 @@ $progress-value-background-color: var(
     @include general-progress-bar-style;
     background-color: $progress-value-background-color;
   }
+
+  &.progress-flash {
+    background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+
+    &::-webkit-progress-bar {
+      background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+    }
+    &::-webkit-progress-value {
+      background-color: var(
+        #{custom-props.$progressValueBackgroundColor},
+        awsui.$color-background-progress-bar-value-flash
+      );
+    }
+    &::-moz-progress-bar {
+      background-color: var(
+        #{custom-props.$progressValueBackgroundColor},
+        awsui.$color-background-progress-bar-value-flash
+      );
+    }
+  }
 }
 
 .additional-info {
