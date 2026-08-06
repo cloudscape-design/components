@@ -723,6 +723,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderDividerNotification: {
+    description: 'The border color for dividers inside flash messages and alerts.',
+    public: false,
+    themeable: false,
+  },
   colorBorderDividerSecondary: {
     description: 'The border color for row dividers. For example: row dividers for table and collection preferences.',
     public: true,

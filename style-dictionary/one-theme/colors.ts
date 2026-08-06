@@ -139,6 +139,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorBorderDividerNotification: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
   colorTextNotificationYellow: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
   colorTextLinkInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
   colorTextInteractiveInvertedDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
