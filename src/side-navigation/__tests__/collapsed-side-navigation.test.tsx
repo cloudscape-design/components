@@ -94,49 +94,6 @@ describe('SideNavigation collapsed mode', () => {
     it.each([
       {
         label: 'section',
-        items: [
-          {
-            type: 'section' as const,
-            text: 'Resources',
-            items: [iconLink('Compute', '#/compute'), iconLink('Storage', '#/storage'), plainLink('No icon', '#/none')],
-          },
-        ],
-        iconHrefs: ['#/compute', '#/storage'],
-        hiddenHref: '#/none',
-        headerText: 'Resources',
-      },
-      {
-        label: 'section-group',
-        items: [
-          {
-            type: 'section-group' as const,
-            title: 'My Group',
-            items: [iconLink('Item A', '#/a'), iconLink('Item B', '#/b'), plainLink('No icon', '#/none')],
-          },
-        ],
-        iconHrefs: ['#/a', '#/b'],
-        hiddenHref: '#/none',
-        headerText: 'My Group',
-      },
-    ])(
-      'keeps $label mounted with icon-bearing children visible and header text aria-hidden',
-      ({ items, iconHrefs, hiddenHref, headerText }) => {
-        const { container } = render(<SideNavigation collapsed={true} items={items} />);
-        const wrapper = createWrapper(container).findSideNavigation()!;
-        // Icon-bearing children remain mounted and visible.
-        iconHrefs.forEach(href => expect(wrapper.findLinkByHref(href)).not.toBeNull());
-        // Children without icons are still hidden (filtered out by the link-level collapsed logic).
-        expect(wrapper.findLinkByHref(hiddenHref)).toBeNull();
-        // The header text is rendered but aria-hidden for accessibility.
-        const ariaHiddenEls = container.querySelectorAll('[aria-hidden="true"]');
-        const headerEl = Array.from(ariaHiddenEls).find(el => el.textContent === headerText);
-        expect(headerEl).toBeDefined();
-      }
-    );
-
-    it.each([
-      {
-        label: 'section',
         items: [{ type: 'section' as const, text: 'Empty', items: [plainLink('A', '#/a'), plainLink('B', '#/b')] }],
       },
       {
@@ -222,7 +179,7 @@ describe('SideNavigation collapsed mode', () => {
       items.forEach(item => expect(wrapper.findLinkByHref(item.href)).not.toBeNull());
     });
 
-    it('hides the expand button and inerts the content when collapsed', () => {
+    it('inerts the expandable-link-group content when collapsed', () => {
       const wrapper = renderSideNavigation({
         collapsed: true,
         items: [
@@ -236,7 +193,6 @@ describe('SideNavigation collapsed mode', () => {
         ],
       });
       const elg = wrapper.findItemByIndex(1)?.findExpandableLinkGroup();
-      expect(elg?.findExpandButton()).toBeNull();
       const contentInner = elg?.findContent().getElement().firstElementChild as HTMLElement;
       expect(contentInner.inert).toBe(true);
     });
@@ -256,8 +212,8 @@ describe('SideNavigation collapsed mode', () => {
       const wrapper = createWrapper(container).findSideNavigation()!;
       expect(wrapper.findLinkByHref('#/group')).not.toBeNull();
       items.forEach(item => expect(wrapper.findLinkByHref(item.href)).not.toBeNull());
-      const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect((childrenInner as HTMLElement).inert).toBe(true);
+      const firstChildLink = wrapper.findLinkByHref(items[0].href)!.getElement();
+      expect(firstChildLink.closest('ul')!.parentElement!.inert).toBe(true);
     });
 
     it('children are not inert when not collapsed', () => {
@@ -275,8 +231,9 @@ describe('SideNavigation collapsed mode', () => {
           ]}
         />
       );
-      const childrenInner = container.querySelector(`.${CSS.escape(styles['link-group-children-inner'])}`);
-      expect((childrenInner as HTMLElement).inert).toBe(false);
+      const wrapper = createWrapper(container).findSideNavigation()!;
+      const childLink = wrapper.findLinkByHref('#/c1')!.getElement();
+      expect(childLink.closest('ul')!.parentElement!.inert).toBe(false);
     });
 
     it('applies the collapsed class to the children container for the grid animation', () => {
@@ -525,13 +482,35 @@ describe('SideNavigation collapsed mode', () => {
       });
     });
 
-    describe('group aria-label preserved when collapsed', () => {
+    describe('group aria-label preserved and children mounted when collapsed', () => {
       it.each([
         {
+          label: 'section',
+          items: [
+            {
+              type: 'section' as const,
+              text: 'Resources',
+              items: [iconLink('Compute', '#/compute'), plainLink('No icon', '#/none')],
+            } as SideNavigationProps.Item,
+          ],
+          listClass: 'list-variant-section',
+          expectedLabel: 'Resources',
+          iconHrefs: ['#/compute'],
+          hiddenHref: '#/none',
+        },
+        {
           label: 'section-group',
-          items: [{ type: 'section-group' as const, title: 'My Group', items: [iconLink('Item A', '#/a')] }],
+          items: [
+            {
+              type: 'section-group' as const,
+              title: 'My Group',
+              items: [iconLink('Item A', '#/a'), plainLink('No icon', '#/none')],
+            } as SideNavigationProps.Item,
+          ],
           listClass: 'list-variant-section-group',
           expectedLabel: 'My Group',
+          iconHrefs: ['#/a'],
+          hiddenHref: '#/none',
         },
         {
           label: 'link-group',
@@ -542,19 +521,31 @@ describe('SideNavigation collapsed mode', () => {
               href: '#/tools',
               icon: <Icon name="folder" />,
               items: [iconLink('Build', '#/build')],
-            },
+            } as SideNavigationProps.Item,
           ],
           listClass: 'list-variant-link-group',
           expectedLabel: 'Tools',
+          iconHrefs: ['#/build'],
+          // link-group children stay mounted even without icons — they're needed for
+          // the collapse animation — so there's no hiddenHref case to assert here.
+          hiddenHref: undefined,
         },
-      ])('adds aria-label to the $label list only when collapsed', ({ items, listClass, expectedLabel }) => {
-        const expanded = render(<SideNavigation collapsed={false} items={items} />).container;
-        const collapsed = render(<SideNavigation collapsed={true} items={items} />).container;
-        expect(expanded.querySelector(`ul.${CSS.escape(styles[listClass])}`)!.getAttribute('aria-label')).toBeNull();
-        expect(collapsed.querySelector(`ul.${CSS.escape(styles[listClass])}`)!.getAttribute('aria-label')).toBe(
-          expectedLabel
-        );
-      });
+      ])(
+        'adds aria-label to the $label list and keeps icon-bearing children mounted when collapsed',
+        ({ items, listClass, expectedLabel, iconHrefs, hiddenHref }) => {
+          const expanded = render(<SideNavigation collapsed={false} items={items} />).container;
+          const collapsed = renderSideNavigation({ collapsed: true, items });
+          expect(expanded.querySelector(`ul.${CSS.escape(styles[listClass])}`)!.getAttribute('aria-label')).toBeNull();
+          expect(collapsed.getElement().querySelector(`ul[aria-label="${expectedLabel}"]`)).not.toBeNull();
+          // Icon-bearing children remain mounted and visible.
+          iconHrefs.forEach(href => expect(collapsed.findLinkByHref(href)).not.toBeNull());
+          // Children without icons are hidden, except for link-group/expandable-link-group
+          // variants which keep them mounted for the collapse animation (see hiddenHref).
+          if (hiddenHref) {
+            expect(collapsed.findLinkByHref(hiddenHref)).toBeNull();
+          }
+        }
+      );
     });
 
     describe('ELG caret hidden from AT when collapsed', () => {

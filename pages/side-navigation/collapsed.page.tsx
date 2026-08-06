@@ -17,6 +17,20 @@ type CollapsedNavDemoContext = React.Context<
   }>
 >;
 
+const cubeIcon = (
+  <Icon
+    svg={
+      <svg viewBox="0 0 16 16" height="16" width="16">
+        <path
+          className="filled no-stroke"
+          fill="currentColor"
+          d="m8.35.34 6.25 3.25.4.2v8.42l-.4.2-6.25 3.26-.35.18-.35-.18-6.25-3.25-.4-.21V3.8l.4-.21L7.65.34 8 .15zM2.5 11.3l4.75 2.46V7.81L2.5 5.44zM8.75 7.8v5.95l4.75-2.46V5.44zM3.42 4.22 8 6.52l4.58-2.3L8 1.85z"
+        ></path>
+      </svg>
+    }
+  />
+);
+
 const kitchenSink: SideNavigationProps.Item[] = [
   { type: 'link', text: 'Dashboard', href: '#/dashboard', icon: <Icon name="grid-view" /> },
   { type: 'link', text: 'Calendar', href: '#/calendar', icon: <Icon name="calendar" /> },
@@ -113,18 +127,7 @@ const simpleItems: SideNavigationProps.Item[] = [
     type: 'link',
     text: 'Dashboard',
     href: '#/dashboard',
-    icon: (
-      <Icon
-        svg={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 3 18 18">
-            <path
-              stroke="currentColor"
-              d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5ZM14 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5ZM4 16a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3ZM14 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6Z"
-            />
-          </svg>
-        }
-      />
-    ),
+    icon: <Icon name="grid-view" />,
   },
   {
     type: 'link',
@@ -187,36 +190,13 @@ const navWithSections: SideNavigationProps.Item[] = [
     type: 'link',
     text: 'Dashboard',
     href: '#/dashboard',
-    icon: (
-      <Icon
-        svg={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 3 18 18">
-            <path
-              stroke="currentColor"
-              d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5ZM14 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5ZM4 16a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3ZM14 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6Z"
-            />
-          </svg>
-        }
-      />
-    ),
+    icon: <Icon name="grid-view" />,
   },
   {
     type: 'link',
     text: 'Instances',
     href: '#/instances',
-    icon: (
-      <Icon
-        svg={
-          <svg viewBox="0 0 16 16" height="16" width="16">
-            <path
-              className="filled no-stroke"
-              fill="currentColor"
-              d="m8.35.34 6.25 3.25.4.2v8.42l-.4.2-6.25 3.26-.35.18-.35-.18-6.25-3.25-.4-.21V3.8l.4-.21L7.65.34 8 .15zM2.5 11.3l4.75 2.46V7.81L2.5 5.44zM8.75 7.8v5.95l4.75-2.46V5.44zM3.42 4.22 8 6.52l4.58-2.3L8 1.85z"
-            ></path>
-          </svg>
-        }
-      />
-    ),
+    icon: cubeIcon,
   },
   {
     type: 'section',
@@ -302,19 +282,7 @@ const navWithELGs: SideNavigationProps.Item[] = [
     type: 'link',
     text: 'Deployments',
     href: '#/page2',
-    icon: (
-      <Icon
-        svg={
-          <svg viewBox="0 0 16 16" height="16" width="16">
-            <path
-              className="filled no-stroke"
-              fill="currentColor"
-              d="m8.35.34 6.25 3.25.4.2v8.42l-.4.2-6.25 3.26-.35.18-.35-.18-6.25-3.25-.4-.21V3.8l.4-.21L7.65.34 8 .15zM2.5 11.3l4.75 2.46V7.81L2.5 5.44zM8.75 7.8v5.95l4.75-2.46V5.44zM3.42 4.22 8 6.52l4.58-2.3L8 1.85z"
-            ></path>
-          </svg>
-        }
-      />
-    ),
+    icon: cubeIcon,
   },
   {
     type: 'expandable-link-group',

@@ -67,10 +67,8 @@ export default function InternalExpandableSection({
   ...props
 }: InternalExpandableSectionProps) {
   const contentInnerRef = useRef<HTMLDivElement>(null);
-  // Start settled when the section is initially expanded — no transition will
-  // fire, so the transitionEnd handler would never switch overflow to visible.
-  // This prevents permanent clipping of negative-margin backgrounds (e.g. nav
-  // active/hover states) in initially-expanded sections and reduced-motion mode.
+  // Starts settled when initially expanded or under reduced motion, since neither case
+  // transitions grid-template-rows — the only trigger for handleContentTransitionEnd below.
   const [contentSettled, setContentSettled] = useState(() => !!(controlledExpanded ?? defaultExpanded));
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
@@ -108,6 +106,7 @@ export default function InternalExpandableSection({
 
   const onKeyDown = useCallback((event: KeyboardEvent<Element>) => {
     if (event.keyCode === KeyCode.space) {
+      // Prevent the page from scrolling when toggling the component with the space bar.
       event.preventDefault();
     }
   }, []);
@@ -129,9 +128,6 @@ export default function InternalExpandableSection({
     }
   }, [expanded]);
 
-  // After the expand transition finishes, mark content as settled so
-  // overflow can switch to visible (prevents clipping of active-state backgrounds
-  // and focus rings that extend beyond the content box).
   const handleContentTransitionEnd = useCallback(
     (event: React.TransitionEvent<HTMLDivElement>) => {
       if (event.propertyName === 'grid-template-rows' && expanded) {
@@ -150,6 +146,7 @@ export default function InternalExpandableSection({
     onClick,
   };
 
+  // Map stacked variant to container to avoid code duplication
   const baseVariant: InternalVariant = variant === 'stacked' ? 'container' : variant;
 
   return (
