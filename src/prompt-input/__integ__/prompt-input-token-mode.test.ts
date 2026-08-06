@@ -593,6 +593,78 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
     );
   });
 
+  describe('minRows sizing', () => {
+    test(
+      'minRows=1 (default) renders a single-row height',
+      setupTest(async page => {
+        const height = await page.getContentEditableHeight();
+        // A single row is ~30px; this should stay well under the multi-row heights below.
+        expect(height).toBeLessThan(40);
+      })
+    );
+
+    test(
+      'increasing minRows grows the input height',
+      setupTest(async page => {
+        // The height-recalculation effect depends on the token list changing, not on minRows
+        // directly, so a keystroke is needed after each minRows change to force a recompute —
+        // matching how a real user's height would update as they keep typing.
+        const heightAtOne = await page.getContentEditableHeight();
+
+        await page.setValue('#min-rows-input', '3');
+        await page.focusInput();
+        await page.keys(['a']);
+        await page.pause(200);
+        const heightAtThree = await page.getContentEditableHeight();
+        expect(heightAtThree).toBeGreaterThan(heightAtOne);
+
+        await page.setValue('#min-rows-input', '4');
+        await page.focusInput();
+        await page.keys(['b']);
+        await page.pause(200);
+        const heightAtFour = await page.getContentEditableHeight();
+        expect(heightAtFour).toBeGreaterThan(heightAtThree);
+      })
+    );
+
+    test(
+      'minRows equal to maxRows produces the same height as the maxRows clamp',
+      setupTest(async page => {
+        // The page's default maxRows is 4. Setting minRows to 4 as well means both the min
+        // and max clamps resolve to the same formula, so the height should match exactly,
+        // even once content overflows past 4 lines.
+        const heightAtMinRowsFour = await page.getContentEditableHeight();
+
+        await page.focusInput();
+        // Add 6 line breaks (7 lines total) — well past the 4-row maxRows clamp.
+        for (let i = 0; i < 6; i++) {
+          await page.keys(['Shift', 'Enter', 'Shift']);
+        }
+        await page.pause(200);
+        const heightAfterOverflow = await page.getContentEditableHeight();
+
+        expect(heightAfterOverflow).toBe(heightAtMinRowsFour);
+      }, 'minRows=4')
+    );
+
+    test(
+      'minRows is respected on initial mount, before any interaction',
+      setupTest(async page => {
+        // Height must already reflect minRows=4 on first render — not just after some later
+        // recalculation triggered by typing or other interaction.
+        const heightOnMount = await page.getContentEditableHeight();
+
+        await page.setValue('#min-rows-input', '1');
+        await page.focusInput();
+        await page.keys(['x']); // force a token change so the height effect re-runs
+        await page.pause(200);
+        const heightAtMinRowsOne = await page.getContentEditableHeight();
+
+        expect(heightOnMount).toBeGreaterThan(heightAtMinRowsOne);
+      }, 'minRows=4')
+    );
+  });
+
   describe('placeholder sizing', () => {
     test(
       'long placeholder grows the input beyond a single row',
