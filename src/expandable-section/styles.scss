@@ -227,6 +227,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
   &-navigation {
     > .icon-container {
+      position: relative;
       display: inline-flex;
       cursor: pointer;
       color: awsui.$color-text-expandable-section-navigation-icon-default;
@@ -238,6 +239,14 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       outline: none;
       text-decoration: none;
       flex-direction: column;
+
+      // Extends the clickable area to ensure a minimum 24x24px pointer target (WCAG 2.5.8)
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block: min(0px, calc((100% - 24px) / 2));
+        inset-inline: min(0px, calc((100% - 24px) / 2));
+      }
 
       &:hover {
         color: awsui.$color-text-expandable-section-hover;
