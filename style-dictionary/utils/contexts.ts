@@ -60,6 +60,14 @@ export const createHeaderAlertContext = (tokens: TokenCategory<string, GlobalVal
   };
 };
 
+export const createTopNavigationAlertContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'alert-top-navigation',
+    selector: '.awsui-context-top-navigation .awsui-context-alert',
+    tokens,
+  };
+};
+
 export const createAppLayoutToolsDrawerTriggerContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'app-layout-tools-drawer-trigger',
