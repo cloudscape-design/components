@@ -32,8 +32,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: block;
 }
 
 .expand-button {
