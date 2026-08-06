@@ -41,35 +41,64 @@ export function useLocale(): string | null {
  */
 type StringKeyOf<T> = Extract<keyof T, string>;
 
-export interface ComponentFormatFunction<ComponentName extends StringKeyOf<I18nFormatArgTypes>> {
-  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
+export interface GenericI18nFormatArgTypes {
+  [componentName: string]: {
+    [messageKey: string]: Record<string, string | number> | never;
+  };
+}
+
+export interface GenericI18nFormatFunction<
+  NamespaceTypes = GenericI18nFormatArgTypes,
+  ComponentName extends StringKeyOf<NamespaceTypes> = StringKeyOf<NamespaceTypes>,
+> {
+  <MessageKey extends StringKeyOf<NamespaceTypes[ComponentName]>>(
     key: MessageKey,
     provided: string,
-    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
+    handler?: CustomHandler<string, NamespaceTypes[ComponentName][MessageKey]>
   ): string;
-  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
+  <MessageKey extends StringKeyOf<NamespaceTypes[ComponentName]>>(
     key: MessageKey,
     provided: string | undefined,
-    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
+    handler?: CustomHandler<string | undefined, NamespaceTypes[ComponentName][MessageKey]>
   ): string | undefined;
-  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ReturnValue>(
+  <MessageKey extends StringKeyOf<NamespaceTypes[ComponentName]>, ReturnValue>(
     key: MessageKey,
     provided: ReturnValue,
-    handler: I18nFormatArgTypes[ComponentName][MessageKey] extends never
+    handler: NamespaceTypes[ComponentName][MessageKey] extends never
       ? never
-      : CustomHandler<ReturnValue, I18nFormatArgTypes[ComponentName][MessageKey]>
+      : CustomHandler<ReturnValue, NamespaceTypes[ComponentName][MessageKey]>
   ): ReturnValue;
+}
+
+export type I18nFormatFunction<
+  NamespaceTypes = GenericI18nFormatArgTypes,
+  ComponentName extends StringKeyOf<NamespaceTypes> = StringKeyOf<NamespaceTypes>,
+> = GenericI18nFormatFunction<NamespaceTypes, ComponentName>;
+
+export type ComponentFormatFunction<ComponentName extends StringKeyOf<I18nFormatArgTypes>> = I18nFormatFunction<
+  I18nFormatArgTypes,
+  ComponentName
+>;
+
+/**
+ * Public hook for third-party component libraries to resolve translations
+ * through I18nProvider under their own namespace.
+ */
+export function useCustomI18n<
+  NamespaceTypes = GenericI18nFormatArgTypes,
+  ComponentName extends StringKeyOf<NamespaceTypes> = StringKeyOf<NamespaceTypes>,
+>(namespace: string, componentName: ComponentName): I18nFormatFunction<NamespaceTypes, ComponentName> {
+  const { format } = useContext(InternalI18nContext) ?? defaultContextValue;
+  const formatFunction = <MessageKey extends StringKeyOf<NamespaceTypes[ComponentName]>, ValueType>(
+    key: MessageKey,
+    provided: ValueType,
+    customHandler?: CustomHandler<ValueType, NamespaceTypes[ComponentName][MessageKey]>
+  ) => format(namespace, componentName, key, provided, customHandler);
+  return formatFunction;
 }
 
 export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
   componentName: ComponentName
 ): ComponentFormatFunction<ComponentName> {
-  const { format } = useContext(InternalI18nContext) ?? defaultContextValue;
-  return <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ValueType>(
-    key: MessageKey,
-    provided: ValueType,
-    customHandler?: CustomHandler<ValueType, I18nFormatArgTypes[ComponentName][MessageKey]>
-  ) => {
-    return format(namespace, componentName, key, provided, customHandler);
-  };
+  return useCustomI18n<I18nFormatArgTypes, ComponentName>(namespace, componentName);
 }
