@@ -43,6 +43,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalHover: { light: '{colorNeutral850}', dark: '{colorNeutral250}' },
   colorTextButtonNormalActive: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextButtonNormalDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorTextInteractiveDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
 
   // Inline-link and icon buttons adopt the link hover color in one-theme.
   colorTextButtonInlineLinkHover: '{colorTextLinkHover}',
@@ -62,11 +63,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
   colorBackgroundButtonPrimaryHover: { light: '{colorNeutral700}', dark: '{colorNeutral200}' },
   colorBackgroundButtonPrimaryActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral700}' },
+  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
   colorTextButtonPrimaryDefault: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryHover: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryActive: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
-  colorTextButtonPrimaryDisabled: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
+  colorTextButtonPrimaryDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
