@@ -196,11 +196,19 @@ const InternalPromptInput = React.forwardRef(
       }
     }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
 
+    // When minRows/maxRows change, recalculate height synchronously — these prop
+    // changes don't involve caret position so no RAF deferral is needed.
+    useEffect(() => {
+      if (isTokenMode) {
+        adjustInputHeight();
+      }
+    }, [isTokenMode, adjustInputHeight, minRows, maxRows]);
+
     useEffect(() => {
       if (!isTokenMode) {
         adjustInputHeight();
       }
-    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder]);
+    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder, minRows, maxRows]);
 
     // Observe width changes on the component's root element to handle container resizes.
     // We need a separate RefObject because __internalRootRef may be a callback ref,

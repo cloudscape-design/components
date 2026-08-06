@@ -606,21 +606,14 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
     test(
       'increasing minRows grows the input height',
       setupTest(async page => {
-        // The height-recalculation effect depends on the token list changing, not on minRows
-        // directly, so a keystroke is needed after each minRows change to force a recompute —
-        // matching how a real user's height would update as they keep typing.
         const heightAtOne = await page.getContentEditableHeight();
 
         await page.setValue('#min-rows-input', '3');
-        await page.focusInput();
-        await page.keys(['a']);
         await page.pause(200);
         const heightAtThree = await page.getContentEditableHeight();
         expect(heightAtThree).toBeGreaterThan(heightAtOne);
 
         await page.setValue('#min-rows-input', '4');
-        await page.focusInput();
-        await page.keys(['b']);
         await page.pause(200);
         const heightAtFour = await page.getContentEditableHeight();
         expect(heightAtFour).toBeGreaterThan(heightAtThree);
@@ -655,8 +648,6 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
         const heightOnMount = await page.getContentEditableHeight();
 
         await page.setValue('#min-rows-input', '1');
-        await page.focusInput();
-        await page.keys(['x']); // force a token change so the height effect re-runs
         await page.pause(200);
         const heightAtMinRowsOne = await page.getContentEditableHeight();
 
