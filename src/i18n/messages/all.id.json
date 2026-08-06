@@ -257,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
     "i18nStrings.jumpToPageInputLabel": "Halaman",
     "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia.",
-    "i18nStrings.jumpToPageLoadingText": "Memuat"
+    "i18nStrings.jumpToPageLoadingText": "Memuat",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} dari {pagesCount}+} false {{currentPage} dari {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",
