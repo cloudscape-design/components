@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 // ==========================================================================
@@ -379,6 +380,19 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
   // Remove margin from section if it is the first item in side nav to prevent double margin stacking
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
+  }
+
+  // One-theme only: nested sections use a grid-based content reveal (see > :first-child
+  // below), and CSS grid containers never let a grid item's margin collapse with the
+  // container's own box. Without this, a section's trailing margin gets trapped inside
+  // its parent section's content instead of collapsing away as the last child — inflating
+  // every ancestor level's grid-row height by that amount. Zeroing it here (only for
+  // sections nested inside another section) restores the same "last child margin doesn't
+  // extend the container" behavior normal block layout gives for free.
+  @at-root .list-variant-section > .list-item:last-child > #{&} {
+    @include theming.one-theme-only {
+      margin-block-end: 0px;
+    }
   }
 
   > :first-child {
