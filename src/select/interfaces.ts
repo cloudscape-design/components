@@ -149,6 +149,35 @@ export interface BaseSelectProps
    * user from both modifying the value and opening the dropdown. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  /**
+   * Renders content at the top of the dropdown, above the filter input (when filtering is enabled) and the
+   * options list. Pinned (sticky) to the top and rendered in every state (empty, no-match, loading, error,
+   * finished).
+   */
+  renderDropdownHeader?: SelectProps.DropdownContentRenderer;
+
+  /**
+   * Renders content at the bottom of the dropdown. The content is always sticky and never scrolls with the
+   * options list. It is added below the built-in status region. Receives the current filtering state and a
+   * callback to close the dropdown.
+   */
+  renderDropdownFooter?: SelectProps.DropdownContentRenderer;
+
+  /**
+   * Determines the ARIA role of the dropdown.
+   *
+   * - `auto` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+   * filtering is enabled.
+   * - `dialog`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+   * this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.
+   */
+  dropdownRole?: SelectProps.DropdownRole;
+
+  /**
+   * Adds `aria-describedby` to the dropdown's listbox/dialog content.
+   */
+  dropdownAriaDescribedby?: string;
 }
 
 export interface SelectProps extends BaseSelectProps {
@@ -196,6 +225,24 @@ export interface SelectProps extends BaseSelectProps {
 export namespace SelectProps {
   export type FilteringType = OptionsFilteringType;
   export type TriggerVariant = 'label' | 'option';
+
+  /**
+   * The argument passed to the dropdown render functions (`renderDropdownHeader`
+   * and `renderDropdownFooter`).
+   */
+  export interface DropdownContentProps {
+    filterText: string;
+
+    closeDropdown: () => void;
+  }
+
+  export type DropdownRole = 'auto' | 'dialog';
+
+  /**
+   * A render function for custom dropdown content, used by `renderDropdownHeader` and `renderDropdownFooter`.
+   * Receives the current filtering state and a callback to close the dropdown.
+   */
+  export type DropdownContentRenderer = (props: DropdownContentProps) => ReactNode | null;
 
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
