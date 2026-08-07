@@ -25,8 +25,6 @@ export function composeDropdownContent({
   dropdownHeaderClass,
   dropdownFooterClass,
 }: ComposeDropdownContentProps): { header: React.ReactNode; footer: React.ReactNode } {
-  // A render prop that is not provided yields undefined; one that opts out can return null. Normalize both
-  // to null so presence checks below use strict equality.
   const headerNode = customDropdownHeader ?? null;
   const footerNode = customDropdownFooter ?? null;
 
