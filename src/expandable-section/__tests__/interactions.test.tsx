@@ -188,4 +188,42 @@ describe('Expandable Section - Interactions', () => {
       expect(onButtonClickSpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('Navigation variant header wrapper', () => {
+    let onChangeSpy: jest.Mock;
+    let onLinkClickSpy: jest.Mock;
+
+    beforeEach(() => {
+      onChangeSpy = jest.fn();
+      onLinkClickSpy = jest.fn();
+    });
+
+    function renderNavigationSection(): ExpandableSectionWrapper {
+      return renderExpandableSection({
+        onChange: onChangeSpy,
+        headerText: <Link onFollow={onLinkClickSpy}>Header link</Link>,
+        variant: 'navigation',
+      });
+    }
+
+    test('toggles when the inert space around the expand button is clicked', () => {
+      const wrapper = renderNavigationSection();
+      wrapper.findHeader().click();
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { expanded: true } }));
+    });
+
+    test('toggles exactly once when the expand button is clicked', () => {
+      const wrapper = renderNavigationSection();
+      wrapper.findExpandButton().click();
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not toggle when a link in the header text is clicked', () => {
+      const wrapper = renderNavigationSection();
+      wrapper.findHeader().findLink()!.click();
+      expect(onChangeSpy).not.toHaveBeenCalled();
+      expect(onLinkClickSpy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
