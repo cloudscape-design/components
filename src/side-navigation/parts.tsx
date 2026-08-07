@@ -3,6 +3,7 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -723,6 +724,10 @@ function LinkGroup({
 }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const childrenRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion(childrenRef);
+  // Starts settled when not collapsed, since that case never transitions
+  // grid-template-rows — the only trigger for handleChildrenTransitionEnd below.
+  const [childrenSettled, setChildrenSettled] = useState(!collapsed);
 
   // Set inert on the children container when collapsed so they leave
   // the tab order and assistive technology.
@@ -731,6 +736,27 @@ function LinkGroup({
       childrenRef.current.inert = !!collapsed;
     }
   }, [collapsed]);
+
+  // When collapsing, immediately reset settled so overflow-y: clip is re-applied
+  // before the grid transition starts (prevents content spill during close).
+  // Under reduced motion, settle immediately on expand too — grid-template-rows never
+  // transitions in that case, so handleChildrenTransitionEnd below would never fire.
+  useEffect(() => {
+    if (collapsed) {
+      setChildrenSettled(false);
+    } else if (reducedMotion) {
+      setChildrenSettled(true);
+    }
+  }, [collapsed, reducedMotion]);
+
+  const handleChildrenTransitionEnd = useCallback(
+    (event: React.TransitionEvent<HTMLDivElement>) => {
+      if (event.propertyName === 'grid-template-rows' && !collapsed) {
+        setChildrenSettled(true);
+      }
+    },
+    [collapsed]
+  );
 
   return (
     <>
@@ -750,12 +776,16 @@ function LinkGroup({
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
       />
-      <div className={clsx(styles['link-group-children'], collapsed && styles['link-group-children--collapsed'])}>
+      <div
+        className={clsx(styles['link-group-children'], collapsed && styles['link-group-children--collapsed'])}
+        onTransitionEnd={handleChildrenTransitionEnd}
+      >
         <div
           ref={childrenRef}
           className={clsx(
             styles['link-group-children-inner'],
-            !collapsed && styles['link-group-children-inner--expanded']
+            !collapsed && styles['link-group-children-inner--expanded'],
+            childrenSettled && styles['link-group-children-inner--settled']
           )}
         >
           <NavigationItemsList

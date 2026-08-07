@@ -3,7 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
 import Button from '../../../lib/components/button';
@@ -18,6 +18,7 @@ import styles from '../../../lib/components/expandable-section/styles.selectors.
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
+  useReducedMotion: jest.fn().mockReturnValue(false),
 }));
 
 afterEach(() => {
@@ -229,6 +230,14 @@ describe('Expandable Section', () => {
       expect(header.tagName).not.toBe('div[role=button]');
       expect(header).not.toHaveAttribute('tabindex', '0');
       expect(icon.tagName).toBe('BUTTON');
+    });
+    test('settles content immediately under reduced motion, since grid-template-rows never transitions', () => {
+      (useReducedMotion as jest.Mock).mockReturnValue(true);
+      const wrapper = renderExpandableSection({ defaultExpanded: false, children: 'Example content' });
+      fireEvent.click(wrapper.findHeader().getElement());
+      const contentInner = wrapper.findExpandedContent()!.getElement().querySelector(`.${styles['content-inner']}`)!;
+      expect(contentInner.className).toContain(styles['content-inner-settled']);
+      (useReducedMotion as jest.Mock).mockReturnValue(false);
     });
   });
 

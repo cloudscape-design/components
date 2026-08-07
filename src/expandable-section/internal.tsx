@@ -3,7 +3,7 @@
 import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useReducedMotion, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
@@ -67,8 +67,9 @@ export default function InternalExpandableSection({
   ...props
 }: InternalExpandableSectionProps) {
   const contentInnerRef = useRef<HTMLDivElement>(null);
-  // Starts settled when initially expanded or under reduced motion, since neither case
-  // transitions grid-template-rows — the only trigger for handleContentTransitionEnd below.
+  const reducedMotion = useReducedMotion(contentInnerRef);
+  // Starts settled when initially expanded, since that case never transitions
+  // grid-template-rows — the only trigger for handleContentTransitionEnd below.
   const [contentSettled, setContentSettled] = useState(() => !!(controlledExpanded ?? defaultExpanded));
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
@@ -122,11 +123,15 @@ export default function InternalExpandableSection({
 
   // When collapsing, immediately reset settled so overflow:hidden is re-applied
   // before the grid transition starts (prevents content spill during close).
+  // When expanding under reduced motion, settle immediately too — grid-template-rows
+  // never transitions in that case, so handleContentTransitionEnd below would never fire.
   useEffect(() => {
     if (!expanded) {
       setContentSettled(false);
+    } else if (reducedMotion) {
+      setContentSettled(true);
     }
-  }, [expanded]);
+  }, [expanded, reducedMotion]);
 
   const handleContentTransitionEnd = useCallback(
     (event: React.TransitionEvent<HTMLDivElement>) => {
