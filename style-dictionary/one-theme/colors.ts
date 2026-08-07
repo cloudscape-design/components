@@ -192,6 +192,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextSideNavigationItemDefault: { light: '{colorTextBodyDefault}', dark: '{colorTextBodyDefault}' },
   colorBackgroundSideNavigationItemActive: { light: 'transparent', dark: 'transparent' },
   colorBackgroundSideNavigationItemActiveCollapsed: { light: '{colorPrimary500}', dark: '{colorPrimary500}' },
+  colorBackgroundSideNavigationItemIconHover: {
+    light: '{colorPrimary50}',
+    dark: '{colorBackgroundStatusIndicatorInfo}',
+  },
 
   // ── Dropzone ──────────────────────────────────────────────────────────────
   colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
