@@ -44,6 +44,8 @@ type UseMultiselectOptions = SomeRequired<
     | 'selectedAriaLabel'
     | 'enableSelectAll'
     | 'i18nStrings'
+    | 'dropdownRole'
+    | 'dropdownAriaDescribedby'
   > &
     DropdownStatusProps & {
       controlId?: string;
@@ -84,6 +86,8 @@ export function useMultiselect({
   embedded,
   enableSelectAll,
   i18nStrings,
+  dropdownRole,
+  dropdownAriaDescribedby,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -193,6 +197,7 @@ export function useMultiselect({
     highlightOption,
     announceSelected,
     focusActiveRef,
+    closeDropdown,
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
@@ -210,6 +215,7 @@ export function useMultiselect({
     isAllSelected,
     isSomeSelected,
     toggleAll,
+    dropdownRole,
   });
 
   const wrapperOnKeyDown = useNativeSearch({
@@ -304,7 +310,7 @@ export function useMultiselect({
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(ariaLabelId, controlId),
-      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+      ariaDescribedby: joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby),
       embedded,
     }),
     getOptionProps,
@@ -312,5 +318,6 @@ export function useMultiselect({
     getDropdownProps: () => ({ ...getDropdownProps(), onMouseDown: dropdownOnMouseDown }),
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
     highlightedIndex,
+    closeDropdown,
   };
 }

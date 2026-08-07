@@ -43,6 +43,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalHover: { light: '{colorNeutral850}', dark: '{colorNeutral250}' },
   colorTextButtonNormalActive: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextButtonNormalDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorTextInteractiveDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
 
   // Inline-link and icon buttons adopt the link hover color in one-theme.
   colorTextButtonInlineLinkHover: '{colorTextLinkHover}',
@@ -192,6 +193,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextSideNavigationItemDefault: { light: '{colorTextBodyDefault}', dark: '{colorTextBodyDefault}' },
   colorBackgroundSideNavigationItemActive: { light: 'transparent', dark: 'transparent' },
   colorBackgroundSideNavigationItemActiveCollapsed: { light: '{colorPrimary500}', dark: '{colorPrimary500}' },
+  colorBackgroundSideNavigationItemIconHover: {
+    light: '{colorPrimary50}',
+    dark: '{colorBackgroundStatusIndicatorInfo}',
+  },
 
   // ── Dropzone ──────────────────────────────────────────────────────────────
   colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },

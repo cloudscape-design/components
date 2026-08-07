@@ -2751,6 +2751,43 @@ describe('internal.tsx paths', () => {
     expect(getValue(wrapper)).toBe('');
   });
 
+  test('minRows scales the computed height formula in token mode, unlike the single-row textarea fallback', () => {
+    // jsdom's CSSStyleDeclaration doesn't parse CSS min()/max(), so assigning our formula to
+    // `element.style.height` is silently dropped and reading it back is unreliable. Spy on the
+    // `height` setter instead to capture the raw string the component actually assigns.
+    const assignedValues: string[] = [];
+    const heightSetterSpy = jest
+      .spyOn(window.CSSStyleDeclaration.prototype, 'height', 'set')
+      .mockImplementation(function (this: CSSStyleDeclaration, value: string) {
+        assignedValues.push(value);
+      });
+    // The height calculation runs inside requestAnimationFrame; run it synchronously here so we
+    // can assert on the resulting formula.
+    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback: FrameRequestCallback) => {
+      callback(0);
+      return 0;
+    });
+    try {
+      render(
+        <PromptInput
+          tokens={[]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          ariaLabel="Chat input"
+          i18nStrings={defaultI18nStrings}
+          minRows={5}
+          maxRows={-1}
+        />
+      );
+      // The height formula in token mode must multiply by minRows (5), not fall back to the
+      // single-line formula used for the native textarea's floor height.
+      expect(assignedValues.some(value => value.includes('5 *'))).toBe(true);
+    } finally {
+      heightSetterSpy.mockRestore();
+      rafSpy.mockRestore();
+    }
+  });
+
   test('action button is disabled when disableActionButton is true', () => {
     const onAction = jest.fn();
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }], onAction } });

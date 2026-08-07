@@ -20,6 +20,7 @@ import Filter from '../select/parts/filter';
 import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
+import { composeDropdownContent } from '../select/utils/dropdown-customization';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
@@ -63,6 +64,10 @@ const InternalMultiselect = React.forwardRef(
       autoFocus,
       enableSelectAll,
       renderOption,
+      renderDropdownHeader,
+      renderDropdownFooter,
+      dropdownRole,
+      dropdownAriaDescribedby,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -91,8 +96,17 @@ const InternalMultiselect = React.forwardRef(
       externalRef,
       enableSelectAll,
       i18nStrings,
+      dropdownRole,
+      dropdownAriaDescribedby,
       ...restProps,
     });
+
+    const dropdownContentProps: MultiselectProps.DropdownContentProps = {
+      filterText: filteringValue,
+      closeDropdown: multiselectProps.closeDropdown,
+    };
+    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
+    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
     const filter = (
       <Filter
@@ -160,6 +174,18 @@ const InternalMultiselect = React.forwardRef(
     const dropdownProps = multiselectProps.getDropdownProps();
     const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
 
+    const statusFooter = dropdownStatus.isSticky ? (
+      <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+    ) : null;
+    const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
+      filter,
+      customDropdownHeader,
+      customDropdownFooter,
+      statusFooter,
+      dropdownHeaderClass: styles['dropdown-header'],
+      dropdownFooterClass: styles['dropdown-footer'],
+    });
+
     const hasOptions = useRef(options.length > 0);
     hasOptions.current = hasOptions.current || options.length > 0;
 
@@ -173,17 +199,17 @@ const InternalMultiselect = React.forwardRef(
         <Dropdown
           {...dropdownProps}
           ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
-          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
+          ariaDescribedby={
+            dropdownProps.ariaRole
+              ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+              : undefined
+          }
           open={multiselectProps.isOpen}
           minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
-          header={filter}
-          footer={
-            dropdownStatus.isSticky ? (
-              <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-            ) : null
-          }
+          header={dropdownHeader}
+          footer={dropdownFooter}
           expandToViewport={expandToViewport}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}
