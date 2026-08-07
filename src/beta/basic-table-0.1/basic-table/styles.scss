@@ -233,12 +233,14 @@
   border-inline: 0;
 }
 
-// Fixed-width disclosure column. It carries an explicit inline-size (the $space-xl token) so
-// the shared grid template's leading `auto` track resolves to the SAME width in the header
-// and every body row (a fixed-size grid item makes an `auto` track deterministic — the data
-// columns therefore start at an identical x offset in every row).
+// Fixed-width leading control column (selection checkbox/radio, or expand/collapse disclosure). It
+// carries an explicit inline-size (the $space-xl token) so the shared grid template's leading track
+// resolves to the SAME width in the header and every body row (a fixed-size grid item makes the
+// track deterministic — the data columns therefore start at an identical x offset in every row).
 .disclosure-header,
-.disclosure-cell {
+.disclosure-cell,
+.selection-header,
+.selection-cell {
   inline-size: awsui.$space-xl;
   box-sizing: border-box;
   display: flex;
@@ -362,6 +364,8 @@
 .header-cell,
 .disclosure-cell,
 .disclosure-header,
+.selection-cell,
+.selection-header,
 .expanded-cell {
   &:focus-visible {
     outline: 2px solid awsui.$color-border-item-focused;
@@ -385,7 +389,8 @@
 }
 
 .header-cell.sticky-cell,
-.disclosure-header.sticky-cell {
+.disclosure-header.sticky-cell,
+.selection-header.sticky-cell {
   background: awsui.$color-background-table-header;
 }
 

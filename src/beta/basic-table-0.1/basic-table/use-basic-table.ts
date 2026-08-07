@@ -87,6 +87,8 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
     i18nStrings,
     contentDensity = 'comfortable',
     totalRowCount = 0,
+    columnLayout = 'fixed',
+    autoColumnWidths,
   } = config;
 
   const columnCount = columns.length;
@@ -113,21 +115,26 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
   const widths = isWidthControlled ? columnWidths! : uncontrolledWidths;
 
   // A flexible column (no `width`) is `minmax(minWidth, 1fr)` and shares remaining space; a fixed
-  // column has a `width`. A resized column becomes fixed at its (floored) resized width.
+  // column has a `width`. A resized column becomes fixed at its (floored) resized width. Under
+  // `columnLayout="auto"`, a flexible column with a measured content width becomes a fixed track at
+  // that width (floored at minWidth) so columns size to content instead of sharing space as `1fr`.
   const gridTemplateColumns = useMemo(() => {
     const tracks: string[] = [];
     columns.forEach((col, index) => {
       const resized = widths[index];
+      const auto = columnLayout === 'auto' ? autoColumnWidths?.[index] : undefined;
       if (resized !== undefined) {
         tracks.push(`${Math.max(resized, col.minWidth ?? 0)}px`);
       } else if (col.width !== undefined) {
         tracks.push(`${col.width}px`);
+      } else if (auto !== undefined) {
+        tracks.push(`${Math.max(auto, col.minWidth ?? 0)}px`);
       } else {
         tracks.push(`minmax(${col.minWidth ?? 0}px, 1fr)`);
       }
     });
     return tracks.join(' ');
-  }, [columns, widths]);
+  }, [columns, widths, columnLayout, autoColumnWidths]);
 
   // --- Sticky (pinned) columns -------------------------------------------------------------
   const stickyIds = useMemo(() => columns.map((col, index) => col.id ?? String(index)), [columns]);
