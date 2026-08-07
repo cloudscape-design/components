@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "在新索引標籤中開啟"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} 個項目 (共 {totalCount} 個）",
+    "noMatch": "沒有相符的動作",
+    "i18nStrings.filteringItemAriaDescription": "繼續輸入以篩選結果。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "下個月",
     "previousMonthAriaLabel": "上個月",

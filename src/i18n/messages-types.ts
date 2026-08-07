@@ -74,6 +74,14 @@ export interface I18nFormatArgTypes {
   button: {
     'i18nStrings.externalIconAriaLabel': never;
   };
+  'button-dropdown': {
+    filteringResultsText: {
+      matchesCount: string | number;
+      totalCount: string | number;
+    };
+    noMatch: never;
+    'i18nStrings.filteringItemAriaDescription': never;
+  };
   calendar: {
     nextMonthAriaLabel: never;
     previousMonthAriaLabel: never;
