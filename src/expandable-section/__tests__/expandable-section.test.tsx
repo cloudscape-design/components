@@ -3,7 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
 import Button from '../../../lib/components/button';
@@ -17,11 +17,15 @@ import styles from '../../../lib/components/expandable-section/styles.selectors.
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
   warnOnce: jest.fn(),
+  useReducedMotion: jest.fn().mockReturnValue(false),
 }));
 
 afterEach(() => {
+  (isThemeActive as jest.Mock).mockReturnValue(false);
   (warnOnce as jest.Mock).mockReset();
+  (useReducedMotion as jest.Mock).mockReturnValue(false);
 });
 
 function renderExpandableSection(props: ExpandableSectionProps = {}): ExpandableSectionWrapper {
@@ -229,6 +233,36 @@ describe('Expandable Section', () => {
       expect(header.tagName).not.toBe('div[role=button]');
       expect(header).not.toHaveAttribute('tabindex', '0');
       expect(icon.tagName).toBe('BUTTON');
+    });
+    test('settles content immediately under reduced motion, since grid-template-rows never transitions', () => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+      (useReducedMotion as jest.Mock).mockReturnValue(true);
+      const wrapper = renderExpandableSection({ defaultExpanded: false, children: 'Example content' });
+      fireEvent.click(wrapper.findHeader().getElement());
+      const contentInner = wrapper.findExpandedContent()!.getElement().querySelector(`.${styles['content-inner']}`)!;
+      expect(contentInner.className).toContain(styles['content-inner-settled']);
+    });
+    test('settles content immediately outside One Theme, where grid-template-rows never transitions', () => {
+      const wrapper = renderExpandableSection({ defaultExpanded: false, children: 'Example content' });
+      fireEvent.click(wrapper.findHeader().getElement());
+      const contentInner = wrapper.findExpandedContent()!.getElement().querySelector(`.${styles['content-inner']}`)!;
+      expect(contentInner.className).toContain(styles['content-inner-settled']);
+    });
+    test('settles after its own transition, ignores nested transitions, and resets immediately on collapse', () => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+      const wrapper = renderExpandableSection({ defaultExpanded: false, children: 'Example content' });
+      fireEvent.click(wrapper.findHeader().getElement());
+      const contentOuter = wrapper.findExpandedContent()!.getElement();
+      const contentInner = contentOuter.querySelector(`.${styles['content-inner']}`)!;
+
+      expect(contentInner.className).not.toContain(styles['content-inner-settled']);
+      fireEvent.transitionEnd(contentInner);
+      expect(contentInner.className).not.toContain(styles['content-inner-settled']);
+      fireEvent.transitionEnd(contentOuter);
+      expect(contentInner.className).toContain(styles['content-inner-settled']);
+
+      fireEvent.click(wrapper.findHeader().getElement());
+      expect(contentInner.className).not.toContain(styles['content-inner-settled']);
     });
   });
 

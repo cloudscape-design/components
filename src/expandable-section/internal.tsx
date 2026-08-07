@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
+import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
+import { useOneTheme } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
@@ -67,9 +69,7 @@ export default function InternalExpandableSection({
   ...props
 }: InternalExpandableSectionProps) {
   const contentInnerRef = useRef<HTMLDivElement>(null);
-  // Starts settled when initially expanded or under reduced motion, since neither case
-  // transitions grid-template-rows — the only trigger for handleContentTransitionEnd below.
-  const [contentSettled, setContentSettled] = useState(() => !!(controlledExpanded ?? defaultExpanded));
+  const isOneTheme = useOneTheme();
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
@@ -120,23 +120,6 @@ export default function InternalExpandableSection({
     }
   }, [expanded]);
 
-  // When collapsing, immediately reset settled so overflow:hidden is re-applied
-  // before the grid transition starts (prevents content spill during close).
-  useEffect(() => {
-    if (!expanded) {
-      setContentSettled(false);
-    }
-  }, [expanded]);
-
-  const handleContentTransitionEnd = useCallback(
-    (event: React.TransitionEvent<HTMLDivElement>) => {
-      if (event.propertyName === 'grid-template-rows' && expanded) {
-        setContentSettled(true);
-      }
-    },
-    [expanded]
-  );
-
   const triggerProps = {
     ariaControls: controlId,
     ariaLabel: headerAriaLabel,
@@ -182,39 +165,49 @@ export default function InternalExpandableSection({
       }
       __internalRootRef={__internalRootRef}
     >
-      <div
-        id={controlId}
-        className={clsx(
-          styles.content,
-          styles[`content-${baseVariant}`],
-          expanded && styles['content-expanded'],
-          disableContentPaddings && styles['disable-content-paddings']
-        )}
-        role="group"
-        aria-label={triggerProps.ariaLabel}
-        aria-labelledby={triggerProps.ariaLabelledBy}
-        aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
-        onTransitionEnd={handleContentTransitionEnd}
-      >
-        <div
-          ref={contentInnerRef}
-          className={clsx(
-            styles['content-inner'],
-            expanded && styles['content-inner-expanded'],
-            contentSettled && styles['content-inner-settled']
-          )}
-        >
-          <div
-            className={clsx(
-              styles['content-inner-body'],
-              styles[`content-inner-body-${baseVariant}`],
-              disableContentPaddings && styles['disable-content-paddings']
-            )}
-          >
-            {children}
-          </div>
-        </div>
-      </div>
+      <Transition<HTMLDivElement> in={!!expanded} disabled={!isOneTheme}>
+        {(transitionState, transitionEventsRef, motionDisabled) => {
+          const contentSettled = !!expanded && (motionDisabled || transitionState === 'entered');
+
+          return (
+            <div
+              ref={transitionEventsRef}
+              id={controlId}
+              className={clsx(
+                styles.content,
+                styles[`content-${baseVariant}`],
+                expanded && styles['content-expanded'],
+                disableContentPaddings && styles['disable-content-paddings']
+              )}
+              role="group"
+              aria-label={triggerProps.ariaLabel}
+              aria-labelledby={triggerProps.ariaLabelledBy}
+              aria-describedby={
+                variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined
+              }
+            >
+              <div
+                ref={contentInnerRef}
+                className={clsx(
+                  styles['content-inner'],
+                  expanded && styles['content-inner-expanded'],
+                  contentSettled && styles['content-inner-settled']
+                )}
+              >
+                <div
+                  className={clsx(
+                    styles['content-inner-body'],
+                    styles[`content-inner-body-${baseVariant}`],
+                    disableContentPaddings && styles['disable-content-paddings']
+                  )}
+                >
+                  {children}
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </Transition>
     </ExpandableSectionContainer>
   );
 }

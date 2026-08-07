@@ -10,6 +10,7 @@ import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
+import { Transition } from '../internal/components/transition';
 import { isPlainLeftClick } from '../internal/events';
 import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
@@ -723,6 +724,7 @@ function LinkGroup({
 }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const childrenRef = useRef<HTMLDivElement>(null);
+  const isOneTheme = useOneTheme();
 
   // Set inert on the children container when collapsed so they leave
   // the tab order and assistive technology.
@@ -750,29 +752,41 @@ function LinkGroup({
         activeTooltip={activeTooltip}
         setActiveTooltip={setActiveTooltip}
       />
-      <div className={clsx(styles['link-group-children'], collapsed && styles['link-group-children--collapsed'])}>
-        <div
-          ref={childrenRef}
-          className={clsx(
-            styles['link-group-children-inner'],
-            !collapsed && styles['link-group-children-inner--expanded']
-          )}
-        >
-          <NavigationItemsList
-            variant="link-group"
-            items={definition.items}
-            fireFollow={fireFollow}
-            fireChange={fireChange}
-            activeHref={activeHref}
-            position={position}
-            collapsed={collapsed}
-            withIcons={withIcons}
-            ariaLabel={collapsed ? definition.text : undefined}
-            activeTooltip={activeTooltip}
-            setActiveTooltip={setActiveTooltip}
-          />
-        </div>
-      </div>
+      <Transition<HTMLDivElement> in={!collapsed} disabled={!isOneTheme}>
+        {(transitionState, transitionEventsRef, motionDisabled) => {
+          const childrenSettled = !collapsed && (motionDisabled || transitionState === 'entered');
+
+          return (
+            <div
+              ref={transitionEventsRef}
+              className={clsx(styles['link-group-children'], collapsed && styles['link-group-children--collapsed'])}
+            >
+              <div
+                ref={childrenRef}
+                className={clsx(
+                  styles['link-group-children-inner'],
+                  !collapsed && styles['link-group-children-inner--expanded'],
+                  childrenSettled && styles['link-group-children-inner--settled']
+                )}
+              >
+                <NavigationItemsList
+                  variant="link-group"
+                  items={definition.items}
+                  fireFollow={fireFollow}
+                  fireChange={fireChange}
+                  activeHref={activeHref}
+                  position={position}
+                  collapsed={collapsed}
+                  withIcons={withIcons}
+                  ariaLabel={collapsed ? definition.text : undefined}
+                  activeTooltip={activeTooltip}
+                  setActiveTooltip={setActiveTooltip}
+                />
+              </div>
+            </div>
+          );
+        }}
+      </Transition>
     </>
   );
 }

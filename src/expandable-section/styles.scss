@@ -348,7 +348,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     }
 
     &-settled {
-      overflow: visible;
+      overflow-y: visible;
     }
   }
 }
