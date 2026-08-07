@@ -8,7 +8,8 @@ interface ComposeDropdownContentProps {
   customDropdownHeader: React.ReactNode;
   customDropdownFooter: React.ReactNode;
   statusFooter: React.ReactNode;
-  styles: Record<string, string>;
+  dropdownHeaderClass: string;
+  dropdownFooterClass: string;
 }
 
 /**
@@ -21,7 +22,8 @@ export function composeDropdownContent({
   customDropdownHeader,
   customDropdownFooter,
   statusFooter,
-  styles,
+  dropdownHeaderClass,
+  dropdownFooterClass,
 }: ComposeDropdownContentProps): { header: React.ReactNode; footer: React.ReactNode } {
   // A render prop that is not provided yields undefined; one that opts out can return null. Normalize both
   // to null so presence checks below use strict equality.
@@ -32,7 +34,7 @@ export function composeDropdownContent({
   const header =
     headerNode !== null ? (
       <>
-        <div className={styles['dropdown-header']}>{headerNode}</div>
+        <div className={dropdownHeaderClass}>{headerNode}</div>
         {filter}
       </>
     ) : (
@@ -44,7 +46,7 @@ export function composeDropdownContent({
     footerNode !== null ? (
       <>
         {statusFooter}
-        <div className={styles['dropdown-footer']}>{footerNode}</div>
+        <div className={dropdownFooterClass}>{footerNode}</div>
       </>
     ) : (
       statusFooter

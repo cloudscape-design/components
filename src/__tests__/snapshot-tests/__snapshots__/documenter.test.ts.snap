@@ -19772,9 +19772,10 @@ To use it correctly, define an ID for the element you want to use as label and s
     {
       "description": "Determines the ARIA role of the dropdown.
 
-- \`auto\` (default): the dropdown uses a listbox role, or a dialog role when built-in filtering is enabled.
-- \`dialog\`: the dropdown always uses a dialog role, even without built-in filtering. Use this when you render
-interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
+- \`auto\` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+filtering is enabled.
+- \`dialog\`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
       "inlineType": {
         "name": "SelectProps.DropdownRole",
         "type": "union",
@@ -26150,9 +26151,10 @@ To use it correctly, define an ID for the element you want to use as label and s
     {
       "description": "Determines the ARIA role of the dropdown.
 
-- \`auto\` (default): the dropdown uses a listbox role, or a dialog role when built-in filtering is enabled.
-- \`dialog\`: the dropdown always uses a dialog role, even without built-in filtering. Use this when you render
-interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
+- \`auto\` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+filtering is enabled.
+- \`dialog\`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
       "inlineType": {
         "name": "SelectProps.DropdownRole",
         "type": "union",

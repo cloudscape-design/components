@@ -167,9 +167,10 @@ export interface BaseSelectProps
   /**
    * Determines the ARIA role of the dropdown.
    *
-   * - `auto` (default): the dropdown uses a listbox role, or a dialog role when built-in filtering is enabled.
-   * - `dialog`: the dropdown always uses a dialog role, even without built-in filtering. Use this when you render
-   * interactive custom content and want assistive technologies to treat the dropdown as a dialog.
+   * - `auto` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+   * filtering is enabled.
+   * - `dialog`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+   * this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.
    */
   dropdownRole?: SelectProps.DropdownRole;
 

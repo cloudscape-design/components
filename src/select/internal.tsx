@@ -233,7 +233,8 @@ const InternalSelect = React.forwardRef(
       customDropdownHeader,
       customDropdownFooter,
       statusFooter,
-      styles,
+      dropdownHeaderClass: styles['dropdown-header'],
+      dropdownFooterClass: styles['dropdown-footer'],
     });
 
     const menuProps = {

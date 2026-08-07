@@ -182,7 +182,8 @@ const InternalMultiselect = React.forwardRef(
       customDropdownHeader,
       customDropdownFooter,
       statusFooter,
-      styles,
+      dropdownHeaderClass: styles['dropdown-header'],
+      dropdownFooterClass: styles['dropdown-footer'],
     });
 
     const hasOptions = useRef(options.length > 0);
