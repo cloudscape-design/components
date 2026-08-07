@@ -322,7 +322,7 @@
   display: flex;
   align-items: center;
   flex-shrink: 1;
-  max-inline-size: #{'max(0px, calc((100% - 12rem) / 2))'};
+  max-inline-size: calc(50% - 6rem);
   min-inline-size: 0;
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
@@ -412,6 +412,6 @@
 
   > .input-prefix,
   > .input-suffix {
-    max-inline-size: #{'max(0px, calc((100% - 12rem + #{styles.$invalid-control-left-border} - #{awsui.$border-width-field}) / 2))'};
+    max-inline-size: calc(50% - 6rem + (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field}) / 2);
   }
 }
