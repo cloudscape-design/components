@@ -184,6 +184,8 @@ export const HeaderCell = ({
   children,
   className,
   style,
+  wrapText,
+  variant,
   ...rest
 }: BasicTableProps.HeaderCellProps): React.ReactElement => {
   const ctx = useBasicTableContext('HeaderCell');
@@ -204,6 +206,8 @@ export const HeaderCell = ({
   );
   const mergedRef = useMergeRefs(ref, sticky.ref, registerRef);
   const headerProps = ctx.getColumnHeaderProps(columnIndex);
+  const isControl = variant === 'selection' || variant === 'disclosure';
+  const resizable = !isControl && ctx.resizableColumns;
   return (
     <th
       {...headerProps}
@@ -211,8 +215,13 @@ export const HeaderCell = ({
       ref={mergedRef}
       id={headerId}
       className={clsx(
-        styles['header-cell'],
-        ctx.resizableColumns && styles['header-cell-resizable'],
+        variant === 'selection'
+          ? styles['selection-header']
+          : variant === 'disclosure'
+            ? styles['disclosure-header']
+            : styles['header-cell'],
+        resizable && styles['header-cell-resizable'],
+        wrapText && styles['cell-wrap'],
         sticky.className,
         className
       )}
@@ -220,7 +229,7 @@ export const HeaderCell = ({
       tabIndex={tabIndex === -1 ? undefined : tabIndex}
     >
       {children}
-      {ctx.resizableColumns && <ResizeHandle columnIndex={columnIndex} headerId={headerId} />}
+      {resizable && <ResizeHandle columnIndex={columnIndex} headerId={headerId} />}
     </th>
   );
 };
@@ -267,6 +276,8 @@ export const Cell = ({
   children,
   className,
   style,
+  wrapText,
+  variant,
   ...rest
 }: BasicTableProps.CellProps): React.ReactElement => {
   const ctx = useBasicTableContext('Cell');
@@ -288,7 +299,16 @@ export const Cell = ({
       {...cellProps}
       {...rest}
       ref={mergedRef}
-      className={clsx(styles.cell, sticky.className, className)}
+      className={clsx(
+        variant === 'selection'
+          ? styles['selection-cell']
+          : variant === 'disclosure'
+            ? styles['disclosure-cell']
+            : styles.cell,
+        wrapText && styles['cell-wrap'],
+        sticky.className,
+        className
+      )}
       style={{ ...sticky.style, ...style }}
       tabIndex={tabIndex === -1 ? undefined : tabIndex}
     >
@@ -350,7 +370,7 @@ export const ExpandedContent = ({
 // index / expansion. Static grid props come from the hook; a virtual consumer's spread `rowProps`
 // (absolute offset + aria-rowindex override + measure ref) wins.
 export const Row = React.forwardRef<HTMLTableRowElement, BasicTableProps.RowProps>(function Row(
-  { index, id, expanded, onToggleExpand, children, className, style, ...rest },
+  { index, id, expanded, onToggleExpand, selected, children, className, style, ...rest },
   ref
 ) {
   const ctx = useBasicTableContext('Row');
@@ -370,7 +390,8 @@ export const Row = React.forwardRef<HTMLTableRowElement, BasicTableProps.RowProp
         {...rowProps}
         {...rest}
         ref={ref}
-        className={clsx(styles.row, className)}
+        aria-selected={selected}
+        className={clsx(styles.row, selected && styles['row-selected'], className)}
         style={{ ...rowProps.style, ...style }}
       >
         {withColumnIndices(children)}
@@ -400,9 +421,16 @@ export function InternalRoot(props: InternalRootProps) {
     loading = false,
     loadingText,
     i18nStrings,
+    columnLayout = 'fixed',
     children,
     __internalRootRef,
   } = props;
+
+  // Auto column sizing: when `columnLayout="auto"`, measure each flexible column's content width
+  // from the rendered DOM and feed it back to the hook as fixed tracks (each <tr> is its own CSS
+  // grid sharing one template, so CSS `auto` tracks can't align across rows — content must be
+  // JS-measured, like Table's first-render width read). Fixed-width columns are left untouched.
+  const [autoColumnWidths, setAutoColumnWidths] = useState<Record<number, number>>({});
 
   const table = useBasicTable({
     columns,
@@ -414,6 +442,8 @@ export function InternalRoot(props: InternalRootProps) {
     contentDensity,
     totalRowCount,
     i18nStrings,
+    columnLayout,
+    autoColumnWidths,
   });
 
   const columnCount = table.columnCount;
@@ -430,6 +460,50 @@ export function InternalRoot(props: InternalRootProps) {
 
   const baseProps = getBaseProps(props);
   const tableProps = table.getTableProps();
+
+  // Measure content widths for `columnLayout="auto"`. Runs after paint (a brief reflow is
+  // acceptable and SSR-safe); re-measures when the column config / children change and whenever the
+  // table box resizes. Single-column cells only (the full-width expanded / state cells carry
+  // `aria-colspan` and are excluded). Converges: a track set to a cell's ceil(scrollWidth) makes the
+  // cell fit its content, so the next measurement is stable and the equality guard stops re-renders.
+  useEffect(() => {
+    if (columnLayout !== 'auto') {
+      setAutoColumnWidths(prev => (Object.keys(prev).length === 0 ? prev : {}));
+      return;
+    }
+    const tableNode = tableRef.current;
+    if (!tableNode || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const measure = () => {
+      const next: Record<number, number> = {};
+      for (let c = 0; c < columnCount; c++) {
+        if (columns[c]?.width !== undefined) {
+          continue; // fixed columns keep their configured width
+        }
+        const cells = tableNode.querySelectorAll<HTMLElement>(`[aria-colindex="${c + 1}"]:not([aria-colspan])`);
+        let max = 0;
+        cells.forEach(cell => {
+          max = Math.max(max, cell.scrollWidth);
+        });
+        if (max > 0) {
+          next[c] = Math.ceil(max);
+        }
+      }
+      setAutoColumnWidths(prev => {
+        const keys = Object.keys(next);
+        if (keys.length === Object.keys(prev).length && keys.every(k => prev[Number(k)] === next[Number(k)])) {
+          return prev;
+        }
+        return next;
+      });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(tableNode);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnLayout, columnCount, columns, children]);
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>

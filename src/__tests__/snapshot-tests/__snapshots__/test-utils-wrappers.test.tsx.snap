@@ -20,6 +20,7 @@ import AttributeEditorWrapper from './attribute-editor';
 import AutosuggestWrapper from './autosuggest';
 import BadgeWrapper from './badge';
 import BarChartWrapper from './bar-chart';
+import BasicTableWrapper from './basic-table';
 import BoxWrapper from './box';
 import BreadcrumbGroupWrapper from './breadcrumb-group';
 import ButtonWrapper from './button';
@@ -116,6 +117,7 @@ export { AttributeEditorWrapper };
 export { AutosuggestWrapper };
 export { BadgeWrapper };
 export { BarChartWrapper };
+export { BasicTableWrapper };
 export { BoxWrapper };
 export { BreadcrumbGroupWrapper };
 export { ButtonWrapper };
@@ -511,6 +513,34 @@ findAllBarCharts(selector?: string): Array<BarChartWrapper>;
  * @returns {BarChartWrapper | null}
  */
 findClosestBarChart(): BarChartWrapper | null;
+/**
+ * Returns the wrapper of the first BasicTable that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first BasicTable.
+ * If no matching BasicTable is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BasicTableWrapper | null}
+ */
+findBasicTable(selector?: string): BasicTableWrapper | null;
+
+/**
+ * Returns an array of BasicTable wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the BasicTables inside the current wrapper.
+ * If no matching BasicTable is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<BasicTableWrapper>}
+ */
+findAllBasicTables(selector?: string): Array<BasicTableWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent BasicTable for the current element,
+ * or the element itself if it is an instance of BasicTable.
+ * If no BasicTable is found, returns \`null\`.
+ *
+ * @returns {BasicTableWrapper | null}
+ */
+findClosestBasicTable(): BasicTableWrapper | null;
 /**
  * Returns the wrapper of the first Box that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Box.
@@ -2982,6 +3012,19 @@ ElementWrapper.prototype.findBarChart = function(selector) {
 ElementWrapper.prototype.findAllBarCharts = function(selector) {
   return this.findAllComponents(BarChartWrapper, selector);
 };
+ElementWrapper.prototype.findBasicTable = function(selector) {
+  let rootSelector = \`.\${BasicTableWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BasicTableWrapper && BasicTableWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BasicTableWrapper.rootSelector}, .\${BasicTableWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BasicTableWrapper);
+};
+
+ElementWrapper.prototype.findAllBasicTables = function(selector) {
+  return this.findAllComponents(BasicTableWrapper, selector);
+};
 ElementWrapper.prototype.findBox = function(selector) {
   let rootSelector = \`.\${BoxWrapper.rootSelector}\`;
   if("legacyRootSelector" in BoxWrapper && BoxWrapper.legacyRootSelector){
@@ -4117,6 +4160,11 @@ ElementWrapper.prototype.findClosestBarChart = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(BarChartWrapper);
 };
+ElementWrapper.prototype.findClosestBasicTable = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(BasicTableWrapper);
+};
 ElementWrapper.prototype.findClosestBox = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4562,6 +4610,7 @@ import AttributeEditorWrapper from './attribute-editor';
 import AutosuggestWrapper from './autosuggest';
 import BadgeWrapper from './badge';
 import BarChartWrapper from './bar-chart';
+import BasicTableWrapper from './basic-table';
 import BoxWrapper from './box';
 import BreadcrumbGroupWrapper from './breadcrumb-group';
 import ButtonWrapper from './button';
@@ -4658,6 +4707,7 @@ export { AttributeEditorWrapper };
 export { AutosuggestWrapper };
 export { BadgeWrapper };
 export { BarChartWrapper };
+export { BasicTableWrapper };
 export { BoxWrapper };
 export { BreadcrumbGroupWrapper };
 export { ButtonWrapper };
@@ -4932,6 +4982,23 @@ findBarChart(selector?: string): BarChartWrapper;
  * @returns {MultiElementWrapper<BarChartWrapper>}
  */
 findAllBarCharts(selector?: string): MultiElementWrapper<BarChartWrapper>;
+/**
+ * Returns a wrapper that matches the BasicTables with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches BasicTables.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BasicTableWrapper}
+ */
+findBasicTable(selector?: string): BasicTableWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches BasicTables with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches BasicTables.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<BasicTableWrapper>}
+ */
+findAllBasicTables(selector?: string): MultiElementWrapper<BasicTableWrapper>;
 /**
  * Returns a wrapper that matches the Boxes with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Boxes.
@@ -6489,6 +6556,19 @@ ElementWrapper.prototype.findBarChart = function(selector) {
 
 ElementWrapper.prototype.findAllBarCharts = function(selector) {
   return this.findAllComponents(BarChartWrapper, selector);
+};
+ElementWrapper.prototype.findBasicTable = function(selector) {
+  let rootSelector = \`.\${BasicTableWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BasicTableWrapper && BasicTableWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BasicTableWrapper.rootSelector}, .\${BasicTableWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BasicTableWrapper);
+};
+
+ElementWrapper.prototype.findAllBasicTables = function(selector) {
+  return this.findAllComponents(BasicTableWrapper, selector);
 };
 ElementWrapper.prototype.findBox = function(selector) {
   let rootSelector = \`.\${BoxWrapper.rootSelector}\`;

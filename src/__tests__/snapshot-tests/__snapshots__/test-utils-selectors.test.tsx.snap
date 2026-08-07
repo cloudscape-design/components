@@ -81,6 +81,14 @@ exports[`test-utils selectors 1`] = `
   "bar-chart": [
     "awsui_root_1gfe1",
   ],
+  "beta": [
+    "awsui_body_e1x3z",
+    "awsui_header-cell_e1x3z",
+    "awsui_header-row_e1x3z",
+    "awsui_loading_e1x3z",
+    "awsui_root_e1x3z",
+    "awsui_row_e1x3z",
+  ],
   "box": [
     "awsui_root_18wu0",
   ],

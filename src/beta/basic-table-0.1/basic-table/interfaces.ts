@@ -32,6 +32,15 @@ export interface UseBasicTableConfig {
   columnWidths?: Record<number, number>;
   onColumnWidthsChange?: NonCancelableEventHandler<BasicTableProps.ColumnWidthsDetail>;
 
+  /** Column layout. `"fixed"` (default) uses the positional width config (flexible columns share
+   *  remaining space as `1fr`); `"auto"` sizes each flexible column to its measured content width.
+   *  @defaultValue "fixed" */
+  columnLayout?: BasicTableProps.ColumnLayout;
+  /** Measured content widths (px) keyed by column INDEX, applied only when `columnLayout="auto"`.
+   *  `BasicTable.Root` measures these from the DOM; a headless consumer of the hook may supply its
+   *  own measurements. */
+  autoColumnWidths?: Record<number, number>;
+
   /** Pins a number of leading (`first`) / trailing (`last`) columns during horizontal scroll. */
   stickyColumns?: BasicTableProps.StickyColumns;
 
@@ -166,6 +175,13 @@ export namespace BasicTableProps {
     /** Sort indicator for a sortable column, forwarded to the header cell's `aria-sort`. BasicTable
      *  holds no sort state — render your own sort control in `children` and manage sorting yourself. */
     'aria-sort'?: React.AriaAttributes['aria-sort'];
+    /** Wraps the header content onto multiple lines instead of truncating it with an ellipsis.
+     *  @defaultValue false */
+    wrapText?: boolean;
+    /** Renders a fixed-width, centered leading control-column header (tokenized width + focus
+     *  chrome) instead of a default data-column header. `"selection"` for a select-all checkbox
+     *  column; `"disclosure"` for an expand/collapse column. */
+    variant?: 'selection' | 'disclosure';
     children?: React.ReactNode;
   }
 
@@ -191,6 +207,10 @@ export namespace BasicTableProps {
     /** Fired when the row's expansion is toggled from within — e.g. Escape pressed inside the
      *  region when there is no disclosure toggle to return focus to. Detail is empty. */
     onToggleExpand?: NonCancelableEventHandler;
+    /** Marks the row as selected: applies the tokenized selected-row surface (background + selected
+     *  border) and sets `aria-selected`. Pair with a composed selection control (a checkbox/radio in
+     *  a leading `Cell`). Avoids styling the selected state through the deprecated `className`. */
+    selected?: boolean;
     /** Absolute row position for `aria-rowindex`, forwarded so a consumer's own virtualization can
      *  report a windowed row's true position in the full dataset (overrides the computed value). */
     'aria-rowindex'?: number;
@@ -203,6 +223,13 @@ export namespace BasicTableProps {
   export interface CellProps extends StructuralPartProps {
     /** Bind to a column by id instead of by position. */
     columnId?: string;
+    /** Wraps the cell content onto multiple lines instead of truncating it with an ellipsis.
+     *  @defaultValue false */
+    wrapText?: boolean;
+    /** Renders a fixed-width, centered leading control cell (tokenized width + focus chrome) — host
+     *  the control here — instead of a default data cell. `"selection"` for a row selection
+     *  checkbox/radio; `"disclosure"` for the row's expand/collapse toggle. */
+    variant?: 'selection' | 'disclosure';
     children?: React.ReactNode;
   }
 
