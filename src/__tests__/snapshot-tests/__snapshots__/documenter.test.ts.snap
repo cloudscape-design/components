@@ -13440,7 +13440,7 @@ manner even if you provide a value for this property.",
       "type": "boolean",
     },
     {
-      "description": "Determines whether the content section's default padding is removed. This default padding is only present for the \`container\` variant.",
+      "description": "Determines whether the default padding around the content section is removed.",
       "name": "disableContentPaddings",
       "optional": true,
       "type": "boolean",
