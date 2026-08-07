@@ -783,7 +783,8 @@ export namespace TableProps {
      * Renders a custom skeleton placeholder for each cell of the given column while data is loading.
      * Use for columns whose final content is not a single line of text, so the placeholder matches the
      * settled cell shape and the load-to-settle transition stays stable. Compose the returned content
-     * from the `Skeleton` component. Return `undefined` for a column to use the default single-line skeleton.
+     * from the `Skeleton` component. Return `undefined` for a column to use the default single-line
+     * skeleton; return `null` to render an empty placeholder for that column.
      *
      * The returned content is rendered inside an `aria-hidden` row, so it is not announced to screen
      * readers; do not render focusable or interactive elements.

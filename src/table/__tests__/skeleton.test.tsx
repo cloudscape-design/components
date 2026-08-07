@@ -310,5 +310,19 @@ describe('Table skeleton loading', () => {
       expect(hiddenRows).toHaveLength(1);
       expect(hiddenRows[0].findAll('[data-testid="custom-skeleton"]')).toHaveLength(2);
     });
+
+    test('renders an empty placeholder when renderCell returns null (only undefined falls back)', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => (column.header === 'id' ? null : undefined),
+        },
+      });
+      // id column returns null -> empty placeholder (no default skeleton);
+      // name column returns undefined -> default skeleton (2 rows).
+      expect(wrapper.findAllSkeletons()).toHaveLength(2);
+    });
   });
 });

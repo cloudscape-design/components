@@ -84,7 +84,16 @@ export function SkeletonRows({
                 ariaLabels={ariaLabels}
                 column={{
                   ...column,
-                  cell: () => renderCell?.(column) ?? <InternalSkeleton variant="dynamic" tagOverride="span" />,
+                  // Only `undefined` (including when `renderCell` is absent) falls back to the default
+                  // skeleton; an explicit `null` renders an empty placeholder, so do not use `??` here.
+                  cell: () => {
+                    const customSkeleton = renderCell?.(column);
+                    return customSkeleton === undefined ? (
+                      <InternalSkeleton variant="dynamic" tagOverride="span" />
+                    ) : (
+                      customSkeleton
+                    );
+                  },
                 }}
                 item={{}}
                 wrapLines={wrapLines}
