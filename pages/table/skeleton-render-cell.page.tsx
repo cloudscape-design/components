@@ -34,7 +34,11 @@ const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
       </SpaceBetween>
     ),
   },
-  { id: 'status', header: 'Status', cell: item => <StatusIndicator type={item.status === 'error' ? 'error' : 'success'}>{item.status}</StatusIndicator> },
+  {
+    id: 'status',
+    header: 'Status',
+    cell: item => <StatusIndicator type={item.status === 'error' ? 'error' : 'success'}>{item.status}</StatusIndicator>,
+  },
   { id: 'actions', header: '', cell: () => <Button>Edit</Button> },
 ];
 
