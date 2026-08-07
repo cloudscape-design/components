@@ -3,9 +3,12 @@
 import React from 'react';
 
 import Alert, { AlertProps } from '~components/alert';
+import Box from '~components/box';
 import Button from '~components/button';
+import Divider from '~components/divider';
 import Flashbar, { FlashbarProps } from '~components/flashbar';
 import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
 
 import createPermutations from '../utils/permutations';
 
@@ -13,19 +16,30 @@ const noop = () => void 0;
 
 const types = ['info', 'success', 'warning', 'error'] as const;
 
+// Embedded content is rendered by other components, which read the shared body text,
+// link and divider tokens rather than inheriting from the notification.
+function EmbeddedContent({ linkColor }: { linkColor?: 'inverted' }) {
+  return (
+    <SpaceBetween size="xs">
+      <span>
+        Message with a{' '}
+        <Link color={linkColor} variant="primary">
+          link
+        </Link>{' '}
+        and <Box variant="awsui-inline-code">inline code</Box>.
+      </span>
+      <Divider />
+      <Box>Body text below a divider.</Box>
+    </SpaceBetween>
+  );
+}
+
 /* eslint-disable react/jsx-key */
 export const flashbarPermutations = createPermutations<FlashbarProps.MessageDefinition>([
   {
     type: [...types],
     header: ['Flash header'],
-    content: [
-      <span>
-        Flash message with a{' '}
-        <Link color="inverted" variant="primary">
-          link
-        </Link>
-      </span>,
-    ],
+    content: [<EmbeddedContent linkColor="inverted" />],
     action: [<Button>Action</Button>],
     dismissible: [true],
     dismissLabel: ['Dismiss'],
@@ -37,11 +51,7 @@ export const alertPermutations = createPermutations<AlertProps>([
   {
     type: [...types],
     header: ['Alert header'],
-    children: [
-      <span>
-        Alert message with a <Link>link</Link>
-      </span>,
-    ],
+    children: [<EmbeddedContent />],
     action: [<Button>Action</Button>],
     dismissible: [true],
     dismissAriaLabel: ['Dismiss'],
