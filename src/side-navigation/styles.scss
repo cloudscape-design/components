@@ -246,6 +246,14 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       transition: opacity $link-enter-opacity-duration $link-enter-easing $link-enter-opacity-delay;
     }
   }
+
+  // Applied once the expand transition genuinely finishes (or immediately under reduced
+  // motion, where there's no transition to wait for). overflow-y switches to visible so
+  // active/hover/focus states on the last child aren't clipped once the grid track is done
+  // animating — same issue and same fix as expandable-section's content-inner-settled.
+  &--settled {
+    overflow-y: visible;
+  }
 }
 
 .list-variant-section-group {

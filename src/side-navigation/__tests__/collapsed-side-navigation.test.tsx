@@ -3,12 +3,25 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import { isThemeActive, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+
 import Icon from '../../../lib/components/icon';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/side-navigation/styles.css.js';
 import testStyles from '../../../lib/components/side-navigation/test-classes/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
+  useReducedMotion: jest.fn().mockReturnValue(false),
+}));
+
+afterEach(() => {
+  (isThemeActive as jest.Mock).mockReturnValue(false);
+  (useReducedMotion as jest.Mock).mockReturnValue(false);
+});
 
 function renderSideNavigation(props: SideNavigationProps = {}) {
   const { container } = render(<SideNavigation {...props} />);
@@ -199,60 +212,72 @@ describe('SideNavigation collapsed mode', () => {
   });
 
   describe('link groups', () => {
+    function renderLinkGroupNav(collapsed: boolean, items: SideNavigationProps.Item[] = [iconLink('Child 1', '#/c1')]) {
+      const linkGroupItems: SideNavigationProps.Item[] = [
+        { type: 'link-group', text: 'Group', href: '#/group', icon: <Icon name="folder" />, items },
+      ];
+      const utils = render(<SideNavigation collapsed={collapsed} items={linkGroupItems} />);
+      const rerenderCollapsed = (nextCollapsed: boolean) =>
+        utils.rerender(<SideNavigation collapsed={nextCollapsed} items={linkGroupItems} />);
+      const childrenOuter = utils.container.querySelector(`.${CSS.escape(styles['link-group-children'])}`)!;
+      const childrenInner = childrenOuter.querySelector(
+        `.${CSS.escape(styles['link-group-children-inner'])}`
+      ) as HTMLElement;
+      return {
+        wrapper: createWrapper(utils.container).findSideNavigation()!,
+        rerenderCollapsed,
+        childrenOuter,
+        childrenInner,
+        isSettled: () => childrenInner.className.includes(styles['link-group-children-inner--settled']),
+      };
+    }
+
     it.each([
       { label: 'icon-bearing', items: [iconLink('Child 1', '#/c1'), iconLink('Child 2', '#/c2')] },
       { label: 'icon-less', items: [plainLink('Lambda', '#/lambda'), plainLink('S3', '#/s3')] },
     ])('keeps $label children mounted but inert when collapsed', ({ items }) => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[{ type: 'link-group', text: 'Group', href: '#/group', icon: <Icon name="folder" />, items }]}
-        />
-      );
-      const wrapper = createWrapper(container).findSideNavigation()!;
+      const { wrapper, childrenInner } = renderLinkGroupNav(true, items);
       expect(wrapper.findLinkByHref('#/group')).not.toBeNull();
       items.forEach(item => expect(wrapper.findLinkByHref(item.href)).not.toBeNull());
-      const firstChildLink = wrapper.findLinkByHref(items[0].href)!.getElement();
-      expect(firstChildLink.closest('ul')!.parentElement!.inert).toBe(true);
+      expect(childrenInner.inert).toBe(true);
     });
 
-    it('children are not inert when not collapsed', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={false}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Group',
-              href: '#/group',
-              icon: <Icon name="folder" />,
-              items: [iconLink('Child 1', '#/c1')],
-            },
-          ]}
-        />
-      );
-      const wrapper = createWrapper(container).findSideNavigation()!;
-      const childLink = wrapper.findLinkByHref('#/c1')!.getElement();
-      expect(childLink.closest('ul')!.parentElement!.inert).toBe(false);
+    it('applies the collapsed class and is not inert when not collapsed', () => {
+      const { childrenOuter, childrenInner } = renderLinkGroupNav(false);
+      expect(childrenInner.inert).toBe(false);
+      expect(childrenOuter.classList.contains(styles['link-group-children--collapsed'])).toBe(false);
     });
 
-    it('applies the collapsed class to the children container for the grid animation', () => {
-      const { container } = render(
-        <SideNavigation
-          collapsed={true}
-          items={[
-            {
-              type: 'link-group',
-              text: 'Group',
-              href: '#/group',
-              icon: <Icon name="folder" />,
-              items: [iconLink('Child 1', '#/c1')],
-            },
-          ]}
-        />
-      );
-      const childrenContainer = container.querySelector(`.${CSS.escape(styles['link-group-children'])}`);
-      expect(childrenContainer!.classList.contains(styles['link-group-children--collapsed'])).toBe(true);
+    it('settles on transitionend after expanding, resets on collapse, and ignores nested transitions', () => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+      const { rerenderCollapsed, childrenOuter, childrenInner, isSettled } = renderLinkGroupNav(true);
+      expect(childrenOuter.classList.contains(styles['link-group-children--collapsed'])).toBe(true);
+
+      rerenderCollapsed(false);
+      expect(isSettled()).toBe(false);
+      fireEvent.transitionEnd(childrenInner);
+      expect(isSettled()).toBe(false); // Nested transition: parent does not settle.
+      fireEvent.transitionEnd(childrenOuter);
+      expect(isSettled()).toBe(true); // Real transition end: settles.
+
+      // Collapsing again resets settled immediately, before the exit transition starts,
+      // so overflow-y: clip is re-applied right away rather than lingering as "visible".
+      // Children stay mounted when collapsed, so childrenOuter/childrenInner are still the same live nodes.
+      rerenderCollapsed(true);
+      expect(isSettled()).toBe(false);
+      fireEvent.transitionEnd(childrenOuter);
+      expect(isSettled()).toBe(false); // transitionend while collapsed never (re-)settles.
+    });
+
+    it.each([
+      { label: 'outside One Theme', oneTheme: false, reducedMotion: false },
+      { label: 'under reduced motion', oneTheme: true, reducedMotion: true },
+    ])('settles immediately $label', ({ oneTheme, reducedMotion }) => {
+      (isThemeActive as jest.Mock).mockReturnValue(oneTheme);
+      (useReducedMotion as jest.Mock).mockReturnValue(reducedMotion);
+      const { rerenderCollapsed, isSettled } = renderLinkGroupNav(true);
+      rerenderCollapsed(false);
+      expect(isSettled()).toBe(true);
     });
   });
 
