@@ -11,6 +11,7 @@ const pluralizationMap = {
   Autosuggest: 'Autosuggests',
   Badge: 'Badges',
   BarChart: 'BarCharts',
+  BasicTable: 'BasicTables',
   Box: 'Boxes',
   BreadcrumbGroup: 'BreadcrumbGroups',
   Button: 'Buttons',
