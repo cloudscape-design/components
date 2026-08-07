@@ -269,4 +269,46 @@ describe('Table skeleton loading', () => {
       }
     });
   });
+
+  describe('renderCell (custom column skeleton)', () => {
+    test('renders custom skeleton content per column', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => <span data-testid="custom-skeleton">{`skeleton-${column.header}`}</span>,
+        },
+      });
+      const custom = wrapper.findAll('[data-testid="custom-skeleton"]');
+      expect(custom).toHaveLength(4); // 2 columns × 2 rows
+      expect(custom.map(w => w.getElement().textContent)).toEqual(
+        expect.arrayContaining(['skeleton-id', 'skeleton-name'])
+      );
+    });
+
+    test('falls back to the default skeleton when renderCell returns undefined for a column', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => (column.header === 'name' ? <span data-testid="custom-skeleton" /> : undefined),
+        },
+      });
+      expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(2); // name column, 2 rows
+      expect(wrapper.findAllSkeletons()).toHaveLength(2); // id column falls back to default, 2 rows
+    });
+
+    test('renders custom skeleton content inside aria-hidden rows', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: { totalRows: 1, renderCell: () => <span data-testid="custom-skeleton" /> },
+      });
+      const hiddenRows = wrapper.findAll('tr[aria-hidden="true"]');
+      expect(hiddenRows).toHaveLength(1);
+      expect(hiddenRows[0].findAll('[data-testid="custom-skeleton"]')).toHaveLength(2);
+    });
+  });
 });
