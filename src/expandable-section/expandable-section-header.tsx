@@ -126,8 +126,20 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
 }: ExpandableNavigationHeaderProps) => {
+  // Let clicks on the inert space around the expand button also toggle the section to provide
+  // a sufficiently large pointer target, deferring to interactive descendants like the expand button and links.
+  const onWrapperClick: MouseEventHandler = event => {
+    const interactiveElement = (event.target as HTMLElement).closest('a, button');
+    if (!interactiveElement || !event.currentTarget.contains(interactiveElement)) {
+      onClick(event);
+    }
+  };
   return (
-    <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
+    <div
+      id={id}
+      className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}
+      onClick={onWrapperClick}
+    >
       <button
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
