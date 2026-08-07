@@ -187,6 +187,14 @@ const ExpandableNavigationHeader = ({
   icon,
   expandIconPosition,
 }: ExpandableNavigationHeaderProps) => {
+  // Let clicks on the inert space around the expand button also toggle the section to provide
+  // a sufficiently large pointer target, deferring to interactive descendants like the expand button and links.
+  const onWrapperClick: MouseEventHandler = event => {
+    const interactiveElement = (event.target as HTMLElement).closest('a, button');
+    if (!interactiveElement || !event.currentTarget.contains(interactiveElement)) {
+      onClick(event);
+    }
+  };
   const expandButton = (
     <ExpandIconButton
       icon={icon}
@@ -207,6 +215,7 @@ const ExpandableNavigationHeader = ({
         analyticsSelectors['header-label'],
         expandIconPosition === 'end' && styles['header-icon-end']
       )}
+      onClick={onWrapperClick}
     >
       {expandIconPosition === 'end' ? (
         <>
