@@ -43,6 +43,10 @@ const permutations = createPermutations<TextareaProps>([
     placeholder: ['Placeholder with\nmultiple lines'],
     value: [''],
   },
+  {
+    resize: ['both', 'horizontal', 'vertical', 'none'],
+    value: ['Resizable in the direction given by the resize property'],
+  },
 ]);
 
 export default function TextareaPermutations() {
