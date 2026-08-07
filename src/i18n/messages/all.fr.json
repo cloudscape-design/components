@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} sur {totalCount} éléments",
+    "noMatch": "Aucune action correspondante",
+    "i18nStrings.filteringItemAriaDescription": "Continuez à taper pour filtrer les résultats."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Mois suivant",
     "previousMonthAriaLabel": "Mois précédent",
