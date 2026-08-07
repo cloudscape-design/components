@@ -268,6 +268,50 @@ describe('Table skeleton loading', () => {
         expect(lastDataRow.compareDocumentPosition(skeletonRow.getElement())).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
       }
     });
+
+    describe('with renderCell', () => {
+      test('renders custom skeleton content in automatic rows', () => {
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: {
+            totalRows: 'auto',
+            maxAutoRows: 2,
+            renderCell: column => <span data-testid="custom-skeleton">{`skeleton-${column.header}`}</span>,
+          },
+        });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(4); // 2 columns × 2 auto rows
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]').map(w => w.getElement().textContent)).toEqual(
+          expect.arrayContaining(['skeleton-id', 'skeleton-name'])
+        );
+      });
+
+      test('renderCell does not change the automatic row count', () => {
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: { totalRows: 'auto', renderCell: () => <span data-testid="custom-skeleton" /> },
+        });
+        // Same viewport mock as the plain-auto "fills the viewport automatically" case -> 3 rows.
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+      });
+
+      test('falls back to the default skeleton per column in automatic rows', () => {
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: {
+            totalRows: 'auto',
+            maxAutoRows: 2,
+            renderCell: column => (column.header === 'name' ? <span data-testid="custom-skeleton" /> : undefined),
+          },
+        });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(2); // name column, 2 rows
+        expect(wrapper.findAllSkeletons()).toHaveLength(2); // id column falls back to default, 2 rows
+      });
+    });
   });
 
   describe('renderCell (custom column skeleton)', () => {
