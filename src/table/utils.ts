@@ -79,8 +79,36 @@ function getVisibleColumnDefinitionsFromColumnDisplay<T>({
     (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
     {}
   );
+  // Build a map of persisted widths from columnDisplay entries.
+  const persistedWidths = flattenColumnDisplayWidths(columnDisplay);
   const visibleIds = flattenVisibleColumnIds(columnDisplay);
-  return visibleIds.map(id => columnDefinitionsById[id]).filter(Boolean);
+  return visibleIds
+    .map(id => {
+      const colDef = columnDefinitionsById[id];
+      if (!colDef) {
+        return colDef;
+      }
+      const persistedWidth = persistedWidths.get(id);
+      if (persistedWidth !== undefined) {
+        return { ...colDef, width: persistedWidth };
+      }
+      return colDef;
+    })
+    .filter(Boolean);
+}
+
+function flattenColumnDisplayWidths(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): Map<string, number> {
+  const widths = new Map<string, number>();
+  for (const item of items) {
+    if (item.type === 'group') {
+      for (const [id, width] of flattenColumnDisplayWidths(item.children)) {
+        widths.set(id, width);
+      }
+    } else if (item.width !== undefined) {
+      widths.set(item.id, item.width);
+    }
+  }
+  return widths;
 }
 
 function getVisibleColumnDefinitionsFromVisibleColumns<T>({
@@ -113,4 +141,35 @@ function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayPr
     }
   }
   return ids;
+}
+
+/**
+ * Merges a flat array of widths (indexed by columnDefinitions order) back into
+ * the columnDisplay tree, so callers can persist the updated widths via preferences.
+ */
+export function applyWidthsToColumnDisplay<T>(
+  columnDisplay: ReadonlyArray<TableProps.ColumnDisplayProperties>,
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
+  widths: ReadonlyArray<number>
+): ReadonlyArray<TableProps.ColumnDisplayProperties> {
+  const widthById = new Map<string, number>();
+  columnDefinitions.forEach((col, index) => {
+    if (col.id !== undefined) {
+      widthById.set(col.id, widths[index]);
+    }
+  });
+  return applyWidthsToItems(columnDisplay, widthById);
+}
+
+function applyWidthsToItems(
+  items: ReadonlyArray<TableProps.ColumnDisplayProperties>,
+  widthById: Map<string, number>
+): ReadonlyArray<TableProps.ColumnDisplayProperties> {
+  return items.map(item => {
+    if (item.type === 'group') {
+      return { ...item, children: applyWidthsToItems(item.children, widthById) };
+    }
+    const width = widthById.get(item.id);
+    return width !== undefined ? { ...item, width } : item;
+  });
 }
