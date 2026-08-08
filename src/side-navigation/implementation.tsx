@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
@@ -11,7 +11,12 @@ import { isDevelopment } from '../internal/is-development';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { SideNavigationProps } from './interfaces';
 import { Header, NavigationItemsList } from './parts';
-import { checkDuplicateHrefs, generateExpandableItemsMapping, hasNavigationIcons } from './util';
+import {
+  checkCollapsedIconSupport,
+  checkDuplicateHrefs,
+  generateExpandableItemsMapping,
+  hasNavigationIcons,
+} from './util';
 
 import styles from './styles.css.js';
 
@@ -34,10 +39,14 @@ export function SideNavigationImplementation({
   const withIcons = useMemo(() => hasNavigationIcons(items), [items]);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
+  const listContainerRef = useRef<HTMLDivElement>(null);
+
   if (isDevelopment) {
     // This code should be wiped in production anyway.
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => checkDuplicateHrefs(items), [items]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => checkCollapsedIconSupport(items, collapsed), [items, collapsed]);
   }
 
   const onChangeHandler = useCallback(
@@ -84,7 +93,7 @@ export function SideNavigationImplementation({
       )}
       {!collapsed && itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
       {items && (
-        <div className={styles['list-container']}>
+        <div ref={listContainerRef} className={styles['list-container']}>
           <NavigationItemsList
             variant="root"
             items={items}

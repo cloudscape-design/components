@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEvent, useCallback, useRef } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
+import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
+import { useOneTheme } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
@@ -34,10 +35,15 @@ export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'varia
     /**
      * Removes default padding from the header wrapper and content wrapper.
      * Used by side-navigation to zero out expandable-section's own padding so the
-     * parent can control spacing directly, eliminating brittle cross-component
-     * positional selectors.
+     * parent can control spacing directly.
      */
     __disableHeaderPaddings?: boolean;
+    /**
+     * When true, the expand/collapse icon button is hidden from assistive technology
+     * and removed from the tab order. Used by side-navigation when the nav is collapsed
+     * and the caret is visually clipped but still present in the DOM.
+     */
+    __hideExpandIcon?: boolean;
   };
 
 export default function InternalExpandableSection({
@@ -59,9 +65,11 @@ export default function InternalExpandableSection({
   __injectAnalyticsComponentMetadata,
   __expandIconPosition = 'start',
   __disableHeaderPaddings = false,
+  __hideExpandIcon = false,
   ...props
 }: InternalExpandableSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const contentInnerRef = useRef<HTMLDivElement>(null);
+  const isOneTheme = useOneTheme();
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
@@ -74,9 +82,9 @@ export default function InternalExpandableSection({
   });
 
   const onExpandChange = useCallback(
-    (expanded: boolean) => {
-      setExpanded(expanded);
-      fireNonCancelableEvent(onChange, { expanded });
+    (newExpanded: boolean) => {
+      setExpanded(newExpanded);
+      fireNonCancelableEvent(onChange, { expanded: newExpanded });
     },
     [onChange, setExpanded]
   );
@@ -103,6 +111,15 @@ export default function InternalExpandableSection({
     }
   }, []);
 
+  // Set inert on collapsed content to block pointer/focus events and hide from
+  // assistive technology. Direct DOM manipulation needed until React supports
+  // the inert attribute natively. https://github.com/facebook/react/issues/17157
+  useEffect(() => {
+    if (contentInnerRef.current) {
+      contentInnerRef.current.inert = !expanded;
+    }
+  }, [expanded]);
+
   const triggerProps = {
     ariaControls: controlId,
     ariaLabel: headerAriaLabel,
@@ -121,7 +138,6 @@ export default function InternalExpandableSection({
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
-      disableContentPaddings={disableContentPaddings}
       __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
@@ -143,29 +159,55 @@ export default function InternalExpandableSection({
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
+          hideExpandIcon={__hideExpandIcon}
           {...triggerProps}
         />
       }
       __internalRootRef={__internalRootRef}
     >
-      <CSSTransition in={expanded} timeout={30} classNames={{ enter: styles['content-enter'] }} nodeRef={ref}>
-        <div
-          id={controlId}
-          ref={ref}
-          className={clsx(
-            styles.content,
-            styles[`content-${baseVariant}`],
-            expanded && styles['content-expanded'],
-            disableContentPaddings && styles['disable-content-paddings']
-          )}
-          role="group"
-          aria-label={triggerProps.ariaLabel}
-          aria-labelledby={triggerProps.ariaLabelledBy}
-          aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
-        >
-          {children}
-        </div>
-      </CSSTransition>
+      <Transition<HTMLDivElement> in={!!expanded} disabled={!isOneTheme}>
+        {(transitionState, transitionEventsRef, motionDisabled) => {
+          const contentSettled = !!expanded && (motionDisabled || transitionState === 'entered');
+
+          return (
+            <div
+              ref={transitionEventsRef}
+              id={controlId}
+              className={clsx(
+                styles.content,
+                styles[`content-${baseVariant}`],
+                expanded && styles['content-expanded'],
+                disableContentPaddings && styles['disable-content-paddings']
+              )}
+              role="group"
+              aria-label={triggerProps.ariaLabel}
+              aria-labelledby={triggerProps.ariaLabelledBy}
+              aria-describedby={
+                variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined
+              }
+            >
+              <div
+                ref={contentInnerRef}
+                className={clsx(
+                  styles['content-inner'],
+                  expanded && styles['content-inner-expanded'],
+                  contentSettled && styles['content-inner-settled']
+                )}
+              >
+                <div
+                  className={clsx(
+                    styles['content-inner-body'],
+                    styles[`content-inner-body-${baseVariant}`],
+                    disableContentPaddings && styles['disable-content-paddings']
+                  )}
+                >
+                  {children}
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </Transition>
     </ExpandableSectionContainer>
   );
 }

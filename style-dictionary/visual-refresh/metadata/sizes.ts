@@ -14,6 +14,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  sizeSideNavigationItemCollapsed: {
+    description: 'The square size of collapsed side navigation items.',
+    public: true,
+    themeable: true,
+  },
+  sizeSideNavigationCollapsedWidth: {
+    description: 'The default width of the collapsed side navigation rail.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

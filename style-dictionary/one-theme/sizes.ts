@@ -9,6 +9,7 @@ import { tokens as parentTokens } from '../visual-refresh/sizes.js';
 const tokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: { comfortable: '30px', compact: '26px' },
   sizeSideNavigationItemHeight: { comfortable: '30px', compact: '26px' },
+  sizeSideNavigationItemCollapsed: { comfortable: '28px', compact: '26px' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

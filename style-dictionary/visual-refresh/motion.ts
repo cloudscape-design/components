@@ -49,6 +49,15 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationTooltipEnter: '{motionDurationRefreshOnlyFast}',
   motionEasingTooltipEnter: '{motionEasingRefreshOnlyA}',
 
+  // Keep existing VR motion in expandable section
+  motionDurationExpandableContentEnter: '{motionDurationShowPaced}',
+  motionEasingExpandableContentEnter: '{motionEasingShowPaced}',
+
+  motionDurationSideNavigationContentEnterFade: { default: '0ms', disabled: '0ms' },
+  motionDurationSideNavigationContentExit: { default: '0ms', disabled: '0ms' },
+  motionDurationSideNavigationContentExitFade: { default: '0ms', disabled: '0ms' },
+  motionEasingSideNavigationContentExit: '{motionEasingShowQuick}',
+
   motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
   motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
   motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
