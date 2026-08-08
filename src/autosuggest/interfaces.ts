@@ -160,6 +160,15 @@ export interface AutosuggestProps
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
 
   /**
+   * Determines whether the dropdown opens when the input receives focus.
+   * Set to `false` to allow the input to be focused (for example, via `autoFocus`) without
+   * immediately opening the dropdown. The dropdown will still open on user input or when
+   * the user presses the arrow keys.
+   * @defaultValue true
+   */
+  openOnFocus?: boolean;
+
+  /**
    * An object containing CSS properties to customize the autosuggest's visual appearance.
    * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
    * @awsuiSystem core
