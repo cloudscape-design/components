@@ -97,6 +97,7 @@
     "title": "Preferences",
     "confirmLabel": "Confirm",
     "cancelLabel": "Cancel",
+    "resetToDefaults.label": "Reset to defaults",
     "pageSizePreference.title": "Page size",
     "wrapLinesPreference.label": "Wrap lines",
     "wrapLinesPreference.description": "Select to see all the text and wrap the lines",
