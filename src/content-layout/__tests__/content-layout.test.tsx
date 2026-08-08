@@ -280,5 +280,70 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
         expect(wrapper.findByClassName(styles['header-background'])!.getElement()).toHaveStyle('background: blue;');
       });
     });
+
+    describe('fullBleedHeader', () => {
+      test('does not add full-bleed-header class by default', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+        });
+        expect(wrapper.getElement()).not.toHaveClass(styles['full-bleed-header']);
+      });
+
+      test('does not add full-bleed-header class when fullBleedHeader is false', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          fullBleedHeader: false,
+        });
+        expect(wrapper.getElement()).not.toHaveClass(styles['full-bleed-header']);
+      });
+
+      test('adds full-bleed-header class when fullBleedHeader is true', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          fullBleedHeader: true,
+        });
+        expect(wrapper.getElement()).toHaveClass(styles['full-bleed-header']);
+      });
+
+      test('full-bleed-header can be combined with disableOverlap', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          children: <>Content</>,
+          fullBleedHeader: true,
+          disableOverlap: true,
+        });
+        expect(wrapper.getElement()).toHaveClass(styles['full-bleed-header']);
+        expect(wrapper.getElement()).toHaveClass(styles['is-overlap-disabled']);
+      });
+
+      test('full-bleed-header can be combined with headerBackgroundStyle', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          fullBleedHeader: true,
+          headerBackgroundStyle: 'linear-gradient(to right, red, blue)',
+        });
+        expect(wrapper.getElement()).toHaveClass(styles['full-bleed-header']);
+        expect(wrapper.findByClassName(styles['header-background'])!.getElement()).toHaveStyle(
+          'background: linear-gradient(to right, red, blue);'
+        );
+      });
+
+      test('full-bleed-header can be combined with high-contrast headerVariant', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          fullBleedHeader: true,
+          headerVariant: 'high-contrast',
+        });
+        expect(wrapper.getElement()).toHaveClass(styles['full-bleed-header']);
+      });
+
+      test('full-bleed-header renders header slot content', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Full bleed header content</>,
+          fullBleedHeader: true,
+        });
+        expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Full bleed header content');
+      });
+    });
   });
 });
