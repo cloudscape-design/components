@@ -8698,6 +8698,7 @@ The event \`detail\` contains the value of all the preferences as submitted by t
                 "twilight",
                 "vibrant_ink",
                 "cloud_editor_dark",
+                "cloudscape",
               ],
             },
             "name": "theme",
@@ -9188,7 +9189,9 @@ If set to \`undefined\`, the component uses the following default value:
 }
 \`\`\`
 
-You can use any theme provided by Ace.",
+You can use any theme provided by Ace. Additionally, you can set \`theme\` to
+\`'cloudscape'\` to use the opt-in Cloudscape theme, whose colors are derived
+from Cloudscape design tokens and adapt automatically to the active visual mode.",
       "inlineType": {
         "name": "Partial<CodeEditorProps.Preferences>",
         "properties": [
@@ -9237,6 +9240,7 @@ You can use any theme provided by Ace.",
                 "twilight",
                 "vibrant_ink",
                 "cloud_editor_dark",
+                "cloudscape",
               ],
             },
             "name": "theme",
