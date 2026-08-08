@@ -22,26 +22,25 @@ $item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-pa
 $expandable-icon-negative-margin: awsui.$space-l;
 $root-collapsed-padding-horizontal: awsui.$space-scaled-l;
 // ==========================================================================
-// Collapsed-rail link reveal animation — tunable local variables.
+// Collapsed-rail content motion — composite values keep each interaction's
+// duration, easing, and delay together at its transition call sites.
 // ==========================================================================
-// ENTER (expand): spatial leads (width opens first), opacity follows (text fades in after).
-$link-enter-spatial-duration: awsui.$motion-duration-show-paced;
-// Dedicated faster duration for the text-wrapper grid-template-columns reveal (less staccato).
-$link-enter-text-duration: awsui.$motion-duration-show-quick;
-$link-enter-opacity-duration: awsui.$motion-duration-moderate;
-$link-enter-opacity-delay: calc(#{$link-enter-text-duration} / 2); // opacity starts mid-text-reveal
+$content-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$content-enter-motion: $content-enter-duration awsui.$motion-easing-expandable-content-enter;
+// Fade follows the first quarter of structural reveal, giving layout a short lead without a noticeable pause.
+$content-enter-fade-delay: calc(#{$content-enter-duration} / 4);
+$content-enter-fade-motion: awsui.$motion-duration-side-navigation-content-enter-fade
+  awsui.$motion-easing-expandable-content-enter $content-enter-fade-delay;
 
-// EXIT (collapse): opacity leads (fast text fade), spatial follows (width collapses after).
-$link-exit-opacity-duration: awsui.$motion-duration-fast;
-$link-exit-spatial-duration: awsui.$motion-duration-slow;
-$link-exit-spatial-delay: 0ms; // aligned — spatial starts immediately with opacity for unified motion
+// Exit is Side Navigation-specific: labels fade quickly while horizontal and vertical
+// layout collapses around icons that remain visible in the collapsed rail.
+$content-exit-duration: awsui.$motion-duration-side-navigation-content-exit;
+$content-exit-motion: $content-exit-duration awsui.$motion-easing-side-navigation-content-exit;
+$content-exit-fade-duration: awsui.$motion-duration-side-navigation-content-exit-fade;
+$content-exit-fade-motion: $content-exit-fade-duration awsui.$motion-easing-side-navigation-content-exit;
 
-// Easing: enter=decelerate (ease-out), exit=accelerate (ease-in).
-$link-enter-easing: awsui.$motion-easing-show-paced; // decelerate — element settles into place
-$link-exit-easing: awsui.$motion-easing-show-quick; // accelerate — element departs decisively
-
-// Step-function delay for overflow/clip toggles on collapse — activates after spatial finishes.
-$link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spatial-delay});
+// Step-function delay for overflow/clip toggles on collapse — activates after spatial motion finishes.
+$content-exit-clip-delay: $content-exit-duration;
 
 @mixin item-radius($radius: awsui.$border-radius-side-navigation-item) {
   border-start-start-radius: $radius;
@@ -196,14 +195,14 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
 
   // ENTER: indent expands to make room for the child list.
   @include styles.one-theme-with-motion {
-    transition: padding-inline-start $link-enter-spatial-duration $link-enter-easing;
+    transition: padding-inline-start $content-enter-motion;
   }
 
   &--collapsed {
     padding-inline-start: 0;
     // EXIT: indent collapses back to zero.
     @include styles.one-theme-with-motion {
-      transition: padding-inline-start $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay;
+      transition: padding-inline-start $content-exit-motion;
     }
   }
 }
@@ -214,7 +213,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
 
   @include styles.one-theme-with-motion {
     // ENTER: grid row expands to fit the children.
-    transition: grid-template-rows $link-enter-spatial-duration $link-enter-easing;
+    transition: grid-template-rows $content-enter-motion;
   }
 
   &--collapsed {
@@ -222,7 +221,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
 
     @include styles.one-theme-with-motion {
       // EXIT: grid row collapses to zero height.
-      transition: grid-template-rows $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay;
+      transition: grid-template-rows $content-exit-motion;
     }
   }
 }
@@ -235,7 +234,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
 
   @include styles.one-theme-with-motion {
     // EXIT: opacity fades out.
-    transition: opacity $link-exit-opacity-duration $link-exit-easing;
+    transition: opacity $content-exit-fade-motion;
   }
 
   &--expanded {
@@ -243,7 +242,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
 
     @include styles.one-theme-with-motion {
       // ENTER: opacity fades in, delayed until the grid row has partially opened.
-      transition: opacity $link-enter-opacity-duration $link-enter-easing $link-enter-opacity-delay;
+      transition: opacity $content-enter-fade-motion;
     }
   }
 
@@ -351,11 +350,11 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     inline-size: awsui.$size-side-navigation-item-collapsed;
     // EXIT: clip to the icon square only after the content has finished collapsing.
     @include styles.one-theme-with-motion {
-      transition: inline-size 0s linear $link-reveal-clip-delay;
+      transition: inline-size 0s linear $content-exit-clip-delay;
     }
   }
 
-  // Collapse to zero; clip is delayed via $link-reveal-clip-delay.
+  // Collapse to zero; clip is delayed via $content-exit-clip-delay.
   &:not(:has(.item-icon)) {
     overflow: hidden;
     inline-size: 0;
@@ -366,10 +365,10 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     // to zero only after, so the content has time to finish collapsing first.
     @include styles.one-theme-with-motion {
       transition:
-        overflow 0s linear $link-reveal-clip-delay,
-        inline-size 0s linear $link-reveal-clip-delay,
-        block-size $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay,
-        padding-block $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay;
+        overflow 0s linear $content-exit-clip-delay,
+        inline-size 0s linear $content-exit-clip-delay,
+        block-size $content-exit-motion,
+        padding-block $content-exit-motion;
     }
   }
 
@@ -409,9 +408,9 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     opacity: 1;
     @include styles.one-theme-with-motion {
       transition:
-        grid-template-rows $link-enter-spatial-duration $link-enter-easing,
-        padding-block $link-enter-spatial-duration $link-enter-easing,
-        opacity $link-enter-opacity-duration $link-enter-easing $link-enter-opacity-delay;
+        grid-template-rows $content-enter-motion,
+        padding-block $content-enter-motion,
+        opacity $content-enter-fade-motion;
     }
   }
 
@@ -427,9 +426,9 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       @include styles.one-theme-with-motion {
         // EXIT: spatial follows opacity — delay collapse.
         transition:
-          grid-template-rows $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay,
-          padding-block $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay,
-          opacity $link-exit-opacity-duration $link-exit-easing;
+          grid-template-rows $content-exit-motion,
+          padding-block $content-exit-motion,
+          opacity $content-exit-fade-motion;
       }
     }
   }
@@ -465,8 +464,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     // ENTER: grid-columns snap to 1fr instantly (0s) — full width before text appears.
     transition:
       grid-template-columns 0s,
-      block-size $link-enter-spatial-duration $link-enter-easing,
-      padding-block $link-enter-spatial-duration $link-enter-easing;
+      block-size $content-enter-motion,
+      padding-block $content-enter-motion;
   }
 
   &--collapsed {
@@ -478,9 +477,9 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       // EXIT: opacity leads (on .label-text child), grid-columns snap to 0fr AFTER
       // opacity completes (0s duration, delay = exit opacity duration).
       transition:
-        grid-template-columns 0s $link-exit-opacity-duration,
-        block-size $link-exit-spatial-duration $link-exit-easing,
-        padding-block $link-exit-spatial-duration $link-exit-easing;
+        grid-template-columns 0s $content-exit-fade-duration,
+        block-size $content-exit-motion,
+        padding-block $content-exit-motion;
     }
   }
 }
@@ -515,7 +514,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     // ENTER: block-size expands back to full row height.
     // background-color: smooth interpolation prevents jarring swap on hover/active.
     transition:
-      block-size $link-enter-spatial-duration $link-enter-easing,
+      block-size $content-enter-motion,
       background-color awsui.$motion-duration-responsive ease-in-out;
   }
 
@@ -543,8 +542,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       @include styles.one-theme-with-motion {
         transition:
           color awsui.$motion-duration-responsive ease-in-out,
-          background-color $link-enter-spatial-duration ease-in-out,
-          block-size $link-enter-spatial-duration $link-enter-easing;
+          background-color $content-enter-duration ease-in-out,
+          block-size $content-enter-motion;
       }
     }
 
@@ -555,8 +554,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       @include styles.one-theme-with-motion {
         transition:
           color awsui.$motion-duration-responsive ease-in-out,
-          background-color 0ms linear $link-enter-spatial-duration,
-          block-size $link-enter-spatial-duration $link-enter-easing;
+          background-color 0ms linear $content-enter-duration,
+          block-size $content-enter-motion;
       }
 
       // Collapsed state: snap bg to transparent immediately (no delay).
@@ -565,8 +564,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
         @include styles.one-theme-with-motion {
           transition:
             background-color 0ms linear,
-            block-size $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay,
-            min-block-size $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay;
+            block-size $content-exit-motion,
+            min-block-size $content-exit-motion;
         }
       }
     }
@@ -610,8 +609,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
       @include styles.one-theme-with-motion {
         // EXIT: spatial follows opacity — delay block collapse.
         transition:
-          block-size $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay,
-          min-block-size $link-exit-spatial-duration $link-exit-easing $link-exit-spatial-delay;
+          block-size $content-exit-motion,
+          min-block-size $content-exit-motion;
       }
     }
   }
@@ -672,7 +671,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
   @include styles.one-theme-with-motion {
     transition:
       grid-template-columns 0s,
-      opacity $link-enter-opacity-duration $link-enter-easing $link-enter-opacity-delay;
+      opacity $content-enter-fade-motion;
   }
 
   &--collapsed {
@@ -684,8 +683,8 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     // — holds at 1fr during the fade so text remains full-width + visible while fading.
     @include styles.one-theme-with-motion {
       transition:
-        grid-template-columns 0s $link-exit-opacity-duration,
-        opacity $link-exit-opacity-duration $link-exit-easing;
+        grid-template-columns 0s $content-exit-fade-duration,
+        opacity $content-exit-fade-motion;
     }
   }
 }
@@ -700,7 +699,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
   min-inline-size: 0;
   @include styles.one-theme-with-motion {
     // ENTER: opacity follows spatial — delayed fade-in after height expands.
-    transition: opacity $link-enter-opacity-duration $link-enter-easing $link-enter-opacity-delay;
+    transition: opacity $content-enter-fade-motion;
   }
   &--collapsed {
     opacity: 0;
@@ -708,7 +707,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
     white-space: nowrap;
     @include styles.one-theme-with-motion {
       // EXIT: opacity leads — fast fade-out, no delay.
-      transition: opacity $link-exit-opacity-duration $link-exit-easing;
+      transition: opacity $content-exit-fade-motion;
     }
   }
 }
@@ -725,7 +724,7 @@ $link-reveal-clip-delay: calc(#{$link-exit-spatial-duration} + #{$link-exit-spat
   @include styles.one-theme-with-motion {
     transition:
       color awsui.$motion-duration-responsive awsui.$motion-easing-responsive,
-      margin-inline-end $link-exit-spatial-duration $link-exit-easing;
+      margin-inline-end $content-exit-motion;
   }
   &:not(.item-icon--collapsed) {
     margin-inline-end: $item-icon-text-gap;

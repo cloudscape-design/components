@@ -9,10 +9,12 @@
 @use '../internal/styles/utils/theming';
 
 // Show/hide animation (show = height leads, opacity trails; hide = equal, no delay).
-$reveal-duration-show: awsui.$motion-duration-show-paced;
-$reveal-duration-hide: awsui.$motion-duration-show-quick;
-$reveal-easing: awsui.$motion-easing-show-paced;
-$reveal-show-delay: calc(#{$reveal-duration-show} / 3);
+$reveal-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$reveal-enter-easing: awsui.$motion-easing-expandable-content-enter;
+$reveal-enter-delay: calc(#{$reveal-enter-duration} / 3);
+$reveal-enter-motion: $reveal-enter-duration $reveal-enter-easing;
+$reveal-enter-delayed-motion: $reveal-enter-motion $reveal-enter-delay;
+$reveal-exit-motion: awsui.$motion-duration-show-quick $reveal-enter-easing;
 
 $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
@@ -137,7 +139,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     // HIDE (collapsed): quick collapse, no delay
     @include styles.with-motion {
-      transition: border-block-end-color $reveal-duration-hide $reveal-easing;
+      transition: border-block-end-color $reveal-exit-motion;
     }
 
     &.wrapper-expanded {
@@ -146,7 +148,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
       // SHOW (expanded): border fades in with the same delay as content opacity so both appear together
       @include styles.with-motion {
-        transition: border-block-end-color $reveal-duration-show $reveal-easing $reveal-show-delay;
+        transition: border-block-end-color $reveal-enter-delayed-motion;
       }
     }
   }
@@ -172,7 +174,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     // HIDE (collapsed state): padding settles back to symmetric top/bottom.
     @include styles.with-motion {
-      transition: padding-block-end $reveal-duration-hide $reveal-easing;
+      transition: padding-block-end $reveal-exit-motion;
     }
 
     &:not(.wrapper-expanded) {
@@ -307,7 +309,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     // HIDE (collapsed state): quick collapse, no delay
     @include styles.with-motion {
-      transition: grid-template-rows $reveal-duration-hide $reveal-easing;
+      transition: grid-template-rows $reveal-exit-motion;
     }
 
     &-expanded {
@@ -315,7 +317,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
       // SHOW (expanded state): paced height opening, no delay — height leads.
       @include styles.with-motion {
-        transition: grid-template-rows $reveal-duration-show $reveal-easing;
+        transition: grid-template-rows $reveal-enter-motion;
       }
     }
   }
@@ -334,7 +336,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     // HIDE (collapsed state): quick opacity collapse, no delay.
     @include styles.with-motion {
-      transition: opacity $reveal-duration-hide $reveal-easing;
+      transition: opacity $reveal-exit-motion;
     }
 
     &-expanded {
@@ -343,7 +345,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       // SHOW (expanded state): opacity fades in AFTER height has partially
       // opened, creating a perceptible fade in the revealed space.
       @include styles.with-motion {
-        transition: opacity $reveal-duration-show $reveal-easing $reveal-show-delay;
+        transition: opacity $reveal-enter-delayed-motion;
       }
     }
 
