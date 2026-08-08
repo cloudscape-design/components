@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <circle cx="8" cy="8" r="7" />
+  <path class="pending-hand-static" d="M8 4v4" />
+  <path class="pending-hand" d="M8 8H4" />
+  <path class="pending-hand-axle" d="M8 8h0" />
+</svg>

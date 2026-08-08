@@ -1,0 +1,4 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="download-tray" d="M1 15h14" />
+  <path class="download-arrow" d="M13 6l-5 5-5-5M8 11V1" />
+</svg>

@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="fwd10-zero" d="M13.95 14.01h-.96c-.56 0-1.02-.46-1.02-1.02v-2.96c0-.56.45-1.01 1.01-1.02h.96c.56 0 1.02.45 1.02 1.02v2.96c0 .56-.46 1.02-1.02 1.02h.01Z" />
+  <path class="fwd10-one" d="M9 9v5" stroke-linecap="square" />
+  <path class="fwd10-arrow" d="M15 0v5h-5" />
+  <path class="fwd10-arc" d="M6.024 15A7.154 7.154 0 0 1 1 8.164C1 4.204 4.196 1 8.148 1A7.148 7.148 0 0 1 14.5 4.875" />
+</svg>

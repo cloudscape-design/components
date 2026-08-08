@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use './mixins' as mixins;
+@use './motion' as motion;
 
 .icon {
   position: relative;
@@ -53,6 +54,8 @@
     }
   }
 }
+
+@include motion.icon-hover-motion;
 
 .badge::after {
   content: '';

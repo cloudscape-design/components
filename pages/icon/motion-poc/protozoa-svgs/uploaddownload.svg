@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="uploaddownload-baseline" d="M0 14h8" />
+  <path class="uploaddownload-baseline" d="M8 2h8" />
+  <path class="uploaddownload-down" d="m7 7-3 3-3-3M4 10V1" />
+  <path class="uploaddownload-up" d="M15 9l-3-3-3 3M12 6v9" />
+</svg>

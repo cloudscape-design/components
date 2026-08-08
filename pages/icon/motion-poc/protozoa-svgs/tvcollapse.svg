@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="tvcollapse-frame" d="M14 2H2v12h12V2Z" />
+  <g class="tvcollapse-arm" d="M8 8H11" pathLength="1" />
+  <path class="tvcollapse-arm" d="M8 8H5" pathLength="1" />
+  <path class="tvcollapse-arm" d="M8 8H11" pathLength="1" />
+</svg>

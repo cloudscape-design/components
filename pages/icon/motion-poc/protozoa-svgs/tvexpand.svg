@@ -1,0 +1,8 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="tvexpand-frame" d="M14 2H2v12h12V2Z" />
+  <g class="tvexpand-arm" d="M8 8H11.75" pathLength="1" />
+  <path class="tvexpand-arm" d="M8 8V4.25" pathLength="1" />
+  <path class="tvexpand-arm" d="M8 8V11.75" pathLength="1" />
+  <path class="tvexpand-arm" d="M8 8H4.25" pathLength="1" />
+  <path class="tvexpand-arm" d="M8 8H11.75" pathLength="1" />
+</svg>

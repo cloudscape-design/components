@@ -1,0 +1,501 @@
+[
+  {
+    "icon": "announcement",
+    "svgClass": "announcement-dynamics-icon announcement-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "bug",
+    "svgClass": "bug-dynamics-icon bug-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "bug-body",
+      "bug-leg-mid-r",
+      "bug-leg-mid-l",
+      "bug-leg-top-r",
+      "bug-leg-top-l",
+      "bug-leg-bot-r",
+      "bug-leg-bot-l"
+    ],
+    "shapeCount": 7
+  },
+  {
+    "icon": "bwd10",
+    "svgClass": "bwd10-dynamics-icon bwd10-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "bwd10-zero",
+      "bwd10-one",
+      "bwd10-arrow",
+      "bwd10-arc"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "copy",
+    "svgClass": "copy-dynamics-icon copy-dynamics-xs",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "copy-front",
+      "copy-back",
+      "copy-whisker-h",
+      "copy-whisker-v"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "delete",
+    "svgClass": "delete-dynamics-icon ${e.cls}",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "delete-base",
+      "delete-side",
+      "delete-side",
+      "delete-lid"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "download",
+    "svgClass": "download-dynamics-icon download-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "download-tray",
+      "download-arrow"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "exitfs",
+    "svgClass": "exitfs-dynamics-icon exitfs-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "efs-bl",
+      "efs-br",
+      "efs-tl",
+      "efs-tr"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "expand",
+    "svgClass": "expand-dynamics-icon expand-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "expand-tr",
+      "expand-bl",
+      "expand-br",
+      "expand-tl"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "external",
+    "svgClass": "external-dynamics-icon external-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "external-box",
+      "external-arrow"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "facehappy",
+    "svgClass": "facehappy-dynamics-icon facehappy-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "facehappy-head",
+      "facehappy-eyes",
+      "facehappy-mouth"
+    ],
+    "shapeCount": 3
+  },
+  {
+    "icon": "facehappyfilled",
+    "svgClass": "facehappyfilled-dynamics-icon facehappyfilled-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "faceneutral",
+    "svgClass": "faceneutral-dynamics-icon faceneutral-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "faceneutral-head",
+      "faceneutral-mouth",
+      "faceneutral-eyes",
+      "faceneutral-mouth"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "faceneutralfilled",
+    "svgClass": "faceneutralfilled-dynamics-icon faceneutralfilled-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "facesad",
+    "svgClass": "facesad-dynamics-icon facesad-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "facesad-head",
+      "facesad-mouth",
+      "facesad-eyes",
+      "facesad-mouth"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "facesadfilled",
+    "svgClass": "facesadfilled-dynamics-icon facesadfilled-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "fullscreen",
+    "svgClass": "fullscreen-dynamics-icon fullscreen-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "fs-bl",
+      "fs-br",
+      "fs-tl",
+      "fs-tr"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "fwd10",
+    "svgClass": "fwd10-dynamics-icon fwd10-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "fwd10-zero",
+      "fwd10-one",
+      "fwd10-arrow",
+      "fwd10-arc"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "genai",
+    "svgClass": "edit-genai-dynamics-icon ${e.cls}",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "edit-genai-pencil",
+      "edit-genai-sparkle"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "heart",
+    "svgClass": "heart-dynamics-icon heart-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "heartfilled",
+    "svgClass": "heartfilled-dynamics-icon heartfilled-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "history",
+    "svgClass": "history-dynamics-icon history-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "history-ring",
+      "stroke-linejoin-round",
+      "history-ring",
+      "history-hand-small stroke-linejoin-round",
+      "history-hand-big",
+      "history-hand-axle"
+    ],
+    "shapeCount": 6
+  },
+  {
+    "icon": "inprogress",
+    "svgClass": "inprogress-dynamics-icon inprogress-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "inprogress-dot-1",
+      "inprogress-dot-2",
+      "inprogress-dot-3"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "lock",
+    "svgClass": "lock-dynamics-icon lock-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "lock-body",
+      "lock-shackle",
+      "lock-shackle"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "miniplayer",
+    "svgClass": "miniplayer-dynamics-icon miniplayer-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "miniplayer-frame",
+      "miniplayer-frame",
+      "miniplayer-corner",
+      "miniplayer-screen-h",
+      "miniplayer-screen-v",
+      "miniplayer-screen-v miniplayer-screen-left",
+      "miniplayer-screen-h miniplayer-screen-top"
+    ],
+    "shapeCount": 7
+  },
+  {
+    "icon": "multiscreen",
+    "svgClass": "multiscreen-dynamics-icon multiscreen-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "multiscreen-back",
+      "multiscreen-back-foot",
+      "multiscreen-back-foot",
+      "multiscreen-front",
+      "multiscreen-front"
+    ],
+    "shapeCount": 5
+  },
+  {
+    "icon": "negative",
+    "svgClass": "negative-dynamics-icon negative-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "notification",
+    "svgClass": "notification-dynamics-icon notification-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "notification-bell",
+      "notification-ringer"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "pending",
+    "svgClass": "pending-dynamics-icon pending-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "pending-hand-static",
+      "pending-hand",
+      "pending-hand-axle"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "positive",
+    "svgClass": "positive-dynamics-icon positive-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "positive-check"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "redo",
+    "svgClass": "redo-dynamics-icon redo-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "redo-line stroke-linejoin-round",
+      "redo-arrow stroke-linejoin-round"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "refresh",
+    "svgClass": "refresh-dynamics-icon refresh-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "refresh-arrow",
+      "refresh-arc"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "settings",
+    "svgClass": "settings-dynamics-icon settings-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 2
+  },
+  {
+    "icon": "shrink",
+    "svgClass": "shrink-dynamics-icon shrink-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "shrink-top-right",
+      "shrink-bottom-left"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "thumbsdown",
+    "svgClass": "thumbsdown-dynamics-icon thumbsdown-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "thumbsdownfilled",
+    "svgClass": "thumbsdownfilled-dynamics-icon thumbsdownfilled-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "thumbsup",
+    "svgClass": "thumbsup-dynamics-icon thumbsup-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "thumbsupfilled",
+    "svgClass": "thumbsupfilled-dynamics-icon thumbsupfilled-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [],
+    "shapeCount": 1
+  },
+  {
+    "icon": "tvcollapse",
+    "svgClass": "tvcollapse-dynamics-icon tvcollapse-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "tvcollapse-frame",
+      "tvcollapse-arm",
+      "tvcollapse-arm",
+      "tvcollapse-arm"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "tvexpand",
+    "svgClass": "tvexpand-dynamics-icon tvexpand-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "tvexpand-frame",
+      "tvexpand-arm",
+      "tvexpand-arm",
+      "tvexpand-arm",
+      "tvexpand-arm",
+      "tvexpand-arm"
+    ],
+    "shapeCount": 6
+  },
+  {
+    "icon": "undo",
+    "svgClass": "undo-dynamics-icon undo-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "undo-line stroke-linejoin-round",
+      "undo-arrow stroke-linejoin-round"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "unlocked",
+    "svgClass": "unlocked-dynamics-icon unlocked-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "unlocked-body",
+      "unlocked-shackle",
+      "unlocked-shackle"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "upload",
+    "svgClass": "upload-dynamics-icon upload-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "upload-bar",
+      "upload-arrow"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "uploaddownload",
+    "svgClass": "uploaddownload-dynamics-icon uploaddownload-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "uploaddownload-baseline",
+      "uploaddownload-baseline",
+      "uploaddownload-down",
+      "uploaddownload-up"
+    ],
+    "shapeCount": 4
+  },
+  {
+    "icon": "viewslide",
+    "svgClass": "viewslide-dynamics-icon viewslide-full viewslide-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "vs-pane"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "warning",
+    "svgClass": "warning-dynamics-icon warning-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "warning-triangle",
+      "warning-exclamation"
+    ],
+    "shapeCount": 2
+  },
+  {
+    "icon": "zoomfit",
+    "svgClass": "zoomfit-dynamics-icon zoomfit-dynamics-bg",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "zoomfit-brackets stroke-linejoin-round",
+      "zoomfit-square zoomfit-edge-t",
+      "zoomfit-square zoomfit-edge-r",
+      "zoomfit-square zoomfit-edge-b",
+      "zoomfit-square zoomfit-edge-l"
+    ],
+    "shapeCount": 5
+  },
+  {
+    "icon": "zoomin",
+    "svgClass": "zoomin-dynamics-icon zoomin-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "stroke-linecap-round",
+      "zoomin-arm",
+      "zoomin-arm",
+      "zoomin-arm",
+      "zoomin-arm",
+      "zoomin-arm"
+    ],
+    "shapeCount": 7
+  },
+  {
+    "icon": "zoomout",
+    "svgClass": "zoomout-dynamics-icon zoomout-dynamics-inline",
+    "viewBox": "0 0 16 16",
+    "parts": [
+      "stroke-linecap-round",
+      "zoomout-arm",
+      "zoomout-arm",
+      "zoomout-arm"
+    ],
+    "shapeCount": 5
+  }
+]

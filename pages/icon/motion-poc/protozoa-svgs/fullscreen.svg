@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="fs-bl" d="M6 15H1v-5" />
+  <path class="fs-br" d="M15 10v5h-5" />
+  <path class="fs-tl" d="M1 6V1h5" />
+  <path class="fs-tr" d="M10 1h5v5" />
+</svg>

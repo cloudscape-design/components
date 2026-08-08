@@ -1,0 +1,9 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="bug-body" d="M12 5.71a4 4 0 0 0-8 0v4a4 4 0 1 0 8 0v-4ZM12 6H4" />
+  <path class="bug-leg-mid-r" d="M15 8.71h-3" />
+  <path class="bug-leg-mid-l" d="M4 8.71H1" />
+  <path class="bug-leg-top-r" d="M15 3.63l-3 2.08" />
+  <path class="bug-leg-top-l" d="M1 3.63l3 2.08" />
+  <path class="bug-leg-bot-r" d="M15 13.78l-3-2.07" />
+  <path class="bug-leg-bot-l" d="M1 13.78l3-2.07" />
+</svg>

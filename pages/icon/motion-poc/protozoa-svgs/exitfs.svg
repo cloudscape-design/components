@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="efs-bl" d="M1 10.01h5V15" />
+  <path class="efs-br" d="M10 15v-5h5" />
+  <path class="efs-tl" d="M6 1v5H1" />
+  <path class="efs-tr" d="M15 6h-5V1" />
+</svg>

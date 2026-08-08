@@ -1,0 +1,4 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <circle cx="8" cy="8" r="7" />
+  <path class="positive-check" d="M4.5 7.5 7 10l4-5" />
+</svg>

@@ -1,0 +1,7 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="zoomfit-brackets stroke-linejoin-round" d="M6 1H1v5M10 1h5v5M6 15H1v-5M10 15h5v-5" />
+  <path class="zoomfit-square zoomfit-edge-t" d="M5 5H13" pathLength="1" />
+  <path class="zoomfit-square zoomfit-edge-r" d="M11 5V13" pathLength="1" />
+  <path class="zoomfit-square zoomfit-edge-b" d="M11 11H3" pathLength="1" />
+  <path class="zoomfit-square zoomfit-edge-l" d="M5 11V3" pathLength="1" />
+</svg>

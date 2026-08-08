@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="expand-tr" d="M14 7V2H9M10 6l4-4" />
+  <path class="expand-bl" d="M6.99 14H2V9M6 10l-4 4" />
+  <path class="expand-br" d="M9 14h5V9M10 10l4 4" />
+  <path class="expand-tl" d="M2 6.99V2h5M6 6 2 2" />
+</svg>

@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="bwd10-zero" d="M5.95 14.01h-.96c-.56 0-1.02-.46-1.02-1.02v-2.96c0-.56.45-1.01 1.01-1.02h.96c.56 0 1.02.45 1.02 1.02v2.96c0 .56-.46 1.02-1.02 1.02h.01Z" />
+  <path class="bwd10-one" d="M1 9v5" stroke-linecap="square" />
+  <path class="bwd10-arrow" d="M1 0v5h5" />
+  <path class="bwd10-arc" d="M9.976 15A7.154 7.154 0 0 0 15 8.164C15 4.204 11.804 1 7.852 1A7.148 7.148 0 0 0 1.5 4.875" />
+</svg>

@@ -2,6 +2,10 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use 'sass:map';
+@use 'sass:string';
+@use 'awsui:resolved-tokens' as resolved-tokens;
+
 @mixin dark-mode-only($selector: '') {
   @media not print {
     /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
@@ -14,6 +18,41 @@
 
 @mixin one-theme-only($selector: '') {
   :global(#{$selector}.awsui-one-theme) & {
+    @content;
+  }
+}
+
+/// Whether One Theme is one of the themes composed into the artefact currently being
+/// built. `$resolved-tokens` is the compile-time list of themes for this artefact, so
+/// this resolves at build time and lets a caller emit literally zero bytes for
+/// artefacts that have no One Theme tokens at all. `one-theme-only` above cannot do
+/// that: it compiles to a plain class selector that ships everywhere.
+@function has-one-theme() {
+  @each $theme in resolved-tokens.$resolved-tokens {
+    // Compared by EQUALITY, never with string.index: the visual-refresh secondary
+    // selector is `.awsui-visual-refresh:not(.awsui-one-theme)`, which *contains*
+    // `.awsui-one-theme` and would make a substring test match every artefact.
+    @if string.unquote(map.get($theme, 'selector')) == string.unquote('.awsui-one-theme') {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+/// Emits `@content` scoped to One Theme, and only for artefacts that actually compose
+/// One Theme. Artefacts without it get nothing — not even an unmatched selector.
+@mixin one-theme-artefact-only($selector: '') {
+  @if has-one-theme() {
+    :global(#{$selector}.awsui-one-theme) & {
+      @content;
+    }
+  }
+}
+
+/// Same build-time gate, but without the selector scope, for at-rules that cannot be
+/// nested under a class (notably `@keyframes`).
+@mixin when-one-theme-artefact {
+  @if has-one-theme() {
     @content;
   }
 }

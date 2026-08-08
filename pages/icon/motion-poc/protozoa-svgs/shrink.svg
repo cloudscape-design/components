@@ -1,0 +1,4 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="shrink-top-right" d="M10 1v5h5M10 6 15 1" />
+  <path class="shrink-bottom-left" d="M1 10h5v5M6 10 1 15" />
+</svg>

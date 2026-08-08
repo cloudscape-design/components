@@ -1,0 +1,4 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="redo-line stroke-linejoin-round" d="M15 6H5.5C3.01 6 1 8.01 1 10.5S3.01 15 5.5 15H8" pathLength="1" />
+  <path class="redo-arrow stroke-linejoin-round" d="m11 2 4 4-4 4" />
+</svg>

@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="delete-base" d="M4 15h8" />
+  <path class="delete-side" d="M13 5l-1 10H11" />
+  <path class="delete-side" d="M5 15H4L3 5" />
+  <path class="delete-lid" d="M1 5h14M5 5V2h6v3" />
+</svg>

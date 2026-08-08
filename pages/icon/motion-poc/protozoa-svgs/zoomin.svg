@@ -1,0 +1,9 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <circle cx="7" cy="7" r="6" />
+  <path class="stroke-linecap-round" d="m11 11 4 4" />
+  <g class="zoomin-arm" d="M7 7H10.75" pathLength="1" />
+  <path class="zoomin-arm" d="M7 7V3.25" pathLength="1" />
+  <path class="zoomin-arm" d="M7 7V10.75" pathLength="1" />
+  <path class="zoomin-arm" d="M7 7H3.25" pathLength="1" />
+  <path class="zoomin-arm" d="M7 7H10.75" pathLength="1" />
+</svg>

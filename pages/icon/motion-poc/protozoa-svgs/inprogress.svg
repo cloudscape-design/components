@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <circle cx="8" cy="8" r="7" />
+  <rect class="inprogress-dot-1" x="4" y="7" width="2" height="2" />
+  <rect class="inprogress-dot-2" x="7" y="7" width="2" height="2" />
+  <rect class="inprogress-dot-3" x="10" y="7" width="2" height="2" />
+</svg>

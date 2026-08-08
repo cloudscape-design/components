@@ -1,0 +1,8 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <g class="history-ring" d="M1 8c0 3.87 3.13 7 7 7s7-3.13 7-7-3.13-7-7-7C5.21 1 2.8 2.63 1.67 5" />
+  <path class="stroke-linejoin-round" d="M1 0v5l5-.04" />
+  <path class="history-ring" d="M1 8c0 3.87 3.13 7 7 7s7-3.13 7-7-3.13-7-7-7C5.21 1 2.8 2.63 1.67 5" />
+  <path class="history-hand-small stroke-linejoin-round" d="M9 9H5" />
+  <path class="history-hand-big" d="M9 4V9" />
+  <path class="history-hand-axle" d="M9 9h0" />
+</svg>

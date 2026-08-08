@@ -48,7 +48,12 @@ function getIcon(iconName, content) {
       {
         name: 'addAttributesToSVGElement',
         params: {
-          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }],
+          // `awsui-icon` marks an SVG as coming from this generated set. Motion selectors
+          // require it, so a builder-supplied `svg` (via the `svg` prop or an
+          // IconProvider override) can never pick up built-in icon animations — it
+          // simply lacks the marker, with no runtime check needed. `class` is on the
+          // safe-attribute allow list; `data-*` is not.
+          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }, { class: 'awsui-icon' }],
         },
       },
       {

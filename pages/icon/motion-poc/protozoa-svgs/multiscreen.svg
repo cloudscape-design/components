@@ -1,0 +1,7 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="multiscreen-back" d="M11 1.5V1.01L1.01 1 1 8H2" />
+  <path class="multiscreen-back-foot" d="M11 3V1.5" pathLength="1" />
+  <path class="multiscreen-back-foot" d="M2.998 8H2" pathLength="1" />
+  <path class="multiscreen-front" d="M15 5H5v7h10V5Z" />
+  <path class="multiscreen-front" d="M10 12v3M7 15h6" />
+</svg>

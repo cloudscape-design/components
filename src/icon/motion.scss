@@ -1,0 +1,759 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Hover-only icon micro-interactions, One Theme only, zero JavaScript.
+//
+// OPT-IN HOOK. Everything here is emitted into the Icon CSS module by `styles.scss`.
+// The Icon component already computes `styles[`name-${name}`]` unconditionally, so a
+// `name-<icon>` class merely EXISTING in this module is the whole opt-in mechanism —
+// no TSX change and no public API change.
+//
+// PROVENANCE. `.name-<icon>` alone is not safe to animate on: `InternalIcon` builds
+// its className before it decides what to render, so the class reflects the name that
+// was ASKED FOR, not what was rendered. `<Button iconName="x" iconSvg={…} />` and an
+// `IconProvider` override both keep `.name-x` while rendering a builder's SVG. Every
+// selector below therefore also requires `svg.awsui-icon`, the marker that
+// `build-tools/tasks/generate-icons.js` stamps onto the generated set only.
+//
+// Adding an animated icon is one entry in the motion map, plus — for part-level
+// motion — a `motion-*` class on the relevant path(s) in the icon's SVG source.
+//
+// P0 SCOPE. The maps are split by what they require of the icon SOURCES:
+//
+//   $icon-motion            animates the SVG root only. Works against today's
+//                           unmodified icon sources — nothing to re-cut.
+//   $icon-motion-part-level  needs per-part `motion-*` hooks inside the SVG. Cloudscape's
+//                           generated icons do NOT have them: SVGO merges every
+//                           same-class path into a single `<path>`, so adding hooks
+//                           SPLITS the emitted markup (e.g. `bug` goes from 1 shape to
+//                           8). That is a structural icon change and is out of P0 scope
+//                           until the motion spec lands. These entries are the
+//                           transcribed prototype spec; they are inert against the
+//                           current icon set and are exercised by the dev page using
+//                           dev-pages-only demo assets.
+
+@use 'sass:list';
+@use 'sass:map';
+@use '../internal/styles/motion' as motion;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// Descendant combinators and type selectors are unavoidable: the trigger is an
+// interactive ancestor and the targets are SVG shapes inside the icon.
+// stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-disable @cloudscape-design/no-implicit-descendant
+
+// TIMING. Expressed against the theme's motion duration tokens rather than as literal
+// milliseconds, so timing responds to the theme. Every duration the Cloud Dynamics
+// prototype specified happens to be an exact multiple of the 250ms
+// `motion-duration-refresh-only-slow` token, so the prototype's feel is preserved
+// exactly while staying token-driven. Tokens also carry a `disabled: 0ms` motion mode,
+// so these collapse to 0ms when motion is switched off — a second layer of protection
+// behind the explicit guards in `with-motion` below.
+$_base: awsui.$motion-duration-refresh-only-slow;
+
+$_duration-quick: calc(#{$_base} * 0.6); //  150ms — copy sheet offset
+$_duration-generic: $_base; //              250ms — generic hover floor
+$_duration-arc: calc(#{$_base} * 1.4); //   350ms — refresh arc sweep
+$_duration-draw: calc(#{$_base} * 1.6); //  400ms — check draw, ringer bounce
+$_duration-pulse: calc(#{$_base} * 1.8); // 450ms — heart pulse
+$_duration-nudge: calc(#{$_base} * 2); //   500ms — arrow nudges, spring settles
+$_duration-gait: calc(#{$_base} * 2.4); //  600ms — bug gait
+$_duration-emphasis: calc(#{$_base} * 3.6); // 900ms — warning pulse
+$_duration-ring: calc(#{$_base} * 4); //   1000ms — notification ring
+
+$_ease-out: awsui.$motion-easing-show-quick;
+$_ease-symmetric: awsui.$motion-easing-refresh-only-d;
+$_ease-decelerate: awsui.$motion-easing-responsive;
+// No token expresses an overshoot curve, and the settle motions depend on one, so this
+// stays local until the token set gains an equivalent.
+$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// The eligible component regions. An icon animates only while one of these interactive
+// ancestors is hovered or keyboard-focused: hover / focus-visible parity, no click or
+// press state, and no JS trigger. Hover is deliberately never taken on the SVG itself —
+// `styles.scss` sets `pointer-events: none` on `> svg`, so the SVG never receives it.
+$_regions: ('button', 'a', '[role="button"]');
+
+// Generic hover motion: the default floor for every opted-in icon inside an eligible
+// region. Per-icon entries override it purely through the cascade, because
+// `.icon.name-x` outranks `.icon`.
+$_generic-transform: scale(0.94);
+
+// icon name -> list of motion specs, one per animated part.
+//
+//   part       `null` animates the icon root (`> svg.awsui-icon`); otherwise the
+//              `motion-*` class on the SVG path(s) to animate.
+//   animation  keyframe name — emits an animation on hover.
+//   hover      declarations to settle into on hover — emits a transition on the
+//              resting state instead of an animation.
+//   base       declarations applied to the resting state.
+//   property   transitioned property for `hover` specs (default `transform`).
+//   origin     `transform-origin` for the part.
+//   iterations / fill  optional animation modifiers.
+//
+// Keyframes, easing intent and relative timing are transcribed from the Cloud Dynamics
+// Protozoa prototype (951833bf-7a5a-4e5b-9f28-843b8f70f8a8).
+//
+// P0 SCOPE. The maps are split by what they require of the icon SOURCES. Which side an
+// icon falls on was measured, not guessed: SVGO merges same-class sibling paths, so
+// adding a `motion-*` hook only re-cuts geometry when the moving piece is currently
+// buried inside a merged path. Running the generator both ways showed 9 icons split
+// (e.g. `bug` goes from 1 shape to 8) and 5 unchanged.
+//
+//   $icon-motion             no geometry change. Either a whole-icon transform (needs
+//                            nothing at all), or the moving piece is ALREADY its own
+//                            path so only a `class` attribute is added — verified
+//                            pixel-identical, same shape count. Shippable in P0.
+//   $icon-motion-part-level  the moving piece sits inside a merged path, so the icon
+//                            must be re-cut. Out of P0 scope until the motion spec
+//                            lands. Unlike the CSS, re-cut paths CANNOT be theme-gated:
+//                            the generated icons module is theme-agnostic and copied
+//                            identically into every artefact, so those bytes are paid
+//                            by classic and visual-refresh too, which get no animation.
+//                            Exercised by the dev page with segmented demo assets.
+$icon-motion: (
+  'heart': (
+    (
+      part: null,
+      animation: heart-pulse,
+      duration: $_duration-pulse,
+      easing: $_ease-out,
+    ),
+  ),
+  'settings': (
+    (
+      part: null,
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: rotate(60deg),
+      ),
+    ),
+  ),
+  'undo': (
+    (
+      part: 'motion-arrow',
+      animation: undo-nudge,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'redo': (
+    (
+      part: 'motion-arrow',
+      animation: redo-nudge,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'status-positive': (
+    (
+      part: 'motion-check',
+      animation: positive-draw,
+      duration: $_duration-draw,
+      easing: $_ease-out,
+      fill: forwards,
+      base: (
+        stroke-dasharray: 10,
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'copy': (
+    (
+      part: 'motion-front',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      hover: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'motion-back',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      hover: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+  ),
+  'refresh': (
+    (
+      part: 'motion-arc',
+      duration: $_duration-arc,
+      easing: $_ease-decelerate,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 40.9,
+        stroke-dashoffset: 0,
+      ),
+      hover: (
+        stroke-dashoffset: -22px,
+      ),
+    ),
+  ),
+);
+
+// GEOMETRY RE-CUT REQUIRED — out of P0 scope. Kept as the transcribed prototype spec.
+$icon-motion-part-level: (
+  'notification': (
+    (
+      part: 'motion-bell',
+      animation: bell-rotate,
+      duration: $_duration-ring,
+      easing: $_ease-symmetric,
+      origin: 8px 12px,
+    ),
+    (
+      part: 'motion-ringer',
+      animation: ringer-bounce,
+      duration: $_duration-draw,
+      easing: $_ease-symmetric,
+    ),
+  ),
+  'external': (
+    (
+      part: 'motion-arrow',
+      animation: arrow-nudge,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'upload': (
+    (
+      part: 'motion-arrow',
+      animation: upload-nudge,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'download': (
+    (
+      part: 'motion-arrow',
+      animation: download-nudge,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'shrink': (
+    (
+      part: 'motion-corner-tr',
+      animation: shrink-nudge-tr,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'motion-corner-bl',
+      animation: shrink-nudge-bl,
+      duration: $_duration-nudge,
+      easing: $_ease-out,
+    ),
+  ),
+  'status-warning': (
+    (
+      part: 'motion-exclamation',
+      animation: warning-pulse,
+      duration: $_duration-emphasis,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+    ),
+  ),
+  'bug': (
+    (
+      part: 'motion-leg-tl',
+      animation: bug-gait-a,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 4px 5.71px,
+    ),
+    (
+      part: 'motion-leg-mr',
+      animation: bug-gait-a,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 12px 8.71px,
+    ),
+    (
+      part: 'motion-leg-bl',
+      animation: bug-gait-a,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 4px 11.71px,
+    ),
+    (
+      part: 'motion-leg-tr',
+      animation: bug-gait-b,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 12px 5.71px,
+    ),
+    (
+      part: 'motion-leg-ml',
+      animation: bug-gait-b,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 4px 8.71px,
+    ),
+    (
+      part: 'motion-leg-br',
+      animation: bug-gait-b,
+      duration: $_duration-gait,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      origin: 12px 11.71px,
+    ),
+  ),
+  'unlocked': (
+    (
+      part: 'motion-shackle',
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: translateY(6.25%),
+      ),
+    ),
+  ),
+  'expand': (
+    (
+      part: 'motion-corner-tr',
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: translate(5%, -5%),
+      ),
+    ),
+    (
+      part: 'motion-corner-bl',
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: translate(-5%, 5%),
+      ),
+    ),
+    (
+      part: 'motion-corner-br',
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: translate(5%, 5%),
+      ),
+    ),
+    (
+      part: 'motion-corner-tl',
+      duration: $_duration-nudge,
+      easing: $_ease-spring,
+      hover: (
+        transform: translate(-5%, -5%),
+      ),
+    ),
+  ),
+);
+
+@mixin _declarations($declarations) {
+  @each $property, $value in $declarations {
+    #{$property}: #{$value};
+  }
+}
+
+// Combines the build-time One Theme gate with the platform reduced-motion guards.
+//
+// `motion.with-motion` is reused for the standard guards, nested INSIDE the theme scope
+// so its `prefers-reduced-motion` block inherits `.awsui-one-theme` and can actually
+// out-rank the animated rule. Nested the other way round it lacks that class and
+// silently loses on specificity.
+//
+// Its `.awsui-motion-disabled &` descendant guard cannot work here: `awsui-one-theme`
+// and `awsui-motion-disabled` are both applied to the SAME element (`document.body`),
+// so the mode class must be COMPOUNDED with the theme class, not treated as an
+// ancestor. `one-theme-artefact-only($selector)` yields
+// `.awsui-motion-disabled.awsui-one-theme`, one class more specific than the animated
+// rule.
+//
+// `$reset` restores the resting value in every motion-off context: `transition: none`
+// alone would leave a settle target snapping instantly into place.
+//
+// Named `with-motion` so the `no-motion-outside-of-mixin` stylelint rule recognises
+// callers of this mixin.
+@mixin with-motion($reset: ()) {
+  @include theming.one-theme-artefact-only {
+    @include motion.with-motion {
+      @content;
+    }
+  }
+
+  @if list.length($reset) > 0 {
+    @include theming.one-theme-artefact-only {
+      @media (prefers-reduced-motion: reduce) {
+        @include _declarations($reset);
+      }
+    }
+  }
+
+  // stylelint-disable @cloudscape-design/no-motion-outside-of-mixin
+  @each $mode in ('.awsui-motion-disabled', '.awsui-mode-entering') {
+    @include theming.one-theme-artefact-only($mode) {
+      animation: none;
+      transition: none;
+      @include _declarations($reset);
+    }
+  }
+  // stylelint-enable @cloudscape-design/no-motion-outside-of-mixin
+}
+
+// Builds the comma-separated hover/focus selector list for every eligible region.
+@mixin _on-region-hover($suffix) {
+  $selectors: ();
+  @each $region in $_regions {
+    $selectors: list.append($selectors, '#{$region}:hover #{$suffix}', comma);
+    $selectors: list.append($selectors, '#{$region}:focus-visible #{$suffix}', comma);
+  }
+  #{$selectors} {
+    @content;
+  }
+}
+
+// Target for a spec. Always requires `svg.awsui-icon`, so only the generated icon set
+// can match — a builder-supplied SVG has no such marker.
+@function _target($part) {
+  @if not $part {
+    @return '> :global(svg.awsui-icon)';
+  }
+  @return '> :global(svg.awsui-icon .#{$part})';
+}
+
+// Resting value to restore when motion is off, so a settle target cannot snap.
+@function _reset-for($property, $base) {
+  @if $property == transform {
+    @return (transform: none);
+  }
+  @if $base and map.has-key($base, $property) {
+    @return ($property: map.get($base, $property));
+  }
+  @return ();
+}
+
+@mixin generic-motion {
+  .icon > :global(svg.awsui-icon) {
+    @include with-motion {
+      transition-property: transform;
+      transition-duration: $_duration-generic;
+      transition-timing-function: $_ease-decelerate;
+    }
+  }
+
+  @include _on-region-hover('.icon > :global(svg.awsui-icon)') {
+    @include with-motion(
+      (
+        transform: none,
+      )
+    ) {
+      transform: $_generic-transform;
+    }
+  }
+}
+
+@mixin per-icon-motion {
+  // Both maps run through the same engine; they are separate only to make the P0
+  // boundary explicit in the source.
+  @each $name, $specs in map.merge($icon-motion, $icon-motion-part-level) {
+    @each $spec in $specs {
+      $part: map.get($spec, part);
+      $target: _target($part);
+      $base: map.get($spec, base);
+      $origin: map.get($spec, origin);
+      $hover: map.get($spec, hover);
+      $animation: map.get($spec, animation);
+      $duration: map.get($spec, duration);
+      $easing: map.get($spec, easing);
+
+      $property: map.get($spec, property);
+      @if not $property {
+        $property: transform;
+      }
+      $iterations: map.get($spec, iterations);
+      @if not $iterations {
+        $iterations: 1;
+      }
+      $fill: map.get($spec, fill);
+      @if not $fill {
+        $fill: none;
+      }
+
+      .icon.name-#{$name} #{$target} {
+        // Resting-state setup is theme-scoped too: `stroke-dasharray` changes how the
+        // shape paints even with no motion running, so leaking it would give
+        // classic / visual-refresh a visual diff.
+        @if $base or $origin {
+          @include theming.one-theme-artefact-only {
+            @if $base {
+              @include _declarations($base);
+            }
+            @if $origin {
+              transform-origin: $origin;
+            }
+          }
+        }
+        @if $hover {
+          @include with-motion {
+            transition-property: #{$property};
+            transition-duration: $duration;
+            transition-timing-function: $easing;
+          }
+        }
+      }
+
+      // Per-icon motion replaces the generic floor instead of compounding with it.
+      // For part-level motion this is conditional on the hook actually being present:
+      // the current icon sources have no `motion-*` hooks, and an unconditional reset
+      // would strip the generic floor from those icons while giving them nothing back.
+      @if $part {
+        @include _on-region-hover('.icon.name-#{$name} > :global(svg.awsui-icon:has(.#{$part}))') {
+          @include with-motion {
+            transform: none;
+          }
+        }
+      } @else if $animation {
+        @include _on-region-hover('.icon.name-#{$name} > :global(svg.awsui-icon)') {
+          @include with-motion {
+            transform: none;
+          }
+        }
+      }
+
+      @include _on-region-hover('.icon.name-#{$name} #{$target}') {
+        @if $animation {
+          // Longhand rather than the `animation` shorthand: durations are `calc()`
+          // token expressions, and a shorthand `none` fill-mode is ambiguous with
+          // `animation-name: none`.
+          @include with-motion {
+            animation-name: $animation;
+            animation-duration: $duration;
+            animation-timing-function: $easing;
+            animation-iteration-count: $iterations;
+            animation-fill-mode: $fill;
+          }
+        }
+        @if $hover {
+          @include with-motion(_reset-for($property, $base)) {
+            @include _declarations($hover);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Keyframes cannot be nested under a class, so they are gated on the artefact instead:
+// an artefact without One Theme emits none of them at all.
+@mixin keyframes {
+  @include theming.when-one-theme-artefact {
+    @keyframes bell-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      20% {
+        transform: rotate(8deg);
+      }
+      40% {
+        transform: rotate(-6deg);
+      }
+      60% {
+        transform: rotate(4deg);
+      }
+      80% {
+        transform: rotate(-2deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    @keyframes ringer-bounce {
+      0% {
+        transform: translate(0);
+      }
+      20% {
+        transform: translate(5%);
+      }
+      40% {
+        transform: translate(-5%);
+      }
+      60% {
+        transform: translate(2.5%);
+      }
+      80% {
+        transform: translate(-1.5%);
+      }
+      100% {
+        transform: translate(0);
+      }
+    }
+
+    @keyframes arrow-nudge {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0);
+      }
+      20%,
+      60% {
+        transform: translate(5%, -5%);
+      }
+    }
+
+    @keyframes upload-nudge {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes download-nudge {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes undo-nudge {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0);
+      }
+      20%,
+      60% {
+        transform: translate(14%);
+      }
+    }
+
+    @keyframes redo-nudge {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0);
+      }
+      20%,
+      60% {
+        transform: translate(-14%);
+      }
+    }
+
+    @keyframes shrink-nudge-tr {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0);
+      }
+      20%,
+      60% {
+        transform: translate(-5%, 5%);
+      }
+    }
+
+    @keyframes shrink-nudge-bl {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0);
+      }
+      20%,
+      60% {
+        transform: translate(5%, -5%);
+      }
+    }
+
+    @keyframes bug-gait-a {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-8deg);
+      }
+    }
+
+    @keyframes bug-gait-b {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(8deg);
+      }
+    }
+
+    @keyframes warning-pulse {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.55;
+        transform: scale(0.94);
+      }
+    }
+
+    @keyframes positive-draw {
+      0% {
+        stroke-dashoffset: 10px;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes heart-pulse {
+      0% {
+        transform: scale(1);
+      }
+      22% {
+        transform: scale(0.85);
+      }
+      44% {
+        transform: scale(1);
+      }
+      67% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+@mixin icon-hover-motion {
+  @include keyframes;
+  @include generic-motion;
+  @include per-icon-motion;
+}
+
+// stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-enable @cloudscape-design/no-implicit-descendant

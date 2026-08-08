@@ -1,0 +1,9 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="miniplayer-frame" d="M2 2v12h3" pathLength="1" />
+  <path class="miniplayer-frame" d="M2 2h12v5" pathLength="1" />
+  <path class="miniplayer-corner" d="M2 2h0" />
+  <path class="miniplayer-screen-h" d="M14 14.01H6" pathLength="1" />
+  <path class="miniplayer-screen-v" d="M14 14.01V8" pathLength="1" />
+  <path class="miniplayer-screen-v miniplayer-screen-left" d="M8 14.01V8" pathLength="1" />
+  <path class="miniplayer-screen-h miniplayer-screen-top" d="M14 10.01H6" pathLength="1" />
+</svg>

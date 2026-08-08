@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <path class="copy-front" d="M15 5H5v10h10V5Z" />
+  <path class="copy-back" d="M13 1H1v11" />
+  <path class="copy-whisker-h" d="" />
+  <path class="copy-whisker-v" d="" />
+</svg>

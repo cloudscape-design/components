@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linejoin="round">
+  <circle class="faceneutral-head" cx="8" cy="8" r="7" />
+  <g class="faceneutral-mouth" d="M5 10h6" />
+  <path class="faceneutral-eyes" d="M6 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM10.01 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+  <path class="faceneutral-mouth" d="M5 10h6" />
+</svg>
