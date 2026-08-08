@@ -12,6 +12,11 @@ export interface SortableAreaProps<Item> {
   onItemsChange?: NonCancelableEventHandler<SortableAreaProps.ItemsChangeDetail<Item>>;
   i18nStrings?: SortableAreaProps.DndAreaI18nStrings;
   disableReorder?: boolean;
+  /**
+   * Number of leading items that are locked and cannot be reordered.
+   * Their drag handles are disabled and other items cannot be dropped above them.
+   */
+  lockedItemsCount?: number;
 }
 
 export namespace SortableAreaProps {
