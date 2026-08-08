@@ -7,14 +7,13 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/motion.js';
 
 const tokens: StyleDictionary.MotionDictionary = {
-  motionDurationFast: { default: '110ms', disabled: '0ms' },
-  motionDurationModerate: { default: '150ms', disabled: '0ms' },
-  motionDurationSlow: { default: '200ms', disabled: '0ms' },
+  motionDurationExpandableContentEnter: { default: '300ms', disabled: '0ms' },
+  motionEasingExpandableContentEnter: 'cubic-bezier(0, 0, 0.2, 1)',
 
-  motionDurationShowQuick: { default: '135ms', disabled: '0ms' },
-  motionDurationShowPaced: { default: '300ms', disabled: '0ms' },
-  motionEasingShowPaced: 'cubic-bezier(0, 0, 0.2, 1)',
-  motionEasingShowQuick: 'cubic-bezier(0.4, 0, 1, 1)',
+  motionDurationSideNavigationContentEnterFade: { default: '150ms', disabled: '0ms' },
+  motionDurationSideNavigationContentExit: { default: '200ms', disabled: '0ms' },
+  motionDurationSideNavigationContentExitFade: '{motionDurationFast}',
+  motionEasingSideNavigationContentExit: 'cubic-bezier(0.4, 0, 1, 1)',
 };
 
 const mergedTokens = merge({}, parentTokens, expandMotionDictionary(tokens));
