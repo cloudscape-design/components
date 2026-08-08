@@ -104,6 +104,13 @@ export interface TabsProps extends BaseComponentProps {
   keyboardActivationMode?: 'automatic' | 'manual';
 
   /**
+   * Controls how the tab bar behaves when tabs overflow the available width.
+   * - `'scroll'` (default): Scroll buttons appear on each side of the tab bar to allow scrolling through tabs.
+   * - `'dropdown'`: A "More" dropdown button appears at the end of the tab bar listing all tabs that do not fit.
+   */
+  overflowBehavior?: TabsProps.OverflowBehavior;
+
+  /**
    * An object containing CSS properties to customize the tabs' visual appearance.
    * Refer to the [style](/components/tabs/?tabId=style) tab for more details.
    * @awsuiSystem core
@@ -112,6 +119,8 @@ export interface TabsProps extends BaseComponentProps {
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
+
+  export type OverflowBehavior = 'scroll' | 'dropdown';
 
   export interface Tab {
     /**
@@ -199,6 +208,11 @@ export namespace TabsProps {
      * with role="application" to provide further information on the purpose of this component
      */
     tabsWithActionsAriaRoleDescription?: string;
+    /**
+     * Label for the overflow dropdown button shown when `overflowBehavior="dropdown"` and some tabs do not fit.
+     * Defaults to "More".
+     */
+    overflowMenuAriaLabel?: string;
   }
 
   export interface Style {

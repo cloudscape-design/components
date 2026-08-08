@@ -3,6 +3,7 @@
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
+import ButtonDropdownWrapper from '../button-dropdown';
 
 import styles from '../../../tabs/styles.selectors.js';
 import testUtilStyles from '../../../tabs/test-classes/styles.selectors.js';
@@ -127,5 +128,13 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
 
   findActions(): ElementWrapper | null {
     return this.find(`.${styles['actions-container']}`);
+  }
+
+  /**
+   * Finds the overflow dropdown button shown when `overflowBehavior="dropdown"` and some tabs are hidden.
+   * Returns null when there are no overflowing tabs or when `overflowBehavior` is not `"dropdown"`.
+   */
+  findOverflowDropdown(): ButtonDropdownWrapper | null {
+    return this.findComponent(`.${testUtilStyles['tabs-overflow-dropdown']}`, ButtonDropdownWrapper);
   }
 }
