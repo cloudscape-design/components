@@ -287,14 +287,39 @@ describe('Table skeleton loading', () => {
         );
       });
 
-      test('renderCell does not change the automatic row count', () => {
+      test('fits fewer automatic rows when renderCell produces taller rows', () => {
+        // Auto-sizing measures the real rendered skeleton-row height, so a taller custom
+        // placeholder must fit fewer rows than the default single-line case (which fits 3,
+        // per "fills the viewport automatically"). Report custom rows as 80px vs the default 40px.
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+          if (this === document.body) {
+            return { top: 0, bottom: 400, height: 400 } as DOMRect;
+          }
+          if (this.matches('tr[aria-hidden="true"]')) {
+            return this.querySelector('[data-testid="tall-skeleton"]')
+              ? ({ top: 200, bottom: 280, height: 80 } as DOMRect)
+              : ({ top: 200, bottom: 240, height: 40 } as DOMRect);
+          }
+          if (this.querySelector('tbody')) {
+            return { top: 0, bottom: 300, height: 300 } as DOMRect;
+          }
+          return { top: 0, bottom: 0, height: 0 } as DOMRect;
+        });
+
         const wrapper = renderTable({
           items: [],
           loading: true,
-          skeleton: { totalRows: 'auto', renderCell: () => <span data-testid="custom-skeleton" /> },
+          skeleton: {
+            totalRows: 'auto',
+            renderCell: () => (
+              <>
+                <span data-testid="tall-skeleton" />
+                <span data-testid="tall-skeleton" />
+              </>
+            ),
+          },
         });
-        // Same viewport mock as the plain-auto "fills the viewport automatically" case -> 3 rows.
-        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(3);
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
       });
 
       test('falls back to the default skeleton per column in automatic rows', () => {
