@@ -359,7 +359,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorIconActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorIconActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
-  colorBackgroundSkeleton: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
+  colorBackgroundSkeleton: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBackgroundSkeletonWave: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
   colorBackgroundBadgeGreen: '{colorBackgroundNotificationGreen}',
   colorBackgroundBadgeBlue: '{colorBackgroundNotificationBlue}',
