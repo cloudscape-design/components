@@ -4,14 +4,8 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 /**
- * Interactive controls and embedded content inside flash messages and alerts follow
- * the notification text treatment. Values are references only: the referenced base
- * tokens resolve per mode and are pinned dark by the surface contexts (header, top
- * navigation), so no combined contexts are needed.
- *
- * Embedded content (text, links, dividers) has to be redirected here rather than in
- * the alert and flashbar stylesheets, because it is rendered by other components
- * which read the shared tokens directly.
+ * Token overrides for interactive content paced within Notifications such as
+ * Buttons, Tables, etc.
  */
 const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBodyDefault: '{colorTextNotificationDefault}',
