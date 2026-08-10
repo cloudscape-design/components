@@ -219,17 +219,13 @@ export namespace BoxProps {
       | 'green'
       | 'orange'
       | 'purple'
-      | 'mint'
       | 'lime'
       | 'grey'
       | 'teal'
-      | 'cyan'
       | 'blue'
       | 'violet'
-      | 'fuchsia'
       | 'magenta'
       | 'pink'
-      | 'rose'
       | 'amber';
     export type AspectRatio = 'auto' | 'equal';
     export type BorderRadius = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | 'full';

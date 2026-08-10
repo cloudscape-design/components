@@ -1,0 +1,403 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import * as React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+
+import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import Table from '../../../lib/components/table';
+import { TableProps } from '../../../lib/components/table/interfaces';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/table/header-cell/styles.css.js';
+
+interface Item {
+  a: string;
+  b: string;
+  c: string;
+}
+
+const comparatorC = (a: Item, b: Item) => a.c.localeCompare(b.c);
+
+const defaultColumnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+  { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
+  { id: 'b', header: 'B', cell: i => i.b, sortingField: 'b' },
+  { id: 'c', header: 'C', cell: i => i.c, sortingComparator: comparatorC },
+];
+
+const items: Item[] = [{ a: '1', b: '2', c: '3' }];
+
+// 1-based column indices
+const COL_A = 1;
+const COL_B = 2;
+const COL_C = 3;
+
+type Sort = ReadonlyArray<TableProps.SortingState<Item>>;
+
+function renderTable(
+  sortingColumns: Sort,
+  onChange = jest.fn(),
+  columnDefinitions?: TableProps.ColumnDefinition<Item>[],
+  ariaLabels?: TableProps.AriaLabels<Item>,
+  options?: { enableKeyboardNavigation?: boolean }
+) {
+  const { container } = render(
+    <Table
+      items={items}
+      columnDefinitions={columnDefinitions ?? defaultColumnDefinitions}
+      multiColumnSort={{ sortingColumns, onChange }}
+      ariaLabels={ariaLabels}
+      enableKeyboardNavigation={options?.enableKeyboardNavigation}
+    />
+  );
+  return { wrapper: createWrapper(container).findTable()!, onChange };
+}
+
+// Extracts the emitted sort state as a comparable [{ field, desc }] array.
+function emitted(onChange: jest.Mock) {
+  const detail = onChange.mock.calls[onChange.mock.calls.length - 1][0]
+    .detail as TableProps.MultiColumnSortChangeDetail<Item>;
+  return detail.sortingColumns.map(s => ({ field: s.sortingColumn.sortingField, desc: !!s.isDescending }));
+}
+
+function clickHeader(wrapper: TableWrapper, colIndex: number, shiftKey = false) {
+  fireEvent.click(wrapper.findColumnSortingArea(colIndex)!.getElement(), { shiftKey });
+}
+
+function getHeaderCell(wrapper: TableWrapper, colIndex: number) {
+  return wrapper.findColumnHeaders()[colIndex - 1]!.getElement();
+}
+
+describe('header click / keyboard', () => {
+  test('plain click on an unsorted column replaces the sort (ascending)', () => {
+    const { wrapper, onChange } = renderTable([]);
+    clickHeader(wrapper, COL_A);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('plain click on a column already in the sort toggles its direction', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    clickHeader(wrapper, COL_A);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+  });
+
+  test('Shift+click appends a new column to the sort', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    clickHeader(wrapper, COL_B, true);
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('Enter triggers the same behavior as a click', () => {
+    const { wrapper, onChange } = renderTable([]);
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_A)!.getElement(), { keyCode: KeyCode.enter });
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('Shift+Enter appends like Shift+click', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('with keyboard navigation enabled, Enter and Shift+Enter still emit the correct sort detail', () => {
+    const { wrapper, onChange } = renderTable(
+      [{ sortingColumn: { sortingField: 'a' }, isDescending: false }],
+      jest.fn(),
+      undefined,
+      undefined,
+      { enableKeyboardNavigation: true }
+    );
+    // Enter toggles the already-sorted column in place.
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_A)!.getElement(), { keyCode: KeyCode.enter });
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+    // Shift+Enter appends a second column to the sort.
+    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('Space triggers the same behavior as a click', () => {
+    const { wrapper, onChange } = renderTable([]);
+    wrapper.findColumnSortingArea(COL_A)!.keypress(KeyCode.space);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('Shift+Space appends like Shift+click', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    wrapper.findColumnSortingArea(COL_B)!.keypress({
+      keyCode: KeyCode.space,
+      charCode: KeyCode.space,
+      shiftKey: true,
+    });
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('Shift+click on a column already in the sort toggles it in place (does not duplicate)', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    clickHeader(wrapper, COL_A, true);
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+  });
+
+  test('Shift+mousedown prevents default to avoid extending the text selection', () => {
+    const { wrapper } = renderTable([]);
+    // fireEvent returns false when the event's default action was prevented.
+    const notPreventedWithShift = fireEvent.mouseDown(wrapper.findColumnSortingArea(COL_A)!.getElement(), {
+      shiftKey: true,
+    });
+    expect(notPreventedWithShift).toBe(false);
+    // A plain mousedown must not prevent default.
+    const notPreventedPlain = fireEvent.mouseDown(wrapper.findColumnSortingArea(COL_A)!.getElement());
+    expect(notPreventedPlain).toBe(true);
+  });
+});
+
+describe('sort menu dropdown actions', () => {
+  function openAndClick(
+    wrapper: TableWrapper,
+    colIndex: number,
+    click: (menu: ReturnType<TableWrapper['findColumnSortMenu']>) => void
+  ) {
+    const menu = wrapper.findColumnSortMenu(colIndex)!;
+    menu.openDropdown();
+    click(menu);
+  }
+
+  test('"Add to sort (descending)" appends the column descending', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    openAndClick(wrapper, COL_B, menu => menu!.findAddToSortDescendingItem()!.click());
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: true },
+    ]);
+  });
+
+  test('"Remove from sort" removes the column and keeps the rest', () => {
+    const { wrapper, onChange } = renderTable([
+      { sortingColumn: { sortingField: 'a' }, isDescending: false },
+      { sortingColumn: { sortingField: 'b' }, isDescending: true },
+    ]);
+    openAndClick(wrapper, COL_A, menu => menu!.findRemoveFromSortItem()!.click());
+    expect(emitted(onChange)).toEqual([{ field: 'b', desc: true }]);
+  });
+
+  test('"Sort descending" on a column not in the sort replaces the whole sort', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: false }]);
+    openAndClick(wrapper, COL_A, menu => menu!.findSortDescendingItem()!.click());
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
+  });
+
+  test('"Sort ascending" on a column not in the sort replaces the whole sort', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: true }]);
+    openAndClick(wrapper, COL_A, menu => menu!.findSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  });
+
+  test('"Sort ascending" on a column already in the sort sets its direction and keeps the others', () => {
+    const { wrapper, onChange } = renderTable([
+      { sortingColumn: { sortingField: 'a' }, isDescending: true },
+      { sortingColumn: { sortingField: 'b' }, isDescending: true },
+    ]);
+    openAndClick(wrapper, COL_A, menu => menu!.findSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: true },
+    ]);
+  });
+
+  test('"Add to sort (ascending)" appends the column ascending', () => {
+    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    openAndClick(wrapper, COL_B, menu => menu!.findAddToSortAscendingItem()!.click());
+    expect(emitted(onChange)).toEqual([
+      { field: 'a', desc: false },
+      { field: 'b', desc: false },
+    ]);
+  });
+
+  test('"Add to sort (ascending)" appends a comparator-based column', () => {
+    const initialSort = [{ sortingColumn: { sortingField: 'a' }, isDescending: false }];
+    const { wrapper, onChange } = renderTable(initialSort);
+    openAndClick(wrapper, COL_C, menu => menu!.findAddToSortAscendingItem()!.click());
+    expect(onChange.mock.calls[0][0].detail.sortingColumns).toEqual([
+      ...initialSort,
+      { sortingColumn: defaultColumnDefinitions[2], isDescending: false },
+    ]);
+  });
+});
+
+describe('aria-sort', () => {
+  test('declares aria-sort only on the primary sorted column; secondaries are suppressed; unsorted are "none"', () => {
+    const { wrapper } = renderTable([
+      { sortingColumn: { sortingField: 'a' }, isDescending: false },
+      { sortingColumn: { sortingField: 'b' }, isDescending: true },
+    ]);
+    expect(getHeaderCell(wrapper, COL_A).getAttribute('aria-sort')).toBe('ascending');
+    // ARIA permits only one sorted column, so secondary sorted columns omit aria-sort entirely.
+    expect(getHeaderCell(wrapper, COL_B).getAttribute('aria-sort')).toBeNull();
+    expect(getHeaderCell(wrapper, COL_C).getAttribute('aria-sort')).toBe('none');
+  });
+});
+
+describe('screen reader sort priority', () => {
+  test('announces direction and priority for secondary sorted columns', () => {
+    const { wrapper } = renderTable(
+      [
+        { sortingColumn: { sortingField: 'a' }, isDescending: false },
+        { sortingColumn: { sortingField: 'b' }, isDescending: true },
+      ],
+      jest.fn(),
+      undefined,
+      {
+        sortAscending: 'ascending',
+        sortDescending: 'descending',
+        sortPriority: ({ priority }) => `sort priority ${priority}`,
+      }
+    );
+
+    expect(getHeaderCell(wrapper, COL_A)).toHaveTextContent('sort priority 1');
+    expect(getHeaderCell(wrapper, COL_B)).toHaveTextContent('descending sort priority 2');
+  });
+});
+
+describe('column ariaLabel sortIndex', () => {
+  test('receives the 1-based priority for sorted columns and undefined for unsorted', () => {
+    const labelColumns: TableProps.ColumnDefinition<Item>[] = [
+      { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a', ariaLabel: ({ sortIndex }) => `A idx=${sortIndex}` },
+      { id: 'b', header: 'B', cell: i => i.b, sortingField: 'b', ariaLabel: ({ sortIndex }) => `B idx=${sortIndex}` },
+      { id: 'c', header: 'C', cell: i => i.c, sortingField: 'c', ariaLabel: ({ sortIndex }) => `C idx=${sortIndex}` },
+    ];
+    const { wrapper } = renderTable(
+      [
+        { sortingColumn: { sortingField: 'a' }, isDescending: false },
+        { sortingColumn: { sortingField: 'b' }, isDescending: true },
+      ],
+      jest.fn(),
+      labelColumns
+    );
+    expect(wrapper.findColumnSortingArea(COL_A)!.getElement().getAttribute('aria-label')).toBe('A idx=1');
+    expect(wrapper.findColumnSortingArea(COL_B)!.getElement().getAttribute('aria-label')).toBe('B idx=2');
+    expect(wrapper.findColumnSortingArea(COL_C)!.getElement().getAttribute('aria-label')).toBe('C idx=undefined');
+  });
+});
+
+describe('sort menu gating', () => {
+  const hasWithMenuWrapper = (wrapper: TableWrapper, colIndex: number) =>
+    !!getHeaderCell(wrapper, colIndex).querySelector(`.${styles['header-cell-main-with-menu']}`);
+
+  test('non-sortable columns do not render a sort menu', () => {
+    const mixed: TableProps.ColumnDefinition<Item>[] = [
+      { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
+      { id: 'b', header: 'B', cell: i => i.b }, // no sortingField -> not sortable
+    ];
+    const { wrapper } = renderTable([], jest.fn(), mixed);
+    expect(wrapper.findColumnSortMenu(COL_A)).not.toBeNull();
+    expect(wrapper.findColumnSortMenu(COL_B)).toBeNull();
+  });
+
+  test('the with-menu flex wrapper is applied only to columns that actually render a menu', () => {
+    const mixed: TableProps.ColumnDefinition<Item>[] = [
+      { id: 'a', header: 'A', cell: i => i.a, sortingField: 'a' },
+      { id: 'b', header: 'B', cell: i => i.b }, // no sortingField -> not sortable, no menu
+    ];
+    const { wrapper } = renderTable([], jest.fn(), mixed);
+    expect(hasWithMenuWrapper(wrapper, COL_A)).toBe(true);
+    expect(hasWithMenuWrapper(wrapper, COL_B)).toBe(false);
+  });
+
+  test('sortingDisabled removes the menu and the with-menu flex wrapper from all columns', () => {
+    const { container } = render(
+      <Table
+        items={items}
+        columnDefinitions={defaultColumnDefinitions}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+        sortingDisabled={true}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    expect(wrapper.findColumnSortMenu(COL_A)).toBeNull();
+    expect(hasWithMenuWrapper(wrapper, COL_A)).toBe(false);
+  });
+});
+
+describe('sort menu item states', () => {
+  function openMenu(wrapper: TableWrapper, colIndex: number) {
+    const menu = wrapper.findColumnSortMenu(colIndex)!;
+    menu.openDropdown();
+    return menu;
+  }
+
+  const ariaChecked = (item: ElementWrapper) =>
+    item.find('[role="menuitemcheckbox"]')!.getElement().getAttribute('aria-checked');
+
+  test('marks the current direction as checked for a column sorted ascending', () => {
+    const { wrapper } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    const menu = openMenu(wrapper, COL_A);
+    expect(ariaChecked(menu.findSortAscendingItem()!)).toBe('true');
+    expect(ariaChecked(menu.findSortDescendingItem()!)).toBe('false');
+  });
+
+  test('marks descending as checked for a column sorted descending', () => {
+    const { wrapper } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: true }]);
+    const menu = openMenu(wrapper, COL_A);
+    expect(ariaChecked(menu.findSortDescendingItem()!)).toBe('true');
+    expect(ariaChecked(menu.findSortAscendingItem()!)).toBe('false');
+  });
+
+  test('leaves both direction items unchecked for a column that is not sorted', () => {
+    const { wrapper } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: false }]);
+    const menu = openMenu(wrapper, COL_A);
+    expect(ariaChecked(menu.findSortAscendingItem()!)).toBe('false');
+    expect(ariaChecked(menu.findSortDescendingItem()!)).toBe('false');
+  });
+
+  test('disables the "Add to sort" items (and enables "Remove from sort") when the column is in the sort', () => {
+    const { wrapper } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
+    const menu = openMenu(wrapper, COL_A);
+    expect(menu.findAddToSortAscendingItem({ disabled: true })).not.toBeNull();
+    expect(menu.findAddToSortDescendingItem({ disabled: true })).not.toBeNull();
+    expect(menu.findRemoveFromSortItem({ disabled: true })).toBeNull();
+  });
+
+  test('disables "Remove from sort" (and enables "Add to sort") when the column is not in the sort', () => {
+    const { wrapper } = renderTable([{ sortingColumn: { sortingField: 'b' }, isDescending: false }]);
+    const menu = openMenu(wrapper, COL_A);
+    expect(menu.findRemoveFromSortItem({ disabled: true })).not.toBeNull();
+    expect(menu.findAddToSortAscendingItem({ disabled: true })).toBeNull();
+  });
+});
+
+describe('sort menu accessibility', () => {
+  test('sort menu trigger is described by its own column header', () => {
+    const { container } = render(
+      <Table
+        items={items}
+        columnDefinitions={defaultColumnDefinitions}
+        multiColumnSort={{ sortingColumns: [], onChange: () => {} }}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+
+    const triggerA = wrapper.findColumnSortMenu(COL_A)!.getElement().querySelector('button')!;
+    const describedById = triggerA.getAttribute('aria-describedby');
+    expect(describedById).toBeTruthy();
+
+    const describedEl = container.querySelector(`#${CSS.escape(describedById!)}`);
+    expect(getHeaderCell(wrapper, COL_A).contains(describedEl)).toBe(true);
+    expect(describedEl?.textContent).toContain('A');
+
+    // Each column's trigger is described by a different header, so the triggers are not ambiguous.
+    const triggerB = wrapper.findColumnSortMenu(COL_B)!.getElement().querySelector('button')!;
+    expect(triggerB.getAttribute('aria-describedby')).not.toBe(describedById);
+  });
+});

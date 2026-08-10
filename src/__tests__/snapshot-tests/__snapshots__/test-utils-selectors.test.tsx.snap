@@ -378,6 +378,8 @@ exports[`test-utils selectors 1`] = `
   "input": [
     "awsui_input-button-right_2rhyz",
     "awsui_input-container_2rhyz",
+    "awsui_input-prefix_2rhyz",
+    "awsui_input-suffix_2rhyz",
     "awsui_input_2rhyz",
     "awsui_root_2rhyz",
   ],
@@ -487,17 +489,21 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1d2i7",
   ],
   "multiselect": [
+    "awsui_dropdown-footer_f8g6q",
+    "awsui_dropdown-header_f8g6q",
     "awsui_root_f8g6q",
   ],
   "navigable-group": [
     "awsui_root_efqlv",
   ],
   "pagination": [
+    "awsui_arrow_fvjdu",
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
     "awsui_jump-to-page-input_fvjdu",
     "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
+    "awsui_pages-compact-text_lmd86",
     "awsui_root_fvjdu",
   ],
   "panel-layout": [
@@ -588,6 +594,8 @@ exports[`test-utils selectors 1`] = `
   ],
   "select": [
     "awsui_disabled-reason-tooltip_dwuol",
+    "awsui_dropdown-footer_r2vco",
+    "awsui_dropdown-header_r2vco",
     "awsui_inline-label_dwuol",
     "awsui_inline-token-list_dwuol",
     "awsui_placeholder_dwuol",
@@ -639,6 +647,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1cbgc",
   ],
   "steps": [
+    "awsui_annotation_gxp9y",
     "awsui_container_gxp9y",
     "awsui_details_gxp9y",
     "awsui_header_gxp9y",
@@ -661,8 +670,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_wih1l",
     "awsui_row-selected_wih1l",
     "awsui_row_wih1l",
+    "awsui_sort-priority-badge_1spae",
     "awsui_table_wih1l",
     "awsui_thead-active_wih1l",
+    "awsui_tools-clear-sort_wih1l",
     "awsui_tools-filtering_wih1l",
     "awsui_tools-pagination_wih1l",
     "awsui_tools-preferences_wih1l",

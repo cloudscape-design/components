@@ -148,6 +148,12 @@
     border-inline-width: 0;
   }
 
+  &.button-compact {
+    padding-block: 0;
+    border-block-width: 0;
+    border-inline-width: 0;
+  }
+
   &.variant-inline-icon-pointer-target {
     padding-block: awsui.$space-xxxs;
     border-block-width: 0;

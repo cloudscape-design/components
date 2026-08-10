@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Clear filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 items} one {{label}, 1 item} other {{label}, {count} items}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 matches} one {1 match} other {{count} matches}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Jump to page",
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page.",
-    "i18nStrings.jumpToPageLoadingText": "Loading"
+    "i18nStrings.jumpToPageLoadingText": "Loading",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} of {pagesCount}+} false {{currentPage} of {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
@@ -408,7 +410,22 @@
     "ariaLabels.expandButtonLabel": "Expand",
     "ariaLabels.collapseButtonLabel": "Collapse",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable",
+    "i18nStrings.sortDropdownSortAscending": "Sort ascending",
+    "i18nStrings.sortDropdownSortDescending": "Sort descending",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Multi-column sort (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Add to sort (ascending)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Add to sort (descending)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Remove from sort",
+    "i18nStrings.clearSort": "Clear sort",
+    "ariaLabels.sortMenuTriggerLabel": "Sort options",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "This column is already sorted",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "This column is not sorted",
+    "ariaLabels.sortPriority": "sort priority {priority}",
+    "ariaLabels.sortAscending": "ascending",
+    "ariaLabels.sortDescending": "descending",
+    "ariaLabels.liveAnnouncementSortOrder": "Table sorted by {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Sorting cleared"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scroll left",

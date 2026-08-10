@@ -27,6 +27,7 @@ export interface TestDefinition {
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
   pixelDiffTolerance?: number;
+  visualRefreshOnly?: boolean;
   setup?: (context: {
     page: VisualTestPageObject;
     wrapper: Wrapper;
@@ -38,5 +39,6 @@ export interface TestDefinition {
 export interface TestSuite {
   componentName?: string;
   description: string;
+  visualRefreshOnly?: boolean;
   tests: Array<TestDefinition | TestSuite>;
 }

@@ -7,10 +7,10 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   // Status backgrounds
-  colorBackgroundStatusInfo: { light: '{colorInfo100}', dark: '{colorInfo950}' },
-  colorBackgroundStatusWarning: { light: '{colorWarning100}', dark: '{colorWarning950}' },
-  colorBackgroundStatusError: { light: '{colorError100}', dark: '{colorError950}' },
-  colorBackgroundStatusSuccess: { light: '{colorSuccess100}', dark: '{colorSuccess950}' },
+  colorBackgroundStatusError: { light: '#fceded', dark: '#460303' },
+  colorBackgroundStatusInfo: { light: '#eaeffc', dark: '#08144f' },
+  colorBackgroundStatusSuccess: { light: '#e9fce7', dark: '#03220d' },
+  colorBackgroundStatusWarning: { light: '#fcfadb', dark: '#372603' },
 
   // Status text and borders
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },

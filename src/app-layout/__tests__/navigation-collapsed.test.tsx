@@ -52,6 +52,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       const closeButton = wrapper.findNavigationClose().getElement();
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
     });
+
+    test('close button toggles navigation open and closed when collapsible', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout navigationCloseBehavior="collapse" navigation={<>Nav content</>} />
+      );
+      expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+      wrapper.findNavigationClose().click();
+      expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
+      wrapper.findNavigationClose().click();
+      expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+    });
   });
 
   describe('aria-expanded', () => {
