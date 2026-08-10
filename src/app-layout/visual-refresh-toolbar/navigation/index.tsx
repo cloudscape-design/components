@@ -91,7 +91,7 @@ export function AppLayoutNavigationImplementation({
             }
             ariaExpanded={navigationCollapsible && !isMobile ? navigationOpen : undefined}
             iconName={navigationCollapsed ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
-            onClick={() => onNavigationToggle(!navigationOpen)}
+            onClick={() => onNavigationToggle(navigationCollapsible ? !navigationOpen : false)}
             variant="icon"
             formAction="none"
             className={testutilStyles['navigation-close']}

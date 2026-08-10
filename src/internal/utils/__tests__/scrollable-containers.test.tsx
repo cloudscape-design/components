@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getFirstScrollableParent, scrollRectangleIntoView } from '../scrollable-containers';
+import { getFirstScrollableParent, getScrollableParents, scrollRectangleIntoView } from '../scrollable-containers';
 
 const originalScrollBy = window.scrollBy;
 
@@ -64,5 +64,55 @@ describe('getFirstScrollableParent', () => {
   });
   test('returns undefined if no scrollable parent is found', () => {
     expect(getFirstScrollableParent(inner)).toBe(undefined);
+  });
+});
+
+describe('getScrollableParents', () => {
+  const originalGetComputedStyle = window.getComputedStyle;
+
+  afterEach(() => {
+    window.getComputedStyle = originalGetComputedStyle;
+  });
+
+  function mockOverflowByOverflowY(overflowByTestId: Record<string, string>) {
+    window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+      const result = originalGetComputedStyle(element as Element, pseudoElt);
+      const testId = (element as HTMLElement).dataset?.testid;
+      if (testId && overflowByTestId[testId]) {
+        result.overflowY = overflowByTestId[testId];
+      }
+      return result;
+    }) as Window['getComputedStyle'];
+  }
+
+  test('returns scrollable ancestors nearest-first, excluding non-scrollable ones', () => {
+    const { container } = render(
+      <div data-testid="outer">
+        <div data-testid="middle">
+          <div data-testid="scroll-parent">
+            <div data-testid="target" />
+          </div>
+        </div>
+      </div>
+    );
+    mockOverflowByOverflowY({ outer: 'scroll', middle: 'visible', 'scroll-parent': 'auto' });
+
+    const target = container.querySelector<HTMLElement>('[data-testid="target"]')!;
+    const outer = container.querySelector<HTMLElement>('[data-testid="outer"]')!;
+    const scrollParent = container.querySelector<HTMLElement>('[data-testid="scroll-parent"]')!;
+
+    expect(getScrollableParents(target)).toEqual([scrollParent, outer]);
+  });
+
+  test('returns an empty array when no ancestor is scrollable', () => {
+    const { container } = render(
+      <div data-testid="outer">
+        <div data-testid="target" />
+      </div>
+    );
+    mockOverflowByOverflowY({ outer: 'visible' });
+
+    const target = container.querySelector<HTMLElement>('[data-testid="target"]')!;
+    expect(getScrollableParents(target)).toEqual([]);
   });
 });

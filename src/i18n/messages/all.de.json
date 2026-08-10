@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filter löschen",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 Elemente} one {{label}, 1 Element} other {{label}, {count} Elemente}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 Übereinstimmungen} one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Zur Seite springen",
     "i18nStrings.jumpToPageInputLabel": "Seite",
     "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an.",
-    "i18nStrings.jumpToPageLoadingText": "Wird geladen"
+    "i18nStrings.jumpToPageLoadingText": "Wird geladen",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} von {pagesCount}+} false {{currentPage} von {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",
@@ -408,7 +410,22 @@
     "ariaLabels.expandButtonLabel": "Erweitern",
     "ariaLabels.collapseButtonLabel": "Minimieren",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",
-    "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar"
+    "columnDefinitions.editConfig.editIconAriaLabel": "bearbeitbar",
+    "i18nStrings.sortDropdownSortAscending": "Aufsteigend sortieren",
+    "i18nStrings.sortDropdownSortDescending": "Absteigend sortieren",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Sortieren nach mehreren Spalten (Umschalttaste + Klick)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Zur Sortierung hinzufügen (aufsteigend)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Zur Sortierung hinzufügen (absteigend)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Aus Sortierung entfernen",
+    "i18nStrings.clearSort": "Sortierung löschen",
+    "ariaLabels.sortMenuTriggerLabel": "Sortieroptionen",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Diese Spalte ist bereits sortiert",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Diese Spalte ist nicht sortiert",
+    "ariaLabels.sortAscending": "aufsteigend",
+    "ariaLabels.sortDescending": "absteigend",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabelle sortiert nach {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Sortierung gelöscht",
+    "ariaLabels.sortPriority": "Sortierpriorität {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Nach links scrollen",

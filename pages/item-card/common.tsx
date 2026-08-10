@@ -88,6 +88,15 @@ export const wideActions = (
   </SpaceBetween>
 );
 
+export const wrappingActions = (
+  <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+    <Badge color="grey">status</Badge>
+    <Button variant="normal">Action 1</Button>
+    <Button variant="normal">Action 2</Button>
+    <Button variant="primary">Action 3</Button>
+  </div>
+);
+
 export const icon = <Icon name="settings"></Icon>;
 
 export const imageContentEmbedded = (

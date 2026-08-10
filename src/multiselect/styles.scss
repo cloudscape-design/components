@@ -18,3 +18,17 @@
 .tokens {
   margin-block-start: awsui.$space-scaled-xs;
 }
+
+// Custom dropdown header/footer regions (renderDropdownHeader / renderDropdownFooter). Duplicated in the
+// Select stylesheet. The header can sit directly above the options list, so it is lifted with z-index to
+// keep focusable content's focus ring above the list; the footer sits below the list with natural
+// clearance and needs no lift.
+.dropdown-header {
+  inline-size: 100%;
+  position: relative;
+  z-index: 4;
+}
+
+.dropdown-footer {
+  inline-size: 100%;
+}

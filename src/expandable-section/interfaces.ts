@@ -51,7 +51,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   variant?: ExpandableSectionProps.Variant;
 
   /**
-   * Determines whether the content section's default padding is removed. This default padding is only present for the `container` variant.
+   * Determines whether the default padding around the content section is removed.
    */
   disableContentPaddings?: boolean;
 

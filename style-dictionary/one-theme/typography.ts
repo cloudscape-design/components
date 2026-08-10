@@ -7,6 +7,8 @@ import { tokens as parentTokens } from '../visual-refresh/typography.js';
 
 const tokens: StyleDictionary.TypographyDictionary = {
   fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
+  fontFamilyMonospace:
+    "'Ember Modern Mono', Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
 
   // ── Headings ──────────────────────────────────────────────────────────────
   fontSizeHeadingXl: '24px',
@@ -28,9 +30,6 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontSizeHeadingXs: '14px',
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
-
-  fontSideNavigationSectionHeaderSize: '14px',
-  fontSideNavigationSectionHeaderWeight: '500',
 
   fontWeightDisplayL: '500',
   fontWeightDisplayXl: '400',

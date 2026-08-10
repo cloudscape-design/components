@@ -77,6 +77,8 @@ const InternalButtonDropdown = React.forwardRef(
       filteringResultsText,
       noMatch,
       i18nStrings,
+      compactTrigger,
+      ariaDescribedby,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -120,6 +122,7 @@ const InternalButtonDropdown = React.forwardRef(
       onItemActivate,
       onGroupToggle,
       onDropdownFocusLeave,
+      onDropdownBlur,
       toggleDropdown,
       closeDropdown,
       setIsUsingMouse,
@@ -215,6 +218,7 @@ const InternalButtonDropdown = React.forwardRef(
       },
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
+      ariaDescribedby,
       formAction: 'none',
       ariaHaspopup: hasFiltering ? 'dialog' : true,
       nativeButtonAttributes: nativeTriggerAttributes,
@@ -362,6 +366,7 @@ const InternalButtonDropdown = React.forwardRef(
               [styles['full-width']]: canBeFullWidth,
               [styles.loading]: canBeFullWidth && !!loading,
             })}
+            __compact={compactTrigger}
             badge={triggerHasBadge()}
             fullWidth={fullWidth}
           >
@@ -452,6 +457,7 @@ const InternalButtonDropdown = React.forwardRef(
           preferredAlignment={preferCenter ? 'center' : 'start'}
           onOutsideClick={() => toggleDropdown()}
           onFocusLeave={onDropdownFocusLeave}
+          onBlur={onDropdownBlur}
           trigger={trigger}
           dropdownId={dropdownId}
           header={filterElement}

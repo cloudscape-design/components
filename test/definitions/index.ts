@@ -13,6 +13,7 @@ import appLayoutContentPaddings from './visual/app-layout-content-paddings';
 import appLayoutDrawers from './visual/app-layout-drawers';
 import appLayoutFlashbar from './visual/app-layout-flashbar';
 import appLayoutHeader from './visual/app-layout-header';
+import appLayoutMaxContentWidth from './visual/app-layout-max-content-width';
 import appLayoutMulti from './visual/app-layout-multi';
 import appLayoutResponsive from './visual/app-layout-responsive';
 import appLayoutStickyTableHeaderSplitPanel from './visual/app-layout-sticky-table-header-split-panel';
@@ -28,6 +29,7 @@ import breadcrumbGroupSuite from './visual/breadcrumb-group';
 import buttonSuite from './visual/button';
 import buttonDropdownSuite from './visual/button-dropdown';
 import buttonGroupSuite from './visual/button-group';
+import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
 export const actionCard: TestSuite[] = [actionCardSuite];
@@ -38,6 +40,7 @@ export const appLayout: TestSuite[] = [
   appLayoutDrawers,
   appLayoutFlashbar,
   appLayoutHeader,
+  appLayoutMaxContentWidth,
   appLayoutMulti,
   appLayoutResponsive,
   appLayoutStickyTableHeaderSplitPanel,
@@ -54,6 +57,7 @@ export const breadcrumbGroup: TestSuite[] = [breadcrumbGroupSuite];
 export const button: TestSuite[] = [buttonSuite];
 export const buttonDropdown: TestSuite[] = [buttonDropdownSuite];
 export const buttonGroup: TestSuite[] = [buttonGroupSuite];
+export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
   ...actionCard,
@@ -69,4 +73,5 @@ export const allSuites: TestSuite[] = [
   ...button,
   ...buttonDropdown,
   ...buttonGroup,
+  ...table,
 ];

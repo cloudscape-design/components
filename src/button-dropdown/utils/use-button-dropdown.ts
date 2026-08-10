@@ -27,6 +27,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
   onDropdownFocusLeave: () => void;
+  onDropdownBlur: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
@@ -107,6 +108,15 @@ export function useButtonDropdown({
         // Returning the focus to the trigger instead.
         onReturnFocus();
       }
+      closeDropdown();
+    }
+  };
+
+  // Close when focus leaves the entire widget (trigger and menu), for example when focus
+  // moves to an app layout drawer or an element in a different frame. The filtering variant
+  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
+  const onDropdownBlur = () => {
+    if (isOpen && !hasFiltering) {
       closeDropdown();
     }
   };
@@ -279,6 +289,7 @@ export function useButtonDropdown({
     onItemActivate,
     onGroupToggle,
     onDropdownFocusLeave,
+    onDropdownBlur,
     toggleDropdown,
     closeDropdown,
     setIsUsingMouse,

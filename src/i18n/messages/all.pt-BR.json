@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Limpar filtro",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Movendo o item de volta para a posição {currentPosition} de {total}} false {Movendo o item para a posição {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item movido de volta à sua posição original {initialPosition} de {total}} false {Item movido da posição {initialPosition} para a posição {finalPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 itens} one {{label}, 1 item} other {{label}, {count} itens}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 correspondências} one {1 correspondência} other {{count} correspondências}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Ir para a página",
     "i18nStrings.jumpToPageInputLabel": "Página",
     "i18nStrings.jumpToPageError": "Página fora do alcance. Mostrando a última página disponível.",
-    "i18nStrings.jumpToPageLoadingText": "Carregando"
+    "i18nStrings.jumpToPageLoadingText": "Carregando",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {mais {currentPage} de {pagesCount}} false {{currentPage} de {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Alça de redimensionamento do painel",
@@ -408,7 +410,22 @@
     "ariaLabels.expandButtonLabel": "Expandir",
     "ariaLabels.collapseButtonLabel": "Recolher",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erro",
-    "columnDefinitions.editConfig.editIconAriaLabel": "editável"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editável",
+    "i18nStrings.sortDropdownSortAscending": "Classificar em ordem crescente",
+    "i18nStrings.sortDropdownSortDescending": "Classificar em ordem decrescente",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "Classificação em várias colunas (Shift + Click)",
+    "i18nStrings.sortDropdownAddToSortAscending": "Adicionar à classificação (ascendente)",
+    "i18nStrings.sortDropdownAddToSortDescending": "Adicionar à classificação (decrescente)",
+    "i18nStrings.sortDropdownRemoveFromSort": "Remover da classificação",
+    "i18nStrings.clearSort": "Limpar classificação",
+    "ariaLabels.sortMenuTriggerLabel": "Opções de classificação",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "Esta coluna já está classificada",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "Esta coluna não está classificada",
+    "ariaLabels.sortAscending": "ordem crescente",
+    "ariaLabels.sortDescending": "ordem decrescente",
+    "ariaLabels.liveAnnouncementSortOrder": "Tabela classificada por {columns}",
+    "ariaLabels.liveAnnouncementSortCleared": "Classificação cancelada",
+    "ariaLabels.sortPriority": "prioridade de classificação {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Rolar para a esquerda",

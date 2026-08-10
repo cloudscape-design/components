@@ -125,6 +125,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "清除篩選條件",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}，0 個項目} one {{label}，1 個項目} other {{label}，{count} 個項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
   },
   "copy-to-clipboard": {
@@ -256,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
     "i18nStrings.jumpToPageInputLabel": "頁面",
     "i18nStrings.jumpToPageError": "頁面超出範圍。顯示最後一個可用頁面。",
-    "i18nStrings.jumpToPageLoadingText": "正在載入"
+    "i18nStrings.jumpToPageLoadingText": "正在載入",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",
@@ -408,7 +410,22 @@
     "ariaLabels.expandButtonLabel": "展開",
     "ariaLabels.collapseButtonLabel": "摺疊",
     "columnDefinitions.editConfig.errorIconAriaLabel": "錯誤",
-    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯"
+    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯",
+    "i18nStrings.sortDropdownSortAscending": "遞增排序",
+    "i18nStrings.sortDropdownSortDescending": "遞減排序",
+    "i18nStrings.sortDropdownMultiColumnSortGroup": "多欄排序 (Shift + 按一下)",
+    "i18nStrings.sortDropdownAddToSortAscending": "新增至排序 (遞增)",
+    "i18nStrings.sortDropdownAddToSortDescending": "新增至排序 (遞減)",
+    "i18nStrings.sortDropdownRemoveFromSort": "從排序中移除",
+    "i18nStrings.clearSort": "清除排序",
+    "ariaLabels.sortMenuTriggerLabel": "排序選項",
+    "i18nStrings.sortDropdownAddToSortDisabledReason": "此欄已排序",
+    "i18nStrings.sortDropdownRemoveFromSortDisabledReason": "此欄未排序",
+    "ariaLabels.sortAscending": "升序",
+    "ariaLabels.sortDescending": "降序",
+    "ariaLabels.liveAnnouncementSortOrder": "資料表依 {columns} 排序",
+    "ariaLabels.liveAnnouncementSortCleared": "已清除排序",
+    "ariaLabels.sortPriority": "排序優先順序 {priority}"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "向左捲動",

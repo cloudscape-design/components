@@ -5,7 +5,10 @@ import React from 'react';
 import Button from '~components/button';
 import Container from '~components/container';
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
+import InternalExpandableSection from '~components/expandable-section/internal';
 import Header from '~components/header';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 import Table from '~components/table';
 
 import createPermutations from '../utils/permutations';
@@ -158,7 +161,24 @@ const permutations = createPermutations<ExpandableSectionProps>([
     children: ['Sample content'],
   },
 ]);
-/* eslint-enable react/jsx-key */
+
+const endIconPermutations = createPermutations<ExpandableSectionProps>([
+  {
+    variant: ['default', 'footer', 'navigation', 'container'],
+    headerText: [
+      'Short Header',
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ],
+    headerActions: [
+      undefined,
+      <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+        <Button variant="inline-link">Action</Button>
+        <Button>Another action</Button>
+        <StatusIndicator>Information</StatusIndicator>
+      </SpaceBetween>,
+    ],
+  },
+]);
 
 export default function ExpandableSectionPermutations() {
   return (
@@ -166,6 +186,14 @@ export default function ExpandableSectionPermutations() {
       <h1>Expandable Section permutations</h1>
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={permutation => <ExpandableSection {...permutation} />} />
+        <PermutationsView
+          permutations={endIconPermutations}
+          render={permutation => (
+            <InternalExpandableSection {...permutation} defaultExpanded={true} __expandIconPosition="end">
+              Variant {permutation.variant} section content
+            </InternalExpandableSection>
+          )}
+        />
       </ScreenshotArea>
     </>
   );
