@@ -8,7 +8,7 @@ import SpaceBetween from '~components/space-between';
 
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { alertPermutations, flashbarPermutations, renderAlert, renderFlashbar } from './notifications-permutations';
+import { flashbarPermutations, renderFlashbar } from './notifications-permutations';
 
 import styles from './styles.scss';
 
@@ -20,7 +20,6 @@ export default function TopNavigationNotificationsPermutations() {
           <SpaceBetween size="l">
             <Box variant="h1">Notifications in top-navigation visual context</Box>
             <PermutationsView permutations={flashbarPermutations} render={renderFlashbar} />
-            <PermutationsView permutations={alertPermutations} render={renderAlert} />
           </SpaceBetween>
         </Box>
       </VisualContext>
