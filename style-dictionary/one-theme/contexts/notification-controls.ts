@@ -11,6 +11,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBodyDefault: '{colorTextNotificationDefault}',
   colorTextLinkDefault: '{colorTextNotificationLinkDefault}',
   colorTextLinkHover: '{colorTextNotificationLinkHover}',
+  colorTextLinkInvertedDefault: '{colorTextNotificationDefault}',
+  colorTextLinkInvertedHover: '{colorTextNotificationLinkHover}',
   colorBorderDividerDefault: '{colorBorderDividerNotification}',
   colorTextButtonNormalDefault: '{colorTextInteractiveInvertedDefault}',
   colorTextButtonNormalHover: '{colorTextInteractiveInvertedHover}',

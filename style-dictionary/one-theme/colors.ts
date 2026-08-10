@@ -143,7 +143,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextNotificationLinkDefault: { light: '{colorNeutral900}', dark: '{colorNeutral50}' },
   colorTextNotificationLinkHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
   colorBorderDividerNotification: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
-  colorTextLinkInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
+  colorTextLinkInvertedDefault: '{colorNeutral100}',
+  colorTextLinkInvertedHover: '{colorWhite}',
   colorTextInteractiveInvertedDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
   colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 

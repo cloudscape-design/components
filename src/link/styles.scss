@@ -47,7 +47,7 @@
         letter-spacing: normal;
       }
       &.color-inverted {
-        color: awsui.$color-text-notification-default;
+        color: awsui.$color-text-link-inverted-default;
         text-decoration-color: currentColor;
         &:hover {
           color: awsui.$color-text-link-inverted-hover;
@@ -57,7 +57,7 @@
   }
 
   &.color-inverted {
-    color: awsui.$color-text-notification-default;
+    color: awsui.$color-text-link-inverted-default;
     &:not(.button) {
       text-decoration-line: underline;
       text-decoration-color: currentColor;

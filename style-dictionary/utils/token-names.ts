@@ -869,6 +869,7 @@ export type ColorsTokenName =
   | 'colorTextLinkSecondaryHover'
   | 'colorTextLinkInfoDefault'
   | 'colorTextLinkInfoHover'
+  | 'colorTextLinkInvertedDefault'
   | 'colorTextLinkInvertedHover'
   | 'colorTextNotificationDefault'
   | 'colorTextNotificationLinkDefault'

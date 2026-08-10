@@ -1248,6 +1248,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkInvertedDefault: {
+    description:
+      'The default text color of links rendered on an inverted (dark) surface. For example: a link inside a flashbar.',
+    public: false,
+    themeable: false,
+  },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
     public: true,
