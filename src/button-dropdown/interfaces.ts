@@ -128,16 +128,16 @@ export interface ButtonDropdownProps
    * Specifies the text that screen reader announces when the button dropdown is in a loading state.
    */
   loadingText?: string;
+  /**
+   * Specifies the text to display inside the dropdown when items are loading.
+   **/
+  itemsLoadingText?: string;
   /** Determines the general styling of the button dropdown.
    * * `primary` for primary buttons
    * * `normal` for secondary buttons
    * * `icon` for icon buttons
    * * `inline-icon` for icon buttons with no outer padding
    */
-  /**
-   * Specifies the text to display inside the dropdown when items are loading.
-   **/
-  itemsLoadingText?: string;
   variant?: ButtonDropdownProps.Variant;
   /**
    * Specifies the name of the icon used in the button dropdown trigger, used with the [icon component](/components/icon/).

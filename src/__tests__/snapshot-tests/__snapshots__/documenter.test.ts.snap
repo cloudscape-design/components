@@ -7182,6 +7182,11 @@ When returning \`null\`, the default styling will be applied.",
     },
     {
       "defaultValue": "'normal'",
+      "description": "Determines the general styling of the button dropdown.
+* \`primary\` for primary buttons
+* \`normal\` for secondary buttons
+* \`icon\` for icon buttons
+* \`inline-icon\` for icon buttons with no outer padding",
       "inlineType": {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",

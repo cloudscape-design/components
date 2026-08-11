@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Checkbox } from '~components';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 
-import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { useOptionsLoader } from '../common/options-loader';
 
@@ -31,18 +30,8 @@ const asyncSourceItems: ButtonDropdownProps.Item[] = Array.from({ length: 25 }, 
   secondaryText: index % 3 === 0 ? `Description for action ${index + 1}` : undefined,
 }));
 
-type PageContext = React.Context<
-  AppContextType<{
-    fakeResponses?: boolean;
-  }>
->;
-
 export default function ButtonDropdownManualFilteringPage() {
   const [expandToViewport, setExpandToViewport] = useState(false);
-
-  const {
-    urlParams: { fakeResponses = true },
-  } = useContext(AppContext as PageContext);
 
   const filteringResultsText = (matches: number, total: number) => `${matches} out of ${total} matches`;
   const onItemClick = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log(event.detail);
@@ -126,7 +115,7 @@ export default function ButtonDropdownManualFilteringPage() {
             onLoadItems={({ detail: { firstPage, filteringText } }) => {
               const normalized = filteringText.toLowerCase();
               const filtered = asyncSourceItems.filter(item => (item.text ?? '').toLowerCase().includes(normalized));
-              fetchItems({ firstPage, filteringText, sourceItems: fakeResponses ? filtered : undefined });
+              fetchItems({ firstPage, filteringText, sourceItems: filtered });
             }}
           >
             Async actions
