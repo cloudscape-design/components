@@ -11,3 +11,9 @@
   // no positioning or overlay of its own; the item-card shell inside provides
   // the visual container (border, radius, padding).
 }
+
+.hidden {
+  // Controlled hide (open={false}): collapse out of flow entirely. Kept mounted
+  // (not unmounted) so focus restoration and future enter/exit animation work.
+  display: none;
+}

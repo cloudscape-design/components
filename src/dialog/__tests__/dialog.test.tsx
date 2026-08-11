@@ -5,6 +5,8 @@ import { fireEvent, render } from '@testing-library/react';
 
 import Dialog from '../../../lib/components/dialog';
 
+import styles from '../../../lib/components/dialog/styles.css.js';
+
 function renderDialog(jsx: React.ReactElement) {
   const { container } = render(jsx);
   const dialog = container.querySelector<HTMLElement>('[role="dialog"]')!;
@@ -68,4 +70,39 @@ test('does not move focus when initialFocus is none', () => {
   );
   const labelledBy = dialog.getAttribute('aria-labelledby')!;
   expect(document.activeElement).not.toBe(document.getElementById(labelledBy));
+});
+
+test('applies the hidden class and does not move focus when open is false', () => {
+  const { dialog } = renderDialog(
+    <Dialog header="Title" open={false} onDismiss={() => {}}>
+      content
+    </Dialog>
+  );
+  expect(dialog.className).toContain(styles.hidden);
+  const labelledBy = dialog.getAttribute('aria-labelledby')!;
+  expect(document.activeElement).not.toBe(document.getElementById(labelledBy));
+});
+
+test('when controlled, moves focus in on open and restores it to the prior element on close', () => {
+  const view = (open: boolean) => (
+    <>
+      <button data-testid="trigger">Open</button>
+      <Dialog header="Title" open={open} onDismiss={() => {}}>
+        content
+      </Dialog>
+    </>
+  );
+  const { container, rerender } = render(view(false));
+  const trigger = container.querySelector<HTMLButtonElement>('[data-testid="trigger"]')!;
+  trigger.focus();
+  expect(document.activeElement).toBe(trigger);
+
+  // open: focus moves into the dialog header
+  rerender(view(true));
+  const labelledBy = container.querySelector('[role="dialog"]')!.getAttribute('aria-labelledby')!;
+  expect(document.activeElement).toBe(document.getElementById(labelledBy));
+
+  // close: focus is restored to the trigger
+  rerender(view(false));
+  expect(document.activeElement).toBe(trigger);
 });

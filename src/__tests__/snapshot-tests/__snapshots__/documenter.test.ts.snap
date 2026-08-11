@@ -12321,9 +12321,11 @@ exports[`Components definition for dialog matches the snapshot: dialog 1`] = `
   "events": [
     {
       "cancelable": false,
-      "description": "Fired when the user dismisses the dialog using the close button (always
-present) or by pressing \`Escape\`. Dismissal never advances focus on its
-own, so the consumer decides where focus goes after the dialog is removed.",
+      "description": "Fired when the user dismisses the dialog, either with the close button
+(always present) or by pressing \`Escape\`. Dismissal never advances focus on
+its own. When \`open\` is controlled, respond by setting \`open={false}\`;
+otherwise unmount the dialog. In both cases decide where focus goes next
+(controlled dialogs restore it to the previously focused element for you).",
       "name": "onDismiss",
     },
   ],
@@ -12345,7 +12347,9 @@ own, so the consumer decides where focus goes after the dialog is removed.",
       "type": "string",
     },
     {
-      "description": "An object containing all the necessary localized strings required by the component.",
+      "description": "An object containing all the necessary localized strings required by the component.
+
+- \`dismissAriaLabel\` (string) - Provides an ARIA label for the close button.",
       "i18nTag": true,
       "inlineType": {
         "name": "DialogProps.I18nStrings",
@@ -12394,6 +12398,22 @@ out into the rest of the page, matching its non-modal, in-flow behavior.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Controls the dialog's visibility and focus lifecycle.
+
+- When set (\`true\`/\`false\`), the dialog manages its own visibility: it is
+  hidden when \`false\`, moves focus in (per \`initialFocus\`) when it becomes
+  visible, and restores focus to the previously focused element when it
+  becomes hidden. Provide \`onDismiss\` to respond to close actions.
+- When left unset, the dialog is always rendered; mounting/unmounting and
+  focus restoration on removal are the consumer's responsibility. Focus
+  still moves in on mount (per \`initialFocus\`).
+
+The dialog never traps focus, regardless of this property.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": [
     {
@@ -12404,14 +12424,15 @@ owned by the consumer and passed in through this slot.",
       "name": "children",
     },
     {
-      "description": "Footer content displayed at the bottom of the dialog, typically action buttons.",
+      "description": "Footer content displayed at the bottom of the dialog. Although any content
+is technically possible, our UX guidelines recommend using action buttons.",
       "isDefault": false,
       "name": "footer",
     },
     {
-      "description": "Heading text of the dialog. This is used as the dialog's accessible name
-(wired to the \`role="dialog"\` element via \`aria-labelledby\`), so it should
-always be provided.",
+      "description": "Heading text of the dialog. Always provide this: it labels the dialog as
+its accessible name (wired to the \`role="dialog"\` element via
+\`aria-labelledby\`) and is the default target for \`initialFocus\`.",
       "isDefault": false,
       "name": "header",
     },

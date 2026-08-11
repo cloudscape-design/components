@@ -3,13 +3,14 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import InternalItemCard from '../item-card/internal';
 import { DialogProps } from './interfaces';
 
@@ -24,6 +25,7 @@ const InternalDialog = React.forwardRef(
       header,
       children,
       footer,
+      open,
       initialFocus = 'header',
       i18nStrings,
       onDismiss,
@@ -35,18 +37,44 @@ const InternalDialog = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const headerId = useUniqueId('dialog-header-');
     const headerRef = useRef<HTMLSpanElement>(null);
+    const returnFocusTargetRef = useRef<HTMLElement | null>(null);
 
     useForwardFocus(ref, headerRef);
 
-    // Move focus in when the dialog appears. The dialog never traps focus, so
-    // this only sets the entry point; Tab continues to flow out of the dialog.
-    useEffect(() => {
+    const focusIn = useStableCallback(() => {
       if (initialFocus === 'header') {
         headerRef.current?.focus();
       }
-      // Run on mount only: mounting is when the dialog appears.
+    });
+
+    // Uncontrolled (`open` unset): mounting IS the appearance, so move focus in
+    // on mount. Controlled: defer to the open-transition effect below (no focus
+    // change on initial render, matching Drawer).
+    useEffect(() => {
+      if (open === undefined) {
+        focusIn();
+      }
+      // Mount only.
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Controlled visibility. On show, record the previously focused element and
+    // move focus in; on hide, restore focus to it. The dialog never traps focus.
+    useEffectOnUpdate(() => {
+      if (open === undefined) {
+        return;
+      }
+      if (open) {
+        returnFocusTargetRef.current = document.activeElement as HTMLElement | null;
+        focusIn();
+      } else {
+        const target = returnFocusTargetRef.current;
+        if (target && target.isConnected) {
+          target.focus();
+        }
+        returnFocusTargetRef.current = null;
+      }
+    }, [open, focusIn]);
 
     const onKeyDown = (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -72,7 +100,7 @@ const InternalDialog = React.forwardRef(
         ref={__internalRootRef}
         role="dialog"
         aria-labelledby={header ? headerId : undefined}
-        className={clsx(baseProps.className, styles.root, testStyles.root)}
+        className={clsx(baseProps.className, styles.root, testStyles.root, open === false && styles.hidden)}
         onKeyDown={onKeyDown}
       >
         <InternalItemCard

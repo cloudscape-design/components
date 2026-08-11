@@ -3,6 +3,8 @@
 'use client';
 import React from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
@@ -12,12 +14,28 @@ import InternalDialog from './internal';
 export { DialogProps };
 
 const Dialog = React.forwardRef(
-  ({ initialFocus = 'header', ...props }: DialogProps, ref: React.Ref<DialogProps.Ref>) => {
+  ({ initialFocus = 'header', open, onDismiss, ...props }: DialogProps, ref: React.Ref<DialogProps.Ref>) => {
+    if (open !== undefined && !onDismiss) {
+      warnOnce(
+        'Dialog',
+        'You provided `open` without an `onDismiss` handler. The dialog will not respond to close actions.'
+      );
+    }
     const baseComponentProps = useBaseComponent('Dialog', {
       props: { initialFocus },
+      metadata: { hasOpen: open !== undefined },
     });
     const externalProps = getExternalProps(props);
-    return <InternalDialog initialFocus={initialFocus} {...externalProps} {...baseComponentProps} ref={ref} />;
+    return (
+      <InternalDialog
+        initialFocus={initialFocus}
+        open={open}
+        onDismiss={onDismiss}
+        {...externalProps}
+        {...baseComponentProps}
+        ref={ref}
+      />
+    );
   }
 );
 
