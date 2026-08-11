@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+  // The dialog renders in the document flow (non-modal, non-floating). It adds
+  // no positioning or overlay of its own; the item-card shell inside provides
+  // the visual container (border, radius, padding).
+}
