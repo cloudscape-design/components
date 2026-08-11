@@ -13,6 +13,7 @@ import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -120,6 +121,20 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    */
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
+  }
+
+  /**
+   * Finds the error recovery button when item loading fails.
+   */
+  findErrorRecoveryButton(): ElementWrapper | null {
+    return this.findOpenDropdown()?.findByClassName(footerStyles.recovery) ?? null;
+  }
+
+  /**
+   * Finds the status displayed at the footer of the dropdown.
+   */
+  findStatusIndicator(): ElementWrapper | null {
+    return this.findOpenDropdown()?.findByClassName(dropdownStatusStyles.root) ?? null;
   }
 
   /**

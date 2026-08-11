@@ -74,6 +74,10 @@ export interface I18nFormatArgTypes {
   button: {
     'i18nStrings.externalIconAriaLabel': never;
   };
+  'button-dropdown': {
+    errorIconAriaLabel: never;
+    recoveryText: never;
+  };
   calendar: {
     nextMonthAriaLabel: never;
     previousMonthAriaLabel: never;

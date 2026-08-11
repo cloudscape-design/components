@@ -6274,6 +6274,32 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailType": "ButtonDropdownProps.ItemClickDetails",
       "name": "onItemFollow",
     },
+    {
+      "cancelable": false,
+      "detailInlineType": {
+        "name": "ButtonDropdownProps.LoadItemsDetail",
+        "properties": [
+          {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "firstPage",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "samePage",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonDropdownProps.LoadItemsDetail",
+      "name": "onLoadItems",
+    },
   ],
   "functions": [
     {
@@ -6326,6 +6352,19 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
 If provided, the disabled button becomes focusable.",
       "name": "disabledReason",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides a text alternative for the error icon in the error message.",
+      "i18nTag": true,
+      "name": "errorIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
+      "name": "errorText",
       "optional": true,
       "type": "string",
     },
@@ -6395,18 +6434,32 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "defaultValue": "'none'",
       "description": "Enables filtering of the dropdown items.
 
-When set to \`auto\`, a search input is rendered inside the dropdown and the items are filtered as the user
-types. Items are matched client-side using a case-insensitive substring match against their \`text\`,
-\`secondaryText\`, and \`labelTag\`.",
+* \`auto\` - A search input is rendered inside the dropdown and the items are automatically filtered as the user types.
+* \`manual\` - You will set up \`onLoadItems\` event listeners and filter items on your side or request
+them from server.
+
+If you set this property to \`auto\`, the component will filter the provided \`items\` based on the value of the filtering input field.
+The filtering text is matched against the item's \`text\`, \`secondaryText\`, and \`labelTag\`.
+
+If you set this property to \`manual\`, the default filtering mechanism is disabled and all provided \`items\` are
+displayed in the dropdown list. In that case make sure that you use the \`onLoadItems\` events in order
+to set the \`items\` property to the items that are relevant for the user, given the filtering input value.",
       "inlineType": {
         "name": "ButtonDropdownProps.FilteringType",
         "type": "union",
         "values": [
           "auto",
           "none",
+          "manual",
         ],
       },
       "name": "filteringType",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.",
+      "name": "finishedText",
       "optional": true,
       "type": "string",
     },
@@ -6659,6 +6712,12 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
+    },
+    {
+      "description": "Specifies the text to display inside the dropdown when items are loading.",
+      "name": "itemsLoadingText",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -7037,6 +7096,14 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
+      "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
+Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
+      "i18nTag": true,
+      "name": "recoveryText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies a render function to render custom options in the dropdown menu.
 
 The item inside the props has a different shape depending on its type:
@@ -7094,12 +7161,27 @@ When returning \`null\`, the default styling will be applied.",
       "type": "ButtonDropdownProps.ItemRenderer",
     },
     {
+      "description": "Specifies the current status of loading more options.
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that pagination has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.",
+      "inlineType": {
+        "name": "DropdownStatusProps.StatusType",
+        "type": "union",
+        "values": [
+          "error",
+          "finished",
+          "loading",
+          "pending",
+        ],
+      },
+      "name": "statusType",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "'normal'",
-      "description": "Determines the general styling of the button dropdown.
-* \`primary\` for primary buttons
-* \`normal\` for secondary buttons
-* \`icon\` for icon buttons
-* \`inline-icon\` for icon buttons with no outer padding",
       "inlineType": {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",
@@ -7121,6 +7203,12 @@ When returning \`null\`, the default styling will be applied.",
       "displayName": "text",
       "isDefault": true,
       "name": "children",
+    },
+    {
+      "description": "Displayed when there are no options to display.
+This is only shown when \`statusType\` is set to \`finished\` or not set at all.",
+      "isDefault": false,
+      "name": "empty",
     },
     {
       "description": "Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
@@ -35271,6 +35359,20 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -35445,6 +35547,20 @@ Supported options:
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -44853,6 +44969,23 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -45136,6 +45269,23 @@ Supported options:
               "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -46502,6 +46652,23 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -46703,6 +46870,23 @@ Supported options:
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -47934,6 +48118,15 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -48064,6 +48257,15 @@ Supported options:
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -54739,6 +54941,18 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -54960,6 +55174,18 @@ Supported options:
               "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -55920,6 +56146,18 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -56074,6 +56312,18 @@ Supported options:
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": false,

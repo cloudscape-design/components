@@ -47,6 +47,14 @@ const ButtonDropdown = React.forwardRef(
       filteringClearAriaLabel,
       filteringResultsText,
       noMatch,
+      onLoadItems,
+      statusType,
+      empty,
+      itemsLoadingText,
+      finishedText,
+      errorText,
+      recoveryText,
+      errorIconAriaLabel,
       i18nStrings,
       ...props
     }: ButtonDropdownProps,
@@ -101,6 +109,14 @@ const ButtonDropdown = React.forwardRef(
         filteringClearAriaLabel={filteringClearAriaLabel}
         filteringResultsText={filteringResultsText}
         noMatch={noMatch}
+        onLoadItems={onLoadItems}
+        statusType={statusType}
+        empty={empty}
+        itemsLoadingText={itemsLoadingText}
+        finishedText={finishedText}
+        errorText={errorText}
+        recoveryText={recoveryText}
+        errorIconAriaLabel={errorIconAriaLabel}
         i18nStrings={i18nStrings}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,

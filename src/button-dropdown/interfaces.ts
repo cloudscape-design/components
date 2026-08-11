@@ -3,16 +3,20 @@
 import React, { ReactNode } from 'react';
 
 import { ButtonProps } from '../button/interfaces';
-import { ExpandToViewport } from '../dropdown/interfaces';
+import { ExpandToViewport, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../types/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../types/native-attributes';
 
-export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
+export interface ButtonDropdownProps
+  extends BaseComponentProps,
+    ExpandToViewport,
+    Omit<DropdownStatusProps, 'loadingText'> {
   /**
    * Array of objects with a number of supported types.
    *
@@ -130,6 +134,10 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * * `icon` for icon buttons
    * * `inline-icon` for icon buttons with no outer padding
    */
+  /**
+   * Specifies the text to display inside the dropdown when items are loading.
+   **/
+  itemsLoadingText?: string;
   variant?: ButtonDropdownProps.Variant;
   /**
    * Specifies the name of the icon used in the button dropdown trigger, used with the [icon component](/components/icon/).
@@ -176,6 +184,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an `href` set.
    */
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onLoadItems?: NonCancelableEventHandler<ButtonDropdownProps.LoadItemsDetail>;
   /**
    * A standalone action that is shown prior to the dropdown trigger.
    * Use it with "primary" and "normal" variant only.
@@ -198,9 +207,17 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * Enables filtering of the dropdown items.
    *
-   * When set to `auto`, a search input is rendered inside the dropdown and the items are filtered as the user
-   * types. Items are matched client-side using a case-insensitive substring match against their `text`,
-   * `secondaryText`, and `labelTag`.
+   * * `auto` - A search input is rendered inside the dropdown and the items are automatically filtered as the user types.
+   * * `manual` - You will set up `onLoadItems` event listeners and filter items on your side or request
+   * them from server.
+   *
+   * If you set this property to `auto`, the component will filter the provided `items` based on the value of the filtering input field.
+   * The filtering text is matched against the item's `text`, `secondaryText`, and `labelTag`.
+   *
+   * If you set this property to `manual`, the default filtering mechanism is disabled and all provided `items` are
+   * displayed in the dropdown list. In that case make sure that you use the `onLoadItems` events in order
+   * to set the `items` property to the items that are relevant for the user, given the filtering input value.
+   *
    */
   filteringType?: ButtonDropdownProps.FilteringType;
 
@@ -269,7 +286,12 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
-  export type FilteringType = 'auto' | 'none';
+  export type FilteringType = 'auto' | 'manual' | 'none';
+
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
 
   export interface I18nStrings {
     filteringItemAriaDescription?: string;
