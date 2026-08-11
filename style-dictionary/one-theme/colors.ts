@@ -109,6 +109,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Selection / focus ─────────────────────────────────────────────────────
   colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBorderNotificationStackBarFocused: '{colorNeutral100}',
   colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
   colorBackgroundItemSelected: { light: '{colorNeutral150}', dark: '{colorNeutral1000}' },
