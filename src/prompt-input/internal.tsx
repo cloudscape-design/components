@@ -167,7 +167,12 @@ const InternalPromptInput = React.forwardRef(
       // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
       element.style.height = 'auto';
 
-      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
+      // The native textarea already grows to its `rows={minRows}` attribute, so this
+      // formula only needs to act as a one-line floor there. The contentEditable div used
+      // in token mode has no equivalent native sizing, so it must scale with minRows directly.
+      const minRowsHeight = isTokenMode
+        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
+        : `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
       const scrollHeight = `calc(${element.scrollHeight}px)`;
 
       if (maxRows === -1) {
@@ -191,11 +196,19 @@ const InternalPromptInput = React.forwardRef(
       }
     }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
 
+    // When minRows/maxRows change, recalculate height synchronously — these prop
+    // changes don't involve caret position so no RAF deferral is needed.
+    useEffect(() => {
+      if (isTokenMode) {
+        adjustInputHeight();
+      }
+    }, [isTokenMode, adjustInputHeight, minRows, maxRows]);
+
     useEffect(() => {
       if (!isTokenMode) {
         adjustInputHeight();
       }
-    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder]);
+    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder, minRows, maxRows]);
 
     // Observe width changes on the component's root element to handle container resizes.
     // We need a separate RefObject because __internalRootRef may be a callback ref,

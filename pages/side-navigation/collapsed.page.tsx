@@ -14,14 +14,45 @@ const items: SideNavigationProps.Item[] = [
   { type: 'link', text: 'Settings', href: '#/settings', icon: <Icon name="settings" /> },
   {
     type: 'section',
-    text: 'Resources',
+    text: 'Section',
     items: [
       { type: 'link', text: 'Announcements', href: '#/announcements', icon: <Icon name="announcement" /> },
       { type: 'link', text: 'Team', href: '#/team', icon: <Icon name="group" /> },
       { type: 'link', text: 'Networking', href: '#/networking', icon: <Icon name="share" /> },
     ],
   },
+  { type: 'divider' },
+  {
+    type: 'link-group',
+    text: 'Link group',
+    href: '#/',
+    items: [
+      { type: 'link', text: 'Announcements', href: '#/announcements3', icon: <Icon name="announcement" /> },
+      { type: 'link', text: 'Team', href: '#/team3', icon: <Icon name="group" /> },
+      { type: 'link', text: 'Networking', href: '#/networking3', icon: <Icon name="share" /> },
+    ],
+  },
+  {
+    type: 'expandable-link-group',
+    text: 'Expandable link group',
+    href: '#/projects',
+    icon: <Icon name="folder" />,
+    items: [
+      { type: 'link', text: 'Project 1', href: '#/projects/1' },
+      { type: 'link', text: 'Project 2', href: '#/projects/2' },
+      { type: 'link', text: 'Project 3', href: '#/projects/3' },
+    ],
+  },
   { type: 'link', text: 'Documentation', href: '#/docs', external: true },
+  {
+    type: 'section-group',
+    title: 'Section group',
+    items: [
+      { type: 'link', text: 'Announcements', href: '#/announcements2', icon: <Icon name="announcement" /> },
+      { type: 'link', text: 'Team', href: '#/team2', icon: <Icon name="group" /> },
+      { type: 'link', text: 'Networking', href: '#/networking2', icon: <Icon name="share" /> },
+    ],
+  },
 ];
 
 const COLLAPSED_WIDTH = 52;
@@ -49,7 +80,7 @@ export default function SideNavigationCollapsedPage() {
   }
 
   return (
-    <div style={{ display: 'flex', blockSize: '100vh', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', blockSize: '100vh', overflow: 'auto' }}>
       {/* Nav panel */}
       <nav
         id="side-navigation-panel"
@@ -64,7 +95,7 @@ export default function SideNavigationCollapsedPage() {
           flexDirection: 'column',
         }}
       >
-        <div style={{ inlineSize: collapsed ? 'auto' : EXPANDED_WIDTH, boxSizing: 'border-box' }}>
+        <div style={{ inlineSize: collapsed ? 'auto' : EXPANDED_WIDTH, boxSizing: 'border-box', overflow: 'auto' }}>
           {/* Toggle button at top */}
           <div
             style={{

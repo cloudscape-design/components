@@ -393,6 +393,7 @@ export function NavigationItemsList({
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
                 [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles['list--with-icons']]: withIcons,
               })}
             >
               {list.element}
@@ -620,12 +621,15 @@ function Section({
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
+      disableContentPaddings={true}
       className={clsx(
         styles.section,
         isInSectionGroup && styles['section--no-ident'],
+        withIcons && styles['section--expand-icon-end'],
         isVisualRefresh && styles.refresh
       )}
       headerText={<span className={styles['section-header']}>{definition.text}</span>}
+      __expandIconPosition={withIcons ? 'end' : 'start'}
     >
       <NavigationItemsList
         variant="section"
@@ -812,11 +816,15 @@ function ExpandableLinkGroup({
       className={clsx(
         styles['expandable-link-group'],
         variant === 'section-group' && styles['expandable-link-group--no-ident'],
+        withIcons && styles['expandable-link-group--expand-icon-end'],
         definition.href === activeHref && styles['expandable-link-group--active']
       )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}
+      disableContentPaddings={true}
+      __disableHeaderPaddings={true}
+      __expandIconPosition={withIcons ? 'end' : 'start'}
       headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}

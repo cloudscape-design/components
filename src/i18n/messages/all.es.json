@@ -257,7 +257,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Ir a la página",
     "i18nStrings.jumpToPageInputLabel": "Página",
     "i18nStrings.jumpToPageError": "Página fuera de rango. Se muestra la última página disponible.",
-    "i18nStrings.jumpToPageLoadingText": "Cargando"
+    "i18nStrings.jumpToPageLoadingText": "Cargando",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} de {pagesCount}+} false {{currentPage} de {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",

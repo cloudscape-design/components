@@ -275,6 +275,18 @@ describe('Tabs', () => {
 
       expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
     });
+
+    test('moves the roving tab stop to a programmatically selected tab', () => {
+      const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => void 0} />);
+
+      expect(wrapper.findTabLinkById('first')!.getElement()).toHaveAttribute('tabindex', '0');
+      expect(wrapper.findTabLinkById('second')!.getElement()).toHaveAttribute('tabindex', '-1');
+
+      rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => void 0} />);
+
+      expect(wrapper.findTabLinkById('first')!.getElement()).toHaveAttribute('tabindex', '-1');
+      expect(wrapper.findTabLinkById('second')!.getElement()).toHaveAttribute('tabindex', '0');
+    });
   });
 
   describe('User interaction (controlled)', () => {

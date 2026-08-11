@@ -10,6 +10,7 @@ const DEFAULT_TOKEN_VERSION = 'v3-1';
 const versionGroups = [
   { pattern: /^border-/, version: DEFAULT_TOKEN_VERSION },
   { pattern: /^(font|letter-spacing|line-height)-/, version: DEFAULT_TOKEN_VERSION },
+  { pattern: /^color-(charts|severity)-/, version: DEFAULT_TOKEN_VERSION },
 ];
 
 // Builds the token -> version allowlist from the full token -> cssName map.

@@ -51,9 +51,11 @@ function getComponentsExports() {
     result[`./${component}`] = `./${component}/index.js`;
   }
 
-  // Per-component test-utils DOM wrappers (e.g. `.../test-utils/dom/button`).
+  // Per-component test-utils wrappers, both DOM and selectors
+  // (e.g. `.../test-utils/dom/button` and `.../test-utils/selectors/button`).
   for (const component of listPublicItems('src/test-utils/dom')) {
     result[`./test-utils/dom/${component}`] = `./test-utils/dom/${component}/index.js`;
+    result[`./test-utils/selectors/${component}`] = `./test-utils/selectors/${component}/index.js`;
   }
 
   // Internationalization and messages
@@ -146,3 +148,4 @@ module.exports = parallel([
   testDefinitionsPackageJson,
 ]);
 module.exports.generatePackageJson = generatePackageJson;
+module.exports.getComponentsExports = getComponentsExports;

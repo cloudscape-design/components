@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import SpaceBetween from '~components/space-between';
-import Tabs, { TabsProps } from '~components/tabs';
+import { Button, SpaceBetween, Tabs, TabsProps } from '~components';
+
+import { SimplePage } from '../app/templates';
 
 export default function TabsDemoPage() {
   const tabs: Array<TabsProps.Tab> = [
@@ -22,12 +23,14 @@ export default function TabsDemoPage() {
   ];
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   return (
-    <>
-      <h1>Tabs</h1>
-
+    <SimplePage title="Tabs">
       <SpaceBetween size="xs">
         <div>
           <h2>Controlled component</h2>
+          <SpaceBetween direction="horizontal" size="xs">
+            <Button onClick={() => setSelectedTab(tabs[0].id)}>Select first tab</Button>
+            <Button onClick={() => setSelectedTab(tabs[1].id)}>Select second tab</Button>
+          </SpaceBetween>
           <Tabs
             tabs={tabs}
             activeTabId={selectedTab}
@@ -43,6 +46,6 @@ export default function TabsDemoPage() {
           />
         </div>
       </SpaceBetween>
-    </>
+    </SimplePage>
   );
 }
