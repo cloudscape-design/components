@@ -3357,6 +3357,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -6998,6 +7012,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -10643,6 +10671,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -14284,6 +14326,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -17929,6 +17985,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -21572,6 +21642,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -25213,6 +25297,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+      },
+    },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
       },
     },
     "size-side-navigation-item-height": {
@@ -28863,6 +28961,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -32504,6 +32616,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -36149,6 +36275,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -39790,6 +39930,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -43435,6 +43589,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -47076,6 +47244,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -50721,6 +50903,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -54364,6 +54560,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -58005,6 +58215,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
       },
     },
     "size-side-navigation-item-height": {

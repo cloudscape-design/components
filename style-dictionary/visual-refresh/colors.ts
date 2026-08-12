@@ -64,7 +64,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundItemSelected: { light: '{colorPrimary50}', dark: '{colorPrimary1000}' },
   colorBackgroundSideNavigationItemActive: 'transparent',
   colorBackgroundSideNavigationItemActiveCollapsed: '{colorBackgroundControlChecked}',
-  colorBackgroundSideNavigationItemIconHover: { light: '{colorPrimary50}', dark: '{colorNeutral700}' },
+  colorBackgroundSideNavigationItemIconHover: '{colorBackgroundItemSelected}',
   colorBackgroundLayoutMain: { light: '{colorWhite}', dark: '{colorNeutral850}' },
   colorBackgroundLayoutAiDrawer: '{colorNeutral850}',
   colorBackgroundDrawer: '{colorBackgroundLayoutPanelContent}',

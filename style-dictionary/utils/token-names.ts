@@ -1107,6 +1107,10 @@ export type MotionTokenName =
   | 'motionDurationRotate90'
   | 'motionDurationShowPaced'
   | 'motionDurationShowQuick'
+  | 'motionDurationExpandableContentEnter'
+  | 'motionDurationSideNavigationContentEnterFade'
+  | 'motionDurationSideNavigationContentExit'
+  | 'motionDurationSideNavigationContentExitFade'
   | 'motionDurationSlow'
   | 'motionDurationTransitionQuick'
   | 'motionDurationTransitionShowPaced'
@@ -1123,6 +1127,8 @@ export type MotionTokenName =
   | 'motionEasingRotate90'
   | 'motionEasingShowPaced'
   | 'motionEasingShowQuick'
+  | 'motionEasingExpandableContentEnter'
+  | 'motionEasingSideNavigationContentExit'
   | 'motionEasingTransitionQuick'
   | 'motionEasingTransitionShowPaced'
   | 'motionEasingTransitionShowQuick'
@@ -1148,7 +1154,9 @@ export type SizesTokenName =
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
   | 'sizeVerticalPanelIconOffset'
-  | 'sizeSideNavigationItemHeight';
+  | 'sizeSideNavigationItemHeight'
+  | 'sizeSideNavigationItemCollapsed'
+  | 'sizeSideNavigationCollapsedWidth';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'

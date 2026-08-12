@@ -8,7 +8,13 @@
 @use '../container/shared' as container;
 @use '../internal/styles/utils/theming';
 
-@use './motion';
+// Show/hide animation (show = height leads, opacity trails; hide = equal, no delay).
+$reveal-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$reveal-enter-easing: awsui.$motion-easing-expandable-content-enter;
+$reveal-enter-delay: calc(#{$reveal-enter-duration} / 3);
+$reveal-enter-motion: $reveal-enter-duration $reveal-enter-easing;
+$reveal-enter-delayed-motion: $reveal-enter-motion $reveal-enter-delay;
+$reveal-exit-motion: awsui.$motion-duration-show-quick $reveal-enter-easing;
 
 $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
@@ -37,6 +43,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon {
   transform: rotate(-90deg);
+
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+  }
 
   &.expanded {
     transform: rotate(0deg);
@@ -126,9 +136,20 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     &:not(.header-deprecated) {
       padding-inline-start: $icon-total-space-normal;
     }
+
+    // HIDE (collapsed): quick collapse, no delay
+    @include styles.with-motion {
+      transition: border-block-end-color $reveal-exit-motion;
+    }
+
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
       border-block-end-color: awsui.$color-border-expandable-section-default;
+
+      // SHOW (expanded): border fades in with the same delay as content opacity so both appear together
+      @include styles.with-motion {
+        transition: border-block-end-color $reveal-enter-delayed-motion;
+      }
     }
   }
 
@@ -150,6 +171,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-container {
     padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
     padding-inline-end: container.$header-padding-horizontal;
+
+    // HIDE (collapsed state): padding settles back to symmetric top/bottom.
+    @include styles.with-motion {
+      transition: padding-block-end $reveal-exit-motion;
+    }
 
     &:not(.wrapper-expanded) {
       // Equal top and bottom padding so standalone header has vertical symmetry.
@@ -267,23 +293,82 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .content {
   display: none;
 
-  &-default,
-  &-inline {
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: 0;
-  }
-
-  &-footer {
-    padding-block: awsui.$space-xs;
-    padding-inline: 0;
-  }
-
   &-expanded {
     display: block;
   }
 
   &-compact {
     padding-inline-start: $icon-total-space-normal;
+  }
+
+  // One-theme only: animated grid-template-rows reveal instead of the true/false display:none. VR keeps
+  // instantaneous display toggling, to prevent breaking reliance on synchronous isDisplayed()/isExisting() checks.
+  @include theming.one-theme-only {
+    display: grid;
+    grid-template-rows: 0fr;
+
+    // HIDE (collapsed state): quick collapse, no delay
+    @include styles.with-motion {
+      transition: grid-template-rows $reveal-exit-motion;
+    }
+
+    &-expanded {
+      grid-template-rows: 1fr;
+
+      // SHOW (expanded state): paced height opening, no delay — height leads.
+      @include styles.with-motion {
+        transition: grid-template-rows $reveal-enter-motion;
+      }
+    }
+  }
+}
+
+// One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
+.content-inner {
+  @include theming.one-theme-only {
+    // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
+    // active/hover/focus states) bleed past the inline edges.
+    overflow-x: visible;
+    // overflow: clip (not hidden, which would coerce x-axis to auto) still lets the grid-row track collapse.
+    overflow-y: clip;
+    min-block-size: 0;
+    opacity: 0;
+
+    // HIDE (collapsed state): quick opacity collapse, no delay.
+    @include styles.with-motion {
+      transition: opacity $reveal-exit-motion;
+    }
+
+    &-expanded {
+      opacity: 1;
+
+      // SHOW (expanded state): opacity fades in AFTER height has partially
+      // opened, creating a perceptible fade in the revealed space.
+      @include styles.with-motion {
+        transition: opacity $reveal-enter-delayed-motion;
+      }
+    }
+
+    &-settled {
+      overflow-y: visible;
+    }
+  }
+}
+
+// Padding lives here rather than outer content wrapper so the grid track can fully collapse to zero at 0fr.
+.content-inner-body {
+  &-default,
+  &-inline {
+    padding-block: awsui.$space-scaled-xs;
+  }
+
+  &-footer {
+    padding-block: awsui.$space-xs;
+  }
+
+  &-container {
+    padding-block: awsui.$space-container-content-top awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
   }
 }
 
@@ -319,7 +404,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
-// When the expand/collapse icon is rendered at the end of the header.
 // For non-container variants the icon is rendered at the end of the headerButton
 // (taking the full width of the header). For the container variant the icon is
 // rendered as a sibling of the InternalHeader so it appears past any actions.
@@ -425,12 +509,16 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 }
 
-// Semantic wrapper around HeadingTag + actions in non-container variants
-.header-icon-end > .header-content {
-  flex: 1;
-  min-inline-size: 0;
+// min-block-size: 0 lets this grid item collapse to zero height when an ancestor
+// uses grid-template-rows: 0fr (side-navigation section header collapse).
+// Must remain global (not scoped to .header-icon-end) because the side-nav
+// collapse targets the header wrapper regardless of icon position.
+.header-content {
+  min-block-size: 0;
 }
 
+// In the end-icon layout, header content elements must shrink without overflowing.
+.header-icon-end > .header-content,
 .header-icon-end > .header-navigation-content {
   flex: 1;
   min-inline-size: 0;
