@@ -25,6 +25,7 @@ const permutations = createPermutations<DialogProps>([
   // Header + content + footer
   {
     initialFocus: ['none'],
+    open: [true],
     header: ['What’s your main goal?'],
     children: ['Choose the option that best matches your intent.'],
     footer: [footer],
@@ -32,12 +33,14 @@ const permutations = createPermutations<DialogProps>([
   // Header + content only (no footer)
   {
     initialFocus: ['none'],
+    open: [true],
     header: ['Authorize account access'],
     children: ['Read and write access will be granted to the deployment agent.'],
   },
   // Long content to check wrapping/scroll behavior
   {
     initialFocus: ['none'],
+    open: [true],
     header: ['Tell us what went wrong'],
     children: [
       'This is a longer body of content used to verify that the dialog grows with its content and that the header, content, and footer regions remain visually distinct across a taller layout.',

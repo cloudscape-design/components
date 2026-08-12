@@ -47,23 +47,20 @@ const InternalDialog = React.forwardRef(
       }
     });
 
-    // Uncontrolled (`open` unset): mounting IS the appearance, so move focus in
-    // on mount. Controlled: defer to the open-transition effect below (no focus
-    // change on initial render, matching Drawer).
+    // Focus moves in whenever the dialog becomes visible: on mount if it starts
+    // open, and on every false→true transition. The dialog never traps focus.
     useEffect(() => {
-      if (open === undefined) {
+      if (open) {
+        returnFocusTargetRef.current = document.activeElement as HTMLElement | null;
         focusIn();
       }
-      // Mount only.
+      // Mount only; open transitions are handled below.
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Controlled visibility. On show, record the previously focused element and
-    // move focus in; on hide, restore focus to it. The dialog never traps focus.
+    // On open transitions: focus in on show, restore focus to the previously
+    // focused element on hide.
     useEffectOnUpdate(() => {
-      if (open === undefined) {
-        return;
-      }
       if (open) {
         returnFocusTargetRef.current = document.activeElement as HTMLElement | null;
         focusIn();
@@ -100,7 +97,7 @@ const InternalDialog = React.forwardRef(
         ref={__internalRootRef}
         role="dialog"
         aria-labelledby={header ? headerId : undefined}
-        className={clsx(baseProps.className, styles.root, testStyles.root, open === false && styles.hidden)}
+        className={clsx(baseProps.className, styles.root, testStyles.root, !open && styles.hidden)}
         onKeyDown={onKeyDown}
       >
         <InternalItemCard

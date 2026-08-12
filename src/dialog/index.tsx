@@ -15,15 +15,11 @@ export { DialogProps };
 
 const Dialog = React.forwardRef(
   ({ initialFocus = 'header', open, onDismiss, ...props }: DialogProps, ref: React.Ref<DialogProps.Ref>) => {
-    if (open !== undefined && !onDismiss) {
-      warnOnce(
-        'Dialog',
-        'You provided `open` without an `onDismiss` handler. The dialog will not respond to close actions.'
-      );
+    if (!onDismiss) {
+      warnOnce('Dialog', 'You should provide an `onDismiss` handler so the dialog can respond to close actions.');
     }
     const baseComponentProps = useBaseComponent('Dialog', {
       props: { initialFocus },
-      metadata: { hasOpen: open !== undefined },
     });
     const externalProps = getExternalProps(props);
     return (

@@ -30,44 +30,42 @@ export default function DialogInlineFeedbackPage() {
           ]}
         />
 
-        {open ? (
-          <Dialog
-            header="Tell us what went wrong"
-            i18nStrings={{ dismissAriaLabel: 'Close feedback' }}
-            onDismiss={() => setOpen(false)}
-            footer={
-              <SpaceBetween direction="horizontal" size="xs">
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button variant="primary" onClick={() => setOpen(false)}>
-                  Submit feedback
-                </Button>
-              </SpaceBetween>
-            }
-          >
-            <SpaceBetween size="xs">
-              <FormField label="What was the issue?">
-                <RadioGroup
-                  value={reason}
-                  onChange={({ detail }) => setReason(detail.value)}
-                  items={[
-                    { value: 'inaccurate', label: 'Inaccurate' },
-                    { value: 'incomplete', label: 'Incomplete' },
-                    { value: 'irrelevant', label: 'Not relevant' },
-                  ]}
-                />
-              </FormField>
-              <FormField label="Additional details (optional)">
-                <Textarea
-                  value={details}
-                  onChange={({ detail }) => setDetails(detail.value)}
-                  placeholder="Add more context"
-                />
-              </FormField>
+        <Dialog
+          open={open}
+          header="Tell us what went wrong"
+          i18nStrings={{ dismissAriaLabel: 'Close feedback' }}
+          onDismiss={() => setOpen(false)}
+          footer={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="primary" onClick={() => setOpen(false)}>
+                Submit feedback
+              </Button>
             </SpaceBetween>
-          </Dialog>
-        ) : (
-          <Button onClick={() => setOpen(true)}>Re-open feedback</Button>
-        )}
+          }
+        >
+          <SpaceBetween size="xs">
+            <FormField label="What was the issue?">
+              <RadioGroup
+                value={reason}
+                onChange={({ detail }) => setReason(detail.value)}
+                items={[
+                  { value: 'inaccurate', label: 'Inaccurate' },
+                  { value: 'incomplete', label: 'Incomplete' },
+                  { value: 'irrelevant', label: 'Not relevant' },
+                ]}
+              />
+            </FormField>
+            <FormField label="Additional details (optional)">
+              <Textarea
+                value={details}
+                onChange={({ detail }) => setDetails(detail.value)}
+                placeholder="Add more context"
+              />
+            </FormField>
+          </SpaceBetween>
+        </Dialog>
+        {!open && <Button onClick={() => setOpen(true)}>Re-open feedback</Button>}
       </SpaceBetween>
     </DialogPage>
   );

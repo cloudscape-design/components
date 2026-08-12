@@ -14,13 +14,21 @@ function renderDialog(jsx: React.ReactElement) {
 }
 
 test('renders a role="dialog" element', () => {
-  const { dialog } = renderDialog(<Dialog header="Title">content</Dialog>);
+  const { dialog } = renderDialog(
+    <Dialog header="Title" open={true} onDismiss={() => {}}>
+      content
+    </Dialog>
+  );
   expect(dialog).not.toBeNull();
   expect(dialog).toHaveTextContent('content');
 });
 
 test('uses the header as the accessible name via aria-labelledby', () => {
-  const { dialog } = renderDialog(<Dialog header="What's your goal?">body</Dialog>);
+  const { dialog } = renderDialog(
+    <Dialog header="What's your goal?" open={true} onDismiss={() => {}}>
+      body
+    </Dialog>
+  );
   const labelledBy = dialog.getAttribute('aria-labelledby');
   expect(labelledBy).toBeTruthy();
   const header = document.getElementById(labelledBy!);
@@ -28,14 +36,18 @@ test('uses the header as the accessible name via aria-labelledby', () => {
 });
 
 test('does not set aria-modal', () => {
-  const { dialog } = renderDialog(<Dialog header="Title">content</Dialog>);
+  const { dialog } = renderDialog(
+    <Dialog header="Title" open={true} onDismiss={() => {}}>
+      content
+    </Dialog>
+  );
   expect(dialog.getAttribute('aria-modal')).toBeNull();
 });
 
 test('always renders a dismiss button and fires onDismiss when clicked', () => {
   const onDismiss = jest.fn();
   const { dialog } = renderDialog(
-    <Dialog header="Title" i18nStrings={{ dismissAriaLabel: 'Close' }} onDismiss={onDismiss}>
+    <Dialog header="Title" open={true} i18nStrings={{ dismissAriaLabel: 'Close' }} onDismiss={onDismiss}>
       content
     </Dialog>
   );
@@ -48,7 +60,7 @@ test('always renders a dismiss button and fires onDismiss when clicked', () => {
 test('fires onDismiss when Escape is pressed inside the dialog', () => {
   const onDismiss = jest.fn();
   const { dialog } = renderDialog(
-    <Dialog header="Title" onDismiss={onDismiss}>
+    <Dialog header="Title" open={true} onDismiss={onDismiss}>
       content
     </Dialog>
   );
@@ -56,15 +68,19 @@ test('fires onDismiss when Escape is pressed inside the dialog', () => {
   expect(onDismiss).toHaveBeenCalledTimes(1);
 });
 
-test('moves focus to the header on mount by default', () => {
-  const { dialog } = renderDialog(<Dialog header="Title">content</Dialog>);
+test('moves focus to the header when opened by default', () => {
+  const { dialog } = renderDialog(
+    <Dialog header="Title" open={true} onDismiss={() => {}}>
+      content
+    </Dialog>
+  );
   const labelledBy = dialog.getAttribute('aria-labelledby')!;
   expect(document.activeElement).toBe(document.getElementById(labelledBy));
 });
 
 test('does not move focus when initialFocus is none', () => {
   const { dialog } = renderDialog(
-    <Dialog header="Title" initialFocus="none">
+    <Dialog header="Title" open={true} initialFocus="none" onDismiss={() => {}}>
       content
     </Dialog>
   );

@@ -35,29 +35,29 @@ export default function DialogAuthorizationPage() {
           ]}
         />
 
-        {decided === null ? (
-          <Dialog
-            header="Authorize account access"
-            i18nStrings={{ dismissAriaLabel: 'Close' }}
-            onDismiss={() => setDecided('denied')}
-            footer={
-              <SpaceBetween direction="horizontal" size="xs">
-                <Button onClick={() => setDecided('denied')}>Deny</Button>
-                <Button variant="primary" onClick={() => setDecided('approved')}>
-                  Approve
-                </Button>
-              </SpaceBetween>
-            }
-          >
-            <FormField label="Access level to grant">
-              <Select
-                selectedOption={selected}
-                onChange={({ detail }) => setSelected(detail.selectedOption)}
-                options={options}
-              />
-            </FormField>
-          </Dialog>
-        ) : (
+        <Dialog
+          open={decided === null}
+          header="Authorize account access"
+          i18nStrings={{ dismissAriaLabel: 'Close' }}
+          onDismiss={() => setDecided('denied')}
+          footer={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button onClick={() => setDecided('denied')}>Deny</Button>
+              <Button variant="primary" onClick={() => setDecided('approved')}>
+                Approve
+              </Button>
+            </SpaceBetween>
+          }
+        >
+          <FormField label="Access level to grant">
+            <Select
+              selectedOption={selected}
+              onChange={({ detail }) => setSelected(detail.selectedOption)}
+              options={options}
+            />
+          </FormField>
+        </Dialog>
+        {decided !== null && (
           <Box>
             Decision recorded: {decided}. <Button onClick={() => setDecided(null)}>Reset</Button>
           </Box>

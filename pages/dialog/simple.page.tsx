@@ -26,35 +26,33 @@ export default function DialogSimplePage() {
         <SpaceBetween size="m">
           <FakeTranscript />
 
-          {open ? (
-            <Dialog
-              header="What's your main goal?"
-              i18nStrings={{ dismissAriaLabel: 'Close' }}
-              onDismiss={() => setOpen(false)}
-              footer={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button onClick={() => setOpen(false)}>Skip</Button>
-                  <Button variant="primary" onClick={() => setOpen(false)}>
-                    Continue
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              <FormField label="Select the option that best matches your intent">
-                <RadioGroup
-                  value={goal}
-                  onChange={({ detail }) => setGoal(detail.value)}
-                  items={[
-                    { value: 'increase', label: 'Increase volume size' },
-                    { value: 'change-type', label: 'Change volume type' },
-                    { value: 'something-else', label: 'Something else' },
-                  ]}
-                />
-              </FormField>
-            </Dialog>
-          ) : (
-            <Button onClick={() => setOpen(true)}>Re-open dialog</Button>
-          )}
+          <Dialog
+            open={open}
+            header="What's your main goal?"
+            i18nStrings={{ dismissAriaLabel: 'Close' }}
+            onDismiss={() => setOpen(false)}
+            footer={
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button onClick={() => setOpen(false)}>Skip</Button>
+                <Button variant="primary" onClick={() => setOpen(false)}>
+                  Continue
+                </Button>
+              </SpaceBetween>
+            }
+          >
+            <FormField label="Select the option that best matches your intent">
+              <RadioGroup
+                value={goal}
+                onChange={({ detail }) => setGoal(detail.value)}
+                items={[
+                  { value: 'increase', label: 'Increase volume size' },
+                  { value: 'change-type', label: 'Change volume type' },
+                  { value: 'something-else', label: 'Something else' },
+                ]}
+              />
+            </FormField>
+          </Dialog>
+          {!open && <Button onClick={() => setOpen(true)}>Re-open dialog</Button>}
 
           <PromptInput
             value={prompt}
