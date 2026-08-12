@@ -727,6 +727,7 @@ export type ColorsTokenName =
   | 'colorBorderLayout'
   | 'colorBorderLayoutSideNavigation'
   | 'colorBorderNotificationStackBar'
+  | 'colorBorderNotificationStackBarFocused'
   | 'colorBorderPanelHeader'
   | 'colorBorderPopover'
   | 'colorBorderSegmentActive'
