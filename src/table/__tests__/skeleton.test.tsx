@@ -268,5 +268,130 @@ describe('Table skeleton loading', () => {
         expect(lastDataRow.compareDocumentPosition(skeletonRow.getElement())).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
       }
     });
+
+    describe('with renderCell', () => {
+      test('renders custom skeleton content in automatic rows', () => {
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: {
+            totalRows: 'auto',
+            maxAutoRows: 2,
+            renderCell: column => <span data-testid="custom-skeleton">{`skeleton-${column.header}`}</span>,
+          },
+        });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(4); // 2 columns × 2 auto rows
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]').map(w => w.getElement().textContent)).toEqual(
+          expect.arrayContaining(['skeleton-id', 'skeleton-name'])
+        );
+      });
+
+      test('fits fewer automatic rows when renderCell produces taller rows', () => {
+        // Auto-sizing measures the real rendered skeleton-row height, so a taller custom
+        // placeholder must fit fewer rows than the default single-line case (which fits 3,
+        // per "fills the viewport automatically"). Report custom rows as 80px vs the default 40px.
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+          if (this === document.body) {
+            return { top: 0, bottom: 400, height: 400 } as DOMRect;
+          }
+          if (this.matches('tr[aria-hidden="true"]')) {
+            return this.querySelector('[data-testid="tall-skeleton"]')
+              ? ({ top: 200, bottom: 280, height: 80 } as DOMRect)
+              : ({ top: 200, bottom: 240, height: 40 } as DOMRect);
+          }
+          if (this.querySelector('tbody')) {
+            return { top: 0, bottom: 300, height: 300 } as DOMRect;
+          }
+          return { top: 0, bottom: 0, height: 0 } as DOMRect;
+        });
+
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: {
+            totalRows: 'auto',
+            renderCell: () => (
+              <>
+                <span data-testid="tall-skeleton" />
+                <span data-testid="tall-skeleton" />
+              </>
+            ),
+          },
+        });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+      });
+
+      test('falls back to the default skeleton per column in automatic rows', () => {
+        const wrapper = renderTable({
+          items: [],
+          loading: true,
+          skeleton: {
+            totalRows: 'auto',
+            maxAutoRows: 2,
+            renderCell: column => (column.header === 'name' ? <span data-testid="custom-skeleton" /> : undefined),
+          },
+        });
+        expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(2);
+        expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(2); // name column, 2 rows
+        expect(wrapper.findAllSkeletons()).toHaveLength(2); // id column falls back to default, 2 rows
+      });
+    });
+  });
+
+  describe('renderCell (custom column skeleton)', () => {
+    test('renders custom skeleton content per column', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => <span data-testid="custom-skeleton">{`skeleton-${column.header}`}</span>,
+        },
+      });
+      const custom = wrapper.findAll('[data-testid="custom-skeleton"]');
+      expect(custom).toHaveLength(4); // 2 columns × 2 rows
+      expect(custom.map(w => w.getElement().textContent)).toEqual(
+        expect.arrayContaining(['skeleton-id', 'skeleton-name'])
+      );
+    });
+
+    test('falls back to the default skeleton when renderCell returns undefined for a column', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => (column.header === 'name' ? <span data-testid="custom-skeleton" /> : undefined),
+        },
+      });
+      expect(wrapper.findAll('[data-testid="custom-skeleton"]')).toHaveLength(2); // name column, 2 rows
+      expect(wrapper.findAllSkeletons()).toHaveLength(2); // id column falls back to default, 2 rows
+    });
+
+    test('renders custom skeleton content inside aria-hidden rows', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: { totalRows: 1, renderCell: () => <span data-testid="custom-skeleton" /> },
+      });
+      const hiddenRows = wrapper.findAll('tr[aria-hidden="true"]');
+      expect(hiddenRows).toHaveLength(1);
+      expect(hiddenRows[0].findAll('[data-testid="custom-skeleton"]')).toHaveLength(2);
+    });
+
+    test('renders an empty placeholder when renderCell returns null (only undefined falls back)', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: true,
+        skeleton: {
+          totalRows: 2,
+          renderCell: column => (column.header === 'id' ? null : undefined),
+        },
+      });
+      // id column returns null -> empty placeholder (no default skeleton);
+      // name column returns undefined -> default skeleton (2 rows).
+      expect(wrapper.findAllSkeletons()).toHaveLength(2);
+    });
   });
 });
