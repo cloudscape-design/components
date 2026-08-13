@@ -320,6 +320,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkDecorationHover: 'currentColor',
   colorTextLinkSecondaryDefault: '{colorTextLinkDefault}',
   colorTextLinkSecondaryHover: '{colorTextLinkHover}',
+  colorTextLinkSecondaryDecorationDefault: 'transparent',
   colorTextLinkInfoDefault: '{colorTextLinkDefault}',
   colorTextLinkInfoHover: '{colorTextLinkHover}',
   colorTextLinkInvertedDefault: '{colorTextNotificationDefault}',

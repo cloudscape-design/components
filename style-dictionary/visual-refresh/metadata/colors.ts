@@ -1238,6 +1238,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkSecondaryDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of secondary links.',
+    public: false,
+    themeable: false,
+  },
   colorTextLinkInfoDefault: {
     description: 'The default color for info links.',
     public: true,
