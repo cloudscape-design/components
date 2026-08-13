@@ -6372,6 +6372,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
     },
     {
       "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "i18nTag": true,
       "inlineType": {
         "name": "(matchesCount: number, totalCount: number) => string",
         "parameters": [
@@ -6418,6 +6419,7 @@ types. Items are matched client-side using a case-insensitive substring match ag
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "ButtonDropdownProps.I18nStrings",
         "properties": [

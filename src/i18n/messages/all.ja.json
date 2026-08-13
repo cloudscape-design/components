@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount} 件のうち {matchesCount} 件の商品",
+    "noMatch": "一致するアクションなし",
+    "i18nStrings.filteringItemAriaDescription": "入力を続けると結果が絞り込まれます。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",

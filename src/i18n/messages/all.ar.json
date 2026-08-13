@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "عرض المسار"
   },
+  "button-dropdown": {
+    "filteringResultsText": "تم نفاد عدد {matchesCount} من {totalCount} من العناصر",
+    "noMatch": "لا توجد إجراءات مطابقة",
+    "i18nStrings.filteringItemAriaDescription": "استمر في الكتابة لتصفية النتائج."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "تفتح الصفحة في علامة تبويب جديدة"
   },
