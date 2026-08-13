@@ -59,7 +59,14 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
+  classNames?: ClassNames;
 } & InternalBaseComponentProps;
+
+// Style API v2
+export interface ClassNames {
+  button?: string;
+  anchor?: string;
+}
 
 export const InternalButton = React.forwardRef(
   (
@@ -105,6 +112,7 @@ export const InternalButton = React.forwardRef(
       __skipNativeAttributesWarnings,
       __compact = false,
       analyticsAction = 'click',
+      classNames,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -184,7 +192,8 @@ export const InternalButton = React.forwardRef(
       buttonContext.onClick({ variant });
     };
 
-    const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
+    const stylingClassName = isAnchor ? classNames?.anchor : classNames?.button;
+    const buttonClass = clsx(props.className, stylingClassName, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
       [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,
