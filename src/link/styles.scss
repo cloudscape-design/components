@@ -28,7 +28,7 @@
       @if $variant == 'info' or $variant == 'top-navigation' {
         @include styles.font-smoothing;
       }
-      @if $variant == 'secondary' {
+      @if $variant == 'secondary' or $variant == 'primary' {
         -webkit-font-smoothing: inherit;
         -moz-osx-font-smoothing: inherit;
       }
