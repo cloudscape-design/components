@@ -20,8 +20,8 @@ describe('Pie chart with links in key-value pairs', () => {
         const expectedFocusedText =
           linksIn === 'keys'
             ? // The external link icon adds an extra space at the end
-              'Popularity '
-            : '50% ';
+              'Popularity'
+            : '50%';
         await page.click('#focus-target');
         await page.keys(['Tab']); // Focus the chart
         await page.keys(['Enter']); // Focus the first chart segment
