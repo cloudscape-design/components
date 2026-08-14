@@ -31,6 +31,10 @@ $icon-offset-container: awsui.$space-xxs;
 $icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
 $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
 
+// Extra inline padding that widens the navigation caret pointer target to 24px (WCAG 2.5.8).
+$nav-caret-pad-normal: calc(24px - #{$icon-width-normal});
+$nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -266,6 +270,27 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       outline: none;
       text-decoration: none;
       flex-direction: column;
+
+      // Widen the pointer target to 24px (WCAG 2.5.8) with inline padding and an
+      // equal negative margin: the extra width grows away from the header label
+      // into the adjacent gutter, so neither the glyph nor the label moves and
+      // the label link keeps its own clicks. Vertical size already fills the row.
+      &:not(.icon-container-end) {
+        padding-inline-start: $nav-caret-pad-normal;
+        margin-inline-start: calc(#{$icon-margin-left} - #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-start: $nav-caret-pad-one-theme;
+          margin-inline-start: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
+      &.icon-container-end {
+        padding-inline-end: $nav-caret-pad-normal;
+        margin-inline-end: calc(-1 * #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-end: $nav-caret-pad-one-theme;
+          margin-inline-end: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
 
       &:hover {
         color: awsui.$color-text-expandable-section-hover;
