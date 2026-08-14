@@ -48,7 +48,13 @@ function getIcon(iconName, content) {
       {
         name: 'addAttributesToSVGElement',
         params: {
-          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }],
+          // `data-awsui-icon-animated` is a FEATURE OPT-IN for icon motion, not a claim about
+          // where the SVG came from. Motion selectors require it, and the default is off, so a
+          // builder-supplied `svg` (via the `svg` prop or an IconProvider override) is never
+          // animated by accident — it simply lacks the attribute, with no runtime check needed.
+          // A builder who wants their own SVG to animate may set it themselves: this is intent,
+          // not enforcement.
+          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }, { 'data-awsui-icon-animated': 'true' }],
         },
       },
       {

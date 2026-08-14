@@ -1,0 +1,1345 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Hover-only icon micro-interactions, zero JavaScript, emitted only for themes that opt
+// in to expressive motion (see `$expressive-motion-themes` in internal/styles/utils/theming).
+//
+// OPT-IN HOOK. Everything here is emitted into the Icon CSS module by `styles.scss`.
+// The Icon component already computes `styles[`name-${name}`]` unconditionally, so a
+// `name-<icon>` class merely EXISTING in this module is the whole hook for BESPOKE motion —
+// no TSX change and no public API change. Note the class is not exclusively a motion signal:
+// the 18 RTL-mirrored icons in `styles.scss` have one for an unrelated reason.
+//
+// TWO TIERS. The generic floor (`generic-hover-motion`) is scoped by region and opt-in only and
+// therefore reaches every generated icon; a `.name-<icon>` rule OVERRIDES it via the cascade.
+// So the map below decides which icons get BESPOKE motion, not which icons move at all.
+//
+// OPT-IN ATTRIBUTE. `.name-<icon>` alone is not safe to animate on: `InternalIcon` builds its
+// className before it decides what to render, so the class reflects the name that was
+// ASKED FOR, not what was rendered. `<Button iconName="x" iconSvg={…} />` and an
+// `IconProvider` override both keep `.name-x` while rendering a builder's SVG. Every
+// selector below therefore also requires `svg[data-awsui-icon-animated]`, which
+// `build-tools/tasks/generate-icons.js` stamps onto the generated set. It expresses opt-in
+// rather than origin: the default is off, so nothing animates by accident, and a builder may
+// set it on their own SVG to opt in.
+//
+// THREE INDEPENDENT CONDITIONS gate every animated icon: region ($_hover-trigger), target
+// ($_animating-icon), and marker ($_opted-in). Region alone isn't enough — ActionCard's own
+// `icon` and its `header`/`description`/`children` slots share the same tagged `.root` with
+// no dividing element, so target scope exists to tell them apart.
+//
+// SCOPE. Only icons whose BESPOKE motion needs no change to their drawing are included. An
+// icon qualifies when the moving piece is either the whole icon or already an independent
+// path, so at most a `class` attribute is added — verified pixel-identical with an
+// unchanged shape count. Icons whose moving piece sits inside an SVGO-merged path would
+// have to be re-cut; that changes the published drawing and is deliberately out of scope.
+// Re-cut paths also cannot be theme-gated, because the generated icons module is
+// theme-agnostic and copied identically into every artefact. Such icons still receive the
+// geometry-blind generic floor, which is what makes excluding them from the map harmless.
+//
+// Adding an animated icon is one entry in `$icon-hover-motion`, plus — for part-level motion —
+// a `motion-*` class on the relevant path(s) in the icon's SVG source.
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// Descendant combinators and type selectors are unavoidable: the trigger is an
+// interactive ancestor and the targets are SVG shapes inside the icon.
+// stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-disable @cloudscape-design/no-implicit-descendant
+
+// TIMING. Expressed against the theme's motion duration tokens rather than as literal
+// milliseconds, so timing responds to the theme. Tokens also carry a `disabled: 0ms`
+// motion mode, so these collapse to 0ms when motion is switched off — a second layer of
+// protection behind the explicit guards in `with-motion` below.
+$_base: awsui.$motion-duration-refresh-only-slow;
+
+$_duration-quick: calc(#{$_base} * 0.6); //  150ms — copy sheet offset, shake
+$_duration-generic: $_base; //              250ms — generic hover floor, digit slide
+$_duration-arc: calc(#{$_base} * 1.4); //   350ms — refresh arc sweep
+$_duration-emphasis: calc(#{$_base} * 1.6); // 400ms — arrowhead emphasis, whole-icon tilt
+$_duration-pulse: calc(#{$_base} * 1.8); // 450ms — heart pulse, clock hands
+$_duration-settle: calc(#{$_base} * 2); //  500ms — spring settles, nudges
+$_duration-gait: calc(#{$_base} * 2.4); //  600ms — bug gait cycle
+$_duration-tilt: calc(#{$_base} * 2.8); //  700ms — mouth tilt
+$_duration-attention: calc(#{$_base} * 3.6); // 900ms — warning pulse, mouth flex
+$_duration-dance: calc(#{$_base} * 4.8); // 1200ms — in-progress dots
+$_duration-sweep: calc(#{$_base} * 8); //  2000ms — pending hand full turn
+
+// Stagger for the three in-progress dots, also token-derived.
+$_delay-step: calc(#{$_base} * 0.4); //      100ms
+
+$_ease-out: awsui.$motion-easing-show-quick;
+$_ease-symmetric: awsui.$motion-easing-refresh-only-d;
+$_ease-decelerate: awsui.$motion-easing-responsive;
+// No token expresses an overshoot curve, and the settle motions depend on one, so this
+// stays local until the token set gains an equivalent.
+$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+// A constant-rate turn reads as a mechanical sweep rather than a settle, and no easing token
+// expresses it.
+$_ease-linear: linear;
+
+// The eligible region is an explicit per-component opt-in (`data-awsui-motion-trigger`, see
+// the token-list contract at `$_hover-trigger` below), not an implicit tag/role list — this
+// is what lets a non-interactive container (an action-card-style wrapper) participate. Hover
+// is deliberately never taken on the SVG itself — `styles.scss` sets `pointer-events: none`
+// on `> svg`.
+//
+// A disabled control must not react to hover. `:hover` still matches a disabled element,
+// so this has to be excluded explicitly — verified in Chromium, not assumed.
+//
+// Both clauses are needed because the two disabled mechanisms are not equivalent:
+//   :disabled                  native `disabled` on a <button> (Button, FileInput,
+//                              Pagination, SegmentedControl, ButtonGroup, …). `<a>` and
+//                              `[role="button"]` can never match it, so the clause is
+//                              simply always true for them — harmless.
+//   [aria-disabled="true"]     a LIVE control kept focusable and marked disabled only to
+//                              assistive tech (Table's disabled inline editor, Button's
+//                              disabled-with-reason, loading buttons).
+//
+// The value must be matched exactly. A bare `[aria-disabled]` would be wrong: several
+// call sites pass a boolean (`aria-disabled={disabled}`), and React stringifies aria-*,
+// so an ENABLED control renders `aria-disabled="false"` and would lose its motion.
+$_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
+
+// Motion is suppressed by NOT MATCHING, rather than by emitting an override that has to win
+// the cascade. Both mode classes land on the same element as the theme selector
+// (`document.body`), so they compound directly onto the theme scope. Inverting them here means
+// the guard costs two `:not()` clauses on the one themed rule instead of two extra rule blocks
+// per animated part — O(1) rather than O(parts) — and there is no specificity contest to lose.
+$_motion-on: ':not(.awsui-motion-disabled):not(.awsui-mode-entering)';
+
+// The FEATURE OPT-IN, and the one place its selector is written down. `generate-icons.js`
+// stamps `data-awsui-icon-animated="true"` onto every generated SVG root; a builder's own SVG
+// has it only if the builder sets it, which is a legitimate way to opt in.
+//
+// PRESENCE ONLY, deliberately: the attribute is an opt-in, so its presence is the signal and
+// ANY value enables motion — including `data-awsui-icon-animated="false"`. The generator only
+// ever emits `"true"`, and matching the value would cost 8 B on each of the ~190 places this
+// selector lands while buying nothing for the icons we ship. Worth knowing that two sibling
+// attributes in this repo (`data-stuck`, `data-animating`) ARE matched by exact value, so a
+// builder could reasonably expect `="false"` to opt out here. If that ever has to hold, change
+// this one variable to `svg[data-awsui-icon-animated="true"]`.
+$_opted-in: 'svg[data-awsui-icon-animated]';
+
+// `data-awsui-motion-trigger` carries a whitespace-separated list of trigger names, matched
+// with `~=`. This trigger claims the `hover` token; a future `press` trigger would define its
+// own `$_press-trigger` beside this one, and a component wanting both writes
+// `data-awsui-motion-trigger="hover press"`. `[attr~="v"]` counts as one attribute-level
+// specificity unit, same as the old tag/role list — margins against the disabled guards and
+// the floor-cancel are unchanged (asserted against real DOM, not assumed).
+$_hover-trigger: '[data-awsui-motion-trigger~="hover"]#{$_enabled-only}';
+
+// Matches the marker on the icon's own span OR on an ancestor wrapper around a slot (e.g.
+// ActionCard's `.icon` div, for a slot that accepts consumer content). `:where()` is
+// zero-specificity, so this compound still contributes exactly one attribute-level unit.
+$_animating-icon: ':is([data-awsui-motion-target], :where([data-awsui-motion-target] *))';
+
+// Generic hover motion: the floor for every GENERATED icon inside an eligible region. It is
+// deliberately not per-icon — it is scoped by region and opt-in only, so `.name-X` is
+// what overrides the floor, not what enables motion in the first place.
+//
+// Applying it this broadly is safe precisely because it is a uniform scale of the SVG root:
+// it needs no knowledge of the drawing, so it neither requires a re-cut nor reverses under
+// icon rotation or the RTL mirror. Those constraints bind the per-icon tier below, not this.
+$_generic-transform: scale(0.94);
+
+// icon name -> list of motion specs, one per animated part.
+//
+//   part       OPTIONAL. The `motion-*` class on the SVG path(s) to animate. OMIT it to
+//              animate the icon root (`> svg[data-awsui-icon-animated]`) — a whole-icon motion.
+//   animation  keyframe name — emits an animation while the trigger is active.
+//   to         declarations to settle into while the trigger is active — emits a transition
+//              on the resting state instead of an animation. Mutually exclusive with
+//              `animation`; `_validate-specs` rejects a spec carrying both.
+//   base       declarations applied to the resting state.
+//   property   transitioned property for `to` specs (default `transform`).
+//   origin     `transform-origin` for the part.
+//   iterations / fill  optional animation modifiers.
+//
+// No key inside a spec names a trigger: the MAP names it once. A future press trigger would
+// declare `$icon-press-motion` with this identical spec shape.
+//
+// Motion must be rotation- and mirror-invariant: a child inherits its parent's transform,
+// and 18 icons are mirrored under RTL (`transform: scaleX(-1)` in `styles.scss`). `scale`
+// and `opacity` survive that; a directional `translate` reverses. `undo` and `redo` are
+// both in the mirrored set, which is why their arrowheads pulse rather than nudge.
+//
+// `status-positive` is deliberately omitted: it segments cleanly, but every place
+// Cloudscape renders it is state-driven, so a hover trigger could never fire it. Add it
+// back if design gives it an interactive home.
+$icon-hover-motion: (
+  // --- whole-icon transforms: no SVG change at all -------------------------------------
+  'announcement': (
+      (
+        duration: $_duration-emphasis,
+        easing: $_ease-spring,
+        to: (
+          transform: rotate(-12deg) scale(0.84),
+        ),
+      )
+    ),
+  'heart': (
+    (
+      animation: icon-pulse-soft,
+      duration: $_duration-pulse,
+      easing: $_ease-out,
+    )
+  ),
+  'heart-filled': (
+    (
+      animation: icon-pulse-strong,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'settings': (
+    (
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(60deg),
+      ),
+    )
+  ),
+  'thumbs-up': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-up-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-down': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-down-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    )
+  ),
+  'face-happy-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-3deg),
+      ),
+    )
+  ),
+  // The face icons tilt as a whole AND flex the mouth, which is two parts.
+  'face-happy': (
+      (
+        duration: $_duration-emphasis,
+        easing: $_ease-spring,
+        to: (
+          transform: rotate(-3deg),
+        ),
+      ),
+      (
+        part: 'motion-mouth',
+        animation: icon-mouth-flex,
+        duration: $_duration-attention,
+        easing: $_ease-symmetric,
+      )
+    ),
+  'face-neutral': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(3deg),
+      ),
+    ),
+    (
+      part: 'motion-mouth',
+      animation: icon-mouth-tilt,
+      duration: $_duration-tilt,
+      easing: $_ease-symmetric,
+      origin: 8px 10px,
+    )
+  ),
+  'face-sad': (
+    (
+      part: 'motion-mouth',
+      animation: icon-mouth-flex,
+      duration: $_duration-attention,
+      easing: $_ease-symmetric,
+    )
+  ),
+  // --- part-level motion ----------------------------------------------------------------
+  'copy': (
+      (
+        part: 'motion-front',
+        duration: $_duration-quick,
+        easing: $_ease-symmetric,
+        to: (
+          transform: translate(-4%, -4%),
+        ),
+      ),
+      (
+        part: 'motion-back',
+        duration: $_duration-quick,
+        easing: $_ease-symmetric,
+        to: (
+          transform: translate(4%, 4%),
+        ),
+      )
+    ),
+  'refresh': (
+    (
+      part: 'motion-arc',
+      duration: $_duration-arc,
+      easing: $_ease-decelerate,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 40.9,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -22px,
+      ),
+    )
+  ),
+  'upload': (
+    (
+      part: 'motion-arrow',
+      animation: icon-nudge-up,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'download': (
+    (
+      part: 'motion-arrow',
+      animation: icon-nudge-down,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'upload-download': (
+    (
+      part: 'motion-up',
+      animation: icon-nudge-up-once,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'motion-down',
+      animation: icon-nudge-down-once,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  // MIRRORING IS SELF-CORRECTING, so `undo` / `redo` / `external` / `shrink` keep the
+  // prototype's directional nudges unchanged. The RTL mirror is `scaleX(-1)` on the OUTER
+  // `.icon` span (see `styles.scss`) and these motions sit on an inner element, so the child
+  // inherits the mirror: the arrowhead renders reversed AND the nudge reverses with it. The
+  // motion therefore tracks what the icon depicts rather than opposing it. Measured on screen,
+  // not assumed: `external`'s arrow moves up-right in LTR and up-LEFT in RTL, matching the
+  // mirrored arrowhead.
+  //
+  // ROTATION is the real hazard, and it is a different thing. A wrapper that rotates the icon
+  // as a STATE change does not rotate what the icon means, so a child's "up" becomes sideways
+  // and nothing corrects it. Only `caret-down-filled` and `angle-down` are rendered that way
+  // (`spinWhenOpen`), and neither is in this map.
+  'undo': (
+      (
+        part: 'motion-arrow',
+        animation: icon-nudge-back,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      )
+    ),
+  'redo': (
+    (
+      part: 'motion-arrow',
+      animation: icon-nudge-forward,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'external': (
+    (
+      part: 'motion-arrow',
+      animation: icon-nudge-up-right,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  // The two corners converge diagonally, as designed.
+  'shrink': (
+      (
+        part: 'motion-tr',
+        animation: icon-nudge-down-left,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      ),
+      (
+        part: 'motion-bl',
+        animation: icon-nudge-up-right,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      )
+    ),
+  // Not mirrored, so the diagonals are kept exactly as designed.
+  'expand': (
+      (
+        part: 'motion-tl',
+        duration: $_duration-settle,
+        easing: $_ease-spring,
+        to: (
+          transform: translate(-5%, -5%),
+        ),
+      ),
+      (
+        part: 'motion-tr',
+        duration: $_duration-settle,
+        easing: $_ease-spring,
+        to: (
+          transform: translate(5%, -5%),
+        ),
+      ),
+      (
+        part: 'motion-bl',
+        duration: $_duration-settle,
+        easing: $_ease-spring,
+        to: (
+          transform: translate(-5%, 5%),
+        ),
+      ),
+      (
+        part: 'motion-br',
+        duration: $_duration-settle,
+        easing: $_ease-spring,
+        to: (
+          transform: translate(5%, 5%),
+        ),
+      )
+    ),
+  'zoom-to-fit': (
+    (
+      part: 'motion-edge-tl',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      to: (
+        transform: translate(-1px, -1px),
+      ),
+    ),
+    (
+      part: 'motion-edge-tr',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      to: (
+        transform: translate(1px, -1px),
+      ),
+    ),
+    (
+      part: 'motion-edge-bl',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      to: (
+        transform: translate(-1px, 1px),
+      ),
+    ),
+    (
+      part: 'motion-edge-br',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      to: (
+        transform: translate(1px, 1px),
+      ),
+    )
+  ),
+  'multiscreen': (
+    (
+      part: 'motion-front',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'motion-back',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    )
+  ),
+  'lock-private': (
+    (
+      part: 'motion-shackle',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    )
+  ),
+  'unlocked': (
+    (
+      part: 'motion-shackle',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    )
+  ),
+  // Our two clock hands are one path, so they rotate together rather than only the minute
+  // hand. Rotation is mirror-safe either way.
+  'history': (
+      (
+        part: 'motion-hands',
+        duration: $_duration-pulse,
+        easing: $_ease-spring,
+        origin: 9px 9px,
+        to: (
+          transform: rotate(-45deg),
+        ),
+      ),
+      (
+        part: 'motion-ring',
+        duration: $_duration-pulse,
+        easing: $_ease-decelerate,
+        property: stroke-dashoffset,
+        base: (
+          stroke-dasharray: 42,
+          stroke-dashoffset: 0,
+        ),
+        to: (
+          stroke-dashoffset: -12px,
+        ),
+      )
+    ),
+  'backward-10-seconds': (
+    (
+      part: 'motion-arc',
+      duration: $_duration-generic,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'motion-one',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    ),
+    (
+      part: 'motion-zero',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    )
+  ),
+  'forward-10-seconds': (
+    (
+      part: 'motion-arc',
+      duration: $_duration-generic,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'motion-one',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    ),
+    (
+      part: 'motion-zero',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    )
+  ),
+  // The prototype animates these with `stroke-dasharray: 1`, which only works because it
+  // also sets `pathLength` on the path. Our generator rejects `pathLength`, so the dash maths
+  // cannot be ported; a scale of the same element keeps the "panel responds" reading and is
+  // mirror-safe, which `view-vertical` needs.
+  'view-horizontal': (
+      (
+        part: 'motion-panel',
+        duration: $_duration-pulse,
+        easing: $_ease-decelerate,
+        origin: 8px 9.5px,
+        to: (
+          transform: scale(1.08),
+        ),
+      )
+    ),
+  'view-vertical': (
+    (
+      part: 'motion-panel',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 9.5px 8px,
+      to: (
+        transform: scale(1.08),
+      ),
+    )
+  ),
+  'zoom-in': (
+    (
+      part: 'motion-arm',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 7px 7px,
+      to: (
+        transform: scale(1.15),
+      ),
+    )
+  ),
+  'zoom-out': (
+    (
+      part: 'motion-arm',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 7px 7px,
+      to: (
+        transform: scale(0.85),
+      ),
+    )
+  ),
+  // Six legs, each rotating about its own hip. Gait A and B alternate sides so the bug walks.
+  'bug': (
+      (
+        part: 'motion-leg-tl',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 5.71px,
+      ),
+      (
+        part: 'motion-leg-mr',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 8.71px,
+      ),
+      (
+        part: 'motion-leg-bl',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 11.71px,
+      ),
+      (
+        part: 'motion-leg-tr',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 5.71px,
+      ),
+      (
+        part: 'motion-leg-ml',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 8.71px,
+      ),
+      (
+        part: 'motion-leg-br',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 11.71px,
+      )
+    ),
+  // STATUS ICONS. Every one of these is state-driven in current Cloudscape placements, so a
+  // hover trigger can never fire them — `StatusIndicator`, `Alert` and `FormField` all render
+  // them as reporting, not as an affordance. They are mapped because the prototype specified
+  // them and because a future interactive placement would then just work, not because
+  // anything animates them today. `status-positive` is the clearest case of this.
+  'status-positive': (
+      (
+        part: 'motion-check',
+        animation: icon-draw-in,
+        duration: $_duration-emphasis,
+        easing: $_ease-out,
+        base: (
+          stroke-dasharray: 10,
+          stroke-dashoffset: 0,
+        ),
+      )
+    ),
+  'status-negative': (
+    (
+      animation: icon-shake,
+      duration: $_duration-quick,
+      easing: $_ease-decelerate,
+    )
+  ),
+  'status-warning': (
+    (
+      part: 'motion-exclamation',
+      animation: icon-attention-pulse,
+      duration: $_duration-attention,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+    )
+  ),
+  'status-pending': (
+    (
+      part: 'motion-hands',
+      duration: $_duration-sweep,
+      easing: $_ease-linear,
+      origin: 8px 8px,
+      to: (
+        transform: rotate(360deg),
+      ),
+    )
+  ),
+  'status-in-progress': (
+    (
+      part: 'motion-dot-1',
+      animation: icon-dot-hop,
+      duration: $_duration-dance,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      delay: $_delay-step,
+    ),
+    (
+      part: 'motion-dot-2',
+      animation: icon-dot-hop,
+      duration: $_duration-dance,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      delay: calc(#{$_delay-step} * 2),
+    ),
+    (
+      part: 'motion-dot-3',
+      animation: icon-dot-hop,
+      duration: $_duration-dance,
+      easing: $_ease-symmetric,
+      iterations: infinite,
+      delay: calc(#{$_delay-step} * 3),
+    )
+  ),
+  // `notification` is classed (`motion-bell`, `motion-ringer`) but deliberately NOT mapped.
+  // Our clapper sits 0.75px lower than the prototype's, which reads as deliberate headroom.
+  // Measured against our geometry the motion does in fact FIT: at every keyframe extreme no ink
+  // reaches the viewport edge, so nothing is clipped. But `bell-rotate`'s +8deg peak leaves
+  // only 0.03 user units of margin on the left, which is no headroom at all. Enabling it is
+   // therefore a design judgement about that margin, not a correctness question.
+);
+
+@mixin _declarations($declarations) {
+  @each $property, $value in $declarations {
+    #{$property}: #{$value};
+  }
+}
+
+// Scopes motion to the opted-in themes AND to a motion-enabled document.
+//
+// This used to emit the themed rule plus three overrides per part: a `prefers-reduced-motion`
+// block, and one compounded guard for each of `awsui-motion-disabled` / `awsui-mode-entering`.
+// Suppression does not actually need to know which motion it is cancelling, so all three are
+// now hoisted: the two mode classes become `:not()` clauses on the theme compound (below), and
+// reduced motion becomes ONE wrapping media query in `icon-hover-motion`. Guard cost stops
+// scaling with the number of animated parts.
+//
+// `motion.with-motion` is deliberately NOT reused any more. It emits a per-rule
+// `prefers-reduced-motion` block — exactly the per-part cost being removed — plus
+// `.awsui-motion-disabled &` descendant guards that can never match here, because the mode
+// class is on the same element as the theme selector rather than an ancestor.
+//
+// Nothing needs resetting to a resting value any more either: when the themed rule does not
+// match, the resting declarations simply apply, so a settle target cannot snap.
+//
+// Named `with-motion` so the `no-motion-outside-of-mixin` stylelint rule recognises callers.
+@mixin with-motion {
+  @include theming.expressive-motion-only($_motion-on) {
+    @content;
+  }
+}
+
+// Focus branch is one `:is(:focus-visible, :has([data-awsui-motion-trigger~="focus"]:focus-visible))`,
+// folding "the trigger itself is focused" (a directly-tagged `<button>`) and "the trigger's
+// DECLARED focus owner is focused" (a non-interactive ancestor like ActionCard's `.root`,
+// whose real control is a descendant `.header-button` — `:focus-visible` doesn't bubble like
+// `:hover` does, so `.root:focus-visible` never matches while the inner button is focused).
+//
+// The focus owner must be DECLARED with the `focus` token, not inferred from "any focusable
+// descendant": a region can contain unrelated focusable content (ActionCard's `children`
+// slot takes arbitrary nodes), and a bare `:has(:focus-visible)` would fire on every one of
+// them. This depends on a DOM invariant — the `hover`-token element must contain both the
+// target icon and whichever element carries the `focus` token — pinned by a test, not just
+// documented here.
+@mixin _on-hover-trigger($suffix) {
+  #{'#{$_hover-trigger}:hover #{$suffix}'},
+  #{'#{$_hover-trigger}:is(:focus-visible, :has([data-awsui-motion-trigger~="focus"]:focus-visible)) #{$suffix}'} {
+    @content;
+  }
+}
+
+// Target for a spec. Always requires the opt-in, so an SVG that has not opted in cannot
+// match — which is every builder-supplied SVG by default.
+@function _target($part) {
+  @if not $part {
+    @return '> :global(#{$_opted-in})';
+  }
+  @return '> :global(#{$_opted-in} .#{$part})';
+}
+
+// Normalises a map entry to a LIST of specs.
+//
+// An icon with one animated part is written `'heart': ((animation: …, duration: …),)`, where the
+// trailing comma is what makes the outer parens a one-element list rather than redundant
+// grouping. Prettier deletes that comma, which silently turns the value back into a bare map —
+// and `@each` over a map yields key/value pairs, so the first "spec" becomes `(animation
+// icon-pulse-soft)`. Rather than fight the formatter on every entry, accept either shape here.
+// `list.append` is used instead of `($value,)` because that literal has the same comma the
+// formatter removes.
+@function _specs($value) {
+  @if meta.type-of($value) == 'map' {
+    @return list.append((), $value);
+  }
+  @return $value;
+}
+
+@mixin generic-hover-motion {
+  .icon > :global(#{$_opted-in}) {
+    @include with-motion {
+      transition-property: transform;
+      transition-duration: $_duration-generic;
+      transition-timing-function: $_ease-decelerate;
+    }
+  }
+
+  @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
+    @include with-motion {
+      transform: $_generic-transform;
+    }
+  }
+}
+
+// Resting-state setup: theme-scoped but NOT motion-gated, and deliberately outside the
+// reduced-motion wrapper. `stroke-dasharray` changes how the shape paints even with no motion
+// running, so the resting paint must be identical whether motion is on or off. Leaking it to
+// themes without expressive motion would still be a visual diff, hence the theme scope.
+@mixin per-icon-hover-resting {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $base: map.get($spec, base);
+      $origin: map.get($spec, origin);
+
+      @if $base or $origin {
+        .icon.name-#{$name} #{_target(map.get($spec, part))} {
+          @include theming.expressive-motion-only {
+            @if $base {
+              @include _declarations($base);
+            }
+            @if $origin {
+              transform-origin: $origin;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Cancels the generic floor wherever a PART is animated, in ONE rule.
+//
+// The floor animates the svg ROOT; part-level motion animates a child. Without this the whole
+// icon would scale as well as the part moving. Emitting it per part cost 51 rule blocks, each
+// carrying a full copy of the region compound — so the icon names and the hook names are
+// grouped into `:is()` and the compound is carried twice (hover + focus-visible) in total.
+//
+// `:has(:is(<every hook>))` keeps the original guarantee that the cancel only applies when a
+// hook is actually present, so an icon whose hook is removed keeps the floor rather than losing
+// both. Cross-matching another icon's hook name is impossible: an svg only contains the classes
+// its own source declares.
+//
+// Whole-icon motion needs no cancel at all. It targets the same element as the floor and either
+// out-ranks it on specificity (the extra `.name-X`) or overrides it as a running animation,
+// which beats a normal declaration. Verified in a browser: `heart` reaches its keyframe's
+// scale(0.85) rather than the compounded 0.799, and `settings` stays a pure rotation.
+//
+// AN ICON THAT OWNS BOTH A WHOLE-ICON SPEC AND A PART SPEC IS THEREFORE EXCLUDED. This aggregate
+// used to include every icon with ANY part, which put `face-happy` and `face-neutral` — each a
+// whole-icon tilt PLUS a `motion-mouth` part — into a selector that lands on the very element
+// their tilt targets. It out-specified the tilt (1,11,1) against (1,10,1), the extra class-level
+// unit being the `:has(:is(…))`, so it won regardless of source order and silently reset the tilt
+// AND the floor to `none`. The mouth kept animating, so the icons looked subtly wrong, not dead.
+// Confirmed in Chromium and fixed here: see `.poc-extract/probe-floor-cancel-cascade.mjs`.
+//
+// Excluding them is correct rather than a workaround, for the reason above: their root already
+// has a rule that beats the floor, so there is nothing left to cancel. The mouth then animates
+// INSIDE the tilting face, which is what the design intends.
+@mixin _cancel-floor-under-hover-parts {
+  $names: ();
+  $parts: ();
+
+  @each $name, $specs in $icon-hover-motion {
+    $whole-icon: false;
+    @each $spec in _specs($specs) {
+      @if not map.get($spec, part) {
+        $whole-icon: true;
+      }
+    }
+
+    @if not $whole-icon {
+      @each $spec in _specs($specs) {
+        $part: map.get($spec, part);
+        @if $part {
+          @if not list.index($names, '.name-#{$name}') {
+            $names: list.append($names, '.name-#{$name}', comma);
+          }
+          @if not list.index($parts, '.#{$part}') {
+            $parts: list.append($parts, '.#{$part}', comma);
+          }
+        }
+      }
+    }
+  }
+
+  @if list.length($names) > 0 {
+    @include _on-hover-trigger('.icon#{$_animating-icon}:is(#{$names}) > :global(#{$_opted-in}:has(:is(#{$parts})))') {
+      @include with-motion {
+        transform: none;
+      }
+    }
+  }
+}
+
+@mixin per-icon-hover-motion {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $part: map.get($spec, part);
+      $target: _target($part);
+      $to: map.get($spec, to);
+      $animation: map.get($spec, animation);
+      $duration: map.get($spec, duration);
+      $easing: map.get($spec, easing);
+
+      $property: map.get($spec, property);
+      @if not $property {
+        $property: transform;
+      }
+      $iterations: map.get($spec, iterations);
+      @if not $iterations {
+        $iterations: 1;
+      }
+      $fill: map.get($spec, fill);
+      @if not $fill {
+        $fill: none;
+      }
+      $delay: map.get($spec, delay);
+      @if not $delay {
+        $delay: 0s;
+      }
+
+      @if $to {
+        .icon.name-#{$name} #{$target} {
+          @include with-motion {
+            transition-property: #{$property};
+            transition-duration: $duration;
+            transition-timing-function: $easing;
+          }
+        }
+      }
+
+      // Cancelling the floor is handled once, outside this loop, by `_cancel-floor-under-hover-parts`.
+
+      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
+        @if $animation {
+          // Longhand rather than the `animation` shorthand: durations are `calc()` token
+          // expressions, and a shorthand `none` fill-mode is ambiguous with
+          // `animation-name: none`.
+          //
+          // Only non-default longhands are emitted. `animation-fill-mode: none`,
+          // `animation-iteration-count: 1` and `animation-delay: 0s` are the CSS INITIAL
+          // values, so stating them changes nothing and costs bytes on every animated part.
+          // They go through `_declarations` rather than an inline `@if`, because
+          // `no-motion-outside-of-mixin` requires a declaration to sit DIRECTLY under the
+          // `with-motion` include and an `@if` breaks that chain.
+          $optional: ();
+          @if $iterations != 1 {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-iteration-count: $iterations,
+              )
+            );
+          }
+          @if $fill != none {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-fill-mode: $fill,
+              )
+            );
+          }
+          @if $delay != 0s {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-delay: $delay,
+              )
+            );
+          }
+
+          @include with-motion {
+            animation-name: $animation;
+            animation-duration: $duration;
+            animation-timing-function: $easing;
+            @include _declarations($optional);
+          }
+        }
+        @if $to {
+          @include with-motion {
+            @include _declarations($to);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Keyframes cannot be nested under a class, so they are gated on the artefact instead: an
+// artefact with no opted-in theme emits none of them at all.
+//
+// Directional translates are used freely, and are correct under the RTL mirror. The mirror is
+// `scaleX(-1)` on the outer `.icon` span, and these keyframes animate an inner element, so the
+// nudge inherits the mirror exactly as the drawing does — the motion tracks the icon rather
+// than opposing it. Verified on screen in both directions.
+//
+// The case that does NOT self-correct is a wrapper rotating the icon as a state change, since
+// the rotation changes which way "up" points without changing what the icon means. Only the
+// dropdown carets are rendered that way and none of them is in the motion map.
+@mixin keyframes {
+  @if theming.has-expressive-motion() {
+    @keyframes icon-pulse-soft {
+      0% {
+        transform: scale(1);
+      }
+      22% {
+        transform: scale(0.85);
+      }
+      44% {
+        transform: scale(1);
+      }
+      67% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes icon-pulse-strong {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(0.9);
+      }
+    }
+
+    @keyframes icon-nudge-up-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(5%, -5%);
+      }
+    }
+
+    @keyframes icon-nudge-down-left {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(-5%, 5%);
+      }
+    }
+
+    @keyframes icon-nudge-back {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(14%);
+      }
+    }
+
+    @keyframes icon-nudge-forward {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-14%);
+      }
+    }
+
+    @keyframes icon-nudge-up {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-nudge-up-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-gait-a {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-8deg);
+      }
+    }
+
+    @keyframes icon-gait-b {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(8deg);
+      }
+    }
+
+    @keyframes icon-dot-hop {
+      0%,
+      44%,
+      100% {
+        transform: translateY(0);
+      }
+      28% {
+        transform: translateY(-2px);
+      }
+    }
+
+    @keyframes icon-attention-pulse {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.55;
+        transform: scale(0.94);
+      }
+    }
+
+    // A horizontal shake is the one directional motion that is mirror-safe, because it is
+    // symmetric: reversing it produces the same sequence in the opposite order.
+    @keyframes icon-shake {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-5%);
+      }
+      50% {
+        transform: translateX(5%);
+      }
+      75% {
+        transform: translateX(-3%);
+      }
+    }
+
+    @keyframes icon-draw-in {
+      0% {
+        stroke-dashoffset: 10px;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    // Shortens the mouth stroke and lets it spring back, so a smile deepens and a frown
+    // sharpens with the same keyframe.
+    @keyframes icon-mouth-flex {
+      0%,
+      100% {
+        stroke-dasharray: 7.4, 7.4;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 6, 7.4;
+        stroke-dashoffset: -0.7px;
+      }
+    }
+
+    @keyframes icon-mouth-tilt {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      35%,
+      65% {
+        transform: rotate(-4deg);
+      }
+    }
+  }
+}
+
+// Compile-time validation of the map. Emits no CSS.
+//
+// Every key is read with a bare `map.get`, and Sass cannot tell an absent key from a misspelled
+// one, so a typo is silently ignored: `animaton:` yields a rule with no animation, and `too:`
+// yields a transition that settles on nothing. `part` being OPTIONAL sharpens this — a typo'd
+// `pat:` is indistinguishable from a deliberate whole-icon spec, so it silently DEGRADES a part
+// motion into a whole-icon one, which still animates and therefore still looks plausible.
+//
+// The known-key list is the set the emitters actually read; adding a key to the map means
+// teaching an emitter to read it, so the two must be changed together.
+$_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterations, fill, property);
+
+@mixin _validate-specs {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      @each $key, $value in $spec {
+        @if not list.index($_spec-keys, $key) {
+          @error 'Unknown key `#{$key}` in the $icon-hover-motion spec for `#{$name}`. ' +
+            'Known keys: #{$_spec-keys}.';
+        }
+      }
+
+      // `animation` and `to` are documented as alternatives, but the emitter would happily put
+      // both into one rule, where the animation wins while the transition still costs bytes.
+      @if map.get($spec, animation) and map.get($spec, to) {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets both `animation` and `to`. ' +
+          'Use `animation` for keyframe-driven motion or `to` for a transition, not both.';
+      }
+    }
+  }
+}
+
+@mixin icon-hover-motion {
+  // Outside the theme gate and the reduced-motion wrapper on purpose, so a malformed map fails
+  // EVERY build rather than only the artefacts that emit motion.
+  @include _validate-specs;
+
+  @include keyframes;
+  @include per-icon-hover-resting;
+
+  // ONE media query wrapping every motion rule, rather than a `prefers-reduced-motion`
+  // override emitted next to each of them. Expressed positively (`no-preference`) so that
+  // suppression needs no override at all: under `reduce` the rules are simply never emitted
+  // into the matching set. A browser too old to support the feature matches neither value and
+  // therefore gets no motion, which is the safe direction to degrade.
+  @media (prefers-reduced-motion: no-preference) {
+    @include generic-hover-motion;
+    @include _cancel-floor-under-hover-parts;
+    @include per-icon-hover-motion;
+  }
+}
+
+// stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-enable @cloudscape-design/no-implicit-descendant

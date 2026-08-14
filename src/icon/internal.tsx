@@ -17,6 +17,13 @@ import styles from './styles.css.js';
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
+    /**
+     * POC: marks this icon's own span as an eligible TARGET for icon hover motion — see
+     * `$_animating-icon` in `src/icon/hover-motion.scss`. Only a component's own affordance
+     * icon should set this; consumer-supplied content must stay unmarked so it cannot animate
+     * just by sitting inside the same tagged region.
+     */
+    __motionTarget?: boolean;
   };
 
 function iconSizeMap(height: number | null, fontSize?: number | null) {
@@ -51,6 +58,7 @@ const InternalIcon = ({
   badge,
   nativeAttributes,
   __internalRootRef,
+  __motionTarget,
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
@@ -93,6 +101,7 @@ const InternalIcon = ({
   const mergedRef = useMergeRefs(iconRef, __internalRootRef);
   const hasAriaLabel = typeof ariaLabel === 'string';
   const labelAttributes = hasAriaLabel ? { role: 'img', 'aria-label': ariaLabel } : {};
+  const motionAttributes = __motionTarget ? { 'data-awsui-motion-target': 'true' } : {};
 
   if (svg) {
     if (url) {
@@ -105,6 +114,7 @@ const InternalIcon = ({
       <WithNativeAttributes
         {...baseProps}
         {...labelAttributes}
+        {...motionAttributes}
         tag="span"
         componentName="Icon"
         nativeAttributes={nativeAttributes}
@@ -121,6 +131,7 @@ const InternalIcon = ({
     return (
       <WithNativeAttributes
         {...baseProps}
+        {...motionAttributes}
         tag="span"
         componentName="Icon"
         nativeAttributes={nativeAttributes}
@@ -168,6 +179,7 @@ const InternalIcon = ({
     <WithNativeAttributes
       {...baseProps}
       {...labelAttributes}
+      {...motionAttributes}
       tag="span"
       componentName="Icon"
       nativeAttributes={nativeAttributes}

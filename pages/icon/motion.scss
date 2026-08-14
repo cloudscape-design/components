@@ -1,0 +1,92 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.section {
+  padding-block-end: 8px;
+}
+
+.body {
+  padding-block-start: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.case {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-inline-size: 0;
+}
+
+.control {
+  min-block-size: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-size: 12px;
+}
+
+.icon {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.bespoke {
+  font-weight: 700;
+}
+
+.generic {
+  opacity: 0.75;
+}
+
+/* Forces the Tabs scroll arrows to appear so they can be hovered. */
+.narrow {
+  inline-size: 300px;
+  max-inline-size: 100%;
+  overflow: hidden;
+}
+
+/* Real chrome is flush to the viewport edge, so the bar is unpadded and only the content
+   below it is inset. Logical properties throughout — `padding` itself is disallowed. */
+.chrome-content {
+  padding-block: 16px;
+  padding-inline: 20px;
+}
+
+/*
+ * Approximates the visual shape of an action-card (border, padding, rounded corners) without
+ * importing the real component — the point of this example is the bare `data-awsui-motion-trigger`
+ * attribute on a plain, non-interactive `<div>`, which the real ActionCard does not expose today.
+ */
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-block: 16px;
+  padding-inline: 16px;
+  border-block-width: 1px;
+  border-inline-width: 1px;
+  border-block-style: solid;
+  border-inline-style: solid;
+  border-color: #879596;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  cursor: default;
+}

@@ -79,7 +79,7 @@ const InternalActionCard = React.forwardRef(
     const headerRowEmpty = !header && !description;
 
     const iconWrapper = icon && (
-      <div className={clsx(styles.icon, testStyles.icon)} aria-hidden="true">
+      <div className={clsx(styles.icon, testStyles.icon)} aria-hidden="true" data-awsui-motion-target="true">
         {icon}
       </div>
     );
@@ -104,6 +104,9 @@ const InternalActionCard = React.forwardRef(
       onClick: handleButtonClick,
       'aria-describedby': ariaDescribedby,
       'aria-disabled': disabled || undefined,
+      // Shared focus trigger for `.header-button` and `.overlay-button` — whichever is live is
+      // the sole focusable control this tagged region delegates to.
+      'data-awsui-motion-trigger': 'focus',
     };
 
     // <a>-tag specific props
@@ -237,6 +240,12 @@ const InternalActionCard = React.forwardRef(
           baseProps.className
         )}
         aria-disabled={disabled || undefined}
+        // Hover trigger for the icon; the FOCUS token lives separately on whichever of
+        // `.header-button`/`.overlay-button` is live, since `.root` itself is never focused and
+        // may contain other focusable consumer content that must not re-trigger the icon. This
+        // element must contain both the target icon and the focus-token element — pinned in a
+        // test, not just documented here.
+        data-awsui-motion-trigger="hover"
       >
         {standaloneButton}
         {contentElement}

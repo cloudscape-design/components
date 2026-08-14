@@ -43,6 +43,7 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, badge, ...
       alt={iconAlt}
       size={iconSize}
       badge={badge}
+      __motionTarget={true}
     />
   );
 }

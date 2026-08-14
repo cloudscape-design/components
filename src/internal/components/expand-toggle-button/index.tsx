@@ -39,14 +39,22 @@ export function ExpandToggleButton({
       aria-expanded={isExpanded}
       className={clsx(styles['expand-toggle'], disableFocusHighlight && styles['disable-focus-highlight'], className)}
       onClick={onExpandableItemToggle}
+      data-awsui-motion-trigger="hover"
     >
-      {customIcon ?? (
-        <InternalIcon
-          size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'small'}
-          name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-          className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
-        />
-      )}
+      {/* Marks the POSITION the button defines for its toggle icon, not just the default caret:
+          a consumer-substituted `customIcon` sits in this exact slot and re-skins the same
+          affordance, so it animates too — unlike a slot where consumer content merely happens
+          to land inside a region. A raw builder `<svg>` still won't animate (no
+          `data-awsui-icon-animated`). */}
+      <span data-awsui-motion-target="true">
+        {customIcon ?? (
+          <InternalIcon
+            size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'small'}
+            name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+            className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
+          />
+        )}
+      </span>
     </button>
   );
 }

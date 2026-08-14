@@ -79,6 +79,7 @@ const ExpandIconButton = ({
       }
       onKeyUp={stopKeyPropagation}
       onKeyDown={stopKeyPropagation}
+      data-awsui-motion-trigger="hover"
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
       {icon}
@@ -169,6 +170,7 @@ const ExpandableDeprecatedHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
@@ -324,6 +326,7 @@ const ExpandableHeaderTextWrapper = ({
       aria-describedby={description ? descriptionId : undefined}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
       {...headerButtonListeners}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
@@ -412,6 +415,7 @@ export const ExpandableSectionHeader = ({
       size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
       className={clsx(styles.icon, expanded && styles.expanded)}
       name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+      __motionTarget={true}
     />
   );
   const defaultHeaderProps = {

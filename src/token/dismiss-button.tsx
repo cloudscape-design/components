@@ -55,9 +55,10 @@ function DismissButton(
         fireNonCancelableEvent(onDismiss);
       }}
       aria-label={dismissLabel}
+      data-awsui-motion-trigger="hover"
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
-      <InternalIcon name="close" size={isOneTheme ? 'x-small' : undefined} />
+      <InternalIcon name="close" size={isOneTheme ? 'x-small' : undefined} __motionTarget={true} />
     </button>
   );
 }

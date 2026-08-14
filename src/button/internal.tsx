@@ -228,6 +228,7 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      'data-awsui-motion-trigger': 'hover',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
       ...getAnalyticsLabelAttribute(shouldHaveContent ? `.${analyticsSelectors.label}` : ''),
@@ -258,6 +259,7 @@ export const InternalButton = React.forwardRef(
                   name="external"
                   className={testUtilStyles['external-icon']}
                   ariaLabel={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
+                  __motionTarget={true}
                 />
               </>
             )}

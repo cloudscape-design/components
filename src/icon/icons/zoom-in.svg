@@ -1,6 +1,6 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <circle cx="7" cy="7" r="6" />
 <path d="M11 11L15 15" />
-<path d="M7 4V10" />
-<path d="M4 7L10 7.01" />
+<path d="M7 4V10" class="motion-arm"/>
+<path d="M4 7L10 7.01" class="motion-arm"/>
 </svg>
