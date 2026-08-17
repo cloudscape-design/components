@@ -79,11 +79,8 @@ const InternalButtonDropdown = React.forwardRef(
       filteringResultsText,
       onLoadItems,
       noMatch,
-      empty,
-      itemsLoadingText,
-      finishedText,
-      errorText,
-      statusType = 'finished',
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
       i18nStrings,
       compactTrigger,
       ariaDescribedby,
@@ -118,12 +115,14 @@ const InternalButtonDropdown = React.forwardRef(
     const isVisualRefresh = useVisualRefresh();
     const isOneTheme = isThemeActive(Theme.OneTheme);
     const i18n = useInternalI18n('button-dropdown');
-    const errorIconAriaLabel = i18n('errorIconAriaLabel', props.errorIconAriaLabel);
-    const recoveryText = i18n('recoveryText', props.recoveryText);
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+    const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
 
-    if (props.recoveryText && !onLoadItems) {
+    if (asyncLoadingProps?.recoveryText && !onLoadItems) {
       warnOnce('ButtonDropdown', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
     }
+
+    const statusType = asyncLoadingProps?.statusType ?? 'finished';
 
     const { fireLoadItems, handleLoadMore, handleRecoveryClick } = useLoadItems({
       onLoadItems,
@@ -412,17 +411,17 @@ const InternalButtonDropdown = React.forwardRef(
 
     const dropdownStatus = useDropdownStatus({
       statusType,
-      empty,
-      loadingText: itemsLoadingText,
-      finishedText,
-      errorText,
+      empty: asyncLoadingProps?.empty?.(),
+      loadingText: asyncLoadingProps?.loadingText?.(),
+      finishedText: asyncLoadingProps?.finishedText?.(),
+      errorText: asyncLoadingProps?.errorText?.(),
       recoveryText,
       isEmpty,
       isNoMatch,
       noMatch,
       filteringResultsText: filteredText,
       errorIconAriaLabel,
-      onRecoveryClick: handleRecoveryClick,
+      onRecoveryClick: () => handleRecoveryClick(),
       hasRecoveryCallback: !!onLoadItems,
     });
 
@@ -559,6 +558,9 @@ const InternalButtonDropdown = React.forwardRef(
                   filteringEnabled={hasFiltering}
                   menuId={hasFiltering ? menuId : undefined}
                   filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
+                  asyncLoadingProps={asyncLoadingProps}
+                  getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+                  onLoadItems={onLoadItems}
                 />
               </OptionsList>
               {dropdownStatus.content && !dropdownStatus.isSticky ? (

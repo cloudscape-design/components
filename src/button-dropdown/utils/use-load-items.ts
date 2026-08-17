@@ -3,13 +3,12 @@
 import { useRef } from 'react';
 
 import { fireNonCancelableEvent } from '../../internal/events';
-import { DropdownStatusProps } from '../../types/dropdown-status';
 import { ButtonDropdownProps } from '../interfaces';
 
 interface UseLoadItemsProps {
   onLoadItems: ButtonDropdownProps['onLoadItems'];
   items: ButtonDropdownProps.Items;
-  statusType: DropdownStatusProps.StatusType;
+  statusType: ButtonDropdownProps.AsyncLoadingStatusType | undefined;
 }
 
 export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsProps) => {
@@ -34,16 +33,26 @@ export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsPro
     }
   };
 
-  const handleRecoveryClick = () =>
+  const handleRecoveryClick = (expandedGroupId?: string) =>
     fireNonCancelableEvent(onLoadItems, {
       firstPage: false,
       samePage: true,
       filteringText: prevFilteringText.current || '',
+      expandedGroupId,
+    });
+
+  const fireGroupLoadItems = (expandedGroupId: string) =>
+    fireNonCancelableEvent(onLoadItems, {
+      filteringText: prevFilteringText.current || '',
+      firstPage: true,
+      samePage: false,
+      expandedGroupId,
     });
 
   return {
     fireLoadItems,
     handleLoadMore,
     handleRecoveryClick,
+    fireGroupLoadItems,
   };
 };

@@ -3,11 +3,15 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import Dropdown from '../../dropdown/internal';
+import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import DropdownFooter from '../../internal/components/dropdown-footer';
+import { useDropdownStatus } from '../../internal/components/dropdown-status';
+import { fireNonCancelableEvent } from '../../internal/events';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import {
@@ -42,12 +46,44 @@ const ExpandableCategoryElement = ({
   filteringEnabled,
   menuId,
   filteringDescriptionId,
+  asyncLoadingProps,
+  getExpandableItemsAsyncLoadingState,
+  onLoadItems,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
   const isKeyboardHighlighted = isKeyboardHighlight(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
   const ref = useRef<HTMLLIElement>(null);
+  const footerId = useUniqueId('awsui-button-dropdown__group-footer');
+
+  // Per-group async loading status derived from the callback prop.
+  const groupId = item.id;
+  const groupStatusType = groupId ? (getExpandableItemsAsyncLoadingState?.({ item }) ?? undefined) : undefined;
+
+  const i18n = useInternalI18n('button-dropdown');
+  const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+
+  const groupDropdownStatus = useDropdownStatus({
+    statusType: groupStatusType,
+    empty: asyncLoadingProps?.empty?.(groupId),
+    loadingText: asyncLoadingProps?.loadingText?.(groupId),
+    finishedText: asyncLoadingProps?.finishedText?.(groupId),
+    errorText: asyncLoadingProps?.errorText?.(groupId),
+    recoveryText,
+    errorIconAriaLabel,
+    isEmpty: !item.items || item.items.length === 0,
+    isNoMatch: false,
+    hasRecoveryCallback: !!onLoadItems,
+    onRecoveryClick: () =>
+      fireNonCancelableEvent(onLoadItems, {
+        filteringText: '',
+        firstPage: false,
+        samePage: true,
+        expandedGroupId: groupId,
+      }),
+  });
 
   useEffect(() => {
     if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
@@ -58,6 +94,15 @@ const ExpandableCategoryElement = ({
   const onClick: React.MouseEventHandler = event => {
     if (!disabled) {
       event.preventDefault();
+      // Fire onLoadItems when expanding (not collapsing) a group.
+      if (!expanded && groupId && onLoadItems) {
+        fireNonCancelableEvent(onLoadItems, {
+          filteringText: '',
+          firstPage: true,
+          samePage: false,
+          expandedGroupId: groupId,
+        });
+      }
       onGroupToggle(item, event);
       if (!filteringEnabled) {
         triggerRef.current?.focus();
@@ -192,6 +237,7 @@ const ExpandableCategoryElement = ({
                 menuId={menuId}
                 filteringDescriptionId={filteringDescriptionId}
               />
+              {groupDropdownStatus.content && <DropdownFooter content={groupDropdownStatus.content} id={footerId} />}
             </ul>
           ) : undefined
         }

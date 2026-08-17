@@ -65,9 +65,11 @@ describe('ButtonDropdown async loading', () => {
     const onLoadItems = jest.fn();
     const { wrapper } = renderDropdown({
       filteringType: 'manual',
-      statusType: 'error',
-      errorText: 'Error fetching items',
-      recoveryText: 'Retry',
+      asyncLoadingProps: {
+        statusType: 'error',
+        errorText: () => 'Error fetching items',
+        recoveryText: 'Retry',
+      },
       onLoadItems: event => onLoadItems(event.detail),
     });
     wrapper.openDropdown();
@@ -80,7 +82,13 @@ describe('ButtonDropdown async loading', () => {
   });
 
   test('warns if recoveryText is provided without onLoadItems', () => {
-    renderDropdown({ statusType: 'error', errorText: 'Error', recoveryText: 'Retry' });
+    renderDropdown({
+      asyncLoadingProps: {
+        statusType: 'error',
+        errorText: () => 'Error',
+        recoveryText: 'Retry',
+      },
+    });
     expect(warnOnce).toHaveBeenCalledWith(
       'ButtonDropdown',
       '`onLoadItems` must be provided for `recoveryText` to be displayed.'
@@ -107,28 +115,31 @@ describe('ButtonDropdown status display', () => {
   ])('displays %s status text as %s footer', (statusType, isSticky) => {
     const statusText =
       statusType === 'loading'
-        ? { itemsLoadingText: 'Test loading text' }
-        : { [`${statusType}Text`]: `Test ${statusType} text` };
+        ? { loadingText: () => 'Test loading text' }
+        : { [`${statusType}Text`]: () => `Test ${statusType} text` };
     const expectedText = statusType === 'loading' ? 'Test loading text' : `Test ${statusType} text`;
 
     const { wrapper } = renderDropdown({
-      statusType: statusType as ButtonDropdownProps['statusType'],
+      asyncLoadingProps: {
+        statusType: statusType as ButtonDropdownProps.AsyncLoadingStatusType,
+        ...statusText,
+      },
       onLoadItems: () => {},
-      ...statusText,
     });
     wrapper.openDropdown();
 
     const statusIndicator = wrapper.findStatusIndicator();
     expect(statusIndicator).not.toBeNull();
     expect(statusIndicator!.getElement()).toHaveTextContent(expectedText);
-    // isSticky is currently unused in the assertion beyond documenting intent.
     void isSticky;
   });
 
   test('displays the empty state when there are no items', () => {
     const { wrapper } = renderDropdown({
       items: [],
-      empty: 'No items available',
+      asyncLoadingProps: {
+        empty: () => 'No items available',
+      },
     });
     wrapper.openDropdown();
     const status = wrapper.findStatusIndicator();
