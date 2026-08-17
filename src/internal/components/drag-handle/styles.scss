@@ -47,7 +47,6 @@
       position: absolute;
       inset-block-end: 0;
       inset-inline-end: 0;
-      // min-*-size instead of `max(24px, 100%)`, which Sass can misinterpret due to mixed units
       inline-size: 100%;
       block-size: 100%;
       min-inline-size: 24px;
