@@ -8,7 +8,7 @@ const workspace = require('./workspace');
 // primary (root selector `body`), as a secondary (root selector a class, layered on top of a
 // primary), or both — `visual-refresh` has distinct primary/secondary modules because the two
 // use different selectors. `classic` and `core` are primary-only. `one-theme` is secondary-only.
-// To add a new theme, register it here, then select it via PRIMARY_THEME/SECONDARY_THEMES.
+// To add a new theme, register it here, then select it via AWSUI_PRIMARY_THEME/AWSUI_SECONDARY_THEMES.
 const THEME_REGISTRY = {
   classic: { primaryModule: './classic/index.js' },
   'visual-refresh': {
@@ -25,7 +25,7 @@ const THEME_REGISTRY = {
 const RELEASE_DEFAULT = { primary: 'classic', secondary: ['visual-refresh'] };
 
 // The composition used for local dev/test pages (`npm start`), selected only via
-// THEME_PRESET=dev (see package.json's start:watch script) — offers every switchable theme.
+// AWSUI_THEME_PRESET=dev (see package.json's start:watch script) — offers every switchable theme.
 const DEV_DEFAULT = { primary: 'classic', secondary: ['visual-refresh', 'one-theme'] };
 
 const ENVIRONMENT_JSON_PATH = path.join(workspace.targetPath, 'components', 'internal', 'environment.json');
@@ -70,12 +70,12 @@ function readPersistedComposition() {
     if (error.code === 'ENOENT') {
       console.log(
         `[themes] No previous build found at ${ENVIRONMENT_JSON_PATH} — using the ` +
-          `${process.env.THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
+          `${process.env.AWSUI_THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
       );
     } else {
       console.warn(
         `[themes] Could not read persisted theme composition from ${ENVIRONMENT_JSON_PATH} (${error.message}). ` +
-          `Falling back to the ${process.env.THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
+          `Falling back to the ${process.env.AWSUI_THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
       );
     }
     return undefined;
@@ -90,7 +90,7 @@ function readPersistedComposition() {
   } catch (error) {
     console.warn(
       `[themes] Ignoring corrupt persisted theme composition at ${ENVIRONMENT_JSON_PATH} (${error.message}). ` +
-        `Falling back to the ${process.env.THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
+        `Falling back to the ${process.env.AWSUI_THEME_PRESET === 'dev' ? 'dev' : 'release'} preset default.`
     );
     return undefined;
   }
@@ -108,73 +108,87 @@ function validateComposition(primary, secondary) {
   const registryIds = Object.keys(THEME_REGISTRY);
 
   if (!THEME_REGISTRY[primary]) {
-    throw new Error(`Unknown PRIMARY_THEME "${primary}". Available themes: ${registryIds.join(', ')}.`);
+    throw new Error(`Unknown AWSUI_PRIMARY_THEME "${primary}". Available themes: ${registryIds.join(', ')}.`);
   }
   if (!THEME_REGISTRY[primary].primaryModule) {
     const validPrimaries = registryIds.filter(id => THEME_REGISTRY[id].primaryModule).join(', ');
     throw new Error(
-      `"${primary}" has no primary module and cannot be used as PRIMARY_THEME. Valid primary themes: ${validPrimaries}.`
+      `"${primary}" has no primary module and cannot be used as AWSUI_PRIMARY_THEME. Valid primary themes: ${validPrimaries}.`
     );
   }
 
   const seen = new Set();
   for (const id of secondary) {
     if (!THEME_REGISTRY[id]) {
-      throw new Error(`Unknown theme "${id}" in SECONDARY_THEMES. Available themes: ${registryIds.join(', ')}.`);
+      throw new Error(`Unknown theme "${id}" in AWSUI_SECONDARY_THEMES. Available themes: ${registryIds.join(', ')}.`);
     }
     if (!THEME_REGISTRY[id].secondaryModule) {
       const validSecondaries = registryIds.filter(regId => THEME_REGISTRY[regId].secondaryModule).join(', ');
       throw new Error(
-        `"${id}" has no secondary module and cannot be used in SECONDARY_THEMES. Valid secondary themes: ${validSecondaries}.`
+        `"${id}" has no secondary module and cannot be used in AWSUI_SECONDARY_THEMES. Valid secondary themes: ${validSecondaries}.`
       );
     }
     if (id === primary) {
-      throw new Error(`"${id}" cannot be both PRIMARY_THEME and listed in SECONDARY_THEMES.`);
+      throw new Error(`"${id}" cannot be both AWSUI_PRIMARY_THEME and listed in AWSUI_SECONDARY_THEMES.`);
     }
     if (seen.has(id)) {
-      throw new Error(`"${id}" is listed more than once in SECONDARY_THEMES.`);
+      throw new Error(`"${id}" is listed more than once in AWSUI_SECONDARY_THEMES.`);
     }
     seen.add(id);
   }
 }
 
 // Resolution precedence: explicit env var (this process) > persisted (last full build's output) >
-// preset (release, unless THEME_PRESET=dev). Uses `??`, not `||`, so an explicitly-empty
-// SECONDARY_THEMES="" (zero secondary themes, needed for the open-source/core compositions) is
+// preset (release, unless AWSUI_THEME_PRESET=dev). Uses `??`, not `||`, so an explicitly-empty
+// AWSUI_SECONDARY_THEMES="" (zero secondary themes, needed for the open-source/core compositions) is
 // preserved rather than being mistaken for "not provided".
+//
+// Composition resolves ATOMICALLY: if EITHER env var is set explicitly, BOTH fields resolve from
+// explicit-or-preset and persisted is ignored entirely for BOTH — resolving one field from an
+// explicit override while the other silently inherits a stale persisted value can yield a
+// composition nobody asked for and can't predict (e.g. AWSUI_PRIMARY_THEME=visual-refresh alone
+// inheriting a persisted AWSUI_SECONDARY_THEMES that happens to also be ["visual-refresh"], colliding
+// with itself). Stickiness (inheriting the entire last build) applies ONLY when NEITHER var is set.
 function resolveComposition() {
-  const explicitPrimary = process.env.PRIMARY_THEME;
-  const explicitSecondary = process.env.SECONDARY_THEMES;
-  const preset = process.env.THEME_PRESET === 'dev' ? DEV_DEFAULT : RELEASE_DEFAULT;
+  const explicitPrimary = process.env.AWSUI_PRIMARY_THEME;
+  const explicitSecondary = process.env.AWSUI_SECONDARY_THEMES;
+  const usingDevPreset = process.env.AWSUI_THEME_PRESET === 'dev';
+  const preset = usingDevPreset ? DEV_DEFAULT : RELEASE_DEFAULT;
+  const presetName = usingDevPreset ? 'dev' : 'release';
+  const isExplicit = explicitPrimary !== undefined || explicitSecondary !== undefined;
 
-  const primary = explicitPrimary?.trim() ?? persistedComposition?.primary ?? preset.primary;
-  const secondary =
-    explicitSecondary !== undefined
+  const primary = isExplicit
+    ? (explicitPrimary?.trim() ?? preset.primary)
+    : (persistedComposition?.primary ?? preset.primary);
+  const secondary = isExplicit
+    ? explicitSecondary !== undefined
       ? parseThemeList(explicitSecondary)
-      : (persistedComposition?.secondary ?? preset.secondary);
+      : preset.secondary
+    : (persistedComposition?.secondary ?? preset.secondary);
 
-  // Setting only one of the two env vars while the other silently inherits a DIFFERENT theme's
-  // persisted value (rather than the default) is a natural thing to try and a likely source of
-  // confusing validation errors below — call it out explicitly before validating.
-  if (persistedComposition !== undefined) {
+  // Setting only one of the two env vars is a natural thing to try, and — because resolution is
+  // atomic — the OTHER field now defaults to the preset, not to whatever was last built. Call
+  // that out explicitly, since it's a likely source of confusing validation errors below.
+  if (isExplicit && persistedComposition !== undefined) {
     if (explicitPrimary !== undefined && explicitSecondary === undefined) {
       console.log(
-        `[themes] PRIMARY_THEME was set explicitly, but SECONDARY_THEMES was not — it was inherited ` +
-          `from the last build (${secondary.join(',') || '<none>'}), not defaulted. Set SECONDARY_THEMES ` +
-          `explicitly alongside PRIMARY_THEME to avoid surprises.`
+        `[themes] AWSUI_PRIMARY_THEME was set explicitly but AWSUI_SECONDARY_THEMES was not. Composition resolves ` +
+          `atomically, so AWSUI_SECONDARY_THEMES defaulted to the ${presetName} preset (${secondary.join(',') || '<none>'}), ` +
+          `NOT your last build's secondary themes. Set AWSUI_SECONDARY_THEMES explicitly alongside AWSUI_PRIMARY_THEME ` +
+          `to pick a specific composition.`
       );
     } else if (explicitSecondary !== undefined && explicitPrimary === undefined) {
       console.log(
-        `[themes] SECONDARY_THEMES was set explicitly, but PRIMARY_THEME was not — it was inherited ` +
-          `from the last build (${primary}), not defaulted. Set PRIMARY_THEME explicitly alongside ` +
-          `SECONDARY_THEMES to avoid surprises.`
+        `[themes] AWSUI_SECONDARY_THEMES was set explicitly but AWSUI_PRIMARY_THEME was not. Composition resolves ` +
+          `atomically, so AWSUI_PRIMARY_THEME defaulted to the ${presetName} preset (${primary}), NOT your last ` +
+          `build's primary theme. Set AWSUI_PRIMARY_THEME explicitly alongside AWSUI_SECONDARY_THEMES to pick a specific ` +
+          `composition.`
       );
     }
   }
 
   validateComposition(primary, secondary);
 
-  const isExplicit = explicitPrimary !== undefined || explicitSecondary !== undefined;
   const changedFromPersisted =
     persistedComposition !== undefined &&
     (persistedComposition.primary !== primary || !sameThemeList(persistedComposition.secondary, secondary));
@@ -202,6 +216,32 @@ function resolveComposition() {
 
 const { primary, secondary } = resolveComposition();
 
+// Called from the `gulp watch` pipeline (see gulpfile.js) right before every watch-triggered
+// `styles`/`generateEnvironment` rerun. This process captured `persistedComposition` ONCE, at
+// startup, and never re-reads it — so if some OTHER process (typically a separate `quick-build`
+// run while this watch session stayed alive) has since rebuilt lib/ with a DIFFERENT composition,
+// this session's own composition is stale. Rewriting lib/ with it would silently clobber the
+// other build. Re-read the ground truth fresh and abort loudly on any mismatch instead.
+function assertCompositionUnchanged() {
+  const onDisk = readPersistedComposition();
+
+  if (onDisk === undefined) {
+    throw new Error(
+      `[themes] lib/ no longer contains a readable theme composition at ${ENVIRONMENT_JSON_PATH} — was it deleted ` +
+        `by another process? This 'gulp watch' session (started with ${describeComposition({ primary, secondary })}) ` +
+        `is stale. Stop it, run 'npm run quick-build' again, then restart 'npm start'.`
+    );
+  }
+
+  if (onDisk.primary !== primary || !sameThemeList(onDisk.secondary, secondary)) {
+    throw new Error(
+      `[themes] Another build changed the theme composition on disk (now ${describeComposition(onDisk)}) since ` +
+        `this 'gulp watch' session started (with ${describeComposition({ primary, secondary })}). This watch ` +
+        `session is stale and must be restarted: stop it and run 'npm start' again.`
+    );
+  }
+}
+
 const themes = [
   // This is the default Cloudscape theme, which is best used with Visual Refresh enabled (by default)
   {
@@ -225,3 +265,4 @@ module.exports.RELEASE_DEFAULT = RELEASE_DEFAULT;
 module.exports.DEV_DEFAULT = DEV_DEFAULT;
 module.exports.resolveComposition = resolveComposition;
 module.exports.validateComposition = validateComposition;
+module.exports.assertCompositionUnchanged = assertCompositionUnchanged;
