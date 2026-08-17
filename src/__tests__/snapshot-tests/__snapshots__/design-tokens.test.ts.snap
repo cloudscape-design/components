@@ -3318,29 +3318,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -6975,29 +6975,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -10632,29 +10632,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -14289,29 +14289,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -17946,29 +17946,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -21603,29 +21603,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-592d6e",
+            "disabled": "awsui-none-592d6e",
           },
         },
         "shadow-card": {
@@ -25260,29 +25260,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-592d6e",
+        "disabled": "awsui-fade-in-592d6e",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-592d6e",
+        "disabled": "awsui-fade-out-592d6e",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-592d6e",
+        "disabled": "awsui-none-592d6e",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-592d6e",
+        "disabled": "awsui-none-592d6e",
       },
     },
     "shadow-card": {
@@ -28922,29 +28922,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -32579,29 +32579,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -36236,29 +36236,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -39893,29 +39893,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -43550,29 +43550,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -47207,29 +47207,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -50864,29 +50864,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -54521,29 +54521,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-592d6e",
+            "disabled": "awsui-fade-in-592d6e",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-592d6e",
+            "disabled": "awsui-fade-out-592d6e",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-592d6e",
+            "disabled": "awsui-scale-popup-592d6e",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-592d6e",
+            "disabled": "awsui-status-icon-error-592d6e",
           },
         },
         "shadow-card": {
@@ -58178,29 +58178,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-592d6e",
+        "disabled": "awsui-fade-in-592d6e",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-592d6e",
+        "disabled": "awsui-fade-out-592d6e",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-scale-popup-35003c",
-        "disabled": "awsui-scale-popup-35003c",
+        "default": "awsui-scale-popup-592d6e",
+        "disabled": "awsui-scale-popup-592d6e",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-status-icon-error-35003c",
-        "disabled": "awsui-status-icon-error-35003c",
+        "default": "awsui-status-icon-error-592d6e",
+        "disabled": "awsui-status-icon-error-592d6e",
       },
     },
     "shadow-card": {
