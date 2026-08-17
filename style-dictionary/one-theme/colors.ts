@@ -62,11 +62,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
   colorBackgroundButtonPrimaryHover: { light: '{colorNeutral700}', dark: '{colorNeutral200}' },
   colorBackgroundButtonPrimaryActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral700}' },
+  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
   colorTextButtonPrimaryDefault: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryHover: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryActive: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
-  colorTextButtonPrimaryDisabled: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
+  colorTextButtonPrimaryDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
