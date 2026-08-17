@@ -59,5 +59,8 @@ exports.watch = () => {
   );
   watch(['src/i18n/messages/*.json'], generateI18nMessages);
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
-  watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
+  // generateEnvironment is included here so `lib/components/internal/environment.*`
+  // (PRIMARY_THEME/INCLUDED_THEMES/ALWAYS_VISUAL_REFRESH) never goes stale relative to what
+  // `styles` is actually (re-)producing for this process's resolved theme composition.
+  watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], series(generateEnvironment, styles));
 };

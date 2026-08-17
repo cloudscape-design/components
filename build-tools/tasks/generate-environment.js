@@ -23,6 +23,7 @@ function getEnvironmentValues(theme) {
     THEME: theme.name,
     SYSTEM: 'core',
     ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh || ALWAYS_VISUAL_REFRESH,
+    PRIMARY_THEME: theme.primaryThemeId,
     INCLUDED_THEMES: theme.includedThemes ?? [],
   };
 }
