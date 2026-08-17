@@ -10,6 +10,7 @@ export type Wrapper = ReturnType<typeof createWrapper>;
 export interface ScreenshotTestConfiguration {
   width?: number;
   height?: number;
+  skipBrowsers?: string[];
 }
 
 // 'screenshotArea' — captures the .screenshot-area element on the page.

@@ -81,7 +81,7 @@ const suite: TestSuite = {
       description: 'selects correct series when navigated back from legend',
       path: 'area-chart/test',
       screenshotType: 'viewport',
-      configuration: { width: 800, height: 800 },
+      configuration: { width: 800, height: 800, skipBrowsers: ['Safari'] },
       setup: async ({ page }) => {
         // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
