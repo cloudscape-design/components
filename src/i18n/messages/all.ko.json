@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "새 탭에서 열림"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount}개 항목 중 {matchesCount}개",
+    "noMatch": "일치하는 작업 없음",
+    "i18nStrings.filteringItemAriaDescription": "결과를 필터링하려면 계속 입력하세요."
+  },
   "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",

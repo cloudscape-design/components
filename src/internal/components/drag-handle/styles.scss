@@ -39,6 +39,19 @@
 
   &-resize-area {
     cursor: nwse-resize;
+    position: relative;
+
+    // Extend the pointer target to at least 24x24px (WCAG 2.5.8)
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline-end: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      min-inline-size: 24px;
+      min-block-size: 24px;
+    }
 
     @include styles.with-direction('rtl') {
       cursor: nesw-resize;

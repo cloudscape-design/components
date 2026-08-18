@@ -77,6 +77,12 @@ export interface I18nFormatArgTypes {
   'button-dropdown': {
     errorIconAriaLabel: never;
     recoveryText: never;
+    filteringResultsText: {
+      matchesCount: string | number;
+      totalCount: string | number;
+    };
+    noMatch: never;
+    'i18nStrings.filteringItemAriaDescription': never;
   };
   calendar: {
     nextMonthAriaLabel: never;

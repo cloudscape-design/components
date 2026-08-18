@@ -6531,6 +6531,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
     },
     {
       "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "i18nTag": true,
       "inlineType": {
         "name": "(matchesCount: number, totalCount: number) => string",
         "parameters": [
@@ -6612,6 +6613,7 @@ If null or undefined, the status will be treated as \`finished\`.",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "ButtonDropdownProps.I18nStrings",
         "properties": [
@@ -29514,18 +29516,21 @@ the table items array is empty.",
 - \`maxAutoRows\` (number) - Limits the number of skeleton rows rendered when \`totalRows\` is set to \`'auto'\`.
 - \`minAutoRows\` (number) - Sets the minimum number of skeleton rows rendered when \`totalRows\` is set to \`'auto'\`.
    Defaults to 1. Useful for tables rendered off-screen, where the calculated available height would
-   otherwise yield a single row.",
+   otherwise yield a single row.
+- \`renderCell\` ((column) => ReactNode) - Renders a custom skeleton placeholder per column, for cells whose
+   final content is not a single line of text (for example, multi-line cells, status indicators, or actions).
+   Return \`undefined\` for a column to fall back to the default single-line skeleton.",
       "inlineType": {
-        "name": "TableProps.SkeletonConfig",
+        "name": "TableProps.SkeletonConfig<T>",
         "type": "union",
         "values": [
-          "TableProps.FixedSkeletonConfig",
-          "TableProps.AutoSkeletonConfig",
+          "TableProps.FixedSkeletonConfig<T>",
+          "TableProps.AutoSkeletonConfig<T>",
         ],
       },
       "name": "skeleton",
       "optional": true,
-      "type": "TableProps.SkeletonConfig",
+      "type": "TableProps.SkeletonConfig<T>",
     },
     {
       "description": "Specifies the definition object of the currently sorted column. Make sure you pass an object that's

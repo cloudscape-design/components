@@ -30,6 +30,7 @@ interface SkeletonRowsProps {
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
   colIndexOffset: number;
+  renderCell: TableProps.SkeletonConfig<any>['renderCell'];
 }
 
 export function SkeletonRows({
@@ -48,6 +49,7 @@ export function SkeletonRows({
   wrapLines,
   resizableColumns,
   colIndexOffset,
+  renderCell,
 }: SkeletonRowsProps) {
   return (
     <>
@@ -82,7 +84,14 @@ export function SkeletonRows({
                 ariaLabels={ariaLabels}
                 column={{
                   ...column,
-                  cell: () => <InternalSkeleton variant="dynamic" tagOverride="span" />,
+                  cell: () => {
+                    const customSkeleton = renderCell?.(column);
+                    return customSkeleton === undefined ? (
+                      <InternalSkeleton variant="dynamic" tagOverride="span" />
+                    ) : (
+                      customSkeleton
+                    );
+                  },
                 }}
                 item={{}}
                 wrapLines={wrapLines}

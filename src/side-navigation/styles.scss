@@ -5,6 +5,8 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 // ==========================================================================
@@ -18,6 +20,27 @@ $item-padding-block: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.
 $item-padding-inline: awsui.$space-xs;
 $item-indent: calc(awsui.$size-icon-normal + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: awsui.$space-l;
+$root-collapsed-padding-horizontal: awsui.$space-scaled-l;
+// ==========================================================================
+// Collapsed-rail content motion — composite values keep each interaction's
+// duration, easing, and delay together at its transition call sites.
+// ==========================================================================
+$content-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$content-enter-motion: $content-enter-duration awsui.$motion-easing-expandable-content-enter;
+// Fade follows the first quarter of structural reveal, giving layout a short lead without a noticeable pause.
+$content-enter-fade-delay: calc(#{$content-enter-duration} / 4);
+$content-enter-fade-motion: awsui.$motion-duration-side-navigation-content-enter-fade
+  awsui.$motion-easing-expandable-content-enter $content-enter-fade-delay;
+
+// Exit is Side Navigation-specific: labels fade quickly while horizontal and vertical
+// layout collapses around icons that remain visible in the collapsed rail.
+$content-exit-duration: awsui.$motion-duration-side-navigation-content-exit;
+$content-exit-motion: $content-exit-duration awsui.$motion-easing-side-navigation-content-exit;
+$content-exit-fade-duration: awsui.$motion-duration-side-navigation-content-exit-fade;
+$content-exit-fade-motion: $content-exit-fade-duration awsui.$motion-easing-side-navigation-content-exit;
+
+// Step-function delay for overflow/clip toggles on collapse — activates after spatial motion finishes.
+$content-exit-clip-delay: $content-exit-duration;
 
 @mixin item-radius($radius: awsui.$border-radius-side-navigation-item) {
   border-start-start-radius: $radius;
@@ -46,6 +69,11 @@ $expandable-icon-negative-margin: awsui.$space-l;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+
+  // Align header to the collapsed icon column when icons are present.
+  .root:has(.list--with-icons) > & {
+    padding-inline-start: $root-collapsed-padding-horizontal;
+  }
 }
 
 .header-link {
@@ -89,13 +117,16 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .items-control,
 .list-container {
   margin-block-start: calc(#{awsui.$space-panel-content-top} - #{$item-padding-block});
-  .root--collapsed > & {
-    margin-block-start: awsui.$space-xs;
-  }
 
   // Toolbar removes margin and item padding for whatever comes first after the header
   .with-toolbar > .divider-header + & {
     margin-block-start: calc(-1 * #{$item-padding-block});
+  }
+
+  // When collapsed, the header and divider are hidden so the adjacent-sibling rule
+  // above cannot match. Apply the same reduced margin to keep vertical position stable.
+  .with-toolbar.root--collapsed > & {
+    margin-block-start: awsui.$space-scaled-xxs;
   }
 }
 
@@ -119,12 +150,17 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 
   &--collapsed {
-    padding-inline-start: 0;
-    padding-inline-end: 0;
+    padding-inline: calc(
+      (
+          var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width) -
+            #{awsui.$size-side-navigation-item-collapsed}
+        ) /
+        2
+    );
   }
 
   &.list--with-icons:not(.list-variant-root--collapsed) {
-    padding-inline-start: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
+    padding-inline: calc(#{$root-collapsed-padding-horizontal} - #{$item-padding-inline});
   }
 }
 
@@ -134,19 +170,89 @@ $expandable-icon-negative-margin: awsui.$space-l;
   &.list--with-icons {
     padding-inline-start: $item-indent;
   }
+
+  &--collapsed {
+    padding-inline-start: 0;
+  }
 }
 
 .list-variant-section {
   padding-inline-start: calc(#{$expandable-icon-negative-margin} - #{$item-padding-inline});
 
-  &.list--with-icons {
+  &.list--with-icons:not(.list-variant-section--collapsed) {
     padding-inline-start: 0;
     margin-inline-start: calc(-1 * #{awsui.$space-xs});
+  }
+
+  &--collapsed {
+    padding-inline-start: 0;
+    margin-inline-start: 0;
   }
 }
 
 .list-variant-link-group {
   padding-inline-start: $item-indent;
+
+  // ENTER: indent expands to make room for the child list.
+  @include styles.one-theme-with-motion {
+    transition: padding-inline-start $content-enter-motion;
+  }
+
+  &--collapsed {
+    padding-inline-start: 0;
+    // EXIT: indent collapses back to zero.
+    @include styles.one-theme-with-motion {
+      transition: padding-inline-start $content-exit-motion;
+    }
+  }
+}
+
+.link-group-children {
+  display: grid;
+  grid-template-rows: 1fr;
+
+  @include styles.one-theme-with-motion {
+    // ENTER: grid row expands to fit the children.
+    transition: grid-template-rows $content-enter-motion;
+  }
+
+  &--collapsed {
+    grid-template-rows: 0fr;
+
+    @include styles.one-theme-with-motion {
+      // EXIT: grid row collapses to zero height.
+      transition: grid-template-rows $content-exit-motion;
+    }
+  }
+}
+
+.link-group-children-inner {
+  overflow-y: clip;
+  overflow-x: visible;
+  min-block-size: 0;
+  opacity: 0;
+
+  @include styles.one-theme-with-motion {
+    // EXIT: opacity fades out.
+    transition: opacity $content-exit-fade-motion;
+  }
+
+  &--expanded {
+    opacity: 1;
+
+    @include styles.one-theme-with-motion {
+      // ENTER: opacity fades in, delayed until the grid row has partially opened.
+      transition: opacity $content-enter-fade-motion;
+    }
+  }
+
+  // Applied once the expand transition genuinely finishes (or immediately under reduced
+  // motion, where there's no transition to wait for). overflow-y switches to visible so
+  // active/hover/focus states on the last child aren't clipped once the grid track is done
+  // animating — same issue and same fix as expandable-section's content-inner-settled.
+  &--settled {
+    overflow-y: visible;
+  }
 }
 
 .list-variant-section-group {
@@ -154,6 +260,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
   margin-inline: calc(-1 * #{$item-padding-inline});
   padding-block: 0;
   padding-inline: 0;
+
+  &--collapsed {
+    margin-inline: 0;
+  }
 }
 
 // ==========================================================================
@@ -177,25 +287,10 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 
   &--collapsed {
+    inline-size: fit-content;
     margin-block: awsui.$space-side-navigation-item-icon-gap;
-    display: flex;
-    justify-content: center;
     padding-block: 0;
     padding-inline: 0;
-  }
-
-  &--group {
-    padding-inline: 0;
-    padding-block: awsui.$space-scaled-s;
-    list-style: none;
-
-    &-no-padding-start {
-      padding-block-start: 0;
-    }
-
-    &-no-padding-end {
-      padding-block-end: 0;
-    }
   }
 
   &--link-with-info {
@@ -204,12 +299,11 @@ $expandable-icon-negative-margin: awsui.$space-l;
   }
 }
 
-.list--collapsed-group {
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
-  list-style: none;
+// Sections and section-groups retain larger visual separation as structural boundaries
+// between children and other groups when collapsed.
+.list-item--collapsed.list-item--group:not(:first-child):has(> .section),
+.list-item--collapsed.list-item--group:not(:first-child):has(> .section-group) {
+  margin-block-start: awsui.$space-scaled-xl;
 }
 
 // ==========================================================================
@@ -221,6 +315,11 @@ $expandable-icon-negative-margin: awsui.$space-l;
 
   &--no-ident,
   &--expand-icon-end {
+    margin-inline-start: 0;
+  }
+
+  // Collapsed state: hide the expand icon.
+  &--collapsed {
     margin-inline-start: 0;
   }
 }
@@ -239,14 +338,99 @@ $expandable-icon-negative-margin: awsui.$space-l;
   background-color: awsui.$color-background-side-navigation-item-active;
 }
 
+// Collapsed state: constrain to icon square and clip the expand chevron.
+// Delay overflow/size constraints so the expandable-section grid-template-rows
+// collapse animation (1fr→0fr) can run before the parent clips the children area.
+.expandable-link-group--collapsed {
+  // Icon-bearing items: allow inline bleed for active/hover bg (no inline clip).
+  // overflow-y: visible so the focus ring (outline-offset: 2–4px) is not clipped;
+  &:has(.item-icon) {
+    overflow-x: visible;
+    overflow-y: visible;
+    inline-size: awsui.$size-side-navigation-item-collapsed;
+    // EXIT: clip to the icon square only after the content has finished collapsing.
+    @include styles.one-theme-with-motion {
+      transition: inline-size 0s linear $content-exit-clip-delay;
+    }
+  }
+
+  // Collapse to zero; clip is delayed via $content-exit-clip-delay.
+  &:not(:has(.item-icon)) {
+    overflow: hidden;
+    inline-size: 0;
+    block-size: 0;
+    padding-block: 0;
+    margin-block: 0;
+    // EXIT: block-size/padding collapse immediately; overflow/inline-size snap
+    // to zero only after, so the content has time to finish collapsing first.
+    @include styles.one-theme-with-motion {
+      transition:
+        overflow 0s linear $content-exit-clip-delay,
+        inline-size 0s linear $content-exit-clip-delay,
+        block-size $content-exit-motion,
+        padding-block $content-exit-motion;
+    }
+  }
+
+  > :first-child {
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+}
+
 .section {
   margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  min-block-size: 0;
   &.refresh {
     margin-block: calc(#{awsui.$space-scaled-xs} - #{awsui.$border-divider-section-width});
   }
   // Remove margin from section if it is the first item in side nav to prevent double margin stacking
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
+  }
+
+  // One-theme only: nested sections use a grid-based content reveal (see > :first-child
+  // below), and CSS grid containers never let a grid item's margin collapse with the
+  // container's own box. Without this, a section's trailing margin gets trapped inside
+  // its parent section's content instead of collapsing away as the last child — inflating
+  // every ancestor level's grid-row height by that amount. Zeroing it here (only for
+  // sections nested inside another section) restores the same "last child margin doesn't
+  // extend the container" behavior normal block layout gives for free.
+  @at-root .list-variant-section > .list-item:last-child > #{&} {
+    @include theming.one-theme-only {
+      margin-block-end: 0px;
+    }
+  }
+
+  > :first-child {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    @include styles.one-theme-with-motion {
+      transition:
+        grid-template-rows $content-enter-motion,
+        padding-block $content-enter-motion,
+        opacity $content-enter-fade-motion;
+    }
+  }
+
+  // Collapsed state: children are forced open, this hides header with zero-height collapse.
+  &--collapsed {
+    margin-block: 0;
+
+    > :first-child {
+      grid-template-rows: 0fr;
+      overflow: hidden;
+      padding-block: 0;
+      opacity: 0;
+      @include styles.one-theme-with-motion {
+        // EXIT: spatial follows opacity — delay collapse.
+        transition:
+          grid-template-rows $content-exit-motion,
+          padding-block $content-exit-motion,
+          opacity $content-exit-fade-motion;
+      }
+    }
   }
 }
 
@@ -262,6 +446,7 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .section-group {
   margin-block: calc(#{awsui.$space-scaled-xs} - #{awsui.$border-divider-section-width});
   margin-inline: 0;
+  min-block-size: 0;
 
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
@@ -269,20 +454,55 @@ $expandable-icon-negative-margin: awsui.$space-l;
 }
 
 .section-group-title {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
+  overflow: hidden;
+  min-inline-size: 0;
   margin-block: 0;
+  @include styles.one-theme-with-motion {
+    // ENTER: grid-columns snap to 1fr instantly (0s) — full width before text appears.
+    transition:
+      grid-template-columns 0s,
+      block-size $content-enter-motion,
+      padding-block $content-enter-motion;
+  }
+
+  &--collapsed {
+    grid-template-columns: 0fr;
+    block-size: 0;
+    padding-block: 0;
+    margin-block: 0;
+    @include styles.one-theme-with-motion {
+      // EXIT: opacity leads (on .label-text child), grid-columns snap to 0fr AFTER
+      // opacity completes (0s duration, delay = exit opacity duration).
+      transition:
+        grid-template-columns 0s $content-exit-fade-duration,
+        block-size $content-exit-motion,
+        padding-block $content-exit-motion;
+    }
+  }
+}
+
+// Override InternalBox .box.h3-variant padding (specificity 0,2,0) that otherwise
+// wins over the single-class --collapsed rule and reserves vertical space.
+.section-group-title.section-group-title--collapsed {
+  padding-block: 0;
 }
 
 // ==========================================================================
-// Links — all links use awsui.$size-side-navigation-item-height for consistent row sizing and collapse icon size.
+// Links — all links use awsui.$size-side-navigation-item-height for consistent row sizing;
+// collapsed icon square uses awsui.$size-side-navigation-item-collapsed.
 // ==========================================================================
 .link {
   @include styles.font-body-m;
   color: awsui.$color-text-side-navigation-item-default;
   display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-block-size: awsui.$size-side-navigation-item-height;
   padding-block: $item-padding-block;
-  min-inline-size: awsui.$size-side-navigation-item-height;
+  min-inline-size: awsui.$size-side-navigation-item-collapsed;
   padding-inline: $item-padding-inline;
   margin-inline: calc(-1 * #{$item-padding-inline});
   align-items: flex-start;
@@ -290,6 +510,13 @@ $expandable-icon-negative-margin: awsui.$space-l;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
+  @include styles.one-theme-with-motion {
+    // ENTER: block-size expands back to full row height.
+    // background-color: smooth interpolation prevents jarring swap on hover/active.
+    transition:
+      block-size $content-enter-motion,
+      background-color awsui.$motion-duration-responsive ease-in-out;
+  }
 
   &-active {
     font-weight: awsui.$font-wayfinding-link-active-weight;
@@ -303,15 +530,89 @@ $expandable-icon-negative-margin: awsui.$space-l;
       &:hover {
         color: awsui.$color-text-side-navigation-item-active-collapsed;
       }
+      // Icon-less links collapse to zero size — suppress active background so it
+      // doesn't visibly shrink as a colored square/circle during the spatial exit.
+      &:not(:has(.item-icon)) {
+        background-color: transparent;
+      }
+    }
+    // stylelint-disable-next-line no-duplicate-selectors
+    & {
+      // ENTER: color/background/block-size all settle back to the active state.
+      @include styles.one-theme-with-motion {
+        transition:
+          color awsui.$motion-duration-responsive ease-in-out,
+          background-color $content-enter-duration ease-in-out,
+          block-size $content-enter-motion;
+      }
+    }
+
+    // Icon-less links: step-function the bg so it snaps AFTER the spatial expand
+    // finishes — prevents a growing colored square on enter.
+    &:not(:has(.item-icon)) {
+      // ENTER: background snaps in only after block-size has finished expanding.
+      @include styles.one-theme-with-motion {
+        transition:
+          color awsui.$motion-duration-responsive ease-in-out,
+          background-color 0ms linear $content-enter-duration,
+          block-size $content-enter-motion;
+      }
+
+      // Collapsed state: snap bg to transparent immediately (no delay).
+      &.link--collapsed {
+        // EXIT: background snaps out immediately; block-size collapses after.
+        @include styles.one-theme-with-motion {
+          transition:
+            background-color 0ms linear,
+            block-size $content-exit-motion,
+            min-block-size $content-exit-motion;
+        }
+      }
     }
   }
 
   &--collapsed {
-    padding-inline: 0;
-    margin-inline: 0;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    margin-inline: 0;
     @include item-radius(awsui.$border-radius-side-navigation-item-collapsed);
+
+    // Icon-bearing items: anchor the icon at the horizontal center of the collapsed
+    // square ($size-side-navigation-item-collapsed) independent of the text-wrapper width.
+    // Using padding-inline-start to fix the icon position decouples it from the
+    // text-wrapper's grid-template-columns step-function collapse, so:
+    //   (1) the text fades out via opacity (compositor-cheap), AND
+    //   (2) the icon center stays stable (no drift from justify-content re-centering).
+    &:has(.item-icon) {
+      justify-content: flex-start;
+      padding-inline-start: calc((#{awsui.$size-side-navigation-item-collapsed} - #{awsui.$size-icon-normal}) / 2);
+      padding-inline-end: 0;
+      // Override base item-height floor to enforce icon-sized square.
+      min-block-size: awsui.$size-side-navigation-item-collapsed;
+      max-block-size: awsui.$size-side-navigation-item-collapsed;
+      // Square forms naturally at rest: min-inline-size enforces minimum, text-wrapper at
+      // grid-template-columns: 0fr contributes zero width. fit-content prevents transient
+      // overflow without a fixed max that would clip the text fade animation.
+      max-inline-size: fit-content;
+      box-sizing: border-box;
+    }
+
+    &:not(:has(.item-icon)) {
+      inline-size: 0;
+      min-inline-size: 0;
+      padding-inline: 0;
+      block-size: 0;
+      min-block-size: 0;
+      padding-block: 0;
+      margin-block: 0;
+      @include styles.one-theme-with-motion {
+        // EXIT: spatial follows opacity — delay block collapse.
+        transition:
+          block-size $content-exit-motion,
+          min-block-size $content-exit-motion;
+      }
+    }
   }
 }
 
@@ -335,13 +636,80 @@ $expandable-icon-negative-margin: awsui.$space-l;
   @include focus-visible.when-visible {
     @include styles.link-focus;
   }
+
+  // Larger gutter for active collapsed items so the focus ring is clearly separated from the background edge.
+  // overflow: visible overrides the base .link--collapsed overflow: hidden so the ::before pseudo-element is not clipped.
+  // stylelint-disable-next-line no-descending-specificity
+  &-active.link--collapsed {
+    overflow: visible;
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(4px);
+    }
+  }
 }
 
 // ==========================================================================
 // Misc
 // ==========================================================================
-.link-text-wrapper {
+
+// Allows text wrapping at rest; parent grid container handles the 0fr clip.
+.link-text-wrapper-content {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
   min-inline-size: 0;
+}
+
+.link-text-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  min-inline-size: 0;
+  opacity: 1;
+
+  // ENTER: grid snaps to 1fr instantly; opacity follows with delay.
+  @include styles.one-theme-with-motion {
+    transition:
+      grid-template-columns 0s,
+      opacity $content-enter-fade-motion;
+  }
+
+  &--collapsed {
+    grid-template-columns: 0fr;
+    opacity: 0;
+
+    // EXIT (collapsed state governs transition INTO collapsed): Opacity leads (no delay).
+    // Grid snaps to 0fr AFTER opacity completes (0s duration, delay = exit opacity duration)
+    // — holds at 1fr during the fade so text remains full-width + visible while fading.
+    @include styles.one-theme-with-motion {
+      transition:
+        grid-template-columns 0s $content-exit-fade-duration,
+        opacity $content-exit-fade-motion;
+    }
+  }
+}
+
+// Shared text-fade for non-link labels (section headers, section-group titles).
+// Uses the same opacity timing as .link-text-wrapper for visual consistency.
+.label-text {
+  opacity: 1;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  min-inline-size: 0;
+  @include styles.one-theme-with-motion {
+    // ENTER: opacity follows spatial — delayed fade-in after height expands.
+    transition: opacity $content-enter-fade-motion;
+  }
+  &--collapsed {
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    @include styles.one-theme-with-motion {
+      // EXIT: opacity leads — fast fade-out, no delay.
+      transition: opacity $content-exit-fade-motion;
+    }
+  }
 }
 
 .info {
@@ -352,6 +720,12 @@ $expandable-icon-negative-margin: awsui.$space-l;
 .item-icon {
   display: inline-flex;
   flex-shrink: 0;
+  // EXIT: text gap margin collapses to zero once the icon is the only remaining content.
+  @include styles.one-theme-with-motion {
+    transition:
+      color awsui.$motion-duration-responsive awsui.$motion-easing-responsive,
+      margin-inline-end $content-exit-motion;
+  }
   &:not(.item-icon--collapsed) {
     margin-inline-end: $item-icon-text-gap;
   }
@@ -369,7 +743,6 @@ $expandable-icon-negative-margin: awsui.$space-l;
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     &.divider--collapsed {
       margin-block: awsui.$space-scaled-2x-m;
-      margin-inline: awsui.$space-xs;
     }
   }
   &-header {
@@ -399,16 +772,16 @@ $expandable-icon-negative-margin: awsui.$space-l;
     @include icon-layout-hover-background;
   }
 
-  // Expandable-link-group header: hover background.
-  > .list-item > .expandable-link-group > div:first-child:hover {
+  // Expandable-link-group header: hover background (expanded only).
+  // Collapsed ELGs use .link--collapsed:hover on the inner <a> instead.
+  > .list-item > .expandable-link-group:not(.expandable-link-group--collapsed) > div:first-child:hover {
     @include icon-layout-hover-background;
   }
 
-  // Section (footer-variant expandable) header: full-width hover geometry + background.
-  // :first-child targets the ExpandableSection header wrapper (positional cross-component coupling).
+  // Section (footer-variant expandable) header :first-child targets the ExpandableSection header wrapper.
   > .list-item > .section > :first-child {
     @include item-radius;
-    display: flex;
+    display: grid;
     padding-inline: $item-padding-inline;
     margin-inline: calc(-1 * #{$item-padding-inline});
     box-sizing: content-box;
@@ -416,6 +789,13 @@ $expandable-icon-negative-margin: awsui.$space-l;
     &:hover {
       @include icon-layout-hover-background;
     }
+  }
+
+  // In collapsed mode, icon-layout section headers are zero-height; zero their inline offsets
+  // to prevent influencing the layout of children below.
+  > .list-item--collapsed > .section--collapsed > :first-child {
+    padding-inline: 0;
+    margin-inline: 0;
   }
 }
 

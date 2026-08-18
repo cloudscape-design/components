@@ -2,6 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { GlobalValue, ModeValue, TokenCategory } from '@cloudscape-design/theming-build';
 
+const oneThemeGuard = ':where(:not(.awsui-one-theme):not(.awsui-one-theme *))';
+
+/**
+ * Global (body) themes' context rules would otherwise also match context elements in
+ * one theme, which styles notifications through base tokens without these contexts.
+ */
+export const excludeOneTheme = <T extends { selector: string }>(context: T): T => ({
+  ...context,
+  selector: `${context.selector}${oneThemeGuard}`,
+});
+
 export const createTopNavigationContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'top-navigation',

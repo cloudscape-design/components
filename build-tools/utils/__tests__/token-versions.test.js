@@ -18,13 +18,8 @@ const variablesMap = {
   shadowModal: 'shadow-modal',
 };
 
-test('versions border + typography tokens matched by the default groups and leaves others (incl. border colors) version-less', () => {
-  expect(getTokenVersions(variablesMap)).toEqual({
-    borderRadiusButton: 'v3-1',
-    borderWidthField: 'v3-1',
-    colorChartsPurple300: 'v3-1',
-    fontFamilyBase: 'v3-1',
-  });
+test('versions every token using the default fallback group', () => {
+  expect(getTokenVersions(variablesMap)).toEqual(mapValues(variablesMap, () => 'v3-1'));
 });
 
 test('assigns the version of the first matching group', () => {

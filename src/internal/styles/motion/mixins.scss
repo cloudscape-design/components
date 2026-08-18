@@ -21,3 +21,12 @@
   }
 }
 /* stylelint-enable @cloudscape-design/no-motion-outside-of-mixin, selector-combinator-disallowed-list, selector-pseudo-class-no-unknown, selector-class-pattern */
+
+// A wrapper for animation related styles that should be applied to one-theme only.
+@mixin one-theme-with-motion($selector: '') {
+  @include theming.one-theme-only($selector) {
+    @include with-motion {
+      @content;
+    }
+  }
+}

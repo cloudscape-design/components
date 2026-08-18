@@ -680,6 +680,7 @@ const InternalTable = React.forwardRef(
                           wrapLines={wrapLines}
                           resizableColumns={resizableColumns}
                           colIndexOffset={colIndexOffset}
+                          renderCell={skeleton?.renderCell}
                         />
                       ) : !skeleton && (loading || allItems.length === 0) ? (
                         <tr>
@@ -895,6 +896,7 @@ const InternalTable = React.forwardRef(
                           wrapLines={wrapLines}
                           resizableColumns={resizableColumns}
                           colIndexOffset={colIndexOffset}
+                          renderCell={skeleton?.renderCell}
                         />
                       )}
                     </tbody>

@@ -4,7 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
-    "custom-property-pattern": "^(?!.+)",
+    "custom-property-pattern": "^awsui-(internal-)?style-",
     "scss/comment-no-empty": null,
     "scss/operator-no-newline-after": null,
     "selector-pseudo-class-no-unknown": [

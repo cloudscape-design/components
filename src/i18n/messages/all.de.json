@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Pfad anzeigen"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} von {totalCount} Artikeln",
+    "noMatch": "Keine übereinstimmenden Aktionen",
+    "i18nStrings.filteringItemAriaDescription": "Tippen Sie weiter, um die Ergebnisse zu filtern."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },

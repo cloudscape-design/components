@@ -261,6 +261,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundAlertError: {
+    description: 'The background color of error alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertInfo: {
+    description: 'The background color of info alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertSuccess: {
+    description: 'The background color of success alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertWarning: {
+    description: 'The background color of warning alerts.',
+    public: false,
+    themeable: false,
+  },
   colorBackgroundFlashbarError: {
     description: 'The background color of error flash messages.',
     public: true,
@@ -430,6 +450,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The default background color of the progress bar value.',
     public: true,
     themeable: true,
+  },
+  colorBackgroundProgressBarValueFlash: {
+    description: 'The background color of the progress bar value inside flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundProgressBarFlash: {
+    description: 'The background color of the progress bar track inside flash messages.',
+    public: false,
+    themeable: false,
   },
   colorBackgroundProgressBarDefault: {
     description: 'The default background color of the progress bar.',
@@ -692,6 +722,11 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.',
     public: true,
     themeable: true,
+  },
+  colorBorderDividerNotification: {
+    description: 'The border color for dividers inside flash messages and alerts.',
+    public: false,
+    themeable: false,
   },
   colorBorderDividerSecondary: {
     description: 'The border color for row dividers. For example: row dividers for table and collection preferences.',
@@ -1018,6 +1053,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextFlashbarIconError: {
+    description: 'The icon color inside error flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconInfo: {
+    description: 'The icon color inside info and in-progress flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconSuccess: {
+    description: 'The icon color inside success flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconWarning: {
+    description: 'The icon color inside warning flash messages.',
+    public: false,
+    themeable: false,
+  },
   colorTextFormDefault: {
     description:
       'The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.',
@@ -1183,6 +1238,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkSecondaryDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of secondary links.',
+    public: false,
+    themeable: false,
+  },
   colorTextLinkInfoDefault: {
     description: 'The default color for info links.',
     public: true,
@@ -1193,10 +1253,51 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkInvertedDefault: {
+    description:
+      'The default text color of links rendered on an inverted (dark) surface. For example: a link inside a flashbar.',
+    public: false,
+    themeable: false,
+  },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
     public: true,
     themeable: true,
+  },
+  colorTextAlertDefault: {
+    description: 'Default text color inside alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconError: {
+    description: 'The icon color inside error alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconInfo: {
+    description: 'The icon color inside info alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconSuccess: {
+    description: 'The icon color inside success alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconWarning: {
+    description: 'The icon color inside warning alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationLinkDefault: {
+    description: 'The default text color of links inside flash messages and alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationLinkHover: {
+    description: 'The text color of hovered links inside flash messages and alerts.',
+    public: false,
+    themeable: false,
   },
   colorTextNotificationYellow: {
     description: 'The text and foreground color used on warning flash messages (yellow notification surface).',

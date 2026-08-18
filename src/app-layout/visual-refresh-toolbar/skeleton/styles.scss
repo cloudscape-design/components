@@ -155,7 +155,7 @@
 
   &.navigation-collapsed {
     @include desktop-only {
-      inline-size: var(#{custom-props.$navigationCollapsedWidth}, constants.$navigation-collapsed-width-default);
+      inline-size: var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width);
     }
   }
 }

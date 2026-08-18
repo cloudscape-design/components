@@ -43,7 +43,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalHover: { light: '{colorNeutral850}', dark: '{colorNeutral250}' },
   colorTextButtonNormalActive: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextButtonNormalDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
-  colorTextInteractiveDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
 
   // Inline-link and icon buttons adopt the link hover color in one-theme.
   colorTextButtonInlineLinkHover: '{colorTextLinkHover}',
@@ -63,11 +62,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
   colorBackgroundButtonPrimaryHover: { light: '{colorNeutral700}', dark: '{colorNeutral200}' },
   colorBackgroundButtonPrimaryActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral700}' },
+  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
   colorTextButtonPrimaryDefault: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryHover: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryActive: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
-  colorTextButtonPrimaryDisabled: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
+  colorTextButtonPrimaryDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
@@ -102,6 +101,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkSecondaryDefault: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextLinkSecondaryHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextLinkSecondaryDecorationDefault: '{colorTextLinkDecorationDefault}',
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
@@ -109,6 +109,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Selection / focus ─────────────────────────────────────────────────────
   colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBorderNotificationStackBarFocused: '{colorNeutral100}',
   colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
   colorBackgroundItemSelected: { light: '{colorNeutral150}', dark: '{colorNeutral1000}' },
@@ -129,6 +130,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSliderRangeDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundSliderHandleDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBackgroundProgressBarValueDefault: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
+  colorBackgroundProgressBarValueFlash: '{colorTextNotificationDefault}',
+  colorBackgroundProgressBarFlash: { light: '{colorGreyOpaque10}', dark: '{colorGreyOpaque25}' },
 
   // ── Badge ─────────────────────────────────────────────────────────
   colorBackgroundBadgeGreen: { light: '{colorSuccess100}', dark: 'rgba(43, 181, 52, 0.2)' },
@@ -136,26 +139,45 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
   colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
-  colorTextNotificationDefault: { light: '{colorNeutral100}', dark: '{colorNeutral100}' },
+  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextNotificationYellow: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextNotificationLinkDefault: { light: '{colorNeutral900}', dark: '{colorNeutral50}' },
+  colorTextNotificationLinkHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
+  colorBorderDividerNotification: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
+  colorTextLinkInvertedDefault: '{colorNeutral100}',
+  colorTextLinkInvertedHover: '{colorWhite}',
+  colorTextInteractiveInvertedDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
   colorTextBadgeGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextBadgeBlue: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextBadgeRed: { light: '{colorError700}', dark: '{colorError400}' },
   colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 
-  // ── Flashbar (one-theme: subtle alert-style backgrounds) ───────────────────
+  // Flashbar
   colorBackgroundFlashbarError: { light: '#fceded', dark: '#460303' },
   colorBackgroundFlashbarInfo: { light: '#eaeffc', dark: '#08144f' },
   colorBackgroundFlashbarSuccess: { light: '#e9fce7', dark: '#03220d' },
   colorBackgroundFlashbarWarning: { light: '#fcfadb', dark: '#372603' },
+  colorTextFlashbarIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextFlashbarIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
+
+  // Alert
+  colorBackgroundAlertError: { light: '#fceded', dark: '#460303' },
+  colorBackgroundAlertInfo: { light: '#eaeffc', dark: '#08144f' },
+  colorBackgroundAlertSuccess: { light: '#e9fce7', dark: '#03220d' },
+  colorBackgroundAlertWarning: { light: '#fcfadb', dark: '#372603' },
+  colorTextAlertDefault: '{colorTextNotificationDefault}',
 
   // ── Status border ───────────────────────────────────────────────────────────
-  colorBorderStatusError: { light: '{colorError600}', dark: '{colorError400}' },
+  colorBorderStatusError: { light: '{colorError600}', dark: '{colorError500}' },
   colorBorderStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorBorderStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess300}' },
   colorBorderStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
+  colorTextAlertIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
+  colorTextAlertIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
   colorTextStatusInfo: { light: '{colorInfo600}', dark: '{colorInfo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
