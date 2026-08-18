@@ -50,18 +50,21 @@ $item-toggle-column-width: 28px;
       }
     }
 
+    &.with-icon {
+      /* the component sets this class in every theme, the rules below apply in one theme only */
+      @include theming.one-theme-only {
+        align-items: baseline;
+        > .expand-toggle-wrapper > .toggle {
+          inset-block-start: 2px;
+        }
+      }
+    }
+
     @include theming.one-theme-only {
       align-items: center;
       > .expand-toggle-wrapper > .toggle {
         inset-inline-start: 0px;
         inset-block-start: 3px;
-      }
-
-      &.with-icon {
-        align-items: baseline;
-        > .expand-toggle-wrapper > .toggle {
-          inset-block-start: 2px;
-        }
       }
     }
 

@@ -325,6 +325,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 // One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
 .content-inner {
+  /* the component sets this class in every theme, the rules below apply in one theme only */
   @include theming.one-theme-only {
     // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
     // active/hover/focus states) bleed past the inline edges.
@@ -338,20 +339,26 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     @include styles.with-motion {
       transition: opacity $reveal-exit-motion;
     }
+  }
+}
 
-    &-expanded {
-      opacity: 1;
+.content-inner-expanded {
+  /* the component sets this class in every theme, the rules below apply in one theme only */
+  @include theming.one-theme-only {
+    opacity: 1;
 
-      // SHOW (expanded state): opacity fades in AFTER height has partially
-      // opened, creating a perceptible fade in the revealed space.
-      @include styles.with-motion {
-        transition: opacity $reveal-enter-delayed-motion;
-      }
+    // SHOW (expanded state): opacity fades in AFTER height has partially
+    // opened, creating a perceptible fade in the revealed space.
+    @include styles.with-motion {
+      transition: opacity $reveal-enter-delayed-motion;
     }
+  }
+}
 
-    &-settled {
-      overflow-y: visible;
-    }
+.content-inner-settled {
+  /* the component sets this class in every theme, the rules below apply in one theme only */
+  @include theming.one-theme-only {
+    overflow-y: visible;
   }
 }
 
