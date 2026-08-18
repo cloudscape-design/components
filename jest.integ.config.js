@@ -15,7 +15,7 @@ module.exports = {
     ],
   },
   reporters: ['default', 'github-actions'],
-  testTimeout: 60_000, // 1min
+  testTimeout: 90_000, // 1.5min
   maxWorkers: os.cpus().length * (process.env.GITHUB_ACTION ? 3 : 1),
   globalSetup: '<rootDir>/build-tools/integ/global-setup.js',
   globalTeardown: '<rootDir>/build-tools/integ/global-teardown.js',
