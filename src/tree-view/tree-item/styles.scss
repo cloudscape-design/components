@@ -51,7 +51,7 @@ $item-toggle-column-width: 28px;
     }
 
     &.with-icon {
-      /* the component sets this class in every theme, the rules below apply in one theme only */
+      /* this comment keeps the class in the style sheet */
       @include theming.one-theme-only {
         align-items: baseline;
         > .expand-toggle-wrapper > .toggle {

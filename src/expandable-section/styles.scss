@@ -325,7 +325,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 // One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
 .content-inner {
-  /* the component sets this class in every theme, the rules below apply in one theme only */
+  /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
     // active/hover/focus states) bleed past the inline edges.
@@ -343,7 +343,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 .content-inner-expanded {
-  /* the component sets this class in every theme, the rules below apply in one theme only */
+  /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     opacity: 1;
 
@@ -356,7 +356,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 }
 
 .content-inner-settled {
-  /* the component sets this class in every theme, the rules below apply in one theme only */
+  /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     overflow-y: visible;
   }

@@ -106,7 +106,7 @@ $dropdown-trigger-icon-offset: 2px;
     }
 
     &.has-trigger-text {
-      /* the component sets this class in every theme, the rules below apply in one theme only */
+      /* this comment keeps the class in the style sheet */
       @include theming.one-theme-only {
         & > .trigger-button {
           padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
