@@ -4,8 +4,22 @@
 import CollectionPreferencesPageObject from '../../../__integ__/pages/collection-preferences-page';
 
 export default class ContentDisplayPageObject extends CollectionPreferencesPageObject {
+  // Reads every option label in a single script evaluation. Fetching them through the
+  // WebDriver protocol costs one round-trip per element, which is 50 for the long list and
+  // dominated the runtime of these tests on CI. Returns the same strings as getText(),
+  // both before and after the list is scrolled.
+  async getOptionTexts(): Promise<string[]> {
+    return (await this.browser.execute(
+      selector =>
+        Array.prototype.map.call(document.querySelectorAll(selector), element =>
+          (element as HTMLElement).innerText.trim()
+        ),
+      this.findOptions().toSelector()
+    )) as string[];
+  }
+
   async containsOptionsInOrder(options: string[]) {
-    const texts = await this.getElementsText(this.findOptions().toSelector());
+    const texts = await this.getOptionTexts();
     const result = texts.join(`\n`).includes(options.join('\n'));
     if (!result) {
       throw new Error(`Options are not in the expected order:
