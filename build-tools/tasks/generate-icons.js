@@ -48,7 +48,7 @@ function getIcon(iconName, content) {
       {
         name: 'addAttributesToSVGElement',
         params: {
-          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }],
+          attributes: [{ focusable: 'false' }, { 'aria-hidden': 'true' }, { 'data-awsui-icon-animated': 'true' }],
         },
       },
       {
