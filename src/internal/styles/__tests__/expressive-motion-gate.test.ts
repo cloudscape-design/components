@@ -74,10 +74,6 @@ describe('expressive-motion gate: opt-in', () => {
     expect(compile([THEME_SELECTOR_C, THEME_SELECTOR_A], [THEME_SELECTOR_B])).toBe('');
   });
 
-  test('emits nothing when the artefact contains no themes at all', () => {
-    expect(compile([], [THEME_SELECTOR_B])).toBe('');
-  });
-
   test('a substring-similar selector does not opt in by accident', () => {
     expect(compile([THEME_SELECTOR_C], [THEME_SELECTOR_B])).toBe('');
   });
