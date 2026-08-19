@@ -41,6 +41,25 @@ $sizes-vertical: (
 }
 
 /*
+ * Divider between children
+ */
+
+.divider {
+  /* used in test-utils */
+}
+
+.divider-vertical {
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  inline-size: 100%;
+}
+
+.divider-horizontal {
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  block-size: auto;
+  align-self: stretch;
+}
+
+/*
  * Horizontal variant
  */
 

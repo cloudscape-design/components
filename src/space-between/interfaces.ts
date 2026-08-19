@@ -28,6 +28,13 @@ export interface SpaceBetweenProps extends BaseComponentProps {
   alignItems?: SpaceBetweenProps.AlignItems;
 
   /**
+   * When set to `true`, renders a visual divider line between each child element.
+   * The divider is oriented perpendicular to the layout direction:
+   * a horizontal line for `direction="vertical"` and a vertical line for `direction="horizontal"`.
+   */
+  divider?: boolean;
+
+  /**
    * Attributes to add to the native element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
