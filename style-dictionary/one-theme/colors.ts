@@ -62,11 +62,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
   colorBackgroundButtonPrimaryHover: { light: '{colorNeutral700}', dark: '{colorNeutral200}' },
   colorBackgroundButtonPrimaryActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
-  colorBackgroundButtonPrimaryDisabled: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
   colorTextButtonPrimaryDefault: { light: '{colorNeutral100}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryHover: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
   colorTextButtonPrimaryActive: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
-  colorTextButtonPrimaryDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
   colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
@@ -182,7 +180,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning900}', dark: '{colorWarning300}' },
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError400}' },
-  colorTextStatusInactive: { light: '{colorNeutral650}', dark: '{colorNeutral450}' },
 
   // ── Dropdown & Popover ─────────────────────────────────────────────────
   colorTextDropdownItemFilterMatch: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
@@ -197,7 +194,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusIndicatorWarning: { light: '{colorWarning50}', dark: '#fbd33220' },
   colorBackgroundStatusIndicatorSuccess: { light: '{colorSuccess50}', dark: '#2bb53420' },
   colorBackgroundStatusIndicatorError: { light: '{colorError50}', dark: '#ff7a7a20' },
-  colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
+  colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
 
   // ── Table ─────────────────────────────────────────────────────────────────
   colorBackgroundCellShaded: { light: '{colorNeutral150}', dark: '{colorNeutral900}' },
