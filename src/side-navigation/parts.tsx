@@ -539,7 +539,11 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
         <span className={clsx(styles['link-text-wrapper-content'])}>
           <span className={analyticsSelectors['link-text']}>{definition.text}</span>
           {definition.external && (
-            <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
+            <span
+              className={testUtilStyles['external-icon']}
+              aria-label={renderedExternalIconAriaLabel}
+              role={renderedExternalIconAriaLabel ? 'img' : undefined}
+            >
               <InternalIcon name="external" className={styles['external-icon']} />
             </span>
           )}
