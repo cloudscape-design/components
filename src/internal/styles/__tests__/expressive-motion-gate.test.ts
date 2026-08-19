@@ -13,7 +13,7 @@ const THEMING_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'utils', 'them
 const THEME_SELECTOR_A = 'body'; // theme A themes the whole document
 const THEME_SELECTOR_B = '.test-theme-a';
 const THEME_SELECTOR_C = '.test-theme-a-legacy:not(.test-theme-a)'; // substring-overlaps with theme B's selector
-const MODE_SELECTOR = '.test-mode-disabled';
+const MODE_SELECTOR = '.test-reduce-motion';
 
 function resolvedTokensStub(selectors: string[]) {
   return `$resolved-tokens: [${selectors.map(s => `(selector: "${s}", tokens: ())`).join(',\n')}];`;
@@ -106,44 +106,48 @@ describe('expressive-motion gate: opt-in', () => {
     );
 
     expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_A))).toHaveLength(2);
+    // each opted-in theme gets exactly its own pair of rules
     expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_B))).toHaveLength(2);
+    // a theme present in the artefact but not opted in gets nothing
     expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_C))).toHaveLength(0);
   });
 });
 
-describe.each([
-  ['element selector theme (A)', THEME_SELECTOR_A],
-  ['class selector theme (B)', THEME_SELECTOR_B],
-])('expressive-motion gate: %s composition', (_label, theme) => {
+describe('expressive-motion gate: composition', () => {
   const selectors = selectorsOf(compile([THEME_SELECTOR_B, THEME_SELECTOR_A], [THEME_SELECTOR_B, THEME_SELECTOR_A]));
-  const guard = selectors.find(s => s.startsWith(`${theme}${MODE_SELECTOR}`));
-  const themedOnly = selectors.find(s => s.startsWith(theme) && !s.includes(MODE_SELECTOR));
 
-  test('theme selector composes before the mode selector, and the compound matches real DOM', () => {
-    expect(guard).toBeDefined();
-    expect(renderTarget(theme, [MODE_SELECTOR]).matches(guard!)).toBe(true);
+  test.each([
+    ['element selector theme (A)', THEME_SELECTOR_A],
+    ['class selector theme (B)', THEME_SELECTOR_B],
+  ])('%s: emitted selectors match the real DOM only under the right conditions', (_label, theme) => {
+    const themeRule = `${theme} .target`; // .target comes from the scss definition above
+    const modeRule = `${theme}${MODE_SELECTOR} .target`;
+
+    // the mixin emits the unguarded rule for an opted-in theme
+    expect(selectors).toContain(themeRule);
+    // and the guarded rule, with the mode compounded onto the theme rather than nested under it
+    expect(selectors).toContain(modeRule);
+
+    // the guarded rule applies once the mode is on
+    expect(renderTarget(theme, [MODE_SELECTOR]).matches(modeRule)).toBe(true);
+    // but must not leak when the mode is off, otherwise the guard argument is being ignored
+    expect(renderTarget(theme).matches(modeRule)).toBe(false);
+    // the unguarded rule applies on the theme alone
+    expect(renderTarget(theme).matches(themeRule)).toBe(true);
   });
 
-  test('the guard does not match when the mode is off', () => {
-    expect(renderTarget(theme).matches(guard!)).toBe(false);
+  test('the mode selector compounds onto the theme element, rather than nesting as a separate ancestor', () => {
+    const modeRule = `${THEME_SELECTOR_B}${MODE_SELECTOR} .target`;
+    // a mode class on a descendant must not satisfy the compound: both belong on the theme element
+    expect(renderTarget(THEME_SELECTOR_B, [MODE_SELECTOR], true).matches(modeRule)).toBe(false);
   });
-
-  test('the theme-only rule matches when just the theme is present', () => {
-    expect(themedOnly).toBeDefined();
-    expect(renderTarget(theme).matches(themedOnly!)).toBe(true);
-  });
-});
-
-test('the mode selector compounds onto the theme element, rather than nesting as a separate ancestor', () => {
-  const guard = selectorsOf(compile([THEME_SELECTOR_B], [THEME_SELECTOR_B])).find(s =>
-    s.startsWith(`${THEME_SELECTOR_B}${MODE_SELECTOR}`)
-  )!;
-  expect(renderTarget(THEME_SELECTOR_B, [MODE_SELECTOR], true).matches(guard)).toBe(false);
 });
 
 describe('expressive-motion gate: default configuration', () => {
   test('ships with One Theme opted in by default (pin this if it ever changes intentionally)', () => {
+    // One Theme is the shipped default
     expect(compile(['.awsui-one-theme'])).not.toBe('');
+    // any other theme has to opt in
     expect(compile([THEME_SELECTOR_B])).toBe('');
   });
 });
