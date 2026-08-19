@@ -70,7 +70,7 @@ function renderTarget(theme: string, extraClasses: string[] = []): Element {
 }
 
 describe('expressive-motion gate: opt-in', () => {
-  test('emits nothing when no theme in the artefact has opted in', () => {
+  test('emits nothing when the opted-in theme is absent from the artefact', () => {
     expect(compile([THEME_SELECTOR_C, THEME_SELECTOR_A], [THEME_SELECTOR_B])).toBe('');
   });
 
