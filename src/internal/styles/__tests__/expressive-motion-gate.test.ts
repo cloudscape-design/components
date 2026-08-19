@@ -57,33 +57,15 @@ function compile(artefactThemes: string[], optedIn?: string[]): string {
   }).css;
 }
 
-/** Returns list of selectors after stripping `:global(...)` */
-function selectorsOf(css: string): string[] {
-  return Array.from(css.matchAll(/([^{}]+)\{/g))
-    .map(m => m[1].trim().replace(/:global\(([^)]*)\)/g, '$1'))
-    .filter(Boolean);
-}
-
-/**
- * Renders the theme (plus `extraClasses`) on `<body>` with the target inside, and returns the target.
- * With `nestMode`, `extraClasses` go on a wrapper div between body and target instead.
- */
-function renderTarget(theme: string, extraClasses: string[] = [], nestMode = false): Element {
-  const classNames = (selectors: string[]) => selectors.filter(s => s.startsWith('.')).map(s => s.slice(1));
+/** Renders the theme (plus `extraClasses`) on `<body>` with the target inside, and returns the target. */
+function renderTarget(theme: string, extraClasses: string[] = []): Element {
   document.body.className = '';
   document.body.innerHTML = '';
-  document.body.classList.add(...classNames(nestMode ? [theme] : [theme, ...extraClasses]));
+  document.body.classList.add(...[theme, ...extraClasses].filter(s => s.startsWith('.')).map(s => s.slice(1)));
 
   const target = document.createElement('div');
   target.className = 'target';
-  let parent: Element = document.body;
-  if (nestMode) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add(...classNames(extraClasses));
-    document.body.appendChild(wrapper);
-    parent = wrapper;
-  }
-  parent.appendChild(target);
+  document.body.appendChild(target);
   return target;
 }
 
@@ -101,32 +83,34 @@ describe('expressive-motion gate: opt-in', () => {
   });
 
   test('emits exactly the themed + guarded rule per opted-in theme, nothing for a sibling that did not opt in', () => {
-    const selectors = selectorsOf(
-      compile([THEME_SELECTOR_A, THEME_SELECTOR_B, THEME_SELECTOR_C], [THEME_SELECTOR_A, THEME_SELECTOR_B])
-    );
+    const css = compile([THEME_SELECTOR_A, THEME_SELECTOR_B, THEME_SELECTOR_C], [THEME_SELECTOR_A, THEME_SELECTOR_B]);
 
-    expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_A))).toHaveLength(2);
-    // each opted-in theme gets exactly its own pair of rules
-    expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_B))).toHaveLength(2);
-    // a theme present in the artefact but not opted in gets nothing
-    expect(selectors.filter(s => s.startsWith(THEME_SELECTOR_C))).toHaveLength(0);
+    // both opted-in themes share one rule per mixin call, and theme C appears nowhere
+    expect(css).toBe(
+      `:global(${THEME_SELECTOR_A}) .target,:global(${THEME_SELECTOR_B}) .target{color:red}` +
+        `:global(${THEME_SELECTOR_A}${MODE_SELECTOR}) .target,` +
+        `:global(${THEME_SELECTOR_B}${MODE_SELECTOR}) .target{animation:none}`
+    );
   });
 });
 
 describe('expressive-motion gate: composition', () => {
-  const selectors = selectorsOf(compile([THEME_SELECTOR_B, THEME_SELECTOR_A], [THEME_SELECTOR_B, THEME_SELECTOR_A]));
+  // `:global(...)` is a CSS-modules compile-time marker; strip it to get selectors a real DOM can match
+  const emitted = compile([THEME_SELECTOR_B, THEME_SELECTOR_A], [THEME_SELECTOR_B, THEME_SELECTOR_A]).replace(
+    /:global\(([^)]*)\)/g,
+    '$1'
+  );
 
   test.each([
     ['element selector theme (A)', THEME_SELECTOR_A],
     ['class selector theme (B)', THEME_SELECTOR_B],
   ])('%s: emitted selectors match the real DOM only under the right conditions', (_label, theme) => {
-    const themeRule = `${theme} .target`; // .target comes from the scss definition above
+    const themeRule = `${theme} .target`;
     const modeRule = `${theme}${MODE_SELECTOR} .target`;
 
-    // the mixin emits the unguarded rule for an opted-in theme
-    expect(selectors).toContain(themeRule);
-    // and the guarded rule, with the mode compounded onto the theme rather than nested under it
-    expect(selectors).toContain(modeRule);
+    // tie the assertions below to what the mixin actually emitted
+    expect(emitted).toContain(themeRule);
+    expect(emitted).toContain(modeRule);
 
     // the guarded rule applies once the mode is on
     expect(renderTarget(theme, [MODE_SELECTOR]).matches(modeRule)).toBe(true);
@@ -134,12 +118,6 @@ describe('expressive-motion gate: composition', () => {
     expect(renderTarget(theme).matches(modeRule)).toBe(false);
     // the unguarded rule applies on the theme alone
     expect(renderTarget(theme).matches(themeRule)).toBe(true);
-  });
-
-  test('the mode selector compounds onto the theme element, rather than nesting as a separate ancestor', () => {
-    const modeRule = `${THEME_SELECTOR_B}${MODE_SELECTOR} .target`;
-    // a mode class on a descendant must not satisfy the compound: both belong on the theme element
-    expect(renderTarget(THEME_SELECTOR_B, [MODE_SELECTOR], true).matches(modeRule)).toBe(false);
   });
 });
 

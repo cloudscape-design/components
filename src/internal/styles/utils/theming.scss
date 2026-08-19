@@ -38,14 +38,19 @@ $expressive-motion-themes: ('.awsui-one-theme') !default;
   @return false;
 }
 
-/// Emits `@content` once per opted-in theme, scoped to that theme's selector.
+/// Emits `@content` once, scoped to every opted-in theme's selector.
 @mixin expressive-motion-only($selector: '') {
+  $selectors: ();
   @each $theme in resolved-tokens.$resolved-tokens {
     $theme-selector: string.unquote(map.get($theme, 'selector'));
     @if list.index($expressive-motion-themes, '#{$theme-selector}') {
-      :global(#{$theme-selector}#{$selector}) & {
-        @content;
-      }
+      $selectors: list.append($selectors, ':global(#{$theme-selector}#{$selector}) &', comma);
+    }
+  }
+  @if list.length($selectors) > 0 {
+    /* stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- every entry in the list already ends with `&` */
+    #{$selectors} {
+      @content;
     }
   }
 }
