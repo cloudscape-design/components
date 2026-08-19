@@ -23,19 +23,12 @@
   }
 }
 
-/// Themes that opt in to expressive motion, by selector. An explicit list, not a design
-/// token — tokens carry style values, not feature switches. `!default` so tests can
-/// override it with fictional themes.
 $expressive-motion-themes: ('.awsui-one-theme') !default;
 
-/// Two ways to gate on the opt-in above, because one consumer shape can't use a selector
-/// wrapper: `@keyframes` cannot nest inside a selector, so `hover-motion.scss` (a later
-/// PR) needs a plain build-time boolean to decide whether to emit its top-level
-/// `@keyframes` block at all — which is also what keeps a non-opted-in artefact free of
-/// keyframe bytes. `expressive-motion-only()` below is the wrapper form for everything
-/// else: content that already lives inside a selector.
+/// Two ways to gate on the opt-in above:
+/// - a function `has-expressive-motion` used to wrap `@keyframes`
+/// - a mixin `expressive-motion-only` is the wrapper form for everything
 
-/// True if any theme in this artefact's `$resolved-tokens` has opted in.
 @function has-expressive-motion() {
   @each $theme in resolved-tokens.$resolved-tokens {
     @if list.index($expressive-motion-themes, '#{string.unquote(map.get($theme, 'selector'))}') {
@@ -45,19 +38,11 @@ $expressive-motion-themes: ('.awsui-one-theme') !default;
   @return false;
 }
 
-/// Emits `@content` once per opted-in theme, scoped to that theme's selector. Emits
-/// nothing for an artefact with no opted-in theme.
-///
-/// `$selector` compounds onto the theme selector (e.g. a mode class such as
-/// `.awsui-motion-disabled`) — for a caller that needs to combine the two.
+/// Emits `@content` once per opted-in theme, scoped to that theme's selector.
 @mixin expressive-motion-only($selector: '') {
   @each $theme in resolved-tokens.$resolved-tokens {
     $theme-selector: string.unquote(map.get($theme, 'selector'));
     @if list.index($expressive-motion-themes, '#{$theme-selector}') {
-      // Theme selector MUST come first: a theme selector isn't always a class (the
-      // primary theme's is the element `body`), so `$selector` first would concatenate
-      // e.g. `.awsui-motion-disabled` + `body` into `.awsui-motion-disabledbody` — valid
-      // Sass, silently unmatchable, and how the reduced-motion guards broke once already.
       :global(#{$theme-selector}#{$selector}) & {
         @content;
       }
