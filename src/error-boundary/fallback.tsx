@@ -3,11 +3,11 @@
 
 import React from 'react';
 import clsx from 'clsx';
-import IntlMessageFormat from 'intl-messageformat';
 
 import InternalAlert from '../alert/internal';
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
+import { formatMessage } from '../i18n/utils/icu-parser';
 import { getBaseProps } from '../internal/base-component';
 import { ErrorBoundaryProps } from './interfaces';
 import { canUseRefresh, refreshPage } from './utils';
@@ -54,6 +54,44 @@ function DefaultHeaderContent({ i18nStrings }: { i18nStrings: ErrorBoundaryProps
   return <>{i18n('i18nStrings.headerText', i18nStrings?.headerText)}</>;
 }
 
+/**
+ * Format a message string that may contain XML-like pseudo-tag placeholders
+ * (e.g. `<Feedback>text</Feedback>`) and return an array of React nodes.
+ *
+ * The `components` map must supply a wrapper component for each tag name.
+ * Only self-closing or paired tags with a single text body are supported —
+ * which covers all current Cloudscape error-boundary messages.
+ */
+function formatWithComponents(
+  message: string,
+  components: Record<string, (children: React.ReactNode) => React.ReactNode>
+): React.ReactNode[] {
+  const result: React.ReactNode[] = [];
+  // Match <TagName>...</TagName> blocks.
+  const tagPattern = /<([A-Z][A-Za-z]*)>(.*?)<\/\1>/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tagPattern.exec(message)) !== null) {
+    // Text before the tag.
+    if (match.index > lastIndex) {
+      result.push(message.slice(lastIndex, match.index));
+    }
+    const tagName = match[1];
+    const inner = match[2];
+    const wrapper = components[tagName];
+    result.push(wrapper ? wrapper(inner) : inner);
+    lastIndex = tagPattern.lastIndex;
+  }
+
+  // Remaining text after the last tag.
+  if (lastIndex < message.length) {
+    result.push(message.slice(lastIndex));
+  }
+
+  return result;
+}
+
 function DefaultDescriptionContent({
   i18nStrings: { descriptionText, components: { Feedback } = {} } = {},
 }: {
@@ -61,31 +99,46 @@ function DefaultDescriptionContent({
 }) {
   const i18n = useInternalI18n('error-boundary');
 
-  // Dependencies for the intl-format function, where the pseudo-tags are declared as functions from parsed chunks.
-  const formatArgs = Feedback
+  const componentMap: Record<string, (children: React.ReactNode) => React.ReactNode> = Feedback
     ? {
-        hasFeedback: true,
-        Feedback: (chunks: React.ReactNode[]) => (
+        Feedback: (children: React.ReactNode) => (
           <span className={testUtilStyles['feedback-action']}>
-            <Feedback>{chunks[0] ?? ''}</Feedback>
+            <Feedback>{children}</Feedback>
           </span>
         ),
       }
-    : { hasFeedback: false, Feedback: () => <></> };
+    : {};
 
-  // This ensures that the description string provided via i18nStrings also supports the <Feedback> injection,
-  // because the i18n() helper propagates the second argument as is, without applying intl-format to it.
-  // We wrap the format with try-catch to avoid intl errors caused by incorrectly referenced components.
-  function safeFormat(descriptionText?: string) {
+  const hasFeedback = Boolean(Feedback);
+
+  // Resolve the ICU select to a plain string, then expand pseudo-tags.
+  function safeFormat(rawMessage?: string): React.ReactNode[] | string | undefined {
+    if (!rawMessage) {
+      return undefined;
+    }
     try {
-      return descriptionText ? new IntlMessageFormat(descriptionText).format(formatArgs) : undefined;
+      // First pass: resolve ICU (select/plural/simple substitution).
+      const resolved = formatMessage(rawMessage, { hasFeedback: String(hasFeedback) });
+      // Second pass: expand XML-like pseudo-tags into React nodes.
+      if (Object.keys(componentMap).length > 0) {
+        return formatWithComponents(resolved, componentMap);
+      }
+      return resolved;
     } catch {
-      return descriptionText;
+      return rawMessage;
     }
   }
-  const message = i18n('i18nStrings.descriptionText', safeFormat(descriptionText), format => format(formatArgs));
 
-  // When the description includes <Feedback>, then the translated message is represented as an array of strings and
+  const message = i18n('i18nStrings.descriptionText', safeFormat(descriptionText), format => {
+    // customHandler path: the message came from the i18n provider.
+    // `format` here is `(args) => string`, but we need rich-text output.
+    // We call format with the hasFeedback arg to resolve the ICU select,
+    // then expand pseudo-tags ourselves.
+    const resolved = format({ hasFeedback: String(hasFeedback) } as never);
+    return formatWithComponents(resolved, componentMap);
+  });
+
+  // When the description includes <Feedback>, the message is an array of strings and
   // React elements that require keys when rendering to avoid React warnings.
   return (
     <>

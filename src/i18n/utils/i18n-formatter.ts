@@ -1,43 +1,42 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
-import IntlMessageFormat from 'intl-messageformat';
-
 import { CustomHandler } from '../context';
+import { formatMessage } from './icu-parser';
 import { getMatchableLocales } from './locales';
 import { normalizeMessages } from './messages';
 
 /**
  * The expected shape of the fully resolved messages object.
- * Typescript ensures any static imports are properly typed, but since this
- * depends on types from formatjs, it should not be included in any files that
- * need to support older versions of TypeScript (3.7 and up).
+ *
+ * Values are plain ICU message strings. Pre-parsed MessageFormatElement[]
+ * arrays are no longer accepted; use plain strings only.
+ *
+ * @see MIGRATION.md for upgrade instructions.
  */
 export interface I18nMessages {
   [namespace: string]: {
     [locale: string]: {
       [component: string]: {
-        [key: string]: string | MessageFormatElement[];
+        [key: string]: string;
       };
     };
   };
 }
 
 /**
- * A stateful container for formatting internal strings. Caches formatters
- * where possible; a new instance must be created if locale or messages may
- * have changed.
+ * A stateful container for formatting internal strings. Caches formatted
+ * message strings where possible; a new instance must be created if locale
+ * or messages may have changed.
  */
 export class I18nFormatter {
   private _locale: string;
   private _messages: I18nMessages;
 
-  // Create a per-render cache of messages and IntlMessageFormat instances.
-  // Not memoizing it allows us to reset the cache when the component rerenders
-  // with potentially different locale or messages. We expect this component to
-  // be placed above AppLayout and therefore rerender very infrequently.
-  private _localeFormatterCache = new Map<string, IntlMessageFormat>();
+  // Per-render cache keyed by `namespace.component.key`.
+  // Stores the raw (unformatted) message string so that the same message
+  // can be formatted with different argument sets.
+  private _messageCache = new Map<string, string>();
 
   constructor(locale: string, messages: I18nMessages) {
     this._locale = locale.toLowerCase();
@@ -59,20 +58,17 @@ export class I18nFormatter {
     }
 
     const cacheKey = `${namespace}.${component}.${key}`;
-    let intlMessageFormat: IntlMessageFormat;
 
-    const cachedFormatter = this._localeFormatterCache.get(cacheKey);
-    if (cachedFormatter) {
-      // If an IntlMessageFormat instance was cached for this locale, just use that.
-      intlMessageFormat = cachedFormatter;
-    } else {
+    let message: string | undefined = this._messageCache.get(cacheKey);
+
+    if (message === undefined) {
       // Widen the locale string (e.g. en-GB -> en) until we find a locale
       // that contains the message we need.
-      let message: string | MessageFormatElement[] | undefined;
       const matchableLocales = getMatchableLocales(this._locale);
       for (const matchableLocale of matchableLocales) {
-        message = this._messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
-        if (message !== undefined) {
+        const candidate = this._messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
+        if (candidate !== undefined) {
+          message = candidate;
           break;
         }
       }
@@ -82,15 +78,17 @@ export class I18nFormatter {
         return provided;
       }
 
-      // Lazily create an IntlMessageFormat object for this key.
-      intlMessageFormat = new IntlMessageFormat(message, this._locale);
-      this._localeFormatterCache.set(cacheKey, intlMessageFormat);
+      this._messageCache.set(cacheKey, message);
     }
 
+    // Capture `message` in a closure for the customHandler path.
+    const resolvedMessage = message;
+
     if (customHandler) {
-      return customHandler(args => intlMessageFormat.format(args) as string);
+      return customHandler((args: FormatFnArgs) => formatMessage(resolvedMessage, args));
     }
+
     // Assuming `ReturnValue extends string` since a customHandler wasn't provided.
-    return intlMessageFormat.format() as ReturnValue;
+    return formatMessage(resolvedMessage) as ReturnValue;
   }
 }
