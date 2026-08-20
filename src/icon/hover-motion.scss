@@ -1,0 +1,86 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Hover-only icon micro-interactions, emitted only for themes that opt in to expressive
+// motion. An icon with no bespoke entry in `$icon-hover-motion` gets the generic floor.
+//
+// Targets the inner svg, not the outer .icon span, which already carries RTL mirroring
+// and caret rotation.
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// The trigger is an ancestor element and the target is an SVG shape, so descendant
+// combinators and type selectors are unavoidable here.
+// stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-disable @cloudscape-design/no-implicit-descendant
+
+$_duration-generic: awsui.$motion-duration-refresh-only-slow;
+$_ease-decelerate: awsui.$motion-easing-responsive;
+
+// A disabled control must not react to hover.
+$_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
+
+// Motion must only play if .awsui-motion-disabled and .awsui-mode-entering are not set
+$_motion-on: ':not(.awsui-motion-disabled):not(.awsui-mode-entering)';
+
+// Any value enables motion — the generator always sets this to "true".
+$_animated-attribute: 'data-awsui-icon-animated';
+$_opted-in: 'svg[#{$_animated-attribute}]';
+
+// An explicit opt-in attribute, not a tag/role list, so non-interactive containers can be triggers too.
+$_trigger-attribute: 'data-awsui-motion-trigger';
+$_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
+
+// The svg has pointer-events: none, so hover is always taken by the trigger, never the icon itself.
+$_target-attribute: 'data-awsui-motion-target';
+$_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
+
+// A uniform scale needs no re-cut and survives icon rotation or the RTL mirror.
+$_generic-transform: scale(0.94);
+
+// Extension point for bespoke per-icon motion.
+$icon-hover-motion: ();
+
+// Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
+@mixin with-motion {
+  @include theming.expressive-motion-only($_motion-on) {
+    @content;
+  }
+}
+
+// Also fires on :focus-visible, covering a focus owner nested inside the trigger.
+@mixin _on-hover-trigger($suffix) {
+  #{'#{$_hover-trigger}:hover #{$suffix}'},
+  #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
+    @content;
+  }
+}
+
+@mixin generic-hover-motion {
+  .icon > :global(#{$_opted-in}) {
+    @include with-motion {
+      transition-property: transform;
+      transition-duration: $_duration-generic;
+      transition-timing-function: $_ease-decelerate;
+    }
+  }
+
+  @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
+    @include with-motion {
+      transform: $_generic-transform;
+    }
+  }
+}
+
+@mixin icon-hover-motion {
+  // Wrapped once so prefers-reduced-motion can suppress all of this without a per-rule override.
+  @media (prefers-reduced-motion: no-preference) {
+    @include generic-hover-motion;
+  }
+}
+
+// stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-enable @cloudscape-design/no-implicit-descendant
