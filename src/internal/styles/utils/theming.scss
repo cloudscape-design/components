@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:string';
@@ -18,8 +19,13 @@
 }
 
 @mixin one-theme-only($selector: '') {
-  :global(#{$selector}.awsui-one-theme) & {
-    @content;
+  // When One Theme is not part of the components these selectors are not emitted.
+  @each $theme in resolved-tokens.$resolved-tokens {
+    @if map.get($theme, 'selector') == '.awsui-one-theme' {
+      :global(#{$selector}.awsui-one-theme) & {
+        @content;
+      }
+    }
   }
 }
 
