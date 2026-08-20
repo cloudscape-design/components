@@ -12,7 +12,6 @@ $marker-margin-right: awsui.$space-xxs;
 .marker {
   @include styles.styles-reset;
   margin-inline-end: $marker-margin-right;
-  margin-block-start: awsui.$space-xxs;
   border-start-start-radius: 2px;
   border-start-end-radius: 2px;
   border-end-start-radius: 2px;
@@ -22,8 +21,6 @@ $marker-margin-right: awsui.$space-xxs;
   cursor: inherit;
 
   &--line {
-    // same margin as in filled marker + half the difference in their size
-    margin-block-start: 0.9 * styles.$base-size;
     block-size: 0.4 * styles.$base-size;
   }
 
@@ -57,8 +54,6 @@ $marker-margin-right: awsui.$space-xxs;
   &--dashed {
     block-size: 0.4 * styles.$base-size;
     inline-size: 0.6 * styles.$base-size;
-    // same margins as in filled marker + half the difference in their size
-    margin-block-start: 0.9 * styles.$base-size;
     margin-inline-end: 1.2 * styles.$base-size;
 
     &::after {
