@@ -30,7 +30,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryActive: { light: '{colorBlack}', dark: '{colorBlack}' },
   colorBackgroundButtonPrimaryDefault: '{colorBlack}',
   colorBackgroundButtonPrimaryDisabled: { light: '{colorBlack}', dark: '{colorBlack}' },
-  colorBackgroundButtonPrimaryHover: '{colorBorderButtonNormalHover}',
+  colorBackgroundButtonPrimaryHover: '{colorBlack}',
   colorBackgroundDirectionButtonActive: '{colorNeutral750}',
   colorBackgroundDirectionButtonDefault: '{colorNeutral650}',
   colorBackgroundDirectionButtonDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
