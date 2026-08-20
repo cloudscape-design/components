@@ -22,6 +22,7 @@ const pluralizationMap = {
   CodeEditor: 'CodeEditors',
   CollectionPreferences: 'CollectionPreferences',
   ColumnLayout: 'ColumnLayouts',
+  ComparisonTable: 'ComparisonTables',
   Container: 'Containers',
   ContentLayout: 'ContentLayouts',
   CopyToClipboard: 'CopyToClipboards',

@@ -6,6 +6,7 @@ export { defaultSplitPanelContextProps } from '../split-panel/__tests__/helpers'
 const defaultProps: Record<string, Record<string, any>> = {
   tabs: { tabs: [] },
   table: { columnDefinitions: [] },
+  'comparison-table': { attributes: [], entities: [] },
   cards: { cardDefinition: {} },
   autosuggest: { options: [], enteredPrefix: '' },
   'anchor-navigation': { anchors: [] },
