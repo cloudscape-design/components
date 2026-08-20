@@ -296,7 +296,7 @@ function InternalInput(
     >
       {__startIcon && (
         <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
-          <InternalIcon name={__startIcon} variant={disabled || readOnly ? 'disabled' : __startIconVariant} />
+          <InternalIcon name={__startIcon} variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant} />
         </span>
       )}
       {hasPrefixOrSuffix ? (

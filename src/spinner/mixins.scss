@@ -30,7 +30,7 @@ $_spinner-sizes: (
 
 $_spinner-variants: (
   'normal': currentColor,
-  'disabled': awsui.$color-text-interactive-disabled,
+  'disabled': awsui.$color-text-status-inactive,
   'inverted': awsui.$color-text-inverted,
 );
 
