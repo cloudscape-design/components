@@ -54,7 +54,7 @@ $expressive-motion-themes: list.append((), '.awsui-one-theme') !default;
     }
   }
   @if list.length($selectors) > 0 {
-    /* stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- every entry in the list already ends with `&` */
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- every entry in the list already ends with `&`
     #{$selectors} {
       @content;
     }
