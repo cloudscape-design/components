@@ -2,6 +2,9 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use 'sass:map';
+@use 'awsui:resolved-tokens' as resolved-tokens;
+
 @mixin dark-mode-only($selector: '') {
   @media not print {
     /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
@@ -13,7 +16,12 @@
 }
 
 @mixin one-theme-only($selector: '') {
-  :global(#{$selector}.awsui-one-theme) & {
-    @content;
+  // When One Theme is not part of the components these selectors are not emitted.
+  @each $theme in resolved-tokens.$resolved-tokens {
+    @if map.get($theme, 'selector') == '.awsui-one-theme' {
+      :global(#{$selector}.awsui-one-theme) & {
+        @content;
+      }
+    }
   }
 }

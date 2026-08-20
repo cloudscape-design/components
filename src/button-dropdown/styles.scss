@@ -105,17 +105,20 @@ $dropdown-trigger-icon-offset: 2px;
       }
     }
 
+    &.has-trigger-text {
+      /* this comment keeps the class in the style sheet */
+      @include theming.one-theme-only {
+        & > .trigger-button {
+          padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
+        }
+      }
+    }
+
     @include theming.one-theme-only {
       & > .trigger-button {
         // Resets the padding-inline-end override applied by .visual-refresh above,
         // so both sides stay at $space-xs - $dropdown-trigger-icon-offset.
         padding-inline: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
-      }
-
-      &.has-trigger-text {
-        & > .trigger-button {
-          padding-inline: calc(#{awsui.$space-xs} + #{$dropdown-trigger-icon-offset});
-        }
       }
     }
   }
