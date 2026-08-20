@@ -11,6 +11,12 @@ export class ListItemWrapper extends StructuredItemWrapper {
   findDragHandle(): ElementWrapper | null {
     return this.findByClassName(dragHandleStyles.root);
   }
+  /**
+   * Returns the selection control (checkbox or radio) for a selectable list item, if present.
+   */
+  findSelectionControl(): ElementWrapper | null {
+    return this.findByClassName(styles['selection-control']);
+  }
 }
 
 export default class ListWrapper extends ComponentWrapper {
@@ -35,5 +41,11 @@ export default class ListWrapper extends ComponentWrapper {
    */
   findItemById(id: string): ListItemWrapper | null {
     return this.findComponent(`.${styles.item}[data-testid="${id}"]`, ListItemWrapper);
+  }
+  /**
+   * Returns all currently selected items. Only meaningful for selectable lists.
+   */
+  findSelectedItems(): Array<ListItemWrapper> {
+    return this.findAllByClassName(styles.selected).map(wrapper => new ListItemWrapper(wrapper.getElement()));
   }
 }
