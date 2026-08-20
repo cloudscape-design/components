@@ -10,6 +10,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   autosuggest: { options: [], enteredPrefix: '' },
   'anchor-navigation': { anchors: [] },
   'code-editor': { i18nStrings },
+  'content-display-preference': { options: [] },
   wizard: {
     steps: [],
     i18nStrings: {
