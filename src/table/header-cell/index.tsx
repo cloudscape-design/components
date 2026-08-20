@@ -12,6 +12,7 @@ import InternalIcon from '../../icon/internal';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import InternalPopover from '../../popover/internal';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
 import {
@@ -210,6 +211,8 @@ export function TableHeaderCell<ItemType>({
     updateColumn(columnId, entry.borderBoxWidth);
   });
 
+  const hasTooltip = !!column.tooltip;
+
   return (
     <TableThElement
       resizableStyle={resizableStyle}
@@ -326,6 +329,26 @@ export function TableHeaderCell<ItemType>({
           />
         )}
       </div>
+      {hasTooltip && (
+        <span className={styles['header-cell-info']} onClick={e => e.stopPropagation()}>
+          <InternalPopover
+            triggerType="custom"
+            size="medium"
+            position="top"
+            dismissButton={false}
+            renderWithPortal={true}
+            content={column.tooltip}
+          >
+            <button
+              type="button"
+              className={styles['header-cell-info-button']}
+              aria-label={`${typeof column.header === 'string' ? column.header + ' - ' : ''}info`}
+            >
+              <InternalIcon name="status-info" />
+            </button>
+          </InternalPopover>
+        </span>
+      )}
       {resizableColumns ? (
         <Resizer
           tabIndex={tabIndex}
