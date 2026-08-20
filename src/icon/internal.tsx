@@ -17,6 +17,7 @@ import styles from './styles.css.js';
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
+    override?: React.ReactNode;
   };
 
 function iconSizeMap(height: number | null, fontSize?: number | null) {
@@ -42,6 +43,7 @@ function iconSizeMap(height: number | null, fontSize?: number | null) {
 
 const InternalIcon = ({
   name,
+  override,
   size = 'normal',
   variant = 'normal',
   url,
@@ -174,7 +176,7 @@ const InternalIcon = ({
       ref={mergedRef}
       style={inlineStyles}
     >
-      {validIcon ? iconMap(name) : undefined}
+      {override ?? (validIcon ? iconMap(name) : undefined)}
     </WithNativeAttributes>
   );
 };

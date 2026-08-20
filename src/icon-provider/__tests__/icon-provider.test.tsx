@@ -15,9 +15,9 @@ const CUSTOM_SVG = (
   </svg>
 );
 
-const getIcon = (iconName: IconProps.Name, iconOverrides: IconProviderProps.Icons) => {
+const getIcon = (iconName: IconProps.Name, icons: IconProviderProps.Icons) => {
   return (
-    <IconProvider icons={iconOverrides}>
+    <IconProvider icons={icons}>
       <Icon name={iconName} />
     </IconProvider>
   );
