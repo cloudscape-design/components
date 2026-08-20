@@ -170,6 +170,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_page-size-form-field_tc96w",
     "awsui_page-size-radio-group_tc96w",
     "awsui_page-size_tc96w",
+    "awsui_reset-button_tc96w",
     "awsui_root_tc96w",
     "awsui_sticky-columns-first_tc96w",
     "awsui_sticky-columns-form-field_tc96w",
