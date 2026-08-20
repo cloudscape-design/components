@@ -5,6 +5,9 @@ export interface StickyColumnsProps {
   visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
+  // Minimum scrollable width (px) that must remain besides the sticky columns for the feature
+  // to stay active. Defaults to MINIMUM_SCROLLABLE_SPACE when not provided.
+  minScrollableWidth?: number;
 }
 
 export interface StickyColumnsState {
