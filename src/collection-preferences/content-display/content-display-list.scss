@@ -42,3 +42,13 @@ $group-children-indentation: 28px;
     #{$group-children-indentation} - #{awsui.$size-icon-normal} - 2 * #{awsui.$space-scaled-xxxs}
   );
 }
+
+.content-display-locked-options {
+  /* Container for locked (non-sortable) options rendered above the sortable list */
+}
+
+.content-display-locked-option-item {
+  /* Matches the padding of sortable list items so locked options align visually */
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline-start: awsui.$space-xl; /* indent to align with sortable items that have a drag handle */
+}

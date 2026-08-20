@@ -268,6 +268,11 @@ export namespace CollectionPreferencesProps {
     id: string;
     label: string;
     alwaysVisible?: boolean;
+    /**
+     * When `true`, the column is locked in its current position and cannot be reordered or hidden.
+     * Locked columns are always rendered at the top of the list with their drag handle and visibility toggle disabled.
+     */
+    locked?: boolean;
   }
 
   export interface ContentDisplayOptionGroup {
