@@ -29,6 +29,19 @@ import breadcrumbGroupSuite from './visual/breadcrumb-group';
 import buttonSuite from './visual/button';
 import buttonDropdownSuite from './visual/button-dropdown';
 import buttonGroupSuite from './visual/button-group';
+import cardsSuite from './visual/cards';
+import checkboxSuite from './visual/checkbox';
+import collectionPreferencesSuite from './visual/collection-preferences';
+import columnLayoutSuite from './visual/column-layout';
+import containerSuite from './visual/container';
+import containerStickySuite from './visual/container-sticky';
+import contentLayoutSuite from './visual/content-layout';
+import contentLayoutPermutationsSuite from './visual/content-layout-permutations';
+import copyToClipboardSuite from './visual/copy-to-clipboard';
+import dateInputSuite from './visual/date-input';
+import datePickerSuite from './visual/date-picker';
+import dateRangePickerSuite from './visual/date-range-picker';
+import expandableSectionSuite from './visual/expandable-section';
 import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
@@ -57,6 +70,17 @@ export const breadcrumbGroup: TestSuite[] = [breadcrumbGroupSuite];
 export const button: TestSuite[] = [buttonSuite];
 export const buttonDropdown: TestSuite[] = [buttonDropdownSuite];
 export const buttonGroup: TestSuite[] = [buttonGroupSuite];
+export const cards: TestSuite[] = [cardsSuite];
+export const checkbox: TestSuite[] = [checkboxSuite];
+export const collectionPreferences: TestSuite[] = [collectionPreferencesSuite];
+export const columnLayout: TestSuite[] = [columnLayoutSuite];
+export const container: TestSuite[] = [containerSuite, containerStickySuite];
+export const contentLayout: TestSuite[] = [contentLayoutSuite, contentLayoutPermutationsSuite];
+export const copyToClipboard: TestSuite[] = [copyToClipboardSuite];
+export const dateInput: TestSuite[] = [dateInputSuite];
+export const datePicker: TestSuite[] = [datePickerSuite];
+export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
+export const expandableSection: TestSuite[] = [expandableSectionSuite];
 export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
@@ -73,5 +97,16 @@ export const allSuites: TestSuite[] = [
   ...button,
   ...buttonDropdown,
   ...buttonGroup,
+  ...cards,
+  ...checkbox,
+  ...collectionPreferences,
+  ...columnLayout,
+  ...container,
+  ...contentLayout,
+  ...copyToClipboard,
+  ...dateInput,
+  ...datePicker,
+  ...dateRangePicker,
+  ...expandableSection,
   ...table,
 ];
