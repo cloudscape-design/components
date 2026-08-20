@@ -7,6 +7,10 @@
 // expressive motion via the `$expressive-motion-themes` list in
 // internal/styles/utils/theming.scss.
 
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
 
 // Descendant combinators and type selectors are unavoidable here since the trigger
@@ -14,8 +18,25 @@
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
-$_duration-generic: 250ms;
-$_ease-decelerate: cubic-bezier(0, 0, 0, 1);
+$_base: awsui.$motion-duration-refresh-only-slow;
+
+$_duration-quick: calc(#{$_base} * 0.6); //  150ms — copy sheet offset
+$_duration-generic: $_base; //              250ms — generic hover floor, digit slide
+$_duration-arc: calc(#{$_base} * 1.4); //   350ms — refresh arc sweep
+$_duration-emphasis: calc(#{$_base} * 1.6); // 400ms — whole-icon tilt/rotate
+$_duration-pulse: calc(#{$_base} * 1.8); // 450ms — heart pulse, clock hands, view/zoom scale
+$_duration-settle: calc(#{$_base} * 2); //  500ms — spring settles, nudges
+$_duration-gait: calc(#{$_base} * 2.4); //  600ms — bug gait cycle
+$_duration-tilt: calc(#{$_base} * 2.8); //  700ms — mouth tilt
+$_duration-attention: calc(#{$_base} * 3.6); // 900ms — mouth flex
+$_duration-swing: calc(#{$_base} * 4); //   1000ms — bell rotation
+
+$_ease-out: awsui.$motion-easing-show-quick;
+$_ease-symmetric: awsui.$motion-easing-refresh-only-d;
+$_ease-decelerate: awsui.$motion-easing-responsive;
+// No token expresses an overshoot curve, and the settle motions depend on one, so this
+// stays local until the token set gains an equivalent.
+$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // A disabled control must not react to hover.
 $_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
@@ -35,9 +56,667 @@ $_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
 $_target-attribute: 'data-awsui-motion-target';
 $_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
 
-// List for bespoke per-icon motion. An icon with no entry in `$icon-hover-motion`
-// gets the generic hover motion if the SVG is tagged with `data-awsui-icon-animated`.
-$icon-hover-motion: ();
+// icon name -> list of motion specs; part is optional and animates the whole icon when omitted.
+// `animation` and `to` are alternatives, never both — `_validate-specs` rejects both.
+// Motion must survive the RTL mirror, so mirrored icons scale or rotate rather than translate.
+// Status icons are excluded — they report state, not an affordance a hover could trigger.
+$icon-hover-motion: (
+  // Whole-icon transforms: no SVG change at all.
+  'announcement': (
+      (
+        duration: $_duration-emphasis,
+        easing: $_ease-spring,
+        to: (
+          transform: rotate(-12deg) scale(0.84),
+        ),
+      )
+    ),
+  'heart': (
+    (
+      animation: icon-pulse-soft,
+      duration: $_duration-pulse,
+      easing: $_ease-out,
+    )
+  ),
+  'heart-filled': (
+    (
+      animation: icon-pulse-strong,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'settings': (
+    (
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(60deg),
+      ),
+    )
+  ),
+  'thumbs-up': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-up-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-down': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    )
+  ),
+  'thumbs-down-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    )
+  ),
+  'face-happy-filled': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-3deg),
+      ),
+    )
+  ),
+  // The face icons tilt as a whole AND flex the mouth, which is two parts.
+  'face-happy': (
+      (
+        duration: $_duration-emphasis,
+        easing: $_ease-spring,
+        to: (
+          transform: rotate(-3deg),
+        ),
+      ),
+      (
+        part: 'awsui-icon-mouth',
+        animation: icon-mouth-flex,
+        duration: $_duration-attention,
+        easing: $_ease-symmetric,
+      )
+    ),
+  'face-neutral': (
+    (
+      duration: $_duration-emphasis,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(3deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-mouth',
+      animation: icon-mouth-tilt,
+      duration: $_duration-tilt,
+      easing: $_ease-symmetric,
+      origin: 8px 10px,
+    )
+  ),
+  'face-sad': (
+    (
+      part: 'awsui-icon-mouth',
+      animation: icon-mouth-flex,
+      duration: $_duration-attention,
+      easing: $_ease-symmetric,
+    )
+  ),
+  // Part-level motion.
+  'gen-ai': (
+      (
+        part: 'awsui-icon-sparkle',
+        animation: icon-sparkle-pinch,
+        duration: $_duration-settle,
+        easing: ease,
+        origin: 50% center,
+        base: (
+          transform-box: fill-box,
+        ),
+      )
+    ),
+  'search-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: $_duration-settle,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    )
+  ),
+  'edit-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: $_duration-settle,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    )
+  ),
+  'suggestions-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: $_duration-settle,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    )
+  ),
+  'copy': (
+    (
+      part: 'awsui-icon-front',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-back',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    )
+  ),
+  'refresh': (
+    (
+      part: 'awsui-icon-arc',
+      animation: icon-coil,
+      duration: $_duration-settle,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+    ),
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-coil,
+      duration: $_duration-settle,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+    )
+  ),
+  'upload': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-up,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'download': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-down,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'upload-download': (
+    (
+      part: 'awsui-icon-up',
+      animation: icon-nudge-up-once,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-down',
+      animation: icon-nudge-down-once,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  // The RTL mirror is self-correcting for these inner-element nudges, so undo/redo/external/shrink keep their direction.
+  // Rotated wrappers (caret-down-filled, angle-down) are not mirror-safe, so neither is in this map.
+  'undo': (
+      (
+        part: 'awsui-icon-arrow',
+        animation: icon-nudge-back,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      ),
+      (
+        part: 'awsui-icon-line',
+        animation: icon-shaft-flutter,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+        base: (
+          stroke-dasharray: 2,
+          stroke-dashoffset: 0,
+        ),
+      )
+    ),
+  'redo': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-forward,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-line',
+      animation: icon-shaft-flutter,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+      base: (
+        stroke-dasharray: 2,
+        stroke-dashoffset: 0,
+      ),
+    )
+  ),
+  'external': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-up-right,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  'sign-out': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-right,
+      duration: $_duration-settle,
+      easing: $_ease-out,
+    )
+  ),
+  // The two corners converge diagonally, as designed.
+  'shrink': (
+      (
+        part: 'awsui-icon-corner-tr',
+        animation: icon-nudge-down-left,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      ),
+      (
+        part: 'awsui-icon-corner-bl',
+        animation: icon-nudge-up-right,
+        duration: $_duration-settle,
+        easing: $_ease-out,
+      )
+    ),
+  'expand': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(5%, 5%),
+      ),
+    )
+  ),
+  'full-screen': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-4%, 4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    )
+  ),
+  'exit-full-screen': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      origin: 3.5px 3.5px,
+      to: (
+        transform: translate(5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      origin: 12.5px 3.5px,
+      to: (
+        transform: translate(-5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      origin: 3.5px 12.5px,
+      to: (
+        transform: translate(5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      origin: 12.5px 12.5px,
+      to: (
+        transform: translate(-5%, -5%),
+      ),
+    )
+  ),
+  'zoom-to-fit': (
+    (
+      part: 'awsui-icon-square',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 8px 8px,
+      to: (
+        transform: scale(1.15),
+      ),
+    )
+  ),
+  'multiscreen': (
+    (
+      part: 'awsui-icon-front',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-back',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-foot',
+      duration: $_duration-quick,
+      easing: $_ease-symmetric,
+      origin: 10px 13.5px,
+      to: (
+        transform: scale(1.1),
+      ),
+    )
+  ),
+  'lock-private': (
+    (
+      part: 'awsui-icon-shackle',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    )
+  ),
+  'unlocked': (
+    (
+      part: 'awsui-icon-shackle',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    )
+  ),
+  'notification': (
+    (
+      part: 'awsui-icon-bell',
+      animation: icon-bell-rotate,
+      duration: $_duration-swing,
+      easing: ease-in-out,
+      origin: 8px 4px,
+    ),
+    (
+      part: 'awsui-icon-ringer',
+      animation: icon-ringer-bounce,
+      duration: $_duration-emphasis,
+      easing: ease-in-out,
+      origin: 8px 12.25px,
+    )
+  ),
+  'history': (
+    (
+      part: 'awsui-icon-hands',
+      duration: $_duration-pulse,
+      easing: $_ease-spring,
+      origin: 9px 9px,
+      to: (
+        transform: rotate(-45deg),
+      ),
+    )
+  ),
+  'backward-10-seconds': (
+    (
+      part: 'awsui-icon-arc',
+      duration: $_duration-generic,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-one',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-zero',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    )
+  ),
+  'forward-10-seconds': (
+    (
+      part: 'awsui-icon-arc',
+      duration: $_duration-generic,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-one',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-zero',
+      duration: $_duration-settle,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    )
+  ),
+  // A scale substitutes for the prototype's stroke-dasharray/pathLength trick, which our generator rejects.
+  'view-horizontal': (
+      (
+        part: 'awsui-icon-panel',
+        duration: $_duration-pulse,
+        easing: $_ease-decelerate,
+        origin: 8px 9.5px,
+        to: (
+          transform: scale(1.08),
+        ),
+      )
+    ),
+  'view-vertical': (
+    (
+      part: 'awsui-icon-panel',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 9.5px 8px,
+      to: (
+        transform: scale(1.08),
+      ),
+    )
+  ),
+  'zoom-in': (
+    (
+      part: 'awsui-icon-arm',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 7px 7px,
+      to: (
+        transform: scale(1.15),
+      ),
+    )
+  ),
+  'zoom-out': (
+    (
+      part: 'awsui-icon-arm',
+      duration: $_duration-pulse,
+      easing: $_ease-decelerate,
+      origin: 7px 7px,
+      to: (
+        transform: scale(0.85),
+      ),
+    )
+  ),
+  // Six legs, each rotating about its own hip. Gait A and B alternate sides so the bug walks.
+  'bug': (
+      (
+        part: 'awsui-icon-leg-tl',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 5.71px,
+      ),
+      (
+        part: 'awsui-icon-leg-mr',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 8.71px,
+      ),
+      (
+        part: 'awsui-icon-leg-bl',
+        animation: icon-gait-a,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 11.71px,
+      ),
+      (
+        part: 'awsui-icon-leg-tr',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 5.71px,
+      ),
+      (
+        part: 'awsui-icon-leg-ml',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 4px 8.71px,
+      ),
+      (
+        part: 'awsui-icon-leg-br',
+        animation: icon-gait-b,
+        duration: $_duration-gait,
+        easing: $_ease-symmetric,
+        iterations: infinite,
+        origin: 12px 11.71px,
+      )
+    )
+);
+
+@mixin _declarations($declarations) {
+  @each $property, $value in $declarations {
+    #{$property}: #{$value};
+  }
+}
 
 // Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
 @mixin with-motion {
@@ -52,6 +731,22 @@ $icon-hover-motion: ();
   #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
     @content;
   }
+}
+
+// Always requires the opt-in attribute, so a builder-supplied SVG cannot match by default.
+@function _target($part) {
+  @if not $part {
+    @return '> :global(#{$_opted-in})';
+  }
+  @return '> :global(#{$_opted-in} .#{$part})';
+}
+
+// A single-spec entry needs a trailing comma or Prettier turns the list back into a bare map.
+@function _specs($value) {
+  @if meta.type-of($value) == 'map' {
+    @return list.append((), $value);
+  }
+  @return $value;
 }
 
 @mixin generic-hover-motion {
@@ -70,9 +765,440 @@ $icon-hover-motion: ();
   }
 }
 
+// Theme-scoped but not motion-gated — stroke-dasharray affects the resting paint even with motion off.
+@mixin per-icon-hover-resting {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $base: map.get($spec, base);
+      $origin: map.get($spec, origin);
+
+      @if $base or $origin {
+        .icon.name-#{$name} #{_target(map.get($spec, part))} {
+          @include theming.expressive-motion-only {
+            @if $base {
+              @include _declarations($base);
+            }
+            @if $origin {
+              transform-origin: $origin;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Cancels the generic floor wherever a part is animated, grouped into one rule via :is().
+// Whole-icon motion needs no cancel — it already out-ranks or overrides the floor on the same element.
+// Icons with BOTH a whole-icon spec and a part spec are excluded — the cancel would out-specify the whole-icon rule and reset it to none.
+@mixin _cancel-floor-under-hover-parts {
+  $names: ();
+  $parts: ();
+
+  @each $name, $specs in $icon-hover-motion {
+    $whole-icon: false;
+    @each $spec in _specs($specs) {
+      @if not map.get($spec, part) {
+        $whole-icon: true;
+      }
+    }
+
+    @if not $whole-icon {
+      @each $spec in _specs($specs) {
+        $part: map.get($spec, part);
+        @if $part {
+          @if not list.index($names, '.name-#{$name}') {
+            $names: list.append($names, '.name-#{$name}', comma);
+          }
+          @if not list.index($parts, '.#{$part}') {
+            $parts: list.append($parts, '.#{$part}', comma);
+          }
+        }
+      }
+    }
+  }
+
+  @if list.length($names) > 0 {
+    @include _on-hover-trigger('.icon#{$_animating-icon}:is(#{$names}) > :global(#{$_opted-in}:has(:is(#{$parts})))') {
+      @include with-motion {
+        transform: none;
+      }
+    }
+  }
+}
+
+@mixin per-icon-hover-motion {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $part: map.get($spec, part);
+      $target: _target($part);
+      $to: map.get($spec, to);
+      $animation: map.get($spec, animation);
+      $duration: map.get($spec, duration);
+      $easing: map.get($spec, easing);
+
+      $property: map.get($spec, property);
+      @if not $property {
+        $property: transform;
+      }
+      $iterations: map.get($spec, iterations);
+      @if not $iterations {
+        $iterations: 1;
+      }
+      $fill: map.get($spec, fill);
+      @if not $fill {
+        $fill: none;
+      }
+      $delay: map.get($spec, delay);
+      @if not $delay {
+        $delay: 0s;
+      }
+
+      @if $to {
+        .icon.name-#{$name} #{$target} {
+          @include with-motion {
+            transition-property: #{$property};
+            transition-duration: $duration;
+            transition-timing-function: $easing;
+          }
+        }
+      }
+
+      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
+        @if $animation {
+          // Longhand, not the animation shorthand — `no-motion-outside-of-mixin` needs a declaration directly under with-motion.
+          // Only non-default values are emitted; animation-fill-mode: none etc. are CSS initial values.
+          $optional: ();
+          @if $iterations != 1 {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-iteration-count: $iterations,
+              )
+            );
+          }
+          @if $fill != none {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-fill-mode: $fill,
+              )
+            );
+          }
+          @if $delay != 0s {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-delay: $delay,
+              )
+            );
+          }
+
+          @include with-motion {
+            animation-name: $animation;
+            animation-duration: $duration;
+            animation-timing-function: $easing;
+            @include _declarations($optional);
+          }
+        }
+        @if $to {
+          @include with-motion {
+            @include _declarations($to);
+          }
+        }
+      }
+    }
+  }
+}
+
+// @keyframes cannot nest under a class, so they're gated on the artefact instead of the selector.
+@mixin keyframes {
+  @if theming.has-expressive-motion() {
+    @keyframes icon-pulse-soft {
+      0% {
+        transform: scale(1);
+      }
+      22% {
+        transform: scale(0.85);
+      }
+      44% {
+        transform: scale(1);
+      }
+      67% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes icon-pulse-strong {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(0.9);
+      }
+    }
+
+    @keyframes icon-mouth-flex {
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(1.4);
+      }
+    }
+
+    @keyframes icon-mouth-tilt {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(8deg);
+      }
+    }
+
+    @keyframes icon-nudge-up {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-nudge-up-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-nudge-back {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(14%);
+      }
+    }
+
+    @keyframes icon-nudge-forward {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-14%);
+      }
+    }
+
+    @keyframes icon-nudge-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(14%);
+      }
+    }
+
+    @keyframes icon-nudge-up-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(5%, -5%);
+      }
+    }
+
+    @keyframes icon-nudge-down-left {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(-5%, 5%);
+      }
+    }
+
+    @keyframes icon-gait-a {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(15deg);
+      }
+    }
+
+    @keyframes icon-gait-b {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-15deg);
+      }
+    }
+
+    @keyframes icon-sparkle-pinch {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(0.8) rotate(-15deg);
+      }
+    }
+
+    @keyframes icon-shaft-flutter {
+      0%,
+      40%,
+      80%,
+      100% {
+        stroke-dashoffset: 0;
+      }
+      20%,
+      60% {
+        stroke-dashoffset: -0.086px;
+      }
+    }
+
+    @keyframes icon-bell-rotate {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      20% {
+        transform: rotate(8deg);
+      }
+      40% {
+        transform: rotate(-6deg);
+      }
+      60% {
+        transform: rotate(4deg);
+      }
+      80% {
+        transform: rotate(-2deg);
+      }
+    }
+
+    @keyframes icon-ringer-bounce {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      20% {
+        transform: translateX(5%);
+      }
+      40% {
+        transform: translateX(-5%);
+      }
+      60% {
+        transform: translateX(2.5%);
+      }
+      80% {
+        transform: translateX(-1.5%);
+      }
+    }
+
+    @keyframes icon-coil {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      55% {
+        transform: rotate(-14deg);
+      }
+    }
+  }
+}
+
+// Validates the map at compile time — a bare map.get can't tell a typo'd key from an absent one.
+$_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterations, fill, property);
+
+@mixin _validate-specs {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      @each $key, $value in $spec {
+        @if not list.index($_spec-keys, $key) {
+          @error 'Unknown key `#{$key}` in the $icon-hover-motion spec for `#{$name}`. ' +
+            'Known keys: #{$_spec-keys}.';
+        }
+      }
+
+      // Both would compile — the emitter would let animation win while paying for a dead transition.
+      @if map.get($spec, animation) and map.get($spec, to) {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets both `animation` and `to`. ' +
+          'Use `animation` for keyframe-driven motion or `to` for a transition, not both.';
+      }
+    }
+  }
+}
+
 @mixin icon-hover-motion {
+  // Runs outside the gates so a malformed map fails every build, not just motion artefacts.
+  @include _validate-specs;
+
+  @include keyframes;
+  @include per-icon-hover-resting;
+
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
+    @include _cancel-floor-under-hover-parts;
+    @include per-icon-hover-motion;
   }
 }
 
