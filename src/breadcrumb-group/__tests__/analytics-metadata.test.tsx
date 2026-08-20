@@ -24,6 +24,7 @@ jest.mock('../../../lib/components/breadcrumb-group/utils', () => ({
     minWidths: [100, 100, 100, 100],
     collapsed: 0,
   }),
+  getMaxItemsCollapsed: jest.fn().mockReturnValue(0),
 }));
 
 const labels = { ...ownLabels, ...buttonDropdownLabels };

@@ -29,6 +29,18 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
    * @i18n
    */
   expandAriaLabel?: string;
+
+  /**
+   * The maximum number of breadcrumb items to display before collapsing middle items into an
+   * overflow ellipsis. The first and last items are always visible. When the total number of
+   * items exceeds `maxItems`, middle items are hidden and can be revealed by activating the
+   * ellipsis control.
+   *
+   * Must be a positive integer ≥ 2. When omitted (default), no static item limit is applied
+   * and only the responsive (container-width-based) collapse is used.
+   */
+  maxItems?: number;
+
   /**
    * Called when the user clicks on a breadcrumb item. Do not use this handler for navigation, use the `onFollow` event instead.
    */
