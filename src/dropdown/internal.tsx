@@ -19,6 +19,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getOwnerWindow } from '../internal/utils/dom';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { NonCancelableEventHandler } from '../types/events';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
@@ -427,16 +428,17 @@ const InternalDropdown = ({
 
     if (open) {
       // window may scroll when dropdown opens, for example when soft keyboard shows up
-      window.addEventListener('scroll', onDropdownOpen);
+      const targetWindow = getOwnerWindow(triggerRef.current);
+      targetWindow.addEventListener('scroll', onDropdownOpen);
       // only listen to window scroll within very short time after the dropdown opens
       // do not want to interfere dropdown position on scroll afterwards
       const timeoutId = setTimeout(() => {
-        window.removeEventListener('scroll', onDropdownOpen);
+        targetWindow.removeEventListener('scroll', onDropdownOpen);
       }, 500);
 
       return () => {
         clearTimeout(timeoutId);
-        window.removeEventListener('scroll', onDropdownOpen);
+        targetWindow.removeEventListener('scroll', onDropdownOpen);
       };
     }
     // See AWSUI-13040
@@ -470,10 +472,11 @@ const InternalDropdown = ({
         fireNonCancelableEvent(onOutsideClick);
       }
     };
-    window.addEventListener('click', clickListener, true);
+    const targetWindow = getOwnerWindow(triggerRef.current);
+    targetWindow.addEventListener('click', clickListener, true);
 
     return () => {
-      window.removeEventListener('click', clickListener, true);
+      targetWindow.removeEventListener('click', clickListener, true);
     };
   }, [open, onOutsideClick, triggerRef, externalTriggerRef, getMouseDownTarget]);
 
@@ -490,12 +493,13 @@ const InternalDropdown = ({
         fireNonCancelableEvent(onEscape);
       }
     };
-    window.addEventListener('keydown', keydownListener, true);
+    const targetWindow = getOwnerWindow(triggerRef.current);
+    targetWindow.addEventListener('keydown', keydownListener, true);
 
     return () => {
-      window.removeEventListener('keydown', keydownListener, true);
+      targetWindow.removeEventListener('keydown', keydownListener, true);
     };
-  }, [open, onEscape]);
+  }, [open, onEscape, triggerRef]);
 
   // sync dropdown position on scroll and resize
   useLayoutEffect(() => {
@@ -516,8 +520,9 @@ const InternalDropdown = ({
     updateDropdownPosition();
 
     const controller = new AbortController();
-    window.addEventListener('scroll', updateDropdownPosition, { capture: true, signal: controller.signal });
-    window.addEventListener('resize', updateDropdownPosition, { capture: true, signal: controller.signal });
+    const targetWindow = getOwnerWindow(triggerRef.current);
+    targetWindow.addEventListener('scroll', updateDropdownPosition, { capture: true, signal: controller.signal });
+    targetWindow.addEventListener('resize', updateDropdownPosition, { capture: true, signal: controller.signal });
     return () => {
       controller.abort();
     };

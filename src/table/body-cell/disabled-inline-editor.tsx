@@ -8,6 +8,7 @@ import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit
 
 import Icon from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import { usePortalContainer } from '../../internal/hooks/use-portal-container';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
 import InternalLiveRegion from '../../live-region/internal';
 import Arrow from '../../popover/arrow';
@@ -57,6 +58,7 @@ export function DisabledInlineEditor<ItemType>({
 
   const { targetProps, descriptionEl } = useHiddenDescription(editDisabledReason);
   const portalClasses = usePortalModeClasses(portalRef);
+  const portalContainer = usePortalContainer(() => iconRef.current);
 
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
 
@@ -100,7 +102,7 @@ export function DisabledInlineEditor<ItemType>({
 
       {isEditing && (
         <span ref={portalRef}>
-          <Portal>
+          <Portal container={portalContainer}>
             <span className={portalClasses}>
               <PopoverContainer
                 size="medium"
