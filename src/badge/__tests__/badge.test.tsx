@@ -97,3 +97,51 @@ describe('native attributes', () => {
     expect(container.firstChild).toHaveClass('additional-class');
   });
 });
+
+describe('hover state in interactive containers', () => {
+  it('renders badge inside a button without errors', () => {
+    const { container } = render(
+      <button>
+        Notifications <Badge color="red">3</Badge>
+      </button>
+    );
+    const badge = createWrapper(container).findBadge();
+    expect(badge).not.toBeNull();
+    expect(badge!.getElement()).toHaveClass(styles.badge);
+    expect(badge!.getElement()).toHaveClass(styles['badge-color-red']);
+  });
+
+  it('renders badge inside a link without errors', () => {
+    const { container } = render(
+      <a href="#">
+        Messages <Badge color="blue">7</Badge>
+      </a>
+    );
+    const badge = createWrapper(container).findBadge();
+    expect(badge).not.toBeNull();
+    expect(badge!.getElement()).toHaveClass(styles.badge);
+  });
+
+  it('renders badge inside a role=tab element without errors', () => {
+    const { container } = render(
+      <div role="tab">
+        Tab label <Badge color="grey">5</Badge>
+      </div>
+    );
+    const badge = createWrapper(container).findBadge();
+    expect(badge).not.toBeNull();
+    expect(badge!.getElement()).toHaveClass(styles.badge);
+  });
+
+  it('badge retains its color class when inside interactive containers', () => {
+    (['blue', 'grey', 'green', 'red'] as Array<BadgeProps['color']>).forEach(color => {
+      const { container } = render(
+        <button>
+          Label <Badge color={color}>{color}</Badge>
+        </button>
+      );
+      const badge = createWrapper(container).findBadge();
+      expect(badge!.getElement()).toHaveClass(styles[`badge-color-${color}`]);
+    });
+  });
+});
