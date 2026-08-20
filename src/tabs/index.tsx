@@ -56,19 +56,28 @@ export default function Tabs({
   keyboardActivationMode = 'automatic',
   actions,
   style,
+  reorderable,
+  onReorder,
+  addTabButton,
+  onAddTab,
+  reorderGroup,
+  onTabMove,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
-    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode },
+    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode, reorderable, addTabButton },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasHeaderActions: !!actions,
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
       hasEagerLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'eager'),
       hasLazyLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'lazy'),
+      hasReorderable: !!reorderable,
+      hasPinnedTabs: tabs.some(tab => !!tab.disableReorder),
+      hasAddTabButton: !!addTabButton,
     },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
@@ -85,6 +94,11 @@ export default function Tabs({
   }
 
   const baseProps = getBaseProps(rest);
+
+  // Stable, app-correlatable id for this Tabs instance within a cross-list reorder group.
+  // Prefer a consumer-provided `id` (so `onTabMove` details are meaningful to the app),
+  // falling back to the generated namespace when none is set.
+  const tabsId = (baseProps.id as string | undefined) ?? idNamespace;
 
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataTabsComponent = {
     name: 'awsui.Tabs',
@@ -156,6 +170,13 @@ export default function Tabs({
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
       style={style}
+      reorderable={reorderable}
+      onReorder={onReorder}
+      addTabButton={addTabButton}
+      onAddTab={onAddTab}
+      tabsId={tabsId}
+      reorderGroup={reorderGroup}
+      onTabMove={onTabMove}
     />
   );
 
