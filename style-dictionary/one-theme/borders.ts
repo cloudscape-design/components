@@ -28,7 +28,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   // ── Border radii ──────────────────────────────────────────────────────────
   borderRadiusAlert: '2px',
   borderRadiusBadge: '16px',
-  borderRadiusButton: '2px',
+  borderRadiusButton: '4px',
   borderRadiusContainer: '4px',
   borderRadiusDropdown: '2px',
   borderRadiusDropzone: '4px',
