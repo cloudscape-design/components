@@ -29,7 +29,7 @@
   }
 }
 
-$expressive-motion-themes: ('.awsui-one-theme',) !default;
+$expressive-motion-themes: list.append((), '.awsui-one-theme') !default;
 
 /// Two ways to gate on the opt-in above:
 /// - a function `has-expressive-motion` used to wrap `@keyframes`
