@@ -1,0 +1,80 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// This file holds icon hover motions, emitted only for themes that opt in to
+// expressive motion via the `$expressive-motion-themes` list in
+// internal/styles/utils/theming.scss.
+
+@use '../internal/styles/utils/theming' as theming;
+
+// Descendant combinators and type selectors are unavoidable here since the trigger
+// is an ancestor element and the target is an SVG shape.
+// stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-disable @cloudscape-design/no-implicit-descendant
+
+$_duration-generic: 250ms;
+$_ease-decelerate: cubic-bezier(0, 0, 0, 1);
+
+// A disabled control must not react to hover.
+$_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
+
+// Motion must only play if .awsui-motion-disabled and .awsui-mode-entering are not set.
+$_motion-on: ':not(.awsui-motion-disabled):not(.awsui-mode-entering)';
+
+// The following data attribute on an SVG enables motion.
+$_animated-attribute: 'data-awsui-icon-animated';
+$_opted-in: 'svg[#{$_animated-attribute}]';
+
+// Opt-in attribute for which element triggers hover motion.
+$_trigger-attribute: 'data-awsui-motion-trigger';
+$_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
+
+// Opt-in attribute for where the motion should be applied within a trigger region.
+$_target-attribute: 'data-awsui-motion-target';
+$_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
+
+// List for bespoke per-icon motion. An icon with no entry in `$icon-hover-motion`
+// gets the generic hover motion if the SVG is tagged with `data-awsui-icon-animated`.
+$icon-hover-motion: ();
+
+// Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
+@mixin with-motion {
+  @include theming.expressive-motion-only($_motion-on) {
+    @content;
+  }
+}
+
+// Also fires on :focus-visible, covering a focus owner nested inside the trigger.
+@mixin _on-hover-trigger($suffix) {
+  #{'#{$_hover-trigger}:hover #{$suffix}'},
+  #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
+    @content;
+  }
+}
+
+@mixin generic-hover-motion {
+  .icon > :global(#{$_opted-in}) {
+    @include with-motion {
+      transition-property: transform;
+      transition-duration: $_duration-generic;
+      transition-timing-function: $_ease-decelerate;
+    }
+  }
+
+  @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
+    @include with-motion {
+      transform: scale(0.94);
+    }
+  }
+}
+
+@mixin icon-hover-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include generic-hover-motion;
+  }
+}
+
+// stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
+// stylelint-enable @cloudscape-design/no-implicit-descendant
