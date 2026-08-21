@@ -49,7 +49,8 @@ function compile(optedInThemes: string[]): string {
 }
 
 /**
- * Every style rule in the REAL built stylesheet.
+ * Parses the built stylesheet into real CSSStyleRule objects, so tests can
+ * assert on selectorText and style instead of matching raw CSS text.
  */
 function builtRules(): CSSStyleRule[] {
   const style = document.createElement('style');
@@ -76,31 +77,32 @@ const hoverRules = () => builtRules().filter(rule => /:hover|:focus-visible/.tes
 // Generic motion for icons that don't have their own motion
 const genericRule = () => hoverRules().find(rule => rule.style.transform === 'scale(0.94)')!;
 
-describe('the theme gate', () => {
+describe('the expressive-motion theme opt-in gate', () => {
   test('emits nothing for an artefact with no opted-in theme', () => {
     const css = compile([]);
     expect(css).not.toContain('scale(0.94)');
     expect(css).not.toContain('data-awsui-motion-trigger');
   });
 
-  test('emits the floor, scoped to the theme, once the theme opts in', () => {
+  test('emits generic motion, scoped to the theme, once the theme opts in', () => {
     const css = compile([THEME]);
-    expect(css).toContain(THEME);
-    expect(css).toContain('scale(0.94)');
-    expect(css).toContain('data-awsui-motion-trigger');
+    const scaleBlock = css.split('}').find(block => block.includes('scale(0.94)'));
+
+    expect(scaleBlock).toBeDefined();
+    expect(scaleBlock).toContain(THEME);
+    expect(scaleBlock).toContain('data-awsui-motion-trigger');
   });
 });
 
-describe('the real built stylesheet', () => {
-  test('the floor rule carries the theme scope and both mode exclusions', () => {
+describe('the generic hover motion rule, as compiled', () => {
+  test('the generic rule carries the theme scope and both mode exclusions', () => {
     expect(genericRule().selectorText).toContain(THEME);
     expect(genericRule().selectorText).toContain(':not(.awsui-motion-disabled)');
     expect(genericRule().selectorText).toContain(':not(.awsui-mode-entering)');
   });
 
-  test('the floor targets the INNER svg, never the outer .icon span', () => {
+  test('the generic rule targets the inner svg', () => {
     expect(genericRule().style.transform).toBe('scale(0.94)');
-    // The rule's target is the last compound; it must be the opted-in svg, not a bare `.icon`.
     const target = genericRule().selectorText.split(/\s+/).pop()!;
     expect(target).toMatch(/^>?\s*svg\[data-awsui-icon-animated\]$/);
   });
@@ -111,16 +113,13 @@ describe('the real built stylesheet', () => {
     expect(css).not.toMatch(/prefers-reduced-motion:\s*reduce\b/);
   });
 
-  test('the floor also fires on :focus-visible, guarded the same way as :hover', () => {
+  test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
     expect(genericRule().selectorText).toMatch(
       /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
     );
   });
 
-  test('the disabled guard matches by exact value — an ENABLED control still animates', () => {
-    // The region is the one compound immediately left of `:hover` — an ancestor theme scope
-    // sits further left, joined by a descendant combinator, so it must not be included: a
-    // bare region element has no such ancestor and would otherwise never match.
+  test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
     const selector = genericRule().selectorText;
     const hoverIndex = selector.indexOf(':hover');
     const regionStart = selector.lastIndexOf(' ', hoverIndex) + 1;
@@ -141,7 +140,7 @@ describe('the real built stylesheet', () => {
     expect(ariaDisabled.matches(region)).toBe(false);
 
     // Positive control: React stringifies `aria-disabled={false}` to the string "false" on an
-    // ENABLED control. A bare `[aria-disabled]` guard would wrongly exclude this one too.
+    // ENABLED control. A bare `[aria-disabled]` guard must work.
     const ariaEnabled = document.createElement('button');
     ariaEnabled.setAttribute('data-awsui-motion-trigger', 'hover');
     ariaEnabled.setAttribute('aria-disabled', 'false');

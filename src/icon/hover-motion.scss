@@ -14,7 +14,6 @@
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
-// Local literals, not motion tokens, until expressive motion has tokens of its own.
 $_duration-generic: 250ms;
 $_ease-decelerate: cubic-bezier(0, 0, 0, 1);
 
@@ -36,9 +35,8 @@ $_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
 $_target-attribute: 'data-awsui-motion-target';
 $_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
 
-// List for bespoke per-icon motion. An icon with no entry in
-// `$icon-hover-motion` gets the generic hover motion if the SVG is tagged with
-// `data-awsui-icon-animated`.
+// List for bespoke per-icon motion. An icon with no entry in `$icon-hover-motion`
+// gets the generic hover motion if the SVG is tagged with `data-awsui-icon-animated`.
 $icon-hover-motion: ();
 
 // Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
@@ -73,7 +71,6 @@ $icon-hover-motion: ();
 }
 
 @mixin icon-hover-motion {
-  // Wrapped once so prefers-reduced-motion can suppress all of this in one go.
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
   }
