@@ -5,11 +5,9 @@ import * as path from 'node:path';
 import * as sass from 'sass';
 
 const SRC_ROOT = path.resolve(__dirname, '../..'); // .../src
-const BUILD_ROOT = path.resolve(SRC_ROOT, '../lib/components'); // .../lib/components
 
 const HOVER_MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'icon/hover-motion.scss'), 'utf8');
 const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
-const CSS_PATH = path.join(BUILD_ROOT, 'icon/styles.scoped.css');
 
 const THEME = '.awsui-one-theme';
 
@@ -49,33 +47,17 @@ function compile(optedInThemes: string[]): string {
 }
 
 /**
- * Parses the built stylesheet into real CSSStyleRule objects, so tests can
- * assert on selectorText and style instead of matching raw CSS text.
+ * The selector of the generic hover-motion rule (the one setting `scale(0.94)`),
+ * compiled with `THEME` opted in.
  */
-function builtRules(): CSSStyleRule[] {
-  const style = document.createElement('style');
-  style.textContent = fs.readFileSync(CSS_PATH, 'utf8').replace(/:not\(#\\9\)/g, '');
-  document.head.appendChild(style);
-
-  const rules: CSSStyleRule[] = [];
-  const collect = (list: CSSRuleList) => {
-    for (const rule of Array.from(list)) {
-      if (rule instanceof CSSMediaRule) {
-        collect(rule.cssRules);
-      } else if (rule instanceof CSSStyleRule) {
-        rules.push(rule);
-      }
-    }
-  };
-  collect(style.sheet!.cssRules);
-  document.head.removeChild(style);
-  return rules;
+function genericRuleSelector(): string {
+  const css = compile([THEME]);
+  const block = css.split('}').find(b => b.includes('scale(0.94)'));
+  if (!block) {
+    throw new Error('generic hover-motion rule not found in compiled CSS');
+  }
+  return block.slice(0, block.indexOf('{')).trim();
 }
-
-// Icon-specific motions
-const hoverRules = () => builtRules().filter(rule => /:hover|:focus-visible/.test(rule.selectorText));
-// Generic motion for icons that don't have their own motion
-const genericRule = () => hoverRules().find(rule => rule.style.transform === 'scale(0.94)')!;
 
 describe('the expressive-motion theme opt-in gate', () => {
   test('emits nothing for an artefact with no opted-in theme', () => {
@@ -96,33 +78,35 @@ describe('the expressive-motion theme opt-in gate', () => {
 
 describe('the generic hover motion rule, as compiled', () => {
   test('the generic rule carries the theme scope and both mode exclusions', () => {
-    expect(genericRule().selectorText).toContain(THEME);
-    expect(genericRule().selectorText).toContain(':not(.awsui-motion-disabled)');
-    expect(genericRule().selectorText).toContain(':not(.awsui-mode-entering)');
+    const selector = genericRuleSelector();
+    expect(selector).toContain(THEME);
+    expect(selector).toContain(':not(.awsui-motion-disabled)');
+    expect(selector).toContain(':not(.awsui-mode-entering)');
   });
 
   test('the generic rule targets the inner svg', () => {
-    expect(genericRule().style.transform).toBe('scale(0.94)');
-    const target = genericRule().selectorText.split(/\s+/).pop()!;
-    expect(target).toMatch(/^>?\s*svg\[data-awsui-icon-animated\]$/);
+    const target = genericRuleSelector().split(/\s+/).pop()!;
+    expect(target).toMatch(/^>?\s*:global\(svg\[data-awsui-icon-animated\]\)$/);
   });
 
   test('reduced motion is one wrapping media query, not a per-rule override', () => {
-    const css = fs.readFileSync(CSS_PATH, 'utf8');
+    const css = compile([THEME]);
     expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(1);
     expect(css).not.toMatch(/prefers-reduced-motion:\s*reduce\b/);
   });
 
   test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
-    expect(genericRule().selectorText).toMatch(
+    expect(genericRuleSelector()).toMatch(
       /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
     );
   });
 
   test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
-    const selector = genericRule().selectorText;
+    const selector = genericRuleSelector();
     const hoverIndex = selector.indexOf(':hover');
-    const regionStart = selector.lastIndexOf(' ', hoverIndex) + 1;
+    // The region is the one compound immediately left of `:hover`. The theme scope sits
+    // further left, closed by `) ` (the end of the `:global(...)` wrapper), so start there.
+    const regionStart = selector.lastIndexOf(') ', hoverIndex) + 2;
     const region = selector.slice(regionStart, hoverIndex);
 
     const enabled = document.createElement('button');
