@@ -41,6 +41,7 @@ test(
     const header = createWrapper().findContainer().findHeader().toSelector();
     await browser.url('#/light/table/full-page-variant');
     const page = new BasePageObject(browser);
+    await page.waitForVisible(header);
     const heightBefore = await browser.execute(extractHeight, header);
     await page.windowScrollTo({ top: 100 });
     await page.waitForJsTimers();
@@ -54,6 +55,7 @@ test(
     const tableWrapper = createWrapper().findTable();
     await browser.url('#/light/table/full-page-variant');
     const page = new BasePageObject(browser);
+    await page.waitForVisible(tableWrapper.findByClassName(styles['header-secondary']).toSelector());
     await page.elementScrollTo(tableWrapper.findByClassName(styles['header-secondary']).toSelector(), { left: 50 });
     await page.waitForJsTimers();
     const { left: scrollLeft } = await page.getElementScroll(tableWrapper.findByClassName(styles.wrapper).toSelector());
@@ -71,6 +73,7 @@ test(
 
     // Find the scrollable wrapper element
     const scrollableWrapperSelector = tableWrapper.findByClassName(styles.wrapper).toSelector();
+    await page.waitForVisible(scrollableWrapperSelector);
 
     // Get the 'role' and 'aria-label' attributes of the scrollable wrapper
     let role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
