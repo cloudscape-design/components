@@ -77,6 +77,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -3733,6 +3737,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -7391,6 +7399,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -11047,6 +11059,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -14705,6 +14721,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -18362,6 +18382,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -22018,6 +22042,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
       "$value": "2px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
+      "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {
       "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -25681,6 +25709,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -29336,6 +29368,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -32995,6 +33031,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -36650,6 +36690,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -40309,6 +40353,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -43964,6 +44012,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -47623,6 +47675,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -51280,6 +51336,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -54935,6 +54995,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
+      "$value": "8px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
       "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {

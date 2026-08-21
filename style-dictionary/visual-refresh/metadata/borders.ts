@@ -133,7 +133,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusChatBubble: {
     description: 'The border radius of chat bubbles.',
     public: true,
-    themeable: false,
+    themeable: true,
+  },
+  borderRadiusSupportPrompt: {
+    description: 'The border radius of support prompts.',
+    public: true,
+    themeable: true,
   },
   borderRadiusTutorialPanelItem: {
     description: 'The border radius of tutorials inside a tutorial panel.',
