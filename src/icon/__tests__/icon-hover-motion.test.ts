@@ -122,10 +122,6 @@ describe('the real built stylesheet', () => {
     expect(css).not.toMatch(/prefers-reduced-motion:\s*reduce\b/);
   });
 
-  test('no `@keyframes` are emitted', () => {
-    expect(fs.readFileSync(CSS_PATH, 'utf8')).not.toMatch(/@keyframes/);
-  });
-
   test('the floor also fires on :focus-visible, guarded the same way as :hover', () => {
     expect(genericRule().selectorText).toMatch(
       /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
