@@ -7,7 +7,6 @@
 // expressive motion via the `$expressive-motion-themes` list in
 // internal/styles/utils/theming.scss.
 
-@use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
 
 // Descendant combinators and type selectors are unavoidable here since the trigger
@@ -15,8 +14,9 @@
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
-$_duration-generic: awsui.$motion-duration-refresh-only-slow;
-$_ease-decelerate: awsui.$motion-easing-responsive;
+// Local literals, not motion tokens, until expressive motion has tokens of its own.
+$_duration-generic: 250ms;
+$_ease-decelerate: cubic-bezier(0, 0, 0, 1);
 
 // A disabled control must not react to hover.
 $_enabled-only: ':not(:disabled):not([aria-disabled="true"])';

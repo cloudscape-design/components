@@ -13,13 +13,6 @@ const CSS_PATH = path.join(BUILD_ROOT, 'icon/styles.scoped.css');
 
 const THEME = '.awsui-one-theme';
 
-// Only the two tokens the file actually reads. Real values are `var(--…)` references; literals
-// are used here so the compiled output stays inspectable.
-const TOKENS_STUB = `
-  $motion-duration-refresh-only-slow: 250ms;
-  $motion-easing-responsive: cubic-bezier(0, 0, 0.35, 1);
-`;
-
 /**
  * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact
  * whose `resolved-tokens` carry `optedInThemes`.
@@ -32,9 +25,6 @@ function compile(optedInThemes: string[]): string {
           if (url.endsWith('hover-motion')) {
             return new URL('mem:hover-motion');
           }
-          if (url.endsWith('tokens') && !url.startsWith('awsui:')) {
-            return new URL('mem:tokens');
-          }
           if (url.endsWith('theming')) {
             return new URL('mem:theming');
           }
@@ -46,7 +36,6 @@ function compile(optedInThemes: string[]): string {
         load(canonicalUrl: URL) {
           const contents = {
             'mem:hover-motion': HOVER_MOTION_SOURCE,
-            'mem:tokens': TOKENS_STUB,
             'mem:theming': THEMING_SOURCE,
             'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
               .map(selector => `(selector: "${selector}", tokens: ())`)
