@@ -19,6 +19,7 @@ class StickyHeaderCardsPage extends BasePageObject {
       url += '?density=compact';
     }
     await this.browser.url(url);
+    await this.waitForVisible('#overflow-parent');
   }
 }
 
