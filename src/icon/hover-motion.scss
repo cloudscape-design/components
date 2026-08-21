@@ -3,17 +3,15 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-// Hover-only icon micro-interactions, emitted only for themes that opt in to expressive
-// motion. An icon with no bespoke entry in `$icon-hover-motion` gets the generic floor.
-//
-// Targets the inner svg, not the outer .icon span, which already carries RTL mirroring
-// and caret rotation.
+// This file holds icon hover motions, emitted only for themes that opt in to
+// expressive motion via the `$expressive-motion-themes` list in
+// internal/styles/utils/theming.scss.
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
 
-// The trigger is an ancestor element and the target is an SVG shape, so descendant
-// combinators and type selectors are unavoidable here.
+// Descendant combinators and type selectors are unavoidable here since the trigger
+// is an ancestor element and the target is an SVG shape.
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
@@ -23,25 +21,24 @@ $_ease-decelerate: awsui.$motion-easing-responsive;
 // A disabled control must not react to hover.
 $_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
 
-// Motion must only play if .awsui-motion-disabled and .awsui-mode-entering are not set
+// Motion must only play if .awsui-motion-disabled and .awsui-mode-entering are not set.
 $_motion-on: ':not(.awsui-motion-disabled):not(.awsui-mode-entering)';
 
-// Any value enables motion — the generator always sets this to "true".
+// The following data attribute on an SVG enables motion.
 $_animated-attribute: 'data-awsui-icon-animated';
 $_opted-in: 'svg[#{$_animated-attribute}]';
 
-// An explicit opt-in attribute, not a tag/role list, so non-interactive containers can be triggers too.
+// Opt-in attribute for which element triggers hover motion.
 $_trigger-attribute: 'data-awsui-motion-trigger';
 $_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
 
-// The svg has pointer-events: none, so hover is always taken by the trigger, never the icon itself.
+// Opt-in attribute for where the motion should be applied within a trigger region.
 $_target-attribute: 'data-awsui-motion-target';
 $_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
 
-// A uniform scale needs no re-cut and survives icon rotation or the RTL mirror.
-$_generic-transform: scale(0.94);
-
-// Extension point for bespoke per-icon motion.
+// List for bespoke per-icon motion. An icon with no entry in
+// `$icon-hover-motion` gets the generic hover motion if the SVG is tagged with
+// `data-awsui-icon-animated`.
 $icon-hover-motion: ();
 
 // Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
@@ -70,13 +67,13 @@ $icon-hover-motion: ();
 
   @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
     @include with-motion {
-      transform: $_generic-transform;
+      transform: scale(0.94);
     }
   }
 }
 
 @mixin icon-hover-motion {
-  // Wrapped once so prefers-reduced-motion can suppress all of this without a per-rule override.
+  // Wrapped once so prefers-reduced-motion can suppress all of this in one go.
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
   }
