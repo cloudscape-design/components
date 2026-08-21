@@ -6,9 +6,9 @@
 @use '@cloudscape-design/component-toolkit/internal/style-api' as style-api;
 
 // Illustrates a shared token group.
-$surface: (color-text, color-background, color-border, border-width, border-radius);
+$surface: (color, background-color, border-color, border-width, border-radius);
 
-$tokens: style-api.resolve(style-api.combine($surface, (color-text-secondary)), carrier);
+$tokens: style-api.resolve(style-api.combine($surface, (secondary-color)), carrier);
 
 @include style-api.register($tokens);
 
@@ -16,11 +16,11 @@ $tokens: style-api.resolve(style-api.combine($surface, (color-text-secondary)), 
   @include style-api.carriers($tokens);
   box-sizing: border-box;
   max-inline-size: 360px;
-  background: var(#{style-api.read($tokens, color-background)}, #fcf2f4);
+  background: var(#{style-api.read($tokens, background-color)}, #fcf2f4);
   border-block: var(#{style-api.read($tokens, border-width)}, 1px) solid
-    var(#{style-api.read($tokens, color-border)}, #ff8da1);
+    var(#{style-api.read($tokens, border-color)}, #ff8da1);
   border-inline: var(#{style-api.read($tokens, border-width)}, 1px) solid
-    var(#{style-api.read($tokens, color-border)}, #ff8da1);
+    var(#{style-api.read($tokens, border-color)}, #ff8da1);
   border-start-start-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
   border-start-end-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
   border-end-start-radius: var(#{style-api.read($tokens, border-radius)}, 8px);
@@ -30,10 +30,10 @@ $tokens: style-api.resolve(style-api.combine($surface, (color-text-secondary)), 
 }
 // Descendant elements can read tokens because of the carrier re-anchoring inside panel.
 .title {
-  color: var(#{style-api.read($tokens, color-text)}, #16191f);
+  color: var(#{style-api.read($tokens, color)}, #16191f);
   font-weight: 700;
 }
 .body {
   margin-block-start: 8px;
-  color: var(#{style-api.read($tokens, color-text-secondary)}, #5f6b7a);
+  color: var(#{style-api.read($tokens, secondary-color)}, #5f6b7a);
 }
