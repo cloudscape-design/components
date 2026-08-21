@@ -6274,6 +6274,51 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailType": "ButtonDropdownProps.ItemClickDetails",
       "name": "onItemFollow",
     },
+    {
+      "cancelable": false,
+      "description": "Use this event to implement the asynchronous behavior for the component.
+
+The event is called in the following situations:
+* The user scrolls to the end of the list of options, if \`statusType\` is set to \`pending\`.
+* The user clicks on the recovery button in the error state.
+* The user types inside the input field.
+* The user focuses the input field.
+* The user expands an expandable group item.
+
+The detail object contains the following properties:
+* \`filteringText\` - The value that you need to use to fetch options.
+* \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
+* \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+* \`expandedGroupId\` - The ID of the expanded group that you need to load the items of.",
+      "detailInlineType": {
+        "name": "ButtonDropdownProps.LoadItemsDetail",
+        "properties": [
+          {
+            "name": "expandedGroupId",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "firstPage",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "samePage",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonDropdownProps.LoadItemsDetail",
+      "name": "onLoadItems",
+    },
   ],
   "functions": [
     {
@@ -6309,6 +6354,118 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "string",
     },
     {
+      "description": "Contains all the properties for async loading. Make sure to listen to \`onLoadItems\`.
+* \`empty\` - (Optional) Displayed when there are no options to display. This is only shown when \`statusType\` is set to \`finished\` or not set at all.
+* \`loadingText\` - (Optional) Specifies the text to display when in the loading state.
+* \`finishedText\` - (Optional) Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+* \`errorText\` - (Optional) Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.
+* \`recoveryText\` (i18n) - (Optional) Specifies the text for the recovery button. The text is displayed next to the error text. Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).
+* \`errorIconAriaLabel\` (i18n) - (Optional) Provides a text alternative for the error icon in the error message.
+* \`statusType\` - (Optional) Specifies the current status of loading more options.
+* * \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* * \`loading\` - Indicates that data fetching is in progress.
+* * \`finished\` - Indicates that pagination has finished and no more requests are expected.
+* * \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.AsyncLoadingProps",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "empty",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => React.ReactNode)",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "errorText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "finishedText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "loadingText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "name": "recoveryText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "ButtonDropdownProps.AsyncLoadingStatusType",
+              "type": "union",
+              "values": [
+                "error",
+                "finished",
+                "loading",
+                "pending",
+              ],
+            },
+            "name": "statusType",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "asyncLoadingProps",
+      "optional": true,
+      "type": "ButtonDropdownProps.AsyncLoadingProps",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -6331,7 +6488,9 @@ If provided, the disabled button becomes focusable.",
     },
     {
       "defaultValue": "false",
-      "description": "Controls expandability of the item groups.",
+      "description": "Controls expandability of the item groups.
+If async loading, make sure to define expandable groups' statuses in \`expandableItemsAsyncLoadingStates\`.
+If manual filtering and there are filtered items, make sure to disable this to ensure filtered items are easily discoverable.",
       "name": "expandableGroups",
       "optional": true,
       "type": "boolean",
@@ -6396,15 +6555,24 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "defaultValue": "'none'",
       "description": "Enables filtering of the dropdown items.
 
-When set to \`auto\`, a search input is rendered inside the dropdown and the items are filtered as the user
-types. Items are matched client-side using a case-insensitive substring match against their \`text\`,
-\`secondaryText\`, and \`labelTag\`.",
+* \`auto\` - A search input is rendered inside the dropdown and the items are automatically filtered as the user types.
+* \`manual\` - You will set up \`onLoadItems\` event listeners and filter items on your side or request
+them from server.
+
+If you set this property to \`auto\`, the component will filter the provided \`items\` based on the value of the filtering input field.
+The filtering text is matched against the item's \`text\`, \`secondaryText\`, and \`labelTag\`.
+
+If you set this property to \`manual\`, the default filtering mechanism is disabled and all provided \`items\` are
+displayed in the dropdown list. In that case make sure that you use the \`onLoadItems\` events in order
+to set the \`items\` property to the items that are relevant for the user, given the filtering input value.
+When there are filtered items, disable \`expandableGroups\` to ensure filtered items are easily discoverable.",
       "inlineType": {
         "name": "ButtonDropdownProps.FilteringType",
         "type": "union",
         "values": [
           "auto",
           "none",
+          "manual",
         ],
       },
       "name": "filteringType",
@@ -6416,6 +6584,32 @@ types. Items are matched client-side using a case-insensitive substring match ag
       "name": "fullWidth",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the async loading status of individual expandable items. 
+Use only if you load nested items asynchronously upon expanding an item.
+
+Return values are:
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that pagination has finished and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.
+
+If null or undefined, the status will be treated as \`finished\`.",
+      "inlineType": {
+        "name": "(options: { item: ButtonDropdownProps.ItemOrGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "{ item: ButtonDropdownProps.ItemOrGroup; }",
+          },
+        ],
+        "returnType": "ButtonDropdownProps.AsyncLoadingStatusType | null",
+        "type": "function",
+      },
+      "name": "getExpandableItemsAsyncLoadingState",
+      "optional": true,
+      "type": "((options: { item: ButtonDropdownProps.ItemOrGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined)",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -6661,6 +6855,12 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
+    },
+    {
+      "description": "Specifies the text to display inside the dropdown when items are loading.",
+      "name": "itemsLoadingText",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -7133,7 +7333,7 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.",
       "name": "iconSvg",
     },
     {
-      "description": "Displayed when filtering is enabled and there are no matches for the filtering input.",
+      "description": "Displayed for \`filteringType="auto"\` when there are no matches for the filtering input.",
       "isDefault": false,
       "name": "noMatch",
     },
@@ -35466,6 +35666,21 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -35476,6 +35691,58 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -35640,6 +35907,21 @@ Supported options:
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -45158,6 +45440,24 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -45171,6 +45471,64 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryErrorRecoveryButton",
+          },
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryStatusIndicator",
+          },
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -45441,6 +45799,24 @@ Supported options:
               "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -46807,6 +47183,24 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -46820,6 +47214,64 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryErrorRecoveryButton",
+          },
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryStatusIndicator",
+          },
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -47008,6 +47460,24 @@ Supported options:
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -48239,6 +48709,16 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -48249,6 +48729,48 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -48369,6 +48891,16 @@ Supported options:
         },
         {
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -55137,6 +55669,19 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -55150,6 +55695,54 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryErrorRecoveryButton",
+          },
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryStatusIndicator",
+          },
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -55358,6 +55951,19 @@ Supported options:
               "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -56318,6 +56924,19 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryErrorRecoveryButton\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -56331,6 +56950,54 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
                 "isOptional": false,
               },
               "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the error recovery button inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryErrorRecoveryButton",
+          },
+          "name": "findExpandableCategoryErrorRecoveryButton",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status indicator inside a specific expanded group's nested dropdown.
+Use this when async loading is enabled per expandable group via \`getExpandableItemsAsyncLoadingState\`.
+
+This utility does not open the dropdown or expand the group. Call \`openDropdown()\` and expand the group first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findExpandableCategoryStatusIndicator",
+          },
+          "name": "findExpandableCategoryStatusIndicator",
+          "parameters": [
+            {
+              "description": "The \`id\` of the expandable group item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "groupId",
               "typeName": "string",
             },
           ],
@@ -56472,6 +57139,19 @@ Supported options:
             "name": "ButtonDropdownWrapper.findOpenDropdown",
           },
           "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Use this for the top-level dropdown status. For the status of a specific expandable group, use \`findExpandableCategoryStatusIndicator\`.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
           "parameters": [],
           "returnType": {
             "isNullable": false,
