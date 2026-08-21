@@ -4,12 +4,12 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as sass from 'sass';
 
-const HOVER_MOTION_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'hover-motion.scss'), 'utf8');
-const THEMING_SOURCE = fs.readFileSync(
-  path.join(__dirname, '..', '..', 'internal', 'styles', 'utils', 'theming.scss'),
-  'utf8'
-);
-const CSS_PATH = path.join(__dirname, '..', '..', '..', 'lib', 'components', 'icon', 'styles.scoped.css');
+const SRC_ROOT = path.resolve(__dirname, '../..'); // .../src
+const BUILD_ROOT = path.resolve(SRC_ROOT, '../lib/components'); // .../lib/components
+
+const HOVER_MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'icon/hover-motion.scss'), 'utf8');
+const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
+const CSS_PATH = path.join(BUILD_ROOT, 'icon/styles.scoped.css');
 
 const THEME = '.awsui-one-theme';
 
@@ -21,9 +21,8 @@ const TOKENS_STUB = `
 `;
 
 /**
- * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact whose
- * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
- * jest's jsdom environment, so every module is served from memory.
+ * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact
+ * whose `resolved-tokens` carry `optedInThemes`.
  */
 function compile(optedInThemes: string[]): string {
   return sass.compileString(`@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`, {
@@ -61,10 +60,7 @@ function compile(optedInThemes: string[]): string {
 }
 
 /**
- * Every style rule in the REAL built stylesheet, read through the CSSOM rather than a
- * bespoke selector parser — the browser's own parser already handles comma lists, `:is()`
- * and `@media` nesting correctly. The postcss `:not(#\\9)` specificity hack is stripped first:
- * it can never match an element, and jsdom's selector engine refuses to compile the escape.
+ * Every style rule in the REAL built stylesheet.
  */
 function builtRules(): CSSStyleRule[] {
   const style = document.createElement('style');
@@ -86,8 +82,10 @@ function builtRules(): CSSStyleRule[] {
   return rules;
 }
 
+// Icon-specific motions
 const hoverRules = () => builtRules().filter(rule => /:hover|:focus-visible/.test(rule.selectorText));
-const floorRule = () => hoverRules().find(rule => rule.style.transform === 'scale(0.94)')!;
+// Generic motion for icons that don't have their own motion
+const genericRule = () => hoverRules().find(rule => rule.style.transform === 'scale(0.94)')!;
 
 describe('the theme gate', () => {
   test('emits nothing for an artefact with no opted-in theme', () => {
@@ -106,15 +104,15 @@ describe('the theme gate', () => {
 
 describe('the real built stylesheet', () => {
   test('the floor rule carries the theme scope and both mode exclusions', () => {
-    expect(floorRule().selectorText).toContain(THEME);
-    expect(floorRule().selectorText).toContain(':not(.awsui-motion-disabled)');
-    expect(floorRule().selectorText).toContain(':not(.awsui-mode-entering)');
+    expect(genericRule().selectorText).toContain(THEME);
+    expect(genericRule().selectorText).toContain(':not(.awsui-motion-disabled)');
+    expect(genericRule().selectorText).toContain(':not(.awsui-mode-entering)');
   });
 
   test('the floor targets the INNER svg, never the outer .icon span', () => {
-    expect(floorRule().style.transform).toBe('scale(0.94)');
+    expect(genericRule().style.transform).toBe('scale(0.94)');
     // The rule's target is the last compound; it must be the opted-in svg, not a bare `.icon`.
-    const target = floorRule().selectorText.split(/\s+/).pop()!;
+    const target = genericRule().selectorText.split(/\s+/).pop()!;
     expect(target).toMatch(/^>?\s*svg\[data-awsui-icon-animated\]$/);
   });
 
@@ -129,7 +127,7 @@ describe('the real built stylesheet', () => {
   });
 
   test('the floor also fires on :focus-visible, guarded the same way as :hover', () => {
-    expect(floorRule().selectorText).toMatch(
+    expect(genericRule().selectorText).toMatch(
       /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
     );
   });
@@ -138,7 +136,7 @@ describe('the real built stylesheet', () => {
     // The region is the one compound immediately left of `:hover` — an ancestor theme scope
     // sits further left, joined by a descendant combinator, so it must not be included: a
     // bare region element has no such ancestor and would otherwise never match.
-    const selector = floorRule().selectorText;
+    const selector = genericRule().selectorText;
     const hoverIndex = selector.indexOf(':hover');
     const regionStart = selector.lastIndexOf(' ', hoverIndex) + 1;
     const region = selector.slice(regionStart, hoverIndex);
