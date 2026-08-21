@@ -8,6 +8,7 @@
 @use '../internal/styles/foundation' as foundation;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './ace-editor';
+@use './cloudscape-ace-theme';
 @use './pane';
 
 .code-editor {
