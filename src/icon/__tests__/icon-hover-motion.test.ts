@@ -103,10 +103,12 @@ describe('the generic hover motion rule, as compiled', () => {
 
   test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
     const selector = genericRuleSelector();
+    // Example selector: `:global(.awsui-one-theme...) [data-awsui-motion-trigger~=hover]:not(...):hover ...`
+    // The region under test is everything between the theme scope's `:global(...)` wrapper
+    // and `:hover`, here: `[data-awsui-motion-trigger~=hover]:not(:disabled):not([aria-disabled=true])`.
     const hoverIndex = selector.indexOf(':hover');
-    // The region is the one compound immediately left of `:hover`. The theme scope sits
-    // further left, closed by `) ` (the end of the `:global(...)` wrapper), so start there.
-    const regionStart = selector.lastIndexOf(') ', hoverIndex) + 2;
+    const globalIndex = selector.indexOf(':global(');
+    const regionStart = selector.indexOf(') ', globalIndex) + 2;
     const region = selector.slice(regionStart, hoverIndex);
 
     const enabled = document.createElement('button');
