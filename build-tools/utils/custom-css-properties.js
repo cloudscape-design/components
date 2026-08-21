@@ -200,5 +200,7 @@ const customCssPropertiesList = [
   'styleItemCardBorderRadius',
   'styleItemCardBorderWidthDefault',
   'styleItemCardBoxShadowDefault',
+  // Steps Style API
+  'styleStepsConnectorColor',
 ];
 module.exports = customCssPropertiesList;

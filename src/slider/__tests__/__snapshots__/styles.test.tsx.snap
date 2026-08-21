@@ -2,36 +2,36 @@
 
 exports[`getSliderStyles handles all possible style configurations 1`] = `
 {
-  "--awsui-style-slider-handle-background-active-esndbs": undefined,
-  "--awsui-style-slider-handle-background-default-esndbs": undefined,
-  "--awsui-style-slider-handle-background-hover-esndbs": undefined,
-  "--awsui-style-slider-handle-border-radius-esndbs": undefined,
-  "--awsui-style-slider-range-background-active-esndbs": undefined,
-  "--awsui-style-slider-range-background-default-esndbs": undefined,
-  "--awsui-style-slider-track-background-color-esndbs": undefined,
+  "--awsui-style-slider-handle-background-active-rufkue": undefined,
+  "--awsui-style-slider-handle-background-default-rufkue": undefined,
+  "--awsui-style-slider-handle-background-hover-rufkue": undefined,
+  "--awsui-style-slider-handle-border-radius-rufkue": undefined,
+  "--awsui-style-slider-range-background-active-rufkue": undefined,
+  "--awsui-style-slider-range-background-default-rufkue": undefined,
+  "--awsui-style-slider-track-background-color-rufkue": undefined,
 }
 `;
 
 exports[`getSliderStyles handles all possible style configurations 2`] = `
 {
-  "--awsui-style-slider-handle-background-active-esndbs": undefined,
-  "--awsui-style-slider-handle-background-default-esndbs": undefined,
-  "--awsui-style-slider-handle-background-hover-esndbs": undefined,
-  "--awsui-style-slider-handle-border-radius-esndbs": undefined,
-  "--awsui-style-slider-range-background-active-esndbs": undefined,
-  "--awsui-style-slider-range-background-default-esndbs": undefined,
-  "--awsui-style-slider-track-background-color-esndbs": undefined,
+  "--awsui-style-slider-handle-background-active-rufkue": undefined,
+  "--awsui-style-slider-handle-background-default-rufkue": undefined,
+  "--awsui-style-slider-handle-background-hover-rufkue": undefined,
+  "--awsui-style-slider-handle-border-radius-rufkue": undefined,
+  "--awsui-style-slider-range-background-active-rufkue": undefined,
+  "--awsui-style-slider-range-background-default-rufkue": undefined,
+  "--awsui-style-slider-track-background-color-rufkue": undefined,
 }
 `;
 
 exports[`getSliderStyles handles all possible style configurations 3`] = `
 {
-  "--awsui-style-slider-handle-background-active-esndbs": "#1d4ed8",
-  "--awsui-style-slider-handle-background-default-esndbs": "#3b82f6",
-  "--awsui-style-slider-handle-background-hover-esndbs": "#2563eb",
-  "--awsui-style-slider-handle-border-radius-esndbs": "50%",
-  "--awsui-style-slider-range-background-active-esndbs": "#2563eb",
-  "--awsui-style-slider-range-background-default-esndbs": "#3b82f6",
-  "--awsui-style-slider-track-background-color-esndbs": "#dbeafe",
+  "--awsui-style-slider-handle-background-active-rufkue": "#1d4ed8",
+  "--awsui-style-slider-handle-background-default-rufkue": "#3b82f6",
+  "--awsui-style-slider-handle-background-hover-rufkue": "#2563eb",
+  "--awsui-style-slider-handle-border-radius-rufkue": "50%",
+  "--awsui-style-slider-range-background-active-rufkue": "#2563eb",
+  "--awsui-style-slider-range-background-default-rufkue": "#3b82f6",
+  "--awsui-style-slider-track-background-color-rufkue": "#dbeafe",
 }
 `;
