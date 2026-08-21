@@ -18,6 +18,22 @@ const flatSourceItems: ButtonDropdownProps.Item[] = Array.from({ length: 25 }, (
   secondaryText: i % 3 === 0 ? `Description for action ${i + 1}` : undefined,
 }));
 
+// Source data for the combined example: flat async items plus two expandable groups.
+const combinedFlatSource: ButtonDropdownProps.Item[] = Array.from({ length: 20 }, (_, i) => ({
+  id: `combined-action-${i + 1}`,
+  text: `Instance action ${i + 1}`,
+  secondaryText: i % 4 === 0 ? `Details for instance action ${i + 1}` : undefined,
+}));
+
+const combinedGroupSource: Record<string, ButtonDropdownProps.Item[]> = {
+  'combined-file': Array.from({ length: 6 }, (_, i) => ({ id: `cf-${i + 1}`, text: `File action ${i + 1}` })),
+  'combined-edit': Array.from({ length: 5 }, (_, i) => ({ id: `ce-${i + 1}`, text: `Edit action ${i + 1}` })),
+};
+
+function fetchCombinedGroupItems(groupId: string): Promise<ButtonDropdownProps.Item[]> {
+  return new Promise(resolve => setTimeout(() => resolve(combinedGroupSource[groupId] ?? []), 600));
+}
+
 // Groups for the expandable async-loading example.
 // group-files: loads successfully after 600ms.
 // group-edit:  starts loading then fails after 800ms (error + retry button visible; retry also fails).
@@ -70,6 +86,47 @@ export default function ButtonDropdownAsyncLoadingPage() {
     { id: 'group-edit', text: 'Edit (always errors)', items: groupItems['group-edit'] ?? [] },
     { id: 'group-view', text: 'View (loading forever)', items: groupItems['group-view'] ?? [] },
   ];
+
+  // --- Combined: filtering + async loading + expandable groups ---
+  const {
+    items: combinedItems,
+    status: combinedStatus,
+    filteringText: combinedFilteringText,
+    fetchItems: fetchCombinedItems,
+  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10 });
+
+  const [combinedGroupItems, setCombinedGroupItems] = useState<Record<string, ButtonDropdownProps.Item[]>>({});
+  const [combinedGroupStatuses, setCombinedGroupStatuses] = useState<
+    Record<string, ButtonDropdownProps.AsyncLoadingStatusType>
+  >({});
+  // Track the current filter value directly so group visibility updates immediately on input,
+  // without waiting for useOptionsLoader's filteringText (which only updates after firstPage resolves).
+  const [combinedFilter, setCombinedFilter] = useState('');
+
+  // The top-level items are a mix of flat async results and expandable groups.
+  // Groups themselves have their children loaded on demand.
+  // When a filter is active:
+  // - Groups whose text matches are kept and their already-loaded children are shown inline.
+  // - Groups with no loaded children yet show a loading/pending status so they can be fetched.
+  // - Groups whose text doesn't match are hidden.
+  const combinedGroups: ButtonDropdownProps.ItemGroup[] = [
+    { id: 'combined-file', text: 'File', items: combinedGroupItems['combined-file'] ?? [] },
+    { id: 'combined-edit', text: 'Edit', items: combinedGroupItems['combined-edit'] ?? [] },
+  ];
+  const visibleCombinedGroups = combinedFilter
+    ? combinedGroups.filter(g => (g.text ?? '').toLowerCase().includes(combinedFilter.toLowerCase()))
+    : combinedGroups;
+  const combinedTopLevelItems: ButtonDropdownProps.Items = [...visibleCombinedGroups, ...combinedItems];
+
+  const combinedFilteringResultsText = (matchesCount: number, totalCount: number) => {
+    if (combinedStatus === 'pending') {
+      return `${matchesCount}+ results`;
+    }
+    if (combinedStatus === 'finished') {
+      return `${matchesCount} out of ${totalCount} results`;
+    }
+    return '';
+  };
 
   // Error state example for the flat async loading.
   const [errorStatus, setErrorStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('error');
@@ -202,6 +259,77 @@ export default function ButtonDropdownAsyncLoadingPage() {
             }}
           >
             Actions (error)
+          </ButtonDropdown>
+        </div>
+        <div className={styles.container}>
+          <h2>Async loading with filtering and expandable groups</h2>
+          <p>
+            The top-level list is loaded and filtered asynchronously. Two expandable groups also load their children on
+            demand when expanded, independently of the filtering.
+          </p>
+          <ButtonDropdown
+            data-testid="async-combined"
+            items={combinedTopLevelItems}
+            filteringType="manual"
+            filteringPlaceholder="Find action"
+            filteringAriaLabel="Filter actions"
+            expandableGroups={!combinedFilter}
+            asyncLoadingProps={{
+              statusType: combinedStatus,
+              recoveryText: 'Retry',
+              finishedText: () =>
+                combinedFilteringText ? `End of "${combinedFilteringText}" results` : 'End of all results',
+              empty: () => 'No actions found',
+              loadingText: (groupId?: string) => (groupId ? `Loading ${groupId} items…` : 'Loading actions'),
+              errorText: (groupId?: string) =>
+                groupId ? `Failed to load ${groupId} items.` : 'Error fetching actions.',
+            }}
+            getExpandableItemsAsyncLoadingState={({ item }) => {
+              const id = item.id;
+              return id ? (combinedGroupStatuses[id] ?? null) : null;
+            }}
+            expandToViewport={expandToViewport}
+            filteringResultsText={combinedFilteringResultsText}
+            onItemClick={onItemClick}
+            onLoadItems={({ detail: { firstPage, filteringText, expandedGroupId, samePage } }) => {
+              if (expandedGroupId) {
+                // Group expansion — load the group's children.
+                if (!samePage) {
+                  setCombinedGroupItems(prev => ({ ...prev, [expandedGroupId]: [] }));
+                }
+                setCombinedGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'loading' }));
+                fetchCombinedGroupItems(expandedGroupId).then(items => {
+                  setCombinedGroupItems(prev => ({ ...prev, [expandedGroupId]: items }));
+                  setCombinedGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'finished' }));
+                });
+              } else {
+                // Top-level filtering / pagination / open.
+                if (firstPage) {
+                  setCombinedFilter(filteringText);
+                  // Clear group items so nothing stale shows while the new filter is in-flight.
+                  setCombinedGroupItems({});
+                  setCombinedGroupStatuses({});
+                  // Eagerly load any group whose text matches the filter.
+                  combinedGroups
+                    .filter(g => filteringText && (g.text ?? '').toLowerCase().includes(filteringText.toLowerCase()))
+                    .forEach(g => {
+                      const gid = g.id!;
+                      setCombinedGroupStatuses(prev => ({ ...prev, [gid]: 'loading' }));
+                      fetchCombinedGroupItems(gid).then(items => {
+                        setCombinedGroupItems(prev => ({ ...prev, [gid]: items }));
+                        setCombinedGroupStatuses(prev => ({ ...prev, [gid]: 'finished' }));
+                      });
+                    });
+                }
+                const normalized = filteringText.toLowerCase();
+                const filtered = combinedFlatSource.filter(item =>
+                  (item.text ?? '').toLowerCase().includes(normalized)
+                );
+                fetchCombinedItems({ firstPage, filteringText, sourceItems: filtered });
+              }
+            }}
+          >
+            Actions
           </ButtonDropdown>
         </div>
       </SpaceBetween>
