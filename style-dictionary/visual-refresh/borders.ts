@@ -30,6 +30,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusCardDefault: '{borderRadiusContainer}',
   borderRadiusCardEmbedded: '{borderRadiusChatBubble}',
   borderRadiusChatBubble: '8px',
+  borderRadiusSupportPrompt: '8px',
   borderRadiusCodeEditor: '{borderRadiusInput}',
   borderRadiusContainer: '16px',
   borderRadiusControlCircularFocusRing: '4px',
