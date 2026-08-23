@@ -77,3 +77,13 @@
     border-color: awsui.$color-border-badge-severity-neutral;
   }
 }
+
+// Hover state: when a Badge is inside an interactive container (button, link, tab)
+// and that container is hovered, apply a subtle visual response via brightness filter.
+// CSS-only, zero-prop approach — no new API surface required.
+a:hover .badge,
+button:hover .badge,
+[role='tab']:hover .badge,
+[role='button']:hover .badge {
+  filter: brightness(0.92);
+}
