@@ -56,6 +56,33 @@ describe('Badge', () => {
     const badge = renderBadge(<Badge>20</Badge>);
     expect(badge).toHaveClass(styles[`badge-color-grey`]);
   });
+
+  describe('truncate', () => {
+    test('does not apply truncate class by default', () => {
+      const badge = renderBadge(<Badge>Long text</Badge>);
+      expect(badge).not.toHaveClass(styles['badge-truncate']);
+    });
+
+    test('does not apply truncate class when truncate=false', () => {
+      const badge = renderBadge(<Badge truncate={false}>Long text</Badge>);
+      expect(badge).not.toHaveClass(styles['badge-truncate']);
+    });
+
+    test('applies truncate class when truncate=true', () => {
+      const badge = renderBadge(<Badge truncate={true}>Long text</Badge>);
+      expect(badge).toHaveClass(styles['badge-truncate']);
+    });
+
+    test('truncate can be combined with a color variant', () => {
+      const badge = renderBadge(
+        <Badge color="blue" truncate={true}>
+          Very long badge text that should be truncated
+        </Badge>
+      );
+      expect(badge).toHaveClass(styles['badge-truncate']);
+      expect(badge).toHaveClass(styles['badge-color-blue']);
+    });
+  });
 });
 
 describe('Style API', () => {
