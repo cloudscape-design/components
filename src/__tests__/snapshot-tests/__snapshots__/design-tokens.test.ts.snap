@@ -77,6 +77,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -3355,6 +3359,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -3720,6 +3738,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -6998,6 +7020,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -7363,6 +7399,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -10643,6 +10683,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -11005,6 +11059,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -14286,6 +14344,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -14648,6 +14720,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -17929,6 +18005,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -18291,6 +18381,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -21572,6 +21666,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -21934,6 +22042,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
       "$value": "2px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
+      "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {
       "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -25215,6 +25327,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
+      },
+    },
     "size-side-navigation-item-height": {
       "$description": "The minimum height of side navigation items.",
       "$value": {
@@ -25581,6 +25707,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -28863,6 +28993,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -29224,6 +29368,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -32506,6 +32654,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -32867,6 +33029,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -36149,6 +36315,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -36510,6 +36690,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -39792,6 +39976,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -40153,6 +40351,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -43435,6 +43637,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -43796,6 +44012,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -47078,6 +47298,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -47439,6 +47673,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -50721,6 +50959,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -51082,6 +51334,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -54364,6 +54620,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
+          },
+        },
         "size-side-navigation-item-height": {
           "$description": "The minimum height of side navigation items.",
           "$value": {
@@ -54725,6 +54995,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
+      "$value": "8px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
       "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {
@@ -58005,6 +58279,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
       },
     },
     "size-side-navigation-item-height": {

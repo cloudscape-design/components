@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "在新索引標籤中開啟"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} 個項目 (共 {totalCount} 個）",
+    "noMatch": "沒有相符的動作",
+    "i18nStrings.filteringItemAriaDescription": "繼續輸入以篩選結果。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "下個月",
     "previousMonthAriaLabel": "上個月",
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
     "i18nStrings.jumpToPageInputLabel": "頁面",
     "i18nStrings.jumpToPageError": "頁面超出範圍。顯示最後一個可用頁面。",
-    "i18nStrings.jumpToPageLoadingText": "正在載入"
+    "i18nStrings.jumpToPageLoadingText": "正在載入",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",

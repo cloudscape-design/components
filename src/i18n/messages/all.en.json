@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} out of {totalCount} items",
+    "noMatch": "No matching actions",
+    "i18nStrings.filteringItemAriaDescription": "Keep typing to filter results."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Opens in a new tab"
   },
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Jump to page",
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page out of range. Showing last available page.",
-    "i18nStrings.jumpToPageLoadingText": "Loading"
+    "i18nStrings.jumpToPageLoadingText": "Loading",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} of {pagesCount}+} false {{currentPage} of {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",

@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount}/{totalCount} öge",
+    "noMatch": "Eşleşen eylem yok",
+    "i18nStrings.filteringItemAriaDescription": "Sonuçları filtrelemek için yazmaya devam edin."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Gelecek ay",
     "previousMonthAriaLabel": "Önceki ay",
@@ -256,8 +261,9 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
-    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
+    "i18nStrings.jumpToPageError": "Sayfa aralık dışında. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",

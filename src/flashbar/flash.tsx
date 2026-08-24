@@ -224,6 +224,10 @@ export const Flash = React.forwardRef(
             [styles.exiting]: transitionState === 'exiting',
             [styles.exited]: transitionState === 'exited',
           },
+          // The separate flashbar-warning context exists for VR, where warning
+          // flashes have a light background and dark text. One Theme does not
+          // need this context. We don't want to add a isOneTheme check here so
+          // we still set the flashbar-warning context for One Theme.
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}

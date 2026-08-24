@@ -2,6 +2,12 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:string';
+@use 'awsui:resolved-tokens' as resolved-tokens;
+
 @mixin dark-mode-only($selector: '') {
   @media not print {
     /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
@@ -13,7 +19,44 @@
 }
 
 @mixin one-theme-only($selector: '') {
-  :global(#{$selector}.awsui-one-theme) & {
-    @content;
+  // When One Theme is not part of the components these selectors are not emitted.
+  @each $theme in resolved-tokens.$resolved-tokens {
+    @if map.get($theme, 'selector') == '.awsui-one-theme' {
+      :global(#{$selector}.awsui-one-theme) & {
+        @content;
+      }
+    }
+  }
+}
+
+$expressive-motion-themes: list.append((), '.awsui-one-theme') !default;
+
+/// Two ways to gate on the opt-in above:
+/// - a function `has-expressive-motion` used to wrap `@keyframes`
+/// - a mixin `expressive-motion-only` is the wrapper form for everything
+
+@function has-expressive-motion() {
+  @each $theme in resolved-tokens.$resolved-tokens {
+    @if list.index($expressive-motion-themes, '#{string.unquote(map.get($theme, 'selector'))}') {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+/// Emits `@content` once, scoped to every opted-in theme's selector.
+@mixin expressive-motion-only($selector: '') {
+  $selectors: ();
+  @each $theme in resolved-tokens.$resolved-tokens {
+    $theme-selector: string.unquote(map.get($theme, 'selector'));
+    @if list.index($expressive-motion-themes, '#{$theme-selector}') {
+      $selectors: list.append($selectors, ':global(#{$theme-selector}#{$selector}) &', comma);
+    }
+  }
+  @if list.length($selectors) > 0 {
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant -- every entry in the list already ends with `&`
+    #{$selectors} {
+      @content;
+    }
   }
 }

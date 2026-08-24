@@ -49,7 +49,7 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, badge, ...
 
 export function LeftIcon(props: ButtonIconProps) {
   if (props.loading) {
-    return <InternalSpinner className={clsx(styles.icon, styles['icon-left'])} />;
+    return <InternalSpinner variant="disabled" className={clsx(styles.icon, styles['icon-left'])} />;
   } else if (getIconAlign(props) === 'left') {
     return <IconWrapper {...props} />;
   }

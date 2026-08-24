@@ -6372,6 +6372,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
     },
     {
       "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "i18nTag": true,
       "inlineType": {
         "name": "(matchesCount: number, totalCount: number) => string",
         "parameters": [
@@ -6418,6 +6419,7 @@ types. Items are matched client-side using a case-insensitive substring match ag
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "ButtonDropdownProps.I18nStrings",
         "properties": [
@@ -13440,7 +13442,7 @@ manner even if you provide a value for this property.",
       "type": "boolean",
     },
     {
-      "description": "Determines whether the content section's default padding is removed. This default padding is only present for the \`container\` variant.",
+      "description": "Determines whether the default padding around the content section is removed.",
       "name": "disableContentPaddings",
       "optional": true,
       "type": "boolean",
@@ -17404,7 +17406,18 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Use for content rendered before the editable value.",
+      "isDefault": false,
+      "name": "prefix",
+    },
+    {
+      "description": "Use for content rendered after the editable value.",
+      "isDefault": false,
+      "name": "suffix",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -19764,6 +19777,31 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "description": "Adds \`aria-describedby\` to the dropdown's listbox/dialog content.",
+      "name": "dropdownAriaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines the ARIA role of the dropdown.
+
+- \`auto\` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+filtering is enabled.
+- \`dialog\`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
+      "inlineType": {
+        "name": "SelectProps.DropdownRole",
+        "type": "union",
+        "values": [
+          "auto",
+          "dialog",
+        ],
+      },
+      "name": "dropdownRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.",
       "name": "enableSelectAll",
       "optional": true,
@@ -20021,6 +20059,44 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "name": "recoveryText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Renders content at the bottom of the dropdown. The content is always sticky and never scrolls with the
+options list. It is added below the built-in status region. Receives the current filtering state and a
+callback to close the dropdown.",
+      "inlineType": {
+        "name": "SelectProps.DropdownContentRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "SelectProps.DropdownContentProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderDropdownFooter",
+      "optional": true,
+      "type": "SelectProps.DropdownContentRenderer",
+    },
+    {
+      "description": "Renders content at the top of the dropdown, above the filter input (when filtering is enabled) and the
+options list. Pinned (sticky) to the top and rendered in every state (empty, no-match, loading, error,
+finished).",
+      "inlineType": {
+        "name": "SelectProps.DropdownContentRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "SelectProps.DropdownContentProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderDropdownHeader",
+      "optional": true,
+      "type": "SelectProps.DropdownContentRenderer",
     },
     {
       "description": "Overrides the element that is announced to screen readers
@@ -20420,6 +20496,13 @@ from changing page before items are loaded.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the necessary localized strings required by the component:
+* \`jumpToPageInputLabel\` (string) - Accessible label for the jump-to-page number input.
+* \`jumpToPageError\` (string) - Error message displayed when the entered page number is invalid.
+* \`jumpToPageLoadingText\` (string) - Loading text displayed while the jump-to-page action is in progress.
+* \`pagesCompactText\` ((options: { currentPage: number; pagesCount: number; openEnd: boolean }) => string) -
+  Provides the visible text for compact pages, for example \`3 of 12\`, or \`3 of 12+\` when \`openEnd\` is \`true\`.
+  Receives the current page, page count, and whether pagination is open-ended.",
       "i18nTag": true,
       "inlineType": {
         "name": "PaginationProps.I18nStrings",
@@ -20438,6 +20521,22 @@ from changing page before items are loaded.",
             "name": "jumpToPageLoadingText",
             "optional": true,
             "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(options: { currentPage: number; pagesCount: number; openEnd: boolean; }) => string",
+              "parameters": [
+                {
+                  "name": "options",
+                  "type": "{ currentPage: number; pagesCount: number; openEnd: boolean; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "pagesCompactText",
+            "optional": true,
+            "type": "((options: { currentPage: number; pagesCount: number; openEnd: boolean; }) => string)",
           },
         ],
         "type": "object",
@@ -20478,6 +20577,23 @@ never disabled. When the user clicks on it but there are no more items to show, 
       "name": "pagesCount",
       "optional": false,
       "type": "number",
+    },
+    {
+      "defaultValue": "'normal'",
+      "description": "Specifies how pages are displayed:
+* \`normal\` - Displays page number buttons. For larger page ranges, the displayed range is truncated with ellipses.
+* \`compact\` - Displays the current page and page count between the previous and next buttons. When \`openEnd\` is \`true\`, a plus sign after the page count indicates that more pages are available.",
+      "inlineType": {
+        "name": "PaginationProps.PagesVariant",
+        "type": "union",
+        "values": [
+          "normal",
+          "compact",
+        ],
+      },
+      "name": "pagesVariant",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": [],
@@ -26080,6 +26196,31 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "description": "Adds \`aria-describedby\` to the dropdown's listbox/dialog content.",
+      "name": "dropdownAriaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines the ARIA role of the dropdown.
+
+- \`auto\` (default): the dropdown uses a listbox role, or a dialog role wrapping the listbox when built-in
+filtering is enabled.
+- \`dialog\`: the dropdown always uses a dialog role wrapping the listbox, even without built-in filtering. Use
+this when you render interactive custom content and want assistive technologies to treat the dropdown as a dialog.",
+      "inlineType": {
+        "name": "SelectProps.DropdownRole",
+        "type": "union",
+        "values": [
+          "auto",
+          "dialog",
+        ],
+      },
+      "name": "dropdownRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Provides a text alternative for the error icon in the error message.",
       "i18nTag": true,
       "name": "errorIconAriaLabel",
@@ -26278,6 +26419,44 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "name": "recoveryText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Renders content at the bottom of the dropdown. The content is always sticky and never scrolls with the
+options list. It is added below the built-in status region. Receives the current filtering state and a
+callback to close the dropdown.",
+      "inlineType": {
+        "name": "SelectProps.DropdownContentRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "SelectProps.DropdownContentProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderDropdownFooter",
+      "optional": true,
+      "type": "SelectProps.DropdownContentRenderer",
+    },
+    {
+      "description": "Renders content at the top of the dropdown, above the filter input (when filtering is enabled) and the
+options list. Pinned (sticky) to the top and rendered in every state (empty, no-match, loading, error,
+finished).",
+      "inlineType": {
+        "name": "SelectProps.DropdownContentRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "SelectProps.DropdownContentProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderDropdownHeader",
+      "optional": true,
+      "type": "SelectProps.DropdownContentRenderer",
     },
     {
       "description": "Overrides the element that is announced to screen readers
@@ -27824,6 +28003,7 @@ We do not support using this attribute to apply custom styling.",
           "loading",
           "pending",
           "success",
+          "log",
           "warning",
           "info",
           "not-started",
@@ -27955,7 +28135,7 @@ The function is called for each step and should return an object with the follow
       "description": "An array of individual steps
 
 Each step definition has the following properties:
- * \`status\` (string) - Status of the step corresponding to a status indicator. The \`log\` status renders a neutral dot marker.
+ * \`status\` (string) - Status of the step corresponding to a status indicator.
  * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
  * \`header\` (ReactNode) - Summary corresponding to the step.
  * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
@@ -29136,18 +29316,21 @@ the table items array is empty.",
 - \`maxAutoRows\` (number) - Limits the number of skeleton rows rendered when \`totalRows\` is set to \`'auto'\`.
 - \`minAutoRows\` (number) - Sets the minimum number of skeleton rows rendered when \`totalRows\` is set to \`'auto'\`.
    Defaults to 1. Useful for tables rendered off-screen, where the calculated available height would
-   otherwise yield a single row.",
+   otherwise yield a single row.
+- \`renderCell\` ((column) => ReactNode) - Renders a custom skeleton placeholder per column, for cells whose
+   final content is not a single line of text (for example, multi-line cells, status indicators, or actions).
+   Return \`undefined\` for a column to fall back to the default single-line skeleton.",
       "inlineType": {
-        "name": "TableProps.SkeletonConfig",
+        "name": "TableProps.SkeletonConfig<T>",
         "type": "union",
         "values": [
-          "TableProps.FixedSkeletonConfig",
-          "TableProps.AutoSkeletonConfig",
+          "TableProps.FixedSkeletonConfig<T>",
+          "TableProps.AutoSkeletonConfig<T>",
         ],
       },
       "name": "skeleton",
       "optional": true,
-      "type": "TableProps.SkeletonConfig",
+      "type": "TableProps.SkeletonConfig<T>",
     },
     {
       "description": "Specifies the definition object of the currently sorted column. Make sure you pass an object that's
@@ -31108,6 +31291,30 @@ Don't use read-only inputs outside a form.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "defaultValue": "'both'",
+      "description": "Specifies the directions in which the user can resize the textarea:
+
+* \`both\` (default) - The user can change both the width and the height.
+* \`vertical\` - The user can only change the height. Use this when the textarea
+  is next to other content that a width change would disrupt.
+* \`horizontal\` - The user can only change the width.
+* \`none\` - The user can't resize the textarea. Longer content scrolls instead.
+  Consider using the \`rows\` property to make the initial height fit the expected content.",
+      "inlineType": {
+        "name": "TextareaProps.Resize",
+        "type": "union",
+        "values": [
+          "none",
+          "both",
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "resize",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Specifies the number of lines of text to set the height to.",
@@ -35506,6 +35713,32 @@ Supported options:
           },
         },
         {
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.focus",
           },
@@ -37160,6 +37393,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -37172,6 +37421,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -38365,6 +38630,20 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "typeArguments": [
               {
                 "name": "PaginationButtonWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the visible text for compact pages (for example, \`3 of 12\` or \`3 of 12+\`).",
+          "name": "findPagesCompactText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
               },
             ],
           },
@@ -40234,6 +40513,54 @@ wrapper.clickSelectAll();
           "returnType": {
             "isNullable": false,
             "name": "OptionsDropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom dropdown footer region rendered by \`renderDropdownFooter\`, if present.",
+          "name": "findDropdownFooter",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the custom dropdown header region rendered by \`renderDropdownHeader\`, if present.",
+          "name": "findDropdownHeader",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
           },
         },
         {
@@ -42387,6 +42714,54 @@ wrapper.clickSelectAll();
           },
         },
         {
+          "description": "Returns the custom dropdown footer region rendered by \`renderDropdownFooter\`, if present.",
+          "name": "findDropdownFooter",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the custom dropdown header region rendered by \`renderDropdownHeader\`, if present.",
+          "name": "findDropdownHeader",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findErrorRecoveryButton",
           "parameters": [
             {
@@ -43462,6 +43837,22 @@ and this method will have no effect.",
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -43542,6 +43933,22 @@ and this method will have no effect.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -48000,6 +48407,22 @@ Supported options:
             "name": "ElementWrapper",
           },
         },
+        {
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
       ],
       "name": "InputWrapper",
     },
@@ -49137,6 +49560,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findStatusIndicator",
           "parameters": [
             {
@@ -49151,6 +49585,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -50061,6 +50506,15 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
                 "name": "PaginationButtonWrapper",
               },
             ],
+          },
+        },
+        {
+          "description": "Returns the visible text for compact pages (for example, \`3 of 12\` or \`3 of 12+\`).",
+          "name": "findPagesCompactText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {
@@ -51403,6 +51857,48 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           "returnType": {
             "isNullable": false,
             "name": "OptionsDropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom dropdown footer region rendered by \`renderDropdownFooter\`, if present.",
+          "name": "findDropdownFooter",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom dropdown header region rendered by \`renderDropdownHeader\`, if present.",
+          "name": "findDropdownHeader",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {
@@ -52932,6 +53428,48 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Returns the custom dropdown footer region rendered by \`renderDropdownFooter\`, if present.",
+          "name": "findDropdownFooter",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the custom dropdown header region rendered by \`renderDropdownHeader\`, if present.",
+          "name": "findDropdownHeader",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findErrorRecoveryButton",
           "parameters": [
             {
@@ -53636,6 +54174,17 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "inheritedFrom": {
+            "name": "InputWrapper.findPrefix",
+          },
+          "name": "findPrefix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Returns custom property form cancel button.",
           "name": "findPropertyCancelButton",
           "parameters": [
@@ -53712,6 +54261,17 @@ In this case, use findContentEditableElement() instead.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findSuffix",
+          },
+          "name": "findSuffix",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

@@ -74,6 +74,14 @@ export interface I18nFormatArgTypes {
   button: {
     'i18nStrings.externalIconAriaLabel': never;
   };
+  'button-dropdown': {
+    filteringResultsText: {
+      matchesCount: string | number;
+      totalCount: string | number;
+    };
+    noMatch: never;
+    'i18nStrings.filteringItemAriaDescription': never;
+  };
   calendar: {
     nextMonthAriaLabel: never;
     previousMonthAriaLabel: never;
@@ -335,6 +343,11 @@ export interface I18nFormatArgTypes {
     'i18nStrings.jumpToPageInputLabel': never;
     'i18nStrings.jumpToPageError': never;
     'i18nStrings.jumpToPageLoadingText': never;
+    'i18nStrings.pagesCompactText': {
+      openEnd: string;
+      currentPage: string | number;
+      pagesCount: string | number;
+    };
   };
   'panel-resize-handle': {
     'i18nStrings.resizeHandleAriaLabel': never;

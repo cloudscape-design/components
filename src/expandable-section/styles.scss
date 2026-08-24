@@ -8,7 +8,13 @@
 @use '../container/shared' as container;
 @use '../internal/styles/utils/theming';
 
-@use './motion';
+// Show/hide animation (show = height leads, opacity trails; hide = equal, no delay).
+$reveal-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$reveal-enter-easing: awsui.$motion-easing-expandable-content-enter;
+$reveal-enter-delay: calc(#{$reveal-enter-duration} / 3);
+$reveal-enter-motion: $reveal-enter-duration $reveal-enter-easing;
+$reveal-enter-delayed-motion: $reveal-enter-motion $reveal-enter-delay;
+$reveal-exit-motion: awsui.$motion-duration-show-quick $reveal-enter-easing;
 
 $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
@@ -25,6 +31,10 @@ $icon-offset-container: awsui.$space-xxs;
 $icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
 $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
 
+// Extra inline padding that widens the navigation caret pointer target to 24px (WCAG 2.5.8).
+$nav-caret-pad-normal: calc(24px - #{$icon-width-normal});
+$nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -37,6 +47,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon {
   transform: rotate(-90deg);
+
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+  }
 
   &.expanded {
     transform: rotate(0deg);
@@ -126,9 +140,20 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     &:not(.header-deprecated) {
       padding-inline-start: $icon-total-space-normal;
     }
+
+    // HIDE (collapsed): quick collapse, no delay
+    @include styles.with-motion {
+      transition: border-block-end-color $reveal-exit-motion;
+    }
+
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
       border-block-end-color: awsui.$color-border-expandable-section-default;
+
+      // SHOW (expanded): border fades in with the same delay as content opacity so both appear together
+      @include styles.with-motion {
+        transition: border-block-end-color $reveal-enter-delayed-motion;
+      }
     }
   }
 
@@ -150,6 +175,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-container {
     padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
     padding-inline-end: container.$header-padding-horizontal;
+
+    // HIDE (collapsed state): padding settles back to symmetric top/bottom.
+    @include styles.with-motion {
+      transition: padding-block-end $reveal-exit-motion;
+    }
 
     &:not(.wrapper-expanded) {
       // Equal top and bottom padding so standalone header has vertical symmetry.
@@ -198,6 +228,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex: 1;
+    min-inline-size: 0;
   }
 
   &-button,
@@ -239,6 +271,27 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       text-decoration: none;
       flex-direction: column;
 
+      // Widen the pointer target to 24px (WCAG 2.5.8) with inline padding and an
+      // equal negative margin: the extra width grows away from the header label
+      // into the adjacent gutter, so neither the glyph nor the label moves and
+      // the label link keeps its own clicks. Vertical size already fills the row.
+      &:not(.icon-container-end) {
+        padding-inline-start: $nav-caret-pad-normal;
+        margin-inline-start: calc(#{$icon-margin-left} - #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-start: $nav-caret-pad-one-theme;
+          margin-inline-start: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
+      &.icon-container-end {
+        padding-inline-end: $nav-caret-pad-normal;
+        margin-inline-end: calc(-1 * #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-end: $nav-caret-pad-one-theme;
+          margin-inline-end: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
+
       &:hover {
         color: awsui.$color-text-expandable-section-hover;
       }
@@ -265,17 +318,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .content {
   display: none;
 
-  &-default,
-  &-inline {
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: 0;
-  }
-
-  &-footer {
-    padding-block: awsui.$space-xs;
-    padding-inline: 0;
-  }
-
   &-expanded {
     display: block;
   }
@@ -283,6 +325,97 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-compact {
     padding-inline-start: $icon-total-space-normal;
   }
+
+  // One-theme only: animated grid-template-rows reveal instead of the true/false display:none. VR keeps
+  // instantaneous display toggling, to prevent breaking reliance on synchronous isDisplayed()/isExisting() checks.
+  @include theming.one-theme-only {
+    display: grid;
+    grid-template-rows: 0fr;
+
+    // HIDE (collapsed state): quick collapse, no delay
+    @include styles.with-motion {
+      transition: grid-template-rows $reveal-exit-motion;
+    }
+
+    &-expanded {
+      grid-template-rows: 1fr;
+
+      // SHOW (expanded state): paced height opening, no delay — height leads.
+      @include styles.with-motion {
+        transition: grid-template-rows $reveal-enter-motion;
+      }
+    }
+  }
+}
+
+// One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
+.content-inner {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
+    // active/hover/focus states) bleed past the inline edges.
+    overflow-x: visible;
+    // overflow: clip (not hidden, which would coerce x-axis to auto) still lets the grid-row track collapse.
+    overflow-y: clip;
+    min-block-size: 0;
+    opacity: 0;
+
+    // HIDE (collapsed state): quick opacity collapse, no delay.
+    @include styles.with-motion {
+      transition: opacity $reveal-exit-motion;
+    }
+  }
+}
+
+.content-inner-expanded {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    opacity: 1;
+
+    // SHOW (expanded state): opacity fades in AFTER height has partially
+    // opened, creating a perceptible fade in the revealed space.
+    @include styles.with-motion {
+      transition: opacity $reveal-enter-delayed-motion;
+    }
+  }
+}
+
+.content-inner-settled {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    overflow-y: visible;
+  }
+}
+
+// Padding lives here rather than outer content wrapper so the grid track can fully collapse to zero at 0fr.
+.content-inner-body {
+  &-default,
+  &-inline {
+    padding-block: awsui.$space-scaled-xs;
+  }
+
+  &-footer {
+    padding-block: awsui.$space-xs;
+  }
+
+  &-container {
+    padding-block: awsui.$space-container-content-top awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
+  }
+}
+
+// Internal-only class: zeros header wrapper padding when __disableHeaderPaddings is set.
+// Allows parent components to control spacing without brittle positional selectors.
+.disable-header-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+// Internal-only class: zeros content wrapper padding when the disableContentPaddings prop is set.
+// Paired with disable-header-paddings for consistent zero-padding on both wrapper divs.
+.disable-content-paddings {
+  padding-block: 0;
+  padding-inline: 0;
 }
 
 .focusable {
@@ -301,4 +434,133 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &:not(.wrapper-container):not(.header-container-button):hover {
     color: awsui.$color-text-expandable-section-hover;
   }
+}
+
+// For non-container variants the icon is rendered at the end of the headerButton
+// (taking the full width of the header). For the container variant the icon is
+// rendered as a sibling of the InternalHeader so it appears past any actions.
+.header-icon-end {
+  &.wrapper-default,
+  &.wrapper-inline,
+  &.wrapper-footer,
+  &.wrapper-compact {
+    padding-inline-start: 0;
+  }
+
+  &.wrapper-navigation {
+    justify-content: space-between;
+    align-items: flex-start;
+    column-gap: awsui.$space-xs;
+  }
+
+  &.wrapper-container,
+  &.wrapper-default {
+    display: flex;
+    align-items: flex-start;
+    column-gap: awsui.$space-m;
+  }
+
+  &.wrapper-container {
+    &:not(.header-deprecated) {
+      padding-inline-start: container.$header-padding-horizontal;
+    }
+  }
+}
+
+.header-button-icon-end {
+  margin-inline-start: 0;
+  column-gap: awsui.$space-xs;
+  justify-content: space-between;
+
+  // For non-container variants the icon lives inside this button, so it
+  // needs to be a full-width flex row to push the icon to the inline-end.
+  // The container variant renders the icon outside InternalHeader, so
+  // making this element a block-level flex container with 100% width would
+  // force the title to consume all available space and push the info slot
+  // (rendered as a sibling inside InternalHeader) to a new line.
+  &:not(.header-container-button) {
+    display: flex;
+    inline-size: 100%;
+
+    > .header-text {
+      flex: 1;
+      min-inline-size: 0;
+    }
+  }
+}
+
+.icon-container-end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  flex-shrink: 0;
+
+  // Stretch the button to fill the parent's block-size so the entire caret
+  // column is clickable/hoverable, matching start-position behavior.
+  align-self: stretch;
+  align-items: flex-start;
+
+  // Reset native <button> chrome for the outside caret in end-icon-position.
+  // The navigation variant already has its own reset via .header-navigation > .icon-container
+  // so this is harmless-but-redundant for that path, and necessary for default/container.
+  border-block: none;
+  border-inline: none;
+  background: none;
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(2px);
+  }
+
+  // Align the navigation end-layout caret to the first line of header text.
+  // The header link has padding-block equal to (item-height - line-height) / 2
+  // (set by side-navigation). Mirror that on the caret so it sits at the same
+  // vertical position as the first text line — identical to the start layout.
+  .header-icon-end.wrapper-navigation > & {
+    padding-block-start: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
+  }
+
+  // In the end layout the icon is a flex child governed by the parent's
+  // align-items: flex-start. Reset the inset-block-start offsets that the
+  // start layout uses (they assume relative positioning within text flow)
+  // so the icon aligns with the first line of header text via flex.
+  @include theming.one-theme-only {
+    // Override the base .icon-container one-theme rule that re-introduces
+    // margin-inline-end via the margin-inline shorthand (equal specificity,
+    // later source order wins).
+    margin-inline-end: 0;
+    &:not(.icon-container-container) {
+      inset-block-start: $icon-offset-block;
+    }
+    > .icon {
+      inset-block-start: 0;
+    }
+  }
+}
+
+// min-block-size: 0 lets this grid item collapse to zero height when an ancestor
+// uses grid-template-rows: 0fr (side-navigation section header collapse).
+// Must remain global (not scoped to .header-icon-end) because the side-nav
+// collapse targets the header wrapper regardless of icon position.
+.header-content {
+  min-block-size: 0;
+}
+
+// In the end-icon layout, header content elements must shrink without overflowing.
+.header-icon-end > .header-content,
+.header-icon-end > .header-navigation-content {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+// Navigation variant, start icon: align the expand caret to the first line of text
+// when header paddings are disabled (side-navigation use case).
+// Mirrors the end-icon alignment at .icon-container-end (same formula).
+.disable-header-paddings.wrapper-navigation:not(.header-icon-end) > .icon-container {
+  display: grid;
+  align-items: flex-start;
+  padding-block: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
 }

@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount} 件のうち {matchesCount} 件の商品",
+    "noMatch": "一致するアクションなし",
+    "i18nStrings.filteringItemAriaDescription": "入力を続けると結果が絞り込まれます。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "i18nStrings.jumpToPageInputLabel": "ページ",
     "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。",
-    "i18nStrings.jumpToPageLoadingText": "ロード中"
+    "i18nStrings.jumpToPageLoadingText": "ロード中",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",

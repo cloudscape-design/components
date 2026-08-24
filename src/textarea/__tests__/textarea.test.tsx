@@ -248,6 +248,31 @@ describe('Textarea', () => {
     });
   });
 
+  describe('resize', () => {
+    test('allows resizing in both directions by default', () => {
+      const { textarea } = renderTextarea();
+      expect(textarea).toHaveClass(styles['textarea-resize-both']);
+    });
+
+    test.each<TextareaProps.Resize>(['both', 'horizontal', 'vertical', 'none'])('can be set to %s', resize => {
+      const { textarea } = renderTextarea({ resize });
+      expect(textarea).toHaveClass(styles[`textarea-resize-${resize}`]);
+    });
+
+    test('applies only the class matching the given value', () => {
+      const { textarea } = renderTextarea({ resize: 'vertical' });
+      expect(textarea).toHaveClass(styles['textarea-resize-vertical']);
+      expect(textarea).not.toHaveClass(styles['textarea-resize-both']);
+      expect(textarea).not.toHaveClass(styles['textarea-resize-horizontal']);
+      expect(textarea).not.toHaveClass(styles['textarea-resize-none']);
+    });
+
+    test('does not render a resize attribute on the native textarea', () => {
+      const { textarea } = renderTextarea({ resize: 'none' });
+      expect(textarea).not.toHaveAttribute('resize');
+    });
+  });
+
   describe('id and controlId', () => {
     test('id is rendered on the outer tag', () => {
       const { textareaWrapper } = renderTextarea({ id: 'something-specific' });

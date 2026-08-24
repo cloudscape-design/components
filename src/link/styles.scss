@@ -47,7 +47,7 @@
         letter-spacing: normal;
       }
       &.color-inverted {
-        color: awsui.$color-text-notification-default;
+        color: awsui.$color-text-link-inverted-default;
         text-decoration-color: currentColor;
         &:hover {
           color: awsui.$color-text-link-inverted-hover;
@@ -57,7 +57,12 @@
   }
 
   &.color-inverted {
-    color: awsui.$color-text-notification-default;
+    color: awsui.$color-text-link-inverted-default;
+    @include theming.one-theme-only {
+      #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+        var(#{custom-props.$styleFocusRingBorderWidth}, awsui.$border-link-focus-ring-shadow-spread)
+        var(#{custom-props.$styleFocusRingBorderColor}, currentColor);
+    }
     &:not(.button) {
       text-decoration-line: underline;
       text-decoration-color: currentColor;

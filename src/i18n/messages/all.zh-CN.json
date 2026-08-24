@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "在新选项卡中打开"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} 个项目（共 {totalCount} 个）",
+    "noMatch": "没有匹配的操作",
+    "i18nStrings.filteringItemAriaDescription": "继续键入以筛选结果。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "下个月",
     "previousMonthAriaLabel": "上个月",
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "跳转到页面",
     "i18nStrings.jumpToPageInputLabel": "页面",
     "i18nStrings.jumpToPageError": "页面超出范围。显示最后一个可用页面。",
-    "i18nStrings.jumpToPageLoadingText": "正在加载"
+    "i18nStrings.jumpToPageLoadingText": "正在加载",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} / {pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板大小调整手柄",

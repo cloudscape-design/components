@@ -31,9 +31,6 @@ const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
 
-  fontSideNavigationSectionHeaderSize: '14px',
-  fontSideNavigationSectionHeaderWeight: '500',
-
   fontWeightDisplayL: '500',
   fontWeightDisplayXl: '400',
 
@@ -42,7 +39,8 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightTabs: '600',
   fontSizeTabs: '14px',
   fontWayfindingLinkActiveWeight: '600',
-  fontWeightLinkSecondary: '500',
+  fontWeightLinkSecondary: 'inherit',
+  fontDecorationLineLinkSecondary: 'underline',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',
@@ -53,7 +51,9 @@ const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightFormLabel: '20px',
   fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
-  fontWeightBold: '500',
+
+  // ── Body text ─────────────────────────────────────────────────────────────
+  fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontSizeKeyValuePairsLabel: '14px',

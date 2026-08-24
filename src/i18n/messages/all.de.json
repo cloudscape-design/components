@@ -55,6 +55,11 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Pfad anzeigen"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} von {totalCount} Artikeln",
+    "noMatch": "Keine übereinstimmenden Aktionen",
+    "i18nStrings.filteringItemAriaDescription": "Tippen Sie weiter, um die Ergebnisse zu filtern."
+  },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Zur Seite springen",
     "i18nStrings.jumpToPageInputLabel": "Seite",
     "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an.",
-    "i18nStrings.jumpToPageLoadingText": "Wird geladen"
+    "i18nStrings.jumpToPageLoadingText": "Wird geladen",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} von {pagesCount}+} false {{currentPage} von {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",

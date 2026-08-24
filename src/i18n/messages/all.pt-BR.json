@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "Abre em uma nova guia"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} de {totalCount} itens",
+    "noMatch": "Nenhuma ação correspondente",
+    "i18nStrings.filteringItemAriaDescription": "Continue digitando para filtrar os resultados."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Próximo mês",
     "previousMonthAriaLabel": "Mês anterior",
@@ -257,7 +262,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Ir para a página",
     "i18nStrings.jumpToPageInputLabel": "Página",
     "i18nStrings.jumpToPageError": "Página fora do alcance. Mostrando a última página disponível.",
-    "i18nStrings.jumpToPageLoadingText": "Carregando"
+    "i18nStrings.jumpToPageLoadingText": "Carregando",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {mais {currentPage} de {pagesCount}} false {{currentPage} de {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Alça de redimensionamento do painel",
