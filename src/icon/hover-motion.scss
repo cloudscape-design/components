@@ -724,6 +724,9 @@ $icon-hover-motion: (
   ),
 );
 
+// Conditional motion declarations must go through this mixin: the no-motion-outside-of-mixin
+// stylelint rule only accepts declarations sitting directly under `with-motion`, so an
+// intervening `@if` would trip it even though the output stays inside the gate.
 @mixin _declarations($declarations) {
   @each $property, $value in $declarations {
     #{$property}: #{$value};
@@ -789,16 +792,13 @@ $icon-hover-motion: (
       }
     }
 
+    // Without a whole-icon spec, every spec has a `part`.
     @if not $whole-icon {
+      $names: list.append($names, '.name-#{$name}', comma);
       @each $spec in _specs($specs) {
-        $part: map.get($spec, part);
-        @if $part {
-          @if not list.index($names, '.name-#{$name}') {
-            $names: list.append($names, '.name-#{$name}', comma);
-          }
-          @if not list.index($parts, '.#{$part}') {
-            $parts: list.append($parts, '.#{$part}', comma);
-          }
+        $part: '.#{map.get($spec, part)}';
+        @if not list.index($parts, $part) {
+          $parts: list.append($parts, $part, comma);
         }
       }
     }
@@ -825,88 +825,61 @@ $icon-hover-motion: (
       $base: map.get($spec, base);
       $origin: map.get($spec, origin);
 
-      $property: map.get($spec, property);
-      @if not $property {
-        $property: transform;
-      }
-      $iterations: map.get($spec, iterations);
-      @if not $iterations {
-        $iterations: 1;
-      }
-      $fill: map.get($spec, fill);
-      @if not $fill {
-        $fill: none;
-      }
-      $delay: map.get($spec, delay);
-      @if not $delay {
-        $delay: 0s;
-      }
+      $property: map.get($spec, property) or transform;
+      $iterations: map.get($spec, iterations) or 1;
+      $fill: map.get($spec, fill) or none;
+      $delay: map.get($spec, delay) or 0s;
 
       // base/origin are visually inert at rest, so riding inside the motion gate costs nothing.
       @if $to or $base or $origin {
-        $resting: ();
-        @if $to {
-          $resting: map.merge(
-            $resting,
-            (
-              transition-property: #{$property},
-              transition-duration: $duration,
-              transition-timing-function: $easing,
-            )
-          );
-        }
-        @if $base {
-          $resting: map.merge($resting, $base);
-        }
-        @if $origin {
-          $resting: map.merge(
-            $resting,
-            (
-              transform-origin: $origin,
-            )
-          );
-        }
-
         .icon.name-#{$name} #{$target} {
           @include with-motion {
-            @include _declarations($resting);
+            @if $to {
+              @include _declarations(
+                (
+                  transition-property: #{$property},
+                  transition-duration: $duration,
+                  transition-timing-function: $easing,
+                )
+              );
+            }
+            @if $base {
+              @include _declarations($base);
+            }
+            @if $origin {
+              transform-origin: $origin;
+            }
           }
         }
       }
 
       @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
         @if $animation {
-          $optional: ();
-          @if $iterations != 1 {
-            $optional: map.merge(
-              $optional,
-              (
-                animation-iteration-count: $iterations,
-              )
-            );
-          }
-          @if $fill != none {
-            $optional: map.merge(
-              $optional,
-              (
-                animation-fill-mode: $fill,
-              )
-            );
-          }
-          @if $delay != 0s {
-            $optional: map.merge(
-              $optional,
-              (
-                animation-delay: $delay,
-              )
-            );
-          }
-
           @include with-motion {
             animation-name: $animation;
             animation-duration: $duration;
             animation-timing-function: $easing;
-            @include _declarations($optional);
+            @if $iterations != 1 {
+              @include _declarations(
+                (
+                  animation-iteration-count: $iterations,
+                )
+              );
+            }
+            @if $fill != none {
+              @include _declarations(
+                (
+                  animation-fill-mode: $fill,
+                )
+              );
+            }
+            @if $delay != 0s {
+              @include _declarations(
+                (
+                  animation-delay: $delay,
+                )
+              );
+            }
           }
         }
         @if $to {
@@ -1216,6 +1189,14 @@ $_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterat
       @if map.get($spec, animation) and map.get($spec, to) {
         @error 'The $icon-hover-motion spec for `#{$name}` sets both `animation` and `to`. ' +
           'Use `animation` for keyframe-driven motion or `to` for a transition, not both.';
+      }
+
+      @if (map.get($spec, animation) or map.get($spec, to)) and not
+        (map.get($spec, duration) and map.get($spec, easing))
+      {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets motion but is missing ' +
+          '`duration` or `easing`. Sass drops declarations with null values, so the ' +
+          'motion would silently run with the initial 0s duration and never be seen.';
       }
     }
   }

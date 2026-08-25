@@ -145,6 +145,13 @@ describe('a malformed spec fails the build', () => {
     expect(both).not.toBe(HOVER_MOTION_SOURCE);
     expect(() => compile([THEME], both)).toThrow(/sets both `animation` and `to`/);
   });
+
+  test('a motion spec missing `duration` is rejected, naming the icon', () => {
+    // `announcement` is the first entry in the map, so the first match is its duration.
+    const missing = HOVER_MOTION_SOURCE.replace('      duration: 400ms,\n', '');
+    expect(missing).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], missing)).toThrow(/spec for `announcement` sets motion but is missing/);
+  });
 });
 
 describe('keyframes', () => {
