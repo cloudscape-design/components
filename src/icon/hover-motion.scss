@@ -7,6 +7,9 @@
 // expressive motion via the `$expressive-motion-themes` list in
 // internal/styles/utils/theming.scss.
 
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
 @use '../internal/styles/utils/theming' as theming;
 
 // Descendant combinators and type selectors are unavoidable here since the trigger
@@ -14,8 +17,10 @@
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
-$_duration-generic: 250ms;
-$_ease-decelerate: cubic-bezier(0, 0, 0, 1);
+$_ease-out: ease-out;
+$_ease-symmetric: cubic-bezier(0.33, 0, 0.67, 1);
+$_ease-decelerate: cubic-bezier(0.4, 0, 0.2, 1);
+$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // A disabled control must not react to hover.
 $_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
@@ -34,10 +39,6 @@ $_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
 // Opt-in attribute for where the motion should be applied within a trigger region.
 $_target-attribute: 'data-awsui-motion-target';
 $_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
-
-$_ease-out: ease-out;
-$_ease-symmetric: cubic-bezier(0.33, 0, 0.67, 1);
-$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 $icon-hover-motion: (
   'announcement': (
@@ -723,6 +724,201 @@ $icon-hover-motion: (
   ),
 );
 
+@mixin _declarations($declarations) {
+  @each $property, $value in $declarations {
+    #{$property}: #{$value};
+  }
+}
+
+// Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
+@mixin with-motion {
+  @include theming.expressive-motion-only($_motion-on) {
+    @content;
+  }
+}
+
+// Also fires on :focus-visible, covering a focus owner nested inside the trigger.
+@mixin _on-hover-trigger($suffix) {
+  #{'#{$_hover-trigger}:hover #{$suffix}'},
+  #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
+    @content;
+  }
+}
+
+@function _target($part) {
+  @if not $part {
+    @return '> :global(#{$_opted-in})';
+  }
+  @return '> :global(#{$_opted-in} .#{$part})';
+}
+
+// A single-spec entry needs a trailing comma or Prettier turns the list back into a bare map.
+@function _specs($value) {
+  @if meta.type-of($value) == 'map' {
+    @return list.append((), $value);
+  }
+  @return $value;
+}
+
+@mixin generic-hover-motion {
+  .icon > :global(#{$_opted-in}) {
+    @include with-motion {
+      transition-property: transform;
+      transition-duration: 250ms;
+      transition-timing-function: $_ease-decelerate;
+    }
+  }
+
+  @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
+    @include with-motion {
+      transform: scale(0.94);
+    }
+  }
+}
+
+// Icons with BOTH a whole-icon spec and a part spec are excluded — the cancel would out-specify the whole-icon rule and reset it to none.
+@mixin _cancel-floor-under-hover-parts {
+  $names: ();
+  $parts: ();
+
+  @each $name, $specs in $icon-hover-motion {
+    $whole-icon: false;
+    @each $spec in _specs($specs) {
+      @if not map.get($spec, part) {
+        $whole-icon: true;
+      }
+    }
+
+    @if not $whole-icon {
+      @each $spec in _specs($specs) {
+        $part: map.get($spec, part);
+        @if $part {
+          @if not list.index($names, '.name-#{$name}') {
+            $names: list.append($names, '.name-#{$name}', comma);
+          }
+          @if not list.index($parts, '.#{$part}') {
+            $parts: list.append($parts, '.#{$part}', comma);
+          }
+        }
+      }
+    }
+  }
+
+  @if list.length($names) > 0 {
+    @include _on-hover-trigger('.icon#{$_animating-icon}:is(#{$names}) > :global(#{$_opted-in}:has(:is(#{$parts})))') {
+      @include with-motion {
+        transform: none;
+      }
+    }
+  }
+}
+
+@mixin per-icon-hover-motion {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $part: map.get($spec, part);
+      $target: _target($part);
+      $to: map.get($spec, to);
+      $animation: map.get($spec, animation);
+      $duration: map.get($spec, duration);
+      $easing: map.get($spec, easing);
+      $base: map.get($spec, base);
+      $origin: map.get($spec, origin);
+
+      $property: map.get($spec, property);
+      @if not $property {
+        $property: transform;
+      }
+      $iterations: map.get($spec, iterations);
+      @if not $iterations {
+        $iterations: 1;
+      }
+      $fill: map.get($spec, fill);
+      @if not $fill {
+        $fill: none;
+      }
+      $delay: map.get($spec, delay);
+      @if not $delay {
+        $delay: 0s;
+      }
+
+      // base/origin are visually inert at rest, so riding inside the motion gate costs nothing.
+      @if $to or $base or $origin {
+        $resting: ();
+        @if $to {
+          $resting: map.merge(
+            $resting,
+            (
+              transition-property: #{$property},
+              transition-duration: $duration,
+              transition-timing-function: $easing,
+            )
+          );
+        }
+        @if $base {
+          $resting: map.merge($resting, $base);
+        }
+        @if $origin {
+          $resting: map.merge(
+            $resting,
+            (
+              transform-origin: $origin,
+            )
+          );
+        }
+
+        .icon.name-#{$name} #{$target} {
+          @include with-motion {
+            @include _declarations($resting);
+          }
+        }
+      }
+
+      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
+        @if $animation {
+          $optional: ();
+          @if $iterations != 1 {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-iteration-count: $iterations,
+              )
+            );
+          }
+          @if $fill != none {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-fill-mode: $fill,
+              )
+            );
+          }
+          @if $delay != 0s {
+            $optional: map.merge(
+              $optional,
+              (
+                animation-delay: $delay,
+              )
+            );
+          }
+
+          @include with-motion {
+            animation-name: $animation;
+            animation-duration: $duration;
+            animation-timing-function: $easing;
+            @include _declarations($optional);
+          }
+        }
+        @if $to {
+          @include with-motion {
+            @include _declarations($to);
+          }
+        }
+      }
+    }
+  }
+}
+
 // @keyframes cannot nest under a class, so they're gated on the artefact instead of the selector.
 @mixin keyframes {
   @if theming.has-expressive-motion() {
@@ -1005,40 +1201,35 @@ $icon-hover-motion: (
   }
 }
 
-// Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
-@mixin with-motion {
-  @include theming.expressive-motion-only($_motion-on) {
-    @content;
-  }
-}
+$_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterations, fill, property);
 
-// Also fires on :focus-visible, covering a focus owner nested inside the trigger.
-@mixin _on-hover-trigger($suffix) {
-  #{'#{$_hover-trigger}:hover #{$suffix}'},
-  #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
-    @content;
-  }
-}
+@mixin _validate-specs {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      @each $key, $value in $spec {
+        @if not list.index($_spec-keys, $key) {
+          @error 'Unknown key `#{$key}` in the $icon-hover-motion spec for `#{$name}`. ' +
+            'Known keys: #{$_spec-keys}.';
+        }
+      }
 
-@mixin generic-hover-motion {
-  .icon > :global(#{$_opted-in}) {
-    @include with-motion {
-      transition-property: transform;
-      transition-duration: $_duration-generic;
-      transition-timing-function: $_ease-decelerate;
-    }
-  }
-
-  @include _on-hover-trigger('.icon#{$_animating-icon} > :global(#{$_opted-in})') {
-    @include with-motion {
-      transform: scale(0.94);
+      @if map.get($spec, animation) and map.get($spec, to) {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets both `animation` and `to`. ' +
+          'Use `animation` for keyframe-driven motion or `to` for a transition, not both.';
+      }
     }
   }
 }
 
 @mixin icon-hover-motion {
+  @include _validate-specs;
+
+  @include keyframes;
+
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
+    @include _cancel-floor-under-hover-parts;
+    @include per-icon-hover-motion;
   }
 }
 
