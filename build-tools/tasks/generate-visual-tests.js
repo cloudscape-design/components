@@ -22,6 +22,10 @@ function runnerContent(name) {
 }
 
 module.exports = function generateVisualTests() {
+  // Recreate the directory, removes anything inside it.
+  fs.rmSync(RUNNERS_DIR, { recursive: true, force: true });
+  fs.mkdirSync(RUNNERS_DIR, { recursive: true });
+
   const definitions = fs
     .readdirSync(DEFINITIONS_DIR)
     .filter(file => file.endsWith('.ts'))
