@@ -248,5 +248,33 @@ describe('calculateHierarchyTree', () => {
       const result = calculateHierarchyTree(COLUMN_DEFS, [], groups, display);
       expect(result.rows).toHaveLength(0);
     });
+
+    test('renders table when a column has the same id as its group', () => {
+      const cols: TableProps.ColumnDefinition<any>[] = [
+        { id: 'id', header: 'ID', cell: () => 'id' },
+        { id: 'target', header: 'Target', cell: () => 'target' },
+        { id: 'processingTime', header: 'Processing time', cell: () => 'processingTime' },
+      ];
+      const groups: TableProps.GroupDefinition[] = [{ id: 'target', header: 'Target details' }];
+      const display: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        {
+          type: 'group',
+          id: 'target',
+          visible: true,
+          children: [
+            { id: 'target', visible: true },
+            { id: 'processingTime', visible: true },
+          ],
+        },
+      ];
+      const result = calculateHierarchyTree(cols, ['id', 'target', 'processingTime'], groups, display);
+
+      expect(result.maxDepth).toBe(2);
+      expect(result.rows).toHaveLength(2);
+      expect(result.rows[0].columns.map(c => c.id)).toEqual(['id', 'target']);
+      expect(result.rows[0].columns.find(c => c.id === 'target')).toMatchObject({ isGroup: true, colSpan: 2 });
+      expect(result.rows[1].columns.map(c => c.id)).toEqual(['target', 'processingTime']);
+    });
   });
 });

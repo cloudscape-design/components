@@ -77,9 +77,10 @@ const groupDefinitions: TableProps.GroupDefinition[] = [
   { id: 'performance', header: 'Performance' },
   { id: 'network', header: 'Network' },
   { id: 'metrics', header: 'Metrics' },
+  { id: 'type', header: 'Type Details' },
 ];
 
-type GroupingPreset = 'flat' | 'single-level' | 'nested' | 'single-child-groups';
+type GroupingPreset = 'flat' | 'single-level' | 'nested' | 'single-child-groups' | 'id-collision';
 
 const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayProperties[]> = {
   flat: [
@@ -179,6 +180,30 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
     { id: 'netOut', visible: true },
     { id: 'cost', visible: true },
   ],
+  'id-collision': [
+    { id: 'id', visible: true },
+    { id: 'name', visible: true },
+    {
+      type: 'group',
+      id: 'type',
+      visible: true,
+      children: [
+        { id: 'type', visible: true },
+        { id: 'az', visible: true },
+        { id: 'state', visible: true },
+      ],
+    },
+    {
+      type: 'group',
+      id: 'performance',
+      visible: true,
+      children: [
+        { id: 'cpu', visible: true },
+        { id: 'memory', visible: true },
+      ],
+    },
+    { id: 'cost', visible: true },
+  ],
 };
 
 const presetOptions = [
@@ -186,6 +211,7 @@ const presetOptions = [
   { value: 'nested', label: 'Nested groups (3 levels)' },
   { value: 'single-child-groups', label: 'Single-child groups' },
   { value: 'flat', label: 'Without grouping' },
+  { value: 'id-collision', label: 'Column id = group id' },
 ];
 
 type DemoContext = React.Context<
