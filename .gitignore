@@ -16,3 +16,5 @@ vendor/generated-*.txt
 # System
 .DS_Store
 .worktrees
+# These files are auto-generated
+test/visual/*
