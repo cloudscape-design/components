@@ -100,6 +100,25 @@ describe('position=fixed', () => {
     );
     expect(el).toHaveStyle({ insetInlineStart: '8px', insetBlockStart: '4px', insetBlockEnd: '12px' });
   });
+
+  test('propagates one-theme class to the fixed drawer when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+
+    try {
+      const el = getDrawerElement(<Drawer position="fixed" />);
+      expect(el).toHaveClass('awsui-one-theme');
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  test('does not stamp one-theme class on the fixed drawer when one theme is inactive', () => {
+    const el = getDrawerElement(<Drawer position="fixed" />);
+
+    expect(el).not.toHaveClass('awsui-one-theme');
+  });
 });
 
 describe('position=sticky', () => {
