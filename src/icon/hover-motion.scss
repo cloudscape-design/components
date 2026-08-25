@@ -724,9 +724,8 @@ $icon-hover-motion: (
   ),
 );
 
-// Conditional motion declarations must go through this mixin: the no-motion-outside-of-mixin
-// stylelint rule only accepts declarations sitting directly under `with-motion`, so an
-// intervening `@if` would trip it even though the output stays inside the gate.
+// Conditional motion declarations go through this mixin: the no-motion-outside-of-mixin
+// stylelint rule only accepts declarations directly under `with-motion`.
 @mixin _declarations($declarations) {
   @each $property, $value in $declarations {
     #{$property}: #{$value};
@@ -792,7 +791,6 @@ $icon-hover-motion: (
       }
     }
 
-    // Without a whole-icon spec, every spec has a `part`.
     @if not $whole-icon {
       $names: list.append($names, '.name-#{$name}', comma);
       @each $spec in _specs($specs) {
@@ -1193,22 +1191,18 @@ $_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterat
       @if (map.get($spec, animation) or map.get($spec, to)) and not
         (map.get($spec, duration) and map.get($spec, easing))
       {
-        @error 'The $icon-hover-motion spec for `#{$name}` sets motion but is missing ' +
-          '`duration` or `easing`. Sass drops declarations with null values, so the ' +
-          'motion would silently run with the initial 0s duration and never be seen.';
+        @error 'The $icon-hover-motion spec for `#{$name}` sets motion but is missing `duration` or `easing`.';
       }
     }
   }
 }
 
 @mixin icon-hover-motion {
-  @include _validate-specs;
-
+  @include _validate-specs; // checks if per-icon motion definitions are properly defined
   @include keyframes;
-
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
-    @include _cancel-floor-under-hover-parts;
+    @include _cancel-floor-under-hover-parts; // ensures generic motion does not apply to icons with bespoke motion
     @include per-icon-hover-motion;
   }
 }
