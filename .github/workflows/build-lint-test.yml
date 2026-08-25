@@ -29,3 +29,4 @@ jobs:
       react-version: ${{ matrix.react }}
       artifact-path: pages/lib/static-default
       artifact-name: dev-pages-react${{ matrix.react }}
+      coverage-artifact-name: coverage-report-react${{ matrix.react }}
