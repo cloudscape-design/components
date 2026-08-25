@@ -112,9 +112,9 @@ describe('BasicTable resize handle keyboard + SR a11y (#8)', () => {
     expect(separator.getAttribute('tabindex')).toBe('-1');
     expect(separator.getAttribute('aria-valuemin')).toBe(String(NAME_MIN_WIDTH));
     expect(separator.getAttribute('aria-valuenow')).toBe(String(NAME_START_WIDTH));
-    // The slider is effectively unbounded above; instead of a nonsensical numeric max it exposes a
-    // human-readable width via aria-valuetext.
-    expect(separator.hasAttribute('aria-valuemax')).toBe(false);
+    // The slider is effectively unbounded above, but VoiceOver treats a slider with no max as
+    // inoperable, so it exposes a sentinel max (mirroring Table) plus a human-readable aria-valuetext.
+    expect(separator.getAttribute('aria-valuemax')).toBe(String(Number.MAX_SAFE_INTEGER));
     expect(separator.getAttribute('aria-valuetext')).toBe(`${NAME_START_WIDTH} pixels`);
     expect(separator.getAttribute('aria-hidden')).toBe('true');
   });
@@ -177,5 +177,52 @@ describe('BasicTable resize handle keyboard + SR a11y (#8)', () => {
       fireEvent.keyDown(getSeparator(), { key: 'ArrowLeft' });
     }
     expect(lastWidths()[0]).toBe(120);
+  });
+});
+
+// Pointer-drag commit semantics (parity with Table's onWidthUpdate-per-move +
+// onWidthUpdateCommit-on-release): the internal `dragWidths` state renders the live preview during
+// a drag WITHOUT emitting the public event; `onColumnWidthsChange` fires exactly ONCE on
+// pointer-up, and only when the dragged column's width actually changed (Table's `widthsChanged`
+// guard). jsdom has no layout, but `startWidth` is read from the controlled `columnWidths` map, so
+// clientX deltas drive deterministic widths.
+describe('BasicTable pointer-drag resize commit semantics', () => {
+  // jsdom's PointerEvent init drops clientX; a MouseEvent dispatched with a pointer type carries it
+  // and still triggers the same 'pointerdown'/'pointermove'/'pointerup' listeners.
+  const ptr = (type: string, clientX: number) => new MouseEvent(type, { clientX, bubbles: true, cancelable: true });
+
+  test('a drag emits onColumnWidthsChange exactly once (on pointer-up), not per pointer-move', () => {
+    const { getToggle, onWidths, lastWidths } = renderResizable();
+    const handle = getToggle();
+
+    fireEvent(handle, ptr('pointerdown', 500));
+    // Several moves -> live preview only, no public event yet.
+    fireEvent(document, ptr('pointermove', 520));
+    fireEvent(document, ptr('pointermove', 540));
+    fireEvent(document, ptr('pointermove', 560));
+    expect(onWidths).not.toHaveBeenCalled();
+
+    fireEvent(document, ptr('pointerup', 560));
+    // Exactly one commit, carrying the final width (200 + (560-500) = 260).
+    expect(onWidths).toHaveBeenCalledTimes(1);
+    expect(lastWidths()[0]).toBe(NAME_START_WIDTH + 60);
+    // Sibling (last, flexible) column is untouched by the name-column drag.
+    expect(lastWidths()[1]).toBe(STATUS_WIDTH);
+  });
+
+  test('a bare click on the handle (no move / net-zero drag) emits no commit', () => {
+    const { getToggle, onWidths } = renderResizable();
+    const handle = getToggle();
+
+    fireEvent(handle, ptr('pointerdown', 500));
+    fireEvent(document, ptr('pointerup', 500));
+    expect(onWidths).not.toHaveBeenCalled();
+
+    // A move that returns to the origin nets zero change -> still no commit.
+    fireEvent(handle, ptr('pointerdown', 500));
+    fireEvent(document, ptr('pointermove', 560));
+    fireEvent(document, ptr('pointermove', 500));
+    fireEvent(document, ptr('pointerup', 500));
+    expect(onWidths).not.toHaveBeenCalled();
   });
 });

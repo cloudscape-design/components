@@ -25,10 +25,6 @@
   background: awsui.$color-background-container-content;
 }
 
-.header {
-  margin-block-end: awsui.$space-scaled-s;
-}
-
 .scroll-container {
   position: relative;
   // Fill the height-owning root when it is bounded (min-block-size:0 lets a flex item shrink
@@ -44,6 +40,26 @@
   // tabIndex=-1, aria-row/colcount) live on the inner .grid-table, and the single tab stop is the
   // roving cell managed by the shared GridNavigationProvider, so the focus ring lives on the
   // focused cell (see the cell :focus-visible rules below).
+}
+
+// Horizontal overflow scroller (unbounded / body-scroll mode). In that mode .scroll-container is
+// overflow:visible so the page (or app-layout) owns the vertical scroll and the sticky header can
+// pin to the page — which leaves the inline axis unclipped, so a column dragged wider than the
+// container (or a naturally wide table) spills out visibly instead of scrolling (R2). This inner
+// wrapper reintroduces an inline scroll viewport for that case: overflow-x:auto clips and scrolls
+// the wide table horizontally, while its unbounded block-size means no block scrollbar appears and
+// the page stays the vertical runway. (Setting overflow-x:auto makes the computed overflow-y auto
+// too, so the real sticky thead nested here pins to this box rather than the page — the sticky
+// header is reinstated as a page-pinned overlay outside this scroller in a later step.)
+.body-scroller {
+  overflow-x: auto;
+}
+
+// Bounded mode: .scroll-container is itself the scroll viewport (both axes), so this wrapper must be
+// a transparent pass-through — a nested scroll container here would trap the sticky header and add a
+// redundant inner scrollbar.
+.body-scroller-bounded {
+  overflow: visible;
 }
 
 // The grid is a real <table> (so <thead>/<tbody>/<tr>/<td>/<th> are valid HTML and the shared
@@ -87,9 +103,56 @@
 // whole .scroll-container content (header + body runway), so inset-block-start:0 has the travel
 // room to pin. Sticking the inner row instead traps it in the short rowgroup box (no travel) and
 // it scrolls away with content.
+// The sticky tools/header slot: pinned to the top of the scroll viewport above the sticky header
+// row (z 801 > 800). Its measured height is published as `--awsui-basic-table-sticky-header-offset`
+// on the scroll container (see internal.tsx) so the header row pins directly beneath it.
+.sticky-header-slot {
+  position: sticky;
+  inset-block-start: var(--awsui-basic-table-sticky-top-offset, 0px);
+  z-index: 801;
+  background: awsui.$color-background-container-content;
+}
+
+// Sticky-header overlay (unbounded / body-scroll mode): an aria-hidden, inert duplicate of the
+// consumer's column header rendered as a sibling of .body-scroller — i.e. OUTSIDE that
+// overflow-x:auto clipping context — so it can page-pin (added in a later step) while the real
+// header scrolls horizontally inside the scroller. Opaque header surface so that, once the real
+// header is tucked beneath it (negative margin, P3), this copy fully occludes it. P3 syncs this
+// copy's scrollLeft to the body scroller (see internal.tsx) so its columns track the real header
+// during horizontal scroll; overflow:hidden clips the overflowing duplicate header without adding a
+// user scrollbar (scrollLeft is still settable programmatically). P4 makes it position:sticky.
+.sticky-header-overlay {
+  position: sticky;
+  // Pin the duplicated column header. The offset chains: app-layout chrome + the consumer's
+  // stickyHeaderVerticalOffset (both folded into --awsui-basic-table-sticky-top-offset in unbounded
+  // mode, see internal.tsx) + the sticky-header slot height (the title band pins above the column
+  // header). This resolves the in-app-layout header offset — the pinned column header seats below
+  // the app chrome and the title band.
+  inset-block-start: calc(
+    var(--awsui-basic-table-sticky-top-offset, 0px) + var(--awsui-basic-table-sticky-header-offset, 0px)
+  );
+  // Below the sticky-header slot (801) so the title band layers over the column header where they
+  // meet; above sticky columns (798).
+  z-index: 800;
+  background: awsui.$color-background-table-header;
+  overflow: hidden;
+}
+
+// Stuck (pinned) treatment, mirroring Table: once the header block has pinned, drop the header
+// divider and raise a shadow over the scrolling body (avoids a double divider-plus-shadow line).
+.sticky-header-overlay-stuck {
+  box-shadow: awsui.$shadow-sticky-embedded;
+  & .header-row {
+    border-block-end-color: transparent;
+  }
+}
+
 .sticky-header {
   position: sticky;
-  inset-block-start: 0;
+  // Chained beneath the sticky top offset (app chrome) + the sticky-header slot (0 each when absent).
+  inset-block-start: calc(
+    var(--awsui-basic-table-sticky-top-offset, 0px) + var(--awsui-basic-table-sticky-header-offset, 0px)
+  );
   // Sticky-header stacking: 800 pins the header above sticky columns (798); a bare `1` risks
   // under-layering other console stacking contexts.
   z-index: 800;
@@ -110,6 +173,7 @@
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
+  @include styles.font-smoothing;
   line-height: awsui.$line-height-heading-xs;
   // The header cell has no inner content wrapper (a composed sort trigger, when present, brings its
   // own), so it sums two vertical padding layers here to reach the standard header height at density
@@ -126,7 +190,11 @@
   content: '';
   position: absolute;
   inset-inline-end: 0;
-  inset-block: awsui.$space-xxs; // same block gap as the resize-handle divider
+  // Vertically centered divider matching Table's resizer geometry (same as the resize-handle divider).
+  inset-block: 0;
+  margin-block: auto;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - (2 * #{awsui.$space-xs} + #{awsui.$space-xxxs}));
   inline-size: 0;
   border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   box-sizing: border-box;
@@ -150,9 +218,18 @@
 .resize-handle-wrapper {
   position: absolute;
   inset-block: 0;
-  inset-inline-end: 0;
-  inline-size: awsui.$space-m;
+  // Straddle the column boundary (half in each adjacent column) so the handle, tooltip, and
+  // direction buttons center on the boundary — mirroring Table's resizer. Pulled back to the edge
+  // on the last column so it doesn't overflow the table's trailing edge.
+  inset-inline-end: calc(-1 * #{awsui.$space-xl} / 2);
+  inline-size: awsui.$space-xl;
   z-index: 1;
+}
+.header-cell:last-child .resize-handle-wrapper {
+  inset-inline-end: 0;
+}
+.header-cell:last-child .resize-handle::after {
+  inset-inline-end: 0;
 }
 
 // Applied via `wrapperClassName` to DragHandleWrapper's positioning element (`.drag-handle`,
@@ -167,7 +244,7 @@
   // edge via ::after so the hit target is wider than the 1px divider. `position: relative` anchors
   // that ::after divider to the button's own box.
   position: relative;
-  inline-size: awsui.$space-m;
+  inline-size: awsui.$space-xl;
   block-size: 100%;
   cursor: col-resize;
   user-select: none;
@@ -185,9 +262,14 @@
   &::after {
     content: '';
     position: absolute;
-    inset-inline-end: 0;
-    // Small block gap top/bottom.
-    inset-block: awsui.$space-xxs;
+    // Divider sits at the straddling wrapper's center = on the column boundary (last column: 0).
+    inset-inline-end: calc(#{awsui.$space-xl} / 2);
+    // Vertically centered divider matching Table's resizer geometry: block gap of
+    // $block-gap (2 * space-xs + space-xxxs) split top/bottom, floored at the heading line-height.
+    inset-block: 0;
+    margin-block: auto;
+    min-block-size: awsui.$line-height-heading-xs;
+    max-block-size: calc(100% - (2 * #{awsui.$space-xs} + #{awsui.$space-xxxs}));
     inline-size: 0;
     border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
@@ -198,10 +280,10 @@
     border-inline-start-color: awsui.$color-border-divider-interactive-default;
   }
 
-  // Keyboard focus ring (same token/offset as the sort trigger + roving cells).
+  // Keyboard focus ring: Cloudscape's rounded focus ring + Windows High Contrast fallback via the
+  // shared mixin, with Table's resizer gutter for parity.
   &:focus-visible {
-    outline: 2px solid awsui.$color-border-item-focused;
-    outline-offset: -2px;
+    @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
   }
 
   // During keyboard-drag mode focus moves to the (zero-size) role="slider" separator, so the
@@ -209,8 +291,7 @@
   // toggle for the duration of the drag (WCAG 2.4.7 focus visible). Also promote the divider to the
   // interactive color so the edge being resized reads as active.
   &-dragging {
-    outline: 2px solid awsui.$color-border-item-focused;
-    outline-offset: -2px;
+    @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
 
     &::after {
       border-inline-start-color: awsui.$color-border-divider-interactive-default;
@@ -241,11 +322,15 @@
 .disclosure-cell,
 .selection-header,
 .selection-cell {
-  inline-size: awsui.$space-xl;
+  // Left-align the control at Table's cell horizontal padding ($space-scaled-l) rather than centering
+  // it in a narrow track, so the checkbox/toggle sits where Table's does (~20px in), not cramped at
+  // the edge. Track is wide enough for the padding + control + a small trailing gap.
+  inline-size: calc(#{awsui.$space-scaled-l} + #{awsui.$space-l});
+  padding-inline-start: awsui.$space-scaled-l;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 // The body is the windowing runway — virtualization sizes it to the full virtual height and
@@ -270,16 +355,55 @@
 }
 
 .row {
+  position: relative;
   align-items: center;
-  // Per-row divider: the border sits on the row (not the cell) so it always lands at the row
-  // boundary regardless of cell padding / fixed windowed row height.
+  // Comfortable row-height parity with Table (40px). The height is a floor on the grid row *tracks*
+  // (grid-auto-rows), not the row box: when an expanded region adds a second track, the data-cell
+  // track keeps this height instead of shrinking to its content, so the row content doesn't shift on
+  // expand/collapse. Track floor = row height minus the divider (which sits on the row's border-box).
+  grid-auto-rows: minmax(
+    calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-scaled-xs} + 4px - #{awsui.$border-divider-list-width}),
+    auto
+  );
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
 
   // Selected-row surface. There is no selection prop; this is an inert style-only hook so a marked
   // row reads as selected if a consumer sets the class.
   &.row-selected {
     background: awsui.$color-background-item-selected;
-    border-block: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+    border-radius: awsui.$border-radius-item;
+    // Selection border on an absolutely-positioned overlay: takes no layout space, so toggling
+    // selection never shifts content. Shared edges/corners are dropped for consecutive selected rows
+    // (sibling rules below) so a run reads as one continuous rounded block, matching Table.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-sizing: border-box;
+      border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+  }
+}
+
+// Consecutive selected rows read as one rounded block: square the touching corners and show a single
+// 1px divider in the selection color between them (matching Table's thin blue inner divider). The
+// upper row draws it (2px bottom → 1px), the lower row drops its top edge so they don't stack, and
+// the row's own grey divider is hidden between the two.
+.row-selected + .row-selected {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  &::after {
+    border-block-start: 0;
+  }
+}
+.row-selected:has(+ .row-selected) {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  border-block-end-color: transparent;
+  &::after {
+    border-block-end-width: awsui.$border-divider-list-width;
   }
 }
 
@@ -297,6 +421,17 @@
   box-sizing: border-box;
 }
 
+// Parity with Table: with no leading control column (selection/disclosure), the first DATA column's
+// content sits (near-)flush to the container edge rather than carrying the full inter-column inline
+// padding. Table's visual-refresh first column uses `space-xxxs` here (see `table/body-cell`
+// `.is-visual-refresh:first-child`). A control column renders its own `.selection-*`/`.disclosure-*`
+// class (never the base `.cell`/`.header-cell`), so when one is present it is `:first-child` and the
+// data cell is not — matching Table's `:not(.has-selection)` gate without an explicit guard.
+.header-cell:first-child,
+.cell:first-child {
+  padding-inline-start: awsui.$space-xxxs;
+}
+
 // Wrapping affordance. Apply on cells in rows that opt into measured heights (getRowHeight: 'auto')
 // so wrapped content is measured and windowed correctly — e.g. a raw/file line renderer.
 .cell-wrap {
@@ -312,14 +447,15 @@
   box-sizing: border-box;
 }
 
-// The expanded region sits on the container content surface with a divider below, so an expanded
-// row reads as a detail panel attached to its data row while holding arbitrary non-tabular content.
+// The expanded region sits on the container content surface so an expanded row reads as a detail
+// panel attached to its data row while holding arbitrary non-tabular content. The closing divider
+// is the parent `.row`'s own `border-block-end` (which encloses the expanded region), so the region
+// must not add its own — that would double the line at the row's bottom edge.
 .expanded-region {
   display: block;
   inline-size: 100%;
   box-sizing: border-box;
   background: awsui.$color-background-container-content;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   padding-block: awsui.$space-scaled-s;
   padding-inline: awsui.$space-scaled-l;
 }
@@ -368,8 +504,12 @@
 .selection-header,
 .expanded-cell {
   &:focus-visible {
-    outline: 2px solid awsui.$color-border-item-focused;
-    outline-offset: -2px;
+    @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+    // focus-highlight sets position:relative; re-assert sticky so pinned columns keep pinning
+    // (mirrors Table's safe-focus-highlight).
+    &.sticky-cell {
+      position: sticky;
+    }
   }
 }
 
@@ -442,4 +582,12 @@
 // keep the toggled class resolvable.
 .sticky-cell-pad-inline-start {
   padding-inline-start: awsui.$space-scaled-l;
+}
+
+// --- Striped rows (RowProps.striped) -----------------------------------------
+// Per-cell shading (mirrors Table's `body-cell-shaded`) so sticky columns stay opaque over the
+// stripe. The consumer marks a row `striped` (typically the odd rows); the Cell reads that from row
+// context and shades unless the row is also selected, so the selected-row surface always wins.
+.cell-shaded {
+  background: awsui.$color-background-cell-shaded;
 }

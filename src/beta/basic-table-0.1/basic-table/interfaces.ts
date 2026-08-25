@@ -63,10 +63,10 @@ export interface UseBasicTableConfig {
 export namespace BasicTableGetters {
   export interface TableProps {
     role: BasicTableProps.Role;
-    'aria-rowcount': number;
-    'aria-colcount': number;
+    'aria-rowcount'?: number;
+    'aria-colcount'?: number;
     'aria-label'?: string;
-    tabIndex: number;
+    tabIndex?: number;
   }
   export interface HeaderGroupProps {
     role: 'row';
@@ -107,13 +107,24 @@ export interface BasicTableProps extends BaseComponentProps, UseBasicTableConfig
    *  @defaultValue "fixed" */
   columnLayout?: BasicTableProps.ColumnLayout;
 
-  /** Fixed height (px) of the scroll viewport. */
+  /** Fixed height (px). Setting `height` (or `maxHeight`) opts the table into its OWN bounded internal
+   *  scroll viewport. When neither is set, the table flows at full height and the page / app-layout is
+   *  the scroll runway — the sticky header then pins to the viewport (body-scroll, like Table). */
   height?: number;
-  /** Maximum height (px) of the scroll viewport. */
+  /** Maximum height (px) — see `height`; bounds the table into its own internal scroll viewport. */
   maxHeight?: number;
+  /** Additional offset (px) from the top of the page at which the sticky header pins, to clear fixed
+   *  app chrome (e.g. an AppLayout header / notifications). Applies in the body-scroll (unbounded)
+   *  layout only. Mirrors Table's `stickyHeaderVerticalOffset`. */
+  stickyHeaderVerticalOffset?: number;
 
-  /** Header slot above the grid (title, counter, actions). */
-  header?: React.ReactNode;
+  /** Sticky region pinned to the top of the scroll viewport. A truthy value pins the column-header
+   *  row as a sticky overlay while the body scrolls beneath it. A real element additionally renders a
+   *  sticky title band (general header content — a `Header`, pagination, counters) chained directly
+   *  above the column headers, so the tools and column headers pin together. `true` (with no element)
+   *  pins the column headers alone, with no title band. Falsy/undefined is not sticky. For a
+   *  non-sticky header, compose that content before `<BasicTable>` — there is no non-sticky header slot. */
+  stickyHeader?: React.ReactNode;
   /** Rendered when there are no rows. */
   empty?: React.ReactNode;
   /** Loading state for the whole grid. */
@@ -158,10 +169,9 @@ export namespace BasicTableProps {
   }
 
   /** Props for `BasicTable.Header` — a declarative header rowgroup. Renders the `HeaderCell`
-   *  children it is GIVEN (positional); BasicTable never auto-generates the header from config. */
+   *  children it is GIVEN (positional); BasicTable never auto-generates the header from config.
+   *  Stickiness is controlled by the root `stickyHeader` prop, not here. */
   export interface HeaderProps {
-    /** Renders a sticky header. @defaultValue false */
-    sticky?: boolean;
     children?: React.ReactNode;
   }
 
@@ -211,6 +221,10 @@ export namespace BasicTableProps {
      *  border) and sets `aria-selected`. Pair with a composed selection control (a checkbox/radio in
      *  a leading `Cell`). Avoids styling the selected state through the deprecated `className`. */
     selected?: boolean;
+    /** Shades this row (the alternating "striped" surface). The consumer chooses which rows are
+     *  shaded — typically `striped={index % 2 === 1}` — since BasicTable renders the rows it is given
+     *  and owns no row parity. A selected row overrides shading. */
+    striped?: boolean;
     /** Absolute row position for `aria-rowindex`, forwarded so a consumer's own virtualization can
      *  report a windowed row's true position in the full dataset (overrides the computed value). */
     'aria-rowindex'?: number;

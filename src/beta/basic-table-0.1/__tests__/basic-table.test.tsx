@@ -13,8 +13,6 @@ import BasicTable, {
   BasicTableProps,
 } from '../../../../lib/components/beta/basic-table-0.1';
 
-import styles from '../../../../lib/components/beta/basic-table-0.1/basic-table/styles.css.js';
-
 // Tests for the BasicTable compound components (Root/Header/HeaderCell/Body/Row/Cell) over the
 // headless useBasicTable hook, accessed through the generated test-utils wrapper. Columns are a
 // positional width list on Root; the header is declared with Header/HeaderCell children (Root does
@@ -41,7 +39,6 @@ interface RenderOptions {
   count?: number;
   items?: Item[];
   contentDensity?: 'comfortable' | 'compact';
-  stickyHeader?: boolean;
   loading?: boolean;
   loadingText?: string;
   empty?: React.ReactNode;
@@ -60,7 +57,7 @@ function BasicTableHarness({ options }: { options: RenderOptions }) {
       empty={options.empty}
       i18nStrings={{ tableLabel: 'Resources' }}
     >
-      <BasicTableHeader sticky={options.stickyHeader}>
+      <BasicTableHeader>
         <BasicTableHeaderCell>Name</BasicTableHeaderCell>
         <BasicTableHeaderCell>Status</BasicTableHeaderCell>
       </BasicTableHeader>
@@ -143,18 +140,6 @@ describe('BasicTable (compound components over headless hook)', () => {
     test('contentDensity defaults to comfortable (no compact-table context)', () => {
       const { wrapper } = renderTable();
       expect(grid(wrapper).className).not.toMatch(/compact-table/);
-    });
-
-    test('Header sticky renders the header rowgroup with the sticky-header class', () => {
-      const { container } = renderTable({ stickyHeader: true });
-      const thead = container.querySelector('thead')!;
-      expect(thead.classList.contains(styles['sticky-header'])).toBe(true);
-    });
-
-    test('without Header sticky the header rowgroup is not sticky', () => {
-      const { container } = renderTable();
-      const thead = container.querySelector('thead')!;
-      expect(thead.classList.contains(styles['sticky-header'])).toBe(false);
     });
   });
 });

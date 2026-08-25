@@ -61,6 +61,30 @@ describe('RowProps.selected', () => {
   });
 });
 
+describe('RowProps.striped', () => {
+  test('applies the shaded cell hook to every cell of a striped row', () => {
+    const { container } = render(<Harness rowProps={{ striped: true }} />);
+    const cells = container.querySelectorAll('[role="gridcell"]');
+    expect(cells.length).toBeGreaterThan(0);
+    cells.forEach(cell => expect(cell.classList.contains(styles['cell-shaded'])).toBe(true));
+  });
+
+  test('omits the shaded hook when the row is not striped', () => {
+    const { container } = render(<Harness />);
+    const cells = container.querySelectorAll('[role="gridcell"]');
+    cells.forEach(cell => expect(cell.classList.contains(styles['cell-shaded'])).toBe(false));
+  });
+
+  test('selection overrides striping: a selected striped row shows the selected surface, not the stripe', () => {
+    const { container } = render(<Harness rowProps={{ striped: true, selected: true }} />);
+    const row = container.querySelector('[aria-rowindex="2"]')!;
+    expect(row.classList.contains(styles['row-selected'])).toBe(true);
+    container
+      .querySelectorAll('[role="gridcell"]')
+      .forEach(cell => expect(cell.classList.contains(styles['cell-shaded'])).toBe(false));
+  });
+});
+
 describe('wrapText', () => {
   test('Cell wrapText applies the .cell-wrap hook', () => {
     const { container } = render(

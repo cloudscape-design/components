@@ -112,7 +112,13 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
   // --- Shared column-track layout + resize -------------------------------------------------
   const isWidthControlled = columnWidths !== undefined;
   const [uncontrolledWidths, setUncontrolledWidths] = useState<Record<number, number>>({});
-  const widths = isWidthControlled ? columnWidths! : uncontrolledWidths;
+  // Internal live-preview widths held ONLY during an active pointer drag (like Table's own
+  // `columnWidths` map). While a drag is in flight this overrides the base (controlled or
+  // uncontrolled) widths so the preview renders WITHOUT emitting a public event per move; the
+  // public `onColumnWidthsChange` fires once on pointer-up. Null when no drag is active.
+  const [dragWidths, setDragWidths] = useState<Record<number, number> | null>(null);
+  const baseWidths = isWidthControlled ? columnWidths! : uncontrolledWidths;
+  const widths = dragWidths ?? baseWidths;
 
   // A flexible column (no `width`) is `minmax(minWidth, 1fr)` and shares remaining space; a fixed
   // column has a `width`. A resized column becomes fixed at its (floored) resized width. Under
@@ -120,7 +126,17 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
   // that width (floored at minWidth) so columns size to content instead of sharing space as `1fr`.
   const gridTemplateColumns = useMemo(() => {
     const tracks: string[] = [];
+    const lastIndex = columns.length - 1;
     columns.forEach((col, index) => {
+      // Parity with Table (`use-column-widths` last-column `width:'auto'` rule): the last resizable
+      // column fills remaining width (1fr) but honors its resized width as the track floor. Dragging it
+      // wider than the available space forces that width → the table overflows and scrolls (like
+      // Table); dragging it narrower keeps it filling (1fr) instead of leaving a trailing gap.
+      if (resizableColumns && index === lastIndex) {
+        const floor = Math.max(widths[index] ?? 0, col.minWidth ?? DEFAULT_COLUMN_WIDTH);
+        tracks.push(`minmax(${floor}px, 1fr)`);
+        return;
+      }
       const resized = widths[index];
       const auto = columnLayout === 'auto' ? autoColumnWidths?.[index] : undefined;
       if (resized !== undefined) {
@@ -134,7 +150,7 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
       }
     });
     return tracks.join(' ');
-  }, [columns, widths, columnLayout, autoColumnWidths]);
+  }, [columns, widths, columnLayout, autoColumnWidths, resizableColumns]);
 
   // --- Sticky (pinned) columns -------------------------------------------------------------
   const stickyIds = useMemo(() => columns.map((col, index) => col.id ?? String(index)), [columns]);
@@ -179,18 +195,20 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
 
   const freezeWidths = useCallback((): Record<number, number> => {
     const frozen: Record<number, number> = { ...widthsRef.current };
-    let needSnapshot = false;
+    // Never freeze the last column: it stays the flexible `minmax(min, 1fr)` absorber, so resizing
+    // another column lets it flex down toward its minimum. It only gains a fixed floor when the user
+    // resizes it directly (which sets its width explicitly, bypassing this snapshot).
+    const lastIndex = columns.length - 1;
     headerCellRefs.current.forEach((node, index) => {
-      if (frozen[index] === undefined) {
+      if (index !== lastIndex && frozen[index] === undefined) {
         frozen[index] = Math.round(node.getBoundingClientRect().width);
-        needSnapshot = true;
       }
     });
-    if (needSnapshot) {
-      applyWidths(frozen);
-    }
+    // Snapshot only — never emits a public event. A pointer drag applies this via `dragWidths`
+    // (internal live preview); keyboard resize commits it (plus the delta) via `adjustColumnWidth`'s
+    // single `applyWidths` call. Both surface `onColumnWidthsChange` exactly once per gesture.
     return frozen;
-  }, [applyWidths]);
+  }, [columns.length]);
 
   const currentColumnWidth = useCallback((columnIndex: number): number => {
     const resized = widthsRef.current[columnIndex];
@@ -219,11 +237,17 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
   const startColumnResize = useCallback(
     (columnIndex: number, event: React.PointerEvent<HTMLElement>) => {
       event.preventDefault();
-      event.stopPropagation();
       const frozen = freezeWidths();
       const startWidth =
         frozen[columnIndex] ?? Math.round(headerCellRefs.current.get(columnIndex)?.getBoundingClientRect().width ?? 0);
       resizeState.current = { columnIndex, startX: event.clientX, startWidth };
+      // Seed the internal live-preview snapshot (frozen siblings) so no column reflows during the
+      // drag, in BOTH controlled and uncontrolled modes — WITHOUT emitting any public event yet.
+      let committedWidths: Record<number, number> = frozen;
+      setDragWidths(frozen);
+      // Live-preview during the drag via internal `dragWidths` only; the public
+      // `onColumnWidthsChange` fires ONCE on pointer-up (mirrors Table's onWidthUpdate-per-move +
+      // onWidthUpdateCommit-on-release), regardless of controlled vs uncontrolled.
       const onMove = (moveEvent: PointerEvent) => {
         const state = resizeState.current;
         if (!state) {
@@ -231,17 +255,34 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
         }
         const min = resizeFloors.current[state.columnIndex] ?? DEFAULT_COLUMN_WIDTH;
         const next = Math.max(min, Math.round(state.startWidth + (moveEvent.clientX - state.startX)));
-        applyWidths({ ...widthsRef.current, [state.columnIndex]: next });
+        committedWidths = { ...committedWidths, [state.columnIndex]: next };
+        setDragWidths(committedWidths);
       };
       const onUp = () => {
         resizeState.current = null;
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
+        // Only a gesture that actually changed the dragged column's width commits — a bare click on
+        // the handle (no move / net-zero drag) emits nothing (parity with Table's `widthsChanged`
+        // guard). Persist the committed widths and emit the single commit event; clearing
+        // `dragWidths` in the same batch reveals the base widths: uncontrolled just wrote them
+        // locally, and a controlled consumer updates `columnWidths` from this event synchronously —
+        // so both settle to `committedWidths` with no reflow flash.
+        const changed = committedWidths[columnIndex] !== startWidth;
+        if (changed) {
+          if (!isWidthControlled) {
+            setUncontrolledWidths(committedWidths);
+          }
+          if (onColumnWidthsChange) {
+            fireNonCancelableEvent(onColumnWidthsChange, { widths: committedWidths });
+          }
+        }
+        setDragWidths(null);
       };
       document.addEventListener('pointermove', onMove);
       document.addEventListener('pointerup', onUp);
     },
-    [applyWidths, freezeWidths]
+    [freezeWidths, isWidthControlled, onColumnWidthsChange]
   );
 
   const resizerRoleDescription =
@@ -251,10 +292,16 @@ export function useBasicTable(config: UseBasicTableConfig): UseBasicTableResult 
   const getTableProps = useCallback(
     (): BasicTableGetters.TableProps => ({
       role,
-      'aria-rowcount': totalRowCount + 1,
-      'aria-colcount': columnCount,
       'aria-label': i18nStrings?.tableLabel,
-      tabIndex: -1,
+      // aria-colcount/rowcount and the -1 tab stop are grid semantics: Table omits them for
+      // role="table", and omits aria-rowcount when there are no rows.
+      ...(role !== 'table'
+        ? {
+            'aria-colcount': columnCount,
+            tabIndex: -1,
+            ...(totalRowCount > 0 ? { 'aria-rowcount': totalRowCount + 1 } : {}),
+          }
+        : {}),
     }),
     [role, totalRowCount, columnCount, i18nStrings]
   );
