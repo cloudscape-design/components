@@ -9,6 +9,12 @@
 
 $_spinner-sizes: (
   (
+    name: 'x-small',
+    size: 0.9 * styles.$base-size,
+    iconSizeMap: 12px,
+    supportedLineHeight: awsui.$line-height-body-s,
+  ),
+  (
     name: 'normal',
     size: 1.2 * styles.$base-size,
     iconSizeMap: awsui.$size-icon-normal,
