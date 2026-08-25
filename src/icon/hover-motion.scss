@@ -830,7 +830,6 @@ $icon-hover-motion: (
       $fill: map.get($spec, fill) or none;
       $delay: map.get($spec, delay) or 0s;
 
-      // base/origin are visually inert at rest, so riding inside the motion gate costs nothing.
       @if $to or $base or $origin {
         .icon.name-#{$name} #{$target} {
           @include with-motion {
