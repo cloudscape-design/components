@@ -87,7 +87,7 @@ const suite: TestSuite = {
         await page.click('#focusable-before');
         await page.focusNextElement();
         await page.keys(['Enter']);
-        const nextButtonSelector = wrapper.findDateRangePicker().findDropdown().findNextMonthButton().toSelector();
+        const nextButtonSelector = wrapper.findDateRangePicker().findDropdown().findNextButton().toSelector();
         await page.doubleClick(nextButtonSelector);
       },
     },
