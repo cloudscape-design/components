@@ -41,7 +41,15 @@ type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps & {
     messageSlotId?: string;
     style?: AlertProps['style'];
+    styleClassNames?: StyleClassNames;
   };
+
+// Style API v2
+interface StyleClassNames {
+  root?: string;
+  icon?: string;
+  dismissButton?: string;
+}
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
@@ -65,6 +73,7 @@ const InternalAlert = React.forwardRef(
       messageSlotId,
       style,
       persistenceConfig,
+      styleClassNames,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -179,6 +188,7 @@ const InternalAlert = React.forwardRef(
           <VisualContext contextName="alert">
             <div
               className={clsx(
+                styleClassNames?.root,
                 styles.alert,
                 styles[`type-${type}`],
                 styles[`icon-size-${size}`],
@@ -189,7 +199,7 @@ const InternalAlert = React.forwardRef(
             >
               <div className={styles['alert-wrapper']}>
                 <div className={styles['alert-focus-wrapper']} ref={focusRef} role="group" onBlur={handleBlur}>
-                  <div className={clsx(styles.icon, styles.text)} style={getIconStyles(style)}>
+                  <div className={clsx(styleClassNames?.icon, styles.icon, styles.text)} style={getIconStyles(style)}>
                     <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                   </div>
                   <div className={clsx(styles.message, styles.text)} id={messageSlotId}>
@@ -253,6 +263,7 @@ const InternalAlert = React.forwardRef(
                     ariaLabel={dismissAriaLabel}
                     onClick={dismiss}
                     style={getDismissButtonStyles(style)}
+                    styleClassNames={{ root: styleClassNames?.dismissButton }}
                   />
                 </div>
               )}
