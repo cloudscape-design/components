@@ -724,18 +724,10 @@ $icon-hover-motion: (
   ),
 );
 
-// The no-motion-outside-of-mixin stylelint rule checks literally written animation/transition
-// declarations, requiring `@include with-motion` as their direct parent. Dynamic declarations
-// emitted here are invisible to it — only call this inside `with-motion`.
-@mixin _declarations($declarations) {
-  @each $property, $value in $declarations {
-    #{$property}: #{$value};
-  }
-}
-
-// Motion declarations must sit directly under a mixin named *with-motion, per the
-// no-motion-outside-of-mixin stylelint rule. This is that mixin: it scopes @content
-// to opted-in themes and adds the runtime motion gate ($_motion-on).
+// Motion declarations must sit under a mixin named *with-motion, with at most sass
+// control flow in between, per the no-motion-outside-of-mixin stylelint rule. This is
+// that mixin: it scopes @content to opted-in themes and adds the runtime motion gate
+// ($_motion-on).
 @mixin with-motion {
   @include theming.expressive-motion-only($_motion-on) {
     @content;
@@ -835,16 +827,14 @@ $icon-hover-motion: (
         .icon.name-#{$name} #{$target} {
           @include with-motion {
             @if $to {
-              @include _declarations(
-                (
-                  transition-property: #{$property},
-                  transition-duration: $duration,
-                  transition-timing-function: $easing,
-                )
-              );
+              transition-property: #{$property};
+              transition-duration: $duration;
+              transition-timing-function: $easing;
             }
             @if $base {
-              @include _declarations($base);
+              @each $property, $value in $base {
+                #{$property}: #{$value};
+              }
             }
             @if $origin {
               transform-origin: $origin;
@@ -854,37 +844,24 @@ $icon-hover-motion: (
       }
 
       @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
-        @if $animation {
-          @include with-motion {
+        @include with-motion {
+          @if $animation {
             animation-name: $animation;
             animation-duration: $duration;
             animation-timing-function: $easing;
             @if $iterations != 1 {
-              @include _declarations(
-                (
-                  animation-iteration-count: $iterations,
-                )
-              );
+              animation-iteration-count: $iterations;
             }
             @if $fill != none {
-              @include _declarations(
-                (
-                  animation-fill-mode: $fill,
-                )
-              );
+              animation-fill-mode: $fill;
             }
             @if $delay != 0s {
-              @include _declarations(
-                (
-                  animation-delay: $delay,
-                )
-              );
+              animation-delay: $delay;
             }
-          }
-        }
-        @if $to {
-          @include with-motion {
-            @include _declarations($to);
+          } @else if $to {
+            @each $property, $value in $to {
+              #{$property}: #{$value};
+            }
           }
         }
       }
