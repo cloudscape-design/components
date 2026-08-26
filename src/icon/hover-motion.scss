@@ -733,9 +733,9 @@ $icon-hover-motion: (
   }
 }
 
-// The one gate for motion declarations: theme opt-in plus the runtime motion gate
-// ($_motion-on), so no caller can get one without the other. Named with-motion because
-// the no-motion-outside-of-mixin stylelint rule matches callers by that name.
+// Motion declarations must sit directly under a mixin named *with-motion, per the
+// no-motion-outside-of-mixin stylelint rule. This is that mixin: it scopes @content
+// to opted-in themes and adds the runtime motion gate ($_motion-on).
 @mixin with-motion {
   @include theming.expressive-motion-only($_motion-on) {
     @content;
