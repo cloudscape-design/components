@@ -7,6 +7,7 @@
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index' as custom-props;
+@use '../internal/styles/utils/theming' as theming;
 
 @keyframes spinner-rotator {
   0% {
@@ -59,6 +60,11 @@
     border-inline: 0.2 * styles.$base-size solid;
     border-inline-end-color: transparent;
     border-block-end-color: transparent;
+
+    @include theming.one-theme-only {
+      border-block-width: awsui.$border-width-icon-x-small;
+      border-inline-width: awsui.$border-width-icon-x-small;
+    }
   }
 }
 
