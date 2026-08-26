@@ -60,11 +60,6 @@
     border-inline: 0.2 * styles.$base-size solid;
     border-inline-end-color: transparent;
     border-block-end-color: transparent;
-
-    @include theming.one-theme-only {
-      border-block-width: awsui.$border-width-icon-x-small;
-      border-inline-width: awsui.$border-width-icon-x-small;
-    }
   }
 }
 
@@ -119,5 +114,17 @@
     inset-inline-start: -100%;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
+  }
+}
+
+// One Theme renders x-small/normal status icons with a 1.5px stroke.
+// Match the spinner ring for those sizes only; big/large keep 2px.
+.root.size-x-small,
+.root.size-normal {
+  @include theming.one-theme-only {
+    & > .circle::after {
+      border-block-width: awsui.$border-width-icon-x-small;
+      border-inline-width: awsui.$border-width-icon-x-small;
+    }
   }
 }
