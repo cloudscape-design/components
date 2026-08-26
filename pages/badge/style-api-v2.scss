@@ -1,0 +1,26 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.badge {
+  --awsui-style-border-color: transparent;
+  --awsui-style-border-radius: 4px;
+  --awsui-style-border-width: 3px;
+  --awsui-style-padding-block: 6px;
+  --awsui-style-padding-inline: 12px;
+}
+
+.badge-info-pill {
+  --awsui-style-background-color: #{palette.$accent};
+  --awsui-style-color: #{palette.$text-on-accent};
+  --awsui-style-border-radius: 77px;
+}
+
+.badge-error-square {
+  --awsui-style-background-color: #{palette.$error-surface};
+  --awsui-style-color: #{palette.$error};
+  --awsui-style-border-color: #{palette.$error};
+}

@@ -7,6 +7,9 @@
 // expressive motion via the `$expressive-motion-themes` list in
 // internal/styles/utils/theming.scss.
 
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
 @use '../internal/styles/utils/theming' as theming;
 
 // Descendant combinators and type selectors are unavoidable here since the trigger
@@ -14,8 +17,10 @@
 // stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-class-pattern
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
-$_duration-generic: 250ms;
-$_ease-decelerate: cubic-bezier(0, 0, 0, 1);
+$_ease-out: ease-out;
+$_ease-symmetric: cubic-bezier(0.33, 0, 0.67, 1);
+$_ease-decelerate: cubic-bezier(0.4, 0, 0.2, 1);
+$_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // A disabled control must not react to hover.
 $_enabled-only: ':not(:disabled):not([aria-disabled="true"])';
@@ -35,11 +40,694 @@ $_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
 $_target-attribute: 'data-awsui-motion-target';
 $_animating-icon: ':is([#{$_target-attribute}], :where([#{$_target-attribute}] *))';
 
-// List for bespoke per-icon motion. An icon with no entry in `$icon-hover-motion`
-// gets the generic hover motion if the SVG is tagged with `data-awsui-icon-animated`.
-$icon-hover-motion: ();
+$icon-hover-motion: (
+  'announcement': (
+    (
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.84),
+      ),
+    ),
+  ),
+  'heart': (
+    (
+      animation: icon-pulse-soft,
+      duration: 450ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'heart-filled': (
+    (
+      animation: icon-pulse-strong,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'settings': (
+    (
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(60deg),
+      ),
+    ),
+  ),
+  'thumbs-up': (
+    (
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    ),
+  ),
+  'thumbs-up-filled': (
+    (
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-12deg) scale(0.92),
+      ),
+    ),
+  ),
+  'thumbs-down': (
+    (
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    ),
+  ),
+  'thumbs-down-filled': (
+    (
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(12deg) scale(0.92),
+      ),
+    ),
+  ),
+  'face-happy-filled': (
+    (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-3deg),
+      ),
+    ),
+  ),
+  'face-happy': (
+    (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-3deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-mouth',
+      animation: icon-mouth-smile-grow,
+      duration: 900ms,
+      easing: $_ease-symmetric,
+      base: (
+        stroke-dasharray: 7.4,
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'face-neutral': (
+    (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(3deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-mouth',
+      animation: icon-mouth-tilt,
+      duration: 700ms,
+      easing: $_ease-symmetric,
+      origin: 8px 10px,
+    ),
+  ),
+  'face-sad': (
+    (
+      part: 'awsui-icon-mouth',
+      animation: icon-mouth-frown-deepen,
+      duration: 900ms,
+      easing: $_ease-symmetric,
+      base: (
+        stroke-dasharray: 7.4,
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: 500ms,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    ),
+  ),
+  'search-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: 500ms,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    ),
+  ),
+  'edit-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: 500ms,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    ),
+  ),
+  'suggestions-gen-ai': (
+    (
+      part: 'awsui-icon-sparkle',
+      animation: icon-sparkle-pinch,
+      duration: 500ms,
+      easing: ease,
+      origin: 50% center,
+      base: (
+        transform-box: fill-box,
+      ),
+    ),
+  ),
+  'copy': (
+    (
+      part: 'awsui-icon-front',
+      duration: 150ms,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-back',
+      duration: 150ms,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+  ),
+  'refresh': (
+    (
+      part: 'awsui-icon-arc',
+      animation: icon-coil,
+      duration: 500ms,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+    ),
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-coil-arrow,
+      duration: 500ms,
+      easing: $_ease-symmetric,
+      origin: 8px 8px,
+      base: (
+        stroke-dasharray: 0 0 10.01 0,
+      ),
+    ),
+  ),
+  'upload': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-up,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'download': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-down,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'upload-download': (
+    (
+      part: 'awsui-icon-up',
+      animation: icon-nudge-up-once,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-down',
+      animation: icon-nudge-down-once,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'undo': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-back,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-line',
+      animation: icon-shaft-retract,
+      duration: 500ms,
+      easing: $_ease-out,
+      base: (
+        stroke-dasharray: 25.15,
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'redo': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-forward,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-line',
+      animation: icon-shaft-retract,
+      duration: 500ms,
+      easing: $_ease-out,
+      base: (
+        stroke-dasharray: 25.15,
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'external': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-up-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'sign-out': (
+    (
+      part: 'awsui-icon-arrow',
+      animation: icon-nudge-in,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'shrink': (
+    (
+      part: 'awsui-icon-corner-tr',
+      animation: icon-nudge-down-left,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      animation: icon-nudge-up-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'expand': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(5%, 5%),
+      ),
+    ),
+  ),
+  'full-screen': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-4%, 4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+  ),
+  'exit-full-screen': (
+    (
+      part: 'awsui-icon-corner-tl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 3.5px 3.5px,
+      to: (
+        transform: translate(5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-tr',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 12.5px 3.5px,
+      to: (
+        transform: translate(-5%, 5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-bl',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 3.5px 12.5px,
+      to: (
+        transform: translate(5%, -5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-corner-br',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 12.5px 12.5px,
+      to: (
+        transform: translate(-5%, -5%),
+      ),
+    ),
+  ),
+  'remove': (
+    (
+      part: 'awsui-icon-lid',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 0px 100%,
+      base: (
+        transform-box: fill-box,
+      ),
+      to: (
+        transform: rotate(-4deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-side',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: center bottom,
+      base: (
+        transform-box: fill-box,
+      ),
+      to: (
+        transform: scaleY(0.78),
+      ),
+    ),
+  ),
+  'zoom-to-fit': (
+    (
+      part: 'awsui-icon-square',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 8px 8px,
+      to: (
+        transform: scale(1.15),
+      ),
+    ),
+  ),
+  'multiscreen': (
+    (
+      part: 'awsui-icon-front',
+      duration: 150ms,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(-4%, -4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-back',
+      duration: 150ms,
+      easing: $_ease-symmetric,
+      to: (
+        transform: translate(4%, 4%),
+      ),
+    ),
+  ),
+  'lock-private': (
+    (
+      part: 'awsui-icon-clip',
+      base: (
+        clip-path: inset(0 0 56.25% 0) view-box,
+      ),
+    ),
+    (
+      part: 'awsui-icon-shackle',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    ),
+  ),
+  'unlocked': (
+    (
+      part: 'awsui-icon-clip',
+      base: (
+        clip-path: inset(0 0 56.25% 0) view-box,
+      ),
+    ),
+    (
+      part: 'awsui-icon-shackle',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    ),
+  ),
+  'notification': (
+    (
+      part: 'awsui-icon-bell',
+      animation: icon-bell-rotate,
+      duration: 1000ms,
+      easing: ease-in-out,
+      origin: 8px 4px,
+    ),
+    (
+      part: 'awsui-icon-ringer',
+      animation: icon-ringer-bounce,
+      duration: 400ms,
+      easing: ease-in-out,
+      origin: 8px 12.25px,
+    ),
+  ),
+  'history': (
+    (
+      part: 'awsui-icon-hand',
+      duration: 450ms,
+      easing: $_ease-spring,
+      origin: 9px 9px,
+      to: (
+        transform: rotate(-45deg),
+      ),
+    ),
+  ),
+  'backward-10-seconds': (
+    (
+      part: 'awsui-icon-arc',
+      duration: 250ms,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-one',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-zero',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    ),
+  ),
+  'forward-10-seconds': (
+    (
+      part: 'awsui-icon-arc',
+      duration: 250ms,
+      easing: $_ease-out,
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 30,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -4px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-one',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-zero',
+      duration: 500ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    ),
+  ),
+  'view-horizontal': (
+    (
+      part: 'awsui-icon-panel',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 8px 9.5px,
+      to: (
+        transform: scale(1.08),
+      ),
+    ),
+  ),
+  'view-vertical': (
+    (
+      part: 'awsui-icon-panel',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 9.5px 8px,
+      to: (
+        transform: scale(1.08),
+      ),
+    ),
+  ),
+  'zoom-in': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 7px 7px,
+      to: (
+        transform: scale(1.15),
+      ),
+    ),
+  ),
+  'zoom-out': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 7px 7px,
+      to: (
+        transform: scale(0.85),
+      ),
+    ),
+  ),
+  'bug': (
+    (
+      part: 'awsui-icon-leg-tl',
+      animation: icon-gait-a,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 4px 5.71px,
+    ),
+    (
+      part: 'awsui-icon-leg-mr',
+      animation: icon-gait-a,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 12px 8.71px,
+    ),
+    (
+      part: 'awsui-icon-leg-bl',
+      animation: icon-gait-a,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 4px 11.71px,
+    ),
+    (
+      part: 'awsui-icon-leg-tr',
+      animation: icon-gait-b,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 12px 5.71px,
+    ),
+    (
+      part: 'awsui-icon-leg-ml',
+      animation: icon-gait-b,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 4px 8.71px,
+    ),
+    (
+      part: 'awsui-icon-leg-br',
+      animation: icon-gait-b,
+      duration: 600ms,
+      easing: $_ease-symmetric,
+      iterations: 2,
+      origin: 12px 11.71px,
+    ),
+  ),
+);
 
-// Named with-motion so the no-motion-outside-of-mixin stylelint rule can find callers.
+// Motion declarations must sit under a mixin named *with-motion, with at most sass
+// control flow in between, per the no-motion-outside-of-mixin stylelint rule. This is
+// that mixin: it scopes @content to opted-in themes and adds the runtime motion gate
+// ($_motion-on).
 @mixin with-motion {
   @include theming.expressive-motion-only($_motion-on) {
     @content;
@@ -54,11 +742,26 @@ $icon-hover-motion: ();
   }
 }
 
+@function _target($part) {
+  @if not $part {
+    @return '> :global(#{$_opted-in})';
+  }
+  @return '> :global(#{$_opted-in} .#{$part})';
+}
+
+// A single-spec entry needs a trailing comma or Prettier turns the list back into a bare map.
+@function _specs($value) {
+  @if meta.type-of($value) == 'map' {
+    @return list.append((), $value);
+  }
+  @return $value;
+}
+
 @mixin generic-hover-motion {
   .icon > :global(#{$_opted-in}) {
     @include with-motion {
       transition-property: transform;
-      transition-duration: $_duration-generic;
+      transition-duration: 250ms;
       transition-timing-function: $_ease-decelerate;
     }
   }
@@ -70,9 +773,417 @@ $icon-hover-motion: ();
   }
 }
 
+// Icons with BOTH a whole-icon spec and a part spec are excluded — the cancel would out-specify the whole-icon rule and reset it to none.
+@mixin _cancel-floor-under-hover-parts {
+  $names: ();
+  $parts: ();
+
+  @each $name, $specs in $icon-hover-motion {
+    $whole-icon: false;
+    @each $spec in _specs($specs) {
+      @if not map.get($spec, part) {
+        $whole-icon: true;
+      }
+    }
+
+    @if not $whole-icon {
+      $names: list.append($names, '.name-#{$name}', comma);
+      @each $spec in _specs($specs) {
+        $part: '.#{map.get($spec, part)}';
+        @if not list.index($parts, $part) {
+          $parts: list.append($parts, $part, comma);
+        }
+      }
+    }
+  }
+
+  @if list.length($names) > 0 {
+    @include _on-hover-trigger('.icon#{$_animating-icon}:is(#{$names}) > :global(#{$_opted-in}:has(:is(#{$parts})))') {
+      @include with-motion {
+        transform: none;
+      }
+    }
+  }
+}
+
+@mixin per-icon-hover-motion {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      $part: map.get($spec, part);
+      $target: _target($part);
+      $to: map.get($spec, to);
+      $animation: map.get($spec, animation);
+      $duration: map.get($spec, duration);
+      $easing: map.get($spec, easing);
+      $base: map.get($spec, base);
+      $origin: map.get($spec, origin);
+
+      $property: map.get($spec, property) or transform;
+      $iterations: map.get($spec, iterations) or 1;
+      $fill: map.get($spec, fill) or none;
+      $delay: map.get($spec, delay) or 0s;
+
+      @if $to or $base or $origin {
+        .icon.name-#{$name} #{$target} {
+          @include with-motion {
+            @if $to {
+              transition-property: #{$property};
+              transition-duration: $duration;
+              transition-timing-function: $easing;
+            }
+            @if $base {
+              @each $property, $value in $base {
+                #{$property}: #{$value};
+              }
+            }
+            @if $origin {
+              transform-origin: $origin;
+            }
+          }
+        }
+      }
+
+      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
+        @include with-motion {
+          @if $animation {
+            animation-name: $animation;
+            animation-duration: $duration;
+            animation-timing-function: $easing;
+            @if $iterations != 1 {
+              animation-iteration-count: $iterations;
+            }
+            @if $fill != none {
+              animation-fill-mode: $fill;
+            }
+            @if $delay != 0s {
+              animation-delay: $delay;
+            }
+          } @else if $to {
+            @each $property, $value in $to {
+              #{$property}: #{$value};
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// @keyframes cannot nest under a class, so they're gated on the artefact instead of the selector.
+@mixin keyframes {
+  @if theming.has-expressive-motion() {
+    @keyframes icon-pulse-soft {
+      0% {
+        transform: scale(1);
+      }
+      22% {
+        transform: scale(0.85);
+      }
+      44% {
+        transform: scale(1);
+      }
+      67% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes icon-pulse-strong {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(0.9);
+      }
+    }
+
+    @keyframes icon-mouth-frown-deepen {
+      0%,
+      100% {
+        stroke-dasharray: 7.4;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 6, 7.4;
+        stroke-dashoffset: -0.7px;
+      }
+    }
+
+    @keyframes icon-mouth-smile-grow {
+      0%,
+      100% {
+        stroke-dasharray: 7.4;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 6, 7.4;
+        stroke-dashoffset: -0.7px;
+      }
+    }
+
+    @keyframes icon-mouth-tilt {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      35%,
+      65% {
+        transform: rotate(-4deg);
+      }
+    }
+
+    @keyframes icon-nudge-up {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-nudge-up-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-down-once {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(8%);
+      }
+    }
+
+    @keyframes icon-nudge-back {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(14%);
+      }
+    }
+
+    @keyframes icon-nudge-forward {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-14%);
+      }
+    }
+
+    @keyframes icon-shaft-retract {
+      0%,
+      40%,
+      80%,
+      100% {
+        stroke-dashoffset: 0;
+      }
+      20%,
+      60% {
+        stroke-dashoffset: -2.24px;
+      }
+    }
+
+    @keyframes icon-nudge-in {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-8%);
+      }
+    }
+
+    @keyframes icon-nudge-up-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(5%, -5%);
+      }
+    }
+
+    @keyframes icon-nudge-down-left {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translate(0, 0);
+      }
+      20%,
+      60% {
+        transform: translate(-5%, 5%);
+      }
+    }
+
+    @keyframes icon-gait-a {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-8deg);
+      }
+    }
+
+    @keyframes icon-gait-b {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(8deg);
+      }
+    }
+
+    @keyframes icon-sparkle-pinch {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(0.8) rotate(-15deg);
+      }
+    }
+
+    @keyframes icon-bell-rotate {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      20% {
+        transform: rotate(8deg);
+      }
+      40% {
+        transform: rotate(-6deg);
+      }
+      60% {
+        transform: rotate(4deg);
+      }
+      80% {
+        transform: rotate(-2deg);
+      }
+    }
+
+    @keyframes icon-ringer-bounce {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      20% {
+        transform: translateX(5%);
+      }
+      40% {
+        transform: translateX(-5%);
+      }
+      60% {
+        transform: translateX(2.5%);
+      }
+      80% {
+        transform: translateX(-1.5%);
+      }
+    }
+
+    @keyframes icon-coil {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      55% {
+        transform: rotate(-14deg);
+      }
+    }
+
+    @keyframes icon-coil-arrow {
+      0%,
+      100% {
+        stroke-dasharray: 0 0 10.01 0;
+        transform: rotate(0deg);
+      }
+      55% {
+        stroke-dasharray: 0 2 6.01 2;
+        transform: rotate(-14deg);
+      }
+    }
+  }
+}
+
+$_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterations, fill, property);
+
+@mixin _validate-specs {
+  @each $name, $specs in $icon-hover-motion {
+    @each $spec in _specs($specs) {
+      @each $key, $value in $spec {
+        @if not list.index($_spec-keys, $key) {
+          @error 'Unknown key `#{$key}` in the $icon-hover-motion spec for `#{$name}`. ' +
+            'Known keys: #{$_spec-keys}.';
+        }
+      }
+
+      @if map.get($spec, animation) and map.get($spec, to) {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets both `animation` and `to`. ' +
+          'Use `animation` for keyframe-driven motion or `to` for a transition, not both.';
+      }
+
+      @if (map.get($spec, animation) or map.get($spec, to)) and not
+        (map.get($spec, duration) and map.get($spec, easing))
+      {
+        @error 'The $icon-hover-motion spec for `#{$name}` sets motion but is missing `duration` or `easing`.';
+      }
+    }
+  }
+}
+
 @mixin icon-hover-motion {
+  @include _validate-specs; // checks if per-icon motion definitions are properly defined
+  @include keyframes;
   @media (prefers-reduced-motion: no-preference) {
     @include generic-hover-motion;
+    @include _cancel-floor-under-hover-parts; // ensures generic motion does not apply to icons with bespoke motion
+    @include per-icon-hover-motion;
   }
 }
 

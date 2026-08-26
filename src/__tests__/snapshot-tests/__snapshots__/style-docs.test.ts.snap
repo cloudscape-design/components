@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "icon",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for button matches the snapshot: button 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "box-shadow",
+        "padding-block",
+        "padding-inline",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
+[
+  "alert",
+  "badge",
+  "button",
+]
+`;
