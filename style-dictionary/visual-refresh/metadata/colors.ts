@@ -797,6 +797,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderSegmentDivider: {
+    description: 'The color of the dividers between segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
   colorBorderSegmentHover: {
     description: 'Deprecated - this token is no longer in use.',
     public: true,
