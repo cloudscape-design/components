@@ -212,6 +212,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderSegmentActive: '{colorBorderSegmentDefault}',
   colorBorderSegmentDefault: { light: '{colorNeutral650}', dark: '{colorNeutral300}' },
   colorBorderSegmentDisabled: '{colorBorderSegmentDefault}',
+  colorBorderSegmentDivider: '{colorBorderInputDefault}',
   colorBorderSegmentHover: '{colorBorderSegmentDefault}',
   colorBorderSegmentWrapper: '{colorBorderInputDefault}',
   colorBorderStatusError: { light: '{colorError600}', dark: '{colorError400}' },
