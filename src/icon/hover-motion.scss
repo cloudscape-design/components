@@ -724,8 +724,9 @@ $icon-hover-motion: (
   ),
 );
 
-// Conditional motion declarations go through this mixin: the no-motion-outside-of-mixin
-// stylelint rule only accepts declarations directly under `with-motion`.
+// The no-motion-outside-of-mixin stylelint rule checks literally written animation/transition
+// declarations, requiring `@include with-motion` as their direct parent. Dynamic declarations
+// emitted here are invisible to it — only call this inside `with-motion`.
 @mixin _declarations($declarations) {
   @each $property, $value in $declarations {
     #{$property}: #{$value};
