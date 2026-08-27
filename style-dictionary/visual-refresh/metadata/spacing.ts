@@ -3,6 +3,36 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  spaceDialogHorizontal: {
+    description: 'The horizontal padding inside Dialog.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogVertical: {
+    description: 'The vertical padding inside Dialog.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogActionBlock: {
+    description: 'The block-axis offset used to align Dialog header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogActionInline: {
+    description: 'The inline-axis offset used to align Dialog header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogHeaderGap: {
+    description: 'The gap between the Dialog heading and header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogSectionGap: {
+    description: 'The spacing between Dialog sections.',
+    public: false,
+    themeable: true,
+  },
   spaceAlertVertical: {
     description: 'The vertical padding inside alert components.',
     public: true,
