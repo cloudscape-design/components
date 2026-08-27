@@ -21,7 +21,7 @@ $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-b
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
-$segment-radius: calc(awsui.$border-radius-button - 3px);
+$segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
 
 .segment {
   @include styles.font-body-m;
