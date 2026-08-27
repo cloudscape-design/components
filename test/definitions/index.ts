@@ -61,19 +61,6 @@ import inputSuite from './visual/input';
 import itemCardSuite from './visual/item-card';
 import keyValuePairsSuite from './visual/key-value-pairs';
 import lineChartSuite from './visual/line-chart';
-import linkSuite from './visual/link';
-import listSuite from './visual/list';
-import mixedLineBarChartSuite from './visual/mixed-line-bar-chart';
-import modalSuite from './visual/modal';
-import multiselectSuite from './visual/multiselect';
-import paginationSuite from './visual/pagination';
-import pieChartSuite from './visual/pie-chart';
-import popoverSuite from './visual/popover';
-import progressBarSuite from './visual/progress-bar';
-import promptInputSuite from './visual/prompt-input';
-import propertyFilterSuite from './visual/property-filter';
-import radioButtonSuite from './visual/radio-button';
-import radioGroupSuite from './visual/radio-group';
 import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
@@ -131,19 +118,6 @@ export const input: TestSuite[] = [inputSuite];
 export const itemCard: TestSuite[] = [itemCardSuite];
 export const keyValuePairs: TestSuite[] = [keyValuePairsSuite];
 export const lineChart: TestSuite[] = [lineChartSuite];
-export const link: TestSuite[] = [linkSuite];
-export const list: TestSuite[] = [listSuite];
-export const mixedLineBarChart: TestSuite[] = [mixedLineBarChartSuite];
-export const modal: TestSuite[] = [modalSuite];
-export const multiselect: TestSuite[] = [multiselectSuite];
-export const pagination: TestSuite[] = [paginationSuite];
-export const pieChart: TestSuite[] = [pieChartSuite];
-export const popover: TestSuite[] = [popoverSuite];
-export const progressBar: TestSuite[] = [progressBarSuite];
-export const promptInput: TestSuite[] = [promptInputSuite];
-export const propertyFilter: TestSuite[] = [propertyFilterSuite];
-export const radioButton: TestSuite[] = [radioButtonSuite];
-export const radioGroup: TestSuite[] = [radioGroupSuite];
 export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
@@ -189,18 +163,5 @@ export const allSuites: TestSuite[] = [
   ...itemCard,
   ...keyValuePairs,
   ...lineChart,
-  ...link,
-  ...list,
-  ...mixedLineBarChart,
-  ...modal,
-  ...multiselect,
-  ...pagination,
-  ...pieChart,
-  ...popover,
-  ...progressBar,
-  ...promptInput,
-  ...propertyFilter,
-  ...radioButton,
-  ...radioGroup,
   ...table,
 ];
