@@ -10,6 +10,7 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/utils/theming' as theming;
 
 $default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
 $default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
@@ -21,7 +22,7 @@ $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-b
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
-$segment-radius: calc(awsui.$border-radius-button - 3px);
+$segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
 
 .segment {
   @include styles.font-body-m;
