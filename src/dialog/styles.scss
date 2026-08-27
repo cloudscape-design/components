@@ -1,0 +1,94 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$border-radius: awsui.$border-radius-dialog;
+$section-padding-block: awsui.$space-dialog-vertical;
+$section-padding-inline: awsui.$space-dialog-horizontal;
+$action-padding-block: awsui.$space-dialog-action-block;
+$action-padding-inline: awsui.$space-dialog-action-inline;
+$header-gap: awsui.$space-dialog-header-gap;
+$section-gap: awsui.$space-dialog-section-gap;
+
+@mixin apply-border-radius {
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+}
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include apply-border-radius;
+
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  background: awsui.$color-background-dialog;
+  box-shadow: awsui.$shadow-dialog;
+
+  &::before {
+    @include styles.base-pseudo-element;
+    @include apply-border-radius;
+
+    border-block: solid awsui.$border-width-dialog awsui.$color-border-dialog;
+    border-inline: solid awsui.$border-width-dialog awsui.$color-border-dialog;
+    box-shadow: none;
+  }
+
+  &:not(.refresh)::before {
+    border-block-start: solid awsui.$border-dialog-top-width awsui.$color-border-dialog-top;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  column-gap: $header-gap;
+
+  // Compensate for the action controls' internal padding so the heading and
+  // close button align with the other sections.
+  padding-block: calc($section-padding-block - $action-padding-block);
+  padding-inline-start: $section-padding-inline;
+  padding-inline-end: calc($section-padding-inline - $action-padding-inline);
+}
+
+.header-content {
+  @include styles.font-heading-s;
+
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.header-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  column-gap: $header-gap;
+  margin-inline-start: auto;
+}
+
+.content,
+.footer {
+  padding-block: $section-padding-block;
+  padding-inline: $section-padding-inline;
+}
+
+.header:has(+ .content, + .footer),
+.content:has(+ .footer) {
+  padding-block-end: $section-gap;
+}
+
+.header + .content,
+.header + .footer,
+.content + .footer {
+  padding-block-start: $section-gap;
+}

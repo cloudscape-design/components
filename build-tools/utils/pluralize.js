@@ -28,6 +28,7 @@ const pluralizationMap = {
   DateInput: 'DateInputs',
   DatePicker: 'DatePickers',
   DateRangePicker: 'DateRangePickers',
+  Dialog: 'Dialogs',
   Divider: 'Dividers',
   Drawer: 'Drawers',
   Dropdown: 'Dropdowns',

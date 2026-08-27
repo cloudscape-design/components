@@ -451,10 +451,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -1046,10 +1046,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-border-divider-default": {
@@ -4119,10 +4119,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -4714,10 +4714,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#414750",
+            "light": "#eaeded",
           },
         },
         "color-border-divider-default": {
@@ -7787,10 +7787,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -8382,10 +8382,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#414750",
+            "light": "#eaeded",
           },
         },
         "color-border-divider-default": {
@@ -11455,10 +11455,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -12050,10 +12050,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-divider-default": {
@@ -15123,10 +15123,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#f1faff",
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -15718,10 +15718,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-divider-default": {
@@ -18791,10 +18791,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#12293b",
-            "light": "#12293b",
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-background-dropdown-item-default": {
@@ -19386,10 +19386,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
+            "dark": "#414750",
+            "light": "#414750",
           },
         },
         "color-border-divider-default": {
@@ -22459,10 +22459,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-background-dialog": {
-      "$description": "The background color of the feedback/input dialogue box.",
+      "$description": "The background color of the Dialog surface.",
       "$value": {
-        "dark": "#12293b",
-        "light": "#f1faff",
+        "dark": "#2a2e33",
+        "light": "#ffffff",
       },
     },
     "color-background-dropdown-item-default": {
@@ -23054,10 +23054,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-border-dialog": {
-      "$description": "The border color of the feedback/input dialogue box.",
+      "$description": "The border color of the Dialog surface.",
       "$value": {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
+        "dark": "#414750",
+        "light": "#eaeded",
       },
     },
     "color-border-divider-default": {
@@ -26132,10 +26132,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -26727,10 +26727,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#dedee3",
+            "light": "#424650",
           },
         },
         "color-border-divider-default": {
@@ -29800,10 +29800,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#001129",
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-dropdown-item-default": {
@@ -30395,10 +30395,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#dedee3",
+            "light": "#dedee3",
           },
         },
         "color-border-divider-default": {
@@ -33468,10 +33468,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -34063,10 +34063,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-divider-default": {
@@ -37136,10 +37136,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -37731,10 +37731,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-divider-default": {
@@ -40804,10 +40804,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -41399,10 +41399,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-border-divider-default": {
@@ -44472,10 +44472,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#f0fbff",
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-dropdown-item-default": {
@@ -45067,10 +45067,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-divider-default": {
@@ -48140,10 +48140,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#001129",
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-dropdown-item-default": {
@@ -48735,10 +48735,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-divider-default": {
@@ -51808,10 +51808,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-dialog": {
-          "$description": "The background color of the feedback/input dialogue box.",
+          "$description": "The background color of the Dialog surface.",
           "$value": {
-            "dark": "#001129",
-            "light": "#001129",
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-dropdown-item-default": {
@@ -52403,10 +52403,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-dialog": {
-          "$description": "The border color of the feedback/input dialogue box.",
+          "$description": "The border color of the Dialog surface.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-divider-default": {
@@ -55476,10 +55476,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-background-dialog": {
-      "$description": "The background color of the feedback/input dialogue box.",
+      "$description": "The background color of the Dialog surface.",
       "$value": {
-        "dark": "#001129",
-        "light": "#f0fbff",
+        "dark": "#161d26",
+        "light": "#ffffff",
       },
     },
     "color-background-dropdown-item-default": {
@@ -56071,10 +56071,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-border-dialog": {
-      "$description": "The border color of the feedback/input dialogue box.",
+      "$description": "The border color of the Dialog surface.",
       "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
+        "dark": "#424650",
+        "light": "#c6c6cd",
       },
     },
     "color-border-divider-default": {
