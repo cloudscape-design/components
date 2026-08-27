@@ -42,7 +42,9 @@ import dateInputSuite from './visual/date-input';
 import datePickerSuite from './visual/date-picker';
 import dateRangePickerSuite from './visual/date-range-picker';
 import dividerSuite from './visual/divider';
+import drawerSuite from './visual/drawer';
 import dropdownSuite from './visual/dropdown';
+import dropdownAlignmentSuite from './visual/dropdown-alignment';
 import errorBoundarySuite from './visual/error-boundary';
 import expandableSectionSuite from './visual/expandable-section';
 import fileDropzoneSuite from './visual/file-dropzone';
@@ -99,10 +101,12 @@ export const copyToClipboard: TestSuite[] = [copyToClipboardSuite];
 export const dateInput: TestSuite[] = [dateInputSuite];
 export const datePicker: TestSuite[] = [datePickerSuite];
 export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
-export const expandableSection: TestSuite[] = [expandableSectionSuite];
+export const drawer: TestSuite[] = [drawerSuite];
+export const dropdownAlignment: TestSuite[] = [dropdownAlignmentSuite];
 export const divider: TestSuite[] = [dividerSuite];
 export const dropdown: TestSuite[] = [dropdownSuite];
 export const errorBoundary: TestSuite[] = [errorBoundarySuite];
+export const expandableSection: TestSuite[] = [expandableSectionSuite];
 export const fileDropzone: TestSuite[] = [fileDropzoneSuite];
 export const fileInput: TestSuite[] = [fileInputSuite];
 export const fileTokenGroup: TestSuite[] = [fileTokenGroupSuite];
@@ -144,10 +148,12 @@ export const allSuites: TestSuite[] = [
   ...dateInput,
   ...datePicker,
   ...dateRangePicker,
-  ...expandableSection,
+  ...drawer,
+  ...dropdownAlignment,
   ...divider,
   ...dropdown,
   ...errorBoundary,
+  ...expandableSection,
   ...fileDropzone,
   ...fileInput,
   ...fileTokenGroup,
