@@ -24,12 +24,34 @@ const safeAttributes = [
   'y2',
   'width',
   'height',
+  'overflow',
+  'pathLength',
+  'stroke-dasharray',
+  'stroke-dashoffset',
 ];
 
 function getIcon(iconName, content) {
+  // Dash-animated icons (see hover-motion.scss) carry pathLength/stroke-dash*
+  // attributes that define their resting shape. Two preset-default
+  // optimizations corrupt them: mergePaths fuses same-attribute paths, breaking
+  // per-path pathLength normalization, and removeUselessStrokeAndFill strips
+  // the dash attributes because the stroke arrives via CSS classes SVGO cannot
+  // see. Only these icons opt out, so every other icon keeps its exact previous
+  // output.
+  const usesDashMotion = content.includes('pathLength');
   const { data } = Svgo.optimize(content, {
     plugins: [
-      'preset-default',
+      usesDashMotion
+        ? {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                removeUselessStrokeAndFill: false,
+                mergePaths: false,
+              },
+            },
+          }
+        : 'preset-default',
       {
         name: 'awsuiValidateAttributes',
         type: 'visitor',

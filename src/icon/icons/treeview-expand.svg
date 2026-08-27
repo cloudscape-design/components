@@ -1,5 +1,7 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <path d="M14 2H2V14H14V2Z" class="stroke-linejoin-round"/>
-<path d="M8 5V11" class="stroke-linejoin-round"/>
-<path d="M5 8H11" class="stroke-linejoin-round"/>
+<path d="M8 8V4.25" class="awsui-icon-arm" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.2"/>
+<path d="M8 8V11.75" class="awsui-icon-arm" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.2"/>
+<path d="M8 8H4.25" class="awsui-icon-arm" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.2"/>
+<path d="M8 8H11.75" class="awsui-icon-arm" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.2"/>
 </svg>
