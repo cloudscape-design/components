@@ -7,6 +7,7 @@ module.exports = {
   generateEnvironment: require('./generate-environment'),
   generateIcons: require('./generate-icons'),
   generateIndexFile: require('./generate-index-file'),
+  generateVisualTests: require('./generate-visual-tests'),
   generateCustomCssPropertiesMap: require('./generate-custom-css-properties'),
   packageJSON: require('./package-json'),
   styles: require('./styles'),

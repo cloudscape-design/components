@@ -38,18 +38,23 @@ export interface InternalStatusIndicatorProps
   __display?: 'inline' | 'inline-block';
 }
 
-const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
-  error: <InternalIcon name="status-negative" size={size} />,
-  warning: <InternalIcon name="status-warning" size={size} />,
-  success: <InternalIcon name="status-positive" size={size} />,
-  info: <InternalIcon name="status-info" size={size} />,
-  stopped: <InternalIcon name="status-stopped" size={size} />,
-  pending: <InternalIcon name="status-pending" size={size} />,
-  'in-progress': <InternalIcon name="status-in-progress" size={size} />,
-  loading: <InternalSpinner />,
-  'not-started': <InternalIcon name="status-not-started" size={size} />,
-  log: <InternalIcon name="dot" size={size} />,
-});
+const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => {
+  // Spinner supports a narrower size set than icons (no 'small'/'medium'/'inherit'); map to a valid
+  // spinner size so the loading spinner matches the sibling status icons.
+  const spinnerSize = size === 'x-small' ? 'x-small' : 'normal';
+  return {
+    error: <InternalIcon name="status-negative" size={size} />,
+    warning: <InternalIcon name="status-warning" size={size} />,
+    success: <InternalIcon name="status-positive" size={size} />,
+    info: <InternalIcon name="status-info" size={size} />,
+    stopped: <InternalIcon name="status-stopped" size={size} />,
+    pending: <InternalIcon name="status-pending" size={size} />,
+    'in-progress': <InternalIcon name="status-in-progress" size={size} />,
+    loading: <InternalSpinner size={spinnerSize} />,
+    'not-started': <InternalIcon name="status-not-started" size={size} />,
+    log: <InternalIcon name="dot" size={size} />,
+  };
+};
 
 interface InternalStatusIconProps extends Pick<InternalStatusIndicatorProps, 'type' | 'iconAriaLabel'> {
   animate?: InternalStatusIndicatorProps['__animate'];

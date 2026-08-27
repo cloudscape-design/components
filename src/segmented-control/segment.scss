@@ -81,7 +81,7 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
     block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
     min-block-size: calc(awsui.$line-height-body-m - $segment-gap * 2);
     inline-size: $segment-divider-width;
-    background: awsui.$color-border-input-default;
+    background: awsui.$color-border-segment-divider;
     z-index: 1;
   }
   &:not(.refresh):not(:last-child)::after {

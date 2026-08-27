@@ -1150,6 +1150,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -4809,6 +4816,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
           },
         },
         "color-border-segment-hover": {
@@ -8472,6 +8486,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -12131,6 +12152,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
           },
         },
         "color-border-segment-hover": {
@@ -15794,6 +15822,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -19455,6 +19490,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -23114,6 +23156,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#687078",
       },
     },
     "color-border-segment-hover": {
@@ -26782,6 +26831,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -30441,6 +30497,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-hover": {
@@ -34104,6 +34167,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -37763,6 +37833,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-border-segment-hover": {
@@ -41426,6 +41503,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -45085,6 +45169,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-border-segment-hover": {
@@ -48748,6 +48839,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -52409,6 +52507,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -56068,6 +56173,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
       },
     },
     "color-border-segment-hover": {
