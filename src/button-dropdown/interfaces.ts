@@ -364,6 +364,11 @@ export namespace ButtonDropdownProps {
     id?: string;
     text?: string;
     items: Items;
+    /**
+     * Controls whether this group renders as an expandable submenu, overriding `expandableGroups`
+     * for this group. Defaults to the `expandableGroups` value when unset.
+     */
+    expandable?: boolean;
   }
 
   export type ItemOrGroup = Item | CheckboxItem | ItemGroup;

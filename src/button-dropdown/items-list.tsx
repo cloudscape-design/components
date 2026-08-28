@@ -21,7 +21,7 @@ export default function ItemsList({
   lastInDropdown,
   highlightItem,
   categoryDisabled = false,
-  hasExpandableGroups = false,
+  isExpandable = () => false,
   hasCategoryHeader = false,
   expandToViewport = false,
   variant = 'normal',
@@ -66,7 +66,7 @@ export default function ItemsList({
         />
       );
     }
-    if (hasExpandableGroups) {
+    if (isExpandable(item)) {
       return item.text ? (
         isMobile ? (
           <MobileExpandableCategoryElement
