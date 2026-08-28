@@ -101,9 +101,9 @@ export const copyToClipboard: TestSuite[] = [copyToClipboardSuite];
 export const dateInput: TestSuite[] = [dateInputSuite];
 export const datePicker: TestSuite[] = [datePickerSuite];
 export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
+export const divider: TestSuite[] = [dividerSuite];
 export const drawer: TestSuite[] = [drawerSuite];
 export const dropdownAlignment: TestSuite[] = [dropdownAlignmentSuite];
-export const divider: TestSuite[] = [dividerSuite];
 export const dropdown: TestSuite[] = [dropdownSuite];
 export const errorBoundary: TestSuite[] = [errorBoundarySuite];
 export const expandableSection: TestSuite[] = [expandableSectionSuite];
@@ -148,9 +148,9 @@ export const allSuites: TestSuite[] = [
   ...dateInput,
   ...datePicker,
   ...dateRangePicker,
+  ...divider,
   ...drawer,
   ...dropdownAlignment,
-  ...divider,
   ...dropdown,
   ...errorBoundary,
   ...expandableSection,
