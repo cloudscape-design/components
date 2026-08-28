@@ -91,7 +91,16 @@ export interface IconProps extends BaseComponentProps {
 export namespace IconProps {
   export type Name = BuiltInIconName | IconRegistryIconName;
 
-  export type Variant = 'normal' | 'disabled' | 'error' | 'inverted' | 'link' | 'subtle' | 'success' | 'warning';
+  export type Variant =
+    | 'normal'
+    | 'disabled'
+    | 'error'
+    | 'inverted'
+    | 'link'
+    | 'subtle'
+    | 'success'
+    | 'warning'
+    | 'info';
 
   export type Size = 'x-small' | 'small' | 'normal' | 'medium' | 'big' | 'large' | 'inherit';
 }
