@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -99,6 +99,39 @@ describe('position=fixed', () => {
       <Drawer position="fixed" placement="start" offset={{ start: 8, top: 4, bottom: 12 }} />
     );
     expect(el).toHaveStyle({ insetInlineStart: '8px', insetBlockStart: '4px', insetBlockEnd: '12px' });
+  });
+
+  test('propagates one-theme class to the fixed drawer when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+
+    try {
+      const el = getDrawerElement(<Drawer position="fixed" />);
+      expect(el).toHaveClass('awsui-one-theme');
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  test('propagates compact mode classes to the fixed drawer from the source tree', async () => {
+    render(
+      <div className="awsui-polaris-compact-mode">
+        <Drawer position="fixed" />
+      </div>
+    );
+
+    await waitFor(() => {
+      expect(createWrapper().findDrawer()!.findByClassName(drawerStyles.drawer)!.getElement()).toHaveClass(
+        'awsui-polaris-compact-mode awsui-compact-mode'
+      );
+    });
+  });
+
+  test('does not stamp one-theme class on the fixed drawer when one theme is inactive', () => {
+    const el = getDrawerElement(<Drawer position="fixed" />);
+
+    expect(el).not.toHaveClass('awsui-one-theme');
   });
 });
 

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
@@ -8,6 +9,7 @@ import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
+import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { Transition } from '../transition';
 
 import testUtilsStyles from '../../../tooltip/test-classes/styles.css.js';
@@ -41,6 +43,8 @@ export default function Tooltip({
   hideOnOverscroll,
   onDismiss,
 }: TooltipProps) {
+  const portalClasses = usePortalModeClasses(trackRef as React.RefObject<HTMLElement>);
+
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;
   }
@@ -71,7 +75,11 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={`${styles.root} ${testUtilsStyles.root}`} {...contentAttributes} data-testid={trackKey}>
+      <div
+        className={clsx(portalClasses, styles.root, testUtilsStyles.root)}
+        {...contentAttributes}
+        data-testid={trackKey}
+      >
         <Transition in={true}>
           {() => (
             <PopoverContainer

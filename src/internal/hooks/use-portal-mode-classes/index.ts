@@ -9,9 +9,12 @@ import { useVisualContext } from '../../components/visual-context';
 import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { useOneTheme, useVisualRefresh } from '../use-visual-mode';
 
-export function usePortalModeClasses(ref: React.RefObject<HTMLElement>, options?: { resetVisualContext?: boolean }) {
-  const colorMode = useCurrentMode(ref);
-  const densityMode = useDensityMode(ref);
+export function usePortalModeClasses(
+  ref: React.RefObject<HTMLElement | null>,
+  options?: { resetVisualContext?: boolean }
+) {
+  const colorMode = useCurrentMode(ref as React.RefObject<HTMLElement>);
+  const densityMode = useDensityMode(ref as React.RefObject<HTMLElement>);
   const context = useVisualContext(ref);
   const oneTheme = useOneTheme();
   const visualRefreshWithClass = useVisualRefresh() && !ALWAYS_VISUAL_REFRESH && !oneTheme;

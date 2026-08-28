@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
+import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -37,6 +38,8 @@ export default function SortableArea<Item>({
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
   const portalContainer = usePortalContainer();
+  const portalModeRef = useRef<HTMLElement>(null);
+  const portalClasses = usePortalModeClasses(portalModeRef);
   return (
     <DndContext
       sensors={sensors}
@@ -67,7 +70,7 @@ export default function SortableArea<Item>({
         items={items.map(item => itemDefinition.id(item))}
         strategy={verticalListSortingStrategy}
       >
-        {items.map(item => (
+        {items.map((item, index) => (
           <DraggableItem
             key={itemDefinition.id(item)}
             item={item}
@@ -76,6 +79,7 @@ export default function SortableArea<Item>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
+            portalModeRef={index === 0 ? portalModeRef : undefined}
           />
         ))}
       </SortableContext>
@@ -84,7 +88,11 @@ export default function SortableArea<Item>({
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
         <DragOverlay
-          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`])}
+          className={clsx(
+            portalClasses,
+            styles['drag-overlay'],
+            styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`]
+          )}
           dropAnimation={null}
           style={{ zIndex: 5000 }}
           transition={isKeyboard.current ? 'transform 250ms' : ''}
@@ -133,6 +141,7 @@ function DraggableItem<Item>({
   showDirectionButtons,
   onKeyDown,
   renderItem,
+  portalModeRef,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
@@ -140,6 +149,7 @@ function DraggableItem<Item>({
   showDirectionButtons: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
+  portalModeRef?: React.MutableRefObject<HTMLElement | null>;
 }) {
   const id = itemDefinition.id(item);
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
@@ -164,12 +174,18 @@ function DraggableItem<Item>({
     isSorting && styles.sorting
   );
   const dragHandleRef = useRef<HTMLElement>(null);
+  const setItemRef = (element: HTMLElement | null) => {
+    setNodeRef(element);
+    if (portalModeRef) {
+      portalModeRef.current = element;
+    }
+  };
   return (
     <>
       {renderItem({
         item,
         id,
-        ref: setNodeRef,
+        ref: setItemRef,
         style,
         className,
         isDropPlaceholder: isDragging,

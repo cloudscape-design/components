@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
@@ -36,6 +37,7 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+  const portalClasses = usePortalModeClasses(trackRef as React.RefObject<HTMLElement>);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -71,7 +73,7 @@ export default function InternalTooltip({
     <Portal>
       <div
         {...baseProps}
-        className={clsx(testUtilStyles.root, styles.root, baseProps.className)}
+        className={clsx(portalClasses, testUtilStyles.root, styles.root, baseProps.className)}
         ref={__internalRootRef}
         data-awsui-referrer-id={referrerId}
         role="tooltip"

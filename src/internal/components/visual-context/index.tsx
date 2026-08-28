@@ -13,7 +13,7 @@ interface VisualContextProps {
 
 const contextMatch = /awsui-context-([\w-]+)/;
 
-export function useVisualContext(elementRef: React.RefObject<HTMLElement>) {
+export function useVisualContext(elementRef: React.RefObject<HTMLElement | null>) {
   const [value, setValue] = useState('');
 
   useLayoutEffect(() => {

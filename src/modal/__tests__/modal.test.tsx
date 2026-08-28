@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
 import Autosuggest from '../../../lib/components/autosuggest';
 import Button from '../../../lib/components/button/index.js';
@@ -95,6 +95,54 @@ describe('Modal component', () => {
       const wrapper = renderModal({ onDismiss: onDismissSpy });
       wrapper.findDismissButton().click();
       expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('propagates one-theme class to the portaled root when one theme is active', () => {
+      const themeRoot = document.createElement('div');
+      themeRoot.className = 'awsui-one-theme';
+      document.body.appendChild(themeRoot);
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+
+      try {
+        render(<Modal visible={true} modalRoot={modalRoot} />);
+        expect(createWrapper(modalRoot).findModal()!.getElement()).toHaveClass('awsui-one-theme');
+      } finally {
+        modalRoot.remove();
+        themeRoot.remove();
+      }
+    });
+
+    it('propagates dark mode classes to the portaled root from the source tree', async () => {
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+
+      try {
+        render(
+          <div className="awsui-polaris-dark-mode">
+            <Modal visible={true} modalRoot={modalRoot} />
+          </div>
+        );
+        await waitFor(() => {
+          expect(createWrapper(modalRoot).findModal()!.getElement()).toHaveClass(
+            'awsui-polaris-dark-mode awsui-dark-mode'
+          );
+        });
+      } finally {
+        modalRoot.remove();
+      }
+    });
+
+    it('does not stamp one-theme class on the portaled root when one theme is inactive', () => {
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+
+      try {
+        render(<Modal visible={true} modalRoot={modalRoot} />);
+        expect(createWrapper(modalRoot).findModal()!.getElement()).not.toHaveClass('awsui-one-theme');
+      } finally {
+        modalRoot.remove();
+      }
     });
   });
 

@@ -110,6 +110,39 @@ describe('Tooltip', () => {
     expect(wrapper).not.toBeNull();
   });
 
+  it('propagates one-theme class to the portaled tooltip when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    try {
+      render(
+        <>
+          <div ref={trackRef} />
+          <Tooltip content="Value" getTrack={() => trackRef.current} />
+        </>
+      );
+
+      expect(createWrapper().findTooltip()!.getElement()).toHaveClass('awsui-one-theme');
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  it('does not stamp one-theme class on the portaled tooltip when one theme is inactive', () => {
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    render(
+      <>
+        <div ref={trackRef} />
+        <Tooltip content="Value" getTrack={() => trackRef.current} />
+      </>
+    );
+
+    expect(createWrapper().findTooltip()!.getElement()).not.toHaveClass('awsui-one-theme');
+  });
+
   it('updates tracked element when getTrack changes', () => {
     const element1 = document.createElement('div');
     const element2 = document.createElement('div');

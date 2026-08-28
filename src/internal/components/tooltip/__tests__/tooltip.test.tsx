@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
 import StatusIndicator from '../../../../../lib/components/status-indicator';
@@ -98,5 +98,55 @@ describe('Tooltip', () => {
     });
     expect(keydownEvent.stopPropagation).toHaveBeenCalled();
     expect(onDismiss).toHaveBeenCalled();
+  });
+
+  it('propagates one-theme class to the portaled tooltip when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    try {
+      render(
+        <>
+          <div ref={trackRef} />
+          <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+        </>
+      );
+
+      expect(createWrapper().findByClassName(tooltipStyles.root)!.getElement()).toHaveClass('awsui-one-theme');
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  it('propagates dark mode classes to the portaled tooltip from the tracked element', async () => {
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    render(
+      <div className="awsui-polaris-dark-mode">
+        <div ref={trackRef} />
+        <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+      </div>
+    );
+
+    await waitFor(() => {
+      expect(createWrapper().findByClassName(tooltipStyles.root)!.getElement()).toHaveClass(
+        'awsui-polaris-dark-mode awsui-dark-mode'
+      );
+    });
+  });
+
+  it('does not stamp one-theme class on the portaled tooltip when one theme is inactive', () => {
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    render(
+      <>
+        <div ref={trackRef} />
+        <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+      </>
+    );
+
+    expect(createWrapper().findByClassName(tooltipStyles.root)!.getElement()).not.toHaveClass('awsui-one-theme');
   });
 });

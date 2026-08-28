@@ -3,7 +3,7 @@
 
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { SomeRequired } from '../../../internal/types';
 import Arrow from '../../../popover/arrow';
@@ -13,6 +13,7 @@ import { getBaseProps } from '../../base-component';
 import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { FeaturePromptProps } from './interfaces';
 
@@ -42,6 +43,9 @@ function InternalFeaturePrompt(
   const [show, setShow] = useState(false);
 
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
+  const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+  const portalClasses = usePortalModeClasses(rootRef);
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {
@@ -86,43 +90,45 @@ function InternalFeaturePrompt(
   }, [show, onDismiss]);
 
   return (
-    <span {...baseProps} className={styles.root} ref={__internalRootRef}>
+    <span {...baseProps} className={styles.root} ref={mergedRef}>
       {show && (
         <Portal>
-          <ResetContextsForModal>
-            <PopoverContainer
-              size={size}
-              fixedWidth={false}
-              position={position}
-              getTrack={getTrack}
-              trackKey={trackKey}
-              variant="annotation"
-              arrow={position => <Arrow position={position} variant="info" />}
-              zIndex={7000}
-              renderWithPortal={true}
-            >
-              <PopoverBody
-                ref={popoverBodyRef}
-                dismissButton={true}
-                dismissAriaLabel={i18nStrings?.dismissAriaLabel}
-                header={header}
-                onDismiss={method => {
-                  setShow(false);
-                  fireNonCancelableEvent(onDismiss, { method });
-                }}
-                onBlur={event => {
-                  if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
-                    setShow(false);
-                    fireNonCancelableEvent(onDismiss, { method: 'blur' });
-                  }
-                }}
-                variant="feature-prompt"
-                overflowVisible="content"
+          <span className={portalClasses}>
+            <ResetContextsForModal>
+              <PopoverContainer
+                size={size}
+                fixedWidth={false}
+                position={position}
+                getTrack={getTrack}
+                trackKey={trackKey}
+                variant="annotation"
+                arrow={position => <Arrow position={position} variant="info" />}
+                zIndex={7000}
+                renderWithPortal={true}
               >
-                {content}
-              </PopoverBody>
-            </PopoverContainer>
-          </ResetContextsForModal>
+                <PopoverBody
+                  ref={popoverBodyRef}
+                  dismissButton={true}
+                  dismissAriaLabel={i18nStrings?.dismissAriaLabel}
+                  header={header}
+                  onDismiss={method => {
+                    setShow(false);
+                    fireNonCancelableEvent(onDismiss, { method });
+                  }}
+                  onBlur={event => {
+                    if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                      setShow(false);
+                      fireNonCancelableEvent(onDismiss, { method: 'blur' });
+                    }
+                  }}
+                  variant="feature-prompt"
+                  overflowVisible="content"
+                >
+                  {content}
+                </PopoverBody>
+              </PopoverContainer>
+            </ResetContextsForModal>
+          </span>
         </Portal>
       )}
     </span>
