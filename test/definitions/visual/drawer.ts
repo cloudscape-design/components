@@ -1,9 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper from '../../../lib/components/test-utils/selectors';
 import { TestDefinition, TestSuite } from '../types';
-
-const wrapper = createWrapper();
 
 const drawerFooterPermutations = [
   { longContent: 'true', longFooter: 'true', hasFooter: 'true' },
@@ -57,7 +54,7 @@ const suite: TestSuite = {
             longContent: 'true',
             hasFooter: 'true',
           },
-          setup: async ({ page }) => {
+          setup: async ({ page, wrapper }) => {
             await page.scrollIntoView(wrapper.findDrawer().findFooter().toSelector());
           },
         },
