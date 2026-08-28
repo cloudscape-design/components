@@ -15,7 +15,7 @@ const suite: TestSuite = {
         configuration: { width },
       },
       {
-        description: '2.1 Scenarios',
+        description: 'Scenarios',
         path: 'form-field/form-field-columns',
         screenshotType: 'screenshotArea',
         configuration: { width },
