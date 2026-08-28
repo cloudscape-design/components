@@ -76,15 +76,22 @@ function getIcon(iconName, content) {
         },
       },
       {
-        name: 'awsuiClassToClassName',
-        description: 'Replace SVG class attribute with className for JSX',
+        name: 'awsuiRenameAttributesForJsx',
+        description: 'Rename SVG attributes to their JSX property names',
         type: 'visitor',
         fn: () => ({
           element: {
             enter: node => {
-              if (node.attributes.class) {
-                node.attributes.className = node.attributes.class;
-                delete node.attributes.class;
+              const jsxNames = {
+                class: 'className',
+                'stroke-dasharray': 'strokeDasharray',
+                'stroke-dashoffset': 'strokeDashoffset',
+              };
+              for (const [attribute, jsxName] of Object.entries(jsxNames)) {
+                if (node.attributes[attribute] !== undefined) {
+                  node.attributes[jsxName] = node.attributes[attribute];
+                  delete node.attributes[attribute];
+                }
               }
             },
           },
