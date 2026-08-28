@@ -7,6 +7,7 @@ import { render, waitFor } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Drawer from '../../../lib/components/drawer';
+import VisualContext from '../../../lib/components/internal/components/visual-context';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import drawerStyles from '../../../lib/components/drawer/styles.css.js';
@@ -125,6 +126,22 @@ describe('position=fixed', () => {
       expect(createWrapper().findDrawer()!.findByClassName(drawerStyles.drawer)!.getElement()).toHaveClass(
         'awsui-polaris-compact-mode awsui-compact-mode'
       );
+    });
+  });
+
+  test('does not propagate visual context to the fixed drawer', async () => {
+    render(
+      <div className="awsui-polaris-dark-mode">
+        <VisualContext contextName="alert">
+          <Drawer position="fixed" />
+        </VisualContext>
+      </div>
+    );
+
+    await waitFor(() => {
+      const el = createWrapper().findDrawer()!.findByClassName(drawerStyles.drawer)!.getElement();
+      expect(el).toHaveClass('awsui-polaris-dark-mode awsui-dark-mode');
+      expect(el).not.toHaveClass('awsui-context-alert');
     });
   });
 

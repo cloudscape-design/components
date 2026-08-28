@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import AnnotationContext from '../../../lib/components/annotation-context';
 import Hotspot from '../../../lib/components/hotspot';
+import VisualContext from '../../../lib/components/internal/components/visual-context';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { AnnotationContextProps } from '../interfaces';
 import { getTutorial, getTutorialWithMultipleStepsPerHotspot, i18nStrings } from './data';
@@ -278,6 +279,19 @@ test('does not stamp one-theme class on the portaled annotation when one theme i
   const { wrapper } = renderAnnotationContext(<Hotspot hotspotId="first-hotspot" />);
 
   expect(wrapper.findAnnotation()!.findContent().getElement().closest('.awsui-one-theme')).toBeNull();
+});
+
+test('does not propagate visual context to the portaled annotation', () => {
+  const { wrapper } = renderAnnotationContext(
+    <div className="awsui-polaris-dark-mode">
+      <VisualContext contextName="alert">
+        <Hotspot hotspotId="first-hotspot" />
+      </VisualContext>
+    </div>
+  );
+
+  expect(wrapper.findAnnotation()!.findContent().getElement().closest('.awsui-polaris-dark-mode')).not.toBeNull();
+  expect(wrapper.findAnnotation()!.findContent().getElement().closest('.awsui-context-alert')).toBeNull();
 });
 
 test('annotation should have be labeled by header and step counter', () => {

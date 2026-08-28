@@ -45,7 +45,7 @@ function InternalFeaturePrompt(
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
   const rootRef = useRef<HTMLSpanElement | null>(null);
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
-  const portalClasses = usePortalModeClasses(rootRef);
+  const portalClasses = usePortalModeClasses(rootRef, { resetVisualContext: true });
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {

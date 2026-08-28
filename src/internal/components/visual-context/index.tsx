@@ -13,13 +13,21 @@ interface VisualContextProps {
 
 const contextMatch = /awsui-context-([\w-]+)/;
 
-export function useVisualContext(elementRef: React.RefObject<HTMLElement | null>) {
+function getClassName(element: Element): string {
+  return element.getAttribute('class') ?? '';
+}
+
+export function useVisualContext(elementRef: React.RefObject<Element | null>) {
   const [value, setValue] = useState('');
 
   useLayoutEffect(() => {
     if (elementRef.current) {
-      const contextParent = findUpUntil(elementRef.current, node => !!node.className.match(contextMatch));
-      setValue(contextParent?.className.match(contextMatch)![1] ?? '');
+      const contextParent = findUpUntil(
+        // @ts-expect-error The implementation only reads parentElement from the start node before walking HTML ancestors.
+        elementRef.current,
+        node => !!getClassName(node).match(contextMatch)
+      );
+      setValue(contextParent ? (getClassName(contextParent).match(contextMatch)?.[1] ?? '') : '');
     }
   }, [elementRef]);
 

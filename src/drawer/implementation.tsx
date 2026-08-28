@@ -65,7 +65,7 @@ export function DrawerImplementation({
   const returnFocusTargetRef = useRef<HTMLElement | null>(null);
 
   const baseProps = getBaseProps(restProps);
-  const portalClasses = usePortalModeClasses(portalModeRef);
+  const portalClasses = usePortalModeClasses(portalModeRef, { resetVisualContext: true });
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
   const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });

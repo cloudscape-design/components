@@ -137,6 +137,23 @@ describe('Tooltip', () => {
     });
   });
 
+  it('renders with an SVG tracked element without throwing', async () => {
+    const trackRef = React.createRef<SVGSVGElement>();
+
+    expect(() =>
+      render(
+        <>
+          <svg ref={trackRef} />
+          <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+        </>
+      )
+    ).not.toThrow();
+
+    await waitFor(() => {
+      expect(createWrapper().findByClassName(tooltipStyles.root)).not.toBeNull();
+    });
+  });
+
   it('does not stamp one-theme class on the portaled tooltip when one theme is inactive', () => {
     const trackRef = React.createRef<HTMLDivElement>();
 

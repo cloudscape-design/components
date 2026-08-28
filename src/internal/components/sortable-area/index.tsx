@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -79,6 +79,7 @@ export default function SortableArea<Item>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
+            // All items in one sortable list share the same visual context, so the first item is enough as the anchor.
             portalModeRef={index === 0 ? portalModeRef : undefined}
           />
         ))}
@@ -174,12 +175,15 @@ function DraggableItem<Item>({
     isSorting && styles.sorting
   );
   const dragHandleRef = useRef<HTMLElement>(null);
-  const setItemRef = (element: HTMLElement | null) => {
-    setNodeRef(element);
-    if (portalModeRef) {
-      portalModeRef.current = element;
-    }
-  };
+  const setItemRef = useCallback(
+    (element: HTMLElement | null) => {
+      setNodeRef(element);
+      if (portalModeRef) {
+        portalModeRef.current = element;
+      }
+    },
+    [setNodeRef, portalModeRef]
+  );
   return (
     <>
       {renderItem({

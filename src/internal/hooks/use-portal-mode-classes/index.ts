@@ -10,10 +10,12 @@ import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { useOneTheme, useVisualRefresh } from '../use-visual-mode';
 
 export function usePortalModeClasses(
-  ref: React.RefObject<HTMLElement | null>,
+  ref: React.RefObject<HTMLElement | SVGElement | null>,
   options?: { resetVisualContext?: boolean }
 ) {
+  // `useCurrentMode` reads `classList`, which is available on SVG elements.
   const colorMode = useCurrentMode(ref as React.RefObject<HTMLElement>);
+  // `useDensityMode` also reads `classList`, which is available on SVG elements.
   const densityMode = useDensityMode(ref as React.RefObject<HTMLElement>);
   const context = useVisualContext(ref);
   const oneTheme = useOneTheme();

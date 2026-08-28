@@ -43,7 +43,7 @@ export default function Tooltip({
   hideOnOverscroll,
   onDismiss,
 }: TooltipProps) {
-  const portalClasses = usePortalModeClasses(trackRef as React.RefObject<HTMLElement>);
+  const portalClasses = usePortalModeClasses(trackRef);
 
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;

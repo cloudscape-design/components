@@ -62,7 +62,7 @@ export function OpenAnnotation({
   i18nStrings,
 }: AnnotationProps) {
   const trackRef = useRef<HTMLButtonElement>(null);
-  const portalClasses = usePortalModeClasses(trackRef);
+  const portalClasses = usePortalModeClasses(trackRef, { resetVisualContext: true });
 
   return (
     <>

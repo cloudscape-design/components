@@ -80,7 +80,7 @@ type InternalModalProps = SomeRequired<ModalProps, 'size'> &
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
   const portalModeRef = useRef<HTMLSpanElement>(null);
-  const portalClasses = usePortalModeClasses(portalModeRef);
+  const portalClasses = usePortalModeClasses(portalModeRef, { resetVisualContext: true });
 
   return (
     <>

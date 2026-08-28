@@ -37,7 +37,7 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
-  const portalClasses = usePortalModeClasses(trackRef as React.RefObject<HTMLElement>);
+  const portalClasses = usePortalModeClasses(trackRef);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
