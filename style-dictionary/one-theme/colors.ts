@@ -103,7 +103,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkInfoDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkInfoHover: { light: '{colorPrimary800}', dark: '{colorPrimary300}' },
   colorTextAccent: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorTextLinkDecorationDefault: { light: '{colorNeutral650}', dark: '{colorNeutral600}' },
+  colorTextLinkDecorationDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
 
   // ── Selection / focus ─────────────────────────────────────────────────────
   colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },

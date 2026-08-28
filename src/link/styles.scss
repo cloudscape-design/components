@@ -45,6 +45,8 @@
       & {
         font-weight: inherit;
         letter-spacing: normal;
+        -webkit-font-smoothing: auto;
+        -moz-osx-font-smoothing: auto;
       }
       &.color-inverted {
         color: awsui.$color-text-link-inverted-default;
