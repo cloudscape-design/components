@@ -7,6 +7,7 @@
 @use './mixins' as mixins;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index' as custom-props;
+@use '../internal/styles/utils/theming' as theming;
 
 @keyframes spinner-rotator {
   0% {
@@ -113,5 +114,17 @@
     inset-inline-start: -100%;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
+  }
+}
+
+// One Theme renders x-small/normal status icons with a 1.5px stroke.
+// Match the spinner ring for those sizes only; big/large keep 2px.
+.root.size-x-small,
+.root.size-normal {
+  @include theming.one-theme-only {
+    & > .circle::after {
+      border-block-width: awsui.$border-width-icon-x-small;
+      border-inline-width: awsui.$border-width-icon-x-small;
+    }
   }
 }
