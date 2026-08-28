@@ -328,12 +328,10 @@ $icon-hover-motion: (
       animation: icon-shaft-retract,
       duration: 500ms,
       easing: $_ease-out,
-      // The dash (2) is longer than the pathLength-normalized line (1), leaving
-      // slack at the hook end so only the arrow end moves during the draw.
       base: (
-          stroke-dasharray: 2,
-          stroke-dashoffset: 0,
-        ),
+        stroke-dasharray: 2,
+        stroke-dashoffset: 0,
+      ),
     ),
   ),
   'redo': (
@@ -1063,12 +1061,9 @@ $icon-hover-motion: (
       duration: 220ms,
       easing: cubic-bezier(0.4, 0, 0.2, 1),
       property: rx,
-      // Only the bottom-right quadrant of the corner rect is painted; the open
-      // frame path draws the rest of the square, so just that corner rounds.
       base: (
-          rx: 0px,
-          clip-path: inset(50% 0 0 50%) view-box,
-        ),
+        rx: 0px,
+      ),
       to: (
         rx: 4px,
       ),
@@ -1387,12 +1382,10 @@ $icon-hover-motion: (
       duration: 350ms,
       easing: cubic-bezier(0.4, 0, 0.2, 1),
       property: stroke-dashoffset,
-      // The frame is 32 units long; shifting the 32/2 dash retracts its end by
-      // 2 units to clear room for the growing plus.
       base: (
-          stroke-dasharray: 32 2,
-          stroke-dashoffset: 0,
-        ),
+        stroke-dasharray: 32 2,
+        stroke-dashoffset: 0,
+      ),
       to: (
         stroke-dashoffset: -2px,
       ),

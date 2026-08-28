@@ -28,6 +28,7 @@ const safeAttributes = [
   'pathLength',
   'stroke-dasharray',
   'stroke-dashoffset',
+  'clip-path',
 ];
 
 function getIcon(iconName, content) {
@@ -86,6 +87,7 @@ function getIcon(iconName, content) {
                 class: 'className',
                 'stroke-dasharray': 'strokeDasharray',
                 'stroke-dashoffset': 'strokeDashoffset',
+                'clip-path': 'clipPath',
               };
               for (const [attribute, jsxName] of Object.entries(jsxNames)) {
                 if (node.attributes[attribute] !== undefined) {
