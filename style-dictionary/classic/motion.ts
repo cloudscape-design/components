@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { tokenStylesSuffix } from '../utils/environment.js';
+
 import { StyleDictionary } from '../utils/interfaces.js';
+import { getStableKeyframe } from '../utils/token-versions.js';
 import { mode, tokens as visualRefreshTokens } from '../visual-refresh/motion.js';
 
 export const tokens: StyleDictionary.MotionDictionary = {
@@ -20,7 +21,7 @@ export const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExpressive: '{motionDurationSlow}',
   motionDurationComplex: '{motionDurationExtraSlow}',
 
-  motionKeyframesStatusIconError: 'awsui-none-' + tokenStylesSuffix,
-  motionKeyframesScalePopup: 'awsui-none-' + tokenStylesSuffix,
+  motionKeyframesStatusIconError: getStableKeyframe('awsui-none'),
+  motionKeyframesScalePopup: getStableKeyframe('awsui-none'),
 };
 export { mode };
