@@ -352,12 +352,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 .content-inner {
   /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
-    // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
-    // active/hover/focus states) bleed past the inline edges.
-    overflow-x: visible;
-    // overflow: clip (not hidden, which would coerce x-axis to auto) still lets the grid-row track collapse.
+    // Grid item of .content above. `clip` rather than `hidden`: `hidden` coerces the inline axis
+    // to `auto`, making this a scroll container on both axes, where `clip` leaves the inline axis
+    // `visible` so content that paints outside the box (focus rings, inline popovers) survives.
     overflow-y: clip;
     min-block-size: 0;
+    // A grid item's automatic minimum size is content-based on this axis too, so content that
+    // manages its own inline overflow (e.g. a table) would stretch the box out of the container.
+    min-inline-size: 0;
     opacity: 0;
 
     // HIDE (collapsed state): quick opacity collapse, no delay.
@@ -541,12 +543,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 }
 
-// min-block-size: 0 lets this grid item collapse to zero height when an ancestor
-// uses grid-template-rows: 0fr (side-navigation section header collapse).
-// Must remain global (not scoped to .header-icon-end) because the side-nav
-// collapse targets the header wrapper regardless of icon position.
+// Side-navigation makes this box a grid item (its section wrapper sets display: grid with
+// grid-template-rows: 0fr to collapse), and a grid item's automatic minimum size is content-based on
+// both axes: zero the block axis so the header collapses to zero, zero the inline axis so wide content
+// cannot stretch it past the track. It belongs here rather than on side-navigation's grid container,
+// because a container's min-size does not participate in track sizing.
 .header-content {
   min-block-size: 0;
+  min-inline-size: 0;
 }
 
 // In the end-icon layout, header content elements must shrink without overflowing.
