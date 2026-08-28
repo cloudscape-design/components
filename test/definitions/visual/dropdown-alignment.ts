@@ -8,8 +8,6 @@ const expandToViewportOptions = [true, false];
 const pages = ['expandable', 'expandable-iframe'];
 
 const suite: TestSuite = {
-  // Registered under the `dropdown` component name so it only runs when testing
-  // the latest components (matches the original `conditionalDescribe(isTestingOnlyLatestComponents)`).
   componentName: 'dropdown',
   description: 'Dropdown and trigger element alignment',
   tests: expandToViewportOptions.map<TestSuite>(expandToViewport => ({
