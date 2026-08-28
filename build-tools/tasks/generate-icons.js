@@ -34,17 +34,24 @@ function getIcon(iconName, content) {
   // Dash-animated icons (see hover-motion.scss) carry pathLength/stroke-dash*
   // attributes that define their resting shape and can't be stripped away.
   const usesDashMotion = content.includes('pathLength');
+  // Shape elements carrying a part class are motion targets whose element type
+  // matters (e.g. the calendar corner animates the rect-only `rx` property), so
+  // they must not be rewritten into paths.
+  const hasAnimatedShape = /<(rect|circle|ellipse|line)[^>]*class="[^"]*awsui-icon-/.test(content);
+  const overrides = {};
+  if (usesDashMotion) {
+    overrides.removeUselessStrokeAndFill = false;
+    overrides.mergePaths = false;
+  }
+  if (hasAnimatedShape) {
+    overrides.convertShapeToPath = false;
+  }
   const { data } = Svgo.optimize(content, {
     plugins: [
-      usesDashMotion
+      Object.keys(overrides).length > 0
         ? {
             name: 'preset-default',
-            params: {
-              overrides: {
-                removeUselessStrokeAndFill: false,
-                mergePaths: false,
-              },
-            },
+            params: { overrides },
           }
         : 'preset-default',
       {
