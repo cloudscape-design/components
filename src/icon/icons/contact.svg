@@ -1,3 +1,7 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 12C14.55 12 15 11.55 15 11V3C15 2.45 14.55 2 14 2H2C1.45 2 1 2.45 1 3V11C1 11.55 1.45 12 2 12H6V15L10 12H14Z" class="stroke-linejoin-round"/>
+<path d="M14 12C14.55 12 15 11.55 15 11V3C15 2.45 14.55 2 14 2H2C1.45 2 1 2.45 1 3V11C1 11.55 1.45 12 2 12" class="stroke-linejoin-round stroke-linecap-round"/>
+<path d="M2 12H6" class="awsui-icon-edge-left"/>
+<path d="M14 12H10" class="awsui-icon-edge-right"/>
+<path d="M6 12V15" class="stroke-linecap-round awsui-icon-tail-leg"/>
+<path d="M10 12L6 15" class="stroke-linecap-round awsui-icon-tail-diag"/>
 </svg>

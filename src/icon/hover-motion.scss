@@ -18,8 +18,6 @@
 // stylelint-disable @cloudscape-design/no-implicit-descendant
 
 $_ease-out: ease-out;
-$_ease-symmetric: cubic-bezier(0.33, 0, 0.67, 1);
-$_ease-decelerate: cubic-bezier(0.4, 0, 0.2, 1);
 $_ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // A disabled control must not react to hover.
@@ -46,7 +44,7 @@ $icon-hover-motion: (
       duration: 400ms,
       easing: $_ease-spring,
       to: (
-        transform: rotate(-12deg) scale(0.84),
+        transform: rotate(-12deg) scale(0.86),
       ),
     ),
   ),
@@ -114,7 +112,7 @@ $icon-hover-motion: (
       duration: 350ms,
       easing: $_ease-spring,
       to: (
-        transform: rotate(-3deg),
+        transform: rotate(-7deg),
       ),
     ),
   ),
@@ -123,14 +121,14 @@ $icon-hover-motion: (
       duration: 350ms,
       easing: $_ease-spring,
       to: (
-        transform: rotate(-3deg),
+        transform: rotate(-7deg),
       ),
     ),
     (
       part: 'awsui-icon-mouth',
       animation: icon-mouth-smile-grow,
       duration: 900ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       base: (
         stroke-dasharray: 7.4,
         stroke-dashoffset: 0,
@@ -142,26 +140,51 @@ $icon-hover-motion: (
       duration: 350ms,
       easing: $_ease-spring,
       to: (
-        transform: rotate(3deg),
+        transform: rotate(-7deg),
       ),
     ),
     (
       part: 'awsui-icon-mouth',
       animation: icon-mouth-tilt,
       duration: 700ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       origin: 8px 10px,
+    ),
+  ),
+  'face-neutral-filled': (
+    (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-7deg),
+      ),
     ),
   ),
   'face-sad': (
     (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-7deg),
+      ),
+    ),
+    (
       part: 'awsui-icon-mouth',
       animation: icon-mouth-frown-deepen,
       duration: 900ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       base: (
         stroke-dasharray: 7.4,
         stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'face-sad-filled': (
+    (
+      duration: 350ms,
+      easing: $_ease-spring,
+      to: (
+        transform: rotate(-7deg),
       ),
     ),
   ),
@@ -200,6 +223,38 @@ $icon-hover-motion: (
         transform-box: fill-box,
       ),
     ),
+    (
+      part: 'awsui-icon-nib-a',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 1.7px 8.785px,
+      base: (
+        transform: rotate(99.4845deg) scaleX(1) rotate(-99.4845deg),
+      ),
+      to: (
+        transform: rotate(90deg) scaleX(0.82155) rotate(-99.4845deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-nib-b',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 5.19px 12.275px,
+      base: (
+        transform: rotate(170.516deg) scaleX(1) rotate(-170.516deg),
+      ),
+      to: (
+        transform: rotate(180deg) scaleX(0.82155) rotate(-170.516deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-eraser',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      to: (
+        transform: translate(0.7px, -0.7px),
+      ),
+    ),
   ),
   'suggestions-gen-ai': (
     (
@@ -217,7 +272,7 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-front',
       duration: 150ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       to: (
         transform: translate(-4%, -4%),
       ),
@@ -225,28 +280,9 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-back',
       duration: 150ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       to: (
         transform: translate(4%, 4%),
-      ),
-    ),
-  ),
-  'refresh': (
-    (
-      part: 'awsui-icon-arc',
-      animation: icon-coil,
-      duration: 500ms,
-      easing: $_ease-symmetric,
-      origin: 8px 8px,
-    ),
-    (
-      part: 'awsui-icon-arrow',
-      animation: icon-coil-arrow,
-      duration: 500ms,
-      easing: $_ease-symmetric,
-      origin: 8px 8px,
-      base: (
-        stroke-dasharray: 0 0 10.01 0,
       ),
     ),
   ),
@@ -293,7 +329,7 @@ $icon-hover-motion: (
       duration: 500ms,
       easing: $_ease-out,
       base: (
-        stroke-dasharray: 25.15,
+        stroke-dasharray: 2,
         stroke-dashoffset: 0,
       ),
     ),
@@ -311,7 +347,7 @@ $icon-hover-motion: (
       duration: 500ms,
       easing: $_ease-out,
       base: (
-        stroke-dasharray: 25.15,
+        stroke-dasharray: 2,
         stroke-dashoffset: 0,
       ),
     ),
@@ -485,7 +521,7 @@ $icon-hover-motion: (
       easing: cubic-bezier(0.4, 0, 0.2, 1),
       origin: 8px 8px,
       to: (
-        transform: scale(1.15),
+        transform: scale(1.25),
       ),
     ),
   ),
@@ -493,7 +529,7 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-front',
       duration: 150ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       to: (
         transform: translate(-4%, -4%),
       ),
@@ -501,7 +537,7 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-back',
       duration: 150ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       to: (
         transform: translate(4%, 4%),
       ),
@@ -631,22 +667,22 @@ $icon-hover-motion: (
   'view-horizontal': (
     (
       part: 'awsui-icon-panel',
-      duration: 450ms,
-      easing: cubic-bezier(0.4, 0, 0.2, 1),
-      origin: 8px 9.5px,
-      to: (
-        transform: scale(1.08),
+      animation: icon-panel-slide-down,
+      duration: 600ms,
+      easing: cubic-bezier(0.65, 0, 0.35, 1),
+      base: (
+        transform-box: fill-box,
       ),
     ),
   ),
   'view-vertical': (
     (
       part: 'awsui-icon-panel',
-      duration: 450ms,
-      easing: cubic-bezier(0.4, 0, 0.2, 1),
-      origin: 9.5px 8px,
-      to: (
-        transform: scale(1.08),
+      animation: icon-panel-slide-right,
+      duration: 600ms,
+      easing: cubic-bezier(0.65, 0, 0.35, 1),
+      base: (
+        transform-box: fill-box,
       ),
     ),
   ),
@@ -657,7 +693,7 @@ $icon-hover-motion: (
       easing: cubic-bezier(0.4, 0, 0.2, 1),
       origin: 7px 7px,
       to: (
-        transform: scale(1.15),
+        transform: scale(1.2),
       ),
     ),
   ),
@@ -668,8 +704,171 @@ $icon-hover-motion: (
       easing: cubic-bezier(0.4, 0, 0.2, 1),
       origin: 7px 7px,
       to: (
-        transform: scale(0.85),
+        transform: scaleX(0.85),
       ),
+    ),
+  ),
+  'menu': (
+    (
+      part: 'awsui-icon-line-top',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(6.25%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-line-bottom',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(-6.25%),
+      ),
+    ),
+  ),
+  'anchor-link': (
+    (
+      part: 'awsui-icon-left',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(4%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-right',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-4%),
+      ),
+    ),
+  ),
+  'convert-code': (
+    (
+      part: 'awsui-icon-dot-1',
+      animation: icon-dot-blink,
+      duration: 320ms,
+      easing: ease,
+    ),
+    (
+      part: 'awsui-icon-dot-2',
+      animation: icon-dot-blink,
+      duration: 320ms,
+      easing: ease,
+      delay: 90ms,
+    ),
+    (
+      part: 'awsui-icon-dot-3',
+      animation: icon-dot-blink,
+      duration: 320ms,
+      easing: ease,
+      delay: 180ms,
+    ),
+    (
+      part: 'awsui-icon-chevron',
+      animation: icon-nudge-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'mini-player': (
+    (
+      part: 'awsui-icon-frame',
+      duration: 500ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      to: (
+        stroke-dashoffset: 0.14px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-screen-bottom',
+      duration: 500ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      to: (
+        stroke-dashoffset: 0,
+      ),
+    ),
+    (
+      part: 'awsui-icon-screen-right',
+      duration: 500ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      to: (
+        stroke-dashoffset: 0,
+      ),
+    ),
+    (
+      part: 'awsui-icon-screen-left',
+      duration: 500ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: (
+        stroke-dashoffset,
+        transform,
+      ),
+      to: (
+        stroke-dashoffset: 0,
+        transform: translateX(-12.5%),
+      ),
+    ),
+    (
+      part: 'awsui-icon-screen-top',
+      duration: 500ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: (
+        stroke-dashoffset,
+        transform,
+      ),
+      to: (
+        stroke-dashoffset: 0,
+        transform: translateY(-12.5%),
+      ),
+    ),
+  ),
+  'treeview-expand': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      to: (
+        stroke-dashoffset: 0,
+      ),
+    ),
+  ),
+  'treeview-collapse': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      to: (
+        stroke-dashoffset: 0.35px,
+      ),
+    ),
+  ),
+  'view-full': (
+    (
+      part: 'awsui-icon-panel',
+      duration: 500ms,
+      easing: $_ease-spring,
+      origin: 50% 50%,
+      base: (
+        transform-box: fill-box,
+      ),
+      to: (
+        transform: scale(1.12),
+      ),
+    ),
+  ),
+  'side-bar': (
+    (
+      part: 'awsui-icon-bar',
+      animation: icon-bar-slide-left,
+      duration: 600ms,
+      easing: cubic-bezier(0.65, 0, 0.35, 1),
     ),
   ),
   'bug': (
@@ -677,7 +876,7 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-tl',
       animation: icon-gait-a,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 4px 5.71px,
     ),
@@ -685,7 +884,7 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-mr',
       animation: icon-gait-a,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 12px 8.71px,
     ),
@@ -693,7 +892,7 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-bl',
       animation: icon-gait-a,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 4px 11.71px,
     ),
@@ -701,7 +900,7 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-tr',
       animation: icon-gait-b,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 12px 5.71px,
     ),
@@ -709,7 +908,7 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-ml',
       animation: icon-gait-b,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 4px 8.71px,
     ),
@@ -717,9 +916,647 @@ $icon-hover-motion: (
       part: 'awsui-icon-leg-br',
       animation: icon-gait-b,
       duration: 600ms,
-      easing: $_ease-symmetric,
+      easing: ease-in-out,
       iterations: 2,
       origin: 12px 11.71px,
+    ),
+  ),
+  'arrow-up': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-up,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'arrow-down': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-down,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'arrow-left': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-left,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'arrow-right': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'angle-left-double': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-left,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'angle-right-double': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'internal-link': (
+    (
+      part: 'awsui-icon-glyph',
+      animation: icon-glyph-nudge-right,
+      duration: 500ms,
+      easing: $_ease-out,
+    ),
+  ),
+  'audio-full': (
+    (
+      part: 'awsui-icon-wave-1',
+      duration: 180ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+        transition-delay: 100ms,
+      ),
+      to: (
+        stroke-dashoffset: 0.333333px,
+        transition-delay: 0ms,
+      ),
+    ),
+    (
+      part: 'awsui-icon-wave-2',
+      duration: 180ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: 0.333333px,
+        transition-delay: 100ms,
+      ),
+    ),
+  ),
+  'audio-half': (
+    (
+      part: 'awsui-icon-wave-1',
+      duration: 180ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+        transition-delay: 100ms,
+      ),
+      to: (
+        stroke-dashoffset: 0.333333px,
+        transition-delay: 0ms,
+      ),
+    ),
+  ),
+  'audio-off': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: 0.35px,
+      ),
+    ),
+  ),
+  'delete-marker': (
+    (
+      part: 'awsui-icon-arm',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: 0.35px,
+      ),
+    ),
+  ),
+  'calendar': (
+    (
+      part: 'awsui-icon-corner',
+      duration: 220ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: rx,
+      base: (
+        rx: 0px,
+      ),
+      to: (
+        rx: 4px,
+      ),
+    ),
+  ),
+  'call': (
+    (
+      part: 'awsui-icon-handset',
+      animation: icon-handset-ring,
+      duration: 400ms,
+      easing: ease-in-out,
+      origin: 8px 8px,
+    ),
+    (
+      part: 'awsui-icon-ring',
+      duration: 180ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 1,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: 0.333333px,
+      ),
+    ),
+  ),
+  'command-prompt': (
+    (
+      part: 'awsui-icon-cursor',
+      animation: icon-cursor-blink,
+      duration: 1000ms,
+      easing: ease,
+    ),
+  ),
+  'contact': (
+    (
+      part: 'awsui-icon-tail-leg',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 6px 12px,
+      base: (
+        transform: translateX(0) scaleY(1),
+      ),
+      to: (
+        transform: translateX(0.5px) scaleY(0.75),
+      ),
+    ),
+    (
+      part: 'awsui-icon-tail-diag',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 10px 12px,
+      base: (
+        transform: translateX(0) rotate(143.13deg) scaleX(1) rotate(-143.13deg),
+      ),
+      to: (
+        transform: translateX(-0.5px) rotate(143.13deg) scaleX(0.75) rotate(-143.13deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-edge-left',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 2px 12px,
+      to: (
+        transform: scaleX(1.125),
+      ),
+    ),
+    (
+      part: 'awsui-icon-edge-right',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 14px 12px,
+      to: (
+        transform: scaleX(1.125),
+      ),
+    ),
+  ),
+  'drag-indicator': (
+    (
+      part: 'awsui-icon-dot-tl',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(0.5px, 1.25px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-tr',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-0.5px, 1.25px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-ml',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(0.5px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-mr',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateX(-0.5px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-bl',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(0.5px, -1.25px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-br',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translate(-0.5px, -1.25px),
+      ),
+    ),
+  ),
+  'edit': (
+    (
+      part: 'awsui-icon-nib-a',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 2.7px 9.785px,
+      // rotate(θ) scaleX(s) rotate(-θ) shortens the line along its own
+      // direction; at rest the pre- and post-rotations cancel out.
+      base: (
+          transform: rotate(99.4845deg) scaleX(1) rotate(-99.4845deg),
+        ),
+      to: (
+        transform: rotate(90deg) scaleX(0.82155) rotate(-99.4845deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-nib-b',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 6.19px 13.275px,
+      base: (
+        transform: rotate(170.516deg) scaleX(1) rotate(-170.516deg),
+      ),
+      to: (
+        transform: rotate(180deg) scaleX(0.82155) rotate(-170.516deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-eraser',
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      to: (
+        transform: translate(0.7px, -0.7px),
+      ),
+    ),
+  ),
+  'ellipsis': (
+    (
+      part: 'awsui-icon-dot-1',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(1.25px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-dot-3',
+      duration: 400ms,
+      easing: $_ease-spring,
+      to: (
+        transform: translateY(-1.25px),
+      ),
+    ),
+  ),
+  'envelope': (
+    (
+      part: 'awsui-icon-flap-left',
+      duration: 400ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 1px 3px,
+      base: (
+        transform: rotate(40.601deg) scaleX(1) rotate(-40.601deg),
+      ),
+      to: (
+        transform: rotate(29.745deg) scaleX(0.8745) rotate(-40.601deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-flap-right',
+      duration: 400ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 15px 3px,
+      base: (
+        transform: rotate(-40.601deg) scaleX(1) rotate(40.601deg),
+      ),
+      to: (
+        transform: rotate(-29.745deg) scaleX(0.8745) rotate(40.601deg),
+      ),
+    ),
+  ),
+  'folder-open': (
+    (
+      part: 'awsui-icon-flap-top',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 0 0,
+      to: (
+        transform: translateX(0.7px) scaleX(1.3),
+      ),
+    ),
+    (
+      part: 'awsui-icon-flap-bottom',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      to: (
+        transform: translateX(-1px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-flap-left',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 0 0,
+      to: (
+        transform: translateX(2.96152px) skew(-15.3614deg) scaleX(0.961524),
+      ),
+    ),
+    (
+      part: 'awsui-icon-flap-right',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 0 0,
+      to: (
+        transform: translate(7.64684px, 1px) skew(-24.6726deg) scale(0.919145, 0.857143),
+      ),
+    ),
+  ),
+  'globe': (
+    (
+      part: 'awsui-icon-meridian',
+      animation: icon-meridian-turn,
+      duration: 400ms,
+      easing: linear,
+    ),
+  ),
+  'grid-view': (
+    (
+      part: 'awsui-icon-cell-tl',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 6px 6px,
+      property: (
+        transform,
+        stroke-width,
+      ),
+      to: (
+        transform: scale(1.25),
+        stroke-width: calc(var(--awsui-internal-style-icon-stroke-width, 1.5px) / 1.25),
+      ),
+    ),
+    (
+      part: 'awsui-icon-cell-br',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 10px 10px,
+      property: (
+        transform,
+        stroke-width,
+      ),
+      to: (
+        transform: scale(1.25),
+        stroke-width: calc(var(--awsui-internal-style-icon-stroke-width, 1.5px) / 1.25),
+      ),
+    ),
+    (
+      part: 'awsui-icon-cell-tr',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 10px 6px,
+      property: (
+        transform,
+        stroke-width,
+      ),
+      to: (
+        transform: scale(0.833333),
+        stroke-width: calc(var(--awsui-internal-style-icon-stroke-width, 1.5px) / 0.833333),
+      ),
+    ),
+    (
+      part: 'awsui-icon-cell-bl',
+      duration: 280ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 6px 10px,
+      property: (
+        transform,
+        stroke-width,
+      ),
+      to: (
+        transform: scale(0.833333),
+        stroke-width: calc(var(--awsui-internal-style-icon-stroke-width, 1.5px) / 0.833333),
+      ),
+    ),
+  ),
+  'insert-row': (
+    (
+      part: 'awsui-icon-frame',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      property: stroke-dashoffset,
+      base: (
+        stroke-dasharray: 32 2,
+        stroke-dashoffset: 0,
+      ),
+      to: (
+        stroke-dashoffset: -2px,
+      ),
+    ),
+    (
+      part: 'awsui-icon-plus-h',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 16px 11px,
+      base: (
+        transform: scaleX(1),
+      ),
+      to: (
+        transform: scaleX(1.25),
+      ),
+    ),
+    (
+      part: 'awsui-icon-plus-v',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 12px 11px,
+      base: (
+        transform: translateX(0) scaleY(1),
+      ),
+      to: (
+        transform: translateX(-1px) scaleY(1.25),
+      ),
+    ),
+  ),
+  'keyboard': (
+    (
+      part: 'awsui-icon-key-tl',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+    ),
+    (
+      part: 'awsui-icon-key-tc',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      delay: 70ms,
+    ),
+    (
+      part: 'awsui-icon-key-tr',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      delay: 140ms,
+    ),
+    (
+      part: 'awsui-icon-key-ml',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      delay: 210ms,
+    ),
+    (
+      part: 'awsui-icon-key-mc',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      delay: 280ms,
+    ),
+    (
+      part: 'awsui-icon-key-mr',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      delay: 350ms,
+    ),
+    (
+      part: 'awsui-icon-space',
+      animation: icon-key-press,
+      duration: 180ms,
+      easing: ease,
+      // The space bar skips beat 6 of the 70ms ripple and lands on beat 7.
+      delay: 490ms,
+    ),
+  ),
+  'light-dark': (
+    (
+      part: 'awsui-icon-half',
+      duration: 400ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 8px 8px,
+      to: (
+        transform: rotate(180deg),
+      ),
+    ),
+  ),
+  'list-view': (
+    (
+      part: 'awsui-icon-line-middle',
+      duration: 400ms,
+      easing: $_ease-spring,
+      origin: 5px 0,
+      to: (
+        transform: scaleX(0.5),
+      ),
+    ),
+    (
+      part: 'awsui-icon-line-bottom',
+      duration: 400ms,
+      easing: $_ease-spring,
+      origin: 5px 0,
+      to: (
+        transform: scaleX(0.75),
+      ),
+    ),
+  ),
+  'location-pin': (
+    (
+      part: 'awsui-icon-dot',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      to: (
+        transform: translateY(1px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-head',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      to: (
+        transform: translateY(1px),
+      ),
+    ),
+    (
+      part: 'awsui-icon-leg-left',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 4.00977px 9px,
+      base: (
+        transform: translateY(0) rotate(56.31deg) scaleX(1) rotate(-56.31deg),
+      ),
+      to: (
+        transform: translateY(1px) rotate(45deg) scaleX(0.7845) rotate(-56.31deg),
+      ),
+    ),
+    (
+      part: 'awsui-icon-leg-right',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 12.0098px 9px,
+      base: (
+        transform: translateY(0) rotate(-56.31deg) scaleX(1) rotate(56.31deg),
+      ),
+      to: (
+        transform: translateY(1px) rotate(-45deg) scaleX(0.7845) rotate(56.31deg),
+      ),
+    ),
+  ),
+  'transcript': (
+    (
+      part: 'awsui-icon-line-top',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 4px 0,
+      to: (
+        transform: scaleX(0.625),
+      ),
+    ),
+    (
+      part: 'awsui-icon-line-bottom',
+      duration: 350ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
+      origin: 4px 0,
+      to: (
+        transform: scaleX(1.6),
+      ),
     ),
   ),
 );
@@ -762,7 +1599,7 @@ $icon-hover-motion: (
     @include with-motion {
       transition-property: transform;
       transition-duration: 250ms;
-      transition-timing-function: $_ease-decelerate;
+      transition-timing-function: ease;
     }
   }
 
@@ -990,7 +1827,7 @@ $icon-hover-motion: (
       }
       20%,
       60% {
-        transform: translateX(14%);
+        transform: translateX(8%);
       }
     }
 
@@ -1003,7 +1840,7 @@ $icon-hover-motion: (
       }
       20%,
       60% {
-        transform: translateX(-14%);
+        transform: translateX(-8%);
       }
     }
 
@@ -1016,7 +1853,7 @@ $icon-hover-motion: (
       }
       20%,
       60% {
-        stroke-dashoffset: -2.24px;
+        stroke-dashoffset: -0.049px;
       }
     }
 
@@ -1059,6 +1896,60 @@ $icon-hover-motion: (
       }
     }
 
+    @keyframes icon-panel-slide-down {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      45% {
+        transform: translateY(300%);
+      }
+    }
+
+    @keyframes icon-panel-slide-right {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      45% {
+        transform: translateX(300%);
+      }
+    }
+
+    @keyframes icon-bar-slide-left {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      45% {
+        transform: translateX(-8px);
+      }
+    }
+
+    @keyframes icon-nudge-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(8%);
+      }
+    }
+
+    @keyframes icon-dot-blink {
+      0%,
+      100% {
+        visibility: visible;
+      }
+      35%,
+      65% {
+        visibility: hidden;
+      }
+    }
+
     @keyframes icon-gait-a {
       0%,
       100% {
@@ -1082,9 +1973,11 @@ $icon-hover-motion: (
     @keyframes icon-sparkle-pinch {
       0%,
       100% {
+        animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
         transform: scale(1);
       }
       40% {
+        animation-timing-function: cubic-bezier(0.3, 0, 0.35, 1);
         transform: scale(0.8) rotate(-15deg);
       }
     }
@@ -1127,25 +2020,159 @@ $icon-hover-motion: (
       }
     }
 
-    @keyframes icon-coil {
+    // 7.8125% is 1.25px of the 16px view box.
+    @keyframes icon-glyph-nudge-up {
       0%,
+      40%,
+      80%,
       100% {
-        transform: rotate(0deg);
+        transform: translateY(0);
       }
-      55% {
-        transform: rotate(-14deg);
+      20%,
+      60% {
+        transform: translateY(-7.8125%);
       }
     }
 
-    @keyframes icon-coil-arrow {
+    @keyframes icon-glyph-nudge-down {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      20%,
+      60% {
+        transform: translateY(7.8125%);
+      }
+    }
+
+    @keyframes icon-glyph-nudge-left {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-7.8125%);
+      }
+    }
+
+    @keyframes icon-glyph-nudge-right {
+      0%,
+      40%,
+      80%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(7.8125%);
+      }
+    }
+
+    @keyframes icon-handset-ring {
       0%,
       100% {
-        stroke-dasharray: 0 0 10.01 0;
         transform: rotate(0deg);
       }
+      20% {
+        transform: rotate(4deg);
+      }
+      40% {
+        transform: rotate(-3deg);
+      }
+      60% {
+        transform: rotate(2deg);
+      }
+      80% {
+        transform: rotate(-1deg);
+      }
+    }
+
+    @keyframes icon-cursor-blink {
+      0%,
+      30%,
+      60%,
+      100% {
+        visibility: visible;
+      }
+      10%,
+      20%,
+      40%,
+      50%,
+      70%,
+      80% {
+        visibility: hidden;
+      }
+    }
+
+    // A cosine table: rx follows abs(cos) so the meridian appears to spin once
+    // around the pole at constant angular speed.
+    @keyframes icon-meridian-turn {
+      0%,
+      100% {
+        rx: 3px;
+      }
+      5%,
+      95% {
+        rx: 2.717px;
+      }
+      10%,
+      90% {
+        rx: 2.429px;
+      }
+      15%,
+      85% {
+        rx: 2.136px;
+      }
+      20%,
+      80% {
+        rx: 1.838px;
+      }
+      25%,
+      75% {
+        rx: 1.538px;
+      }
+      30%,
+      70% {
+        rx: 1.234px;
+      }
+      35%,
+      65% {
+        rx: 0.927px;
+      }
+      40%,
+      60% {
+        rx: 0.619px;
+      }
+      45%,
       55% {
-        stroke-dasharray: 0 2 6.01 2;
-        transform: rotate(-14deg);
+        rx: 0.31px;
+      }
+      50% {
+        rx: 0.02px;
+      }
+    }
+
+    // The dip stops just short of the row below: (3px gap - stroke) / 2.
+    @keyframes icon-key-press {
+      0% {
+        animation-timing-function: cubic-bezier(0.3, 0, 0.6, 1);
+        transform: translateY(0);
+      }
+      30% {
+        animation-timing-function: linear;
+        transform: translateY(calc((3px - var(--awsui-internal-style-icon-stroke-width, 1.5px)) / 2));
+      }
+      40% {
+        animation-timing-function: cubic-bezier(0.3, 0, 0.3, 1);
+        transform: translateY(calc((3px - var(--awsui-internal-style-icon-stroke-width, 1.5px)) / 2));
+      }
+      100% {
+        transform: translateY(0);
       }
     }
   }
