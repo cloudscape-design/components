@@ -29,6 +29,7 @@ import {
   ExtendedOperator,
   FilteringProperty,
   PropertyFilterProps,
+  PropertyFilterTextOperatorExtended,
   Ref,
   Token,
   TokenGroup,
@@ -187,10 +188,16 @@ const PropertyFilterInternal = React.forwardRef(
         tokens: (enableTokenGroups && query.tokenGroups ? query.tokenGroups : query.tokens).map(transformToken),
       };
 
+      const freeTextOperators = freeTextFiltering?.operators ?? [':', '!:'];
+      const extendedFreeTextOperators = freeTextOperators.reduce(
+        (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
+        new Map<PropertyFilterOperator, PropertyFilterTextOperatorExtended>()
+      );
       const internalFreeText: InternalFreeTextFiltering = {
         disabled: disableFreeTextFiltering,
-        operators: freeTextFiltering?.operators ?? [':', '!:'],
+        operators: freeTextOperators,
         defaultOperator: freeTextFiltering?.defaultOperator ?? ':',
+        getOperatorDescription: operator => extendedFreeTextOperators.get(operator)?.description ?? null,
       };
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };

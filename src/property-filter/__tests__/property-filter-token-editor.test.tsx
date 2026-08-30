@@ -272,6 +272,48 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
     });
 
+    test('uses custom descriptions provided for free text operators', () => {
+      renderComponent({
+        freeTextFiltering: {
+          operators: [
+            { operator: '=', description: 'Exact match' },
+            { operator: ':', description: 'Includes' },
+            // custom operator string with a description and no built-in i18n fallback
+            { operator: '~', description: 'Matches regex' },
+          ],
+        },
+        query: { tokens: [{ value: 'first', operator: '=' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
+      // The token trigger shows the operator symbol together with its custom description.
+      expect(editor.operatorField().getElement()).toHaveTextContent('=Exact match');
+      act(() => editor.operatorSelect().openDropdown());
+      expect(
+        editor
+          .operatorSelect()
+          .findDropdown()
+          .findOptions()!
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['=Exact match', ':Includes', '~Matches regex']);
+    });
+
+    test('falls back to the built-in description when no custom free text description is provided', () => {
+      renderComponent({
+        // Mixed: `=` carries a custom description, `:` relies on the built-in i18n description.
+        freeTextFiltering: { operators: [{ operator: '=', description: 'Exact match' }, ':'] },
+        query: { tokens: [{ value: 'first', operator: ':' }], operation: 'or' },
+      });
+      const editor = openEditor(0, { expandToViewport });
+      act(() => editor.operatorSelect().openDropdown());
+      expect(
+        editor
+          .operatorSelect()
+          .findDropdown()
+          .findOptions()!
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['=Exact match', ':Contains']);
+    });
+
     test('enables client-side filtering on property options', () => {
       renderComponent({
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
