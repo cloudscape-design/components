@@ -292,3 +292,19 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-focusable {
   /* used to manage focusable logic */
 }
+
+// Dropdown overflow mode: clip the tab list instead of scrolling
+.tabs-header-list-dropdown-overflow {
+  overflow: hidden;
+  flex-wrap: nowrap;
+}
+
+// Container for the overflow "more" dropdown button
+.overflow-dropdown-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-xxs;
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+}
