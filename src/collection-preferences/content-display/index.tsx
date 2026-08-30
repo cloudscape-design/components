@@ -302,7 +302,7 @@ export default function ContentDisplayPreference({
                 i18nStrings?.columnFilteringNoMatchText
               )}
             </InternalBox>
-            <InternalButton onClick={() => setColumnFilteringText('')}>
+            <InternalButton formAction="none" onClick={() => setColumnFilteringText('')}>
               {i18n(
                 'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
                 i18nStrings?.columnFilteringClearFilterText
