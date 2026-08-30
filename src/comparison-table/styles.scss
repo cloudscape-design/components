@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  // Marker class applied to the underlying Table root so test-utils and consumers can target
+  // the comparison table specifically. Visual styling is inherited from Table.
+  inline-size: 100%;
+}
+
+.attribute-label {
+  font-weight: styles.$font-weight-bold;
+  color: awsui.$color-text-body-default;
+}
+
+.cell {
+  color: awsui.$color-text-body-default;
+}
+
+// Emphasis applied to a cell when its attribute row differs across entities.
+.cell-highlighted {
+  display: inline-block;
+  padding-block: awsui.$space-xxxs;
+  padding-inline: awsui.$space-xxs;
+  border-start-start-radius: awsui.$border-radius-badge;
+  border-start-end-radius: awsui.$border-radius-badge;
+  border-end-start-radius: awsui.$border-radius-badge;
+  border-end-end-radius: awsui.$border-radius-badge;
+  background-color: awsui.$color-background-status-warning;
+  color: awsui.$color-text-status-warning;
+  font-weight: styles.$font-weight-bold;
+}
