@@ -37,6 +37,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DateRangePickerPresetsWrapper from './date-range-picker-presets';
 import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
@@ -133,6 +134,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DateRangePickerPresetsWrapper };
 export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
@@ -987,6 +989,34 @@ findAllDateRangePickers(selector?: string): Array<DateRangePickerWrapper>;
  * @returns {DateRangePickerWrapper | null}
  */
 findClosestDateRangePicker(): DateRangePickerWrapper | null;
+/**
+ * Returns the wrapper of the first DateRangePickerPresets that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first DateRangePickerPresets.
+ * If no matching DateRangePickerPresets is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DateRangePickerPresetsWrapper | null}
+ */
+findDateRangePickerPresets(selector?: string): DateRangePickerPresetsWrapper | null;
+
+/**
+ * Returns an array of DateRangePickerPresets wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the DateRangePickerPresets inside the current wrapper.
+ * If no matching DateRangePickerPresets is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DateRangePickerPresetsWrapper>}
+ */
+findAllDateRangePickerPresets(selector?: string): Array<DateRangePickerPresetsWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent DateRangePickerPresets for the current element,
+ * or the element itself if it is an instance of DateRangePickerPresets.
+ * If no DateRangePickerPresets is found, returns \`null\`.
+ *
+ * @returns {DateRangePickerPresetsWrapper | null}
+ */
+findClosestDateRangePickerPresets(): DateRangePickerPresetsWrapper | null;
 /**
  * Returns the wrapper of the first Divider that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Divider.
@@ -3203,6 +3233,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
 };
+ElementWrapper.prototype.findDateRangePickerPresets = function(selector) {
+  let rootSelector = \`.\${DateRangePickerPresetsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DateRangePickerPresetsWrapper && DateRangePickerPresetsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DateRangePickerPresetsWrapper.rootSelector}, .\${DateRangePickerPresetsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerPresetsWrapper);
+};
+
+ElementWrapper.prototype.findAllDateRangePickerPresets = function(selector) {
+  return this.findAllComponents(DateRangePickerPresetsWrapper, selector);
+};
 ElementWrapper.prototype.findDivider = function(selector) {
   let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
   if("legacyRootSelector" in DividerWrapper && DividerWrapper.legacyRootSelector){
@@ -4202,6 +4245,11 @@ ElementWrapper.prototype.findClosestDateRangePicker = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(DateRangePickerWrapper);
 };
+ElementWrapper.prototype.findClosestDateRangePickerPresets = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DateRangePickerPresetsWrapper);
+};
 ElementWrapper.prototype.findClosestDivider = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4579,6 +4627,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DateRangePickerPresetsWrapper from './date-range-picker-presets';
 import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
@@ -4675,6 +4724,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DateRangePickerPresetsWrapper };
 export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
@@ -5221,6 +5271,23 @@ findDateRangePicker(selector?: string): DateRangePickerWrapper;
  * @returns {MultiElementWrapper<DateRangePickerWrapper>}
  */
 findAllDateRangePickers(selector?: string): MultiElementWrapper<DateRangePickerWrapper>;
+/**
+ * Returns a wrapper that matches the DateRangePickerPresets with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches DateRangePickerPresets.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DateRangePickerPresetsWrapper}
+ */
+findDateRangePickerPresets(selector?: string): DateRangePickerPresetsWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches DateRangePickerPresets with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches DateRangePickerPresets.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<DateRangePickerPresetsWrapper>}
+ */
+findAllDateRangePickerPresets(selector?: string): MultiElementWrapper<DateRangePickerPresetsWrapper>;
 /**
  * Returns a wrapper that matches the Dividers with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Dividers.
@@ -6710,6 +6777,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
+};
+ElementWrapper.prototype.findDateRangePickerPresets = function(selector) {
+  let rootSelector = \`.\${DateRangePickerPresetsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DateRangePickerPresetsWrapper && DateRangePickerPresetsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DateRangePickerPresetsWrapper.rootSelector}, .\${DateRangePickerPresetsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerPresetsWrapper);
+};
+
+ElementWrapper.prototype.findAllDateRangePickerPresets = function(selector) {
+  return this.findAllComponents(DateRangePickerPresetsWrapper, selector);
 };
 ElementWrapper.prototype.findDivider = function(selector) {
   let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
