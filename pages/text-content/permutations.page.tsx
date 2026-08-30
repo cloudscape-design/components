@@ -51,6 +51,19 @@ export default function TextContentPermutations() {
           <li>This is the last item.</li>
         </ol>
         <code>This is just some code</code>
+
+        <blockquote>
+          This is a blockquote. It uses a left border accent and italic text to visually distinguish quoted content from
+          the surrounding body text.
+        </blockquote>
+
+        <p>Text after a blockquote.</p>
+
+        <blockquote>
+          A longer blockquote that spans multiple lines to verify that the left border accent extends the full height of
+          the quoted block and that the padding and margin tokens keep the content comfortably separated from adjacent
+          elements.
+        </blockquote>
       </TextContent>
     </ScreenshotArea>
   );
