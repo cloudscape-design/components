@@ -49,6 +49,7 @@ import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
+import { rowActionsColumnId, TableRowActionsCell } from './row-actions';
 import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
@@ -79,6 +80,7 @@ import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
+const ROW_ACTIONS_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<
@@ -157,6 +159,7 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      rowActions,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -399,13 +402,17 @@ const InternalTable = React.forwardRef(
         widths.push({ ...visibleColumnDefinitions[columnIndex], id: columnId });
         ids.push(columnId);
       }
+      if (rowActions) {
+        widths.push({ id: rowActionsColumnId, width: ROW_ACTIONS_COLUMN_WIDTH });
+        ids.push(rowActionsColumnId);
+      }
       return { visibleColumnWidthsWithSelection: widths, visibleColumnIdsWithSelection: ids };
-    }, [hasSelection, visibleColumnDefinitions]);
+    }, [hasSelection, visibleColumnDefinitions, rowActions]);
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
-      stickyColumnsLast: stickyColumns?.last || 0,
+      stickyColumnsLast: (stickyColumns?.last || 0) + (rowActions ? 1 : 0),
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
@@ -454,11 +461,12 @@ const InternalTable = React.forwardRef(
       stripedRows,
       stickyState,
       stickyColumnsFirst: stickyColumns?.first ?? 0,
-      stickyColumnsLast: stickyColumns?.last ?? 0,
+      stickyColumnsLast: (stickyColumns?.last ?? 0) + (rowActions ? 1 : 0),
       selectionColumnId,
       tableRole,
       isExpandable,
       setLastUserAction,
+      rowActions,
     };
 
     usePreventStickyClickScroll(wrapperRefObject);
@@ -507,7 +515,7 @@ const InternalTable = React.forwardRef(
     const toolsHeaderWrapper = useMergeRefs(toolsHeaderPerformanceMarkRef, toolsHeaderWrapperMeasureRef);
 
     const colIndexOffset = selectionType ? 1 : 0;
-    const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset + (rowActions ? 1 : 0);
     const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
     return (
@@ -821,6 +829,18 @@ const InternalTable = React.forwardRef(
                                     />
                                   );
                                 })}
+
+                                {rowActions && row.type === 'data' && (
+                                  <TableRowActionsCell
+                                    item={row.item}
+                                    rowActions={rowActions}
+                                    {...sharedCellProps}
+                                    columnId={rowActionsColumnId}
+                                    colIndex={visibleColumnDefinitions.length + colIndexOffset}
+                                    verticalAlign={cellVerticalAlign}
+                                    tableVariant={computedVariant}
+                                  />
+                                )}
                               </tr>
                             );
                           }
