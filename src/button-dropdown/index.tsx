@@ -48,6 +48,9 @@ const ButtonDropdown = React.forwardRef(
       filteringClearAriaLabel,
       filteringResultsText,
       noMatch,
+      onLoadItems,
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
       i18nStrings,
       ...props
     }: ButtonDropdownProps,
@@ -108,6 +111,9 @@ const ButtonDropdown = React.forwardRef(
           format => (matchesCount, totalCount) => format({ matchesCount, totalCount })
         )}
         noMatch={noMatch}
+        onLoadItems={onLoadItems}
+        asyncLoadingProps={asyncLoadingProps}
+        getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
         i18nStrings={{
           filteringItemAriaDescription: i18n(
             'i18nStrings.filteringItemAriaDescription',
