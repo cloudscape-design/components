@@ -133,11 +133,10 @@ export const selectableGroupItems: ButtonDropdownProps.Items = [
   { text: 'Action', id: 'action', disabled: false },
 ];
 
-export default function DescriptionPage() {
+export function DisabledReasonDemo() {
   const [isRightAligned, setIsRightAligned] = useState(false);
   return (
     <>
-      <h1>Descriptions in ButtonDropdown</h1>
       <label>
         <input
           type="checkbox"
@@ -181,6 +180,15 @@ export default function DescriptionPage() {
           </ButtonDropdown>
         </div>
       </ScreenshotArea>
+    </>
+  );
+}
+
+export default function DescriptionPage() {
+  return (
+    <>
+      <h1>Descriptions in ButtonDropdown</h1>
+      <DisabledReasonDemo />
     </>
   );
 }

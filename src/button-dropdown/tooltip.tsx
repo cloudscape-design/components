@@ -4,6 +4,7 @@ import React, { KeyboardEventHandler, useCallback, useEffect, useRef, useState }
 
 import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
+import { usePortalContainer } from '../internal/hooks/use-portal-container';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import Arrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
@@ -24,12 +25,13 @@ export default function Tooltip({ children, content, position = 'right', classNa
   const isReducedMotion = useReducedMotion(ref);
   const { open, triggerProps } = useTooltipOpen(controlledOpen, isReducedMotion ? 0 : DEFAULT_OPEN_TIMEOUT_IN_MS);
   const portalClasses = usePortalModeClasses(ref);
+  const portalContainer = usePortalContainer(() => ref.current);
 
   return (
     <span ref={ref} {...triggerProps} className={className}>
       {children}
       {open && (
-        <Portal>
+        <Portal container={portalContainer}>
           <span className={portalClasses}>
             <PopoverContainer
               size="small"
