@@ -6,6 +6,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
+@use '../../internal/styles/utils/theming' as theming;
 
 $cell-horizontal-padding: awsui.$space-scaled-l;
 
@@ -137,6 +138,26 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       @include styles.with-direction('rtl') {
         box-shadow: awsui.$shadow-sticky-column-first;
         clip-path: inset(0 -24px 0 0);
+      }
+    }
+  }
+
+  // Ensure the header cell background token resolves correctly when
+  // .awsui-dark-mode is on a container ancestor rather than <body>.
+  // The dark-mode-only mixin generates a higher-specificity selector that
+  // correctly scopes the token when dark mode is applied at the container level.
+  @include theming.dark-mode-only {
+    background: awsui.$color-background-table-header;
+
+    &-variant-full-page {
+      background: awsui.$color-background-layout-main;
+    }
+
+    &.sticky-cell {
+      background: awsui.$color-background-table-header;
+
+      &.table-variant-full-page {
+        background: awsui.$color-background-layout-main;
       }
     }
   }
