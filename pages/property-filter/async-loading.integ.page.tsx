@@ -15,6 +15,9 @@ type PropertyFilterDemoContext = React.Context<
   AppContextType<{
     token: string;
     asyncProperties: boolean;
+    pageSize: number;
+    delay: number;
+    items: number;
   }>
 >;
 
@@ -26,10 +29,6 @@ const filteringProperties = [
     groupValuesLabel: `Label values`,
   },
 ] as const;
-const filteringOptions = range(1000).map(value => ({
-  propertyKey: 'property',
-  value: value + '',
-}));
 
 interface ExtendedWindow {
   loadItemsCalls: PropertyFilterProps.LoadItemsDetail[];
@@ -39,6 +38,12 @@ window.loadItemsCalls = [];
 
 export default function () {
   const { urlParams } = useContext(AppContext as PropertyFilterDemoContext);
+
+  const filteringOptions = range(urlParams.items ?? 1000).map(value => ({
+    propertyKey: 'property',
+    value: value + '',
+  }));
+
   const [query, setQuery] = useState<PropertyFilterProps['query']>({
     tokens: [
       urlParams.token === 'freeText'
@@ -48,8 +53,8 @@ export default function () {
     operation: 'and',
   });
   const [fetchTarget, setFetchTarget] = useState<'properties' | 'options'>('properties');
-  const propertiesLoader = useOptionsLoader({ timeout: 100 });
-  const optionsLoader = useOptionsLoader<PropertyFilterProps.FilteringOption>({ pageSize: 100, timeout: 100 });
+  const propertiesLoader = useOptionsLoader({ pageSize: urlParams.pageSize ?? 25, timeout: urlParams.delay ?? 100 });
+  const optionsLoader = useOptionsLoader<PropertyFilterProps.FilteringOption>({ pageSize: 10, timeout: 1000 });
   const status = { properties: propertiesLoader, options: optionsLoader }[fetchTarget].status;
 
   const handleLoadItems = ({ detail }: { detail: PropertyFilterProps.LoadItemsDetail }) => {
@@ -79,7 +84,7 @@ export default function () {
   return (
     <>
       <h1>Integration tests fixture for async loading suggestions</h1>
-      <ScreenshotArea disableAnimations={true}>
+      <ScreenshotArea>
         <PropertyFilter
           {...labels}
           i18nStrings={i18nStrings}
