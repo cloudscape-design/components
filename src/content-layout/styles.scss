@@ -81,6 +81,15 @@
   &.is-overlap-disabled {
     grid-template-rows: var(#{custom-props.$contentLayoutMainGap}) min-content min-content auto 0 1fr;
   }
+
+  // Full-bleed header: header-wrapper spans the full grid width (edge-to-edge),
+  // breaking out of the maxContentWidth constraint. The background already spans
+  // full width; this modifier makes the header slot content do the same.
+  &.full-bleed-header {
+    > .header-wrapper {
+      grid-column: 1 / 8;
+    }
+  }
 }
 
 .layout.is-visual-refresh {
