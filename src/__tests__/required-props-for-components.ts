@@ -6,6 +6,11 @@ export { defaultSplitPanelContextProps } from '../split-panel/__tests__/helpers'
 const defaultProps: Record<string, Record<string, any>> = {
   tabs: { tabs: [] },
   table: { columnDefinitions: [] },
+  'virtual-table': {
+    items: [],
+    viewConfig: { type: 'standard', columnDefinitions: [] },
+    trackBy: () => '',
+  },
   cards: { cardDefinition: {} },
   autosuggest: { options: [], enteredPrefix: '' },
   'anchor-navigation': { anchors: [] },
