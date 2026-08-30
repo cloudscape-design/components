@@ -65,6 +65,7 @@ const InternalAlert = React.forwardRef(
       header,
       buttonText,
       action,
+      secondaryAction,
       onDismiss,
       onButtonClick,
       __internalRootRef,
@@ -239,8 +240,10 @@ const InternalAlert = React.forwardRef(
                   testUtilClasses={{
                     actionSlot: styles['action-slot'],
                     actionButton: styles['action-button'],
+                    secondaryActionSlot: styles['secondary-action-slot'],
                   }}
                   action={action}
+                  secondaryAction={secondaryAction}
                   discoveredActions={discoveredActions}
                   buttonText={buttonText}
                   onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
