@@ -58,6 +58,18 @@ export interface SplitPanelProps extends BaseComponentProps {
    * Content displayed before the header text.
    */
   headerBefore?: React.ReactNode;
+
+  /**
+   * Custom icon to display on the toggle button when the split panel is open (close/collapse action).
+   * When provided, replaces the built-in close or collapse icon.
+   */
+  toggleIconOpen?: React.ReactNode;
+
+  /**
+   * Custom icon to display on the toggle button when the split panel is closed (open/expand action).
+   * When provided, replaces the built-in open or expand icon.
+   */
+  toggleIconClosed?: React.ReactNode;
 }
 
 export namespace SplitPanelProps {
