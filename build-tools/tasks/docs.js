@@ -8,7 +8,10 @@ module.exports = function docs() {
   writeComponentsDocumentation({
     outDir: path.join(workspace.apiDocsPath, 'components'),
     tsconfigPath: require.resolve('../../tsconfig.json'),
-    publicFilesGlob: 'src/*/index.tsx',
+    // virtual-table is excluded: its default export is a compound object-literal
+    // namespace (VirtualTable.Root/Header/...), which @cloudscape-design/documenter
+    // cannot model (ObjectLiteralExpression); its API is documented in USAGE.md.
+    publicFilesGlob: 'src/!(virtual-table)/index.tsx',
     extraExports: {
       FileDropzone: ['useFilesDragging'],
       IconProvider: ['defineIcons', 'IconRegistry', 'IconMap'],
