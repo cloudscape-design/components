@@ -777,3 +777,170 @@ describe('Content Display preference with groups', () => {
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// Locked columns
+// ---------------------------------------------------------------------------
+
+const lockedColumnPreference: CollectionPreferencesProps.ContentDisplayPreference = {
+  title: 'Content display title',
+  description: 'Content display description',
+  options: [
+    { id: 'id1', label: 'Item 1', locked: true },
+    { id: 'id2', label: 'Item 2', locked: true },
+    { id: 'id3', label: 'Item 3' },
+    { id: 'id4', label: 'Item 4' },
+  ],
+};
+
+const lockedColumnPreferenceValue: CollectionPreferencesProps.ContentDisplayItem[] = [
+  { id: 'id1', visible: true },
+  { id: 'id2', visible: true },
+  { id: 'id3', visible: true },
+  { id: 'id4', visible: false },
+];
+
+function renderLockedContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
+  const collectionPreferencesWrapper = renderCollectionPreferences({
+    contentDisplayPreference: lockedColumnPreference,
+    preferences: { contentDisplay: lockedColumnPreferenceValue },
+    onConfirm: () => null,
+    ...props,
+  });
+  collectionPreferencesWrapper.findTriggerButton().click();
+  return {
+    wrapper: collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!,
+    collectionPreferencesWrapper,
+  };
+}
+
+describe('Locked columns', () => {
+  describe('Rendering', () => {
+    it('renders locked options in a dedicated locked-options container', () => {
+      const { wrapper } = renderLockedContentDisplay();
+      const lockedSection = wrapper.getElement().querySelector('[data-testid="locked-options"]');
+      expect(lockedSection).not.toBeNull();
+      const lockedOptionItems = lockedSection!.querySelectorAll('[data-testid="locked-option-item"]');
+      expect(lockedOptionItems).toHaveLength(2);
+    });
+
+    it('renders locked options with a role=img lock icon', () => {
+      const { wrapper } = renderLockedContentDisplay();
+      const lockedSection = wrapper.getElement().querySelector('[data-testid="locked-options"]');
+      expect(lockedSection).not.toBeNull();
+      const lockIcons = lockedSection!.querySelectorAll('[role="img"]');
+      expect(lockIcons.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it('does not render a visibility toggle for locked options', () => {
+      const { wrapper } = renderLockedContentDisplay();
+      const lockedSection = wrapper.getElement().querySelector('[data-testid="locked-options"]');
+      expect(lockedSection).not.toBeNull();
+      const toggles = lockedSection!.querySelectorAll('input[type="checkbox"]');
+      expect(toggles).toHaveLength(0);
+    });
+
+    it('renders non-locked options with a visibility toggle', () => {
+      const { wrapper } = renderLockedContentDisplay();
+      // id3 and id4 are not locked — they appear in the sortable list with toggles
+      const options = wrapper.findOptions();
+      expect(options.length).toBeGreaterThanOrEqual(2);
+    });
+  });
+
+  describe('Interaction', () => {
+    it('does not render interactive inputs for locked options', () => {
+      const { wrapper } = renderLockedContentDisplay();
+      const lockedSection = wrapper.getElement().querySelector('[data-testid="locked-options"]');
+      expect(lockedSection).not.toBeNull();
+      // Locked section has no inputs at all (no toggles, no checkboxes)
+      expect(lockedSection!.querySelectorAll('input')).toHaveLength(0);
+    });
+
+    it('confirms with unchanged locked options when no changes are made', () => {
+      const onConfirm = jest.fn();
+      const { collectionPreferencesWrapper } = renderLockedContentDisplay({ onConfirm });
+      collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+      expect(onConfirm).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            contentDisplay: lockedColumnPreferenceValue,
+          }),
+        })
+      );
+    });
+
+    it('allows toggling non-locked options while locked options remain unchanged', () => {
+      const onConfirm = jest.fn();
+      const { wrapper, collectionPreferencesWrapper } = renderLockedContentDisplay({ onConfirm });
+
+      // Toggle id3 (first sortable option, currently visible: true → false)
+      const options = wrapper.findOptions();
+      options[0].findVisibilityToggle().findNativeInput().click();
+
+      collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+      expect(onConfirm).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            contentDisplay: expect.arrayContaining([
+              { id: 'id1', visible: true }, // locked — unchanged
+              { id: 'id2', visible: true }, // locked — unchanged
+              { id: 'id3', visible: false }, // toggled off
+            ]),
+          }),
+        })
+      );
+    });
+
+    it('locked options appear before sortable options in the confirmed value', () => {
+      const onConfirm = jest.fn();
+      const { collectionPreferencesWrapper } = renderLockedContentDisplay({ onConfirm });
+
+      collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+      const result: CollectionPreferencesProps.ContentDisplayItem[] = onConfirm.mock.calls[0][0].detail.contentDisplay;
+
+      // id1 and id2 (locked) should appear first
+      expect(result[0].id).toBe('id1');
+      expect(result[1].id).toBe('id2');
+    });
+  });
+
+  describe('Mixed constraints (locked + alwaysVisible)', () => {
+    const mixedPreference: CollectionPreferencesProps.ContentDisplayPreference = {
+      title: 'Mixed',
+      description: 'Mixed constraints',
+      options: [
+        { id: 'id1', label: 'Item 1', locked: true },
+        { id: 'id2', label: 'Item 2', alwaysVisible: true },
+        { id: 'id3', label: 'Item 3' },
+      ],
+    };
+
+    it('renders locked option with lock icon and alwaysVisible option with disabled toggle', () => {
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference: mixedPreference,
+        preferences: {
+          contentDisplay: [
+            { id: 'id1', visible: true },
+            { id: 'id2', visible: true },
+            { id: 'id3', visible: true },
+          ],
+        },
+        onConfirm: () => null,
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const wrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+
+      // Locked option (id1) is in the locked-options container with a lock icon
+      const lockedSection = wrapper.getElement().querySelector('[data-testid="locked-options"]');
+      expect(lockedSection).not.toBeNull();
+      expect(lockedSection!.querySelectorAll('[role="img"]').length).toBeGreaterThanOrEqual(1);
+
+      // alwaysVisible option (id2) has a disabled toggle
+      const options = wrapper.findOptions();
+      const alwaysVisibleOption = options.find(opt => opt.findLabel()?.getElement().textContent === 'Item 2');
+      expect(alwaysVisibleOption).toBeDefined();
+      expect(alwaysVisibleOption!.findVisibilityToggle().findNativeInput().getElement()).toBeDisabled();
+    });
+  });
+});
