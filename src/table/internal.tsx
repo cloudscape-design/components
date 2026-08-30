@@ -719,6 +719,7 @@ const InternalTable = React.forwardRef(
                             isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
                             isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
                             isEvenRow: rowIndex % 2 === 0,
+                            isMatched: !!rowExpandableProps?.isMatched,
                             stripedRows,
                             hasSelection,
                             hasFooter,
@@ -730,7 +731,11 @@ const InternalTable = React.forwardRef(
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                className={clsx(
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected'],
+                                  sharedCellProps.isMatched && styles['row-match-highlight']
+                                )}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click
