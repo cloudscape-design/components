@@ -37,6 +37,7 @@ export function useStickyColumns({
   visibleColumns,
   stickyColumnsFirst,
   stickyColumnsLast,
+  minScrollableWidth,
 }: StickyColumnsProps): StickyColumnsModel {
   const store = useMemo(() => new StickyColumnsStore(), []);
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
@@ -54,6 +55,7 @@ export function useStickyColumns({
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
+        minScrollableWidth,
       });
     }
   });
@@ -71,9 +73,10 @@ export function useStickyColumns({
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
+        minScrollableWidth,
       });
     }
-  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
+  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns, minScrollableWidth]);
 
   // Update wrapper styles imperatively to avoid unnecessary re-renders.
   useEffect(() => {
@@ -258,6 +261,7 @@ interface UpdateCellStylesProps {
   visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
+  minScrollableWidth?: number;
 }
 
 class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
@@ -363,8 +367,9 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     const totalStickySpace = this.cellOffsets.stickyWidthInlineStart + this.cellOffsets.stickyWidthInlineEnd;
     const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
     const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
+    const minScrollableWidth = props.minScrollableWidth ?? MINIMUM_SCROLLABLE_SPACE;
     const hasEnoughScrollableSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tablePaddingLeft + tablePaddingRight < wrapperWidth;
+      totalStickySpace + minScrollableWidth + tablePaddingLeft + tablePaddingRight < wrapperWidth;
     if (!hasEnoughScrollableSpace) {
       return false;
     }
