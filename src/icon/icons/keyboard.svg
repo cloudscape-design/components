@@ -1,10 +1,10 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M15 2H1V14H15V2Z" stroke-linejoin="round"/>
-<path d="M4 11H12" />
-<path d="M4 8H6" />
-<path d="M4 5H6" />
-<path d="M7 8H9" />
-<path d="M7 5H9" />
-<path d="M10 8H12" />
-<path d="M10 5H12" />
+<path d="M15 2H1V14H15V2Z" class="stroke-linejoin-round"/>
+<path d="M4 5H6" class="awsui-icon-key-tl"/>
+<path d="M7 5H9" class="awsui-icon-key-tc"/>
+<path d="M10 5H12" class="awsui-icon-key-tr"/>
+<path d="M4 8H6" class="awsui-icon-key-ml"/>
+<path d="M7 8H9" class="awsui-icon-key-mc"/>
+<path d="M10 8H12" class="awsui-icon-key-mr"/>
+<path d="M4 11H12" class="awsui-icon-space"/>
 </svg>

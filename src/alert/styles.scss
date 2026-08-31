@@ -9,8 +9,14 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
 
 @use './motion';
+
+$props: style-api.combine(style-api.$surface, (padding-block, padding-inline), style-api.$focus-ring);
+$tokens: style-api.resolve($props, carrier);
+@include style-api.register($tokens);
+@include style-api.docs('root', $tokens);
 
 .root {
   @include styles.styles-reset;
@@ -23,8 +29,9 @@
 }
 
 .alert {
+  @include style-api.carriers($tokens);
   @include styles.styles-reset;
-  color: awsui.$color-text-alert-default;
+  color: var(#{style-api.read($tokens, color)}, #{awsui.$color-text-alert-default});
   position: relative;
   display: flex;
   flex-direction: row;
@@ -32,17 +39,13 @@
   border-block-end: awsui.$border-width-alert-block-end solid;
   border-inline-start: awsui.$border-width-alert-inline-start solid;
   border-inline-end: awsui.$border-width-alert-inline-end solid;
-  border-start-start-radius: awsui.$border-radius-alert;
-  border-start-end-radius: awsui.$border-radius-alert;
-  border-end-start-radius: awsui.$border-radius-alert;
-  border-end-end-radius: awsui.$border-radius-alert;
-  padding-block: awsui.$space-alert-vertical;
-  padding-inline: awsui.$space-alert-horizontal;
-  background-color: awsui.$color-background-container-content;
-
-  #{custom-props.$alertFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused);
+  border-start-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-start-end-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-end-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  border-end-end-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
+  padding-block: var(#{style-api.read($tokens, padding-block)}, #{awsui.$space-alert-vertical});
+  padding-inline: var(#{style-api.read($tokens, padding-inline)}, #{awsui.$space-alert-horizontal});
+  background-color: var(#{style-api.read($tokens, background-color)}, #{awsui.$color-background-container-content});
 }
 
 .alert-wrapper {
@@ -86,12 +89,20 @@
     outline: none;
   }
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$alertFocusRingBoxShadow})
+    @include style-api.focus-highlight(
+      $radius: var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $width: var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+      $color: var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
   }
+}
+
+$icon-props: (color);
+$icon-tokens: style-api.resolve($icon-props, carrier);
+@include style-api.docs('icon', $icon-tokens);
+
+.icon {
+  @include style-api.carriers($icon-tokens);
 }
 
 .text {
@@ -133,6 +144,8 @@
   margin-inline-start: awsui.$space-s;
 }
 
+@include style-api.docs-forward('dismissButton', 'button', 'root');
+
 .dismiss-button {
   /* used in test-utils */
 }
@@ -160,10 +173,13 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: #{map.get($_border-colors, $type)};
-    background-color: #{map.get($_background-colors, $type)};
+    border-color: var(#{style-api.read($tokens, border-color)}, #{map.get($_border-colors, $type)});
+    background-color: var(#{style-api.read($tokens, background-color)}, #{map.get($_background-colors, $type)});
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)});
+      color: var(
+        #{style-api.read($icon-tokens, color)},
+        var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
+      );
     }
   }
 }

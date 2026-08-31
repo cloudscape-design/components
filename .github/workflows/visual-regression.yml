@@ -108,6 +108,9 @@ jobs:
       - name: Wait for baseline server
         run: node_modules/.bin/wait-on http://localhost:8080
 
+      - name: Generate visual test runner files
+        run: npm run generate:visual-tests
+
       - name: Run visual regression tests
         run: |
           echo "NEW_HOST=${NEW_HOST}"

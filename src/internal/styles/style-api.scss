@@ -1,0 +1,45 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@forward '@cloudscape-design/component-toolkit/internal/style-api';
+
+@use '@cloudscape-design/component-toolkit/internal/style-api' as toolkit;
+@use './tokens' as awsui;
+@use './foundation' as foundation;
+@use './forms/mixins' as forms;
+
+// Shared, component-agnostic Style API v2 token groups + the helpers that consume them. Components
+// combine these groups (see combine()), register() the public tokens, and re-anchor them with
+// carriers() on their boundary element so descendants / pseudo-elements read them per instance.
+
+// Common surface tokens (background / text / border / border-radius / border-width), shared by
+// badge, alert, button, etc.
+$surface: (color, background-color, border-color, border-width, border-radius);
+
+// Focus-outline tokens, shared by every focusable component (button, alert dismiss, ...).
+$focus-ring: (focus-ring-color, focus-ring-width, focus-ring-radius, focus-ring-gutter-block, focus-ring-gutter-inline);
+
+// Carrier map for the focus-outline group: reads resolve to the inherited --awsui-internal-style-*
+// carriers (re-anchored by carriers() on the component root), so the ring below reaches ::before.
+$_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
+
+// A wrapper for forms.focus-highlight with style API integration.
+@mixin focus-highlight(
+  $gutter-block: awsui.$space-button-focus-outline-gutter,
+  $gutter-inline: awsui.$space-button-focus-outline-gutter,
+  $radius: awsui.$border-radius-control-default-focus-ring,
+  $width: foundation.$box-shadow-focused-width,
+  $color: awsui.$color-border-item-focused
+) {
+  @include forms.focus-highlight(
+    $gutter: (
+      'vertical': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-block)}, #{$gutter-block}),
+      'horizontal': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-inline)}, #{$gutter-inline}),
+    ),
+    $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
+    $box-shadow: 0 0 0 var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{$width})
+      var(#{toolkit.read($_focus-ring-carriers, focus-ring-color)}, #{$color})
+  );
+}

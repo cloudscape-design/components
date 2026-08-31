@@ -1150,6 +1150,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -3322,29 +3329,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -4811,6 +4818,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -6983,29 +6997,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -8472,6 +8486,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -10644,29 +10665,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -12133,6 +12154,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -14305,29 +14333,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -15794,6 +15822,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -17966,29 +18001,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -19453,6 +19488,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#414750",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-border-segment-hover": {
@@ -21627,29 +21669,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -23114,6 +23156,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#687078",
       },
     },
     "color-border-segment-hover": {
@@ -25288,29 +25337,29 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-jiml2r",
+        "disabled": "awsui-fade-in-jiml2r",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-au27m5",
+        "disabled": "awsui-fade-out-au27m5",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-kjh8f3",
+        "disabled": "awsui-none-kjh8f3",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-kjh8f3",
+        "disabled": "awsui-none-kjh8f3",
       },
     },
     "shadow-card": {
@@ -26782,6 +26831,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -28954,29 +29010,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -30443,6 +30499,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -32615,29 +32678,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -34104,6 +34167,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -36276,29 +36346,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -37765,6 +37835,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -39937,29 +40014,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -41426,6 +41503,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -43598,29 +43682,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -45087,6 +45171,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -47259,29 +47350,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -48748,6 +48839,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -50920,29 +51018,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -52409,6 +52507,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#dedee3",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -54581,29 +54686,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -56068,6 +56173,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
       },
     },
     "color-border-segment-hover": {
@@ -58242,29 +58354,29 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-jiml2r",
+        "disabled": "awsui-fade-in-jiml2r",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-au27m5",
+        "disabled": "awsui-fade-out-au27m5",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-scale-popup-35003c",
-        "disabled": "awsui-scale-popup-35003c",
+        "default": "awsui-scale-popup-2m9987",
+        "disabled": "awsui-scale-popup-2m9987",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-status-icon-error-35003c",
-        "disabled": "awsui-status-icon-error-35003c",
+        "default": "awsui-status-icon-error-mjjk3s",
+        "disabled": "awsui-status-icon-error-mjjk3s",
       },
     },
     "shadow-card": {

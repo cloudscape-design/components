@@ -1,4 +1,6 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <path class="stroke-linejoin-round" d="M15 1H1V15H15V1Z" />
+<svg x="1" y="1" width="14" height="14" viewBox="1 1 14 14" overflow="hidden">
 <path class="filled no-stroke awsui-icon-panel" d="M11.5 4H7.5C7.22386 4 7 4.22386 7 4.5V11.5C7 11.7761 7.22386 12 7.5 12H11.5C11.7761 12 12 11.7761 12 11.5V4.5C12 4.22386 11.7761 4 11.5 4Z" />
+</svg>
 </svg>
