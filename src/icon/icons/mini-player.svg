@@ -1,4 +1,9 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 10.01H8V14.01H14V10.01Z" class="stroke-linejoin-round"/>
-<path d="M5 14H2V2H14V7" class="stroke-linejoin-round"/>
+<path d="M2 2V14H5" class="stroke-linejoin-round awsui-icon-frame" pathLength="1" stroke-dasharray="1"/>
+<path d="M2 2H14V7" class="stroke-linejoin-round awsui-icon-frame" pathLength="1" stroke-dasharray="1"/>
+<path d="M2 2H2.001" class="stroke-linecap-round"/>
+<path d="M14 14.01H6" class="stroke-linecap-round awsui-icon-screen-bottom" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.25"/>
+<path d="M14 14.01V8" class="stroke-linecap-round awsui-icon-screen-right" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.333"/>
+<path d="M8 14.01V8" class="stroke-linecap-round awsui-icon-screen-left" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.333"/>
+<path d="M14 10.01H6" class="stroke-linecap-round awsui-icon-screen-top" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0.25"/>
 </svg>
