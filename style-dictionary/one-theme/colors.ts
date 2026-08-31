@@ -226,7 +226,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 
   // ── Code view ─────────────────────────────────────────────────────────────
-  colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral700}' },
+  colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
