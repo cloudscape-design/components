@@ -127,3 +127,4 @@ jobs:
       test-utils-artifact-name: test-utils-selectors
       baseline-artifact-name: visual-baseline-pages
       caller-run-id: ${{ github.run_id }}
+      commit-sha: ${{ github.event.pull_request.head.sha }}
