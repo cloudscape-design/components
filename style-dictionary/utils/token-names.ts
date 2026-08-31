@@ -733,6 +733,7 @@ export type ColorsTokenName =
   | 'colorBorderSegmentActive'
   | 'colorBorderSegmentDefault'
   | 'colorBorderSegmentDisabled'
+  | 'colorBorderSegmentDivider'
   | 'colorBorderSegmentHover'
   | 'colorBorderSegmentWrapper'
   | 'colorBorderStatusError'

@@ -83,17 +83,12 @@ const suite: TestSuite = {
       description: 'does not select text when double-clicking next button',
       path: 'date-range-picker/with-value',
       screenshotType: 'screenshotArea',
-      setup: async ({ page, wrapper, browser }) => {
+      setup: async ({ page, wrapper }) => {
         await page.click('#focusable-before');
         await page.focusNextElement();
         await page.keys(['Enter']);
-        const nextButtonSelector = wrapper.findDateRangePicker().findDropdown().findNextMonthButton().toSelector();
-        await browser!.execute((sel: string) => {
-          const el = document.querySelector(sel);
-          if (el) {
-            el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
-          }
-        }, nextButtonSelector);
+        const nextButtonSelector = wrapper.findDateRangePicker().findDropdown().findNextButton().toSelector();
+        await page.doubleClick(nextButtonSelector);
       },
     },
   ],

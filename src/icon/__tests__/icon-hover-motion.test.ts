@@ -12,10 +12,12 @@ const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/util
 const THEME = '.awsui-one-theme';
 
 /**
- * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact
- * whose `resolved-tokens` carry `optedInThemes`.
+ * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact whose
+ * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
+ * jest's jsdom environment, so every module is served from memory; `source` lets the
+ * mutation tests below patch the map without touching the file on disk.
  */
-function compile(optedInThemes: string[]): string {
+function compile(optedInThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
   return sass.compileString(`@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`, {
     importers: [
       {
@@ -33,7 +35,7 @@ function compile(optedInThemes: string[]): string {
         },
         load(canonicalUrl: URL) {
           const contents = {
-            'mem:hover-motion': HOVER_MOTION_SOURCE,
+            'mem:hover-motion': source,
             'mem:theming': THEMING_SOURCE,
             'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
               .map(selector => `(selector: "${selector}", tokens: ())`)
@@ -102,34 +104,77 @@ describe('the generic hover motion rule, as compiled', () => {
   });
 
   test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
-    const selector = genericRuleSelector();
-    // Example selector: `:global(.awsui-one-theme...) [data-awsui-motion-trigger~=hover]:not(...):hover ...`
-    // The region under test is everything between the theme scope's `:global(...)` wrapper
-    // and `:hover`, here: `[data-awsui-motion-trigger~=hover]:not(:disabled):not([aria-disabled=true])`.
-    const hoverIndex = selector.indexOf(':hover');
-    const globalIndex = selector.indexOf(':global(');
-    const regionStart = selector.indexOf(') ', globalIndex) + 2;
-    const region = selector.slice(regionStart, hoverIndex);
+    // The trigger's compound is whitespace-free (e.g. `[data-awsui-motion-trigger~=hover]:not(...):hover`),
+    // so token splitting isolates it; `:hover` is dropped since jsdom cannot set hover state.
+    const guard = genericRuleSelector()
+      .split(/\s+/)
+      .find(token => token.startsWith('[data-awsui-motion-trigger'))!
+      .replace(':hover', '');
 
-    const enabled = document.createElement('button');
-    enabled.setAttribute('data-awsui-motion-trigger', 'hover');
-    expect(enabled.matches(region)).toBe(true);
+    const button = (attributes: Record<string, string> = {}) => {
+      const element = document.createElement('button');
+      element.setAttribute('data-awsui-motion-trigger', 'hover');
+      for (const [name, value] of Object.entries(attributes)) {
+        element.setAttribute(name, value);
+      }
+      return element;
+    };
 
-    const nativeDisabled = document.createElement('button');
-    nativeDisabled.setAttribute('data-awsui-motion-trigger', 'hover');
-    nativeDisabled.disabled = true;
-    expect(nativeDisabled.matches(region)).toBe(false);
-
-    const ariaDisabled = document.createElement('button');
-    ariaDisabled.setAttribute('data-awsui-motion-trigger', 'hover');
-    ariaDisabled.setAttribute('aria-disabled', 'true');
-    expect(ariaDisabled.matches(region)).toBe(false);
+    expect(button().matches(guard)).toBe(true);
+    expect(button({ disabled: '' }).matches(guard)).toBe(false);
+    expect(button({ 'aria-disabled': 'true' }).matches(guard)).toBe(false);
 
     // Positive control: React stringifies `aria-disabled={false}` to the string "false" on an
-    // ENABLED control. A bare `[aria-disabled]` guard must work.
-    const ariaEnabled = document.createElement('button');
-    ariaEnabled.setAttribute('data-awsui-motion-trigger', 'hover');
-    ariaEnabled.setAttribute('aria-disabled', 'false');
-    expect(ariaEnabled.matches(region)).toBe(true);
+    // ENABLED control. A bare `[aria-disabled]` guard must not exclude it.
+    expect(button({ 'aria-disabled': 'false' }).matches(guard)).toBe(true);
+  });
+});
+
+describe('a malformed spec fails the build', () => {
+  test('an unknown key is rejected, naming the icon and the key', () => {
+    const typo = HOVER_MOTION_SOURCE.replace("part: 'awsui-icon-arm',", "pat: 'awsui-icon-arm',");
+    expect(typo).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], typo)).toThrow(/Unknown key `pat` in the \$icon-hover-motion spec for `zoom-in`/);
+  });
+
+  test('a spec carrying both `animation` and `to` is rejected', () => {
+    const both = HOVER_MOTION_SOURCE.replace(
+      'animation: icon-pulse-soft,',
+      'animation: icon-pulse-soft,\n      to: (transform: scale(0.9)),'
+    );
+    expect(both).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], both)).toThrow(/sets both `animation` and `to`/);
+  });
+
+  test('a motion spec missing `duration` is rejected, naming the icon', () => {
+    // `announcement` is the first entry in the map, so the first match is its duration.
+    const missing = HOVER_MOTION_SOURCE.replace('      duration: 400ms,\n', '');
+    expect(missing).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], missing)).toThrow(/spec for `announcement` sets motion but is missing/);
+  });
+});
+
+describe('keyframes', () => {
+  test('gated on the artefact: none for a theme that never opted in', () => {
+    expect(compile([])).not.toMatch(/@keyframes/);
+  });
+
+  test('every referenced animation name has a matching keyframes block', () => {
+    const css = compile([THEME]);
+    const referenced = new Set(Array.from(css.matchAll(/animation-name:\s*([\w-]+)/g)).map(match => match[1]));
+    expect(referenced.size).toBeGreaterThan(0);
+    for (const name of referenced) {
+      expect(css).toMatch(new RegExp(`@keyframes\\s+${name}\\s*\\{`));
+    }
+  });
+
+  test('no keyframes block is emitted that nothing in the map references', () => {
+    const css = compile([THEME]);
+    const defined = Array.from(css.matchAll(/@keyframes\s+([\w-]+)\s*\{/g)).map(match => match[1]);
+    const referenced = new Set(Array.from(css.matchAll(/animation-name:\s*([\w-]+)/g)).map(match => match[1]));
+    expect(defined.length).toBeGreaterThan(0);
+    for (const name of defined) {
+      expect(referenced.has(name)).toBe(true);
+    }
   });
 });

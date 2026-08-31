@@ -1,5 +1,6 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 2H2V14H14V2Z" class="stroke-linejoin-round"/>
+<path d="M14 8V2H2V14H8" class="stroke-linejoin-round"/>
+<rect x="2" y="2" width="12" height="12" clip-path="inset(50% 0 0 50%) view-box" class="stroke-linejoin-round awsui-icon-corner"/>
 <path d="M4 6V4H6V6H4Z" class="filled no-stroke"/>
 <path d="M7 6V4H9V6H7Z" class="filled no-stroke"/>
 <path d="M10 6V4H12V6H10Z" class="filled no-stroke"/>

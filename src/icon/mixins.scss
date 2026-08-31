@@ -89,6 +89,10 @@ $_icon-sizes: (
       }
 
       > svg {
+        // Exposed for hover motion that compensates stroke width while scaling
+        // parts (see hover-motion.scss).
+        --awsui-internal-style-icon-stroke-width: calc(#{$stroke} / #{$scaleFactor});
+
         &,
         * {
           stroke-width: calc(#{$stroke} / #{$scaleFactor});
