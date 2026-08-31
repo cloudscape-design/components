@@ -264,7 +264,7 @@
   flex: 1;
 
   &.with-paddings {
-    padding-block: awsui.$space-scaled-l;
+    padding-block: awsui.$space-container-content-vertical;
     padding-inline: awsui.$space-container-horizontal;
 
     &.with-header {
