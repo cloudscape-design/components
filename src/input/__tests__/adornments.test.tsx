@@ -143,6 +143,11 @@ describe('prefix and suffix adornments', () => {
       expect(container).toHaveClass(styles['input-adorned-container-invalid']);
     });
 
+    test('keeps the warning modifier when disabled', () => {
+      const container = getContainer({ disabled: true, warning: true });
+      expect(container).toHaveClass(styles['input-adorned-container-disabled']);
+      expect(container).toHaveClass(styles['input-adorned-container-warning']);
+    });
     test('adds the readonly modifier when readOnly and not disabled', () => {
       const container = getContainer({ readOnly: true });
       expect(container).toHaveClass(styles['input-adorned-container-readonly']);
