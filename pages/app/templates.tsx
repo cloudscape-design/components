@@ -10,6 +10,8 @@ import messages from '~components/i18n/messages/all.all';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea, { ScreenshotAreaProps } from '../utils/screenshot-area';
 
+import simplePageStyles from './simple-page.scss';
+
 interface SimplePageProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
@@ -22,7 +24,7 @@ interface SimplePageProps {
 
 export function SimplePage({ title, subtitle, settings, children, screenshotArea, i18n, iframe }: SimplePageProps) {
   let content = (
-    <div className="page">
+    <div className={simplePageStyles['simple-page']}>
       <SpaceBetween size="m">
         <SpaceBetween size="xs">
           <Box variant="h1">{title}</Box>
