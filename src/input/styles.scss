@@ -296,6 +296,10 @@
 
 .inline-label {
   @include forms.inline-label;
+
+  &-disabled {
+    @include forms.inline-label-disabled;
+  }
 }
 
 .input-adorned-container {
