@@ -24,3 +24,7 @@ export function usePortalModeClasses(ref: React.RefObject<HTMLElement>, options?
     [`awsui-context-${context}`]: context && !options?.resetVisualContext,
   });
 }
+
+export function useOneThemePortalClass() {
+  return useOneTheme() ? 'awsui-one-theme' : '';
+}

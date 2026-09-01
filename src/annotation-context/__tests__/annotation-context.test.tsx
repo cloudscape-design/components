@@ -261,6 +261,25 @@ test('trigger should have aria-expanded depending on open state', () => {
   expect(hotspot.findTrigger().getElement().getAttribute('aria-expanded')).toBe('false');
 });
 
+test('propagates one-theme class to the portaled annotation when one theme is active', () => {
+  const themeRoot = document.createElement('div');
+  themeRoot.className = 'awsui-one-theme';
+  document.body.appendChild(themeRoot);
+
+  try {
+    const { wrapper } = renderAnnotationContext(<Hotspot hotspotId="first-hotspot" />);
+    expect(wrapper.findAnnotation()!.findContent().getElement().closest('.awsui-one-theme')).not.toBeNull();
+  } finally {
+    themeRoot.remove();
+  }
+});
+
+test('does not stamp one-theme class on the portaled annotation when one theme is inactive', () => {
+  const { wrapper } = renderAnnotationContext(<Hotspot hotspotId="first-hotspot" />);
+
+  expect(wrapper.findAnnotation()!.findContent().getElement().closest('.awsui-one-theme')).toBeNull();
+});
+
 test('annotation should have be labeled by header and step counter', () => {
   const { wrapper } = renderAnnotationContext(
     <>

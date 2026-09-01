@@ -99,4 +99,37 @@ describe('Tooltip', () => {
     expect(keydownEvent.stopPropagation).toHaveBeenCalled();
     expect(onDismiss).toHaveBeenCalled();
   });
+
+  it('propagates one-theme class to the portaled tooltip when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    try {
+      render(
+        <>
+          <div ref={trackRef} />
+          <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+        </>
+      );
+
+      expect(createWrapper().findByClassName(tooltipStyles.root)!.getElement()).toHaveClass('awsui-one-theme');
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  it('does not stamp one-theme class on the portaled tooltip when one theme is inactive', () => {
+    const trackRef = React.createRef<HTMLDivElement>();
+
+    render(
+      <>
+        <div ref={trackRef} />
+        <Tooltip trackRef={trackRef} value="Value" onDismiss={() => {}} />
+      </>
+    );
+
+    expect(createWrapper().findByClassName(tooltipStyles.root)!.getElement()).not.toHaveClass('awsui-one-theme');
+  });
 });

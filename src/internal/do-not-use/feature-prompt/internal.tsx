@@ -13,6 +13,7 @@ import { getBaseProps } from '../../base-component';
 import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { useOneThemePortalClass } from '../../hooks/use-portal-mode-classes';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { FeaturePromptProps } from './interfaces';
 
@@ -42,6 +43,7 @@ function InternalFeaturePrompt(
   const [show, setShow] = useState(false);
 
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
+  const portalClasses = useOneThemePortalClass();
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {
@@ -89,40 +91,42 @@ function InternalFeaturePrompt(
     <span {...baseProps} className={styles.root} ref={__internalRootRef}>
       {show && (
         <Portal>
-          <ResetContextsForModal>
-            <PopoverContainer
-              size={size}
-              fixedWidth={false}
-              position={position}
-              getTrack={getTrack}
-              trackKey={trackKey}
-              variant="annotation"
-              arrow={position => <Arrow position={position} variant="info" />}
-              zIndex={7000}
-              renderWithPortal={true}
-            >
-              <PopoverBody
-                ref={popoverBodyRef}
-                dismissButton={true}
-                dismissAriaLabel={i18nStrings?.dismissAriaLabel}
-                header={header}
-                onDismiss={method => {
-                  setShow(false);
-                  fireNonCancelableEvent(onDismiss, { method });
-                }}
-                onBlur={event => {
-                  if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
-                    setShow(false);
-                    fireNonCancelableEvent(onDismiss, { method: 'blur' });
-                  }
-                }}
-                variant="feature-prompt"
-                overflowVisible="content"
+          <span className={portalClasses}>
+            <ResetContextsForModal>
+              <PopoverContainer
+                size={size}
+                fixedWidth={false}
+                position={position}
+                getTrack={getTrack}
+                trackKey={trackKey}
+                variant="annotation"
+                arrow={position => <Arrow position={position} variant="info" />}
+                zIndex={7000}
+                renderWithPortal={true}
               >
-                {content}
-              </PopoverBody>
-            </PopoverContainer>
-          </ResetContextsForModal>
+                <PopoverBody
+                  ref={popoverBodyRef}
+                  dismissButton={true}
+                  dismissAriaLabel={i18nStrings?.dismissAriaLabel}
+                  header={header}
+                  onDismiss={method => {
+                    setShow(false);
+                    fireNonCancelableEvent(onDismiss, { method });
+                  }}
+                  onBlur={event => {
+                    if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                      setShow(false);
+                      fireNonCancelableEvent(onDismiss, { method: 'blur' });
+                    }
+                  }}
+                  variant="feature-prompt"
+                  overflowVisible="content"
+                >
+                  {content}
+                </PopoverBody>
+              </PopoverContainer>
+            </ResetContextsForModal>
+          </span>
         </Portal>
       )}
     </span>

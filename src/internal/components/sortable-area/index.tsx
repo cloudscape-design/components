@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
+import { useOneThemePortalClass } from '../../hooks/use-portal-mode-classes';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -37,6 +38,7 @@ export default function SortableArea<Item>({
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
   const portalContainer = usePortalContainer();
+  const portalClasses = useOneThemePortalClass();
   return (
     <DndContext
       sensors={sensors}
@@ -84,7 +86,11 @@ export default function SortableArea<Item>({
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
         <DragOverlay
-          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`])}
+          className={clsx(
+            portalClasses,
+            styles['drag-overlay'],
+            styles[`drag-overlay-${getBorderRadiusVariant(itemDefinition)}`]
+          )}
           dropAnimation={null}
           style={{ zIndex: 5000 }}
           transition={isKeyboard.current ? 'transform 250ms' : ''}
