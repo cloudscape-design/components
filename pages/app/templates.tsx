@@ -22,7 +22,7 @@ interface SimplePageProps {
 
 export function SimplePage({ title, subtitle, settings, children, screenshotArea, i18n, iframe }: SimplePageProps) {
   let content = (
-    <Box margin="m">
+    <div className="page">
       <SpaceBetween size="m">
         <SpaceBetween size="xs">
           <Box variant="h1">{title}</Box>
@@ -44,7 +44,7 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
           <Box>{children}</Box>
         )}
       </SpaceBetween>
-    </Box>
+    </div>
   );
 
   content = i18n ? (
