@@ -39,3 +39,8 @@ body {
 :global(#app) {
   background-color: tokens.$color-background-container-content;
 }
+
+.page {
+  margin-block: tokens.$space-scaled-m;
+  margin-block: tokens.$space-static-m;
+}
