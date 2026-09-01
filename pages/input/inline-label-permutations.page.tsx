@@ -4,9 +4,9 @@ import React from 'react';
 
 import Input, { InputProps } from '~components/input';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<InputProps>([
   {
@@ -29,23 +29,20 @@ const permutations = createPermutations<InputProps>([
 
 export default function InputInlineLabelPermutations() {
   return (
-    <>
-      <h1>Input inlineLabelText permutations</h1>
-      <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => (
-            <Input
-              ariaLabel="Input field"
-              clearAriaLabel="Clear"
-              onChange={() => {
-                /*empty handler to suppress react controlled property warning*/
-              }}
-              {...permutation}
-            />
-          )}
-        />
-      </ScreenshotArea>
-    </>
+    <PermutationsPage title="Input inlineLabelText permutations">
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <Input
+            ariaLabel="Input field"
+            clearAriaLabel="Clear"
+            onChange={() => {
+              /*empty handler to suppress react controlled property warning*/
+            }}
+            {...permutation}
+          />
+        )}
+      />
+    </PermutationsPage>
   );
 }
