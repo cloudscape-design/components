@@ -1,0 +1,42 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  background: awsui.$color-background-container-content;
+}
+
+.scroll-container {
+  position: relative;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: auto;
+  inline-size: 100%;
+}
+
+.body-scroller {
+  overflow-x: auto;
+}
+
+.table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+.table-auto {
+  table-layout: auto;
+}
+
+// Grid mode lays the table out as blocks so the inline grid-template-columns govern widths.
+.table-grid {
+  display: block;
+}

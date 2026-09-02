@@ -1,0 +1,56 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.header-cell {
+  position: relative;
+  // Override the user-agent `th { text-align: center }` default.
+  text-align: start;
+  vertical-align: middle;
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  @include styles.font-smoothing;
+  line-height: awsui.$line-height-heading-xs;
+  padding-block: calc(2 * #{awsui.$space-scaled-xxs});
+  padding-inline: awsui.$space-scaled-l;
+  box-sizing: border-box;
+}
+
+.header-cell-grid {
+  min-inline-size: 0;
+}
+
+.header-cell::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  margin-block: auto;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - (2 * #{awsui.$space-xs} + #{awsui.$space-xxxs}));
+  inline-size: 0;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.header-cell:last-child::after {
+  display: none;
+}
+
+.header-cell:first-child {
+  padding-inline-start: awsui.$space-xxxs;
+}
+
+// Opt out of the built-in padding so the consumer can compose exact spacing (e.g. a selection
+// control). The `:first-child` compound overrides the reduced first-column start padding above.
+.header-cell.disable-paddings,
+.header-cell.disable-paddings:first-child {
+  padding-block: 0;
+  padding-inline: 0;
+}

@@ -34,6 +34,10 @@ const componentsWithExceptions = [
   'annotation-context',
   'icon-provider',
   'error-boundary',
+  // table-body pluralizes to "TableBodies" (y->ies), which this test's `findAll${Pascal}.*` name
+  // derivation can't reconstruct (same as error-boundary -> ErrorBoundaries). The finder itself is
+  // generated and used elsewhere; only this generic finder-iteration test can't address it.
+  'table-body',
   'tooltip',
   ...componentWithMultipleRootElements,
 ];

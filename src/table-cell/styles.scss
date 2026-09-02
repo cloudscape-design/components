@@ -1,0 +1,32 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.cell {
+  vertical-align: middle;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
+  box-sizing: border-box;
+}
+
+// Lets grid columns shrink below their content size. Truncation/wrapping is deferred, so no
+// `overflow`/`text-overflow` here — clipping the cell would crop the focus ring of an interactive
+// control (checkbox, radio, link) inside it.
+.cell-grid {
+  min-inline-size: 0;
+}
+
+.cell:first-child {
+  padding-inline-start: awsui.$space-xxxs;
+}
+
+// Opt out of the built-in padding so the consumer can compose exact spacing (e.g. a selection
+// control). The `:first-child` compound overrides the reduced first-column start padding above.
+.cell.disable-paddings,
+.cell.disable-paddings:first-child {
+  padding-block: 0;
+  padding-inline: 0;
+}
