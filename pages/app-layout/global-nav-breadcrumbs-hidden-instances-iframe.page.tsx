@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
 import BreadcrumbGroup from '~components/breadcrumb-group';
+import Button from '~components/button';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import { breadcrumbs as breadcrumbsPlugin, GlobalBreadcrumbs } from '~components/plugins';
@@ -21,7 +22,8 @@ import appLayoutLabels from './utils/labels';
 // What to watch: the global consumer must show the VISIBLE instance's trail only. A hidden instance
 // stops publishing because AppLayoutVisibilityContext (driven by intersection) turns its breadcrumbs
 // registration off, so page 2 -- which passes no breadcrumbs -- must leave the header empty rather
-// than showing a stale trail from the hidden page 1.
+// than showing a stale trail from the hidden page 1. Unmount the header and App Layout resumes
+// drawing the visible instance's trail itself.
 
 const CONSUMER_ID = 'demo-global-nav-hidden-instances';
 
@@ -107,11 +109,18 @@ const ROUTES: Array<{ navLink: SideNavigationProps.Link; View: React.ComponentTy
 
 export default function GlobalNavBreadcrumbsHiddenInstancesPage() {
   const [activeHref, setActiveHref] = useState('page1');
+  const [navHeaderMounted, setNavHeaderMounted] = useState(true);
   const openPagesHistory = useRef<Set<string>>(new Set([activeHref]));
 
   return (
     <ScreenshotArea gutters={false}>
-      <GlobalNavigationHeader />
+      {/* Kept outside the header so the consumer can be unmounted and remounted. */}
+      <div style={{ padding: '8px 16px' }}>
+        <Button data-testid="toggle-nav-header" onClick={() => setNavHeaderMounted(mounted => !mounted)}>
+          {navHeaderMounted ? 'Unmount' : 'Mount'} global nav header
+        </Button>
+      </div>
+      {navHeaderMounted && <GlobalNavigationHeader />}
       <AppLayout
         {...{ __disableRuntimeDrawers: true }}
         data-testid="main-layout"
