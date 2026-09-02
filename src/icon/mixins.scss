@@ -1,7 +1,5 @@
-/*
- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- SPDX-License-Identifier: Apache-2.0
-*/
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 @use 'sass:map';
 @use '../internal/styles' as styles;
@@ -90,6 +88,10 @@ $_icon-sizes: (
       }
 
       > svg {
+        // Exposed for hover motion that compensates stroke width while scaling
+        // parts (see hover-motion.scss).
+        --awsui-internal-style-icon-stroke-width: calc(#{$stroke} / #{$scaleFactor});
+
         &,
         * {
           stroke-width: calc(#{$stroke} / #{$scaleFactor});

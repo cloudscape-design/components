@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-const { mapValues } = require('lodash');
-const { getTokenVersions } = require('../token-versions');
+import { mapValues } from 'lodash';
+
+import { getTokenVersions } from '../../style-dictionary/utils/token-versions';
 
 const variablesMap = {
   borderRadiusButton: 'border-radius-button',

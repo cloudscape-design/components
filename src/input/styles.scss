@@ -278,6 +278,17 @@
     );
   }
 
+  // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
+  &.input-adorned-container-disabled {
+    @include styles.form-disabled-element(
+      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
+      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+  }
+
   &.input-adorned-container-invalid {
     @include styles.form-invalid-control(
       $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
@@ -304,16 +315,6 @@
     &:focus-within {
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
-  }
-
-  &.input-adorned-container-disabled {
-    @include styles.form-disabled-element(
-      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
-      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
-      $cursor: default
-    );
-    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
   }
 }
 
