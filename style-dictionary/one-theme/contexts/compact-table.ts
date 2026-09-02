@@ -4,12 +4,29 @@ import merge from 'lodash/merge.js';
 
 import { expandDensityDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
+import { tokens as parentTokens } from '../spacing.js';
 
-const tokens: StyleDictionary.SpacingDictionary = {
-  spaceButtonFocusOutlineGutter: { comfortable: '4px', compact: '3px' },
-  spaceTableCellVertical: { comfortable: '4px', compact: '2px' },
+const spacingTokens: StyleDictionary.SpacingDictionary = {
+  spaceScaledXxxs: '{spaceNone}',
+  spaceScaledXxs: '{spaceXxxs}',
+  spaceScaledXs: '{spaceXxs}',
+  spaceScaledS: '{spaceXs}',
+  spaceScaledM: '{spaceS}',
+  spaceScaledL: '{spaceM}',
+  spaceScaledXl: '{spaceL}',
+  spaceScaledXxl: '{spaceXl}',
+  spaceScaledXxxl: '{spaceXxl}',
+
+  spaceExpandToggleFocusOutlineGutter: '3px',
+  spaceTableCellVertical: '2px',
 };
 
-const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(merge({}, tokens));
+const sizeTokens: StyleDictionary.SizesDictionary = {
+  sizeVerticalInput: '28px',
+};
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
+  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens })
+);
 
 export { expandedTokens as tokens };
