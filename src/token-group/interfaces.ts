@@ -19,9 +19,19 @@ export interface TokenGroupProps extends BaseComponentProps {
   limit?: number;
 
   /**
-   * Specifies the direction in which tokens are aligned (`horizontal | vertical`).
+   * Specifies the direction in which tokens are aligned.
+   * - `horizontal` (default): tokens wrap to multiple rows.
+   * - `vertical`: tokens stack vertically.
+   * - `horizontal-scroll`: tokens stay on a single row and overflow horizontally.
    */
   alignment?: TokenGroupProps.Alignment;
+
+  /**
+   * Visual variant for all tokens in the group.
+   * - `normal`: compact visual representation of an individual item or data point.
+   * - `inline`: slimmer token designed to fit smaller amount of content inline.
+   */
+  variant?: TokenGroupProps.Variant;
 
   /**
    * Removes any outer padding from the component.
@@ -68,7 +78,8 @@ export interface TokenGroupProps extends BaseComponentProps {
 }
 
 export namespace TokenGroupProps {
-  export type Alignment = 'horizontal' | 'vertical';
+  export type Alignment = 'horizontal' | 'vertical' | 'horizontal-scroll';
+  export type Variant = 'normal' | 'inline';
   export interface Item {
     label?: string;
     disabled?: boolean;

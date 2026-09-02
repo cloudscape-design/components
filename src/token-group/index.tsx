@@ -13,9 +13,20 @@ import InternalTokenGroup from './internal';
 
 export { TokenGroupProps };
 
-export default function TokenGroup({ items = [], alignment = 'horizontal', ...props }: TokenGroupProps) {
+export default function TokenGroup({
+  items = [],
+  alignment = 'horizontal',
+  variant = 'normal',
+  ...props
+}: TokenGroupProps) {
   const baseComponentProps = useBaseComponent('TokenGroup', {
-    props: { alignment, disableOuterPadding: props.disableOuterPadding, limit: props.limit, readOnly: props.readOnly },
+    props: {
+      alignment,
+      variant,
+      disableOuterPadding: props.disableOuterPadding,
+      limit: props.limit,
+      readOnly: props.readOnly,
+    },
   });
 
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenGroupComponent = {
@@ -30,6 +41,7 @@ export default function TokenGroup({ items = [], alignment = 'horizontal', ...pr
     <InternalTokenGroup
       items={items}
       alignment={alignment}
+      variant={variant}
       {...props}
       {...baseComponentProps}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}

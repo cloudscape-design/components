@@ -8,14 +8,23 @@
 @use '../../../file-token-group/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+$token-gap: awsui.$space-xs;
+
 .root {
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
     display: flex;
-    gap: awsui.$space-xs;
+    gap: $token-gap;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+  &.horizontal-scroll {
+    display: flex;
+    gap: $token-gap;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-inline-size: max-content;
   }
   &.vertical {
     display: flex;
@@ -34,18 +43,23 @@
   &.horizontal,
   &.vertical {
     display: flex;
-    gap: awsui.$space-xs;
+    gap: $token-gap;
   }
   &.horizontal {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+  &.horizontal-scroll {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-inline-size: max-content;
   }
   &.vertical {
     flex-direction: column;
   }
   &.grid {
     display: grid;
-    gap: awsui.$space-xs;
+    gap: $token-gap;
     grid-template-columns: repeat(auto-fill, constants.$compact-token-width);
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {

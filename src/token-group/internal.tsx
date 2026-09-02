@@ -36,6 +36,7 @@ export default function InternalTokenGroup({
   limitShowMoreAriaLabel,
   readOnly,
   isItemReadOnly,
+  variant = 'normal',
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -80,7 +81,7 @@ export default function InternalTokenGroup({
               setNextFocusIndex(itemIndex);
             }}
             readOnly={readOnly || isItemReadOnly?.(item)}
-            variant={'normal'}
+            variant={variant}
             icon={
               item.iconName || item.iconUrl || item.iconSvg ? (
                 <InternalIcon
@@ -88,7 +89,7 @@ export default function InternalTokenGroup({
                   svg={item.iconSvg}
                   url={item.iconUrl}
                   ariaLabel={item.iconAlt}
-                  size={'normal'}
+                  size={variant === 'inline' ? 'small' : 'normal'}
                 />
               ) : undefined
             }

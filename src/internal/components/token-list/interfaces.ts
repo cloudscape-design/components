@@ -4,7 +4,7 @@
 import React from 'react';
 
 export interface TokenListProps<Item> {
-  alignment: 'vertical' | 'horizontal' | 'inline' | 'horizontal-grid';
+  alignment: 'vertical' | 'horizontal' | 'inline' | 'horizontal-grid' | 'horizontal-scroll';
   items: readonly Item[];
   limit?: number;
   after?: React.ReactNode;
