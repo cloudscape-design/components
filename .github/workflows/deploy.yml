@@ -9,6 +9,10 @@ permissions:
   id-token: write
   actions: read
   contents: read
+  # Granted so the called visual-regression.yml (which declares `statuses: read`
+  # to look up the override commit status) stays within the caller's permission
+  # envelope. Without it, the reusable workflow call fails at startup.
+  statuses: read
   deployments: write
 
 jobs:
