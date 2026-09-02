@@ -55,17 +55,22 @@ export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: Bread
   const isSSR = typeof window === 'undefined';
 
   return (
-    <BreadcrumbsSlotContext.Provider value={breadcrumbsSlotContextValue}>
+    <>
+      {/* Render slot-provided breadcrumbs outside the toolbar context so a passed <BreadcrumbGroup>
+          self-registers with the global breadcrumbs channel. This lets an external host (e.g. the
+          Global Navigation header) consume them; the component hides itself once a consumer takes over. */}
       <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
-      {discoveredBreadcrumbs && !isSSR && (
-        <div className={styles['breadcrumbs-discovered']}>
-          <BreadcrumbGroupImplementation
-            {...discoveredBreadcrumbs}
-            data-awsui-discovered-breadcrumbs={true}
-            __injectAnalyticsComponentMetadata={true}
-          />
-        </div>
-      )}
-    </BreadcrumbsSlotContext.Provider>
+      <BreadcrumbsSlotContext.Provider value={breadcrumbsSlotContextValue}>
+        {discoveredBreadcrumbs && !isSSR && (
+          <div className={styles['breadcrumbs-discovered']}>
+            <BreadcrumbGroupImplementation
+              {...discoveredBreadcrumbs}
+              data-awsui-discovered-breadcrumbs={true}
+              __injectAnalyticsComponentMetadata={true}
+            />
+          </div>
+        )}
+      </BreadcrumbsSlotContext.Provider>
+    </>
   );
 }

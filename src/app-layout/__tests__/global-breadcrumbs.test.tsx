@@ -10,7 +10,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { metrics } from '../../../lib/components/internal/metrics';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
 
@@ -90,6 +90,18 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
     expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
+  });
+
+  test('external consumer receives breadcrumbs passed to the App Layout breadcrumbs slot', async () => {
+    const received: Array<BreadcrumbGroupProps | null> = [];
+    const unsubscribe = awsuiPlugins.breadcrumbs.onBreadcrumbsChange(crumbs => received.push(crumbs));
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+
+    const latest = received[received.length - 1];
+    expect(latest?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+
+    unsubscribe();
   });
 
   test('no relocation happens on the initial render', () => {
