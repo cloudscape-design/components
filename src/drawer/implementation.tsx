@@ -17,6 +17,7 @@ import { getAllFocusables, isFocusable } from '../internal/components/focus-lock
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -60,9 +61,11 @@ export function DrawerImplementation({
 }: DrawerInternalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const portalModeRef = useRef<HTMLSpanElement>(null);
   const returnFocusTargetRef = useRef<HTMLElement | null>(null);
 
   const baseProps = getBaseProps(restProps);
+  const portalClasses = usePortalModeClasses(portalModeRef, { resetVisualContext: true });
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
   const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });
@@ -84,7 +87,8 @@ export function DrawerImplementation({
       isToolbar && styles['with-toolbar'],
       !!footer && styles['with-footer'],
       closeAction && !hideCloseAction && styles['has-close-action'],
-      positionStyles.className
+      positionStyles.className,
+      position === 'fixed' && portalClasses
     ),
   };
 
@@ -226,7 +230,14 @@ export function DrawerImplementation({
     </div>
   );
 
-  return position === 'fixed' ? <Portal>{drawer}</Portal> : drawer;
+  return position === 'fixed' ? (
+    <>
+      <span hidden={true} ref={portalModeRef} />
+      <Portal>{drawer}</Portal>
+    </>
+  ) : (
+    drawer
+  );
 }
 
 export const createWidgetizedDrawer = createWidgetizedComponent(DrawerImplementation);
