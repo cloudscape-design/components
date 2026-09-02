@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import type { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
 import { NonCancelableEventHandler } from '../../../types/events';
 
@@ -190,6 +191,29 @@ export type FeatureNotificationsPayloadPublic<T> = Omit<
   '__persistFeatureNotifications' | '__retrieveFeatureNotifications'
 >;
 
+/**
+ * Breadcrumbs a surface other than App Layout can render. Narrowed from BreadcrumbGroupProps so the
+ * contract is not coupled to every future prop, and excludes anything a different owner cannot draw
+ * (refs, analytics internals). `onFollow` and `onClick` travel with it because they belong to the
+ * page that declared the trail.
+ */
+export type GlobalBreadcrumbs = Pick<
+  BreadcrumbGroupProps,
+  'items' | 'ariaLabel' | 'expandAriaLabel' | 'onFollow' | 'onClick'
+>;
+
+export interface BreadcrumbsConsumerPayload {
+  id: string;
+  /**
+   * Called with the current breadcrumbs as soon as the consumer is registered (or null if there are
+   * none), then on every change. While a consumer is registered App Layout stops drawing its own copy.
+   */
+  onBreadcrumbsChange: (breadcrumbs: GlobalBreadcrumbs | null) => void;
+}
+
+export type RegisterBreadcrumbsConsumerMessage = Message<'registerBreadcrumbsConsumer', BreadcrumbsConsumerPayload>;
+export type DeregisterBreadcrumbsConsumerMessage = Message<'deregisterBreadcrumbsConsumer', { id: string }>;
+
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type RegisterFeatureNotificationsMessage<T> = Message<
   'registerFeatureNotifications',
@@ -220,11 +244,15 @@ export type AppLayoutUpdateMessage<T = unknown> =
   | CloseDrawerMessage
   | ResizeDrawerMessage
   | ExpandDrawerMessage
+  | DeregisterBreadcrumbsConsumerMessage
   | ExitExpandedModeMessage
   | RegisterFeatureNotificationsMessage<T>
   | ShowFeaturePromptIfPossible
   | ClearFeatureNotifications;
 
-export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
+export type InitialMessage<T> =
+  | RegisterDrawerMessage
+  | RegisterFeatureNotificationsMessage<T>
+  | RegisterBreadcrumbsConsumerMessage;
 
 export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;

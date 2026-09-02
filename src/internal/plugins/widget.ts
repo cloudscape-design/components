@@ -6,6 +6,8 @@ export {
   registerLeftDrawer,
   registerBottomDrawer,
   registerFeatureNotifications,
+  registerBreadcrumbsConsumer,
+  deregisterBreadcrumbsConsumer,
   updateDrawer,
   showFeaturePromptIfPossible,
   clearFeatureNotifications,

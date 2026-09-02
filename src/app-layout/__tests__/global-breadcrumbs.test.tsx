@@ -10,7 +10,8 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { metrics } from '../../../lib/components/internal/metrics';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { registerBreadcrumbsConsumer } from '../../../lib/components/internal/plugins/widget';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
 
@@ -92,16 +93,40 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
   });
 
-  test('external consumer receives breadcrumbs passed to the App Layout breadcrumbs slot', async () => {
+  test('widget-registered consumer receives breadcrumbs passed to the App Layout breadcrumbs slot', async () => {
     const received: Array<BreadcrumbGroupProps | null> = [];
-    const unsubscribe = awsuiPlugins.breadcrumbs.onBreadcrumbsChange(crumbs => received.push(crumbs));
+    const deregister = registerBreadcrumbsConsumer({
+      id: 'test-consumer',
+      onBreadcrumbsChange: crumbs => received.push(crumbs),
+    });
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
     await delay();
 
     const latest = received[received.length - 1];
     expect(latest?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
 
-    unsubscribe();
+    deregister();
+  });
+
+  test('App Layout yields its slot breadcrumbs while a widget consumer is registered, without duplicating', async () => {
+    const received: Array<BreadcrumbGroupProps | null> = [];
+    const deregister = registerBreadcrumbsConsumer({
+      id: 'yield-consumer',
+      onBreadcrumbsChange: crumbs => received.push(crumbs),
+    });
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+
+    // The consumer owns rendering, so App Layout draws neither its own copy nor a discovered one.
+    expect(received[received.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+    expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+
+    // Rendering returns to App Layout once the consumer goes away.
+    deregister();
+    await delay();
+    expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
   });
 
   test('no relocation happens on the initial render', () => {

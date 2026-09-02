@@ -5,9 +5,12 @@ import { getExternalProps } from '../../utils/external-props';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
+  BreadcrumbsConsumerPayload,
+  DeregisterBreadcrumbsConsumerMessage,
   DrawerPayload,
   FeatureNotificationsPayload,
   FeatureNotificationsPayloadPublic,
+  RegisterBreadcrumbsConsumerMessage,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
   WidgetMessage,
@@ -55,6 +58,37 @@ export function showFeaturePromptIfPossible() {
 
 export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
+}
+
+/**
+ * Registers a consumer that draws App Layout's breadcrumbs somewhere else -- for example a global
+ * navigation header owning the page header in its own React root and bundle.
+ *
+ * The callback is invoked with the current breadcrumbs as soon as App Layout picks the registration
+ * up (or null if there are none), then on every change. App Layout stops drawing its own copy while
+ * a consumer is registered, so exactly one trail is present at a time.
+ *
+ * Returns a function that deregisters the consumer, so it can be used directly as an effect cleanup.
+ */
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload) {
+  const message: RegisterBreadcrumbsConsumerMessage = { type: 'registerBreadcrumbsConsumer', payload };
+  pushInitialMessage(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+  return () => deregisterBreadcrumbsConsumer(payload.id);
+}
+
+/**
+ * Removes a previously registered breadcrumbs consumer, returning rendering to App Layout.
+ */
+export function deregisterBreadcrumbsConsumer(id: string) {
+  const initialMessages = getAppLayoutInitialMessages();
+  setInitialMessage(
+    initialMessages.filter(
+      initialMessage => !(initialMessage.type === 'registerBreadcrumbsConsumer' && initialMessage.payload.id === id)
+    )
+  );
+  const message: DeregisterBreadcrumbsConsumerMessage = { type: 'deregisterBreadcrumbsConsumer', payload: { id } };
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
 /**

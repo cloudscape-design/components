@@ -10,9 +10,29 @@ export interface BreadcrumbsGlobalRegistration<T> {
   cleanup(): void;
 }
 
+export interface RegisterBreadcrumbsOptions {
+  /**
+   * The instance already renders in the position App Layout would draw it (the toolbar slot).
+   * It publishes its props for external consumers, but App Layout must not draw a second copy,
+   * and it only yields when an external consumer takes over rendering.
+   */
+  ownedByAppLayoutSlot?: boolean;
+}
+
+interface BreadcrumbsEntry<T> {
+  props: T;
+  onRegistered: RegistrationCallback;
+  ownedByAppLayoutSlot: boolean;
+}
+
 export interface BreadcrumbsApiInternal<T> {
   registerAppLayout: (changeCallback: ChangeCallback<T>) => (() => void) | void;
-  registerBreadcrumbs: (props: T, onRegistered: RegistrationCallback) => BreadcrumbsGlobalRegistration<T>;
+  registerBreadcrumbs: (
+    props: T,
+    onRegistered: RegistrationCallback,
+    options?: RegisterBreadcrumbsOptions
+  ) => BreadcrumbsGlobalRegistration<T>;
+  onBreadcrumbsChange: (changeCallback: ChangeCallback<T>) => () => void;
   hasExternalConsumer: () => boolean;
   getStateForTesting: () => {
     appLayoutUpdateCallback: ChangeCallback<T> | null;
@@ -21,28 +41,31 @@ export interface BreadcrumbsApiInternal<T> {
   };
 }
 
-// Public, versioned consumer API. A standalone chrome surface (e.g. the console Global
-// Navigation header) subscribes to the current breadcrumbs and renders them itself; App
-// Layout auto-yields while any external consumer is registered.
-export interface BreadcrumbsApiPublic<T> {
-  onBreadcrumbsChange: (changeCallback: ChangeCallback<T>) => () => void;
-}
-
 export class BreadcrumbsController<T> {
   #appLayoutUpdateCallback: ChangeCallback<T> | null = null;
-  #breadcrumbInstances: Array<{ props: T }> = [];
-  #breadcrumbRegistrations: Array<RegistrationCallback> = [];
+  #entries: Array<BreadcrumbsEntry<T>> = [];
   #externalConsumers: Array<ChangeCallback<T>> = [];
 
-  #latestProps = (): T | null => this.#breadcrumbInstances[this.#breadcrumbInstances.length - 1]?.props ?? null;
+  // External consumers see every registered trail, including the one App Layout renders itself.
+  #latestProps = (): T | null => this.#entries[this.#entries.length - 1]?.props ?? null;
 
-  // App Layout is the fallback renderer: it receives the latest breadcrumbs, or null (yield)
-  // whenever an external consumer owns rendering.
+  // App Layout only draws trails it is not already rendering through its own slot.
+  #latestDiscoverableProps = (): T | null => {
+    for (let i = this.#entries.length - 1; i >= 0; i--) {
+      if (!this.#entries[i].ownedByAppLayoutSlot) {
+        return this.#entries[i].props;
+      }
+    }
+    return null;
+  };
+
+  // App Layout is the fallback renderer: it receives the latest discoverable breadcrumbs, or null
+  // (yield) whenever an external consumer owns rendering.
   #notifyAppLayout = debounce(() => {
     if (!this.#appLayoutUpdateCallback) {
       return;
     }
-    this.#appLayoutUpdateCallback(this.hasExternalConsumer() ? null : this.#latestProps());
+    this.#appLayoutUpdateCallback(this.hasExternalConsumer() ? null : this.#latestDiscoverableProps());
   }, 0);
 
   #notifyExternalConsumers = debounce(() => {
@@ -50,11 +73,14 @@ export class BreadcrumbsController<T> {
     this.#externalConsumers.forEach(consumer => consumer(latestBreadcrumb));
   }, 0);
 
-  // Producers (<BreadcrumbGroup>) yield when any consumer -- App Layout or an external host --
-  // is registered.
+  // Producers hide themselves once something else draws their trail. A slot-owned instance is
+  // already in the right place, so it only yields to an external consumer.
   #notifyBreadcrumbs = debounce(() => {
-    const hasConsumer = !!this.#appLayoutUpdateCallback || this.hasExternalConsumer();
-    this.#breadcrumbRegistrations.forEach(listener => listener(hasConsumer));
+    const hasAppLayout = !!this.#appLayoutUpdateCallback;
+    const hasExternal = this.hasExternalConsumer();
+    this.#entries.forEach(entry => {
+      entry.onRegistered(entry.ownedByAppLayoutSlot ? hasExternal : hasAppLayout || hasExternal);
+    });
   }, 0);
 
   hasExternalConsumer = () => this.#externalConsumers.length > 0;
@@ -71,31 +97,36 @@ export class BreadcrumbsController<T> {
     };
   };
 
-  registerBreadcrumbs = (props: T, onRegistered: RegistrationCallback): BreadcrumbsGlobalRegistration<T> => {
-    const instance = { props: props };
-    this.#breadcrumbInstances.push(instance);
-    this.#breadcrumbRegistrations.push(onRegistered);
+  registerBreadcrumbs = (
+    props: T,
+    onRegistered: RegistrationCallback,
+    options: RegisterBreadcrumbsOptions = {}
+  ): BreadcrumbsGlobalRegistration<T> => {
+    const entry: BreadcrumbsEntry<T> = {
+      props,
+      onRegistered,
+      ownedByAppLayoutSlot: options.ownedByAppLayoutSlot ?? false,
+    };
+    this.#entries.push(entry);
     this.#notifyBreadcrumbs();
     this.#notifyAppLayout();
     this.#notifyExternalConsumers();
     return {
       update: props => {
-        instance.props = props;
+        entry.props = props;
         this.#notifyAppLayout();
         this.#notifyExternalConsumers();
       },
       cleanup: () => {
-        this.#breadcrumbInstances.splice(this.#breadcrumbInstances.indexOf(instance), 1);
-        this.#breadcrumbRegistrations.splice(this.#breadcrumbRegistrations.indexOf(onRegistered), 1);
+        this.#entries.splice(this.#entries.indexOf(entry), 1);
         this.#notifyAppLayout();
         this.#notifyExternalConsumers();
       },
     };
   };
 
-  // Public consumer registration. Fires immediately with the current value (last-value replay),
-  // then on every change; returns an unsubscribe function. Registering an external consumer makes
-  // App Layout yield.
+  // Consumer registration. Fires immediately with the current value (last-value replay), then on
+  // every change; returns an unsubscribe function. While a consumer is registered App Layout yields.
   onBreadcrumbsChange = (changeCallback: ChangeCallback<T>) => {
     this.#externalConsumers.push(changeCallback);
     changeCallback(this.#latestProps());
@@ -111,19 +142,15 @@ export class BreadcrumbsController<T> {
   getStateForTesting = () => {
     return {
       appLayoutUpdateCallback: this.#appLayoutUpdateCallback,
-      breadcrumbInstances: this.#breadcrumbInstances,
-      breadcrumbRegistrations: this.#breadcrumbRegistrations,
+      breadcrumbInstances: this.#entries.map(({ props }) => ({ props })),
+      breadcrumbRegistrations: this.#entries.map(({ onRegistered }) => onRegistered),
     };
   };
-
-  installPublic(api: Partial<BreadcrumbsApiPublic<T>> = {}): BreadcrumbsApiPublic<T> {
-    api.onBreadcrumbsChange ??= this.onBreadcrumbsChange;
-    return api as BreadcrumbsApiPublic<T>;
-  }
 
   installInternal(internalApi: Partial<BreadcrumbsApiInternal<T>> = {}): BreadcrumbsApiInternal<T> {
     internalApi.registerBreadcrumbs ??= this.registerBreadcrumbs;
     internalApi.registerAppLayout ??= this.registerAppLayout;
+    internalApi.onBreadcrumbsChange ??= this.onBreadcrumbsChange;
     internalApi.hasExternalConsumer ??= this.hasExternalConsumer;
     internalApi.getStateForTesting ??= this.getStateForTesting;
 

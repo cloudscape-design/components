@@ -22,16 +22,23 @@ function useSetGlobalBreadcrumbsImplementation({
   const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
-    if (isInToolbar || __disableGlobalization || !isLayoutVisible) {
+    if (__disableGlobalization || !isLayoutVisible) {
       return;
     }
-    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered => {
-      setRegistered(isRegistered ?? true);
-      if (isRegistered) {
-        const breadcrumbs = props.items.map(item => item.text).join(' > ');
-        metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
-      }
-    });
+    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(
+      props,
+      isRegistered => {
+        setRegistered(isRegistered ?? true);
+        if (isRegistered) {
+          const breadcrumbs = props.items.map(item => item.text).join(' > ');
+          metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
+        }
+      },
+      // In the toolbar slot the component already renders where App Layout would draw it. It still
+      // publishes so external consumers can read it, but App Layout must not draw a second copy and
+      // it only hides itself once an external consumer takes over.
+      { ownedByAppLayoutSlot: !!isInToolbar }
+    );
     registrationRef.current = registration;
 
     return () => {

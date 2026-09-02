@@ -7,19 +7,21 @@ import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Container from '~components/container';
 import Header from '~components/header';
-import { awsuiPlugins, GlobalBreadcrumbs } from '~components/internal/plugins/api';
+import { breadcrumbs as breadcrumbsPlugin, GlobalBreadcrumbs } from '~components/plugins';
 import SpaceBetween from '~components/space-between';
 
 import labels from './utils/labels';
 
 // Simulates the console Global Navigation module hosting App Layout breadcrumbs in its own
-// header. It consumes the public `awsuiPlugins.breadcrumbs` channel and renders its own
+// header. It consumes the public `breadcrumbs.registerConsumer` widget API and renders its own
 // BreadcrumbGroup in sink mode (__disableGlobalization) so this render never re-registers.
+
+const CONSUMER_ID = 'demo-global-nav-single';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
   // Fires immediately with the current value, then on every change; returns the unsubscribe fn.
-  useEffect(() => awsuiPlugins.breadcrumbs.onBreadcrumbsChange(next => setCrumbs(next)), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ id: CONSUMER_ID, onBreadcrumbsChange: setCrumbs }), []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<
     typeof BreadcrumbGroup

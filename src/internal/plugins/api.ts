@@ -8,19 +8,12 @@ import {
   AlertFlashContentController,
 } from './controllers/alert-flash-content';
 import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
-import { BreadcrumbsApiInternal, BreadcrumbsApiPublic, BreadcrumbsController } from './controllers/breadcrumbs';
+import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
 import { reportRuntimeApiLoadMetric } from './helpers/metrics';
 
 const storageKey = Symbol.for('awsui-plugin-api');
-
-// Public payload for the breadcrumbs consumer API. Narrowed from BreadcrumbGroupProps so the
-// contract isn't coupled to every future prop, and excludes fields a different owner can't re-render.
-export type GlobalBreadcrumbs = Pick<
-  BreadcrumbGroupProps,
-  'items' | 'ariaLabel' | 'expandAriaLabel' | 'onFollow' | 'onClick'
->;
 
 interface AwsuiApi {
   awsuiPlugins: {
@@ -29,7 +22,6 @@ interface AwsuiApi {
     alertContent: AlertFlashContentApiPublic;
     flashbar: ActionsApiPublic;
     flashContent: AlertFlashContentApiPublic;
-    breadcrumbs: BreadcrumbsApiPublic<BreadcrumbGroupProps>;
   };
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
@@ -112,7 +104,6 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   api.awsuiPluginsInternal.flashbar = flashbarActions.installInternal(api.awsuiPluginsInternal.flashbar);
 
   const breadcrumbs = new BreadcrumbsController<BreadcrumbGroupProps>();
-  api.awsuiPlugins.breadcrumbs = breadcrumbs.installPublic(api.awsuiPlugins.breadcrumbs);
   api.awsuiPluginsInternal.breadcrumbs = breadcrumbs.installInternal(api.awsuiPluginsInternal.breadcrumbs);
 
   const sharedReactContexts = new SharedReactContexts();
