@@ -278,6 +278,7 @@
     );
   }
 
+  // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
   &.input-adorned-container-disabled {
     @include styles.form-disabled-element(
       $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
