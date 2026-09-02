@@ -43,7 +43,7 @@ tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
   builder.addTokens(tokens, mode);
 });
 
-builder.addContext(createCompactTableContext((await import('../visual-refresh/contexts/compact-table.js')).tokens));
+builder.addContext(createCompactTableContext((await import('./contexts/compact-table.js')).tokens));
 builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
 builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
 builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
