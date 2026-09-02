@@ -4,8 +4,10 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../../button/internal';
+import { IconProps } from '../../../icon/interfaces';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 
@@ -55,6 +57,16 @@ export function AppLayoutNavigationImplementation({
     }
   };
 
+  const getNavIconName = (): IconProps.Name => {
+    if (isMobile) {
+      return 'close';
+    }
+    if (isThemeActive(Theme.OneTheme)) {
+      return 'side-bar';
+    }
+    return navigationCollapsed ? 'angle-right' : 'angle-left';
+  };
+
   return (
     <div
       className={clsx(styles['navigation-container'], sharedStyles['with-motion-horizontal'], {
@@ -90,7 +102,7 @@ export function AppLayoutNavigationImplementation({
                 : (ariaLabels?.navigationClose ?? undefined)
             }
             ariaExpanded={navigationCollapsible && !isMobile ? navigationOpen : undefined}
-            iconName={navigationCollapsed ? 'angle-right' : isMobile ? 'close' : 'angle-left'}
+            iconName={getNavIconName()}
             onClick={() => onNavigationToggle(navigationCollapsible ? !navigationOpen : false)}
             variant="icon"
             formAction="none"
