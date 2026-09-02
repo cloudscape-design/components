@@ -34,12 +34,13 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
+        await page.keys([horizontalKey, 'ArrowDown', horizontalKey]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
     },
@@ -65,12 +66,13 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         // Focus and close the filtering select
         await page.click(TEST_CHART_FILTER_TRIGGER);
         await page.keys(['Escape']);
         await page.focusNextElement();
-        await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
+        await page.keys([horizontalKey, 'ArrowDown', horizontalKey]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
         await page.keys(['Enter']);
         await page.waitForVisible('[aria-label="Dismiss"]');
@@ -97,11 +99,12 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           configuration: { width: 800, height: 1000 },
           queryParams: { expandableSubItems: 'true' },
-          setup: async ({ page, wrapper }) => {
+          setup: async ({ page, wrapper, configuration }) => {
+            const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
             const popoverSelector = wrapper.findLineChart().findDetailPopover().toSelector();
             await page.click('#focus-target');
             await page.focusNextElement(); // Focus chart
-            await page.keys(['ArrowRight']); // Focus first x coordinate
+            await page.keys([horizontalKey]); // Focus first x coordinate
             await page.waitForVisible(popoverSelector);
           },
         },
@@ -111,11 +114,12 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           configuration: { width: 800, height: 1000 },
           queryParams: { expandableSubItems: 'true' },
-          setup: async ({ page, wrapper }) => {
+          setup: async ({ page, wrapper, configuration }) => {
+            const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
             const popoverSelector = wrapper.findLineChart().findDetailPopover().toSelector();
             await page.click('#focus-target');
             await page.focusNextElement(); // Focus chart
-            await page.keys(['ArrowRight']); // Focus first x coordinate
+            await page.keys([horizontalKey]); // Focus first x coordinate
             await page.waitForVisible(popoverSelector);
             await page.keys(['Tab']); // Focus expandable section in popover
             await page.keys(['Enter']); // Expand
@@ -127,11 +131,12 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           configuration: { width: 800, height: 1000 },
           queryParams: { expandableSubItems: 'true' },
-          setup: async ({ page, wrapper }) => {
+          setup: async ({ page, wrapper, configuration }) => {
+            const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
             const popoverSelector = wrapper.findLineChart().findDetailPopover().toSelector();
             await page.click('#focus-target');
             await page.focusNextElement(); // Focus chart
-            await page.keys(['ArrowRight']); // Focus first x coordinate
+            await page.keys([horizontalKey]); // Focus first x coordinate
             await page.keys(['ArrowUp']); // Focus first series
             await page.waitForVisible(popoverSelector);
           },
@@ -142,11 +147,12 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           configuration: { width: 800, height: 1000 },
           queryParams: { expandableSubItems: 'true' },
-          setup: async ({ page, wrapper }) => {
+          setup: async ({ page, wrapper, configuration }) => {
+            const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
             const popoverSelector = wrapper.findLineChart().findDetailPopover().toSelector();
             await page.click('#focus-target');
             await page.focusNextElement(); // Focus chart
-            await page.keys(['ArrowRight']); // Focus first x coordinate
+            await page.keys([horizontalKey]); // Focus first x coordinate
             await page.keys(['ArrowUp']); // Focus first series
             await page.waitForVisible(popoverSelector);
             await page.keys(['Tab']); // Focus expandable section in popover
