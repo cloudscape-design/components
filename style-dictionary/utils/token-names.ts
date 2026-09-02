@@ -1167,6 +1167,7 @@ export type SpacingTokenName =
   | 'spaceAlertMessageRight'
   | 'spaceAlertVertical'
   | 'spaceButtonFocusOutlineGutter'
+  | 'spaceExpandToggleFocusOutlineGutter'
   | 'spaceButtonHorizontal'
   | 'spaceButtonVertical'
   | 'spaceTokenVertical'
