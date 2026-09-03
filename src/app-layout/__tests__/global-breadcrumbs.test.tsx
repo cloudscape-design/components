@@ -96,7 +96,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
   test('widget-registered consumer receives breadcrumbs passed to the App Layout breadcrumbs slot', async () => {
     const received: Array<BreadcrumbGroupProps | null> = [];
-    const deregister = registerBreadcrumbsConsumer({
+    const { unregister } = registerBreadcrumbsConsumer({
       onBreadcrumbsChange: crumbs => received.push(crumbs),
     });
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
@@ -105,12 +105,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     const latest = received[received.length - 1];
     expect(latest?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
 
-    deregister();
+    unregister();
   });
 
   test('App Layout yields its slot breadcrumbs while a widget consumer is registered, without duplicating', async () => {
     const received: Array<BreadcrumbGroupProps | null> = [];
-    const deregister = registerBreadcrumbsConsumer({
+    const { unregister } = registerBreadcrumbsConsumer({
       onBreadcrumbsChange: crumbs => received.push(crumbs),
     });
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
@@ -122,32 +122,33 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
 
     // Rendering returns to App Layout once the consumer goes away.
-    deregister();
+    unregister();
     await delay();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
     expect(findDiscoveredBreadcrumbs()).toBeFalsy();
   });
 
-  test('a second consumer replaces the first, and the first cleanup does not deregister it', async () => {
+  test('a second consumer is refused and cannot take rendering from the first', async () => {
     const first: Array<BreadcrumbGroupProps | null> = [];
     const second: Array<BreadcrumbGroupProps | null> = [];
-    const deregisterFirst = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => first.push(crumbs) });
+    const owner = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => first.push(crumbs) });
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
     await delay();
 
-    const deregisterSecond = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => second.push(crumbs) });
+    const refused = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => second.push(crumbs) });
     await delay();
 
-    // The replaced consumer is told to stop drawing; the new one gets the trail.
-    expect(first[first.length - 1]).toBeNull();
-    expect(second[second.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+    expect(owner.registered).toBe(true);
+    expect(refused.registered).toBe(false);
+    expect(first[first.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+    expect(second).toHaveLength(0);
 
-    // A stale cleanup must not hand rendering back while the live consumer still owns it.
-    deregisterFirst();
+    // The refused registration must not hand rendering back while the owner still holds it.
+    refused.unregister();
     await delay();
     expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
 
-    deregisterSecond();
+    owner.unregister();
     await delay();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
   });
@@ -175,11 +176,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
 
       const received: Array<BreadcrumbGroupProps | null> = [];
-      const deregister = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => received.push(crumbs) });
+      const { unregister } = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => received.push(crumbs) });
       await delay();
 
       expect(received[received.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
-      deregister();
+      unregister();
     });
   });
 

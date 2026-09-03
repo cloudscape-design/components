@@ -28,7 +28,7 @@ import appLayoutLabels from './utils/labels';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }).unregister, []);
 
   // Sink mode: without this the consumer's own group would self-register and collapse to a skeleton.
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<

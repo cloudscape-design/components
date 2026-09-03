@@ -33,10 +33,10 @@ describe('BreadcrumbsController public consumer API', () => {
     const controller = new BreadcrumbsController<TestProps>();
     expect(controller.hasExternalConsumer()).toBe(false);
 
-    const unsubscribe = controller.onBreadcrumbsChange(() => {});
+    const { unregister } = controller.onBreadcrumbsChange(() => {});
     expect(controller.hasExternalConsumer()).toBe(true);
 
-    unsubscribe();
+    unregister();
     expect(controller.hasExternalConsumer()).toBe(false);
   });
 
@@ -60,11 +60,11 @@ describe('BreadcrumbsController public consumer API', () => {
     jest.runOnlyPendingTimers();
     expect(appLayout).toHaveBeenLastCalledWith({ id: 'a' });
 
-    const unsubscribe = controller.onBreadcrumbsChange(() => {});
+    const { unregister } = controller.onBreadcrumbsChange(() => {});
     jest.runOnlyPendingTimers();
     expect(appLayout).toHaveBeenLastCalledWith(null);
 
-    unsubscribe();
+    unregister();
     jest.runOnlyPendingTimers();
     expect(appLayout).toHaveBeenLastCalledWith({ id: 'a' });
   });
@@ -140,12 +140,12 @@ describe('BreadcrumbsController with multiple producers', () => {
     expect(onAlphaRegistered).toHaveBeenLastCalledWith(false);
     expect(onBetaRegistered).toHaveBeenLastCalledWith(false);
 
-    const unsubscribe = controller.onBreadcrumbsChange(() => {});
+    const { unregister } = controller.onBreadcrumbsChange(() => {});
     jest.runOnlyPendingTimers();
     expect(onAlphaRegistered).toHaveBeenLastCalledWith(true);
     expect(onBetaRegistered).toHaveBeenLastCalledWith(true);
 
-    unsubscribe();
+    unregister();
     jest.runOnlyPendingTimers();
     expect(onAlphaRegistered).toHaveBeenLastCalledWith(false);
     expect(onBetaRegistered).toHaveBeenLastCalledWith(false);
@@ -156,34 +156,54 @@ describe('BreadcrumbsController with multiple external consumers', () => {
   beforeEach(() => jest.useFakeTimers());
   afterEach(() => jest.useRealTimers());
 
-  test('a second consumer replaces the first, which is told to stop drawing', () => {
+  test('a second consumer is ignored and never receives breadcrumbs', () => {
     const controller = new BreadcrumbsController<TestProps>();
     const first = jest.fn();
     const second = jest.fn();
-    controller.onBreadcrumbsChange(first);
+    const firstRegistration = controller.onBreadcrumbsChange(first);
+    const secondRegistration = controller.onBreadcrumbsChange(second);
+
     controller.registerBreadcrumbs({ id: 'a' }, () => {});
     jest.runOnlyPendingTimers();
+
+    expect(firstRegistration.registered).toBe(true);
+    expect(secondRegistration.registered).toBe(false);
     expect(first).toHaveBeenLastCalledWith({ id: 'a' });
-
-    controller.onBreadcrumbsChange(second);
-    jest.runOnlyPendingTimers();
-
-    expect(first).toHaveBeenLastCalledWith(null);
-    expect(second).toHaveBeenLastCalledWith({ id: 'a' });
+    expect(second).not.toHaveBeenCalled();
   });
 
-  test('a replaced consumer stops receiving updates', () => {
+  test('an ignored consumer cannot unregister the one that owns rendering', () => {
     const controller = new BreadcrumbsController<TestProps>();
-    const replaced = jest.fn();
-    const current = jest.fn();
-    controller.onBreadcrumbsChange(replaced);
-    controller.onBreadcrumbsChange(current);
+    const appLayout = jest.fn();
+    controller.registerAppLayout(appLayout);
+    controller.registerBreadcrumbs({ id: 'a' }, () => {});
+
+    const owner = controller.onBreadcrumbsChange(() => {});
+    const ignored = controller.onBreadcrumbsChange(() => {});
+    jest.runOnlyPendingTimers();
+    expect(appLayout).toHaveBeenLastCalledWith(null);
+
+    ignored.unregister();
+    jest.runOnlyPendingTimers();
+    expect(controller.hasExternalConsumer()).toBe(true);
+    expect(appLayout).toHaveBeenLastCalledWith(null);
+
+    owner.unregister();
+    jest.runOnlyPendingTimers();
+    expect(appLayout).toHaveBeenLastCalledWith({ id: 'a' });
+  });
+
+  test('registration is available again once the owner unregisters', () => {
+    const controller = new BreadcrumbsController<TestProps>();
+    const first = controller.onBreadcrumbsChange(() => {});
+    first.unregister();
+
+    const next = jest.fn();
+    expect(controller.onBreadcrumbsChange(next).registered).toBe(true);
 
     controller.registerBreadcrumbs({ id: 'a' }, () => {});
     jest.runOnlyPendingTimers();
-
-    expect(current).toHaveBeenLastCalledWith({ id: 'a' });
-    expect(replaced).not.toHaveBeenCalledWith({ id: 'a' });
+    expect(next).toHaveBeenLastCalledWith({ id: 'a' });
   });
 
   test('a late subscriber gets the current value replayed', () => {
@@ -194,26 +214,5 @@ describe('BreadcrumbsController with multiple external consumers', () => {
     const late = jest.fn();
     controller.onBreadcrumbsChange(late);
     expect(late).toHaveBeenCalledWith({ id: 'a' });
-  });
-
-  test('a superseded unsubscribe does not hand rendering back', () => {
-    const controller = new BreadcrumbsController<TestProps>();
-    const appLayout = jest.fn();
-    controller.registerAppLayout(appLayout);
-    controller.registerBreadcrumbs({ id: 'a' }, () => {});
-
-    const unsubscribeFirst = controller.onBreadcrumbsChange(() => {});
-    const unsubscribeSecond = controller.onBreadcrumbsChange(() => {});
-    jest.runOnlyPendingTimers();
-    expect(appLayout).toHaveBeenLastCalledWith(null);
-
-    unsubscribeFirst();
-    jest.runOnlyPendingTimers();
-    expect(controller.hasExternalConsumer()).toBe(true);
-    expect(appLayout).toHaveBeenLastCalledWith(null);
-
-    unsubscribeSecond();
-    jest.runOnlyPendingTimers();
-    expect(appLayout).toHaveBeenLastCalledWith({ id: 'a' });
   });
 });

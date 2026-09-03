@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getExternalProps } from '../../utils/external-props';
+import { reportRuntimeApiWarning } from '../helpers/metrics';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
   BreadcrumbsConsumerPayload,
+  BreadcrumbsConsumerRegistration,
   DeregisterBreadcrumbsConsumerMessage,
   DrawerPayload,
   FeatureNotificationsPayload,
@@ -60,31 +62,40 @@ export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
 }
 
-// Identifies the live registration so a superseded one's cleanup can be ignored.
-let currentConsumerToken: object | null = null;
+// Identifies the live registration so a stale unregister can be ignored.
+let activeConsumer: object | null = null;
 
 /**
  * Registers the surface that draws global breadcrumbs outside App Layout. The callback receives the
  * current trail on registration (or null), then on every change, and App Layout stops drawing its own
- * copy meanwhile. Drawing is exclusive, so registering replaces any active consumer.
+ * copy meanwhile.
  *
- * Returns the unsubscribe function -- the only way to deregister, usable directly as an effect
- * cleanup. It is inert once superseded.
+ * Drawing is exclusive: if a consumer is already registered this one is ignored with a warning and
+ * `registered` is false, so the caller can tell it did not win and draw nothing. `unregister` is safe
+ * to use as an effect cleanup in both cases.
  */
-export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload) {
-  const token = {};
-  currentConsumerToken = token;
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
+  if (activeConsumer) {
+    reportRuntimeApiWarning(
+      'breadcrumbs',
+      'A breadcrumbs consumer is already registered. This registration is ignored.'
+    );
+    return { registered: false, unregister: () => {} };
+  }
+  const consumer = {};
+  activeConsumer = consumer;
   const message: RegisterBreadcrumbsConsumerMessage = { type: 'registerBreadcrumbsConsumer', payload };
-  // Single consumer, so a queued registration is replaced rather than stacked.
-  setInitialMessage(getAppLayoutInitialMessages().filter(m => m.type !== 'registerBreadcrumbsConsumer'));
   pushInitialMessage(message);
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
-  return () => {
-    if (currentConsumerToken !== token) {
-      return;
-    }
-    currentConsumerToken = null;
-    deregisterBreadcrumbsConsumer();
+  return {
+    registered: true,
+    unregister: () => {
+      if (activeConsumer !== consumer) {
+        return;
+      }
+      activeConsumer = null;
+      deregisterBreadcrumbsConsumer();
+    },
   };
 }
 

@@ -14,12 +14,12 @@ import { BreadcrumbsConsumerPayload, WidgetMessage } from '../../../internal/plu
  * Returns a handler that reports whether it consumed the message.
  */
 export function useBreadcrumbsConsumers() {
-  const dispose = useRef<(() => void) | null>(null);
+  const unregister = useRef<(() => void) | null>(null);
 
   useEffect(
     () => () => {
-      dispose.current?.();
-      dispose.current = null;
+      unregister.current?.();
+      unregister.current = null;
     },
     []
   );
@@ -27,16 +27,17 @@ export function useBreadcrumbsConsumers() {
   return useCallback((message: WidgetMessage) => {
     if (message.type === 'registerBreadcrumbsConsumer') {
       const { onBreadcrumbsChange } = message.payload as BreadcrumbsConsumerPayload;
-      // Registered without disposing the previous subscription first, so the controller can apply its
-      // replace policy and tell the outgoing consumer to stop drawing. The superseded disposer is
-      // inert, so dropping it here leaks nothing.
-      dispose.current = awsuiPluginsInternal.breadcrumbs.onBreadcrumbsChange(onBreadcrumbsChange);
+      // The controller refuses a second consumer and warns; keep the live registration in that case.
+      const registration = awsuiPluginsInternal.breadcrumbs.onBreadcrumbsChange(onBreadcrumbsChange);
+      if (registration.registered) {
+        unregister.current = registration.unregister;
+      }
       return true;
     }
 
     if (message.type === 'deregisterBreadcrumbsConsumer') {
-      dispose.current?.();
-      dispose.current = null;
+      unregister.current?.();
+      unregister.current = null;
       return true;
     }
 

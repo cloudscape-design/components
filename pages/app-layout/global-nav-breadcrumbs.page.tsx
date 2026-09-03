@@ -19,8 +19,9 @@ import labels from './utils/labels';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
-  // Fires immediately with the current value, then on every change; returns the unsubscribe fn.
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
+  // Fires immediately with the current value, then on every change. `registered` is false if another
+  // consumer already owns rendering.
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }).unregister, []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<
     typeof BreadcrumbGroup

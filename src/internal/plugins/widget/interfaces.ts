@@ -202,11 +202,20 @@ export type GlobalBreadcrumbs = Pick<
   'items' | 'ariaLabel' | 'expandAriaLabel' | 'onFollow' | 'onClick'
 >;
 
+export interface BreadcrumbsConsumerRegistration {
+  /**
+   * False when another consumer already owns rendering. The callback is never invoked in that case and
+   * unregister does nothing, so the surface should not draw breadcrumbs.
+   */
+  registered: boolean;
+  unregister: () => void;
+}
+
 export interface BreadcrumbsConsumerPayload {
   /**
    * Receives the current breadcrumbs on registration (or null), then on every change. App Layout stops
    * drawing its own copy meanwhile. Drawing is exclusive, so there is a single consumer and no id is
-   * needed to address it -- registering replaces any active consumer, which is called with null.
+   * needed to address it -- registering while another consumer is active is ignored with a warning.
    */
   onBreadcrumbsChange: (breadcrumbs: GlobalBreadcrumbs | null) => void;
 }

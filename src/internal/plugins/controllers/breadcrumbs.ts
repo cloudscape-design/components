@@ -4,6 +4,7 @@ import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
 import debounce from '../../debounce';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
+import { BreadcrumbsConsumerRegistration } from '../widget/interfaces';
 
 /**
  * Set by the console shell before either bundle evaluates, to declare that a surface outside App
@@ -50,7 +51,7 @@ export interface BreadcrumbsApiInternal<T> {
     onRegistered: RegistrationCallback,
     options?: RegisterBreadcrumbsOptions
   ) => BreadcrumbsGlobalRegistration<T>;
-  onBreadcrumbsChange: (changeCallback: ChangeCallback<T>) => () => void;
+  onBreadcrumbsChange: (changeCallback: ChangeCallback<T>) => BreadcrumbsConsumerRegistration;
   hasExternalConsumer: () => boolean;
   getStateForTesting: () => {
     appLayoutUpdateCallback: ChangeCallback<T> | null;
@@ -62,9 +63,9 @@ export interface BreadcrumbsApiInternal<T> {
 export class BreadcrumbsController<T> {
   #appLayoutUpdateCallback: ChangeCallback<T> | null = null;
   #entries: Array<BreadcrumbsEntry<T>> = [];
-  // Rendering the trail is exclusive, so there is at most one consumer. The token lets a superseded
-  // consumer's unsubscribe be ignored instead of clearing the live one.
-  #externalConsumer: { changeCallback: ChangeCallback<T>; token: object } | null = null;
+  // Rendering the trail is exclusive, so there is at most one consumer. Comparing the record makes a
+  // stale unsubscribe inert instead of clearing whoever holds it now.
+  #externalConsumer: { changeCallback: ChangeCallback<T> } | null = null;
 
   // External consumers see every registered trail, including the one App Layout renders itself.
   #latestProps = (): T | null => this.#entries[this.#entries.length - 1]?.props ?? null;
@@ -149,27 +150,30 @@ export class BreadcrumbsController<T> {
   // Single consumer: registering while another is active replaces it and tells it to stop drawing, so
   // a mount-before-unmount handover never leaves the trail nowhere. Replays the current value on
   // subscribe. The returned unsubscribe is inert once superseded.
-  onBreadcrumbsChange = (changeCallback: ChangeCallback<T>) => {
-    const token = {};
-    const previous = this.#externalConsumer;
-    if (previous) {
+  onBreadcrumbsChange = (changeCallback: ChangeCallback<T>): BreadcrumbsConsumerRegistration => {
+    if (this.#externalConsumer) {
       reportRuntimeApiWarning(
         'breadcrumbs',
-        'A breadcrumbs consumer is already registered. The previous consumer will be replaced.'
+        'A breadcrumbs consumer is already registered. This registration is ignored.'
       );
+      return { registered: false, unregister: () => {} };
     }
-    this.#externalConsumer = { changeCallback, token };
-    previous?.changeCallback(null);
+    const consumer = { changeCallback };
+    this.#externalConsumer = consumer;
     changeCallback(this.#latestProps());
     this.#notifyBreadcrumbs();
     this.#notifyAppLayout();
-    return () => {
-      if (this.#externalConsumer?.token !== token) {
-        return;
-      }
-      this.#externalConsumer = null;
-      this.#notifyBreadcrumbs();
-      this.#notifyAppLayout();
+    return {
+      registered: true,
+      unregister: () => {
+        // A stale unregister must not clear whoever holds rendering now.
+        if (this.#externalConsumer !== consumer) {
+          return;
+        }
+        this.#externalConsumer = null;
+        this.#notifyBreadcrumbs();
+        this.#notifyAppLayout();
+      },
     };
   };
 
