@@ -41,7 +41,28 @@ import copyToClipboardSuite from './visual/copy-to-clipboard';
 import dateInputSuite from './visual/date-input';
 import datePickerSuite from './visual/date-picker';
 import dateRangePickerSuite from './visual/date-range-picker';
+import dividerSuite from './visual/divider';
+import drawerSuite from './visual/drawer';
+import dropdownSuite from './visual/dropdown';
+import dropdownAlignmentSuite from './visual/dropdown-alignment';
+import errorBoundarySuite from './visual/error-boundary';
 import expandableSectionSuite from './visual/expandable-section';
+import fileDropzoneSuite from './visual/file-dropzone';
+import fileInputSuite from './visual/file-input';
+import fileTokenGroupSuite from './visual/file-token-group';
+import fileUploadSuite from './visual/file-upload';
+import flashbarSuite from './visual/flashbar';
+import flashbarStackedSuite from './visual/flashbar-stacked';
+import formSuite from './visual/form';
+import formFieldSuite from './visual/form-field';
+import gridSuite from './visual/grid';
+import headerSuite from './visual/header';
+import helpPanelSuite from './visual/help-panel';
+import iconSuite from './visual/icon';
+import inputSuite from './visual/input';
+import itemCardSuite from './visual/item-card';
+import keyValuePairsSuite from './visual/key-value-pairs';
+import lineChartSuite from './visual/line-chart';
 import tableSuite from './visual/table';
 
 // Per-component exports (grouped by component)
@@ -80,7 +101,27 @@ export const copyToClipboard: TestSuite[] = [copyToClipboardSuite];
 export const dateInput: TestSuite[] = [dateInputSuite];
 export const datePicker: TestSuite[] = [datePickerSuite];
 export const dateRangePicker: TestSuite[] = [dateRangePickerSuite];
+export const divider: TestSuite[] = [dividerSuite];
+export const drawer: TestSuite[] = [drawerSuite];
+export const dropdownAlignment: TestSuite[] = [dropdownAlignmentSuite];
+export const dropdown: TestSuite[] = [dropdownSuite];
+export const errorBoundary: TestSuite[] = [errorBoundarySuite];
 export const expandableSection: TestSuite[] = [expandableSectionSuite];
+export const fileDropzone: TestSuite[] = [fileDropzoneSuite];
+export const fileInput: TestSuite[] = [fileInputSuite];
+export const fileTokenGroup: TestSuite[] = [fileTokenGroupSuite];
+export const fileUpload: TestSuite[] = [fileUploadSuite];
+export const flashbar: TestSuite[] = [flashbarSuite, flashbarStackedSuite];
+export const form: TestSuite[] = [formSuite];
+export const formField: TestSuite[] = [formFieldSuite];
+export const grid: TestSuite[] = [gridSuite];
+export const header: TestSuite[] = [headerSuite];
+export const helpPanel: TestSuite[] = [helpPanelSuite];
+export const icon: TestSuite[] = [iconSuite];
+export const input: TestSuite[] = [inputSuite];
+export const itemCard: TestSuite[] = [itemCardSuite];
+export const keyValuePairs: TestSuite[] = [keyValuePairsSuite];
+export const lineChart: TestSuite[] = [lineChartSuite];
 export const table: TestSuite[] = [tableSuite];
 
 export const allSuites: TestSuite[] = [
@@ -107,6 +148,26 @@ export const allSuites: TestSuite[] = [
   ...dateInput,
   ...datePicker,
   ...dateRangePicker,
+  ...divider,
+  ...drawer,
+  ...dropdownAlignment,
+  ...dropdown,
+  ...errorBoundary,
   ...expandableSection,
+  ...fileDropzone,
+  ...fileInput,
+  ...fileTokenGroup,
+  ...fileUpload,
+  ...flashbar,
+  ...form,
+  ...formField,
+  ...grid,
+  ...header,
+  ...helpPanel,
+  ...icon,
+  ...input,
+  ...itemCard,
+  ...keyValuePairs,
+  ...lineChart,
   ...table,
 ];
