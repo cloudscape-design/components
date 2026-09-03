@@ -22,10 +22,29 @@ import { buildThemedComponents as themingCoreBuild } from '@cloudscape-design/th
 import { buildThemedComponents } from '../theming';
 
 describe('buildThemedComponents', () => {
-  test('passes stable website token versions to theming build', async () => {
+  test('does not pass website token versions by default', async () => {
     const theme = {} as any;
 
     await buildThemedComponents({ theme, outputDir: '/tmp/output', baseThemeId: 'visual-refresh' });
+
+    expect(themingCoreBuild).toHaveBeenCalledWith(
+      expect.objectContaining({
+        preset: {
+          ...preset,
+        },
+      })
+    );
+  });
+
+  test('passes stable website token versions when the feature flag is enabled', async () => {
+    const theme = {} as any;
+
+    await buildThemedComponents({
+      theme,
+      outputDir: '/tmp/output',
+      baseThemeId: 'visual-refresh',
+      useWebsiteTokenNamespace: true,
+    });
 
     expect(themingCoreBuild).toHaveBeenCalledWith(
       expect.objectContaining({
