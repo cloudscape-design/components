@@ -13,6 +13,7 @@ import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -130,6 +131,32 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    */
   findFilteringInput(): InputWrapper | null {
     return this.findOpenDropdown()?.findComponent(`.${inputStyles['input-container']}`, InputWrapper) ?? null;
+  }
+
+  /**
+   * Finds the error recovery button when item loading fails.
+   * Set `expandedGroupDropdown` to true to access the recovery button of an expanded group.
+   * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   */
+  findErrorRecoveryButton(options = { expandedGroupDropdown: false }): ElementWrapper | null {
+    let dropdown = this.findOpenDropdown();
+    if (options.expandedGroupDropdown && dropdown) {
+      dropdown = dropdown.find(`.${dropdownStyles.dropdown}[data-open=true]`);
+    }
+    return dropdown?.findByClassName(footerStyles.recovery) ?? null;
+  }
+
+  /**
+   * Finds the status displayed at the footer of the dropdown.
+   * Set `expandedGroupDropdown` to true to access the status of an expanded group.
+   * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   */
+  findStatusIndicator(options = { expandedGroupDropdown: false }): ElementWrapper | null {
+    let dropdown = this.findOpenDropdown();
+    if (options.expandedGroupDropdown && dropdown) {
+      dropdown = dropdown.find(`.${dropdownStyles.dropdown}[data-open=true]`);
+    }
+    return dropdown?.findByClassName(dropdownStatusStyles.root) ?? null;
   }
 
   /**
