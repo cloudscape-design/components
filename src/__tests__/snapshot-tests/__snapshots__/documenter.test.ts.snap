@@ -37954,6 +37954,84 @@ Options get highlighted when they match the value of the input field.",
       "name": "BarChartWrapper",
     },
     {
+      "methods": [
+        {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findLoadingText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "BasicTableWrapper",
+    },
+    {
       "methods": [],
       "name": "BoxWrapper",
     },
@@ -49940,6 +50018,69 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "BarChartWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findColumnHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeaderRow",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findLoadingText",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRowByIndex",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRows",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "BasicTableWrapper",
     },
     {
       "methods": [],
