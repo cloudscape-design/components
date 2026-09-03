@@ -7,10 +7,20 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
+@use '../internal/styles/typography/constants.scss' as constants;
 
 .root {
-  @include styles.default-text-style;
+  font-size: awsui.$font-size-table;
+  line-height: awsui.$table-line-height;
+  letter-spacing: awsui.$font-table-letter-spacing;
   inline-size: 100%;
+
+  // default styling from mixin default-text-style
+  color: awsui.$color-text-body-default;
+  font-weight: constants.$font-weight-normal;
+  font-family: awsui.$font-family-base;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 .tools {

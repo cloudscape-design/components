@@ -10,6 +10,9 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: { comfortable: '30px', compact: '26px' },
   sizeSideNavigationItemHeight: { comfortable: '30px', compact: '26px' },
   sizeSideNavigationItemCollapsed: { comfortable: '28px', compact: '26px' },
+  fontSizeTable: { comfortable: '{fontSizeBodyM}', compact: '{fontSizeBodyS}' },
+  tableLineHeight: { comfortable: '{lineHeightBodyM}', compact: '{lineHeightBodyS}' },
+  fontTableLetterSpacing: { comfortable: 'normal', compact: '{letterSpacingBodyS}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

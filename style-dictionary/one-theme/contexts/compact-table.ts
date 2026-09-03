@@ -17,12 +17,15 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxl: '{spaceXl}',
   spaceScaledXxxl: '{spaceXxl}',
 
-  spaceExpandToggleFocusOutlineGutter: '3px',
+  spaceExpandToggleFocusOutlineGutter: '1px',
   spaceTableCellVertical: '2px',
 };
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: '28px',
+  fontSizeTable: '{fontSizeBodyS}',
+  tableLineHeight: '{lineHeightBodyS}',
+  fontTableLetterSpacing: '{letterSpacingBodyS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
