@@ -196,6 +196,64 @@
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
+
+  // Inside a ControlGroup the input keeps its own border but fuses with its
+  // neighbors: interior corners are squared and the shared seam border is
+  // collapsed. A focused control raises above its neighbors so its focus ring
+  // is not clipped by the adjacent control.
+  &.input-in-control-group {
+    &:focus {
+      position: relative;
+      z-index: 1;
+    }
+  }
+  // Re-apply the fused corners at rest AND on focus, since the control's own
+  // focus styles otherwise restore all four corners at the full radius.
+  &.input-in-control-group-first {
+    @include styles.control-group-grouped('first');
+    &:focus {
+      @include styles.control-group-grouped('first');
+    }
+  }
+  &.input-in-control-group-middle {
+    @include styles.control-group-grouped('middle');
+    &:focus {
+      @include styles.control-group-grouped('middle');
+    }
+  }
+  &.input-in-control-group-last {
+    @include styles.control-group-grouped('last');
+    &:focus {
+      @include styles.control-group-grouped('last');
+    }
+  }
+}
+
+// Same grouped treatment for the adorned (prefix/suffix) container, which owns
+// the border when prefix/suffix are present.
+.input-adorned-container.input-adorned-container-in-control-group {
+  &:focus-within {
+    position: relative;
+    z-index: 1;
+  }
+  &.input-adorned-container-in-control-group-first {
+    @include styles.control-group-grouped('first');
+    &:focus-within {
+      @include styles.control-group-grouped('first');
+    }
+  }
+  &.input-adorned-container-in-control-group-middle {
+    @include styles.control-group-grouped('middle');
+    &:focus-within {
+      @include styles.control-group-grouped('middle');
+    }
+  }
+  &.input-adorned-container-in-control-group-last {
+    @include styles.control-group-grouped('last');
+    &:focus-within {
+      @include styles.control-group-grouped('last');
+    }
+  }
 }
 
 .input-container {

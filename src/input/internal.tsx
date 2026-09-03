@@ -14,6 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -140,6 +141,11 @@ function InternalInput(
     ? formFieldContext
     : rest;
 
+  // When inside a ControlGroup, this control keeps its own border but drops the
+  // radius and doubled border on the sides where it meets a neighbor, so the
+  // group reads as one fused unit. Its position decides which sides.
+  const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
@@ -170,6 +176,8 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      isInControlGroup && styles['input-in-control-group'],
+      isInControlGroup && controlGroupPosition && styles[`input-in-control-group-${controlGroupPosition}`],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -307,7 +315,11 @@ function InternalInput(
             invalid && styles['input-adorned-container-invalid'],
             warning && !invalid && styles['input-adorned-container-warning'],
             disabled && styles['input-adorned-container-disabled'],
-            readOnly && !disabled && styles['input-adorned-container-readonly']
+            readOnly && !disabled && styles['input-adorned-container-readonly'],
+            isInControlGroup && styles['input-adorned-container-in-control-group'],
+            isInControlGroup &&
+              controlGroupPosition &&
+              styles[`input-adorned-container-in-control-group-${controlGroupPosition}`]
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}

@@ -33,6 +33,7 @@ import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
 import ContentLayoutWrapper from './content-layout';
+import ControlGroupWrapper from './control-group';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
@@ -129,6 +130,7 @@ export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
 export { ContentLayoutWrapper };
+export { ControlGroupWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
@@ -875,6 +877,34 @@ findAllContentLayouts(selector?: string): Array<ContentLayoutWrapper>;
  * @returns {ContentLayoutWrapper | null}
  */
 findClosestContentLayout(): ContentLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first ControlGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ControlGroup.
+ * If no matching ControlGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ControlGroupWrapper | null}
+ */
+findControlGroup(selector?: string): ControlGroupWrapper | null;
+
+/**
+ * Returns an array of ControlGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ControlGroups inside the current wrapper.
+ * If no matching ControlGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ControlGroupWrapper>}
+ */
+findAllControlGroups(selector?: string): Array<ControlGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ControlGroup for the current element,
+ * or the element itself if it is an instance of ControlGroup.
+ * If no ControlGroup is found, returns \`null\`.
+ *
+ * @returns {ControlGroupWrapper | null}
+ */
+findClosestControlGroup(): ControlGroupWrapper | null;
 /**
  * Returns the wrapper of the first CopyToClipboard that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first CopyToClipboard.
@@ -3151,6 +3181,19 @@ ElementWrapper.prototype.findContentLayout = function(selector) {
 ElementWrapper.prototype.findAllContentLayouts = function(selector) {
   return this.findAllComponents(ContentLayoutWrapper, selector);
 };
+ElementWrapper.prototype.findControlGroup = function(selector) {
+  let rootSelector = \`.\${ControlGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ControlGroupWrapper && ControlGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ControlGroupWrapper.rootSelector}, .\${ControlGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ControlGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllControlGroups = function(selector) {
+  return this.findAllComponents(ControlGroupWrapper, selector);
+};
 ElementWrapper.prototype.findCopyToClipboard = function(selector) {
   let rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
   if("legacyRootSelector" in CopyToClipboardWrapper && CopyToClipboardWrapper.legacyRootSelector){
@@ -4182,6 +4225,11 @@ ElementWrapper.prototype.findClosestContentLayout = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(ContentLayoutWrapper);
 };
+ElementWrapper.prototype.findClosestControlGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ControlGroupWrapper);
+};
 ElementWrapper.prototype.findClosestCopyToClipboard = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4575,6 +4623,7 @@ import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
 import ContentLayoutWrapper from './content-layout';
+import ControlGroupWrapper from './control-group';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
@@ -4671,6 +4720,7 @@ export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
 export { ContentLayoutWrapper };
+export { ControlGroupWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
@@ -5153,6 +5203,23 @@ findContentLayout(selector?: string): ContentLayoutWrapper;
  * @returns {MultiElementWrapper<ContentLayoutWrapper>}
  */
 findAllContentLayouts(selector?: string): MultiElementWrapper<ContentLayoutWrapper>;
+/**
+ * Returns a wrapper that matches the ControlGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ControlGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ControlGroupWrapper}
+ */
+findControlGroup(selector?: string): ControlGroupWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ControlGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ControlGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ControlGroupWrapper>}
+ */
+findAllControlGroups(selector?: string): MultiElementWrapper<ControlGroupWrapper>;
 /**
  * Returns a wrapper that matches the CopyToClipboards with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches CopyToClipboards.
@@ -6658,6 +6725,19 @@ ElementWrapper.prototype.findContentLayout = function(selector) {
 
 ElementWrapper.prototype.findAllContentLayouts = function(selector) {
   return this.findAllComponents(ContentLayoutWrapper, selector);
+};
+ElementWrapper.prototype.findControlGroup = function(selector) {
+  let rootSelector = \`.\${ControlGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ControlGroupWrapper && ControlGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ControlGroupWrapper.rootSelector}, .\${ControlGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ControlGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllControlGroups = function(selector) {
+  return this.findAllComponents(ControlGroupWrapper, selector);
 };
 ElementWrapper.prototype.findCopyToClipboard = function(selector) {
   let rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
