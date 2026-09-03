@@ -1,0 +1,55 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: block;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // The group only lays the controls out; each control owns its own border and
+  // radius (and collapses the shared seams itself via ControlGroupContext), so
+  // the group does not shrink or stretch to a shared border box.
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+.control {
+  min-inline-size: 0;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.hints {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
+.description {
+  @include styles.form-control-description;
+}
+
+/*
+ * Responsiveness: on small screens the grouped controls go full-width and stack
+ * vertically. Each control's own seam styling switches from the inline axis to
+ * the block axis (handled per-control), so the group just changes direction.
+ */
+@media (max-width: styles.$breakpoint-x-small) {
+  .group {
+    flex-direction: column;
+    inline-size: 100%;
+  }
+
+  .control {
+    inline-size: 100%;
+  }
+}

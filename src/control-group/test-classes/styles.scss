@@ -3,12 +3,14 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-.constraint,
-.character-count,
-.hints,
-.error,
-.warning,
-.error-message,
-.warning-message {
+.control-group {
+  /* used in test-utils */
+}
+
+.control-group-item {
+  /* used in test-utils */
+}
+
+.description {
   /* used in test-utils */
 }
