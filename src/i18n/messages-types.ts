@@ -81,6 +81,8 @@ export interface I18nFormatArgTypes {
     };
     noMatch: never;
     'i18nStrings.filteringItemAriaDescription': never;
+    recoveryText: never;
+    errorIconAriaLabel: never;
   };
   calendar: {
     nextMonthAriaLabel: never;

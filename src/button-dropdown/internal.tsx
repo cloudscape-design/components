@@ -10,6 +10,7 @@ import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton, InternalButtonProps } from '../button/internal';
 import Dropdown from '../dropdown/internal';
+import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
@@ -32,6 +33,7 @@ import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces
 import ItemsList from './items-list';
 import { countLeafItems } from './utils/filter-items';
 import { useButtonDropdown } from './utils/use-button-dropdown';
+import { useLoadItems } from './utils/use-load-items';
 import { isLinkItem } from './utils/utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -76,6 +78,9 @@ const InternalButtonDropdown = React.forwardRef(
       filteringClearAriaLabel,
       filteringResultsText,
       noMatch,
+      onLoadItems,
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
       i18nStrings,
       compactTrigger,
       ariaDescribedby,
@@ -86,7 +91,7 @@ const InternalButtonDropdown = React.forwardRef(
     const isInRestrictedView = useMobile();
     const dropdownId = useUniqueId('dropdown');
     const menuId = useUniqueId('button-dropdown-menu');
-    const hasFiltering = filteringType === 'auto';
+    const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
     for (const item of items) {
       if (isLinkItem(item)) {
         checkSafeUrl('ButtonDropdown', item.href);
@@ -109,6 +114,24 @@ const InternalButtonDropdown = React.forwardRef(
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
     const isOneTheme = isThemeActive(Theme.OneTheme);
+
+    const i18n = useInternalI18n('button-dropdown');
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+    const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
+
+    if (isDevelopment) {
+      if (asyncLoadingProps?.recoveryText && !onLoadItems) {
+        warnOnce('ButtonDropdown', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+      }
+    }
+
+    const statusType = asyncLoadingProps?.statusType ?? 'finished';
+
+    const { fireLoadItems, handleLoadMore, handleRecoveryClick } = useLoadItems({
+      onLoadItems,
+      items,
+      statusType,
+    });
 
     const {
       isOpen,
@@ -139,7 +162,8 @@ const InternalButtonDropdown = React.forwardRef(
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
-      hasFiltering,
+      filteringType,
+      fireLoadItems,
     });
 
     const filterRef = useRef<HTMLInputElement>(null);
@@ -387,11 +411,22 @@ const InternalButtonDropdown = React.forwardRef(
     const matchesCount = useMemo(() => countLeafItems(filteredItems), [filteredItems]);
     const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
 
+    const isEmpty = !items || items.length === 0;
+
     const dropdownStatus = useDropdownStatus({
-      statusType: 'finished',
+      statusType,
+      empty: asyncLoadingProps?.empty?.(),
+      loadingText: asyncLoadingProps?.loadingText?.(),
+      finishedText: asyncLoadingProps?.finishedText?.(),
+      errorText: asyncLoadingProps?.errorText?.(),
+      recoveryText,
+      errorIconAriaLabel,
+      isEmpty,
       isNoMatch,
       noMatch,
       filteringResultsText: filteredText,
+      hasRecoveryCallback: !!onLoadItems,
+      onRecoveryClick: () => handleRecoveryClick(),
     });
 
     // Only create a filteringDescription element if filtering is actually enabled,
@@ -410,6 +445,7 @@ const InternalButtonDropdown = React.forwardRef(
         ref={filterRef}
         value={filteringValue}
         onChange={event => setFilteringValue(event.detail.value)}
+        __onDelayedInput={event => fireLoadItems(event.detail.value)}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         clearAriaLabel={filteringClearAriaLabel}
@@ -464,7 +500,7 @@ const InternalButtonDropdown = React.forwardRef(
           ariaRole={hasFiltering ? 'dialog' : undefined}
           ariaLabel={hasFiltering ? ariaLabel : undefined}
           footer={
-            dropdownStatus.content ? (
+            dropdownStatus.content && dropdownStatus.isSticky ? (
               <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={!isNoMatch} />
             ) : null
           }
@@ -503,6 +539,7 @@ const InternalButtonDropdown = React.forwardRef(
                 ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
                 ariaDescribedby={dropdownStatus.content ? footerId : undefined}
                 statusType="finished"
+                onLoadMore={handleLoadMore}
               >
                 <ItemsList
                   items={filteredItems}
@@ -525,8 +562,14 @@ const InternalButtonDropdown = React.forwardRef(
                   filteringEnabled={hasFiltering}
                   menuId={hasFiltering ? menuId : undefined}
                   filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
+                  asyncLoadingProps={asyncLoadingProps}
+                  getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+                  onLoadItems={onLoadItems}
                 />
               </OptionsList>
+              {dropdownStatus.content && !dropdownStatus.isSticky ? (
+                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={false} />
+              ) : null}
               {filteringDescriptionEl}
             </>
           }
