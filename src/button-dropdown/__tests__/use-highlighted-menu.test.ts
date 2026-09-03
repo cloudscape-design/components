@@ -3,6 +3,7 @@
 import { act, renderHook } from '../../__tests__/render-hook';
 import { ButtonDropdownProps } from '../interfaces';
 import useHighlightedMenu from '../utils/use-highlighted-menu';
+import { isItemGroup } from '../utils/utils';
 
 const itemGroup1: ButtonDropdownProps.ItemGroup = {
   text: 'category1',
@@ -32,8 +33,9 @@ const testItems2: ButtonDropdownProps.Items = [
 ];
 
 function render({ items = testItems, hasExpandableGroups = false, isInRestrictedView = false }) {
+  const isExpandable = (item: ButtonDropdownProps.ItemOrGroup) => hasExpandableGroups && isItemGroup(item);
   return renderHook(useHighlightedMenu, {
-    initialProps: { items, hasExpandableGroups, isInRestrictedView },
+    initialProps: { items, isExpandable, isInRestrictedView },
   });
 }
 

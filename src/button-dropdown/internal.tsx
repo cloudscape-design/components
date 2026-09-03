@@ -129,7 +129,7 @@ const InternalButtonDropdown = React.forwardRef(
       filteringValue,
       setFilteringValue,
       filteredItems,
-      showExpandableGroups,
+      isExpandable,
     } = useButtonDropdown({
       items,
       onItemClick,
@@ -508,7 +508,7 @@ const InternalButtonDropdown = React.forwardRef(
                   items={filteredItems}
                   onItemActivate={onItemActivate}
                   onGroupToggle={onGroupToggle}
-                  hasExpandableGroups={showExpandableGroups}
+                  isExpandable={isExpandable}
                   targetItem={targetItem}
                   isHighlighted={isHighlighted}
                   isKeyboardHighlight={isKeyboardHighlight}

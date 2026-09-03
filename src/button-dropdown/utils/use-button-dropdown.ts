@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
@@ -9,7 +9,7 @@ import { CancelableEventHandler } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import { filterItems } from './filter-items';
 import useHighlightedMenu from './use-highlighted-menu';
-import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
+import { getItemTarget, isCheckboxItem, isGroupExpandable, isItemGroup, isLinkItem } from './utils';
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
@@ -34,7 +34,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   filteringValue: string;
   setFilteringValue: (value: string) => void;
   filteredItems: ButtonDropdownProps.Items;
-  showExpandableGroups: boolean;
+  isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
 }
 
 export function useButtonDropdown({
@@ -54,7 +54,12 @@ export function useButtonDropdown({
     [hasFiltering, filteringValue, items]
   );
 
-  const showExpandableGroups = hasExpandableGroups && !filteringValue;
+  // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
+  // back to the dropdown-level `expandableGroups` default
+  const isExpandable = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => !filteringValue && isGroupExpandable(item, hasExpandableGroups),
+    [filteringValue, hasExpandableGroups]
+  );
 
   const {
     targetItem,
@@ -69,7 +74,7 @@ export function useButtonDropdown({
     setIsUsingMouse,
   } = useHighlightedMenu({
     items: filteredItems,
-    hasExpandableGroups: showExpandableGroups,
+    isExpandable,
     isInRestrictedView,
   });
 
@@ -233,7 +238,7 @@ export function useButtonDropdown({
         }
         if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
           expandGroup();
-        } else if (hasExpandableGroups) {
+        } else {
           collapseGroup();
         }
 
@@ -296,6 +301,6 @@ export function useButtonDropdown({
     filteringValue,
     setFilteringValue,
     filteredItems,
-    showExpandableGroups,
+    isExpandable,
   };
 }

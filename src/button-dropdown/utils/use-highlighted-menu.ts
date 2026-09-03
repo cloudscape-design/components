@@ -5,11 +5,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { ButtonDropdownProps, HighlightProps } from '../interfaces';
 import createItemsTree, { TreeIndex } from './create-items-tree';
 import moveHighlightOneStep from './move-highlight';
-import { indexEquals, indexIncludes } from './utils';
+import { indexEquals, indexIncludes, isItemGroup } from './utils';
 
 interface UseHighlightedMenuOptions {
   items: ButtonDropdownProps.Items;
-  hasExpandableGroups: boolean;
+  isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
   isInRestrictedView?: boolean;
 }
 
@@ -23,7 +23,7 @@ interface UseHighlightedMenuApi extends HighlightProps {
 
 export default function useHighlightedMenu({
   items,
-  hasExpandableGroups,
+  isExpandable,
   isInRestrictedView = false,
 }: UseHighlightedMenuOptions): UseHighlightedMenuApi {
   const [targetIndex, setTargetIndex] = useState<TreeIndex>([]);
@@ -60,6 +60,19 @@ export default function useHighlightedMenu({
     [expandedIndex, getItemIndex]
   );
 
+  // an index's navigable plane: an expandable group's children form its plane, everything else is top plane
+  const planeOf = useCallback(
+    (index: TreeIndex): TreeIndex => {
+      if (index.length <= 1) {
+        return [];
+      }
+      const parentIndex = index.slice(0, -1);
+      const parent = getItem(parentIndex);
+      return parent && isItemGroup(parent) && isExpandable(parent) ? parentIndex : [];
+    },
+    [getItem, isExpandable]
+  );
+
   const moveHighlight = useCallback(
     (direction: -1 | 1, loop?: boolean) => {
       const getNext = (index: TreeIndex) => {
@@ -80,7 +93,8 @@ export default function useHighlightedMenu({
         startIndex: targetIndex,
         expandedIndex,
         getNext,
-        hasExpandableGroups,
+        isExpandable,
+        planeOf,
         isInRestrictedView,
       });
 
@@ -88,7 +102,7 @@ export default function useHighlightedMenu({
         setTargetIndex(nextIndex);
       }
     },
-    [targetIndex, expandedIndex, getItem, getSequentialIndex, getParentIndex, hasExpandableGroups, isInRestrictedView]
+    [targetIndex, expandedIndex, getItem, getSequentialIndex, getParentIndex, isExpandable, planeOf, isInRestrictedView]
   );
 
   const highlightItem = useCallback(
