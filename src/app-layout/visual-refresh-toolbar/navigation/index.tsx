@@ -61,7 +61,7 @@ export function AppLayoutNavigationImplementation({
     if (isMobile) {
       return 'close';
     }
-    if (isThemeActive(Theme.OneTheme)) {
+    if (isThemeActive(Theme.OneTheme) && navigationCollapsible) {
       return 'side-bar';
     }
     return navigationCollapsed ? 'angle-right' : 'angle-left';

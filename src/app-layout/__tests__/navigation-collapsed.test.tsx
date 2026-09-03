@@ -65,13 +65,27 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
     });
 
-    test.each([true, false])('close button shows side-bar icon in One Theme, navigationOpen=%s', navigationOpen => {
-      (isThemeActive as jest.Mock).mockReturnValue(true);
-      const { wrapper } = renderComponent(
-        <AppLayout navigationCloseBehavior="collapse" navigationOpen={navigationOpen} navigation={<>Nav content</>} />
-      );
-      expect(wrapper.findNavigationClose().findIcon()!.getElement()).toContainHTML(getIconHTML('side-bar'));
-    });
+    test.each([true, false])(
+      'close button shows side-bar icon in One Theme when navigationCloseBehavior=collapse, navigationOpen=%s',
+      navigationOpen => {
+        (isThemeActive as jest.Mock).mockReturnValue(true);
+        const { wrapper } = renderComponent(
+          <AppLayout navigationCloseBehavior="collapse" navigationOpen={navigationOpen} navigation={<>Nav content</>} />
+        );
+        expect(wrapper.findNavigationClose().findIcon()!.getElement()).toContainHTML(getIconHTML('side-bar'));
+      }
+    );
+
+    test.each([true, false])(
+      'close button shows angle-left icon in One Theme when navigationCloseBehavior!=collapse, navigationOpen=%s',
+      navigationOpen => {
+        (isThemeActive as jest.Mock).mockReturnValue(true);
+        const { wrapper } = renderComponent(
+          <AppLayout navigationOpen={navigationOpen} navigation={<>Nav content</>} />
+        );
+        expect(wrapper.findNavigationClose().findIcon()!.getElement()).toContainHTML(getIconHTML('angle-left'));
+      }
+    );
 
     test('close button toggles navigation open and closed when collapsible', () => {
       const { wrapper } = renderComponent(
