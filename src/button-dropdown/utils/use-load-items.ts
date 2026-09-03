@@ -41,18 +41,9 @@ export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsPro
       expandedGroupId,
     });
 
-  const fireGroupLoadItems = (expandedGroupId: string) =>
-    fireNonCancelableEvent(onLoadItems, {
-      filteringText: prevFilteringText.current || '',
-      firstPage: true,
-      samePage: false,
-      expandedGroupId,
-    });
-
   return {
     fireLoadItems,
     handleLoadMore,
     handleRecoveryClick,
-    fireGroupLoadItems,
   };
 };
