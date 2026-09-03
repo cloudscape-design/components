@@ -1,7 +1,5 @@
-/*
- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- SPDX-License-Identifier: Apache-2.0
-*/
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 @use 'sass:map';
 @use '../internal/styles' as styles;
@@ -16,6 +14,7 @@ $_variant-colors: (
   'error': awsui.$color-text-status-error,
   'success': awsui.$color-text-status-success,
   'link': awsui.$color-text-link-default,
+  'info': awsui.$color-text-status-info,
 );
 
 $_icon-sizes: (
