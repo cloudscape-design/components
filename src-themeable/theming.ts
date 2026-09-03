@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import mapValues from 'lodash/mapValues.js';
 import { join } from 'path';
 
 import { buildThemedComponents as themingCoreBuild } from '@cloudscape-design/theming-build';
@@ -24,7 +23,7 @@ export function buildThemedComponents({ theme, outputDir, baseThemeId }: BuildTh
     override: theme,
     preset: {
       ...preset,
-      tokenVersions: mapValues(preset.propertiesMap, () => 'website'),
+      tokenVersions: Object.fromEntries(Object.entries(preset.propertiesMap).map(([token]) => [token, 'website'])),
     },
     baseThemeId,
     componentsOutputDir: join(outputDir, 'components'),

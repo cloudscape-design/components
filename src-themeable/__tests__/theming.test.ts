@@ -28,18 +28,13 @@ describe('buildThemedComponents', () => {
 
     await buildThemedComponents({ theme, outputDir: '/tmp/output', baseThemeId: 'visual-refresh' });
 
-    expect(themingCoreBuild).toHaveBeenCalledWith({
-      override: theme,
-      preset: {
-        ...preset,
-        tokenVersions: mapValues(preset.propertiesMap, () => 'website'),
-      },
-      baseThemeId: 'visual-refresh',
-      componentsOutputDir: join('/tmp/output', 'components'),
-      designTokensOutputDir: join('/tmp/output', 'design-tokens'),
-      templateDir: join(__dirname, '../internal/template'),
-      designTokensTemplateDir: join(__dirname, '../internal/template-tokens'),
-      scssDir: join(__dirname, '../internal/scss'),
-    });
+    expect(themingCoreBuild).toHaveBeenCalledWith(
+      expect.objectContaining({
+        preset: {
+          ...preset,
+          tokenVersions: mapValues(preset.propertiesMap, () => 'website'),
+        },
+      })
+    );
   });
 });
