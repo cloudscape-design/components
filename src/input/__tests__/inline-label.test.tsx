@@ -37,4 +37,12 @@ describe('Inline label', () => {
     expect(label.htmlFor).toBe('region-input');
     expect(wrapper.findNativeInput().getElement().id).toBe('region-input');
   });
+
+  test('is associated with the native input when no controlId is provided', () => {
+    const { wrapper } = renderInput({ inlineLabelText: 'Region' });
+    const label = wrapper.findInlineLabel()!.getElement() as HTMLLabelElement;
+    const inputId = wrapper.findNativeInput().getElement().id;
+    expect(inputId).toBeTruthy();
+    expect(label.htmlFor).toBe(inputId);
+  });
 });

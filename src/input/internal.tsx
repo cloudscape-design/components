@@ -3,7 +3,7 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -135,9 +135,18 @@ function InternalInput(
   }
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = __inheritFormFieldProps
-    ? formFieldContext
-    : rest;
+  const {
+    ariaLabelledby,
+    ariaDescribedby,
+    controlId: controlIdFromFormFieldContext,
+    invalid,
+    warning,
+  } = __inheritFormFieldProps ? formFieldContext : rest;
+
+  // When an inline label is rendered, the native input must have an id so the
+  // label's htmlFor can reference it. Fall back to a generated id if none was provided.
+  const generatedControlId = useUniqueId('input');
+  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
