@@ -20,14 +20,14 @@ export default class ControlGroupWrapper extends ComponentWrapper<HTMLDivElement
    * Finds the group-level error message text, if present.
    */
   findError(): ElementWrapper | null {
-    return this.find(`.${styles.hints} .${formFieldTestStyles.error} .${formFieldTestStyles.error__message}`);
+    return this.find(`.${styles.hints} .${formFieldTestStyles.error} .${formFieldTestStyles['error-message']}`);
   }
 
   /**
    * Finds the group-level warning message text, if present.
    */
   findWarning(): ElementWrapper | null {
-    return this.find(`.${styles.hints} .${formFieldTestStyles.warning} .${formFieldTestStyles.warning__message}`);
+    return this.find(`.${styles.hints} .${formFieldTestStyles.warning} .${formFieldTestStyles['warning-message']}`);
   }
 
   /**
