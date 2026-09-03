@@ -60,34 +60,39 @@ export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
 }
 
-/**
- * Registers a consumer that draws App Layout's breadcrumbs somewhere else -- for example a global
- * navigation header owning the page header in its own React root and bundle.
- *
- * The callback is invoked with the current breadcrumbs as soon as App Layout picks the registration
- * up (or null if there are none), then on every change. App Layout stops drawing its own copy while
- * a consumer is registered, so exactly one trail is present at a time.
- *
- * Returns a function that deregisters the consumer, so it can be used directly as an effect cleanup.
- */
-export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload) {
-  const message: RegisterBreadcrumbsConsumerMessage = { type: 'registerBreadcrumbsConsumer', payload };
-  pushInitialMessage(message);
-  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
-  return () => deregisterBreadcrumbsConsumer(payload.id);
-}
+// Identifies the live registration so a superseded one's cleanup can be ignored.
+let currentConsumerToken: object | null = null;
 
 /**
- * Removes a previously registered breadcrumbs consumer, returning rendering to App Layout.
+ * Registers the surface that draws global breadcrumbs outside App Layout. The callback receives the
+ * current trail on registration (or null), then on every change, and App Layout stops drawing its own
+ * copy meanwhile. Drawing is exclusive, so registering replaces any active consumer.
+ *
+ * Returns the unsubscribe function -- the only way to deregister, usable directly as an effect
+ * cleanup. It is inert once superseded.
  */
-export function deregisterBreadcrumbsConsumer(id: string) {
-  const initialMessages = getAppLayoutInitialMessages();
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload) {
+  const token = {};
+  currentConsumerToken = token;
+  const message: RegisterBreadcrumbsConsumerMessage = { type: 'registerBreadcrumbsConsumer', payload };
+  // Single consumer, so a queued registration is replaced rather than stacked.
+  setInitialMessage(getAppLayoutInitialMessages().filter(m => m.type !== 'registerBreadcrumbsConsumer'));
+  pushInitialMessage(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+  return () => {
+    if (currentConsumerToken !== token) {
+      return;
+    }
+    currentConsumerToken = null;
+    deregisterBreadcrumbsConsumer();
+  };
+}
+
+function deregisterBreadcrumbsConsumer() {
   setInitialMessage(
-    initialMessages.filter(
-      initialMessage => !(initialMessage.type === 'registerBreadcrumbsConsumer' && initialMessage.payload.id === id)
-    )
+    getAppLayoutInitialMessages().filter(initialMessage => initialMessage.type !== 'registerBreadcrumbsConsumer')
   );
-  const message: DeregisterBreadcrumbsConsumerMessage = { type: 'deregisterBreadcrumbsConsumer', payload: { id } };
+  const message: DeregisterBreadcrumbsConsumerMessage = { type: 'deregisterBreadcrumbsConsumer' };
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 
@@ -99,6 +104,10 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
+      // The breadcrumbs consumer is not addressed by id and must not be matched here.
+      if (initialMessage.type === 'registerBreadcrumbsConsumer') {
+        return;
+      }
       if (initialMessage.payload.id === message.payload.id) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }

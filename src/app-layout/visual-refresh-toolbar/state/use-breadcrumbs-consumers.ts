@@ -6,37 +6,37 @@ import { awsuiPluginsInternal } from '../../../internal/plugins/api';
 import { BreadcrumbsConsumerPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 
 /**
- * Bridges breadcrumbs consumers registered through the widget API into the shared breadcrumbs
- * controller. The controller stays the coordination point -- it aggregates producers across App
- * Layout instances and drives the yield -- while the widget API is the entry point a surface outside
- * App Layout uses to subscribe.
+ * Bridges the breadcrumbs consumer registered through the widget API into the shared controller. The
+ * controller stays the coordination point -- it aggregates producers across App Layout instances and
+ * drives the yield -- while the widget API is only the entry point. Drawing is exclusive, so at most
+ * one consumer is held.
  *
  * Returns a handler that reports whether it consumed the message.
  */
 export function useBreadcrumbsConsumers() {
-  const disposers = useRef(new Map<string, () => void>());
+  const dispose = useRef<(() => void) | null>(null);
 
   useEffect(
     () => () => {
-      disposers.current.forEach(dispose => dispose());
-      disposers.current.clear();
+      dispose.current?.();
+      dispose.current = null;
     },
     []
   );
 
   return useCallback((message: WidgetMessage) => {
     if (message.type === 'registerBreadcrumbsConsumer') {
-      const { id, onBreadcrumbsChange } = message.payload as BreadcrumbsConsumerPayload;
-      // Re-registering the same id replaces the previous subscription rather than leaking it.
-      disposers.current.get(id)?.();
-      disposers.current.set(id, awsuiPluginsInternal.breadcrumbs.onBreadcrumbsChange(onBreadcrumbsChange));
+      const { onBreadcrumbsChange } = message.payload as BreadcrumbsConsumerPayload;
+      // Registered without disposing the previous subscription first, so the controller can apply its
+      // replace policy and tell the outgoing consumer to stop drawing. The superseded disposer is
+      // inert, so dropping it here leaks nothing.
+      dispose.current = awsuiPluginsInternal.breadcrumbs.onBreadcrumbsChange(onBreadcrumbsChange);
       return true;
     }
 
     if (message.type === 'deregisterBreadcrumbsConsumer') {
-      const { id } = message.payload;
-      disposers.current.get(id)?.();
-      disposers.current.delete(id);
+      dispose.current?.();
+      dispose.current = null;
       return true;
     }
 

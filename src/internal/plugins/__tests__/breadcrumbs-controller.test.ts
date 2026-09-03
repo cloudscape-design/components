@@ -156,23 +156,38 @@ describe('BreadcrumbsController with multiple external consumers', () => {
   beforeEach(() => jest.useFakeTimers());
   afterEach(() => jest.useRealTimers());
 
-  test('all consumers receive the same value', () => {
+  test('a second consumer replaces the first, which is told to stop drawing', () => {
     const controller = new BreadcrumbsController<TestProps>();
     const first = jest.fn();
     const second = jest.fn();
     controller.onBreadcrumbsChange(first);
+    controller.registerBreadcrumbs({ id: 'a' }, () => {});
+    jest.runOnlyPendingTimers();
+    expect(first).toHaveBeenLastCalledWith({ id: 'a' });
+
     controller.onBreadcrumbsChange(second);
+    jest.runOnlyPendingTimers();
+
+    expect(first).toHaveBeenLastCalledWith(null);
+    expect(second).toHaveBeenLastCalledWith({ id: 'a' });
+  });
+
+  test('a replaced consumer stops receiving updates', () => {
+    const controller = new BreadcrumbsController<TestProps>();
+    const replaced = jest.fn();
+    const current = jest.fn();
+    controller.onBreadcrumbsChange(replaced);
+    controller.onBreadcrumbsChange(current);
 
     controller.registerBreadcrumbs({ id: 'a' }, () => {});
     jest.runOnlyPendingTimers();
 
-    expect(first).toHaveBeenLastCalledWith({ id: 'a' });
-    expect(second).toHaveBeenLastCalledWith({ id: 'a' });
+    expect(current).toHaveBeenLastCalledWith({ id: 'a' });
+    expect(replaced).not.toHaveBeenCalledWith({ id: 'a' });
   });
 
   test('a late subscriber gets the current value replayed', () => {
     const controller = new BreadcrumbsController<TestProps>();
-    controller.onBreadcrumbsChange(() => {});
     controller.registerBreadcrumbs({ id: 'a' }, () => {});
     jest.runOnlyPendingTimers();
 
@@ -181,7 +196,7 @@ describe('BreadcrumbsController with multiple external consumers', () => {
     expect(late).toHaveBeenCalledWith({ id: 'a' });
   });
 
-  test('App Layout resumes only after the last external consumer unsubscribes', () => {
+  test('a superseded unsubscribe does not hand rendering back', () => {
     const controller = new BreadcrumbsController<TestProps>();
     const appLayout = jest.fn();
     controller.registerAppLayout(appLayout);
@@ -200,20 +215,5 @@ describe('BreadcrumbsController with multiple external consumers', () => {
     unsubscribeSecond();
     jest.runOnlyPendingTimers();
     expect(appLayout).toHaveBeenLastCalledWith({ id: 'a' });
-  });
-
-  test('unsubscribing one consumer does not stop the others', () => {
-    const controller = new BreadcrumbsController<TestProps>();
-    const staying = jest.fn();
-    const leaving = jest.fn();
-    controller.onBreadcrumbsChange(staying);
-    const unsubscribe = controller.onBreadcrumbsChange(leaving);
-    unsubscribe();
-
-    controller.registerBreadcrumbs({ id: 'a' }, () => {});
-    jest.runOnlyPendingTimers();
-
-    expect(staying).toHaveBeenLastCalledWith({ id: 'a' });
-    expect(leaving).not.toHaveBeenCalledWith({ id: 'a' });
   });
 });

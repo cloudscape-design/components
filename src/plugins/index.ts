@@ -4,7 +4,6 @@
 export * from '../internal/plugins/widget/interfaces';
 import {
   clearFeatureNotifications,
-  deregisterBreadcrumbsConsumer,
   registerBreadcrumbsConsumer,
   registerFeatureNotificationsPublic,
   showFeaturePromptIfPossible,
@@ -18,5 +17,4 @@ export const featureNotifications = {
 
 export const breadcrumbs = {
   registerConsumer: registerBreadcrumbsConsumer,
-  deregisterConsumer: deregisterBreadcrumbsConsumer,
 };

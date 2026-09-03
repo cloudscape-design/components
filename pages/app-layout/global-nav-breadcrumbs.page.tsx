@@ -16,12 +16,11 @@ import labels from './utils/labels';
 // header. It consumes the public `breadcrumbs.registerConsumer` widget API and renders its own
 // BreadcrumbGroup in sink mode (__disableGlobalization) so this render never re-registers.
 
-const CONSUMER_ID = 'demo-global-nav-single';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
   // Fires immediately with the current value, then on every change; returns the unsubscribe fn.
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ id: CONSUMER_ID, onBreadcrumbsChange: setCrumbs }), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<
     typeof BreadcrumbGroup
@@ -86,9 +85,24 @@ export default function GlobalNavBreadcrumbsPage() {
                   Layout <strong>auto-yields</strong> (stops rendering breadcrumbs in its toolbar) and the header
                   renders them instead. Unmount the header and App Layout resumes.
                 </p>
+                <p>
+                  &ldquo;Load global nav late&rdquo; reproduces the real console ordering, where App Layout is up before
+                  Global Navigation loads: App Layout draws the trail in its toolbar and then gives it up, which
+                  flashes. Add <code>&amp;breadcrumbsOwnedExternally=true</code> to declare external ownership before
+                  either bundle renders, and the toolbar stays empty for the whole gap instead.
+                </p>
                 <SpaceBetween size="xs" direction="horizontal">
                   <Button data-testid="toggle-nav-header" onClick={() => setNavHeaderMounted(mounted => !mounted)}>
                     {navHeaderMounted ? 'Unmount' : 'Mount'} global nav header
+                  </Button>
+                  <Button
+                    data-testid="delay-nav-header"
+                    onClick={() => {
+                      setNavHeaderMounted(false);
+                      setTimeout(() => setNavHeaderMounted(true), 1500);
+                    }}
+                  >
+                    Load global nav late
                   </Button>
                   <Button
                     data-testid="append-breadcrumb"

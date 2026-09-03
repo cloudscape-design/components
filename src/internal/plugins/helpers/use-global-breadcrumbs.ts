@@ -10,7 +10,7 @@ import {
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { metrics } from '../../metrics';
 import { awsuiPluginsInternal } from '../api';
-import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
+import { BreadcrumbsGlobalRegistration, isBreadcrumbsOwnedExternally } from '../controllers/breadcrumbs';
 
 function useSetGlobalBreadcrumbsImplementation({
   __disableGlobalization,
@@ -19,7 +19,11 @@ function useSetGlobalBreadcrumbsImplementation({
   const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
   const isLayoutVisible = useContext(AppLayoutVisibilityContext) ?? true;
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
-  const [registered, setRegistered] = useState(false);
+  // Start hidden when the console declared external ownership, so the trail never paints in the
+  // toolbar. Excludes a consumer's own sink render, which must draw for real.
+  const [registered, setRegistered] = useState(
+    () => !__disableGlobalization && isLayoutVisible && isBreadcrumbsOwnedExternally()
+  );
 
   useEffect(() => {
     if (__disableGlobalization || !isLayoutVisible) {

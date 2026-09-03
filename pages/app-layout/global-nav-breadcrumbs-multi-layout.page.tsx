@@ -16,11 +16,10 @@ import labels from './utils/labels';
 // the public `breadcrumbs.registerConsumer` widget API and renders in sink mode (__disableGlobalization)
 // so its own render never re-registers. Here it is the single consumer for SEVERAL App Layouts.
 
-const CONSUMER_ID = 'demo-global-nav-multi-layout';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ id: CONSUMER_ID, onBreadcrumbsChange: setCrumbs }), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<
     typeof BreadcrumbGroup

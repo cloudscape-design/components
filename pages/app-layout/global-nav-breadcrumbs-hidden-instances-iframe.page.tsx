@@ -25,12 +25,10 @@ import appLayoutLabels from './utils/labels';
 // than showing a stale trail from the hidden page 1. Unmount the header and App Layout resumes
 // drawing the visible instance's trail itself.
 
-const CONSUMER_ID = 'demo-global-nav-hidden-instances';
-
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ id: CONSUMER_ID, onBreadcrumbsChange: setCrumbs }), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
 
   // Sink mode: without this the consumer's own group would self-register and collapse to a skeleton.
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<

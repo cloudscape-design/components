@@ -203,16 +203,18 @@ export type GlobalBreadcrumbs = Pick<
 >;
 
 export interface BreadcrumbsConsumerPayload {
-  id: string;
   /**
-   * Called with the current breadcrumbs as soon as the consumer is registered (or null if there are
-   * none), then on every change. While a consumer is registered App Layout stops drawing its own copy.
+   * Receives the current breadcrumbs on registration (or null), then on every change. App Layout stops
+   * drawing its own copy meanwhile. Drawing is exclusive, so there is a single consumer and no id is
+   * needed to address it -- registering replaces any active consumer, which is called with null.
    */
   onBreadcrumbsChange: (breadcrumbs: GlobalBreadcrumbs | null) => void;
 }
 
 export type RegisterBreadcrumbsConsumerMessage = Message<'registerBreadcrumbsConsumer', BreadcrumbsConsumerPayload>;
-export type DeregisterBreadcrumbsConsumerMessage = Message<'deregisterBreadcrumbsConsumer', { id: string }>;
+export interface DeregisterBreadcrumbsConsumerMessage {
+  type: 'deregisterBreadcrumbsConsumer';
+}
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type RegisterFeatureNotificationsMessage<T> = Message<

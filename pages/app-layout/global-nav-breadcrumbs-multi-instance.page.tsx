@@ -18,11 +18,10 @@ import labels from './utils/labels';
 // BreadcrumbsController because `loadApi()` walks `window.parent` (findUpApi) and reuses the
 // top-most `Symbol.for('awsui-plugin-api')` instance, so the channel crosses the iframe boundary.
 
-const CONSUMER_ID = 'demo-global-nav-multi-instance';
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
 
-  useEffect(() => breadcrumbsPlugin.registerConsumer({ id: CONSUMER_ID, onBreadcrumbsChange: setCrumbs }), []);
+  useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }), []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<
     typeof BreadcrumbGroup
