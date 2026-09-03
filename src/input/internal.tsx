@@ -147,7 +147,8 @@ function InternalInput(
   // When an inline label is rendered, the native input must have an id so the
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
-  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+  const controlId =
+    nativeInputAttributes?.id ?? controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
   // When inside a ControlGroup, this control keeps its own border but drops the
   // radius and doubled border on the sides where it meets a neighbor, so the
