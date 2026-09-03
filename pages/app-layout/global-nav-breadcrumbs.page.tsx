@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
-import BreadcrumbGroup from '~components/breadcrumb-group';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Container from '~components/container';
 import Header from '~components/header';
-import { breadcrumbs as breadcrumbsPlugin, GlobalBreadcrumbs } from '~components/plugins';
+import { breadcrumbs as breadcrumbsPlugin } from '~components/plugins';
 import SpaceBetween from '~components/space-between';
 
 import labels from './utils/labels';
@@ -17,7 +17,7 @@ import labels from './utils/labels';
 // BreadcrumbGroup in sink mode (__disableGlobalization) so this render never re-registers.
 
 function GlobalNavigationHeader() {
-  const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
+  const [crumbs, setCrumbs] = useState<BreadcrumbGroupProps | null>(null);
 
   // Fires immediately with the current value, then on every change. `registered` is false if another
   // consumer already owns rendering.
@@ -57,7 +57,7 @@ function GlobalNavigationHeader() {
 
 export default function GlobalNavBreadcrumbsPage() {
   const [navHeaderMounted, setNavHeaderMounted] = useState(true);
-  const [items, setItems] = useState<GlobalBreadcrumbs['items']>([
+  const [items, setItems] = useState<BreadcrumbGroupProps['items']>([
     { text: 'Home', href: '#home' },
     { text: 'Service', href: '#service' },
     { text: 'Resource', href: '#resource' },

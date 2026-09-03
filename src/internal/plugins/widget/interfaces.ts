@@ -191,17 +191,6 @@ export type FeatureNotificationsPayloadPublic<T> = Omit<
   '__persistFeatureNotifications' | '__retrieveFeatureNotifications'
 >;
 
-/**
- * Breadcrumbs a surface other than App Layout can render. Narrowed from BreadcrumbGroupProps so the
- * contract is not coupled to every future prop, and excludes anything a different owner cannot draw
- * (refs, analytics internals). `onFollow` and `onClick` travel with it because they belong to the
- * page that declared the trail.
- */
-export type GlobalBreadcrumbs = Pick<
-  BreadcrumbGroupProps,
-  'items' | 'ariaLabel' | 'expandAriaLabel' | 'onFollow' | 'onClick'
->;
-
 export interface BreadcrumbsConsumerRegistration {
   /**
    * False when another consumer already owns rendering. The callback is never invoked in that case and
@@ -213,11 +202,13 @@ export interface BreadcrumbsConsumerRegistration {
 
 export interface BreadcrumbsConsumerPayload {
   /**
-   * Receives the current breadcrumbs on registration (or null), then on every change. App Layout stops
-   * drawing its own copy meanwhile. Drawing is exclusive, so there is a single consumer and no id is
-   * needed to address it -- registering while another consumer is active is ignored with a warning.
+   * Receives the breadcrumbs a page passed to App Layout, on registration (or null) and on every
+   * change. These are the producing component's own props, so `onFollow` and `onClick` belong to that
+   * page and must be called rather than replaced. App Layout stops drawing its own copy meanwhile.
+   * Drawing is exclusive, so there is a single consumer and no id is needed to address it --
+   * registering while another consumer is active is ignored with a warning.
    */
-  onBreadcrumbsChange: (breadcrumbs: GlobalBreadcrumbs | null) => void;
+  onBreadcrumbsChange: (breadcrumbs: BreadcrumbGroupProps | null) => void;
 }
 
 export type RegisterBreadcrumbsConsumerMessage = Message<'registerBreadcrumbsConsumer', BreadcrumbsConsumerPayload>;

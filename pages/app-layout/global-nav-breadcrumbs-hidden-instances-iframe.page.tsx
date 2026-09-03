@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
-import BreadcrumbGroup from '~components/breadcrumb-group';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
-import { breadcrumbs as breadcrumbsPlugin, GlobalBreadcrumbs } from '~components/plugins';
+import { breadcrumbs as breadcrumbsPlugin } from '~components/plugins';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
@@ -26,7 +26,7 @@ import appLayoutLabels from './utils/labels';
 // drawing the visible instance's trail itself.
 
 function GlobalNavigationHeader() {
-  const [crumbs, setCrumbs] = useState<GlobalBreadcrumbs | null>(null);
+  const [crumbs, setCrumbs] = useState<BreadcrumbGroupProps | null>(null);
 
   useEffect(() => breadcrumbsPlugin.registerConsumer({ onBreadcrumbsChange: setCrumbs }).unregister, []);
 
