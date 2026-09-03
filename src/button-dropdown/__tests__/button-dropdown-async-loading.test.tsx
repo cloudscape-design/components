@@ -259,4 +259,22 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     groupRecovery!.click();
     expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ samePage: true, expandedGroupId: 'g1' }));
   });
+
+  test('shows loading status inside expanded group without a border when items are empty', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'loading' : null),
+      asyncLoadingProps: {
+        loadingText: () => 'Loading group items',
+      },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    // g1 has no items yet - status renders via DropdownStatus (no DropdownFooter border)
+    const groupStatus = wrapper.findStatusIndicator({ expandedGroupDropdown: true });
+    expect(groupStatus).not.toBeNull();
+    expect(groupStatus!.getElement()).toHaveTextContent('Loading group items');
+  });
 });

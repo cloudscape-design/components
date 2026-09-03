@@ -16,6 +16,7 @@ import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import DropdownStatus from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -500,7 +501,7 @@ const InternalButtonDropdown = React.forwardRef(
           ariaRole={hasFiltering ? 'dialog' : undefined}
           ariaLabel={hasFiltering ? ariaLabel : undefined}
           footer={
-            dropdownStatus.content && dropdownStatus.isSticky ? (
+            dropdownStatus.content && dropdownStatus.isSticky && !isEmpty ? (
               <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={!isNoMatch} />
             ) : null
           }
@@ -569,6 +570,9 @@ const InternalButtonDropdown = React.forwardRef(
               </OptionsList>
               {dropdownStatus.content && !dropdownStatus.isSticky ? (
                 <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={false} />
+              ) : null}
+              {dropdownStatus.content && dropdownStatus.isSticky && isEmpty ? (
+                <DropdownStatus>{isOpen ? dropdownStatus.content : null}</DropdownStatus>
               ) : null}
               {filteringDescriptionEl}
             </>
