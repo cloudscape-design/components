@@ -1179,7 +1179,10 @@ export type SizesTokenName =
   | 'sizeVerticalPanelIconOffset'
   | 'sizeSideNavigationItemHeight'
   | 'sizeSideNavigationItemCollapsed'
-  | 'sizeSideNavigationCollapsedWidth';
+  | 'sizeSideNavigationCollapsedWidth'
+  | 'fontSizeTable'
+  | 'tableLineHeight'
+  | 'fontTableLetterSpacing';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'

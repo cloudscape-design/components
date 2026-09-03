@@ -12,6 +12,9 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeIconMedium: '16px',
   sizeTableSelectionHorizontal: '54px',
   sizeVerticalInput: { comfortable: '32px', compact: '28px' },
+  fontSizeTable: '{fontSizeBodyM}',
+  tableLineHeight: '{lineHeightBodyM}',
+  fontTableLetterSpacing: 'normal',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
