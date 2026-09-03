@@ -146,7 +146,8 @@ function InternalInput(
   // When an inline label is rendered, the native input must have an id so the
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
-  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+  const controlId =
+    nativeInputAttributes?.id ?? controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
