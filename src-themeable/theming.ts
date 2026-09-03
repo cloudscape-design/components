@@ -16,12 +16,21 @@ export interface BuildThemedComponentsParams {
   theme: Theme;
   outputDir: string;
   baseThemeId?: string;
+  includeSecondaryThemes?: boolean;
 }
 
-export function buildThemedComponents({ theme, outputDir, baseThemeId }: BuildThemedComponentsParams): Promise<void> {
+export function buildThemedComponents({
+  theme,
+  outputDir,
+  baseThemeId,
+  includeSecondaryThemes = true,
+}: BuildThemedComponentsParams): Promise<void> {
   return themingCoreBuild({
     override: theme,
-    preset,
+    preset: {
+      ...preset,
+      secondary: includeSecondaryThemes ? preset.secondary : [],
+    },
     baseThemeId,
     componentsOutputDir: join(outputDir, 'components'),
     designTokensOutputDir: join(outputDir, 'design-tokens'),
