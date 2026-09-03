@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
+import FormField from '~components/form-field';
+import RadioGroup from '~components/radio-group';
 import SpaceBetween from '~components/space-between';
 
 import { SimplePage } from '../app/templates';
 
-const sourceItems: ButtonDropdownProps.Item[] = [
+const SOURCE_ITEMS: ButtonDropdownProps.Item[] = [
   { id: 'cut', text: 'Cut', labelTag: 'Ctrl+X' },
   { id: 'copy', text: 'Copy', labelTag: 'Ctrl+C' },
   { id: 'paste', text: 'Paste', labelTag: 'Ctrl+V' },
@@ -19,71 +21,96 @@ const sourceItems: ButtonDropdownProps.Item[] = [
   { id: 'preferences', text: 'Preferences', secondaryText: 'Configure editor settings' },
 ];
 
-function filterLocally(filteringText: string): ButtonDropdownProps.Items {
-  const normalized = filteringText.toLowerCase();
-  return sourceItems.filter(item => (item.text ?? '').toLowerCase().includes(normalized));
+function filterItems(text: string): ButtonDropdownProps.Items {
+  const q = text.toLowerCase();
+  return SOURCE_ITEMS.filter(i => (i.text ?? '').toLowerCase().includes(q));
 }
 
-function fetchFromServer(filteringText: string): Promise<ButtonDropdownProps.Items> {
-  const normalized = filteringText.toLowerCase();
-  const results = sourceItems.filter(item => (item.text ?? '').toLowerCase().includes(normalized));
-  return new Promise(resolve => setTimeout(() => resolve(results), 400));
+function simulateServer(text: string, delayMs: number): Promise<ButtonDropdownProps.Items> {
+  return new Promise(resolve => setTimeout(() => resolve(filterItems(text)), delayMs));
 }
 
 export default function ButtonDropdownManualFilteringPage() {
   const [expandToViewport, setExpandToViewport] = useState(false);
+  const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
 
-  const onItemClick = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log(event.detail);
-  const filteringResultsText = (matches: number, total: number) => `${matches} out of ${total} matches`;
+  // Interactive: filteringType switcher
+  const [filteringType, setFilteringType] = useState<ButtonDropdownProps.FilteringType>('manual');
+  const [switcherItems, setSwitcherItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
 
-  // Client-side manual filtering
-  const [clientItems, setClientItems] = useState<ButtonDropdownProps.Items>(sourceItems);
-
-  // Server-side manual filtering
-  const [serverItems, setServerItems] = useState<ButtonDropdownProps.Items>(sourceItems);
+  // Interactive: server delay control
+  const [serverDelay, setServerDelay] = useState('400');
+  const [serverItems, setServerItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
   const [serverStatus, setServerStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
+
+  // Preconfigured: client-side manual filtering
+  const [clientItems, setClientItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
+
+  // Preconfigured: server-side manual filtering (fixed 400 ms)
+  const [preItems, setPreItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
+  const [preStatus, setPreStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
 
   return (
     <SimplePage
       title="ButtonDropdown manual filtering"
       settings={
-        <Checkbox
-          checked={expandToViewport}
-          onChange={event => setExpandToViewport(event.detail.checked)}
-          data-testid="expand-to-viewport"
-        >
+        <Checkbox checked={expandToViewport} onChange={e => setExpandToViewport(e.detail.checked)}>
           Expand to viewport
         </Checkbox>
       }
     >
-      <SpaceBetween size="xl">
+      <SpaceBetween size="xxl">
+        {/* Interactive: filteringType switcher */}
         <div>
-          <h2>Client-side manual filtering</h2>
-          <p>
-            The app filters items synchronously inside <code>onLoadItems</code>. No status indicators needed.
-          </p>
+          <h2>Interactive - filteringType switcher</h2>
+          <p>Switch between none, auto, and manual on the same dropdown to compare behavior.</p>
+          <FormField label="filteringType">
+            <RadioGroup
+              value={filteringType}
+              onChange={e => setFilteringType(e.detail.value as ButtonDropdownProps.FilteringType)}
+              items={[
+                { value: 'none', label: 'none' },
+                { value: 'auto', label: 'auto (client-side)' },
+                { value: 'manual', label: 'manual (consumer-controlled)' },
+              ]}
+            />
+          </FormField>
+          <br />
           <ButtonDropdown
-            items={clientItems}
-            filteringType="manual"
+            items={filteringType === 'manual' ? switcherItems : SOURCE_ITEMS}
+            filteringType={filteringType}
             filteringPlaceholder="Filter actions"
-            noMatch={<span>No actions match. Try a different keyword.</span>}
+            noMatch={<span>No actions match.</span>}
             expandToViewport={expandToViewport}
-            filteringResultsText={filteringResultsText}
+            filteringResultsText={(m, t) => `${m} of ${t}`}
             onItemClick={onItemClick}
             onLoadItems={({ detail: { filteringText } }) => {
-              setClientItems(filterLocally(filteringText));
+              setSwitcherItems(filterItems(filteringText));
             }}
           >
             Actions
           </ButtonDropdown>
         </div>
 
+        {/* Interactive: server delay control */}
         <div>
-          <h2>Server-side manual filtering</h2>
+          <h2>Interactive - server delay control</h2>
           <p>
-            The app calls a fake async API on every filter change. A loading spinner appears while the request is in
-            flight.
+            Set delay to 0 ms to stay in the loading state long enough to inspect it, or use 1500 ms for slow network
+            testing.
           </p>
+          <FormField label="Simulated server delay">
+            <RadioGroup
+              value={serverDelay}
+              onChange={e => setServerDelay(e.detail.value)}
+              items={[
+                { value: '0', label: '0 ms (instant)' },
+                { value: '400', label: '400 ms' },
+                { value: '1500', label: '1500 ms (slow)' },
+              ]}
+            />
+          </FormField>
+          <br />
           <ButtonDropdown
             items={serverItems}
             filteringType="manual"
@@ -93,16 +120,66 @@ export default function ButtonDropdownManualFilteringPage() {
               loadingText: () => 'Searching...',
               empty: () => 'No actions found',
             }}
-            noMatch={<span>No actions match. Try a different keyword.</span>}
+            noMatch={<span>No actions match.</span>}
             expandToViewport={expandToViewport}
-            filteringResultsText={filteringResultsText}
+            filteringResultsText={(m, t) => `${m} of ${t}`}
             onItemClick={onItemClick}
             onLoadItems={({ detail: { filteringText } }) => {
               setServerStatus('loading');
               setServerItems([]);
-              fetchFromServer(filteringText).then(results => {
+              simulateServer(filteringText, parseInt(serverDelay, 10)).then(results => {
                 setServerItems(results);
                 setServerStatus('finished');
+              });
+            }}
+          >
+            Actions
+          </ButtonDropdown>
+        </div>
+
+        {/* Preconfigured: client-side manual */}
+        <div>
+          <h2>Preconfigured - client-side manual filtering</h2>
+          <p>App filters synchronously inside onLoadItems. No status indicators needed.</p>
+          <ButtonDropdown
+            items={clientItems}
+            filteringType="manual"
+            filteringPlaceholder="Filter actions"
+            noMatch={<span>No actions match. Try a different keyword.</span>}
+            expandToViewport={expandToViewport}
+            filteringResultsText={(m, t) => `${m} of ${t} matches`}
+            onItemClick={onItemClick}
+            onLoadItems={({ detail: { filteringText } }) => {
+              setClientItems(filterItems(filteringText));
+            }}
+          >
+            Actions
+          </ButtonDropdown>
+        </div>
+
+        {/* Preconfigured: server-side manual */}
+        <div>
+          <h2>Preconfigured - server-side manual filtering</h2>
+          <p>App calls a fake API on every filter change. Loading spinner appears while the request is in flight.</p>
+          <ButtonDropdown
+            items={preItems}
+            filteringType="manual"
+            filteringPlaceholder="Search actions"
+            asyncLoadingProps={{
+              statusType: preStatus,
+              loadingText: () => 'Searching...',
+              empty: () => 'No actions found',
+            }}
+            noMatch={<span>No actions match. Try a different keyword.</span>}
+            expandToViewport={expandToViewport}
+            filteringResultsText={(m, t) => `${m} of ${t} matches`}
+            onItemClick={onItemClick}
+            onLoadItems={({ detail: { filteringText } }) => {
+              setPreStatus('loading');
+              setPreItems([]);
+              simulateServer(filteringText, 400).then(results => {
+                setPreItems(results);
+                setPreStatus('finished');
               });
             }}
           >
