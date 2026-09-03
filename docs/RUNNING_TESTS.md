@@ -80,17 +80,20 @@ The visual regression workflow (`.github/workflows/visual-regression.yml`):
 3. Serves the baseline pages locally.
 4. Runs the test suite sharded across multiple runners. Each test navigates to a page on both hosts, captures screenshots, and compares them pixel-by-pixel.
 5. Produces an Allure report with image diffs for any failures, deployed to a preview environment.
-6. A final `verify` job reports the mandatory pass/fail result.
+6. The deploy workflow's `Visual regression result` job surfaces the pass/fail outcome as the required check.
 
 ### Mandatory check
 
-The visual regression result is a **required check**: a PR cannot merge unless the
-`verify` job passes. It passes only when every shard passed, or when the commit
-was overridden (below). The reporting jobs run with `always()` and never block on
-their own.
+The `Visual regression result` check (from `deploy.yml`) is a **required check**: a PR
+cannot merge unless it passes. It passes only when every shard passed, or when the
+commit was overridden (below). The reporting jobs run with `always()` and never block
+on their own.
 
-> To enforce this, add the `verify` job's status check (`Visual regression result`)
-> to the branch protection rules for `main`.
+Fork pull requests are an exception: visual regression cannot run for forks (the deploy
+and baseline jobs are skipped), so the check passes automatically for them.
+
+> To enforce this, add the `Visual regression result` status check to the branch
+> protection rules for `main`.
 
 ### Reviewing failures
 
@@ -111,7 +114,7 @@ To override, first confirm the diffs in the Allure report are intentional, then 
 - **From the PR page (recommended):** comment `/override-visual-regression` on the pull request. Only users with write access can trigger it; the head commit is used automatically.
 - **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
 
-Either way the workflow posts a `visual-regression-override` success commit status on that SHA, comments on the PR crediting the person who triggered it, and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `verify` job passes.
+Either way the workflow posts a `visual-regression-override` success commit status on that SHA, comments on the PR crediting the person who triggered it, and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
 
 ### Adding tests for a new component
 

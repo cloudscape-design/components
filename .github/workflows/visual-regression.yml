@@ -203,30 +203,3 @@ jobs:
     with:
       artifact-name: allure-report
       deployment-path: allure-report
-
-  # Mandatory check: this job is the required status check. It fails the run
-  # unless every visual shard passed, or a maintainer overrode the result for
-  # this commit. Reporting jobs run with `always()` and never block.
-  verify:
-    name: Visual regression result
-    if: always()
-    needs: [check-override, visual]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Evaluate result
-        env:
-          OVERRIDDEN: ${{ needs.check-override.outputs.overridden }}
-          VISUAL_RESULT: ${{ needs.visual.result }}
-        run: |
-          if [ "$OVERRIDDEN" = "true" ]; then
-            echo "::notice::Visual regression was overridden for this commit by a maintainer (visual-regression-override commit status). Marking as passed."
-            exit 0
-          fi
-
-          if [ "$VISUAL_RESULT" = "success" ]; then
-            echo "Visual regression tests passed."
-            exit 0
-          fi
-
-          echo "::error::Visual regression tests did not pass (result: ${VISUAL_RESULT}). Review the Allure report. If the differences are intentional, run the 'Override visual regression' workflow against this PR's branch."
-          exit 1

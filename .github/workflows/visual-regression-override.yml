@@ -3,21 +3,13 @@ name: Override visual regression
 # Overrides the mandatory visual regression check when the visual differences are
 # intentional.
 #
-# This mirrors the "update workflow" pattern from Vitest visual regression
-# testing (https://vitest.dev/guide/browser/visual-regression-testing.html#the-update-workflow),
-# adapted for this repo: because baselines are rebuilt from `origin/main` at run
-# time (there are no committed screenshots to update), overriding instead posts a
-# `visual-regression-override` commit status on the reviewed commit. The visual
-# regression check (.github/workflows/visual-regression.yml) treats that status
-# as an approval and passes without running the screenshot comparison.
-#
 # The override is scoped to a single commit: pushing a new commit produces a new
 # SHA with no override status, so the comparison runs again.
 #
 # Two ways to trigger it:
-#   1. Comment `/override-visual-regression` on the pull request (right from the
-#      PR page). Only users with write or admin access can do this.
-#   2. Run it manually from the Actions tab, passing a commit SHA or PR number.
+#   1. Comment `/override-visual-regression <justification>` on the pull request
+#      (right from the PR page). Only users with write or admin access can do this.
+#   2. Run it manually from the Actions tab, passing a commit SHA.
 
 on:
   issue_comment:
@@ -29,53 +21,30 @@ on:
         required: true
         type: string
 
-# One override at a time per PR / commit.
+# Run one override at a time per PR (comment) or per commit (manual dispatch).
 concurrency:
   group: visual-regression-override@${{ github.event.issue.number || inputs.commit-sha }}
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  statuses: write
-  pull-requests: write
-  actions: write
+  statuses: write # post the override commit status
+  actions: write # re-run the deploy workflow
 
 jobs:
   override:
     name: Apply visual regression override
-    # For comment triggers, only act on the command posted on a pull request.
-    # workflow_dispatch runs always proceed.
+    # Comment runs must be posted on a PR and start with the command; the trailing
+    # space requires text after it, which serves as the override justification
+    # (for example: "/override-visual-regression Expected padding changes in Container border radii").
+    # Manual (workflow_dispatch) runs skip the comment check and always run.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.issue.pull_request != null &&
-       startsWith(github.event.comment.body, '/override-visual-regression'))
+       startsWith(github.event.comment.body, '/override-visual-regression '))
     runs-on: ubuntu-latest
     steps:
-      # The `if` above is a cheap prefix filter; it would also match strings like
-      # `/override-visual-regressionX`. This step requires the command to be a
-      # standalone token: the first line must be exactly the command, optionally
-      # followed by whitespace (and arguments). A non-match ends the job quietly
-      # as a no-op (via the `matched` output guarding the steps below) rather
-      # than a failed run.
-      - name: Validate command
-        id: command
-        if: github.event_name == 'issue_comment'
-        env:
-          COMMENT_BODY: ${{ github.event.comment.body }}
-        run: |
-          FIRST_LINE=$(printf '%s' "$COMMENT_BODY" | head -n 1)
-          if printf '%s' "$FIRST_LINE" | grep -Eq '^/override-visual-regression([[:space:]]|$)'; then
-            echo "Recognized override command."
-            echo "matched=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Comment does not start with the exact '/override-visual-regression' command; nothing to do."
-            echo "matched=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      # For workflow_dispatch runs there is no comment to validate, so treat the
-      # command as matched. For comment runs, honor the validation result.
       - name: Authorize commenter
-        if: github.event_name == 'issue_comment' && steps.command.outputs.matched == 'true'
+        if: github.event_name == 'issue_comment'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -93,7 +62,7 @@ jobs:
 
       - name: Resolve the commit SHA
         id: resolve
-        if: success() && (github.event_name == 'workflow_dispatch' || steps.command.outputs.matched == 'true')
+        if: success()
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -103,11 +72,9 @@ jobs:
         run: |
           if [ "$EVENT_NAME" = "issue_comment" ]; then
             # Resolve the head commit of the PR the command was posted on.
-            PR_NUMBER="$COMMENT_PR"
-            RESOLVED=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.head.sha')
+            RESOLVED=$(gh api "repos/${REPO}/pulls/${COMMENT_PR}" --jq '.head.sha')
           else
             # workflow_dispatch: the SHA is provided directly.
-            PR_NUMBER=""
             RESOLVED="$INPUT_SHA"
           fi
 
@@ -118,7 +85,6 @@ jobs:
 
           echo "Overriding visual regression for commit ${RESOLVED}."
           echo "sha=${RESOLVED}" >> "$GITHUB_OUTPUT"
-          echo "pr=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Post override commit status
         if: steps.resolve.outputs.sha != ''
@@ -136,20 +102,7 @@ jobs:
             -f target_url="${RUN_URL}" >/dev/null
           echo "Posted visual-regression-override success status on ${SHA}, approved by @${ACTOR}."
 
-      - name: Acknowledge on the pull request
-        if: steps.resolve.outputs.pr != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ steps.resolve.outputs.pr }}
-          SHA: ${{ steps.resolve.outputs.sha }}
-          ACTOR: ${{ github.actor }}
-        run: |
-          gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
-            -f body="Visual regression check overridden for commit \`${SHA}\` by @${ACTOR}. Re-running the deploy workflow to refresh the check. Pushing a new commit will require a fresh override." \
-            >/dev/null
-
-      - name: Re-run the deploy workflow to refresh the check
+      - name: Re-run the failed check to pick up the override
         if: steps.resolve.outputs.sha != ''
         env:
           GH_TOKEN: ${{ github.token }}
@@ -161,9 +114,11 @@ jobs:
             --jq '.workflow_runs[0].id // empty')
 
           if [ -n "$RUN_ID" ]; then
-            echo "Re-running deploy workflow run ${RUN_ID} so the check re-evaluates with the override status."
-            gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun" >/dev/null || \
-              echo "::warning::Could not automatically re-run the deploy workflow. Re-run it manually to refresh the check."
+            # Re-run only the failed jobs (the "Visual regression result" gate),
+            # not the whole run, so the build and deploy jobs are not repeated.
+            echo "Re-running failed jobs of deploy workflow run ${RUN_ID} to re-evaluate the check with the override."
+            gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs" >/dev/null || \
+              echo "::warning::Could not automatically re-run the check. Re-run the failed 'Visual regression result' job manually."
           else
-            echo "::warning::No deploy workflow run found for commit ${SHA}. Re-run the deploy workflow manually to refresh the check."
+            echo "::warning::No deploy workflow run found for commit ${SHA}. Re-run the failed 'Visual regression result' job manually."
           fi
