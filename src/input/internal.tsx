@@ -146,8 +146,7 @@ function InternalInput(
   // When an inline label is rendered, the native input must have an id so the
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
-  const controlId =
-    nativeInputAttributes?.id ?? controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
@@ -348,7 +347,10 @@ function InternalInput(
         __fullWidth && styles['inline-label-wrapper-full-width']
       )}
     >
-      <label htmlFor={controlId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
+      <label
+        htmlFor={attributes.id}
+        className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}
+      >
         {inlineLabelText}
       </label>
       <div
