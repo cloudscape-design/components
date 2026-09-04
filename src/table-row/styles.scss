@@ -1,0 +1,70 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.row {
+  position: relative;
+  box-sizing: border-box;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+
+  &.row-selected {
+    background: awsui.$color-background-item-selected;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+    // Overlay border takes no layout space, so toggling selection never shifts content.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-sizing: border-box;
+      border-block: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+      border-inline: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+      border-start-start-radius: inherit;
+      border-start-end-radius: inherit;
+      border-end-start-radius: inherit;
+      border-end-end-radius: inherit;
+      pointer-events: none;
+    }
+  }
+}
+
+.row-grid {
+  display: grid;
+  inline-size: 100%;
+  align-items: center;
+  grid-auto-rows: minmax(
+    calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-scaled-xs} + 4px - #{awsui.$border-divider-list-width}),
+    auto
+  );
+}
+
+// Consecutive selected rows read as one rounded block: drop the interior corner radii, and let a
+// single full-weight selected border act as the divider between them (the lower row drops its top
+// border so the two don't stack, and the upper row hides its own list divider).
+.row-selected + .row-selected {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  &::after {
+    border-block-start: 0;
+  }
+}
+.row-selected:has(+ .row-selected) {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  border-block-end-color: transparent;
+  // The overlay sits on the padding box, 1px above the true bottom (the row's own divider). Extend
+  // it over that divider so its side borders reach the junction — otherwise the next selected row's
+  // border shows a 1px gap at its top corners.
+  &::after {
+    inset-block-end: calc(-1 * #{awsui.$border-divider-list-width});
+  }
+}
+
+.row.row-shaded {
+  background: awsui.$color-background-cell-shaded;
+}
