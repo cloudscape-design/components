@@ -20,4 +20,8 @@ export default class InputWrapper extends BaseInputWrapper {
   findSuffix(): ElementWrapper | null {
     return this.find(`.${inputSelectors['input-suffix']}`);
   }
+
+  findLeadingContent(): ElementWrapper | null {
+    return this.find(`.${inputSelectors['input-leading-content']}`);
+  }
 }

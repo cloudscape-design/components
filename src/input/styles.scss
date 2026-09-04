@@ -319,7 +319,8 @@
 }
 
 .input-prefix,
-.input-suffix {
+.input-suffix,
+.input-leading-content {
   display: flex;
   align-items: center;
   flex-shrink: 1;
@@ -329,6 +330,12 @@
   padding-inline: styles.$control-padding-horizontal;
   color: inherit;
   @include styles.font-body-m;
+}
+
+.input-leading-content {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
 }
 
 .input-adornment-content {

@@ -104,6 +104,7 @@ function InternalInput(
     style,
     prefix,
     suffix,
+    leadingContent,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -142,7 +143,8 @@ function InternalInput(
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
-  const hasPrefixOrSuffix = hasPrefix || hasSuffix;
+  const hasLeadingContent = !!leadingContent;
+  const hasPrefixOrSuffix = hasPrefix || hasSuffix || hasLeadingContent;
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
     hasPrefixOrSuffix && inputStyles
@@ -320,6 +322,7 @@ function InternalInput(
               <span className={styles['input-adornment-divider']} />
             </>
           )}
+          {hasLeadingContent && <span className={styles['input-leading-content']}>{leadingContent}</span>}
           {inputWithLabel}
           {hasSuffix && (
             <>

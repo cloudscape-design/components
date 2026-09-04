@@ -192,14 +192,19 @@ export interface InputProps
   style?: InputProps.Style;
 
   /**
-   * Use for content rendered before the editable value.
+   * Decorative content rendered before the editable value. Hidden from assistive technology.
    */
   prefix?: ReactNode;
 
   /**
-   * Use for content rendered after the editable value.
+   * Decorative content rendered after the editable value. Hidden from assistive technology.
    */
   suffix?: ReactNode;
+
+  /**
+   * Interactive content rendered before the editable value. Visible to assistive technology.
+   */
+  leadingContent?: ReactNode;
 }
 
 export namespace InputProps {

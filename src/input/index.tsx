@@ -46,6 +46,7 @@ const Input = React.forwardRef(
       style,
       prefix,
       suffix,
+      leadingContent,
       ...rest
     }: InputProps,
     ref: Ref<InputProps.Ref>
@@ -105,6 +106,7 @@ const Input = React.forwardRef(
           style,
           prefix,
           suffix,
+          leadingContent,
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}

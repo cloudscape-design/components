@@ -175,3 +175,65 @@ describe('prefix and suffix adornments', () => {
     });
   });
 });
+
+describe('leadingContent', () => {
+  test('does not render leadingContent wrapper by default', () => {
+    const { wrapper } = renderInput();
+    expect(wrapper.findLeadingContent()).toBeNull();
+  });
+
+  test('renders leadingContent when provided', () => {
+    const { wrapper } = renderInput({ leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()!.getElement()).toHaveTextContent('tokens');
+  });
+
+  test('triggers the adorned container', () => {
+    const { wrapper } = renderInput({ leadingContent: <span>tokens</span> });
+    expect(wrapper.findByClassName(styles['input-adorned-container'])).not.toBeNull();
+    expect(wrapper.findNativeInput().getElement()).toHaveClass(styles['input-adorned']);
+  });
+
+  test('is not aria-hidden', () => {
+    const { wrapper } = renderInput({ leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()!.getElement()).not.toHaveAttribute('aria-hidden');
+  });
+
+  test('does not have an inner adornment-content wrapper', () => {
+    const { wrapper } = renderInput({ leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()!.findByClassName(styles['input-adornment-content'])).toBeNull();
+  });
+
+  test('does not render a divider', () => {
+    const { wrapper } = renderInput({ leadingContent: <span>tokens</span> });
+    expect(wrapper.findAllByClassName(styles['input-adornment-divider'])).toHaveLength(0);
+  });
+
+  test('renders alongside prefix and suffix', () => {
+    const { wrapper } = renderInput({ prefix: '$', suffix: '%', leadingContent: <span>tokens</span> });
+    expect(wrapper.findPrefix()!.getElement()).toHaveTextContent('$');
+    expect(wrapper.findSuffix()!.getElement()).toHaveTextContent('%');
+    expect(wrapper.findLeadingContent()!.getElement()).toHaveTextContent('tokens');
+    // prefix and suffix add dividers, leadingContent does not
+    expect(wrapper.findAllByClassName(styles['input-adornment-divider'])).toHaveLength(2);
+  });
+
+  test('is not cleared for type="search"', () => {
+    const { wrapper } = renderInput({ type: 'search', leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()!.getElement()).toHaveTextContent('tokens');
+  });
+
+  test.each([null, false, undefined, ''] as const)(
+    'does not render leadingContent wrapper for falsy value %p',
+    absentContent => {
+      const { wrapper } = renderInput({ leadingContent: absentContent as any });
+      expect(wrapper.findLeadingContent()).toBeNull();
+    }
+  );
+
+  test('has no axe violations', async () => {
+    const { container } = render(
+      <Input value="test" onChange={() => {}} ariaLabel="Filter" leadingContent={<span>tag1</span>} />
+    );
+    await expect(container).toValidateA11y();
+  });
+});
