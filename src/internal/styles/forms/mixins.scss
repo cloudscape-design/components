@@ -329,7 +329,7 @@ $inline-label-border-radius: 2px;
 }
 
 @mixin inline-label {
-  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-default);
+  background: linear-gradient(to bottom, transparent, awsui.$color-background-input-default);
   border-start-start-radius: $inline-label-border-radius;
   border-start-end-radius: $inline-label-border-radius;
   border-end-start-radius: $inline-label-border-radius;
@@ -351,5 +351,5 @@ $inline-label-border-radius: 2px;
 }
 
 @mixin inline-label-disabled {
-  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-disabled);
+  background: linear-gradient(to bottom, transparent, awsui.$color-background-input-disabled);
 }
