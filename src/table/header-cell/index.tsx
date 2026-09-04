@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { IconGroup } from '../../icon-provider/icon-group';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
@@ -309,7 +310,11 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <InternalIcon name={getSortingIconName(sortingStatus)} />
+              <IconGroup
+                groupName="sorting-indicator"
+                state={{ sortingState: sortingStatus }}
+                name={getSortingIconName(sortingStatus)}
+              />
             </span>
           )}
         </div>

@@ -7,7 +7,7 @@ import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-too
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
-import InternalIcon from '../icon/internal';
+import { IconGroup } from '../icon-provider/icon-group';
 import { isDevelopment } from '../internal/is-development';
 import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
@@ -408,10 +408,14 @@ export const ExpandableSectionHeader = ({
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
-    <InternalIcon
+    <IconGroup
+      groupName="expand-toggle"
+      state={{ expanded: !!expanded }}
       size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
-      className={clsx(styles.icon, expanded && styles.expanded)}
-      name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+      fallback={{
+        name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
+        className: clsx(styles.icon, expanded && styles.expanded),
+      }}
     />
   );
   const defaultHeaderProps = {

@@ -173,6 +173,34 @@ export type DefineIconsInput = Partial<Record<BuiltInIconName | (string & {}), R
 /** Extracts the keys of a `defineIcons` result into the shape that {@link IconRegistry} expects. */
 export type IconMap<T> = { [K in keyof T & string]: T[K] };
 
+/**
+ * Maps each icon group name to the state object passed to its renderer.
+ */
+export interface IconGroupStates {
+  /**
+   * The expand/collapse toggle shared by Table (expandable rows), Tree View, and Expandable Section.
+   * `expanded` is `true` when the item is currently expanded.
+   */
+  'expand-toggle': { expanded: boolean };
+  /**
+   * The sorting indicator rendered in Table column headers.
+   * `sortingState` reflects the column's current sorting status.
+   */
+  'sorting-indicator': { sortingState: 'sortable' | 'ascending' | 'descending' };
+}
+
+/** Union of all registered icon group names. */
+export type IconGroupName = keyof IconGroupStates & string;
+
+/**
+ * Renders the icon for a given group. Receives the group's current state and returns the node
+ * to display. Return `null` (or `undefined`) to fall back to the icon that `icons` (or the default
+ * set) would render for that state.
+ */
+export type IconGroupRenderer<K extends IconGroupName = IconGroupName> = (
+  state: IconGroupStates[K]
+) => ReactNode | null | undefined;
+
 export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;
 
@@ -190,10 +218,42 @@ export interface IconProviderProps extends BaseComponentProps {
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
+
+  /**
+   * Higher-precedence, role-based icon groups applied *on top* of `icons`.
+   *
+   * While `icons` replaces a glyph by name wherever it appears (including carets), `iconGroups` target
+   * specific, stateful roles — such as the expand/collapse toggle (`expand-toggle`) or the sorting
+   * indicator (`sorting-indicator`) — for cases when more precision is needed. An icon group only
+   * affects its role, so a `sorting-indicator` group never changes an unrelated caret used in a cell or header.
+   *
+   * Each icon group is a render function that receives the role's current state and returns the icon to
+   * display. Because the groups replace the default rendering entirely, the returned node is responsible
+   * for representing every state (including any expand/collapse animation). Return `null` from a renderer
+   * to fall back to what `icons` (or the default set) would render for that state.
+   *
+   * Icon groups are inherited by nested providers (closest provider wins). Set a specific group to
+   * `null` to reset it, or set the whole property to `null` to reset all groups.
+   *
+   * @example
+   * <IconProvider
+   *   icons={null}
+   *   iconGroups={{
+   *     'expand-toggle': ({ expanded }) => (
+   *       <Icon size="inherit" name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
+   *     ),
+   *   }}
+   * >
+   */
+  iconGroups?: IconProviderProps.IconGroups | null;
 }
 
 export namespace IconProviderProps {
   export type Icons = {
     [name in IconProps.Name]?: ReactNode | null;
+  };
+
+  export type IconGroups = {
+    [name in IconGroupName]?: IconGroupRenderer<name> | null;
   };
 }
