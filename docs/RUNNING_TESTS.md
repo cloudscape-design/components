@@ -75,14 +75,34 @@ The deploy workflow (`.github/workflows/deploy.yml`) orchestrates the full pipel
 
 The visual regression workflow (`.github/workflows/visual-regression.yml`):
 
-1. Resolves the PR deployment URL from the GitHub Deployments API.
-2. Serves the baseline pages locally.
-3. Runs the test suite sharded across multiple runners. Each test navigates to a page on both hosts, captures screenshots, and compares them pixel-by-pixel.
-4. Produces an Allure report with image diffs for any failures, deployed to a preview environment.
+1. Checks the commit for a `visual-regression-override` status (see [Overriding](#overriding-intentional-visual-changes) below).
+2. Resolves the PR deployment URL from the GitHub Deployments API.
+3. Serves the baseline pages locally.
+4. Runs the test suite sharded across multiple runners. Each test navigates to a page on both hosts, captures screenshots, and compares them pixel-by-pixel.
+5. Produces an Allure report with image diffs for any failures, deployed to a preview environment.
+6. The deploy workflow's `Visual regression result` job surfaces the pass/fail outcome as the required check.
+
+The `Visual regression result` check (from `deploy.yml`) passes only when every shard passed, or when the commit was overridden (see below).
 
 ### Reviewing failures
 
-When the CI job fails, check the deployed Allure report (linked from the GitHub deployment). It shows expected vs actual vs diff images for each failing test. If the diff is expected (intentional visual change), note it in your PR description.
+When the CI job fails, check the deployed Allure report (linked from the GitHub deployment). It shows expected vs actual vs diff images for each failing test. If the diff is expected (intentional visual change), override the check as described below.
+
+### Overriding intentional visual changes
+
+Because baselines are rebuilt from `origin/main` at run time (there are no committed
+screenshots to update), an intentional visual change is approved by overriding the
+check rather than by updating snapshots.
+
+The override is **scoped to a single commit**. It approves the exact SHA you reviewed;
+pushing a new commit produces a new SHA with no override, so the comparison runs again.
+
+To override, first confirm the diffs in the Allure report are intentional, then use either method:
+
+- **From the PR page (recommended):** comment `/override-visual-regression <Reason to override>` on the pull request.
+- **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
+
+Either way the workflow posts a `visual-regression-override` success commit status on that SHA, comments on the PR crediting the person who triggered it, and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
 
 ### Adding tests for a new component
 
