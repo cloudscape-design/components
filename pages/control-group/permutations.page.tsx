@@ -3,15 +3,15 @@
 import React from 'react';
 
 import Button from '~components/button';
-import ControlGroup from '~components/control-group';
+import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import Input from '~components/input';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SegmentedControl from '~components/segmented-control';
 import Select, { SelectProps } from '~components/select';
 
+import { SimplePage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 const FUNCTIONS: SelectProps.Option[] = [
   { value: 'abs', label: 'abs' },
@@ -42,11 +42,12 @@ const MULTI_OPTIONS: MultiselectProps.Option[] = Array.from({ length: 100 }, (_,
   label: `Option ${i + 1}`,
 }));
 
-const permutations = createPermutations<{ content: React.ReactElement }>([
+const permutations = createPermutations<ControlGroupProps>([
   {
-    content: [
-      // Function: a single Select + a Button child (Button remains a supported control).
-      <ControlGroup key="function" ariaLabel="Function">
+    // Function: a single Select + a Button child (Button remains a supported control).
+    ariaLabel: ['Function'],
+    children: [
+      <>
         <Select
           ariaLabel="Function"
           inlineLabelText="Function"
@@ -55,16 +56,17 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
           onChange={() => {}}
         />
         <Button iconName="close" variant="icon" ariaLabel="Remove function" />
-      </ControlGroup>,
-
-      // Aggregation: two Selects + built-in remove button via `dismissible`.
-      <ControlGroup
-        key="aggregation"
-        ariaLabel="Aggregation"
-        dismissible={true}
-        onDismiss={() => {}}
-        i18nStrings={{ dismissAriaLabel: 'Remove aggregation' }}
-      >
+      </>,
+    ],
+  },
+  {
+    // Aggregation: two Selects + built-in remove button via `dismissible`.
+    ariaLabel: ['Aggregation'],
+    dismissible: [true],
+    onDismiss: [() => {}],
+    i18nStrings: [{ dismissAriaLabel: 'Remove aggregation' }],
+    children: [
+      <>
         <Select
           ariaLabel="Aggregation"
           inlineLabelText="Aggregation"
@@ -73,57 +75,62 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
           onChange={() => {}}
         />
         <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
-      </ControlGroup>,
-
-      // Metric: an Input + built-in remove button.
-      <ControlGroup
+      </>,
+    ],
+  },
+  {
+    // Metric: a single Input + built-in remove button.
+    ariaLabel: ['Metric'],
+    dismissible: [true],
+    onDismiss: [() => {}],
+    i18nStrings: [{ dismissAriaLabel: 'Remove metric' }],
+    children: [
+      <Input
         key="metric"
         ariaLabel="Metric"
-        dismissible={true}
-        onDismiss={() => {}}
-        i18nStrings={{ dismissAriaLabel: 'Remove metric' }}
-      >
-        <Input
-          ariaLabel="Metric"
-          inlineLabelText="Metric"
-          value=""
-          placeholder="Select metric name"
-          onChange={() => {}}
-        />
-      </ControlGroup>,
-
-      // Label: Input + operator Select + Input + built-in remove button.
-      <ControlGroup
-        key="label"
-        ariaLabel="Label"
-        dismissible={true}
-        onDismiss={() => {}}
-        i18nStrings={{ dismissAriaLabel: 'Remove label' }}
-      >
+        inlineLabelText="Metric"
+        value=""
+        placeholder="Select metric name"
+        onChange={() => {}}
+      />,
+    ],
+  },
+  {
+    // Label: Input + operator Select + Input + built-in remove button.
+    ariaLabel: ['Label'],
+    dismissible: [true],
+    onDismiss: [() => {}],
+    i18nStrings: [{ dismissAriaLabel: 'Remove label' }],
+    children: [
+      <>
         <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
         <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
         <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
-      </ControlGroup>,
-
-      // Multiselect with inline tokens + built-in remove button.
-      <ControlGroup
-        key="multiselect"
-        ariaLabel="Multiselect with inline tokens"
-        dismissible={true}
-        onDismiss={() => {}}
-        i18nStrings={{ dismissAriaLabel: 'Remove options' }}
-      >
-        <Multiselect
-          ariaLabel="Options"
-          inlineTokens={true}
-          selectedOptions={MULTI_OPTIONS.slice(0, 6)}
-          options={MULTI_OPTIONS}
-          onChange={() => {}}
-        />
-      </ControlGroup>,
-
-      // Search input + a segmented control choosing how the query is applied.
-      <ControlGroup key="segmented" ariaLabel="Filter results">
+      </>,
+    ],
+  },
+  {
+    // Multiselect with inline tokens + built-in remove button.
+    ariaLabel: ['Multiselect with inline tokens'],
+    dismissible: [true],
+    onDismiss: [() => {}],
+    i18nStrings: [{ dismissAriaLabel: 'Remove options' }],
+    children: [
+      <Multiselect
+        key="options"
+        ariaLabel="Options"
+        inlineTokens={true}
+        selectedOptions={MULTI_OPTIONS.slice(0, 6)}
+        options={MULTI_OPTIONS}
+        onChange={() => {}}
+      />,
+    ],
+  },
+  {
+    // Search input + a segmented control choosing how the query is applied.
+    ariaLabel: ['Filter results'],
+    children: [
+      <>
         <Input ariaLabel="Filter results" type="search" value="" placeholder="Filter results" onChange={() => {}} />
         <SegmentedControl
           selectedId="filter"
@@ -134,18 +141,30 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
           ]}
           onChange={() => {}}
         />
-      </ControlGroup>,
+      </>,
     ],
   },
 ]);
 
 export default function () {
   return (
-    <ScreenshotArea disableAnimations={true}>
-      <article>
-        <h1>ControlGroup permutations</h1>
-        <PermutationsView permutations={permutations} render={permutation => permutation.content} />
-      </article>
-    </ScreenshotArea>
+    <SimplePage title="ControlGroup permutations" screenshotArea={{ disableAnimations: true }}>
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <ControlGroup
+            ariaLabel={permutation.ariaLabel}
+            dismissible={permutation.dismissible}
+            onDismiss={permutation.onDismiss}
+            description={permutation.description}
+            errorText={permutation.errorText}
+            warningText={permutation.warningText}
+            i18nStrings={permutation.i18nStrings}
+          >
+            {permutation.children}
+          </ControlGroup>
+        )}
+      />
+    </SimplePage>
   );
 }
