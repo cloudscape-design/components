@@ -58,6 +58,71 @@ describe('Badge', () => {
   });
 });
 
+describe('icon', () => {
+  function renderBadgeWrapper(component: React.ReactElement) {
+    const { container } = render(component);
+    return createWrapper(container).findBadge()!;
+  }
+
+  test('does not render an icon by default', () => {
+    const wrapper = renderBadgeWrapper(<Badge>20</Badge>);
+    expect(wrapper.findIcon()).toBeNull();
+  });
+
+  test('renders an icon by name', () => {
+    const wrapper = renderBadgeWrapper(<Badge iconName="status-info">20</Badge>);
+    expect(wrapper.findIcon()).not.toBeNull();
+  });
+
+  test('renders a custom svg icon', () => {
+    const wrapper = renderBadgeWrapper(
+      <Badge
+        iconSvg={
+          <svg className="test-svg" focusable="false" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="7" />
+          </svg>
+        }
+      >
+        20
+      </Badge>
+    );
+    const icon = wrapper.findIcon();
+    expect(icon).not.toBeNull();
+    expect(icon!.getElement().querySelector('.test-svg')).not.toBeNull();
+  });
+
+  test('wraps content in a content region when an icon is present', () => {
+    const wrapper = renderBadgeWrapper(<Badge iconName="status-info">20</Badge>);
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('20');
+  });
+
+  test('places the icon before the content when iconAlign is left (default)', () => {
+    const wrapper = renderBadgeWrapper(<Badge iconName="status-info">20</Badge>);
+    const children = Array.from(wrapper.getElement().children);
+    const iconIndex = children.indexOf(wrapper.findIcon()!.getElement());
+    const contentIndex = children.indexOf(wrapper.findContent()!.getElement());
+    expect(iconIndex).toBeLessThan(contentIndex);
+  });
+
+  test('places the icon after the content when iconAlign is right', () => {
+    const wrapper = renderBadgeWrapper(
+      <Badge iconName="status-info" iconAlign="right">
+        20
+      </Badge>
+    );
+    const children = Array.from(wrapper.getElement().children);
+    const iconIndex = children.indexOf(wrapper.findIcon()!.getElement());
+    const contentIndex = children.indexOf(wrapper.findContent()!.getElement());
+    expect(iconIndex).toBeGreaterThan(contentIndex);
+  });
+
+  test('renders an icon-only badge without a content region', () => {
+    const wrapper = renderBadgeWrapper(<Badge iconName="status-info" />);
+    expect(wrapper.findIcon()).not.toBeNull();
+    expect(wrapper.findContent()).toBeNull();
+  });
+});
+
 describe('Style API', () => {
   test('all style properties', () => {
     const badge = renderBadge(

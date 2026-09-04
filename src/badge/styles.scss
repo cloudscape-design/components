@@ -16,7 +16,9 @@ $tokens: style-api.resolve(style-api.combine(style-api.$surface, (padding-block,
 
   @include styles.font-body-s;
   line-height: awsui.$line-height-body-m;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
   border-start-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-badge});
   border-start-end-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-badge});
   border-end-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-badge});
@@ -27,6 +29,18 @@ $tokens: style-api.resolve(style-api.combine(style-api.$surface, (padding-block,
   padding-block: var(#{style-api.read($tokens, padding-block)}, 0);
   padding-inline: var(#{style-api.read($tokens, padding-inline)}, #{awsui.$space-xs});
   color: var(#{style-api.read($tokens, color)}, #{awsui.$color-text-notification-default});
+
+  > .icon {
+    // The icon uses size="inherit", so its height matches the badge line-height.
+    // The flex container (align-items: center) keeps it vertically centered with the label text.
+    &.icon-left.icon-with-content {
+      margin-inline-end: awsui.$space-xxs;
+    }
+
+    &.icon-right.icon-with-content {
+      margin-inline-start: awsui.$space-xxs;
+    }
+  }
 
   &.badge-color-grey {
     background-color: var(#{style-api.read($tokens, background-color)}, #{awsui.$color-background-badge-grey});
