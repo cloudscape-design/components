@@ -363,6 +363,10 @@ $inline-label-border-radius: 2px;
   $radius: constants.$control-border-radius,
   $border-width: awsui.$border-width-field
 ) {
+  // Seams are collapsed by REMOVING the seam-side border on the following control
+  // (rather than overlapping two borders with a negative margin, which doubles up
+  // at fractional device-pixel ratios). Each interior seam is then drawn exactly
+  // once by the preceding control's trailing border.
   @if $position == 'first' {
     // Keep leading corners (at the shared control radius); square the trailing seam side.
     border-start-start-radius: $radius;
@@ -370,19 +374,19 @@ $inline-label-border-radius: 2px;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   } @else if $position == 'last' {
-    // Keep trailing corners; square the leading seam side and collapse the seam.
+    // Keep trailing corners; square the leading seam side and drop the (doubled) leading border.
     border-start-end-radius: $radius;
     border-end-end-radius: $radius;
     border-start-start-radius: 0;
     border-end-start-radius: 0;
-    margin-inline-start: calc(-1 * #{$border-width});
+    border-inline-start-width: 0;
   } @else if $position == 'middle' {
-    // Square both sides and collapse the leading seam.
+    // Square both sides and drop the leading border (the previous control draws the seam).
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
-    margin-inline-start: calc(-1 * #{$border-width});
+    border-inline-start-width: 0;
   } @else if $position == 'only' {
     // Keep all corners at the shared control radius (no seam collapsing).
     border-start-start-radius: $radius;
@@ -420,30 +424,31 @@ $inline-label-border-radius: 2px;
   $radius: constants.$control-border-radius,
   $border-width: awsui.$border-width-field
 ) {
-  // The stacked layout collapses seams along the block axis, so always drop the
-  // inline-axis seam margin from the horizontal treatment.
-  margin-inline-start: 0;
+  // The stacked layout collapses seams along the BLOCK axis, so restore the
+  // inline-start border removed by the horizontal treatment and instead drop the
+  // block-start (top seam) border on the following controls.
+  border-inline-start-width: $border-width;
 
   @if $position == 'first' {
-    // Keep top corners; square the bottom (seam) side.
+    // Keep top corners; square the bottom (seam) side. Draws the first seam.
     border-start-start-radius: $radius;
     border-start-end-radius: $radius;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
   } @else if $position == 'last' {
-    // Keep bottom corners; square the top (seam) side and collapse the seam.
+    // Keep bottom corners; square the top (seam) side and drop the doubled top border.
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: $radius;
     border-end-end-radius: $radius;
-    margin-block-start: calc(-1 * #{$border-width});
+    border-block-start-width: 0;
   } @else if $position == 'middle' {
-    // Square all corners and collapse the top seam.
+    // Square all corners and drop the top border (the previous control draws the seam).
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
-    margin-block-start: calc(-1 * #{$border-width});
+    border-block-start-width: 0;
   } @else if $position == 'only' {
     // Keep all corners rounded (nothing to collapse).
     border-start-start-radius: $radius;
