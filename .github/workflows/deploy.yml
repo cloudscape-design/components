@@ -9,7 +9,7 @@ permissions:
   id-token: write
   actions: read
   contents: read
-  statuses: read # Needed to check if the visual regression test result has been overriden
+  statuses: read # Needed to check if the visual regression test result has been overridden
   deployments: write
 
 jobs:
