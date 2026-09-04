@@ -236,6 +236,8 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      'data-awsui-motion-trigger': 'hover',
+      'data-awsui-motion-target': '',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
       ...getAnalyticsLabelAttribute(shouldHaveContent ? `.${analyticsSelectors.label}` : ''),

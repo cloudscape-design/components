@@ -182,6 +182,8 @@ const InternalLink = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-labelledby': undefined as string | undefined,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
+      'data-awsui-motion-trigger': 'hover',
+      'data-awsui-motion-target': '',
     };
 
     if (variant === 'info' && infoLinkLabelFromContext && !ariaLabel) {

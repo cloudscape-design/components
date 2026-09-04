@@ -79,7 +79,7 @@ const InternalActionCard = React.forwardRef(
     const headerRowEmpty = !header && !description;
 
     const iconWrapper = icon && (
-      <div className={clsx(styles.icon, testStyles.icon)} aria-hidden="true">
+      <div className={clsx(styles.icon, testStyles.icon)} aria-hidden="true" data-awsui-motion-target="">
         {icon}
       </div>
     );
@@ -104,6 +104,9 @@ const InternalActionCard = React.forwardRef(
       onClick: handleButtonClick,
       'aria-describedby': ariaDescribedby,
       'aria-disabled': disabled || undefined,
+      // The hover region is the whole card (see the root element); focusing
+      // the inner control also plays the motion.
+      'data-awsui-motion-trigger': 'focus',
     };
 
     // <a>-tag specific props
@@ -237,6 +240,7 @@ const InternalActionCard = React.forwardRef(
           baseProps.className
         )}
         aria-disabled={disabled || undefined}
+        data-awsui-motion-trigger="hover"
       >
         {standaloneButton}
         {contentElement}
