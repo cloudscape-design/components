@@ -182,6 +182,7 @@ const InternalLink = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-labelledby': undefined as string | undefined,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
+      ...(external ? { 'data-awsui-motion-trigger': 'hover' } : {}),
     };
 
     if (variant === 'info' && infoLinkLabelFromContext && !ariaLabel) {
@@ -200,7 +201,7 @@ const InternalLink = React.forwardRef(
               aria-label={renderedExternalIconAriaLabel}
               role={renderedExternalIconAriaLabel ? 'img' : undefined}
             >
-              <InternalIcon name="external" size="inherit" />
+              <InternalIcon name="external" size="inherit" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
             </span>
           </span>
         )}

@@ -39,6 +39,8 @@ export function ExpandToggleButton({
       aria-expanded={isExpanded}
       className={clsx(styles['expand-toggle'], disableFocusHighlight && styles['disable-focus-highlight'], className)}
       onClick={onExpandableItemToggle}
+      data-awsui-motion-trigger="hover"
+      data-awsui-motion-target=""
     >
       {customIcon ?? (
         <InternalIcon

@@ -271,6 +271,7 @@ export function TableHeaderCell<ItemType>({
                 tabIndex: clickableHeaderTabIndex,
                 role: 'button',
                 onClick: event => handleClick(event.shiftKey),
+                'data-awsui-motion-trigger': 'hover',
                 // Prevent the browser from extending the text selection on Shift+click.
                 onMouseDown: (event: React.MouseEvent) => {
                   if (event.shiftKey) {
@@ -297,6 +298,7 @@ export function TableHeaderCell<ItemType>({
                     'columnDefinitions.editConfig.editIconAriaLabel',
                     column.editConfig?.editIconAriaLabel
                   )}
+                  nativeAttributes={{ 'data-awsui-motion-target': '' }}
                 />
               </span>
             ) : null}
@@ -309,7 +311,10 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <InternalIcon name={getSortingIconName(sortingStatus)} />
+              <InternalIcon
+                name={getSortingIconName(sortingStatus)}
+                nativeAttributes={{ 'data-awsui-motion-target': '' }}
+              />
             </span>
           )}
         </div>

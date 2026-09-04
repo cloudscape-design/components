@@ -77,8 +77,13 @@ const getDropdownTrigger =
         aria-haspopup={true}
         aria-label={ariaLabel}
         formAction="none"
+        data-awsui-motion-trigger="hover"
       >
-        <InternalIcon name="caret-down-filled" className={spinWhenOpen(styles, 'button-icon', isOpen)} />
+        <InternalIcon
+          name="caret-down-filled"
+          className={spinWhenOpen(styles, 'button-icon', isOpen)}
+          nativeAttributes={{ 'data-awsui-motion-target': '' }}
+        />
         <span>{currentPage}</span>
       </button>
     );

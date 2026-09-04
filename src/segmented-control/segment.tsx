@@ -71,6 +71,8 @@ export const Segment = React.forwardRef(
         onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
         {...(isDisabledWithReason ? targetProps : {})}
         data-testid={id}
+        data-awsui-motion-trigger="hover"
+        data-awsui-motion-target=""
         style={getSegmentedControlSegmentStyles(style)}
       >
         {(iconName || iconUrl || iconSvg) && (

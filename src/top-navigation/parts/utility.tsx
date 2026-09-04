@@ -58,7 +58,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
                       aria-label={definition.externalIconAriaLabel}
                       role={definition.externalIconAriaLabel ? 'img' : undefined}
                     >
-                      <InternalIcon name="external" />
+                      <InternalIcon name="external" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
                     </span>
                   </>
                 )}
@@ -90,6 +90,8 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
               );
             }}
             ariaLabel={ariaLabel}
+            // Target on the link so that consumer-provided utility icons animate too.
+            nativeAttributes={{ 'data-awsui-motion-trigger': 'hover', 'data-awsui-motion-target': '' }}
           >
             {hasIcon && (
               <InternalIcon

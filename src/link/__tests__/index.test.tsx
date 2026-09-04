@@ -47,6 +47,19 @@ describe('Link component', () => {
     expect(createWrapper(wrapper.getElement()).find('[aria-label="External link"]')).toBeTruthy();
   });
 
+  describe('external icon hover motion', () => {
+    test('external link is a hover trigger and its icon carries the motion target', () => {
+      const wrapper = renderLink({ href: '#', external: true, children: 'External' });
+      expect(wrapper.getElement()).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      expect(wrapper.getElement().querySelector('[data-awsui-motion-target]')).toBeTruthy();
+    });
+
+    test('non-external link has no motion trigger', () => {
+      const wrapper = renderLink({ href: '#', children: 'Internal' });
+      expect(wrapper.getElement()).not.toHaveAttribute('data-awsui-motion-trigger');
+    });
+  });
+
   describe('i18n', () => {
     test('supports providing externalIconAriaLabel through i18n provider', () => {
       const { container } = render(
