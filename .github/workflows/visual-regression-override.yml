@@ -27,16 +27,16 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  statuses: write # post the override commit status
-  actions: write # re-run the deploy workflow
+  statuses: write # Needed to post the override commit status
+  actions: write # Needed to re-run the deploy workflow
 
 jobs:
   override:
     name: Apply visual regression override
-    # Comment runs must be posted on a PR and start with the command; the trailing
+    # Override comments must be posted on a PR and start with the command; the trailing
     # space requires text after it, which serves as the override justification
     # (for example: "/override-visual-regression Expected padding changes in Container border radii").
-    # Manual (workflow_dispatch) runs skip the comment check and always run.
+    # Manual runs (workflow_dispatch) skip the comment check.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.issue.pull_request != null &&
