@@ -353,3 +353,67 @@ $inline-label-border-radius: 2px;
 @mixin inline-label-disabled {
   background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-disabled);
 }
+
+// Groups a bordered control with its neighbors inside a ControlGroup. The control
+// keeps its own border but squares the corners where it meets a neighbor and
+// pulls over the shared seam border so it is not drawn twice. `$position` is one
+// of 'first' | 'middle' | 'last' | 'only' and comes from the ControlGroup context.
+@mixin control-group-grouped(
+  $position,
+  $radius: constants.$control-border-radius,
+  $border-width: awsui.$border-width-field
+) {
+  @if $position == 'first' {
+    // Keep leading corners (at the shared control radius); square the trailing seam side.
+    border-start-start-radius: $radius;
+    border-end-start-radius: $radius;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  } @else if $position == 'last' {
+    // Keep trailing corners; square the leading seam side and collapse the seam.
+    border-start-end-radius: $radius;
+    border-end-end-radius: $radius;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    margin-inline-start: calc(-1 * #{$border-width});
+  } @else if $position == 'middle' {
+    // Square both sides and collapse the leading seam.
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    margin-inline-start: calc(-1 * #{$border-width});
+  } @else if $position == 'only' {
+    // Keep all corners at the shared control radius (no seam collapsing).
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+  }
+}
+
+// Block-axis variant used when a ControlGroup stacks vertically on small screens.
+@mixin control-group-grouped-stacked(
+  $position,
+  $radius: constants.$control-border-radius,
+  $border-width: awsui.$border-width-field
+) {
+  @if $position == 'first' {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    // reset any inline-axis seam collapsing
+    margin-inline-start: 0;
+  } @else if $position == 'last' {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    margin-inline-start: 0;
+    margin-block-start: calc(-1 * #{$border-width});
+  } @else if $position == 'middle' {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    margin-inline-start: 0;
+    margin-block-start: calc(-1 * #{$border-width});
+  }
+}

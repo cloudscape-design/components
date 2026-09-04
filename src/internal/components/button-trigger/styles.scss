@@ -159,4 +159,49 @@ $icon-offset: awsui.$space-xxxs;
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
   }
+
+  // Inside a ControlGroup the trigger keeps its own border but fuses with its
+  // neighbors: interior corners are squared and the shared seam border is
+  // collapsed. A focused trigger raises above its neighbors so its focus ring is
+  // not clipped by the adjacent control.
+  &.in-control-group {
+    @include focus-visible.when-visible {
+      position: relative;
+      z-index: 1;
+    }
+
+    // The keyboard focus ring (form-focus-element) resets border-inline back to
+    // the normal width/color, which erases the invalid/warning left indicator.
+    // Re-assert it so the indicator survives focus, matching the resting state.
+    &.invalid {
+      @include focus-visible.when-visible {
+        border-inline-start: styles.$invalid-control-left-border solid awsui.$color-text-status-error;
+      }
+    }
+    &.warning {
+      @include focus-visible.when-visible {
+        border-inline-start: styles.$invalid-control-left-border solid awsui.$color-text-status-warning;
+      }
+    }
+  }
+  // Re-apply the fused corners at rest AND when the focus ring is shown, since
+  // the trigger's own focus styles otherwise restore all four corners.
+  &.in-control-group-first {
+    @include styles.control-group-grouped('first');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped('first');
+    }
+  }
+  &.in-control-group-middle {
+    @include styles.control-group-grouped('middle');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped('middle');
+    }
+  }
+  &.in-control-group-last {
+    @include styles.control-group-grouped('last');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped('last');
+    }
+  }
 }

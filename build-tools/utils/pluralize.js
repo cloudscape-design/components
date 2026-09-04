@@ -24,6 +24,7 @@ const pluralizationMap = {
   ColumnLayout: 'ColumnLayouts',
   Container: 'Containers',
   ContentLayout: 'ContentLayouts',
+  ControlGroup: 'ControlGroups',
   CopyToClipboard: 'CopyToClipboards',
   DateInput: 'DateInputs',
   DatePicker: 'DatePickers',
