@@ -9,12 +9,20 @@
 .root {
   @include styles.styles-reset;
   display: block;
+  // Establish a query container so the group's responsiveness follows the width
+  // available in its parent, not the viewport. The child controls flip their
+  // fused corners to the block axis via `@container control-group (...)`.
+  container: control-group / inline-size;
 }
 
 .group {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  // Align controls along their bottom edge so their field boxes line up even when
+  // one control is taller (for example, a control with an inline label that sits
+  // above its field). The label floats above; the fields stay on one line.
+  align-items: flex-end;
   // The group only lays the controls out; each control owns its own border and
   // radius (and collapses the shared seams itself via ControlGroupContext), so
   // the group does not shrink or stretch to a shared border box.
@@ -39,13 +47,16 @@
 }
 
 /*
- * Responsiveness: on small screens the grouped controls go full-width and stack
- * vertically. Each control's own seam styling switches from the inline axis to
- * the block axis (handled per-control), so the group just changes direction.
+ * Responsiveness: when the group's own container gets narrow, the controls go
+ * full-width and stack vertically. Each control's own seam styling switches from
+ * the inline axis to the block axis (handled per-control via container queries),
+ * so the group just changes direction.
  */
-@media (max-width: styles.$breakpoint-x-small) {
+@container control-group #{styles.$control-group-stack-query} {
   .group {
     flex-direction: column;
+    // Stacked controls fill the width; bottom-alignment no longer applies.
+    align-items: stretch;
     inline-size: 100%;
   }
 

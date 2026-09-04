@@ -210,21 +210,21 @@
   // Re-apply the fused corners at rest AND on focus, since the control's own
   // focus styles otherwise restore all four corners at the full radius.
   &.input-in-control-group-first {
-    @include styles.control-group-grouped('first');
+    @include styles.control-group-grouped-responsive('first');
     &:focus {
-      @include styles.control-group-grouped('first');
+      @include styles.control-group-grouped-responsive('first');
     }
   }
   &.input-in-control-group-middle {
-    @include styles.control-group-grouped('middle');
+    @include styles.control-group-grouped-responsive('middle');
     &:focus {
-      @include styles.control-group-grouped('middle');
+      @include styles.control-group-grouped-responsive('middle');
     }
   }
   &.input-in-control-group-last {
-    @include styles.control-group-grouped('last');
+    @include styles.control-group-grouped-responsive('last');
     &:focus {
-      @include styles.control-group-grouped('last');
+      @include styles.control-group-grouped-responsive('last');
     }
   }
 }
@@ -237,21 +237,21 @@
     z-index: 1;
   }
   &.input-adorned-container-in-control-group-first {
-    @include styles.control-group-grouped('first');
+    @include styles.control-group-grouped-responsive('first');
     &:focus-within {
-      @include styles.control-group-grouped('first');
+      @include styles.control-group-grouped-responsive('first');
     }
   }
   &.input-adorned-container-in-control-group-middle {
-    @include styles.control-group-grouped('middle');
+    @include styles.control-group-grouped-responsive('middle');
     &:focus-within {
-      @include styles.control-group-grouped('middle');
+      @include styles.control-group-grouped-responsive('middle');
     }
   }
   &.input-adorned-container-in-control-group-last {
-    @include styles.control-group-grouped('last');
+    @include styles.control-group-grouped-responsive('last');
     &:focus-within {
-      @include styles.control-group-grouped('last');
+      @include styles.control-group-grouped-responsive('last');
     }
   }
 }
