@@ -252,6 +252,8 @@ function InternalInput(
     />
   );
 
+  const renderedId = nativeInputAttributes?.id || controlId;
+
   const endIcon = __endIcon ? (
     <span
       className={styles['input-icon-end']}
@@ -347,10 +349,7 @@ function InternalInput(
         __fullWidth && styles['inline-label-wrapper-full-width']
       )}
     >
-      <label
-        htmlFor={attributes.id}
-        className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}
-      >
+      <label htmlFor={renderedId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
         {inlineLabelText}
       </label>
       <div
