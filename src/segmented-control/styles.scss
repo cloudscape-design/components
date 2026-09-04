@@ -73,6 +73,19 @@
   }
 }
 
+// Inside a ControlGroup the segmented control must stay as segments regardless of
+// viewport width; it must not collapse into the Select fallback (which would break
+// the fused row). Keep the segments shown and the Select hidden at all widths.
+.root.in-control-group {
+  > .segment-part {
+    display: inline-grid;
+  }
+
+  > .select {
+    display: none;
+  }
+}
+
 @for $i from 2 through 6 {
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
