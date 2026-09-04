@@ -83,7 +83,13 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
         onDismiss={() => {}}
         i18nStrings={{ dismissAriaLabel: 'Remove metric' }}
       >
-        <Input ariaLabel="Metric" value="" placeholder="Select metric name" onChange={() => {}} />
+        <Input
+          ariaLabel="Metric"
+          inlineLabelText="Metric"
+          value=""
+          placeholder="Select metric name"
+          onChange={() => {}}
+        />
       </ControlGroup>,
 
       // Label: Input + operator Select + Input + built-in remove button.
@@ -94,7 +100,7 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
         onDismiss={() => {}}
         i18nStrings={{ dismissAriaLabel: 'Remove label' }}
       >
-        <Input ariaLabel="Label name" value="" placeholder="Label name" onChange={() => {}} />
+        <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
         <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
         <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
       </ControlGroup>,
@@ -116,21 +122,15 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
         />
       </ControlGroup>,
 
-      // Segmented control + built-in remove button.
-      <ControlGroup
-        key="segmented"
-        ariaLabel="View"
-        dismissible={true}
-        onDismiss={() => {}}
-        i18nStrings={{ dismissAriaLabel: 'Remove view' }}
-      >
+      // Search input + a segmented control choosing how the query is applied.
+      <ControlGroup key="segmented" ariaLabel="Filter results">
+        <Input ariaLabel="Filter results" type="search" value="" placeholder="Filter results" onChange={() => {}} />
         <SegmentedControl
-          selectedId="table"
-          label="View"
+          selectedId="filter"
+          label="Filter mode"
           options={[
-            { id: 'table', text: 'Table' },
-            { id: 'cards', text: 'Cards' },
-            { id: 'list', text: 'List' },
+            { id: 'filter', text: 'Filter' },
+            { id: 'highlight', text: 'Highlight' },
           ]}
           onChange={() => {}}
         />
