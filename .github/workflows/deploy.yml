@@ -9,6 +9,7 @@ permissions:
   id-token: write
   actions: read
   contents: read
+  statuses: read # Needed to check if the visual regression test result has been overridden
   deployments: write
 
 jobs:
@@ -127,3 +128,50 @@ jobs:
       test-utils-artifact-name: test-utils-selectors
       baseline-artifact-name: visual-baseline-pages
       caller-run-id: ${{ github.run_id }}
+      commit-sha: ${{ github.event.pull_request.head.sha }}
+
+  # Required status check for branch protection. Runs for every PR so the context
+  # is always reported.
+  #
+  # It passes when any of these hold:
+  #   - the PR is from a fork (visual regression cannot run, so it is skipped);
+  #   - the visual job succeeded;
+  #   - the commit has a maintainer override status.
+  #
+  # The override is checked directly here (not only via the visual job result) so
+  # that after an override this job can be re-run on its own to turn the check
+  # green, without rebuilding or redeploying the (unchanged) pages.
+  visual-regression-result:
+    name: Visual regression result
+    needs: [visual]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate result
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          IS_FORK: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+          VISUAL_RESULT: ${{ needs.visual.result }}
+        run: |
+          if [ "$IS_FORK" = "true" ]; then
+            echo "::notice::Fork pull request: visual regression does not run. Marking as passed."
+            exit 0
+          fi
+
+          if [ "$VISUAL_RESULT" = "success" ]; then
+            echo "Visual regression passed."
+            exit 0
+          fi
+
+          OVERRIDDEN=$(gh api \
+            "repos/${REPO}/commits/${SHA}/statuses" \
+            --jq 'any(.[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
+          if [ "$OVERRIDDEN" = "true" ]; then
+            echo "::notice::Visual regression was overridden for this commit by a maintainer. Marking as passed."
+            exit 0
+          fi
+
+          echo "::error::Visual regression did not pass (result: ${VISUAL_RESULT}). If the differences are intentional, comment '/override-visual-regression <justification>' on the PR."
+          exit 1

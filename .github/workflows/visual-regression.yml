@@ -15,6 +15,10 @@ on:
         description: 'Name of the artifact containing baseline pages (built by the caller workflow).'
         required: true
         type: string
+      commit-sha:
+        description: 'The commit SHA under test, used to check for a per-commit override.'
+        required: false
+        type: string
 
 defaults:
   run:
@@ -24,11 +28,45 @@ permissions:
   id-token: write
   contents: read
   actions: read
+  statuses: read
   deployments: write
 
 jobs:
+  # Checks whether a maintainer has explicitly approved the visual changes for
+  # this exact commit via the manual override workflow
+  # (.github/workflows/visual-regression-override.yml). The approval is a commit
+  # status posted on the head SHA, so it applies only to that commit: a new push
+  # produces a new SHA with no override and the comparison runs again.
+  check-override:
+    name: Check for commit override
+    runs-on: ubuntu-latest
+    outputs:
+      overridden: ${{ steps.status.outputs.overridden }}
+    steps:
+      - name: Look for override commit status
+        id: status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ inputs.commit-sha }}
+        run: |
+          if [ -z "$SHA" ]; then
+            echo "No commit SHA provided; treating as not overridden."
+            echo "overridden=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          OVERRIDDEN=$(gh api \
+            "repos/${REPO}/commits/${SHA}/statuses" \
+            --jq 'any(.[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
+          echo "Override status present for ${SHA}: ${OVERRIDDEN}"
+          echo "overridden=${OVERRIDDEN}" >> "$GITHUB_OUTPUT"
+
   visual:
     name: Visual regression (shard ${{ matrix.shard }})
+    needs: check-override
+    # Skip the (expensive) screenshot comparison when the changes have been
+    # explicitly overridden by a maintainer.
+    if: ${{ needs.check-override.outputs.overridden != 'true' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
