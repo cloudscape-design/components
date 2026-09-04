@@ -10,7 +10,7 @@ import {
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { metrics } from '../../metrics';
 import { awsuiPluginsInternal } from '../api';
-import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
+import { BreadcrumbsGlobalRegistration, isBreadcrumbsOwnedExternally } from '../controllers/breadcrumbs';
 
 function useSetGlobalBreadcrumbsImplementation({
   __disableGlobalization,
@@ -19,19 +19,30 @@ function useSetGlobalBreadcrumbsImplementation({
   const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
   const isLayoutVisible = useContext(AppLayoutVisibilityContext) ?? true;
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
-  const [registered, setRegistered] = useState(false);
+  // Start hidden when the console declared external ownership, so the trail never paints in the
+  // toolbar. Excludes a consumer's own sink render, which must draw for real.
+  const [registered, setRegistered] = useState(
+    () => !__disableGlobalization && isLayoutVisible && isBreadcrumbsOwnedExternally()
+  );
 
   useEffect(() => {
-    if (isInToolbar || __disableGlobalization || !isLayoutVisible) {
+    if (__disableGlobalization || !isLayoutVisible) {
       return;
     }
-    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered => {
-      setRegistered(isRegistered ?? true);
-      if (isRegistered) {
-        const breadcrumbs = props.items.map(item => item.text).join(' > ');
-        metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
-      }
-    });
+    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(
+      props,
+      isRegistered => {
+        setRegistered(isRegistered ?? true);
+        if (isRegistered) {
+          const breadcrumbs = props.items.map(item => item.text).join(' > ');
+          metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
+        }
+      },
+      // In the toolbar slot the component already renders where App Layout would draw it. It still
+      // publishes so external consumers can read it, but App Layout must not draw a second copy and
+      // it only hides itself once an external consumer takes over.
+      { ownedByAppLayoutSlot: !!isInToolbar }
+    );
     registrationRef.current = registration;
 
     return () => {

@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useBreadcrumbsConsumers } from './use-breadcrumbs-consumers';
 import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
@@ -254,7 +255,13 @@ export const useAppLayout = (
     }
   };
 
+  const handleBreadcrumbsConsumerMessage = useBreadcrumbsConsumers();
+
   useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
+    if (handleBreadcrumbsConsumerMessage(message)) {
+      return;
+    }
+
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;

@@ -23,6 +23,7 @@ import styles from './styles.scss';
 interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
+  breadcrumbsOwnedExternally?: boolean;
   oneTheme?: boolean;
 }
 // used for local dev / testing
@@ -96,9 +97,15 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, theme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
-  history.location.search
-);
+const {
+  direction,
+  visualRefresh,
+  theme,
+  appLayoutWidget,
+  appLayoutToolbar,
+  appLayoutDelayedWidget,
+  breadcrumbsOwnedExternally,
+} = parseQuery(history.location.search);
 const oneTheme = theme === Theme.OneTheme;
 
 // The VR class needs to be set before any React rendering occurs.
@@ -111,6 +118,7 @@ if (!window[awsuiCustomFlagsSymbol]) {
 }
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
+window[awsuiGlobalFlagsSymbol].breadcrumbsOwnedExternally = breadcrumbsOwnedExternally;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
 

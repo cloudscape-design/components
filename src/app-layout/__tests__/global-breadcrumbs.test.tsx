@@ -6,11 +6,13 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { metrics } from '../../../lib/components/internal/metrics';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { registerBreadcrumbsConsumer } from '../../../lib/components/internal/plugins/widget';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
 
@@ -90,6 +92,96 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
     expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
+  });
+
+  test('widget-registered consumer receives breadcrumbs passed to the App Layout breadcrumbs slot', async () => {
+    const received: Array<BreadcrumbGroupProps | null> = [];
+    const { unregister } = registerBreadcrumbsConsumer({
+      onBreadcrumbsChange: crumbs => received.push(crumbs),
+    });
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+
+    const latest = received[received.length - 1];
+    expect(latest?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+
+    unregister();
+  });
+
+  test('App Layout yields its slot breadcrumbs while a widget consumer is registered, without duplicating', async () => {
+    const received: Array<BreadcrumbGroupProps | null> = [];
+    const { unregister } = registerBreadcrumbsConsumer({
+      onBreadcrumbsChange: crumbs => received.push(crumbs),
+    });
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+
+    // The consumer owns rendering, so App Layout draws neither its own copy nor a discovered one.
+    expect(received[received.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+    expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+
+    // Rendering returns to App Layout once the consumer goes away.
+    unregister();
+    await delay();
+    expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+  });
+
+  test('a second consumer is refused and cannot take rendering from the first', async () => {
+    const first: Array<BreadcrumbGroupProps | null> = [];
+    const second: Array<BreadcrumbGroupProps | null> = [];
+    const owner = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => first.push(crumbs) });
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+
+    const refused = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => second.push(crumbs) });
+    await delay();
+
+    expect(owner.registered).toBe(true);
+    expect(refused.registered).toBe(false);
+    expect(first[first.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+    expect(second).toHaveLength(0);
+
+    // The refused registration must not hand rendering back while the owner still holds it.
+    refused.unregister();
+    await delay();
+    expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+
+    owner.unregister();
+    await delay();
+    expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
+  });
+
+  describe('with external ownership declared up front', () => {
+    // Same cast as the controller: the flag name is not in the toolkit's GlobalFlags yet.
+    const setOwnershipFlag = (value: boolean | undefined) =>
+      setGlobalFlag('breadcrumbsOwnedExternally' as Parameters<typeof setGlobalFlag>[0], value);
+
+    beforeEach(() => setOwnershipFlag(true));
+    afterEach(() => setOwnershipFlag(undefined));
+
+    test('App Layout never draws the trail, not even on the first render', async () => {
+      render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+      // Asserted before any delay: this is the paint the flag exists to prevent.
+      expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+      await delay();
+      expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+      expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+    });
+
+    test('a consumer registering later receives the trail with no intermediate render', async () => {
+      render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+      await delay();
+      expect(wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()).toBeFalsy();
+
+      const received: Array<BreadcrumbGroupProps | null> = [];
+      const { unregister } = registerBreadcrumbsConsumer({ onBreadcrumbsChange: crumbs => received.push(crumbs) });
+      await delay();
+
+      expect(received[received.length - 1]?.items?.map(item => item.text)).toEqual(['Home', 'Page']);
+      unregister();
+    });
   });
 
   test('no relocation happens on the initial render', () => {
