@@ -50,7 +50,11 @@ export default function InternalSegmentedControl({
   };
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, isInControlGroup && styles['in-control-group'])}
+      ref={__internalRootRef}
+    >
       <InternalSegmentedControlComponent
         selectedId={selectedId}
         options={options}
