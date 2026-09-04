@@ -6,33 +6,38 @@ import mapValues from 'lodash/mapValues';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { THEME } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH, INCLUDED_THEMES, PRIMARY_THEME } from '~components/internal/environment';
 
-// `visualRefresh` is kept as a separate flag; this enum covers the additional, mutually
-// exclusive themes that map to a single body class.
-export enum Theme {
-  Default = 'default',
-  OneTheme = 'one-theme',
+// The themes selectable in dev pages: the resolved primary plus every secondary theme actually
+// compiled into this build (see docs/SETUP.md — AWSUI_PRIMARY_THEME/AWSUI_SECONDARY_THEMES).
+// Never offer a theme that wasn't built.
+export const SELECTABLE_THEMES: string[] = [PRIMARY_THEME, ...INCLUDED_THEMES];
+
+// Selecting the primary applies no class (it's already the default); selecting a secondary
+// toggles that theme's class on and every other secondary's class off — secondaries are mutually
+// exclusive (this generalizes the old "one-theme cancels visual-refresh" rule to any secondary set).
+export function applyThemeClass(activeThemeId: string) {
+  for (const id of INCLUDED_THEMES) {
+    document.body.classList.toggle(`awsui-${id}`, id === activeThemeId);
+  }
 }
 
-const themeClassNames: Record<Theme, string> = {
-  [Theme.Default]: '',
-  [Theme.OneTheme]: 'awsui-one-theme',
-};
-
-export function applyThemeClass(activeTheme: Theme) {
-  for (const [theme, className] of Object.entries(themeClassNames)) {
-    if (className) {
-      document.body.classList.toggle(className, theme === activeTheme);
-    }
-  }
+// Visual refresh is active either unconditionally (the primary theme forces it) or because it's
+// the currently selected secondary theme.
+export function isVisualRefreshActive(activeThemeId: string) {
+  return ALWAYS_VISUAL_REFRESH || activeThemeId === 'visual-refresh';
 }
 
 interface AppUrlParams {
   density: Density;
   direction: 'ltr' | 'rtl';
+  // Derived from `theme` — kept as its own field since some pages read it directly. Not settable
+  // on its own via setUrlParams; set `theme` instead.
   visualRefresh: boolean;
-  theme: Theme;
+  // One of SELECTABLE_THEMES. The legacy `visualRefresh=true` URL param is still accepted as an
+  // alias for `theme=visual-refresh` (only when `visual-refresh` was actually built); `theme=`
+  // wins when both are present.
+  theme: string;
   motionDisabled: boolean;
   appLayoutWidget: boolean;
   mode?: Mode;
@@ -52,8 +57,8 @@ const appContextDefaults: AppContextType = {
   urlParams: {
     density: Density.Comfortable,
     direction: 'ltr',
-    visualRefresh: THEME === 'default',
-    theme: Theme.Default,
+    visualRefresh: isVisualRefreshActive(PRIMARY_THEME),
+    theme: PRIMARY_THEME,
     motionDisabled: false,
     appLayoutWidget: false,
   },
@@ -71,14 +76,24 @@ export function useAppContext<T extends keyof any>() {
 
 export function parseQuery(query: string) {
   const queryParams: Record<string, any> = { ...appContextDefaults.urlParams };
-  const urlParams = new URLSearchParams(query);
-  urlParams.forEach((value, key) => (queryParams[key] = value));
+  const searchParams = new URLSearchParams(query);
+  searchParams.forEach((value, key) => (queryParams[key] = value));
 
-  const themeValues = Object.values(Theme) as string[];
+  const requestedTheme = searchParams.get('theme');
+  const legacyVisualRefresh = searchParams.get('visualRefresh');
+  let themeId = PRIMARY_THEME;
+  if (requestedTheme && SELECTABLE_THEMES.includes(requestedTheme)) {
+    themeId = requestedTheme;
+  } else if (legacyVisualRefresh === 'true' && SELECTABLE_THEMES.includes('visual-refresh')) {
+    themeId = 'visual-refresh';
+  }
 
   return mapValues(queryParams, (value, key) => {
     if (key === 'theme') {
-      return themeValues.includes(value) ? value : Theme.Default;
+      return themeId;
+    }
+    if (key === 'visualRefresh') {
+      return isVisualRefreshActive(themeId);
     }
     if (value === 'true' || value === 'false') {
       return value === 'true';
@@ -90,6 +105,10 @@ export function parseQuery(query: string) {
 function formatQuery(params: AppUrlParams) {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
+    if (key === 'visualRefresh') {
+      // Derived from `theme`, never round-tripped as its own param.
+      continue;
+    }
     if (value === appContextDefaults.urlParams[key as keyof AppUrlParams]) {
       continue;
     }

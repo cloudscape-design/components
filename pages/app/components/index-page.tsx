@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { PACKAGE_VERSION } from '~components/internal/environment';
 import AwsUiLink from '~components/link';
@@ -38,10 +38,12 @@ function createPagesTree(pages: string[]) {
 }
 
 function TreeItemView({ item }: { item: TreeItem }) {
+  // Preserve the query string (theme, density, motion, …) when navigating to a page.
+  const { search } = useLocation();
   return (
     <li>
       {item.href ? (
-        <Link to={item.href} component={AwsUiLink}>
+        <Link to={{ pathname: item.href, search }} component={AwsUiLink}>
           {item.name}
         </Link>
       ) : (
