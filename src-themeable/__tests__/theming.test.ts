@@ -29,9 +29,7 @@ describe('buildThemedComponents', () => {
 
     expect(themingCoreBuild).toHaveBeenCalledWith(
       expect.objectContaining({
-        preset: {
-          ...preset,
-        },
+        preset,
       })
     );
   });
@@ -43,7 +41,7 @@ describe('buildThemedComponents', () => {
       theme,
       outputDir: '/tmp/output',
       baseThemeId: 'visual-refresh',
-      ...({ __tokenHashSeed: 'website' } as any),
+      ...{ __tokenHashSeed: 'website' },
     });
 
     expect(themingCoreBuild).toHaveBeenCalledWith(

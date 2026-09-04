@@ -24,6 +24,7 @@ export function buildThemedComponents({
   baseThemeId,
   ...rest
 }: BuildThemedComponentsParams): Promise<void> {
+  // Website-only escape hatch to avoid token hash collisions in generated output.
   const version = (rest as any).__tokenHashSeed;
   return themingCoreBuild({
     override: theme,
