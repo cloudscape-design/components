@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export interface ControlGroupProps extends BaseComponentProps {
   /**
@@ -17,12 +18,24 @@ export interface ControlGroupProps extends BaseComponentProps {
 
   /**
    * The controls that make up the group (for example, `Input`, `Select`,
-   * `Multiselect`, or `Button`). They render in DOM order, so keyboard `Tab`
-   * navigation flows through them naturally, and their borders are fused
+   * `Multiselect`, or `SegmentedControl`). They render in DOM order, so keyboard
+   * `Tab` navigation flows through them naturally, and their borders are fused
    * into a single visual unit.
    * @displayname controls
    */
   children?: React.ReactNode;
+
+  /**
+   * Renders a remove button as the last control in the group, fused with the
+   * other controls. Use `onDismiss` to handle activation and
+   * `i18nStrings.dismissAriaLabel` to provide its accessible label.
+   */
+  dismissible?: boolean;
+
+  /**
+   * Called when the user activates the remove button rendered by `dismissible`.
+   */
+  onDismiss?: NonCancelableEventHandler;
 
   /**
    * Detailed information about the group that's displayed below the controls.
@@ -66,5 +79,10 @@ export namespace ControlGroupProps {
      * Provides a text alternative for the warning icon in the warning message.
      */
     warningIconAriaLabel?: string;
+
+    /**
+     * Provides an `aria-label` for the remove button rendered when `dismissible` is set.
+     */
+    dismissAriaLabel?: string;
   }
 }

@@ -83,13 +83,7 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
         onDismiss={() => {}}
         i18nStrings={{ dismissAriaLabel: 'Remove metric' }}
       >
-        <Input
-          ariaLabel="Metric"
-          inlineLabelText="Metric"
-          value=""
-          placeholder="Select metric name"
-          onChange={() => {}}
-        />
+        <Input ariaLabel="Metric" value="" placeholder="Select metric name" onChange={() => {}} />
       </ControlGroup>,
 
       // Label: Input + operator Select + Input + built-in remove button.
@@ -119,8 +113,6 @@ const permutations = createPermutations<{ content: React.ReactElement }>([
           selectedOptions={MULTI_OPTIONS.slice(0, 6)}
           options={MULTI_OPTIONS}
           onChange={() => {}}
-          dismissible={true}
-          onDismiss={() => {}}
         />
       </ControlGroup>,
 

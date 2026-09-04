@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import ButtonWrapper from '../button';
+
 import styles from '../../../control-group/styles.selectors.js';
 import testUtilStyles from '../../../control-group/test-classes/styles.selectors.js';
 import formFieldTestStyles from '../../../form-field/test-classes/styles.selectors.js';
@@ -35,5 +37,12 @@ export default class ControlGroupWrapper extends ComponentWrapper<HTMLDivElement
    */
   findDescription(): ElementWrapper | null {
     return this.findByClassName(testUtilStyles.description);
+  }
+
+  /**
+   * Finds the remove button rendered when the `dismissible` prop is set, if present.
+   */
+  findDismissButton(): ButtonWrapper | null {
+    return this.findComponent(`.${testUtilStyles['dismiss-button']}`, ButtonWrapper);
   }
 }

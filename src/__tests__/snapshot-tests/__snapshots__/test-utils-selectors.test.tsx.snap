@@ -212,6 +212,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_control-group-item_g8no8",
     "awsui_control-group_g8no8",
     "awsui_description_g8no8",
+    "awsui_dismiss-button_g8no8",
     "awsui_hints_1dx2b",
   ],
   "copy-to-clipboard": [
