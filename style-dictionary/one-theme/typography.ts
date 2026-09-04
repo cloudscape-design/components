@@ -51,9 +51,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightFormLabel: '20px',
   fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
-
-  // ── Body text ─────────────────────────────────────────────────────────────
-  fontWeightBold: '600',
+  fontWeightBold: '500',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontSizeKeyValuePairsLabel: '14px',
