@@ -266,12 +266,16 @@
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
+  // Stay above the input, including when the input is raised (z-index: 1) inside a
+  // focused ControlGroup — otherwise the focused field would paint over the icon.
+  z-index: 2;
 }
 
 .input-icon-end {
   position: absolute;
   inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+  z-index: 2;
 }
 
 .input-button-right {
