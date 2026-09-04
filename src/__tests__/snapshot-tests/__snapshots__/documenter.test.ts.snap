@@ -12317,6 +12317,185 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for dialog matches the snapshot: dialog 1`] = `
+{
+  "dashCaseName": "dialog",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user dismisses the dialog, either with the close button or by pressing
+\`Escape\`. Dismissal doesn't advance focus on its own -- respond by setting \`open\` to
+\`false\`, after which the dialog restores focus to the element that was focused before
+it opened.",
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets focus on the dialog heading.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "Dialog",
+  "properties": [
+    {
+      "description": "Specifies the element that the floating dialog is anchored to. Applies only when
+\`variant\` is set to \`floating\`.",
+      "inlineType": {
+        "name": "React.RefObject<HTMLElement>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "NonNullable<T>",
+              "type": "union",
+              "values": [
+                "T",
+                "{}",
+              ],
+            },
+            "name": "current",
+            "optional": false,
+            "type": "NonNullable<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "anchorRef",
+      "optional": true,
+      "type": "React.RefObject<HTMLElement>",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.
+
+- \`dismissAriaLabel\` (string) - Adds an \`aria-label\` to the close button.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "DialogProps.I18nStrings",
+        "properties": [
+          {
+            "name": "dismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DialogProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Determines whether the dialog is displayed. Set to \`false\` to hide it. When the dialog
+becomes visible it moves focus in; when it becomes hidden it restores focus to the
+element that was focused before it opened. See \`variant\` for focus-trapping behavior.
+
+Provide an \`onDismiss\` handler to respond to close actions.",
+      "name": "open",
+      "optional": false,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Determines where the floating dialog is displayed relative to \`anchorRef\`. The dialog
+repositions automatically to stay within the viewport, so this is a preferred position.
+Applies only when \`variant\` is set to \`floating\`.",
+      "inlineType": {
+        "name": "DialogProps.Position",
+        "type": "union",
+        "values": [
+          "left",
+          "top",
+          "bottom",
+          "right",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'inline'",
+      "description": "Determines how the dialog is placed.
+
+- \`inline\` (default) - The dialog renders in the document flow and pushes surrounding
+  content instead of overlaying it.
+- \`floating\` - The dialog is portaled and anchored to \`anchorRef\`, displayed above
+  content at the dropdown and popover stacking level while the page stays interactive.
+
+In both placements the dialog is non-modal (the page behind stays live). The
+\`inline\` variant does not trap focus (\`Tab\` flows out into the page); the
+\`floating\` variant contains focus within the dialog while it is open.",
+      "inlineType": {
+        "name": "DialogProps.Variant",
+        "type": "union",
+        "values": [
+          "inline",
+          "floating",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the width of the dialog, in pixels. For the \`inline\` variant it caps the
+width so the dialog never exceeds the available inline space. For the \`floating\`
+variant it sets the width of the anchored surface. When not set, an \`inline\` dialog
+fills its container and a \`floating\` dialog is sized to its content.",
+      "name": "width",
+      "optional": true,
+      "type": "number",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content of the dialog. The dialog is a shell -- the interactive content it hosts
+(for example a radio group, a \`Select\`, or a form) is provided through this slot.",
+      "displayName": "content",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Specifies a footer for the dialog, typically action buttons. If empty, the footer
+isn't displayed.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Specifies the heading of the dialog. We recommend that you always provide it:
+it labels the dialog as its accessible name (via \`aria-labelledby\`).",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Actions displayed in the header row, before the always-present close button.
+Use this for controls related to the dialog, such as a compact \`Pagination\`.",
+      "isDefault": false,
+      "name": "headerActions",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for divider matches the snapshot: divider 1`] = `
 {
   "dashCaseName": "divider",
@@ -40771,6 +40950,63 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Finds the content slot of the dialog.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the dismiss (close) button, which is always present.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the dialog.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the dialog heading. This element is also the dialog's accessible name
+(referenced by the \`role="dialog"\` element via \`aria-labelledby\`).",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DialogWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the label element, or \`null\` if no label is set.",
           "name": "findLabel",
           "parameters": [],
@@ -51989,6 +52225,48 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the content slot of the dialog.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the dismiss (close) button, which is always present.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the dialog.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the dialog heading. This element is also the dialog's accessible name
+(referenced by the \`role="dialog"\` element via \`aria-labelledby\`).",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DialogWrapper",
     },
     {
       "methods": [

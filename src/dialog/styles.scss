@@ -1,0 +1,92 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$border-radius: awsui.$border-radius-dialog;
+$padding-block: awsui.$space-dialog-vertical;
+$padding-inline: awsui.$space-dialog-horizontal;
+$action-padding-block: awsui.$space-dialog-action-block;
+$action-padding-inline: awsui.$space-dialog-action-inline;
+
+@mixin apply-border-radius {
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+}
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include apply-border-radius;
+
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  background: awsui.$color-background-dialog;
+  box-shadow: awsui.$shadow-dialog;
+
+  &::before {
+    @include styles.base-pseudo-element;
+    @include apply-border-radius;
+
+    border-block: solid awsui.$border-width-dialog awsui.$color-border-dialog;
+    border-inline: solid awsui.$border-width-dialog awsui.$color-border-dialog;
+    box-shadow: none;
+  }
+
+  &:not(.refresh)::before {
+    border-block-start: solid awsui.$border-dialog-top-width awsui.$color-border-dialog-top;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  column-gap: awsui.$space-dialog-header-gap;
+  padding-block: calc($padding-block - $action-padding-block);
+  padding-inline-start: $padding-inline;
+  padding-inline-end: calc($padding-inline - $action-padding-inline);
+
+  &:has(+ .content, + .footer) {
+    padding-block-end: awsui.$space-dialog-section-gap;
+  }
+}
+
+.header-content {
+  @include styles.font-heading-s;
+
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.header-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  column-gap: awsui.$space-dialog-header-gap;
+  margin-inline-start: auto;
+}
+
+.content,
+.footer {
+  padding-block: $padding-block;
+  padding-inline: $padding-inline;
+}
+
+.header + .content,
+.header + .footer,
+.content + .footer {
+  padding-block-start: awsui.$space-dialog-section-gap;
+}
+
+.content:has(+ .footer) {
+  padding-block-end: awsui.$space-dialog-section-gap;
+}

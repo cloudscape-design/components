@@ -31,6 +31,7 @@ export default function InternalItemCard({
   disableFooterPaddings,
   fullHeight,
   variant = 'default',
+  wrapActions = true,
   __internalRootRef,
   ...restProps
 }: InternalItemCardProps) {
@@ -77,7 +78,7 @@ export default function InternalItemCard({
               icon={icon && <div className={testStyles.icon}>{icon}</div>}
               actions={actions}
               disablePaddings={disableHeaderPaddings}
-              wrapActions={true}
+              wrapActions={wrapActions}
             />
           </div>
         )}

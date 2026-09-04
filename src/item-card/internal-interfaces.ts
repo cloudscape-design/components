@@ -25,4 +25,12 @@ export interface InternalItemCardProps extends ItemCardProps, InternalBaseCompon
    * Specifies metadata for analytics in cards
    */
   metadataAttributes?: Record<string, string | undefined>;
+
+  /**
+   * Determines how header actions behave when horizontal space is constrained.
+   * When `true` (the Cards default), the actions wrap below the header content.
+   * When `false`, the actions stay on the header row (they don't shrink) while the
+   * header content wraps within its own column.
+   */
+  wrapActions?: boolean;
 }
