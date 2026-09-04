@@ -102,7 +102,7 @@ To override, first confirm the diffs in the Allure report are intentional, then 
 - **From the PR page (recommended):** comment `/override-visual-regression <Reason to override>` on the pull request.
 - **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
 
-Either way the workflow posts a `visual-regression-override` success commit status on that SHA, comments on the PR crediting the person who triggered it, and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
+Either way the workflow posts a `visual-regression-override` success commit status on that SHA and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
 
 ### Adding tests for a new component
 
