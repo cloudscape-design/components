@@ -29,6 +29,7 @@ concurrency:
 permissions:
   statuses: write # Needed to post the override commit status
   actions: write # Needed to re-run the deploy workflow
+  pull-requests: read # Needed to resolve PR head SHA for issue_comment overrides
 
 jobs:
   override:
