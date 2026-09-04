@@ -17030,6 +17030,14 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Adds a small label inline with the input for saving vertical space in the UI.
+
+Use this only when a visible label from a surrounding form field isn't present.",
+      "name": "inlineLabelText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Adds a hint to the browser about the type of data a user may enter into this field.
 Some devices may render a different virtual keyboard depending on this value.
 This value may not be supported by all browsers or devices.",
@@ -35698,6 +35706,19 @@ Supported options:
           },
         },
         {
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -37367,6 +37388,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -43823,6 +43860,22 @@ and this method will have no effect.",
         },
         {
           "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
           "name": "findNativeInput",
@@ -48398,6 +48451,14 @@ Supported options:
           },
         },
         {
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -49544,6 +49605,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -54158,6 +54230,17 @@ In this case, use findContentEditableElement() instead.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

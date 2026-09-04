@@ -3,7 +3,7 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -56,7 +56,6 @@ export interface InternalInputProps
   __inheritFormFieldProps?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
-  __inlineLabelText?: string;
   __fullWidth?: boolean;
 }
 
@@ -99,11 +98,11 @@ function InternalInput(
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
-    __inlineLabelText,
     __fullWidth,
     style,
     prefix,
     suffix,
+    inlineLabelText,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -136,9 +135,18 @@ function InternalInput(
   }
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = __inheritFormFieldProps
-    ? formFieldContext
-    : rest;
+  const {
+    ariaLabelledby,
+    ariaDescribedby,
+    controlId: controlIdFromFormFieldContext,
+    invalid,
+    warning,
+  } = __inheritFormFieldProps ? formFieldContext : rest;
+
+  // When an inline label is rendered, the native input must have an id so the
+  // label's htmlFor can reference it. Fall back to a generated id if none was provided.
+  const generatedControlId = useUniqueId('input');
+  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
@@ -244,23 +252,7 @@ function InternalInput(
     />
   );
 
-  const inputWithLabel = __inlineLabelText ? (
-    <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
-      <label htmlFor={controlId} className={styles['inline-label']}>
-        {__inlineLabelText}
-      </label>
-      <div
-        className={clsx(
-          styles['inline-label-trigger-wrapper'],
-          __fullWidth && styles['inline-label-trigger-wrapper-full-width']
-        )}
-      >
-        {mainInput}
-      </div>
-    </div>
-  ) : (
-    mainInput
-  );
+  const renderedId = nativeInputAttributes?.id || controlId;
 
   const endIcon = __endIcon ? (
     <span
@@ -284,15 +276,25 @@ function InternalInput(
     </span>
   ) : null;
 
-  return (
+  // Root-level props (base component props, root class/ref, and analytics metadata)
+  // are applied to the outermost rendered element so the component root always
+  // contains the whole component, including the inline label when present.
+  const rootProps = {
+    ...baseProps,
+    className: baseProps.className,
+    ref: __internalRootRef,
+    ...(__injectAnalyticsComponentMetadata
+      ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+      : copyAnalyticsMetadataAttribute(rest)),
+  };
+
+  const renderInputWithPrefixSuffix = (
+    extraProps: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> } = {}
+  ) => (
     <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles['input-container'])}
-      ref={__internalRootRef}
+      {...extraProps}
+      className={clsx(extraProps.className, styles['input-container'])}
       dir={type === 'email' ? 'ltr' : undefined}
-      {...(__injectAnalyticsComponentMetadata
-        ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
-        : copyAnalyticsMetadataAttribute(rest))}
     >
       {__startIcon && (
         <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
@@ -320,7 +322,7 @@ function InternalInput(
               <span className={styles['input-adornment-divider']} />
             </>
           )}
-          {inputWithLabel}
+          {mainInput}
           {hasSuffix && (
             <>
               <span className={styles['input-adornment-divider']} />
@@ -332,11 +334,37 @@ function InternalInput(
           {endIcon}
         </div>
       ) : (
-        inputWithLabel
+        mainInput
       )}
       {!hasPrefixOrSuffix && endIcon}
     </div>
   );
+
+  const inputWithLabel = inlineLabelText ? (
+    <div
+      {...rootProps}
+      className={clsx(
+        rootProps.className,
+        styles['inline-label-wrapper'],
+        __fullWidth && styles['inline-label-wrapper-full-width']
+      )}
+    >
+      <label htmlFor={renderedId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
+        {inlineLabelText}
+      </label>
+      <div
+        className={clsx(
+          styles['inline-label-trigger-wrapper'],
+          __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+        )}
+      >
+        {renderInputWithPrefixSuffix()}
+      </div>
+    </div>
+  ) : (
+    renderInputWithPrefixSuffix(rootProps)
+  );
+  return inputWithLabel;
 }
 
 export default React.forwardRef(InternalInput);
