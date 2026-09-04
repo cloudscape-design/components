@@ -141,6 +141,48 @@ describe('ControlGroup', () => {
     });
   });
 
+  describe('dismissible', () => {
+    test('does not render a remove button by default', () => {
+      const wrapper = renderControlGroup({ ariaLabel: 'Label matcher' });
+      expect(wrapper.findDismissButton()).toBeNull();
+    });
+
+    test('renders a remove button as the last control when dismissible is set', () => {
+      const wrapper = renderControlGroup({
+        ariaLabel: 'Label matcher',
+        dismissible: true,
+        i18nStrings: { dismissAriaLabel: 'Remove' },
+        children: (
+          <>
+            <Input value="a" onChange={() => {}} />
+            <Input value="b" onChange={() => {}} />
+          </>
+        ),
+      });
+
+      const dismissButton = wrapper.findDismissButton();
+      expect(dismissButton).not.toBeNull();
+      expect(dismissButton!.getElement()).toHaveAttribute('aria-label', 'Remove');
+
+      // It is rendered in its own control slot as the last one.
+      const controls = wrapper.findControls();
+      expect(controls[controls.length - 1].findButton()).not.toBeNull();
+    });
+
+    test('calls onDismiss when the remove button is clicked', () => {
+      const onDismiss = jest.fn();
+      const { container } = render(
+        <ControlGroup ariaLabel="Label matcher" dismissible={true} onDismiss={onDismiss}>
+          <Input value="a" onChange={() => {}} />
+        </ControlGroup>
+      );
+      const wrapper = createWrapper(container).findControlGroup()!;
+
+      wrapper.findDismissButton()!.click();
+      expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+  });
+
   test('applies id and className from base props to the root element', () => {
     const { container } = render(
       <ControlGroup ariaLabel="Label matcher" id="my-group" className="my-class">

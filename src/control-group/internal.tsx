@@ -5,10 +5,12 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalButton from '../button/internal';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import { ControlGroupContext, ControlGroupPosition } from '../internal/context/control-group-context';
 import { FormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { flattenChildren } from '../internal/utils/flatten-children';
 import { joinStrings } from '../internal/utils/strings/join-strings';
@@ -25,6 +27,8 @@ const InternalControlGroup = forwardRef(
       description,
       errorText,
       warningText,
+      dismissible,
+      onDismiss,
       i18nStrings,
       __internalRootRef,
       ...props
@@ -55,7 +59,11 @@ const InternalControlGroup = forwardRef(
 
     // See-through fragments and nested arrays so each real control gets its own slot.
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
-    const controlCount = flattenedChildren.length;
+    // The internal remove button (when `dismissible`) counts as an extra trailing
+    // control so positions (first/middle/last/only) stay correct.
+    const controlCount = flattenedChildren.length + (dismissible ? 1 : 0);
+    const getPosition = (index: number): ControlGroupPosition =>
+      controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
 
     return (
       <div
@@ -80,19 +88,33 @@ const InternalControlGroup = forwardRef(
           >
             {flattenedChildren.map((child, index) => {
               const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-              const position: ControlGroupPosition =
-                controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
               return (
                 <div
                   key={key ? String(key) : undefined}
                   className={clsx(styles.control, testUtilStyles['control-group-item'])}
                 >
-                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position }}>
+                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position: getPosition(index) }}>
                     {child}
                   </ControlGroupContext.Provider>
                 </div>
               );
             })}
+            {dismissible && (
+              <div className={clsx(styles.control, testUtilStyles['control-group-item'])}>
+                <ControlGroupContext.Provider
+                  value={{ isInControlGroup: true, position: getPosition(controlCount - 1) }}
+                >
+                  <InternalButton
+                    variant="icon"
+                    iconName="close"
+                    formAction="none"
+                    ariaLabel={i18nStrings?.dismissAriaLabel}
+                    className={testUtilStyles['dismiss-button']}
+                    onClick={() => fireNonCancelableEvent(onDismiss)}
+                  />
+                </ControlGroupContext.Provider>
+              </div>
+            )}
           </FormFieldContext.Provider>
         </div>
 
