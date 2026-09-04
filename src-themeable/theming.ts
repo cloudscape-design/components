@@ -16,24 +16,22 @@ export interface BuildThemedComponentsParams {
   theme: Theme;
   outputDir: string;
   baseThemeId?: string;
-  useWebsiteTokenNamespace?: boolean;
 }
 
 export function buildThemedComponents({
   theme,
   outputDir,
   baseThemeId,
-  useWebsiteTokenNamespace = false,
+  ...rest
 }: BuildThemedComponentsParams): Promise<void> {
+  const version = (rest as any).__tokenHashSeed;
   return themingCoreBuild({
     override: theme,
     preset: {
       ...preset,
-      ...(useWebsiteTokenNamespace
+      ...(version
         ? {
-            tokenVersions: Object.fromEntries(
-              Object.entries(preset.propertiesMap).map(([token]) => [token, 'website'])
-            ),
+            tokenVersions: Object.fromEntries(Object.entries(preset.propertiesMap).map(([token]) => [token, version])),
           }
         : {}),
     },

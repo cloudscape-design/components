@@ -43,7 +43,7 @@ describe('buildThemedComponents', () => {
       theme,
       outputDir: '/tmp/output',
       baseThemeId: 'visual-refresh',
-      useWebsiteTokenNamespace: true,
+      ...({ __tokenHashSeed: 'website' } as any),
     });
 
     expect(themingCoreBuild).toHaveBeenCalledWith(
