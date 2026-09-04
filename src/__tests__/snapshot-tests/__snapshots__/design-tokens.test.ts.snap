@@ -216,7 +216,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
@@ -335,14 +335,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-disabled": {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -370,7 +370,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of primary buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-primary-hover": {
@@ -384,7 +384,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -419,7 +419,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
@@ -440,7 +440,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -461,7 +461,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -524,7 +524,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -552,7 +552,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -601,7 +601,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -685,7 +685,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#21252c",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -713,14 +713,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-disabled": {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -734,7 +734,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -818,7 +818,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-toggle-button-normal-hover": {
@@ -1132,7 +1132,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -1160,7 +1160,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -1363,7 +1363,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -2323,7 +2323,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -2364,15 +2364,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#687078",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -2413,8 +2413,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -2596,14 +2596,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -2617,14 +2617,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -2750,7 +2750,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-home-header-secondary": {
@@ -2848,7 +2848,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -2862,7 +2862,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -2974,7 +2974,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -3884,7 +3884,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
@@ -4003,14 +4003,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-disabled": {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -4038,7 +4038,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of primary buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-primary-hover": {
@@ -4052,7 +4052,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -4087,7 +4087,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
@@ -4108,7 +4108,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -4129,7 +4129,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -4192,7 +4192,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -4220,7 +4220,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -4269,7 +4269,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -4353,7 +4353,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#21252c",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -4381,14 +4381,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-disabled": {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -4402,7 +4402,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -4486,7 +4486,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-toggle-button-normal-hover": {
@@ -4800,7 +4800,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -4828,7 +4828,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -5031,7 +5031,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -5991,7 +5991,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -6032,15 +6032,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#687078",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -6081,8 +6081,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -6264,14 +6264,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -6285,14 +6285,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -6418,7 +6418,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-home-header-secondary": {
@@ -6516,7 +6516,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -6530,7 +6530,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -6642,7 +6642,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -7552,7 +7552,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
@@ -7671,14 +7671,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-disabled": {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -7706,7 +7706,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of primary buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-primary-hover": {
@@ -7720,7 +7720,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -7755,7 +7755,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
@@ -7776,7 +7776,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -7797,7 +7797,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -7860,7 +7860,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -7888,7 +7888,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -7937,7 +7937,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -8021,7 +8021,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#21252c",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -8049,14 +8049,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-disabled": {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -8070,7 +8070,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -8154,7 +8154,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-toggle-button-normal-hover": {
@@ -8468,7 +8468,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -8496,7 +8496,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -8699,7 +8699,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -9659,7 +9659,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -9700,15 +9700,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#687078",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -9749,8 +9749,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -9932,14 +9932,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -9953,14 +9953,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -10086,7 +10086,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-home-header-secondary": {
@@ -10184,7 +10184,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -10198,7 +10198,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -10310,7 +10310,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -11220,7 +11220,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
@@ -11346,7 +11346,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -11374,7 +11374,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of primary buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-primary-hover": {
@@ -11388,7 +11388,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -11423,7 +11423,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
@@ -11444,7 +11444,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -11465,7 +11465,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -11528,7 +11528,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -11556,7 +11556,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -11605,7 +11605,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -11689,7 +11689,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#21252c",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -11702,8 +11702,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-active": {
@@ -11724,7 +11724,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -11738,7 +11738,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -11975,8 +11975,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-normal-default": {
@@ -11996,8 +11996,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-primary-active": {
@@ -12136,7 +12136,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -12164,7 +12164,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -12213,8 +12213,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-toggle-button-normal-hover": {
           "$description": "The border color of normal toggle buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -12367,7 +12367,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -13327,7 +13327,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -13368,15 +13368,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#687078",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -13417,8 +13417,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -13543,8 +13543,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-link-default": {
@@ -13564,15 +13564,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-link-hover": {
           "$description": "The text color of link buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-default": {
@@ -13592,22 +13592,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-active": {
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -13621,14 +13621,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -13704,8 +13704,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-expandable-section-hover": {
           "$description": "The color of the expandable section header text in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-expandable-section-navigation-icon-default": {
@@ -13754,7 +13754,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-home-header-secondary": {
@@ -13852,7 +13852,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -13866,7 +13866,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -13893,8 +13893,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-info-default": {
@@ -13907,8 +13907,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-info-hover": {
           "$description": "The hover color for info links.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-secondary-default": {
@@ -13921,8 +13921,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-secondary-hover": {
           "$description": "The hover color for secondary links. For example: links with lower visual emphasis or supplementary content.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-notification-default": {
@@ -13978,7 +13978,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -13991,8 +13991,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-side-navigation-item-active": {
@@ -14888,7 +14888,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
@@ -15014,7 +15014,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -15042,7 +15042,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of primary buttons in disabled state.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-primary-hover": {
@@ -15056,7 +15056,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -15091,7 +15091,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
@@ -15112,7 +15112,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -15133,7 +15133,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -15196,7 +15196,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -15224,7 +15224,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -15273,7 +15273,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -15357,7 +15357,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#21252c",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -15392,7 +15392,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -15406,7 +15406,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#2a2e33",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -15804,7 +15804,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -15832,7 +15832,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#16191f",
           },
         },
@@ -16035,7 +16035,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -16995,7 +16995,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -17036,15 +17036,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#687078",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -17085,8 +17085,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -17268,14 +17268,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -17289,14 +17289,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -17422,7 +17422,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-home-header-secondary": {
@@ -17520,7 +17520,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -17534,7 +17534,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#16191f",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -17646,7 +17646,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#1a2029",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -19472,8 +19472,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-active": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-segment-default": {
@@ -19500,8 +19500,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-segment-wrapper": {
@@ -19703,7 +19703,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -20704,8 +20704,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-foreground-control-default": {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
@@ -20753,8 +20753,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -22224,7 +22224,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of action cards.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-action-card-disabled": {
@@ -22343,14 +22343,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of normal buttons.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-button-normal-disabled": {
       "$description": "The background color of normal buttons in disabled state.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-button-normal-hover": {
@@ -22378,7 +22378,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of primary buttons in disabled state.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-button-primary-hover": {
@@ -22392,7 +22392,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of a card.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-cell-shaded": {
@@ -22427,7 +22427,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-container-header": {
@@ -22448,7 +22448,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-control-disabled": {
@@ -22469,7 +22469,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-dropdown-item-filter-match": {
@@ -22532,7 +22532,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-input-disabled": {
@@ -22560,7 +22560,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-layout-toggle-active": {
@@ -22609,7 +22609,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-loading-bar-gen-ai": {
@@ -22693,7 +22693,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "Background color for the popover container.",
       "$value": {
         "dark": "#21252c",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-progress-bar-default": {
@@ -22721,14 +22721,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of inactive segments in a segmented control.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-segment-disabled": {
       "$description": "The background color of disabled segments in a segmented control.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-segment-hover": {
@@ -22742,7 +22742,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The background color of segmented control wrapper.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-side-navigation-item-active": {
@@ -22826,7 +22826,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default background color of normal toggle buttons.",
       "$value": {
         "dark": "#2a2e33",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-toggle-button-normal-hover": {
@@ -23140,7 +23140,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-border-segment-active": {
       "$description": "Deprecated - this token is no longer in use.",
       "$value": {
-        "dark": "#ffffff",
+        "dark": "#eeeeee",
         "light": "#16191f",
       },
     },
@@ -23168,7 +23168,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-border-segment-hover": {
       "$description": "Deprecated - this token is no longer in use.",
       "$value": {
-        "dark": "#ffffff",
+        "dark": "#eeeeee",
         "light": "#16191f",
       },
     },
@@ -23371,7 +23371,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-charts-error-bar-marker": {
       "$description": "Color for the error bar marker in charts.",
       "$value": {
-        "dark": "#ffffff",
+        "dark": "#eeeeee",
         "light": "#131920",
       },
     },
@@ -24331,7 +24331,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default color of file upload dropzone background.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-dropzone-background-hover": {
@@ -24372,15 +24372,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-foreground-control-default": {
       "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#eeeeee",
+        "light": "#eeeeee",
       },
     },
     "color-foreground-control-disabled": {
       "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": {
         "dark": "#687078",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-foreground-control-read-only": {
@@ -24421,8 +24421,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-text-avatar": {
       "$description": "The text and icon color of avatars.",
       "$value": {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#eeeeee",
+        "light": "#eeeeee",
       },
     },
     "color-text-badge-blue": {
@@ -24604,14 +24604,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The active text color of primary buttons.",
       "$value": {
         "dark": "#16191f",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-button-primary-default": {
       "$description": "The default text color of primary buttons.",
       "$value": {
         "dark": "#16191f",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-button-primary-disabled": {
@@ -24625,14 +24625,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The hover text color of primary buttons.",
       "$value": {
         "dark": "#16191f",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-calendar-date-selected": {
       "$description": "The text color of selected dates in the calendar.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-chat-bubble-incoming": {
@@ -24758,7 +24758,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The color of the home header's text, displayed on the Service's home page.",
       "$value": {
         "dark": "#eaeded",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-home-header-secondary": {
@@ -24856,7 +24856,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The color of the app layout toggle button when it's active.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-layout-toggle-hover": {
@@ -24870,7 +24870,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The color of the app layout toggle button when it's selected.",
       "$value": {
         "dark": "#16191f",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-link-decoration-default": {
@@ -24982,7 +24982,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The text color of the active segment in a segmented control.",
       "$value": {
         "dark": "#1a2029",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-segment-default": {
@@ -25897,14 +25897,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
           "$description": "The background color of action cards in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-hover": {
@@ -26023,7 +26023,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -26057,7 +26057,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-button-primary-hover": {
           "$description": "The background color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -26065,7 +26065,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -26100,14 +26100,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
           "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-checked": {
@@ -26121,7 +26121,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -26142,7 +26142,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -26205,7 +26205,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -26226,14 +26226,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -26282,7 +26282,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -26366,7 +26366,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -26401,7 +26401,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -26415,7 +26415,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -26652,7 +26652,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -26673,7 +26673,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -26701,7 +26701,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-primary-hover": {
           "$description": "The border color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -26890,7 +26890,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-toggle-button-normal-hover": {
           "$description": "The border color of normal toggle buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -27044,7 +27044,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -28004,7 +28004,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -28046,14 +28046,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -28094,8 +28094,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -28220,7 +28220,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -28241,14 +28241,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-link-hover": {
           "$description": "The text color of link buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -28269,7 +28269,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -28277,14 +28277,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -28298,14 +28298,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -28381,7 +28381,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-expandable-section-hover": {
           "$description": "The color of the expandable section header text in hover state.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -28521,15 +28521,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -28543,7 +28543,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -28655,7 +28655,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -28668,7 +28668,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#0f141a",
           },
         },
@@ -29725,8 +29725,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-button-primary-hover": {
           "$description": "The background color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-background-card": {
@@ -30320,8 +30320,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-normal-default": {
@@ -30341,8 +30341,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-primary-active": {
@@ -30369,8 +30369,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-primary-hover": {
           "$description": "The border color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-card": {
@@ -30558,8 +30558,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-toggle-button-normal-hover": {
           "$description": "The border color of normal toggle buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -30712,7 +30712,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -31762,8 +31762,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -31888,8 +31888,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-link-default": {
@@ -31909,15 +31909,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-link-hover": {
           "$description": "The text color of link buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-default": {
@@ -31937,8 +31937,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-active": {
@@ -32049,8 +32049,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-expandable-section-hover": {
           "$description": "The color of the expandable section header text in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-expandable-section-navigation-icon-default": {
@@ -32189,8 +32189,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
@@ -32336,8 +32336,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-side-navigation-item-active": {
@@ -33233,14 +33233,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
           "$description": "The background color of action cards in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-hover": {
@@ -33352,14 +33352,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of normal buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-disabled": {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -33401,7 +33401,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -33436,14 +33436,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
           "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-checked": {
@@ -33457,7 +33457,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -33478,7 +33478,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -33541,7 +33541,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -33569,7 +33569,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -33618,7 +33618,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -33702,7 +33702,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -33730,14 +33730,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-disabled": {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -33751,7 +33751,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -33835,7 +33835,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-toggle-button-normal-hover": {
@@ -34380,7 +34380,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -35340,7 +35340,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -35382,14 +35382,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -35430,8 +35430,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -35613,14 +35613,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -35634,14 +35634,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -35857,15 +35857,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -35879,7 +35879,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -35991,7 +35991,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -36901,14 +36901,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
           "$description": "The background color of action cards in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-hover": {
@@ -37020,14 +37020,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of normal buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-disabled": {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -37069,7 +37069,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -37104,14 +37104,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
           "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-checked": {
@@ -37125,7 +37125,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -37146,7 +37146,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -37209,7 +37209,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -37230,14 +37230,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -37286,7 +37286,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -37370,7 +37370,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -37398,14 +37398,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-disabled": {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -37419,7 +37419,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -37503,7 +37503,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of normal toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-toggle-button-normal-hover": {
@@ -38048,7 +38048,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -39008,7 +39008,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -39050,14 +39050,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -39098,8 +39098,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -39281,14 +39281,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -39302,14 +39302,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -39525,15 +39525,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -39547,7 +39547,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -39659,7 +39659,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -40569,14 +40569,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
           "$description": "The background color of action cards in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-hover": {
@@ -40695,7 +40695,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -40729,15 +40729,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-button-primary-hover": {
           "$description": "The background color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-background-card": {
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -40772,14 +40772,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
           "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-checked": {
@@ -40793,7 +40793,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -40814,7 +40814,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -40877,7 +40877,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -40898,14 +40898,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -40954,7 +40954,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -41038,7 +41038,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -41051,8 +41051,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-active": {
@@ -41073,7 +41073,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -41087,7 +41087,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -41324,8 +41324,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-normal-default": {
@@ -41345,8 +41345,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-button-primary-active": {
@@ -41373,8 +41373,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-button-primary-hover": {
           "$description": "The border color of primary buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-card": {
@@ -41562,8 +41562,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-border-toggle-button-normal-hover": {
           "$description": "The border color of normal toggle buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-border-toggle-button-normal-pressed": {
@@ -41716,7 +41716,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -42676,7 +42676,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -42718,14 +42718,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -42766,8 +42766,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -42885,15 +42885,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-inline-icon-hover": {
           "$description": "The color of inline button icons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-link-default": {
@@ -42913,15 +42913,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-link-hover": {
           "$description": "The text color of link buttons in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-normal-default": {
@@ -42941,22 +42941,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-active": {
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -42970,14 +42970,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -43053,8 +43053,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-expandable-section-hover": {
           "$description": "The color of the expandable section header text in hover state.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-expandable-section-navigation-icon-default": {
@@ -43193,15 +43193,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -43215,7 +43215,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -43242,8 +43242,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-info-default": {
@@ -43256,8 +43256,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-info-hover": {
           "$description": "The hover color for info links.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-secondary-default": {
@@ -43270,8 +43270,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-secondary-hover": {
           "$description": "The hover color for secondary links. For example: links with lower visual emphasis or supplementary content.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-notification-default": {
@@ -43327,7 +43327,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -43340,8 +43340,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-side-navigation-item-active": {
@@ -44237,14 +44237,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of action cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-disabled": {
           "$description": "The background color of action cards in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-action-card-hover": {
@@ -44363,7 +44363,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of normal buttons in disabled state.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-button-normal-hover": {
@@ -44405,7 +44405,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of a card.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-cell-shaded": {
@@ -44440,14 +44440,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-container-header": {
           "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-checked": {
@@ -44461,7 +44461,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-control-disabled": {
@@ -44482,7 +44482,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-dropdown-item-filter-match": {
@@ -44545,7 +44545,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-input-disabled": {
@@ -44566,14 +44566,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-layout-toggle-active": {
@@ -44622,7 +44622,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-loading-bar-gen-ai": {
@@ -44706,7 +44706,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Background color for the popover container.",
           "$value": {
             "dark": "#1b232d",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-progress-bar-default": {
@@ -44741,7 +44741,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-segment-hover": {
@@ -44755,7 +44755,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of segmented control wrapper.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-background-side-navigation-item-active": {
@@ -45384,7 +45384,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -46344,7 +46344,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default color of file upload dropzone background.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-dropzone-background-hover": {
@@ -46386,14 +46386,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-disabled": {
           "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-foreground-control-read-only": {
@@ -46434,8 +46434,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -46617,14 +46617,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The active text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-default": {
           "$description": "The default text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-button-primary-disabled": {
@@ -46638,14 +46638,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-calendar-date-selected": {
           "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -46861,15 +46861,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
           "$description": "The color of the app layout toggle button when it's active.",
           "$value": {
             "dark": "#161d26",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-hover": {
@@ -46883,7 +46883,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-link-decoration-default": {
@@ -46995,7 +46995,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#ffffff",
+            "light": "#eeeeee",
           },
         },
         "color-text-segment-default": {
@@ -49052,7 +49052,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -50102,8 +50102,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -50529,8 +50529,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
@@ -52720,7 +52720,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-charts-error-bar-marker": {
           "$description": "Color for the error bar marker in charts.",
           "$value": {
-            "dark": "#ffffff",
+            "dark": "#eeeeee",
             "light": "#131920",
           },
         },
@@ -53770,8 +53770,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-badge-blue": {
@@ -54197,8 +54197,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-layout-toggle": {
           "$description": "The default color of the app layout toggle.",
           "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#eeeeee",
+            "light": "#eeeeee",
           },
         },
         "color-text-layout-toggle-active": {
@@ -55241,14 +55241,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of action cards.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-action-card-disabled": {
       "$description": "The background color of action cards in disabled state.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-action-card-hover": {
@@ -55360,14 +55360,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of normal buttons.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-button-normal-disabled": {
       "$description": "The background color of normal buttons in disabled state.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-button-normal-hover": {
@@ -55409,7 +55409,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of a card.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-cell-shaded": {
@@ -55444,14 +55444,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-container-header": {
       "$description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-control-checked": {
@@ -55465,7 +55465,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-control-disabled": {
@@ -55486,7 +55486,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.",
       "$value": {
         "dark": "#1b232d",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-dropdown-item-filter-match": {
@@ -55549,7 +55549,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-input-disabled": {
@@ -55570,14 +55570,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of the main content area on a page. For example: content area in app layout.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-layout-panel": {
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-layout-toggle-active": {
@@ -55626,7 +55626,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-loading-bar-gen-ai": {
@@ -55710,7 +55710,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "Background color for the popover container.",
       "$value": {
         "dark": "#1b232d",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-progress-bar-default": {
@@ -55738,14 +55738,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of inactive segments in a segmented control.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-segment-disabled": {
       "$description": "The background color of disabled segments in a segmented control.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-segment-hover": {
@@ -55759,7 +55759,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of segmented control wrapper.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-side-navigation-item-active": {
@@ -55843,7 +55843,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default background color of normal toggle buttons.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-background-toggle-button-normal-hover": {
@@ -56388,7 +56388,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-charts-error-bar-marker": {
       "$description": "Color for the error bar marker in charts.",
       "$value": {
-        "dark": "#ffffff",
+        "dark": "#eeeeee",
         "light": "#131920",
       },
     },
@@ -57348,7 +57348,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default color of file upload dropzone background.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-dropzone-background-hover": {
@@ -57390,14 +57390,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-foreground-control-disabled": {
       "$description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-foreground-control-read-only": {
@@ -57438,8 +57438,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-text-avatar": {
       "$description": "The text and icon color of avatars.",
       "$value": {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#eeeeee",
+        "light": "#eeeeee",
       },
     },
     "color-text-badge-blue": {
@@ -57621,14 +57621,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The active text color of primary buttons.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-button-primary-default": {
       "$description": "The default text color of primary buttons.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-button-primary-disabled": {
@@ -57642,14 +57642,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The hover text color of primary buttons.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-calendar-date-selected": {
       "$description": "The text color of selected dates in the calendar.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-chat-bubble-incoming": {
@@ -57865,15 +57865,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-text-layout-toggle": {
       "$description": "The default color of the app layout toggle.",
       "$value": {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#eeeeee",
+        "light": "#eeeeee",
       },
     },
     "color-text-layout-toggle-active": {
       "$description": "The color of the app layout toggle button when it's active.",
       "$value": {
         "dark": "#161d26",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-layout-toggle-hover": {
@@ -57887,7 +57887,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The color of the app layout toggle button when it's selected.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-link-decoration-default": {
@@ -57999,7 +57999,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The text color of the active segment in a segmented control.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#ffffff",
+        "light": "#eeeeee",
       },
     },
     "color-text-segment-default": {
