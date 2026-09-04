@@ -47,7 +47,10 @@ describe('Inline label', () => {
   });
 
   test('is associated with the native input when nativeInputAttributes.id is provided', () => {
-    const { wrapper } = renderInput({ inlineLabelText: 'Region', nativeInputAttributes: { id: 'native-region-input' } });
+    const { wrapper } = renderInput({
+      inlineLabelText: 'Region',
+      nativeInputAttributes: { id: 'native-region-input' },
+    });
     const label = wrapper.findInlineLabel()!.getElement() as HTMLLabelElement;
     expect(label.htmlFor).toBe('native-region-input');
     expect(wrapper.findNativeInput().getElement().id).toBe('native-region-input');
