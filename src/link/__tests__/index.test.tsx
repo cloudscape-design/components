@@ -47,16 +47,16 @@ describe('Link component', () => {
     expect(createWrapper(wrapper.getElement()).find('[aria-label="External link"]')).toBeTruthy();
   });
 
-  describe('external icon hover motion', () => {
-    test('external link is a hover trigger and its icon carries the motion target', () => {
-      const wrapper = renderLink({ href: '#', external: true, children: 'External' });
+  describe('icon hover motion', () => {
+    test('every link is hover-motion trigger and target', () => {
+      const wrapper = renderLink({ href: '#', children: 'Internal' });
       expect(wrapper.getElement()).toHaveAttribute('data-awsui-motion-trigger', 'hover');
-      expect(wrapper.getElement().querySelector('[data-awsui-motion-target]')).toBeTruthy();
+      expect(wrapper.getElement()).toHaveAttribute('data-awsui-motion-target', '');
     });
 
-    test('non-external link has no motion trigger', () => {
-      const wrapper = renderLink({ href: '#', children: 'Internal' });
-      expect(wrapper.getElement()).not.toHaveAttribute('data-awsui-motion-trigger');
+    test('the external icon sits inside the link and needs no own target', () => {
+      const wrapper = renderLink({ href: '#', external: true, children: 'External' });
+      expect(wrapper.getElement().querySelector(`.${styles['icon-wrapper']}`)).toBeTruthy();
     });
   });
 
