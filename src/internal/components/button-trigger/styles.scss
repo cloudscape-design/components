@@ -187,21 +187,21 @@ $icon-offset: awsui.$space-xxxs;
   // Re-apply the fused corners at rest AND when the focus ring is shown, since
   // the trigger's own focus styles otherwise restore all four corners.
   &.in-control-group-first {
-    @include styles.control-group-grouped('first');
+    @include styles.control-group-grouped-responsive('first');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped('first');
+      @include styles.control-group-grouped-responsive('first');
     }
   }
   &.in-control-group-middle {
-    @include styles.control-group-grouped('middle');
+    @include styles.control-group-grouped-responsive('middle');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped('middle');
+      @include styles.control-group-grouped-responsive('middle');
     }
   }
   &.in-control-group-last {
-    @include styles.control-group-grouped('last');
+    @include styles.control-group-grouped-responsive('last');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped('last');
+      @include styles.control-group-grouped-responsive('last');
     }
   }
 }
