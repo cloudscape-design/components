@@ -5,6 +5,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import { isElement } from '../../internal/utils/dom';
 import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import { filterItems } from './filter-items';
@@ -20,6 +21,9 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onReturnFocus: () => void;
   // Returns whether the given element is (or is inside) the dropdown trigger.
   isTriggerElement: (element: Element) => boolean;
+  // Returns the target of the most recent mouse-down, or null if the last interaction was a
+  // key press. Used to tell a click on the trigger apart from a keyboard move to it.
+  getMouseDownTarget: () => Node | null;
   expandToViewport?: boolean;
   hasFiltering: boolean;
 }
@@ -47,6 +51,7 @@ export function useButtonDropdown({
   onItemFollow,
   onReturnFocus,
   isTriggerElement,
+  getMouseDownTarget,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -108,12 +113,22 @@ export function useButtonDropdown({
 
   const onFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
-      // When focus moves from the filter input to the trigger (e.g. clicking the trigger to
-      // close the dropdown), the trigger's own click handler already toggles the dropdown
-      // state. Closing here as well would let that click reopen it. Ignore this case and let
-      // the trigger click be the single source of truth.
       const { relatedTarget } = event.detail;
-      if (relatedTarget && isTriggerElement(relatedTarget)) {
+      // Clicking the trigger to close the dropdown moves focus from the filter input to the
+      // trigger, and the trigger's own click then toggles the dropdown. Closing here too would
+      // let that click reopen it, so we let the click be the single source of truth. We detect
+      // this specific case by the pending mouse-down on the trigger: a keyboard move to the
+      // trigger (e.g. Shift+Tab) clears the mouse-down target, so it still closes here — which
+      // it must, otherwise the dropdown would stay open once focus later leaves the trigger.
+      const mouseDownTarget = getMouseDownTarget();
+      const isTriggerClickInProgress =
+        !!relatedTarget &&
+        isElement(relatedTarget) &&
+        isTriggerElement(relatedTarget) &&
+        !!mouseDownTarget &&
+        isElement(mouseDownTarget) &&
+        isTriggerElement(mouseDownTarget);
+      if (isTriggerClickInProgress) {
         return;
       }
       if (expandToViewport) {

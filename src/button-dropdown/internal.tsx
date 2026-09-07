@@ -24,6 +24,7 @@ import { useDropdownStatus } from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMobile } from '../internal/hooks/use-mobile';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
@@ -115,6 +116,7 @@ const InternalButtonDropdown = React.forwardRef(
     const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
     const isOneTheme = isThemeActive(Theme.OneTheme);
+    const getMouseDownTarget = useMouseDownTarget();
 
     const {
       isOpen,
@@ -147,6 +149,7 @@ const InternalButtonDropdown = React.forwardRef(
       // separately, and portaled out entirely when expandToViewport). InternalButton exposes an
       // imperative handle rather than a DOM node, so we test containment against the root.
       isTriggerElement: element => !!rootRef.current?.contains(element),
+      getMouseDownTarget,
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,

@@ -134,4 +134,20 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
       await expect(page.isDropdownOpen()).resolves.toBe(false);
     })
   );
+
+  test(
+    'moving focus to the trigger with the keyboard closes the dropdown',
+    setupTest(expandToViewport, async page => {
+      // Open the dropdown; focus lands on the filter input.
+      await page.clickTrigger();
+      const input = getFilterInput(page);
+      await page.waitForAssertion(async () => expect(await page.isFocused(input)).toBe(true));
+
+      // Shift+Tab moves focus from the filter input back to the trigger.
+      await page.keys(['Shift', 'Tab', 'Null']);
+
+      await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
+      await expect(page.isFocused(page.getTrigger())).resolves.toBe(true);
+    })
+  );
 });
