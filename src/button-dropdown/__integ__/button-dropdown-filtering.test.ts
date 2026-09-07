@@ -126,9 +126,10 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
       // and let the click reopen it — clicking once should close and keep it closed.
       await page.clickTrigger();
 
+      await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
+
       // Wait long enough that a close-then-reopen would have re-rendered the open dropdown,
       // then confirm it is (and stays) closed.
-      await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
       await page.pause(300);
       await expect(page.isDropdownOpen()).resolves.toBe(false);
     })
