@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import Badge from '~components/badge';
-import Box from '~components/box';
 import FormField from '~components/form-field';
 import Input, { InputProps } from '~components/input';
 import SpaceBetween from '~components/space-between';
@@ -22,6 +20,44 @@ type PageContext = React.Context<
   }>
 >;
 
+const REGIONS = [
+  'us-east-1',
+  'us-west-2',
+  'eu-west-1',
+  'ap-southeast-1',
+  'ap-northeast-1',
+  'sa-east-1',
+  'ca-central-1',
+  'eu-central-1',
+];
+
+const singleToken = (disabled: boolean, readOnly: boolean) => (
+  <Token
+    variant="inline"
+    label="us-east-1"
+    dismissLabel="Remove us-east-1"
+    disabled={disabled}
+    readOnly={readOnly}
+    onDismiss={() => {}}
+  />
+);
+
+const overflowTokens = (disabled: boolean, readOnly: boolean) => (
+  <span style={{ display: 'flex', flexWrap: 'nowrap', gap: '4px' }}>
+    {REGIONS.map(r => (
+      <Token
+        key={r}
+        variant="inline"
+        label={r}
+        dismissLabel={`Remove ${r}`}
+        disabled={disabled}
+        readOnly={readOnly}
+        onDismiss={() => {}}
+      />
+    ))}
+  </span>
+);
+
 export default function LeadingContentPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const disabled = urlParams.disabled ?? false;
@@ -29,8 +65,8 @@ export default function LeadingContentPage() {
   const invalid = urlParams.invalid ?? false;
   const warning = urlParams.warning ?? false;
 
-  const sharedProps: Partial<InputProps> = { disabled, readOnly, invalid, warning };
-  const fieldProps = {
+  const sharedInputProps: Partial<InputProps> = { disabled, readOnly, invalid, warning };
+  const sharedFieldProps = {
     errorText: invalid ? 'Validation error.' : undefined,
     warningText: warning && !invalid ? 'Validation warning.' : undefined,
   };
@@ -56,110 +92,93 @@ export default function LeadingContentPage() {
       }
     >
       <SpaceBetween size="l">
-        {/* Single inline token */}
-        <FormField label="Single token" {...fieldProps}>
-          <div data-testid="with-content">
+        {/* 1. Slot present — single token */}
+        <FormField label="Slot present (single token)" {...sharedFieldProps}>
+          <div data-testid="slot-present">
             <Input
               value=""
               onChange={() => {}}
               ariaLabel="Filter"
-              {...sharedProps}
-              leadingContent={
-                <Token variant="inline" label="us-east-1" dismissLabel="Remove us-east-1" onDismiss={() => {}} />
-              }
+              {...sharedInputProps}
+              leadingContent={singleToken(disabled, readOnly)}
             />
           </div>
         </FormField>
 
-        {/* No leadingContent — baseline */}
-        <FormField label="No leadingContent" {...fieldProps}>
-          <div data-testid="without-content">
+        {/* 2. Slot absent — baseline */}
+        <FormField label="Slot absent (baseline)" {...sharedFieldProps}>
+          <div data-testid="slot-absent">
             <Input
               value=""
               onChange={() => {}}
-              ariaLabel="Filter"
+              ariaLabel="Filter baseline"
               placeholder="leadingContent not set"
-              {...sharedProps}
+              {...sharedInputProps}
             />
           </div>
         </FormField>
 
-        {/* Token + typed value */}
-        <FormField label="Token with typed value" {...fieldProps}>
-          <Input
-            value="query"
-            onChange={() => {}}
-            ariaLabel="Filter"
-            {...sharedProps}
-            leadingContent={
-              <Token variant="inline" label="us-east-1" dismissLabel="Remove us-east-1" onDismiss={() => {}} />
-            }
-          />
-        </FormField>
-
-        {/* leadingContent alongside prefix and suffix */}
-        <FormField label="With prefix and suffix" {...fieldProps}>
-          <Input
-            value=""
-            onChange={() => {}}
-            ariaLabel="Filter"
-            prefix="$"
-            suffix="USD"
-            {...sharedProps}
-            leadingContent={
-              <Token variant="inline" label="us-east-1" dismissLabel="Remove us-east-1" onDismiss={() => {}} />
-            }
-          />
-        </FormField>
-
-        {/* Non-token content — badge */}
-        <FormField label="Non-token content (badge)" {...fieldProps}>
-          <Input
-            value=""
-            onChange={() => {}}
-            ariaLabel="Filter"
-            {...sharedProps}
-            leadingContent={<Badge color="blue">3</Badge>}
-          />
-        </FormField>
-
-        {/* Many tokens — exercises overflow scroll */}
-        <FormField label="Many tokens (overflow scroll)" {...fieldProps}>
-          <div data-testid="overflow">
+        {/* 3. Overflow — many tokens, slot scrolls horizontally */}
+        <FormField label="Overflow (many tokens)" {...sharedFieldProps}>
+          <div data-testid="slot-overflow">
             <Input
               value=""
               onChange={() => {}}
               ariaLabel="Filter regions"
-              {...sharedProps}
+              {...sharedInputProps}
+              leadingContent={overflowTokens(disabled, readOnly)}
+            />
+          </div>
+        </FormField>
+
+        {/* 4. Interactive content — button inside the slot */}
+        <FormField label="Interactive content (button)" {...sharedFieldProps}>
+          <div data-testid="slot-interactive">
+            <Input
+              value=""
+              onChange={() => {}}
+              ariaLabel="Filter with action"
+              {...sharedInputProps}
               leadingContent={
-                <span style={{ display: 'flex', flexWrap: 'nowrap', gap: '4px' }}>
-                  {[
-                    'us-east-1',
-                    'us-west-2',
-                    'eu-west-1',
-                    'ap-southeast-1',
-                    'ap-northeast-1',
-                    'sa-east-1',
-                    'ca-central-1',
-                    'eu-central-1',
-                  ].map(r => (
-                    <Token key={r} variant="inline" label={r} dismissLabel={`Remove ${r}`} onDismiss={() => {}} />
-                  ))}
-                </span>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+                  onClick={() => {}}
+                >
+                  Action
+                </button>
               }
             />
           </div>
         </FormField>
 
-        {/* Text-only content */}
-        <FormField label="Plain text content" {...fieldProps}>
-          <Input
-            value=""
-            onChange={() => {}}
-            ariaLabel="Filter"
-            {...sharedProps}
-            leadingContent={<Box variant="small">Label:</Box>}
-          />
+        {/* 5. Plain text content (non-interactive) */}
+        <FormField label="Plain text content" {...sharedFieldProps}>
+          <div data-testid="slot-text">
+            <Input
+              value=""
+              onChange={() => {}}
+              ariaLabel="Filter with label"
+              {...sharedInputProps}
+              leadingContent={<span style={{ whiteSpace: 'nowrap' }}>Filter:</span>}
+            />
+          </div>
+        </FormField>
+
+        {/* 6. Alongside prefix and suffix */}
+        <FormField label="With prefix and suffix" {...sharedFieldProps}>
+          <div data-testid="slot-with-prefix-suffix">
+            <Input
+              value=""
+              onChange={() => {}}
+              ariaLabel="Filter with prefix and suffix"
+              prefix="$"
+              suffix="USD"
+              {...sharedInputProps}
+              leadingContent={singleToken(disabled, readOnly)}
+            />
+          </div>
         </FormField>
       </SpaceBetween>
     </SimplePage>
