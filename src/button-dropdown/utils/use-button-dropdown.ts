@@ -21,7 +21,7 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
   // Returns whether the given element is (or is inside) the dropdown trigger.
-  isTriggerElement: (element: Element) => boolean;
+  isInside: (element: Element) => boolean;
   expandToViewport?: boolean;
   hasFiltering: boolean;
 }
@@ -48,7 +48,7 @@ export function useButtonDropdown({
   onItemClick,
   onItemFollow,
   onReturnFocus,
-  isTriggerElement,
+  isInside,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -112,12 +112,10 @@ export function useButtonDropdown({
     if (hasFiltering && isOpen) {
       const { relatedTarget } = event.detail;
       // When focus moves from the filter input to the trigger via a mouse click, the trigger's
-      // own click handler already toggles the dropdown closed. Closing here as well would let
-      // that click reopen it, so we skip closing and let the click be the single source of
-      // truth. A keyboard move to the trigger (Shift+Tab) has no such click, so we do close —
-      // matching the expectation that tabbing back to the trigger dismisses the dropdown.
-      const movedToTrigger = !!relatedTarget && isElement(relatedTarget) && isTriggerElement(relatedTarget);
-      if (movedToTrigger && !isKeyboardInteraction(relatedTarget)) {
+      // own click handler already closes the dropdown.
+      const clickedTrigger =
+        !!relatedTarget && isElement(relatedTarget) && isInside(relatedTarget) && !isKeyboardInteraction(relatedTarget);
+      if (clickedTrigger) {
         return;
       }
       if (expandToViewport) {

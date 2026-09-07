@@ -146,7 +146,7 @@ const InternalButtonDropdown = React.forwardRef(
       // focusable that still belongs to the widget root is the trigger (the content is rendered
       // separately, and portaled out entirely when expandToViewport). InternalButton exposes an
       // imperative handle rather than a DOM node, so we test containment against the root.
-      isTriggerElement: element => !!rootRef.current?.contains(element),
+      isInside: element => !!rootRef.current?.contains(element),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
