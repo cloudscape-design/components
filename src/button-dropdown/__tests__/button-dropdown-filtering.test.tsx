@@ -407,7 +407,7 @@ describe('Button dropdown filtering', () => {
       expect(wrapper.findOpenDropdown()).not.toBeNull();
 
       wrapper.findFilteringInput()!.keydown(KeyCode.tab);
-      // Dropdown stays open because Tab is handled by onDropdownFocusLeave in filtering mode
+      // Dropdown stays open because Tab is handled by onFocusLeave in filtering mode
       expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
   });

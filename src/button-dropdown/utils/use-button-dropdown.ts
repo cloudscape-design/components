@@ -30,7 +30,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  onDropdownFocusLeave: (event: DropdownFocusLeaveEvent) => void;
+  onFocusLeave: (event: DropdownFocusLeaveEvent) => void;
   onDropdownBlur: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
@@ -106,7 +106,7 @@ export function useButtonDropdown({
     openStateProps.toggleDropdown();
   };
 
-  const onDropdownFocusLeave = (event: DropdownFocusLeaveEvent) => {
+  const onFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
       // When focus moves from the filter input to the trigger (e.g. clicking the trigger to
       // close the dropdown), the trigger's own click handler already toggles the dropdown
@@ -127,7 +127,7 @@ export function useButtonDropdown({
 
   // Close when focus leaves the entire widget (trigger and menu), for example when focus
   // moves to an app layout drawer or an element in a different frame. The filtering variant
-  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
+  // keeps focus inside the dropdown content and closes via onFocusLeave instead.
   const onDropdownBlur = () => {
     if (isOpen && !hasFiltering) {
       closeDropdown();
@@ -265,7 +265,7 @@ export function useButtonDropdown({
       case KeyCode.tab: {
         // In filtering mode the dropdown contains multiple focusable elements (the filter
         // input and its clear button). Tabbing between them must not close the dropdown, so
-        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
+        // closing on Tab is handled by onFocusLeave instead, which only fires once
         // focus actually leaves the dropdown.
         if (hasFiltering) {
           break;
@@ -301,7 +301,7 @@ export function useButtonDropdown({
     onKeyUp,
     onItemActivate,
     onGroupToggle,
-    onDropdownFocusLeave,
+    onFocusLeave,
     onDropdownBlur,
     toggleDropdown,
     closeDropdown,
