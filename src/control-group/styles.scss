@@ -32,6 +32,18 @@
 
 .control {
   min-inline-size: 0;
+  // Raise the focused control's slot above its neighbors so its focus ring is
+  // painted over the adjacent control's seam border (stacking must happen at the
+  // slot level — raising the control's inner element only affects its own slot).
+  position: relative;
+  // Establish a stacking context per slot so a control's internal z-indexes (for
+  // example an inline label's `z-index`) stay contained within its own slot and
+  // cannot paint over adjacent controls.
+  isolation: isolate;
+
+  &:focus-within {
+    z-index: 1;
+  }
 
   &:empty {
     display: none;
