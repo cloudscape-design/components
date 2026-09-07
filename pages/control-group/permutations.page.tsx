@@ -9,7 +9,7 @@ import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SegmentedControl from '~components/segmented-control';
 import Select, { SelectProps } from '~components/select';
 
-import { SimplePage } from '../app/templates';
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 
@@ -58,6 +58,7 @@ const permutations = createPermutations<ControlGroupProps>([
         <Button iconName="close" variant="icon" ariaLabel="Remove function" />
       </>,
     ],
+    errorText: [undefined, '"sqrt" cannot be applied to a non-numeric metric.'],
   },
   {
     // Aggregation: two Selects + built-in remove button via `dismissible`.
@@ -76,7 +77,25 @@ const permutations = createPermutations<ControlGroupProps>([
         />
         <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
       </>,
+      <>
+        <Select
+          ariaLabel="Aggregation"
+          inlineLabelText="Aggregation"
+          selectedOption={null}
+          placeholder="Select function..."
+          options={AGGREGATIONS}
+          onChange={() => {}}
+        />
+        <Select
+          ariaLabel="By"
+          selectedOption={BY_OPTIONS[0]}
+          options={BY_OPTIONS}
+          onChange={() => {}}
+          disabled={true}
+        />
+      </>,
     ],
+    errorText: [undefined, '"count_values" does not support grouping by labels. Use "sum" or "avg" instead.'],
   },
   {
     // Metric: a single Input + built-in remove button.
@@ -94,6 +113,7 @@ const permutations = createPermutations<ControlGroupProps>([
         onChange={() => {}}
       />,
     ],
+    errorText: [undefined, 'Metric "unknown_metric_xyz" not found. Check the metric name or select from suggestions.'],
   },
   {
     // Label: Input + operator Select + Input + built-in remove button.
@@ -108,6 +128,7 @@ const permutations = createPermutations<ControlGroupProps>([
         <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
       </>,
     ],
+    errorText: [undefined, 'Invalid regex pattern for "=~" operator. "[invalid regex" is missing a closing bracket.'],
   },
   {
     // Multiselect with inline tokens + built-in remove button.
@@ -125,6 +146,7 @@ const permutations = createPermutations<ControlGroupProps>([
         onChange={() => {}}
       />,
     ],
+    errorText: [undefined],
   },
   {
     // Search input + a segmented control choosing how the query is applied.
@@ -143,12 +165,13 @@ const permutations = createPermutations<ControlGroupProps>([
         />
       </>,
     ],
+    errorText: [undefined],
   },
 ]);
 
 export default function () {
   return (
-    <SimplePage title="ControlGroup permutations" screenshotArea={{ disableAnimations: true }}>
+    <PermutationsPage title="ControlGroup permutations">
       <PermutationsView
         permutations={permutations}
         render={permutation => (
@@ -165,6 +188,6 @@ export default function () {
           </ControlGroup>
         )}
       />
-    </SimplePage>
+    </PermutationsPage>
   );
 }
