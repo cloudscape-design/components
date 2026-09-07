@@ -6,6 +6,7 @@ import { useOpenState } from '../../internal/components/options-list/utils/use-o
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { isElement } from '../../internal/utils/dom';
+import { isKeyboardInteraction } from '../../internal/utils/focus-visible';
 import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import { filterItems } from './filter-items';
@@ -21,9 +22,6 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onReturnFocus: () => void;
   // Returns whether the given element is (or is inside) the dropdown trigger.
   isTriggerElement: (element: Element) => boolean;
-  // Returns the target of the most recent mouse-down, or null if the last interaction was a
-  // key press. Used to tell a click on the trigger apart from a keyboard move to it.
-  getMouseDownTarget: () => Node | null;
   expandToViewport?: boolean;
   hasFiltering: boolean;
 }
@@ -51,7 +49,6 @@ export function useButtonDropdown({
   onItemFollow,
   onReturnFocus,
   isTriggerElement,
-  getMouseDownTarget,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -114,21 +111,13 @@ export function useButtonDropdown({
   const onFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
       const { relatedTarget } = event.detail;
-      // Clicking the trigger to close the dropdown moves focus from the filter input to the
-      // trigger, and the trigger's own click then toggles the dropdown. Closing here too would
-      // let that click reopen it, so we let the click be the single source of truth. We detect
-      // this specific case by the pending mouse-down on the trigger: a keyboard move to the
-      // trigger (e.g. Shift+Tab) clears the mouse-down target, so it still closes here — which
-      // it must, otherwise the dropdown would stay open once focus later leaves the trigger.
-      const mouseDownTarget = getMouseDownTarget();
-      const isTriggerClickInProgress =
-        !!relatedTarget &&
-        isElement(relatedTarget) &&
-        isTriggerElement(relatedTarget) &&
-        !!mouseDownTarget &&
-        isElement(mouseDownTarget) &&
-        isTriggerElement(mouseDownTarget);
-      if (isTriggerClickInProgress) {
+      // When focus moves from the filter input to the trigger via a mouse click, the trigger's
+      // own click handler already toggles the dropdown closed. Closing here as well would let
+      // that click reopen it, so we skip closing and let the click be the single source of
+      // truth. A keyboard move to the trigger (Shift+Tab) has no such click, so we do close —
+      // matching the expectation that tabbing back to the trigger dismisses the dropdown.
+      const movedToTrigger = !!relatedTarget && isElement(relatedTarget) && isTriggerElement(relatedTarget);
+      if (movedToTrigger && !isKeyboardInteraction(relatedTarget)) {
         return;
       }
       if (expandToViewport) {
@@ -142,7 +131,7 @@ export function useButtonDropdown({
 
   // Close when focus leaves the entire widget (trigger and menu), for example when focus
   // moves to an app layout drawer or an element in a different frame. The filtering variant
-  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
+  // keeps focus inside the dropdown content and closes via onFocusLeave instead.
   const onDropdownBlur = () => {
     if (isOpen && !hasFiltering) {
       closeDropdown();
@@ -280,8 +269,8 @@ export function useButtonDropdown({
       case KeyCode.tab: {
         // In filtering mode the dropdown contains multiple focusable elements (the filter
         // input and its clear button). Tabbing between them must not close the dropdown, so
-        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
-        // focus actually leaves the dropdown.
+        // closing on Tab is handled by onFocusLeave instead, which only fires once focus
+        // actually leaves the dropdown content.
         if (hasFiltering) {
           break;
         }
