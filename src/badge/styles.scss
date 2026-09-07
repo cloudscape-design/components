@@ -28,24 +28,11 @@ $tokens: style-api.resolve(style-api.combine(style-api.$surface, (padding-block,
   padding-inline: var(#{style-api.read($tokens, padding-inline)}, #{awsui.$space-xs});
   color: var(#{style-api.read($tokens, color)}, #{awsui.$color-text-notification-default});
 
-  // Only badges that render an icon become a flex container. Text-only badges
-  // keep the default inline-block layout.
   &.badge-with-icon {
     display: inline-flex;
     align-items: center;
     vertical-align: middle;
-
-    > .icon {
-      // The icon uses size="inherit", so its height matches the badge line-height.
-      // The flex container (align-items: center) keeps it vertically centered with the label text.
-      &.icon-left.icon-with-content {
-        margin-inline-end: awsui.$space-xxs;
-      }
-
-      &.icon-right.icon-with-content {
-        margin-inline-start: awsui.$space-xxs;
-      }
-    }
+    column-gap: awsui.$space-xxs;
   }
 
   &.badge-color-grey {

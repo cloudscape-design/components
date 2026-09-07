@@ -51,12 +51,7 @@ export default function Badge({
 
   const icon = hasIcon ? (
     <InternalIcon
-      className={clsx(
-        styles.icon,
-        testUtilStyles.icon,
-        styles[`icon-${iconAlign}`],
-        hasContent && styles['icon-with-content']
-      )}
+      className={testUtilStyles.icon}
       name={iconName}
       url={iconUrl}
       svg={iconSvg}
