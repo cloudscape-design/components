@@ -252,7 +252,7 @@ function InternalInput(
     />
   );
 
-  const renderedId = nativeInputAttributes?.id || controlId;
+const renderedId = nativeInputAttributes?.id ?? controlId;
 
   const endIcon = __endIcon ? (
     <span
