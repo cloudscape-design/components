@@ -42,6 +42,8 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusToken: '4px',
   borderRadiusTokenInline: '{borderRadiusToken}',
   borderRadiusTutorialPanelItem: '2px',
+  borderRadiusChatBubble: '4px',
+  borderRadiusSupportPrompt: '4px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);

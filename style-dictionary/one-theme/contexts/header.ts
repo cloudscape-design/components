@@ -11,7 +11,7 @@ import { tokens as parentShadowsTokens } from '../shadows.js';
 // All values are mode-invariant (single string = same in light and dark).
 
 const colorTokens: StyleDictionary.ColorsDictionary = {
-  colorBackgroundLayoutMain: '{colorNeutral800}',
+  colorBackgroundLayoutMain: '{colorNeutral950}',
 };
 
 const darkColorValues = pickState(parentColorTokens, 'dark');
