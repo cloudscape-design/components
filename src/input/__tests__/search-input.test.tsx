@@ -57,6 +57,16 @@ describe('Development warnings for prefix/suffix on search type', () => {
     renderInput({ type: 'text', prefix: '$', suffix: '%' });
     expect(warnOnce).not.toHaveBeenCalled();
   });
+
+  test('warns when leadingContent is supplied with type search', () => {
+    renderInput({ type: 'search', leadingContent: <span>tokens</span> });
+    expect(warnOnce).toHaveBeenCalledWith('Input', 'leadingContent is ignored when type is search.');
+  });
+
+  test('does not warn when leadingContent is supplied with non-search type', () => {
+    renderInput({ type: 'text', leadingContent: <span>tokens</span> });
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
 });
 
 describe('Prefix/suffix suppression for search type', () => {
@@ -93,6 +103,16 @@ describe('Prefix/suffix suppression for search type', () => {
     const wrapper = renderInput({ type: 'text', suffix: '%' });
     expect(wrapper.findSuffix()).not.toBeNull();
     expect(wrapper.findSuffix()!.getElement().textContent).toBe('%');
+  });
+
+  test('does not render leadingContent when type is search', () => {
+    const wrapper = renderInput({ type: 'search', leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()).toBeNull();
+  });
+
+  test('renders leadingContent for non-search type', () => {
+    const wrapper = renderInput({ type: 'text', leadingContent: <span>tokens</span> });
+    expect(wrapper.findLeadingContent()).not.toBeNull();
   });
 });
 

@@ -217,9 +217,9 @@ describe('leadingContent', () => {
     expect(wrapper.findAllByClassName(styles['input-adornment-divider'])).toHaveLength(2);
   });
 
-  test('is not cleared for type="search"', () => {
+  test('is cleared for type="search" to prevent overlap with the search icon', () => {
     const { wrapper } = renderInput({ type: 'search', leadingContent: <span>tokens</span> });
-    expect(wrapper.findLeadingContent()!.getElement()).toHaveTextContent('tokens');
+    expect(wrapper.findLeadingContent()).toBeNull();
   });
 
   test.each([null, false, undefined, ''] as const)(

@@ -130,10 +130,14 @@ function InternalInput(
     if (isSearch && (prefix !== undefined || suffix !== undefined)) {
       warnOnce('Input', 'prefix and suffix are ignored when type is search.');
     }
+    if (isSearch && leadingContent !== undefined) {
+      warnOnce('Input', 'leadingContent is ignored when type is search.');
+    }
   }
   if (isSearch) {
     prefix = undefined;
     suffix = undefined;
+    leadingContent = undefined;
   }
 
   const formFieldContext = useFormFieldContext(rest);

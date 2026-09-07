@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import FormField from '~components/form-field';
 import Input, { InputProps } from '~components/input';
+import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
 import Token from '~components/token';
@@ -13,12 +14,22 @@ import { SimplePage } from '../app/templates';
 
 type PageContext = React.Context<
   AppContextType<{
+    type?: InputProps.Type;
     disabled?: boolean;
     readOnly?: boolean;
     invalid?: boolean;
     warning?: boolean;
   }>
 >;
+
+const typeOptions: ReadonlyArray<SelectProps.Option> = [
+  { value: 'text', label: 'Text' },
+  { value: 'password', label: 'Password' },
+  { value: 'number', label: 'Number' },
+  { value: 'email', label: 'Email' },
+  { value: 'url', label: 'URL' },
+  { value: 'search', label: 'Search' },
+];
 
 const REGIONS = [
   'us-east-1',
@@ -60,12 +71,20 @@ const overflowTokens = (disabled: boolean, readOnly: boolean) => (
 
 export default function LeadingContentPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const type = (urlParams.type ?? 'text') as InputProps.Type;
   const disabled = urlParams.disabled ?? false;
   const readOnly = urlParams.readOnly ?? false;
   const invalid = urlParams.invalid ?? false;
   const warning = urlParams.warning ?? false;
 
-  const sharedInputProps: Partial<InputProps> = { disabled, readOnly, invalid, warning };
+  const [slotPresentValue, setSlotPresentValue] = useState('');
+  const [slotAbsentValue, setSlotAbsentValue] = useState('');
+  const [overflowValue, setOverflowValue] = useState('');
+  const [interactiveValue, setInteractiveValue] = useState('');
+  const [textValue, setTextValue] = useState('');
+  const [prefixSuffixValue, setPrefixSuffixValue] = useState('');
+
+  const sharedInputProps: Partial<InputProps> = { type, disabled, readOnly, invalid, warning };
   const sharedFieldProps = {
     errorText: invalid ? 'Validation error.' : undefined,
     warningText: warning && !invalid ? 'Validation warning.' : undefined,
@@ -76,6 +95,12 @@ export default function LeadingContentPage() {
       title="Input — leadingContent"
       settings={
         <SpaceBetween direction="horizontal" size="s" alignItems="center">
+          <Select
+            inlineLabelText="Type"
+            selectedOption={typeOptions.find(o => o.value === type) ?? null}
+            options={typeOptions}
+            onChange={({ detail }) => setUrlParams({ type: detail.selectedOption.value as InputProps.Type })}
+          />
           <Toggle checked={disabled} onChange={({ detail }) => setUrlParams({ disabled: detail.checked })}>
             Disabled
           </Toggle>
@@ -96,9 +121,9 @@ export default function LeadingContentPage() {
         <FormField label="Slot present (single token)" {...sharedFieldProps}>
           <div data-testid="slot-present">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter"
+              value={slotPresentValue}
+              onChange={({ detail }) => setSlotPresentValue(detail.value)}
               {...sharedInputProps}
               leadingContent={singleToken(disabled, readOnly)}
             />
@@ -109,9 +134,9 @@ export default function LeadingContentPage() {
         <FormField label="Slot absent (baseline)" {...sharedFieldProps}>
           <div data-testid="slot-absent">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter baseline"
+              value={slotAbsentValue}
+              onChange={({ detail }) => setSlotAbsentValue(detail.value)}
               placeholder="leadingContent not set"
               {...sharedInputProps}
             />
@@ -122,9 +147,9 @@ export default function LeadingContentPage() {
         <FormField label="Overflow (many tokens)" {...sharedFieldProps}>
           <div data-testid="slot-overflow">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter regions"
+              value={overflowValue}
+              onChange={({ detail }) => setOverflowValue(detail.value)}
               {...sharedInputProps}
               leadingContent={overflowTokens(disabled, readOnly)}
             />
@@ -135,9 +160,9 @@ export default function LeadingContentPage() {
         <FormField label="Interactive content (button)" {...sharedFieldProps}>
           <div data-testid="slot-interactive">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter with action"
+              value={interactiveValue}
+              onChange={({ detail }) => setInteractiveValue(detail.value)}
               {...sharedInputProps}
               leadingContent={
                 <button
@@ -157,9 +182,9 @@ export default function LeadingContentPage() {
         <FormField label="Plain text content" {...sharedFieldProps}>
           <div data-testid="slot-text">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter with label"
+              value={textValue}
+              onChange={({ detail }) => setTextValue(detail.value)}
               {...sharedInputProps}
               leadingContent={<span style={{ whiteSpace: 'nowrap' }}>Filter:</span>}
             />
@@ -170,9 +195,9 @@ export default function LeadingContentPage() {
         <FormField label="With prefix and suffix" {...sharedFieldProps}>
           <div data-testid="slot-with-prefix-suffix">
             <Input
-              value=""
-              onChange={() => {}}
               ariaLabel="Filter with prefix and suffix"
+              value={prefixSuffixValue}
+              onChange={({ detail }) => setPrefixSuffixValue(detail.value)}
               prefix="$"
               suffix="USD"
               {...sharedInputProps}
