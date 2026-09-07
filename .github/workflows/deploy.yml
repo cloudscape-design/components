@@ -166,8 +166,8 @@ jobs:
           fi
 
           OVERRIDDEN=$(gh api \
-            "repos/${REPO}/commits/${SHA}/statuses" \
-            --jq 'any(.[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
+            "repos/${REPO}/commits/${SHA}/status" \
+            --jq 'any(.statuses[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
           if [ "$OVERRIDDEN" = "true" ]; then
             echo "::notice::Visual regression was overridden for this commit by a maintainer. Marking as passed."
             exit 0
