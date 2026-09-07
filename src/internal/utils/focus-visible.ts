@@ -15,6 +15,6 @@
  * Defaults to the main document.
  */
 export function isKeyboardInteraction(element?: Element | null): boolean {
-  const ownerDocument = element?.ownerDocument ?? document;
-  return !!ownerDocument.body.dataset.awsuiFocusVisible;
+  const ownerDocument = element?.ownerDocument ?? (typeof document !== 'undefined' ? document : undefined);
+  return !!ownerDocument?.body?.dataset.awsuiFocusVisible;
 }
