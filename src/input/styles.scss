@@ -209,22 +209,26 @@
   }
   // Re-apply the fused corners at rest AND on focus, since the control's own
   // focus styles otherwise restore all four corners at the full radius.
+  // Re-apply the grouped treatment on focus too (the control's own focus styles
+  // otherwise restore all four corners and the removed seam border). Keeping the
+  // seam border removed on focus preserves the geometry so the control does not
+  // shift; the focus ring is raised above the neighbor at the slot level.
   &.input-in-control-group-first {
     @include styles.control-group-grouped-responsive('first');
     &:focus {
-      @include styles.control-group-grouped-responsive('first');
+      @include styles.control-group-grouped-responsive-focus('first');
     }
   }
   &.input-in-control-group-middle {
     @include styles.control-group-grouped-responsive('middle');
     &:focus {
-      @include styles.control-group-grouped-responsive('middle');
+      @include styles.control-group-grouped-responsive-focus('middle');
     }
   }
   &.input-in-control-group-last {
     @include styles.control-group-grouped-responsive('last');
     &:focus {
-      @include styles.control-group-grouped-responsive('last');
+      @include styles.control-group-grouped-responsive-focus('last');
     }
   }
 }
@@ -239,19 +243,19 @@
   &.input-adorned-container-in-control-group-first {
     @include styles.control-group-grouped-responsive('first');
     &:focus-within {
-      @include styles.control-group-grouped-responsive('first');
+      @include styles.control-group-grouped-responsive-focus('first');
     }
   }
   &.input-adorned-container-in-control-group-middle {
     @include styles.control-group-grouped-responsive('middle');
     &:focus-within {
-      @include styles.control-group-grouped-responsive('middle');
+      @include styles.control-group-grouped-responsive-focus('middle');
     }
   }
   &.input-adorned-container-in-control-group-last {
     @include styles.control-group-grouped-responsive('last');
     &:focus-within {
-      @include styles.control-group-grouped-responsive('last');
+      @include styles.control-group-grouped-responsive-focus('last');
     }
   }
 }

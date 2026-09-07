@@ -347,52 +347,57 @@ $inline-label-border-radius: 2px;
   padding-block-end: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
-  z-index: 1;
+  // Sit above the field, including when the field is raised (`position: relative;
+  // z-index: 1`) on focus inside a ControlGroup. Otherwise the focused control's
+  // focus ring would paint over the label, since an equal z-index resolves in
+  // favor of the later element in DOM order (the field comes after the label).
+  z-index: 2;
 }
 
 @mixin inline-label-disabled {
   background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-disabled);
 }
 
-// Groups a bordered control with its neighbors inside a ControlGroup. The control
-// keeps its own border but squares the corners where it meets a neighbor and
-// pulls over the shared seam border so it is not drawn twice. `$position` is one
-// of 'first' | 'middle' | 'last' | 'only' and comes from the ControlGroup context.
-@mixin control-group-grouped(
-  $position,
-  $radius: constants.$control-border-radius,
-  $border-width: awsui.$border-width-field
-) {
-  // Seams are collapsed by REMOVING the seam-side border on the following control
-  // (rather than overlapping two borders with a negative margin, which doubles up
-  // at fractional device-pixel ratios). Each interior seam is then drawn exactly
-  // once by the preceding control's trailing border.
+// Corner radii for a control fused with horizontal neighbors: keep the corners on
+// the group's outer edge and square the interior (seam) corners. `$position` is
+// one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-corners($position, $radius: constants.$control-border-radius) {
   @if $position == 'first' {
-    // Keep leading corners (at the shared control radius); square the trailing seam side.
     border-start-start-radius: $radius;
     border-end-start-radius: $radius;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   } @else if $position == 'last' {
-    // Keep trailing corners; square the leading seam side and drop the (doubled) leading border.
     border-start-end-radius: $radius;
     border-end-end-radius: $radius;
     border-start-start-radius: 0;
     border-end-start-radius: 0;
-    border-inline-start-width: 0;
   } @else if $position == 'middle' {
-    // Square both sides and drop the leading border (the previous control draws the seam).
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
-    border-inline-start-width: 0;
   } @else if $position == 'only' {
-    // Keep all corners at the shared control radius (no seam collapsing).
     border-start-start-radius: $radius;
     border-start-end-radius: $radius;
     border-end-start-radius: $radius;
     border-end-end-radius: $radius;
+  }
+}
+
+// Groups a bordered control with its horizontal neighbors inside a ControlGroup:
+// squared interior corners PLUS removal of the seam-side border so the seam is
+// drawn exactly once by the preceding control's trailing border (rather than
+// overlapping two borders with a negative margin, which doubles up at fractional
+// device-pixel ratios). Used at REST; on focus use the corners-only mixin so the
+// focused control regains a full border and its focus ring is not occluded by the
+// neighbor's seam border. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped($position, $radius: constants.$control-border-radius) {
+  @include control-group-grouped-corners($position, $radius: $radius);
+
+  @if $position == 'last' or $position == 'middle' {
+    // Drop the leading (seam) border; the previous control draws the seam.
+    border-inline-start-width: 0;
   }
 }
 
@@ -406,7 +411,7 @@ $inline-label-border-radius: 2px;
   $radius: constants.$control-border-radius,
   $border-width: awsui.$border-width-field
 ) {
-  @include control-group-grouped($position, $radius: $radius, $border-width: $border-width);
+  @include control-group-grouped($position, $radius: $radius);
 
   // Flip to the block axis when the ControlGroup's own container (not the
   // viewport) is too narrow to lay the controls out in a row.
@@ -415,45 +420,80 @@ $inline-label-border-radius: 2px;
   }
 }
 
-// Block-axis variant used when a ControlGroup stacks vertically (small screens).
-// Fully overrides the inline-axis treatment: it resets the inline seam margin and
-// squares/rounds corners along the block axis instead. `$position` is one of
-// 'first' | 'middle' | 'last' | 'only'.
-@mixin control-group-grouped-stacked(
+// Focus variant of the responsive grouped treatment. At rest the seam-side border
+// is removed so the shared seam is drawn once; that also drops the 1px focus
+// border on the seam side, making the focus outline look thinner there. On focus
+// we RESTORE that border so the outline is uniform on all four sides, and offset
+// it with a compensating negative margin so the control does not shift. Keeps the
+// squared interior corners. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-responsive-focus(
   $position,
   $radius: constants.$control-border-radius,
   $border-width: awsui.$border-width-field
 ) {
-  // The stacked layout collapses seams along the BLOCK axis, so restore the
-  // inline-start border removed by the horizontal treatment and instead drop the
-  // block-start (top seam) border on the following controls.
-  border-inline-start-width: $border-width;
+  @include control-group-grouped-corners($position, $radius: $radius);
 
+  @if $position == 'last' or $position == 'middle' {
+    // Bring the seam border back so the focus outline is uniform on all sides.
+    // With box-sizing: border-box the control's outer box keeps its size and
+    // position, so nothing shifts — the restored 1px border just draws inside the
+    // (flush) leading edge, over where the neighbor's seam border sits; the raised
+    // focus ring keeps it clean.
+    border-inline-start-width: $border-width;
+  }
+
+  @container control-group #{constants.$control-group-stack-query} {
+    @include control-group-grouped-stacked-corners($position, $radius: $radius);
+    border-inline-start-width: $border-width;
+
+    @if $position == 'last' or $position == 'middle' {
+      border-block-start-width: $border-width;
+    }
+  }
+}
+
+// Corner radii for a control fused with block-axis (stacked) neighbors: keep the
+// corners on the group's outer (top/bottom) edge and square the interior corners.
+@mixin control-group-grouped-stacked-corners($position, $radius: constants.$control-border-radius) {
   @if $position == 'first' {
-    // Keep top corners; square the bottom (seam) side. Draws the first seam.
     border-start-start-radius: $radius;
     border-start-end-radius: $radius;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
   } @else if $position == 'last' {
-    // Keep bottom corners; square the top (seam) side and drop the doubled top border.
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: $radius;
     border-end-end-radius: $radius;
-    border-block-start-width: 0;
   } @else if $position == 'middle' {
-    // Square all corners and drop the top border (the previous control draws the seam).
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
-    border-block-start-width: 0;
   } @else if $position == 'only' {
-    // Keep all corners rounded (nothing to collapse).
     border-start-start-radius: $radius;
     border-start-end-radius: $radius;
     border-end-start-radius: $radius;
     border-end-end-radius: $radius;
+  }
+}
+
+// Block-axis variant used when a ControlGroup stacks vertically. Restores the
+// inline-start border removed by the horizontal treatment and instead drops the
+// block-start (top seam) border on the following controls, so each seam is drawn
+// once. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-stacked(
+  $position,
+  $radius: constants.$control-border-radius,
+  $border-width: awsui.$border-width-field
+) {
+  @include control-group-grouped-stacked-corners($position, $radius: $radius);
+
+  // Restore the inline-start border the horizontal treatment removed.
+  border-inline-start-width: $border-width;
+
+  @if $position == 'last' or $position == 'middle' {
+    // Drop the block-start (seam) border; the previous control draws the seam.
+    border-block-start-width: 0;
   }
 }

@@ -189,19 +189,19 @@ $icon-offset: awsui.$space-xxxs;
   &.in-control-group-first {
     @include styles.control-group-grouped-responsive('first');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped-responsive('first');
+      @include styles.control-group-grouped-responsive-focus('first');
     }
   }
   &.in-control-group-middle {
     @include styles.control-group-grouped-responsive('middle');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped-responsive('middle');
+      @include styles.control-group-grouped-responsive-focus('middle');
     }
   }
   &.in-control-group-last {
     @include styles.control-group-grouped-responsive('last');
     @include focus-visible.when-visible {
-      @include styles.control-group-grouped-responsive('last');
+      @include styles.control-group-grouped-responsive-focus('last');
     }
   }
 }
