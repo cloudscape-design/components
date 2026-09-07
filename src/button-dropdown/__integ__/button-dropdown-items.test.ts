@@ -10,7 +10,7 @@ test(
     const page = new ButtonDropdownPage('ButtonDropdown4', browser);
     await browser.url('#/light/button-dropdown/simple');
     await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
+    await page.clickTrigger();
     await expect(page.isDropdownOpen()).resolves.toBe(true);
     await page.click('[data-testid=states]');
     await page.click('[data-testid=external]');
@@ -27,8 +27,8 @@ test(
     await browser.url('#/light/button-dropdown/simple');
 
     await page1.waitForVisible(page1.getTrigger());
-    await page1.openDropdown();
-    await page2.openDropdown();
+    await page1.clickTrigger();
+    await page2.clickTrigger();
 
     await expect(page2.getFocusedElementText()).resolves.toBe('Option 1');
     await expect(page2.getHighlightedElementText()).resolves.toBe('Option 1');
@@ -42,7 +42,7 @@ test(
     await browser.url('#/light/button-dropdown/simple');
 
     await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
+    await page.clickTrigger();
 
     await expect(page.getFocusedElementText()).resolves.toBe('Option 1');
     await expect(page.getHighlightedElementText()).resolves.toBe('Option 1');
@@ -57,7 +57,7 @@ test(
 
     await page.setWindowSize({ width: 400, height: 800 });
     await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
+    await page.clickTrigger();
 
     await expect(page.getFocusedElementText()).resolves.toBe('Two');
   })
@@ -70,7 +70,7 @@ test(
     await browser.url('#/light/button-dropdown/simple');
 
     await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
+    await page.clickTrigger();
     await page.keys('ArrowDown');
 
     await expect(page.getFocusedElementText()).resolves.toBe('Restart\nCtrl + R\nThis is the Restart option');

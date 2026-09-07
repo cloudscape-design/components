@@ -3,7 +3,13 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -136,6 +142,11 @@ const InternalButtonDropdown = React.forwardRef(
       onItemFollow,
       // Scroll is unnecessary when moving focus back to the dropdown trigger.
       onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
+      // Whether focus moved to the trigger. Once focus has left the dropdown content, the only
+      // focusable that still belongs to the widget root is the trigger (the content is rendered
+      // separately, and portaled out entirely when expandToViewport). InternalButton exposes an
+      // imperative handle rather than a DOM node, so we test containment against the root.
+      isTriggerElement: element => !!rootRef.current?.contains(element),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
@@ -159,6 +170,8 @@ const InternalButtonDropdown = React.forwardRef(
 
     const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
+    const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
 
     useImperativeHandle(
       ref,
@@ -446,7 +459,7 @@ const InternalButtonDropdown = React.forwardRef(
           baseProps.className
         )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
-        ref={__internalRootRef}
+        ref={mergedRootRef}
       >
         <Dropdown
           open={canBeOpened && isOpen}

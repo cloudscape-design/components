@@ -5,17 +5,21 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
-import { CancelableEventHandler } from '../../types/events';
+import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import { filterItems } from './filter-items';
 import useHighlightedMenu from './use-highlighted-menu';
 import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
+
+type DropdownFocusLeaveEvent = NonCancelableCustomEvent<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
+  // Returns whether the given element is (or is inside) the dropdown trigger.
+  isTriggerElement: (element: Element) => boolean;
   expandToViewport?: boolean;
   hasFiltering: boolean;
 }
@@ -26,7 +30,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  onDropdownFocusLeave: () => void;
+  onDropdownFocusLeave: (event: DropdownFocusLeaveEvent) => void;
   onDropdownBlur: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
@@ -42,6 +46,7 @@ export function useButtonDropdown({
   onItemClick,
   onItemFollow,
   onReturnFocus,
+  isTriggerElement,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -101,8 +106,16 @@ export function useButtonDropdown({
     openStateProps.toggleDropdown();
   };
 
-  const onDropdownFocusLeave = () => {
+  const onDropdownFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
+      // When focus moves from the filter input to the trigger (e.g. clicking the trigger to
+      // close the dropdown), the trigger's own click handler already toggles the dropdown
+      // state. Closing here as well would let that click reopen it. Ignore this case and let
+      // the trigger click be the single source of truth.
+      const { relatedTarget } = event.detail;
+      if (relatedTarget && isTriggerElement(relatedTarget)) {
+        return;
+      }
       if (expandToViewport) {
         // When expanded to viewport the focus can't move naturally to the next element.
         // Returning the focus to the trigger instead.

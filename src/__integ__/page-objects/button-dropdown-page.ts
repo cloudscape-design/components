@@ -17,7 +17,7 @@ export default class ButtonDropdownPage extends BasePageObject {
   public getDropdownCheckMessage() {
     return this.getText('#testDropdownMessage');
   }
-  public openDropdown() {
+  public clickTrigger() {
     return this.click(this.findButtonDropdown().findNativeButton().toSelector());
   }
   public isDropdownOpen() {
