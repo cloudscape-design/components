@@ -30,7 +30,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  onFocusLeave: (event: DropdownFocusLeaveEvent) => void;
+  onDropdownFocusLeave: (event: DropdownFocusLeaveEvent) => void;
   onDropdownBlur: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
@@ -127,7 +127,7 @@ export function useButtonDropdown({
 
   // Close when focus leaves the entire widget (trigger and menu), for example when focus
   // moves to an app layout drawer or an element in a different frame. The filtering variant
-  // keeps focus inside the dropdown content and closes via onFocusLeave instead.
+  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
   const onDropdownBlur = () => {
     if (isOpen && !hasFiltering) {
       closeDropdown();
@@ -265,7 +265,7 @@ export function useButtonDropdown({
       case KeyCode.tab: {
         // In filtering mode the dropdown contains multiple focusable elements (the filter
         // input and its clear button). Tabbing between them must not close the dropdown, so
-        // closing on Tab is handled by onFocusLeave instead, which only fires once
+        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
         // focus actually leaves the dropdown.
         if (hasFiltering) {
           break;
@@ -301,7 +301,7 @@ export function useButtonDropdown({
     onKeyUp,
     onItemActivate,
     onGroupToggle,
-    onFocusLeave,
+    onDropdownFocusLeave: onFocusLeave,
     onDropdownBlur,
     toggleDropdown,
     closeDropdown,
