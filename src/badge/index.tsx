@@ -38,10 +38,16 @@ export default function Badge({
   const baseProps = getBaseProps(rest);
   const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
 
-  const className = clsx(baseProps.className, styleClassNames?.root, styles.badge, styles[`badge-color-${color}`]);
-
   const hasIcon = !!iconName || !!iconUrl || !!iconSvg;
   const hasContent = children !== undefined && children !== null && children !== '';
+
+  const className = clsx(
+    baseProps.className,
+    styleClassNames?.root,
+    styles.badge,
+    styles[`badge-color-${color}`],
+    hasIcon && styles['badge-with-icon']
+  );
 
   const icon = hasIcon ? (
     <InternalIcon
