@@ -108,7 +108,7 @@ export function useButtonDropdown({
     openStateProps.toggleDropdown();
   };
 
-  const onFocusLeave = (event: DropdownFocusLeaveEvent) => {
+  const onDropdownFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
       const { relatedTarget } = event.detail;
       // When focus moves from the filter input to the trigger via a mouse click, the trigger's
@@ -132,7 +132,7 @@ export function useButtonDropdown({
 
   // Close when focus leaves the entire widget (trigger and menu), for example when focus
   // moves to an app layout drawer or an element in a different frame. The filtering variant
-  // keeps focus inside the dropdown content and closes via onFocusLeave instead.
+  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
   const onDropdownBlur = () => {
     if (isOpen && !hasFiltering) {
       closeDropdown();
@@ -270,7 +270,7 @@ export function useButtonDropdown({
       case KeyCode.tab: {
         // In filtering mode the dropdown contains multiple focusable elements (the filter
         // input and its clear button). Tabbing between them must not close the dropdown, so
-        // closing on Tab is handled by onFocusLeave instead, which only fires once focus
+        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once focus
         // actually leaves the dropdown content.
         if (hasFiltering) {
           break;
@@ -306,7 +306,7 @@ export function useButtonDropdown({
     onKeyUp,
     onItemActivate,
     onGroupToggle,
-    onDropdownFocusLeave: onFocusLeave,
+    onDropdownFocusLeave,
     onDropdownBlur,
     toggleDropdown,
     closeDropdown,
