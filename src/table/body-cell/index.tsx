@@ -126,10 +126,9 @@ function TableCellEditable<ItemType>({
               ref={editActivateRef}
               onClick={!isEditing && isExpandableColumn ? onEditStart : undefined}
               tabIndex={editActivateTabIndex}
-              data-awsui-motion-trigger="hover"
             >
               <span className={styles['body-cell-editor-icon']}>
-                <Icon name="edit" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
+                <Icon name="edit" />
               </span>
             </button>
           </div>

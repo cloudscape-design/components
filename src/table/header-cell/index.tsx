@@ -298,7 +298,6 @@ export function TableHeaderCell<ItemType>({
                     'columnDefinitions.editConfig.editIconAriaLabel',
                     column.editConfig?.editIconAriaLabel
                   )}
-                  nativeAttributes={{ 'data-awsui-motion-target': '' }}
                 />
               </span>
             ) : null}
