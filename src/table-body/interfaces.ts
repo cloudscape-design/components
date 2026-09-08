@@ -16,6 +16,8 @@ export interface TableBodyProps extends BaseComponentProps {
 }
 
 export namespace TableBodyProps {
-  /** Inline styles supported on the body element, for row positioning (for example, virtualization). */
-  export type Style = Pick<React.CSSProperties, 'position' | 'height'>;
+  export interface Style {
+    position?: React.CSSProperties['position'];
+    height?: React.CSSProperties['height'];
+  }
 }

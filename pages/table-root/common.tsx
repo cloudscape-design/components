@@ -2,7 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { TableBody, TableCell, TableHead, TableHeaderCell, TableHeaderRow, TableRootProps, TableRow } from '~components';
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableHeaderRow,
+  TableRootProps,
+  TableRow,
+} from '~components';
 
 export interface Item {
   id: string;

@@ -44,6 +44,9 @@ export interface TableRowProps extends BaseComponentProps {
 
 export namespace TableRowProps {
   export type Variant = 'default' | 'selected' | 'shaded';
-  /** Inline styles supported on a row element, for row positioning (for example, virtualization). */
-  export type Style = Pick<React.CSSProperties, 'transform' | 'position' | 'height'>;
+  export interface Style {
+    transform?: React.CSSProperties['transform'];
+    position?: React.CSSProperties['position'];
+    height?: React.CSSProperties['height'];
+  }
 }

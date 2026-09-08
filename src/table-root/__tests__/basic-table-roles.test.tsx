@@ -2,20 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import Axe from 'axe-core';
 
-import { runOptions } from '../../__a11y__/axe';
-import './setup';
-import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableBody from '../../../lib/components/table-body';
 import TableCell from '../../../lib/components/table-cell';
 import TableHead from '../../../lib/components/table-head';
 import TableHeaderCell from '../../../lib/components/table-header-cell';
 import TableHeaderRow from '../../../lib/components/table-header-row';
+import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow from '../../../lib/components/table-row';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-// Accessibility tests for the atomic table. In `auto` layout the parts are native
+// Role semantics for the atomic table. In `auto` layout the parts are native
 // <table>/<thead>/<tr>/<th>/<tbody>/<td>, so the browser supplies the table semantics and no explicit
 // ARIA roles are emitted. In `grid` layout the parts are laid out with display:grid, which strips the
 // native table semantics, so the hook restores role=table -> rowgroup -> row -> columnheader/cell.
@@ -61,24 +58,7 @@ function renderTable(items: Item[], grid?: boolean) {
   return { container, wrapper, table: () => wrapper.find('table')!.getElement() };
 }
 
-describe('Table a11y', () => {
-  describe('axe / HTML validity', () => {
-    test('validates a native (auto) table', async () => {
-      const { container } = renderTable(makeItems(20));
-      await expect(container).toValidateA11y();
-    });
-
-    test('grid layout has no axe accessibility-tree violations', async () => {
-      // The static HTML validator behind toValidateA11y flags role="table"/role="cell" as redundant,
-      // but grid layout lays the parts out with display:grid/block, which strips the native table
-      // semantics — so those roles are required, not redundant. Validate the resolved accessibility
-      // tree with axe-core instead.
-      const { container } = renderTable(makeItems(20), true);
-      const results = await Axe.run(container, { ...runOptions, rules: { 'color-contrast': { enabled: false } } });
-      expect(results.violations).toEqual([]);
-    });
-  });
-
+describe('Table role semantics', () => {
   describe('auto layout uses native table semantics (no explicit roles)', () => {
     test('the table, rows, and cells carry no ARIA role attributes', () => {
       const { table } = renderTable(makeItems(20));

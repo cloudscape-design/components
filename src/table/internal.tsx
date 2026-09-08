@@ -35,6 +35,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import { Row as AtomicTableRow } from '../table-row/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { ClearSortButton } from './clear-sort';
@@ -162,7 +163,6 @@ const InternalTable = React.forwardRef(
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
-    // Keyboard navigation defaults to `true` for tables with expandable rows.
     if (externalExpandableRows && enableKeyboardNavigation === undefined) {
       enableKeyboardNavigation = true;
     }
@@ -477,10 +477,8 @@ const InternalTable = React.forwardRef(
     const skeletonRowsCount =
       skeleton?.totalRows === 'auto' ? allItems.length + autoSkeletonRows : (skeleton?.totalRows ?? 0);
 
-    // When the clear-sort button is activated it unmounts (there is no longer a sort to clear),
-    // which would drop keyboard focus to the document body. Move focus to the first sortable
-    // column header instead. Focusing synchronously (before the re-render unmounts the button)
-    // keeps focus on the persistent header element.
+    // The clear-sort button unmounts on activation; move focus to the first sortable header
+    // synchronously (before the unmount) so it doesn't fall to document.body.
     const focusFirstSortableColumn = () => {
       tableRefObject.current?.querySelector<HTMLElement>('[data-focus-id^="sorting-control-"][role="button"]')?.focus();
     };
@@ -502,7 +500,7 @@ const InternalTable = React.forwardRef(
       numRows: allRows?.length,
     });
     const toolsHeaderPerformanceMarkRef = useRef<HTMLDivElement>(null);
-    // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
+    // On mobile, subtract the tools wrapper height so only the table header stays sticky under AppLayout's bar.
     const [toolsHeaderHeight, toolsHeaderWrapperMeasureRef] = useContainerQuery(rect => rect.borderBoxHeight);
     const toolsHeaderWrapper = useMergeRefs(toolsHeaderPerformanceMarkRef, toolsHeaderWrapperMeasureRef);
 
@@ -619,9 +617,7 @@ const InternalTable = React.forwardRef(
                     </span>
                   </InternalLiveRegion>
                 )}
-                {/* Announce multi-column sort changes politely. The text is built internally from
-                    per-column i18n fragments and only changes when the sort changes, so it isn't
-                    announced on initial mount. */}
+                {/* Politely announce sort changes; text changes only on sort, so nothing is announced on mount. */}
                 {multiColumnSort?.sortingColumns && (
                   <SortLiveAnnouncement
                     sortingColumns={multiColumnSort.sortingColumns}
@@ -716,39 +712,40 @@ const InternalTable = React.forwardRef(
                             isFirstRow,
                             isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
+                            // Migrated self-painting cells get prev/next-selected explicitly (the Table knows the
+                            // siblings); the row-level data-* + CSS adjacency still drives the un-migrated cells.
                             isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
                             isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
                             isEvenRow: rowIndex % 2 === 0,
                             stripedRows,
                             hasSelection,
+                            hasStickyColumns,
                             hasFooter,
                             stickyState,
                             tableRole,
                           };
                           if (row.type === 'data') {
                             const rowId = `${getTableItemKey(row.item)}`;
-                            return (
-                              <tr
-                                key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
-                                onFocus={({ currentTarget }) => {
-                                  // When an element inside table row receives focus we want to adjust the scroll.
-                                  // However, that behavior is unwanted when the focus is received as result of a click
-                                  // as it causes the click to never reach the target element.
-                                  if (!currentTarget.contains(getMouseDownTarget())) {
-                                    stickyHeaderRef.current?.scrollToRow(currentTarget);
-                                  }
-                                }}
-                                {...focusMarkers.item}
-                                onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
-                                onContextMenu={
-                                  onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
-                                }
-                                {...rowRoleProps}
-                              >
+                            // Plain tables (role='table', non-expandable) use the atomic <TableRow>; grid/treegrid
+                            // and expandable rows keep the Table's own <tr>.
+                            const useAtomicRow = tableRole === 'table' && !isExpandable;
+                            const onRowFocus = ({ currentTarget }: React.FocusEvent<HTMLTableRowElement>) => {
+                              // Adjust scroll when something inside the row is focused, but not when the focus came
+                              // from a click (that would swallow the click before it reaches the target).
+                              if (!currentTarget.contains(getMouseDownTarget())) {
+                                stickyHeaderRef.current?.scrollToRow(currentTarget);
+                              }
+                            };
+                            const onRowClick = onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item);
+                            const onRowContextMenu =
+                              onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item);
+                            const rowAriaRowindex = (rowRoleProps as Record<string, unknown>)['aria-rowindex'];
+                            const dataRowContent = (
+                              <>
                                 {selection.getItemSelectionProps && (
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
+                                    isAtomicRow={useAtomicRow}
                                     columnId={selectionColumnId}
                                     selectionControlProps={{
                                       ...selection.getItemSelectionProps(row.item),
@@ -794,6 +791,7 @@ const InternalTable = React.forwardRef(
                                     <TableBodyCell
                                       key={colId}
                                       {...sharedCellProps}
+                                      isAtomicRow={useAtomicRow}
                                       resizableStyle={{
                                         width: column.width,
                                         minWidth: column.minWidth,
@@ -821,6 +819,45 @@ const InternalTable = React.forwardRef(
                                     />
                                   );
                                 })}
+                              </>
+                            );
+                            return useAtomicRow ? (
+                              <AtomicTableRow
+                                key={rowId}
+                                variant={
+                                  sharedCellProps.isSelected
+                                    ? 'selected'
+                                    : sharedCellProps.stripedRows && !sharedCellProps.isEvenRow
+                                      ? 'shaded'
+                                      : 'default'
+                                }
+                                ariaSelected={sharedCellProps.isSelected || undefined}
+                                ariaRowindex={typeof rowAriaRowindex === 'number' ? rowAriaRowindex : undefined}
+                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                data-selected={sharedCellProps.isSelected || undefined}
+                                data-shaded={(sharedCellProps.stripedRows && !sharedCellProps.isEvenRow) || undefined}
+                                nativeAttributes={{
+                                  onFocus: onRowFocus,
+                                  onClick: onRowClick,
+                                  onContextMenu: onRowContextMenu,
+                                }}
+                                {...focusMarkers.item}
+                              >
+                                {dataRowContent}
+                              </AtomicTableRow>
+                            ) : (
+                              <tr
+                                key={rowId}
+                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                data-selected={sharedCellProps.isSelected || undefined}
+                                data-shaded={(sharedCellProps.stripedRows && !sharedCellProps.isEvenRow) || undefined}
+                                onFocus={onRowFocus}
+                                {...focusMarkers.item}
+                                onClick={onRowClick}
+                                onContextMenu={onRowContextMenu}
+                                {...rowRoleProps}
+                              >
+                                {dataRowContent}
                               </tr>
                             );
                           }

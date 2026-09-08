@@ -14,12 +14,13 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import cellStyles from '../../../lib/components/table-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
-import styles from '../../../lib/components/table-row/styles.css.js';
 
-// Proves the row `variant` reaches its (CSS-module-hashed) style hooks and accessibility state, and
-// that the narrowed inline `style` props (for virtualization) reach the body and row elements:
-//   variant='selected' -> .row-selected + aria-selected; variant='shaded' -> .row-shaded; default ->
-// neither. selection and shading are mutually exclusive by type, so a row is never both.
+// Proves the row `variant` reaches its data-* style hooks and accessibility state, and that the
+// narrowed inline `style` props (for virtualization) reach the body and row elements:
+//   variant='selected' -> data-selected; variant='shaded' -> data-shaded; default -> neither.
+// aria-selected is set only via the separate ariaSelected prop. Selection and shading are mutually
+// exclusive by type, so a row is never both. The data-* attributes gate the shared cell-layer
+// selection/shaded paint (see table-cell/styles.scss).
 
 function Harness({ variant, ariaSelected }: { variant?: TableRowProps.Variant; ariaSelected?: boolean }) {
   return (
@@ -46,34 +47,34 @@ function renderHarness(variant?: TableRowProps.Variant, ariaSelected?: boolean) 
 }
 
 describe('TableRow variant (visual only) and ariaSelected', () => {
-  test("variant='selected' applies the selected class but does NOT set aria-selected on its own", () => {
+  test("variant='selected' sets data-selected but does NOT set aria-selected on its own", () => {
     const { wrapper } = renderHarness('selected');
     const row = wrapper.findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row.classList.contains(styles['row-selected'])).toBe(true);
-    expect(row.classList.contains(styles['row-shaded'])).toBe(false);
+    expect(row).toHaveAttribute('data-selected', 'true');
+    expect(row).not.toHaveAttribute('data-shaded');
   });
 
-  test("variant='shaded' applies the shaded class and no aria-selected", () => {
+  test("variant='shaded' sets data-shaded and no aria-selected", () => {
     const { wrapper } = renderHarness('shaded');
     const row = wrapper.findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row.classList.contains(styles['row-shaded'])).toBe(true);
-    expect(row.classList.contains(styles['row-selected'])).toBe(false);
+    expect(row).toHaveAttribute('data-shaded', 'true');
+    expect(row).not.toHaveAttribute('data-selected');
   });
 
-  test('the default variant applies neither hook and sets no aria-selected', () => {
+  test('the default variant sets neither hook and no aria-selected', () => {
     const { wrapper } = renderHarness();
     const row = wrapper.findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row.classList.contains(styles['row-selected'])).toBe(false);
-    expect(row.classList.contains(styles['row-shaded'])).toBe(false);
+    expect(row).not.toHaveAttribute('data-selected');
+    expect(row).not.toHaveAttribute('data-shaded');
   });
 
   test('ariaSelected drives aria-selected independently of variant', () => {
     const selected = renderHarness('selected', true).wrapper.findAllTableRows()[0].getElement();
     expect(selected).toHaveAttribute('aria-selected', 'true');
-    expect(selected.classList.contains(styles['row-selected'])).toBe(true);
+    expect(selected).toHaveAttribute('data-selected', 'true');
 
     const notSelected = renderHarness('default', false).wrapper.findAllTableRows()[0].getElement();
     expect(notSelected).toHaveAttribute('aria-selected', 'false');

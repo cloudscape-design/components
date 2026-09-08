@@ -4,29 +4,314 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../table/body-cell/selection-mixins' as sel;
+
+$cell-vertical-padding: awsui.$space-scaled-xs;
+// Restores full first-column inline padding when the first column is sticky.
+$cell-horizontal-padding: awsui.$space-scaled-l;
+// Block-end carries the selected-border width delta so row height is stable on select (visual refresh).
+$cell-vertical-padding-w-border: calc(
+  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+// Focus-ring room. The Table body-cell nets this out with a negative margin on its inner wrapper; the
+// bare <td> here can't, so it is folded into the <td> block padding. 1px/side lands the row at 39px.
+$cell-negative-space-vertical: 1px;
 
 .cell {
   vertical-align: middle;
-  padding-block: awsui.$space-scaled-xs;
+  padding-block-start: calc(
+    #{$cell-vertical-padding} - #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} - #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
   padding-inline: awsui.$space-scaled-l;
   box-sizing: border-box;
+  // Cell-owned divider so the shared selection mechanism can grow it into the 2px selected border.
+  border-block-start: awsui.$border-divider-list-width solid transparent;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
 }
 
-// Lets grid columns shrink below their content size. Truncation/wrapping is deferred, so no
-// `overflow`/`text-overflow` here — clipping the cell would crop the focus ring of an interactive
-// control (checkbox, radio, link) inside it.
+// Lets grid columns shrink below content. No overflow clip (truncation deferred) — it would crop the
+// focus ring of an interactive control inside the cell.
 .cell-grid {
   min-inline-size: 0;
 }
 
 .cell:first-child {
   padding-inline-start: awsui.$space-xxxs;
+  // Edge placeholder so the selected first-child border is a swap, not an added 2px that shifts
+  // content. Reclaimed for non-selectable tables below.
+  border-inline-start: awsui.$border-item-width solid transparent;
+}
+.cell:last-child {
+  border-inline-end: awsui.$border-item-width solid transparent;
+}
+// Absorb the last-column placeholder width so the unselected content position is unchanged.
+.cell:last-child:not(.disable-paddings) {
+  padding-inline-end: calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
 }
 
-// Opt out of the built-in padding so the consumer can compose exact spacing (e.g. a selection
-// control). The `:first-child` compound overrides the reduced first-column start padding above.
+// Zeroes only inline padding so a consumer can compose an exact control column; block padding is kept
+// so a composed control shares the data cells' content-box and stays centred on the text line.
 .cell.disable-paddings,
 .cell.disable-paddings:first-child {
-  padding-block: 0;
   padding-inline: 0;
+  // Fill the row height so a zero-padding control cell's selection border isn't a short detached pill.
+  align-self: stretch;
+}
+
+// First-column inline padding in visual refresh: widened for striped rows, restored full for a sticky
+// first column.
+.cell.is-visual-refresh.has-striped-rows:first-child:not(.disable-paddings) {
+  padding-inline-start: awsui.$space-xxs;
+}
+// stylelint-disable-next-line no-descending-specificity
+.cell.is-visual-refresh.sticky-cell-pad-inline-start:first-child:not(.has-selection):not(.disable-paddings),
+.cell.is-visual-refresh.has-striped-rows.sticky-cell-pad-inline-start:first-child:not(.disable-paddings) {
+  padding-inline-start: $cell-horizontal-padding;
+}
+
+// Reclaim the first-column placeholder for non-selectable tables; selection tables keep it so their
+// side border swaps in with no shift. Gated on is-visual-refresh, so only the Table-reuse path reclaims.
+// stylelint-disable-next-line no-descending-specificity
+.cell.is-visual-refresh:first-child:not(.has-selection):not(.disable-paddings) {
+  border-inline-start: none;
+}
+
+// First-row 2px top placeholder so a selected first row's top border is a swap. Applied only to sticky
+// first-row cells (from td-element): height-neutral in non-sticky layout, +1px under sticky. Placed
+// before the selection rules so a selected first row's colored border wins by source order.
+.cell.body-cell-first-row {
+  border-block-start: awsui.$border-item-width solid transparent;
+}
+
+// Row-gated per-cell selection paint, shared with the Table body-cell via _selection-mixins. The gate
+// is data-selected / data-shaded on the <tr>; CSS adjacency derives prev/next. The mixin's inner-
+// wrapper padding is inert here, so block padding is compensated on the <td> below.
+[data-selected] > .cell {
+  @include sel.selected-cell;
+}
+[data-selected] + [data-selected] > .cell {
+  @include sel.prev-selected-cell;
+}
+[data-selected]:has(+ [data-selected]) > .cell {
+  @include sel.next-selected-cell;
+}
+// A not-selected row above a selected row drops its divider so the selected border reads as one block.
+:not([data-selected]):has(+ [data-selected]) > .cell {
+  @include sel.not-selected-next-cell;
+  border-block-end: 0;
+}
+[data-shaded] > .cell {
+  @include sel.shaded-cell;
+}
+
+// Block-padding compensation for the 1px divider -> 2px selected-border growth, on the <td> directly.
+// Each side shrinks by the full selected border, so a selected row keeps its height (no reflow).
+// Grouped after the mixin includes to keep specificity monotonic (no-descending-specificity).
+[data-selected] > .cell:not(.disable-paddings) {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+}
+// Lower row of a consecutive pair: top border is the 1px placeholder, so compensate only 1px.
+[data-selected] + [data-selected] > .cell:not(.disable-paddings) {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-divider-list-width}
+  );
+}
+[data-selected]:has(+ [data-selected]) > .cell:not(.disable-paddings) {
+  padding-block-end: calc(#{$cell-vertical-padding} + #{$cell-negative-space-vertical});
+}
+:not([data-selected]):has(+ [data-selected]) > .cell:not(.disable-paddings) {
+  padding-block-end: calc(
+    #{$cell-vertical-padding} + #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+}
+
+// The control column zeroes only inline padding, so mirror the per-state block padding here to keep
+// the centred control tracking the data cells in every selection state.
+[data-selected] > .cell.disable-paddings {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+}
+[data-selected] + [data-selected] > .cell.disable-paddings {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-divider-list-width}
+  );
+}
+[data-selected]:has(+ [data-selected]) > .cell.disable-paddings {
+  padding-block-end: calc(#{$cell-vertical-padding} + #{$cell-negative-space-vertical});
+}
+[data-selected] > .cell.body-cell-first-row.disable-paddings {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} - #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+}
+:not([data-selected]):has(+ [data-selected]) > .cell.disable-paddings {
+  padding-block-end: calc(
+    #{$cell-vertical-padding} + #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+}
+
+// Striped-table divider colour: darken the bottom divider of any shaded row and of any row above a
+// shaded row (covers every divider in an alternating table). Selected rows and the last row are excluded.
+[data-shaded]:not([data-selected]) > .cell:not(.body-cell-last-row),
+:not([data-shaded]):not([data-selected]):has(+ [data-shaded]) > .cell:not(.body-cell-last-row) {
+  border-block-end-color: awsui.$color-border-cell-shaded;
+}
+
+// Table-reuse path: when Table reuses this cell as its <td> it sets these classes explicitly (see
+// TableCellInternalProps). Same shared mixins as the row-gated rules above, so the geometry is identical.
+// stylelint-disable no-descending-specificity
+.cell.cell-selected {
+  @include sel.selected-cell;
+}
+.cell.cell-prev-selected {
+  @include sel.prev-selected-cell;
+}
+.cell.cell-next-selected {
+  @include sel.next-selected-cell;
+}
+.cell.cell-not-selected-next {
+  @include sel.not-selected-next-cell;
+  border-block-end: 0;
+}
+.cell.cell-shaded {
+  @include sel.shaded-cell;
+}
+.cell.cell-selected:not(.disable-paddings) {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} + #{$cell-negative-space-vertical} - #{awsui.$border-width-item-selected}
+  );
+}
+.cell.cell-prev-selected:not(.disable-paddings) {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} + #{$cell-negative-space-vertical} - #{awsui.$border-divider-list-width}
+  );
+}
+.cell.cell-next-selected:not(.disable-paddings) {
+  padding-block-end: calc(#{$cell-vertical-padding} + #{$cell-negative-space-vertical});
+}
+.cell.cell-not-selected-next:not(.disable-paddings) {
+  padding-block-end: calc(
+    #{$cell-vertical-padding} + #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+}
+// stylelint-enable no-descending-specificity
+
+// Selected first row: its top border is already the 2px placeholder, so it doesn't grow on select —
+// restore the base block-start the general selected rule would otherwise shrink.
+// stylelint-disable-next-line no-descending-specificity
+.cell.body-cell-first-row.cell-selected:not(.disable-paddings),
+[data-selected] > .cell.body-cell-first-row:not(.disable-paddings) {
+  padding-block-start: calc(
+    #{$cell-vertical-padding} - #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical}
+  );
+}
+
+// Selected last row: its bottom border is already 2px (the container draws the outer border), so it
+// doesn't change on select — match the unselected last row's block-end (no container growth on select).
+// stylelint-disable-next-line no-descending-specificity
+.cell.cell-selected.body-cell-last-row:not(.disable-paddings),
+[data-selected] > .cell.body-cell-last-row:not(.disable-paddings) {
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} + #{$cell-negative-space-vertical} -
+      (#{awsui.$border-width-item-selected} - #{awsui.$border-divider-list-width})
+  );
+}
+// Same last-row block-end on the control cell so the centred control stays put on select.
+// stylelint-disable-next-line no-descending-specificity
+.cell.cell-selected.body-cell-last-row.disable-paddings,
+[data-selected] > .cell.body-cell-last-row.disable-paddings {
+  padding-block-end: calc(
+    #{$cell-vertical-padding-w-border} + #{$cell-negative-space-vertical} -
+      (#{awsui.$border-width-item-selected} - #{awsui.$border-divider-list-width})
+  );
+}
+
+// Last-row bottom border: the container draws the outer border, so a non-selected last row drops its
+// divider (or draws the footer separator). Scoped to :not([data-selected]) so a selected last row keeps
+// its selection border.
+:not([data-selected]) > .cell.body-cell-last-row:not(.cell-selected) {
+  border-block-end: awsui.$border-item-width solid transparent;
+}
+:not([data-selected]) > .cell.body-cell-last-row.body-cell-has-footer:not(.cell-selected) {
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+// Sticky-column support for the Table-reuse path. Table's .body-cell.sticky-cell rules never matched
+// the reused cell (no body-cell class), so it stayed static on horizontal scroll. Mirrored here re-keyed
+// to `.cell`; the sticky-cell* classes come from td-element's getClassName and inset offsets from
+// useStickyCellStyles.
+.cell.sticky-cell {
+  position: sticky;
+  background: awsui.$color-background-container-content;
+  // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower.
+  z-index: 798;
+  &.table-variant-full-page {
+    background: awsui.$color-background-layout-main;
+  }
+  @include styles.with-motion {
+    transition-property: padding;
+    transition-duration: awsui.$motion-duration-transition-show-quick;
+    transition-timing-function: awsui.$motion-easing-sticky;
+  }
+  [data-shaded] > & {
+    background: awsui.$color-background-cell-shaded;
+  }
+  // Sticky cells add an opaque background + shadow/clip to occlude cells scrolling underneath.
+  [data-selected] > & {
+    background-color: awsui.$color-background-item-selected;
+
+    &:first-child {
+      box-shadow: 0 0 0 4px awsui.$color-background-container-content;
+      clip-path: inset(0 0 0 0);
+    }
+    &:last-child {
+      box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
+      clip-path: inset(0 0 0 0);
+      &.sticky-cell-last-inline-end {
+        box-shadow:
+          awsui.$shadow-sticky-column-last,
+          8px 0 0 0 awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 -24px);
+
+        @include styles.with-direction('rtl') {
+          box-shadow: awsui.$shadow-sticky-column-first;
+          clip-path: inset(0 -24px 0 0);
+        }
+      }
+    }
+  }
+}
+.cell.sticky-cell-last-inline-start {
+  box-shadow: awsui.$shadow-sticky-column-first;
+  clip-path: inset(0px -24px 0px 0px);
+
+  @include styles.with-direction('rtl') {
+    box-shadow: awsui.$shadow-sticky-column-last;
+    clip-path: inset(0 0 0 -24px);
+  }
+}
+.cell.sticky-cell-last-inline-end {
+  box-shadow: awsui.$shadow-sticky-column-last;
+  clip-path: inset(0 0 0 -24px);
+
+  @include styles.with-direction('rtl') {
+    box-shadow: awsui.$shadow-sticky-column-first;
+    clip-path: inset(0 -24px 0 0);
+  }
 }

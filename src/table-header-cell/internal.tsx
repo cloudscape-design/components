@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
 import { TableHeaderCellProps } from './interfaces';
 
@@ -14,6 +15,7 @@ export function HeaderCell(props: TableHeaderCellProps & InternalBaseComponentPr
   const { children, ariaLabel, ariaLabelledby, ariaDescribedby, ariaSort, disablePaddings, __internalRootRef } = props;
   const { columnLayout } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
+  const isVisualRefresh = useVisualRefresh();
   const baseProps = getBaseProps(props);
   return (
     <th
@@ -29,6 +31,7 @@ export function HeaderCell(props: TableHeaderCellProps & InternalBaseComponentPr
         baseProps.className,
         styles['header-cell'],
         isGrid && styles['header-cell-grid'],
+        isVisualRefresh && styles['is-visual-refresh'],
         disablePaddings && styles['disable-paddings']
       )}
     >

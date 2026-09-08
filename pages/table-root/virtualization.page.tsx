@@ -75,7 +75,11 @@ export default function TableVirtualizationPage() {
                     <TableRow
                       key={line.id}
                       ariaRowindex={index + 2}
-                      style={{ position: 'absolute', transform: `translateY(${index * ROW_HEIGHT}px)`, height: ROW_HEIGHT }}
+                      style={{
+                        position: 'absolute',
+                        transform: `translateY(${index * ROW_HEIGHT}px)`,
+                        height: ROW_HEIGHT,
+                      }}
                     >
                       <TableCell>{line.timestamp}</TableCell>
                       <TableCell>{line.message}</TableCell>

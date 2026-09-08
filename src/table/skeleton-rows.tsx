@@ -70,8 +70,6 @@ export function SkeletonRows({
                 isFirstRow={isFirstRow}
                 isLastRow={isLastRow}
                 isSelected={false}
-                isPrevSelected={false}
-                isNextSelected={false}
                 hasSelection={hasSelection}
                 hasFooter={hasFooter}
                 stickyState={stickyState}
