@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-@forward '@cloudscape-design/component-toolkit/internal/style-api';
+@forward '@cloudscape-design/component-toolkit/internal/style-api' show combine, resolve;
 
 @use '@cloudscape-design/component-toolkit/internal/style-api' as toolkit;
+@use 'awsui:environment' as env;
 @use './tokens' as awsui;
 @use './foundation' as foundation;
 @use './forms/mixins' as forms;
@@ -23,6 +24,44 @@ $focus-ring: (focus-ring-color, focus-ring-width, focus-ring-radius, focus-ring-
 // carriers (re-anchored by carriers() on the component root), so the ring below reaches ::before.
 $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
 
+@function enabled() {
+  @return env.$system != 'console';
+}
+
+// Emits `var(<carrier>, <fallback>)` when enabled, or just `<fallback>` when disabled — so a read
+// leaves no trace in the compiled CSS for gated-off systems.
+@function value($tokens, $token, $fallback) {
+  @if not enabled() {
+    @return $fallback;
+  }
+  @return var(#{toolkit.read($tokens, $token)}, #{$fallback});
+}
+
+// Gated wrappers around the toolkit's CSS-emitting mixins — same signatures, no-op when disabled.
+@mixin register($maps...) {
+  @if enabled() {
+    @include toolkit.register($maps...);
+  }
+}
+
+@mixin carriers($map) {
+  @if enabled() {
+    @include toolkit.carriers($map);
+  }
+}
+
+@mixin docs($name, $map) {
+  @if enabled() {
+    @include toolkit.docs($name, $map);
+  }
+}
+
+@mixin docs-forward($name, $component, $slot) {
+  @if enabled() {
+    @include toolkit.docs-forward($name, $component, $slot);
+  }
+}
+
 // A wrapper for forms.focus-highlight with style API integration.
 @mixin focus-highlight(
   $gutter-block: awsui.$space-button-focus-outline-gutter,
@@ -31,13 +70,24 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   $width: foundation.$box-shadow-focused-width,
   $color: awsui.$color-border-item-focused
 ) {
-  @include forms.focus-highlight(
-    $gutter: (
-      'vertical': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-block)}, #{$gutter-block}),
-      'horizontal': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-inline)}, #{$gutter-inline}),
-    ),
-    $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
-    $box-shadow: 0 0 0 var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{$width})
-      var(#{toolkit.read($_focus-ring-carriers, focus-ring-color)}, #{$color})
-  );
+  @if enabled() {
+    @include forms.focus-highlight(
+      $gutter: (
+        'vertical': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-block)}, #{$gutter-block}),
+        'horizontal': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-inline)}, #{$gutter-inline}),
+      ),
+      $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
+      $box-shadow: 0 0 0 var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{$width})
+        var(#{toolkit.read($_focus-ring-carriers, focus-ring-color)}, #{$color})
+    );
+  } @else {
+    @include forms.focus-highlight(
+      $gutter: (
+        'vertical': $gutter-block,
+        'horizontal': $gutter-inline,
+      ),
+      $border-radius: $radius,
+      $box-shadow: 0 0 0 $width $color
+    );
+  }
 }

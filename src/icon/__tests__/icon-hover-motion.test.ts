@@ -152,6 +152,15 @@ describe('a malformed spec fails the build', () => {
     expect(missing).not.toBe(HOVER_MOTION_SOURCE);
     expect(() => compile([THEME], missing)).toThrow(/spec for `announcement` sets motion but is missing/);
   });
+
+  test('a negative stroke-dashoffset is rejected, naming the icon', () => {
+    // The first `56px` offset in the map belongs to `backward-10-seconds`.
+    const negative = HOVER_MOTION_SOURCE.replace('stroke-dashoffset: 56px,', 'stroke-dashoffset: -4px,');
+    expect(negative).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], negative)).toThrow(
+      /spec for `backward-10-seconds` sets a negative `stroke-dashoffset`/
+    );
+  });
 });
 
 describe('keyframes', () => {
@@ -176,5 +185,13 @@ describe('keyframes', () => {
     for (const name of defined) {
       expect(referenced.has(name)).toBe(true);
     }
+  });
+
+  // Keyframes are literal CSS the sass-side spec validation cannot see, so the
+  // Safari negative-dash-offset guard is repeated here on the compiled output.
+  test('nothing in the compiled CSS sets a negative stroke-dashoffset (Safari mishandles them)', () => {
+    const css = compile([THEME]);
+    expect(css).toMatch(/stroke-dashoffset/);
+    expect(css).not.toMatch(/stroke-dashoffset:\s*-/);
   });
 });

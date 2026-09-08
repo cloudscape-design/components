@@ -31,7 +31,7 @@ $tokens: style-api.resolve($props, carrier);
 .alert {
   @include style-api.carriers($tokens);
   @include styles.styles-reset;
-  color: var(#{style-api.read($tokens, color)}, #{awsui.$color-text-alert-default});
+  color: style-api.value($tokens, color, awsui.$color-text-alert-default);
   position: relative;
   display: flex;
   flex-direction: row;
@@ -39,13 +39,13 @@ $tokens: style-api.resolve($props, carrier);
   border-block-end: awsui.$border-width-alert-block-end solid;
   border-inline-start: awsui.$border-width-alert-inline-start solid;
   border-inline-end: awsui.$border-width-alert-inline-end solid;
-  border-start-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
-  border-start-end-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
-  border-end-start-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
-  border-end-end-radius: var(#{style-api.read($tokens, border-radius)}, #{awsui.$border-radius-alert});
-  padding-block: var(#{style-api.read($tokens, padding-block)}, #{awsui.$space-alert-vertical});
-  padding-inline: var(#{style-api.read($tokens, padding-inline)}, #{awsui.$space-alert-horizontal});
-  background-color: var(#{style-api.read($tokens, background-color)}, #{awsui.$color-background-container-content});
+  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
+  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
+  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
+  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
+  padding-block: style-api.value($tokens, padding-block, awsui.$space-alert-vertical);
+  padding-inline: style-api.value($tokens, padding-inline, awsui.$space-alert-horizontal);
+  background-color: style-api.value($tokens, background-color, awsui.$color-background-container-content);
 }
 
 .alert-wrapper {
@@ -173,11 +173,12 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: var(#{style-api.read($tokens, border-color)}, #{map.get($_border-colors, $type)});
-    background-color: var(#{style-api.read($tokens, background-color)}, #{map.get($_background-colors, $type)});
+    border-color: style-api.value($tokens, border-color, map.get($_border-colors, $type));
+    background-color: style-api.value($tokens, background-color, map.get($_background-colors, $type));
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: var(
-        #{style-api.read($icon-tokens, color)},
+      color: style-api.value(
+        $icon-tokens,
+        color,
         var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
       );
     }
