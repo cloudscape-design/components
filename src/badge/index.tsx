@@ -57,7 +57,7 @@ export default function Badge({
       name={iconName}
       url={iconUrl}
       svg={iconSvg}
-      alt={iconAlt}
+      ariaLabel={iconAlt}
       size="inherit"
     />
   ) : null;
