@@ -207,12 +207,10 @@
       z-index: 1;
     }
   }
-  // Re-apply the fused corners at rest AND on focus, since the control's own
-  // focus styles otherwise restore all four corners at the full radius.
-  // Re-apply the grouped treatment on focus too (the control's own focus styles
-  // otherwise restore all four corners and the removed seam border). Keeping the
-  // seam border removed on focus preserves the geometry so the control does not
-  // shift; the focus ring is raised above the neighbor at the slot level.
+  // Re-apply the fused corners at rest AND on focus, since the control's own focus
+  // styles otherwise restore all four corners at the full radius. The seam border
+  // stays in the layout (transparent at rest), so geometry is identical at rest and
+  // on focus and the raised focus ring does not shift the control.
   &.input-in-control-group-first {
     @include styles.control-group-grouped-responsive('first');
     &:focus {
