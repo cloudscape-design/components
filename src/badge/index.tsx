@@ -8,6 +8,7 @@ import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { BadgeProps } from './interfaces';
 import { getBadgeStyles } from './style';
@@ -34,6 +35,7 @@ export default function Badge({
   nativeAttributes,
   ...rest
 }: BadgeProps) {
+  checkSafeUrl('Badge', iconUrl);
   const { __internalRootRef } = useBaseComponent('Badge', { props: { color, iconAlign } });
   const baseProps = getBaseProps(rest);
   const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
