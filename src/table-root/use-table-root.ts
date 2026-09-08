@@ -24,7 +24,7 @@ export function useTableRoot(columnLayout: TableRootProps.ColumnLayout): UseTabl
         if (column.maxWidth !== undefined) {
           return `minmax(${min}, ${column.maxWidth}px)`;
         }
-        const flex = column.size && 'flex' in column.size ? column.size.flex : 1;
+        const flex = column.size ? column.size.flex : 1;
         return `minmax(${min}, ${flex}fr)`;
       })
       .join(' ');

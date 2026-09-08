@@ -5,5 +5,5 @@ import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../table-head/styles.selectors.js';
 
 export default class TableHeadWrapper extends ComponentWrapper {
-  static rootSelector: string = styles['head'];
+  static rootSelector: string = styles.head;
 }

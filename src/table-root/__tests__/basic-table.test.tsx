@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableBody from '../../../lib/components/table-body';
 import TableCell from '../../../lib/components/table-cell';
 import TableHead from '../../../lib/components/table-head';
 import TableHeaderCell from '../../../lib/components/table-header-cell';
 import TableHeaderRow from '../../../lib/components/table-header-row';
+import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow from '../../../lib/components/table-row';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
