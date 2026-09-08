@@ -3,9 +3,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import ControlGroup, { ControlGroupProps } from '../../../lib/components/control-group';
+import FormField from '../../../lib/components/form-field';
 import Input from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockClear();
+});
 
 function renderControlGroup(props: Partial<ControlGroupProps> & { ariaLabel: string }) {
   const { container } = render(
@@ -180,6 +192,61 @@ describe('ControlGroup', () => {
 
       wrapper.findDismissButton()!.click();
       expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('accessibility', () => {
+    test('supports ariaLabelledby instead of ariaLabel', () => {
+      const { container } = render(
+        <>
+          <span id="group-heading">Label matcher</span>
+          <ControlGroup ariaLabelledby="group-heading">
+            <Input value="a" onChange={() => {}} />
+          </ControlGroup>
+        </>
+      );
+      const group = createWrapper(container).findControlGroup()!.find('[role="group"]')!.getElement();
+      expect(group).toHaveAttribute('aria-labelledby', 'group-heading');
+      expect(group).not.toHaveAttribute('aria-label');
+    });
+
+    test('merges the group aria-describedby with a describedby inherited from an enclosing FormField', () => {
+      const { container } = render(
+        <FormField label="Field" description="Field description" errorText="Field error">
+          <ControlGroup ariaLabel="Label matcher" errorText="Group error">
+            <Input value="a" onChange={() => {}} />
+          </ControlGroup>
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findControlGroup()!;
+      const group = wrapper.find('[role="group"]')!.getElement();
+      const input = wrapper.findControls()[0].find('input')!.getElement();
+
+      const groupDescribedby = group.getAttribute('aria-describedby') ?? '';
+      const inputDescribedby = input.getAttribute('aria-describedby') ?? '';
+
+      // The group points only at its own messages; the child additionally inherits
+      // the FormField's describedby ids.
+      expect(inputDescribedby.split(' ')).toEqual(expect.arrayContaining(groupDescribedby.split(' ')));
+      expect(inputDescribedby.length).toBeGreaterThan(groupDescribedby.length);
+    });
+
+    test('warns when neither ariaLabel nor ariaLabelledby is provided', () => {
+      render(
+        <ControlGroup>
+          <Input value="a" onChange={() => {}} />
+        </ControlGroup>
+      );
+      expect(warnOnce).toHaveBeenCalledWith('ControlGroup', expect.stringContaining('ariaLabel'));
+    });
+
+    test('warns when dismissible is set without a dismiss aria label', () => {
+      render(
+        <ControlGroup ariaLabel="Label matcher" dismissible={true} onDismiss={() => {}}>
+          <Input value="a" onChange={() => {}} />
+        </ControlGroup>
+      );
+      expect(warnOnce).toHaveBeenCalledWith('ControlGroup', expect.stringContaining('dismissAriaLabel'));
     });
   });
 

@@ -9,7 +9,7 @@ import InternalButton from '../button/internal';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import { ControlGroupContext, ControlGroupPosition } from '../internal/context/control-group-context';
-import { FormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { flattenChildren } from '../internal/utils/flatten-children';
@@ -23,6 +23,7 @@ const InternalControlGroup = forwardRef(
   (
     {
       ariaLabel,
+      ariaLabelledby,
       children,
       description,
       errorText,
@@ -40,22 +41,38 @@ const InternalControlGroup = forwardRef(
 
     const groupId = useUniqueId('control-group');
 
+    // Inherit validation/description wiring from an enclosing FormField (if any),
+    // matching how FormField itself merges with its parent context.
+    const {
+      ariaDescribedby: parentAriaDescribedby,
+      invalid: parentInvalid,
+      warning: parentWarning,
+    } = useFormFieldContext({});
+
     const showWarning = !!warningText && !errorText;
     if (isDevelopment && warningText && errorText) {
       warnOnce('ControlGroup', 'Both `errorText` and `warningText` exist. `warningText` will not be shown.');
+    }
+    if (isDevelopment && !ariaLabel && !ariaLabelledby) {
+      warnOnce('ControlGroup', 'You should provide either `ariaLabel` or `ariaLabelledby` to name the group.');
+    }
+    if (isDevelopment && dismissible && !i18nStrings?.dismissAriaLabel) {
+      warnOnce('ControlGroup', 'You should provide `i18nStrings.dismissAriaLabel` when `dismissible` is set.');
     }
 
     const descriptionId = description ? `${groupId}-description` : undefined;
     const errorId = errorText ? `${groupId}-error` : undefined;
     const warningId = showWarning ? `${groupId}-warning` : undefined;
 
-    // Associate every group-level message with the group, and propagate the same
-    // description down to the child controls so screen readers announce it once
-    // the focus lands on any control in the group.
-    const ariaDescribedby = joinStrings(errorId, warningId, descriptionId) || undefined;
+    // Associate the group-level messages with the group, and propagate the same
+    // description down to the child controls (merged with any describedby coming
+    // from an enclosing FormField) so screen readers announce it. This mirrors how
+    // FormField wires `aria-describedby` through the form-field context.
+    const groupAriaDescribedby = joinStrings(errorId, warningId, descriptionId) || undefined;
+    const childAriaDescribedby = joinStrings(parentAriaDescribedby, groupAriaDescribedby) || undefined;
 
-    const invalid = !!errorText;
-    const warning = showWarning;
+    const invalid = !!errorText || !!parentInvalid;
+    const warning = (showWarning || (!!parentWarning && !parentInvalid)) && !errorText;
 
     // See-through fragments and nested arrays so each real control gets its own slot.
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
@@ -74,16 +91,18 @@ const InternalControlGroup = forwardRef(
         <div
           role="group"
           aria-label={ariaLabel}
-          aria-describedby={ariaDescribedby}
+          aria-labelledby={ariaLabelledby}
+          aria-describedby={groupAriaDescribedby}
           className={clsx(styles.group, invalid && styles.invalid, warning && styles.warning)}
         >
           <FormFieldContext.Provider
             value={{
               invalid,
               warning,
-              // Point child controls at the group-level messages without overriding a
-              // control's own describedby if it sets one.
-              ariaDescribedby,
+              // Point child controls at the group-level messages (merged with any
+              // describedby inherited from an enclosing FormField), matching how
+              // FormField propagates aria-describedby through this context.
+              ariaDescribedby: childAriaDescribedby,
             }}
           >
             {flattenedChildren.map((child, index) => {

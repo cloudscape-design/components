@@ -12,9 +12,18 @@ export interface ControlGroupProps extends BaseComponentProps {
    * announces the grouped controls as a single unit.
    *
    * Use this to give each control group a unique, descriptive name
-   * (for example, `"Label matcher"`).
+   * (for example, `"Label matcher"`). Provide either `ariaLabel` or
+   * `ariaLabelledby`. This does not name the individual controls: each control
+   * still needs its own accessible name.
    */
-  ariaLabel: string;
+  ariaLabel?: string;
+
+  /**
+   * Sets the `aria-labelledby` property on the group element. Use this instead of
+   * `ariaLabel` when the group is named by a visible element elsewhere on the page
+   * (pass that element's `id`). Provide either `ariaLabel` or `ariaLabelledby`.
+   */
+  ariaLabelledby?: string;
 
   /**
    * The controls that make up the group (for example, `Input`, `Select`,
