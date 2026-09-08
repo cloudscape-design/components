@@ -16,6 +16,9 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeSideNavigationItemHeight: { comfortable: '28px', compact: '24px' },
   sizeSideNavigationItemCollapsed: { comfortable: '30px', compact: '28px' },
   sizeSideNavigationCollapsedWidth: '52px',
+  fontSizeTable: '{fontSizeBodyM}',
+  tableLineHeight: '{lineHeightBodyM}',
+  fontTableLetterSpacing: 'normal',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(tokens);

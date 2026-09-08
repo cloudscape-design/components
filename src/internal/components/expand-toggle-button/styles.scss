@@ -44,7 +44,7 @@
   // so we disable this one
   &:not(.disable-focus-highlight) {
     @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+      @include styles.focus-highlight(awsui.$space-expand-toggle-focus-outline-gutter);
     }
   }
 
