@@ -136,6 +136,8 @@ const InternalButtonDropdown = React.forwardRef(
       onItemFollow,
       // Scroll is unnecessary when moving focus back to the dropdown trigger.
       onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
+      // Whether the given element is (or is inside) the dropdown trigger.
+      isTriggerElement: element => !!triggerWrapperRef.current?.contains(element),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
@@ -159,6 +161,10 @@ const InternalButtonDropdown = React.forwardRef(
 
     const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
+    // Wraps the dropdown trigger button (all trigger variants). InternalButton exposes an
+    // imperative handle rather than a DOM node, so trigger containment is tested against this
+    // wrapper element instead of triggerRef.
+    const triggerWrapperRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(
       ref,
@@ -262,7 +268,11 @@ const InternalButtonDropdown = React.forwardRef(
 
     if (customTriggerBuilder) {
       trigger = (
-        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
             ariaExpanded: canBeOpened && isOpen,
@@ -331,6 +341,7 @@ const InternalButtonDropdown = React.forwardRef(
           </div>
           {!showMainActionOnly && (
             <div
+              ref={triggerWrapperRef}
               className={clsx(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
@@ -357,7 +368,11 @@ const InternalButtonDropdown = React.forwardRef(
       );
     } else {
       trigger = (
-        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
           <InternalButton
             ref={triggerRef}
             id={triggerId}
