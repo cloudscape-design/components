@@ -270,8 +270,8 @@ export function useButtonDropdown({
       case KeyCode.tab: {
         // In filtering mode the dropdown contains multiple focusable elements (the filter
         // input and its clear button). Tabbing between them must not close the dropdown, so
-        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once focus
-        // actually leaves the dropdown content.
+        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
+        // focus actually leaves the dropdown.
         if (hasFiltering) {
           break;
         }
