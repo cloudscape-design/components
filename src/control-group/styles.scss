@@ -48,6 +48,32 @@
   &:empty {
     display: none;
   }
+
+  // Collapse the shared seam at the SLOT level: overlap each non-first slot onto
+  // its predecessor by one border width, so the two adjacent 1px borders coincide
+  // into a single 1px seam. Doing this on the slot (a plain flex item) rather than
+  // on the control's inner element keeps it identical for every control type —
+  // input, select trigger, segmented control, button — regardless of whether the
+  // inner element is auto-width or width:100%. The overlap is constant at rest and
+  // on focus, so showing the focus ring never shifts a control; the focused slot is
+  // raised (z-index above) so its full, colored border paints over the neighbor's
+  // seam without doubling.
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+  }
+}
+
+// When stacked, the seam is on the block axis: overlap each non-first slot onto the
+// one above it instead, and drop the inline overlap.
+@container control-group #{styles.$control-group-stack-query} {
+  .control {
+    &.control-middle,
+    &.control-last {
+      margin-inline-start: 0;
+      margin-block-start: calc(-1 * #{awsui.$border-width-field});
+    }
+  }
 }
 
 .hints {

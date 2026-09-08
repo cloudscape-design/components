@@ -107,19 +107,26 @@ const InternalControlGroup = forwardRef(
           >
             {flattenedChildren.map((child, index) => {
               const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+              const position = getPosition(index);
               return (
                 <div
                   key={key ? String(key) : undefined}
-                  className={clsx(styles.control, testUtilStyles['control-group-item'])}
+                  className={clsx(styles.control, styles[`control-${position}`], testUtilStyles['control-group-item'])}
                 >
-                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position: getPosition(index) }}>
+                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position }}>
                     {child}
                   </ControlGroupContext.Provider>
                 </div>
               );
             })}
             {dismissible && (
-              <div className={clsx(styles.control, testUtilStyles['control-group-item'])}>
+              <div
+                className={clsx(
+                  styles.control,
+                  styles[`control-${getPosition(controlCount - 1)}`],
+                  testUtilStyles['control-group-item']
+                )}
+              >
                 <ControlGroupContext.Provider
                   value={{ isInControlGroup: true, position: getPosition(controlCount - 1) }}
                 >
