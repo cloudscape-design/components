@@ -29,6 +29,9 @@ export interface CategoryProps extends HighlightProps {
   filteringEnabled?: boolean;
   menuId?: string;
   filteringDescriptionId?: string;
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+  getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
+  onLoadItems?: ButtonDropdownProps['onLoadItems'];
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -50,6 +53,9 @@ export interface ItemListProps extends HighlightProps {
   filteringEnabled?: boolean;
   menuId?: string;
   filteringDescriptionId?: string;
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+  getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
+  onLoadItems?: ButtonDropdownProps['onLoadItems'];
 }
 
 export interface ItemProps {

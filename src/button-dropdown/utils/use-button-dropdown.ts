@@ -23,7 +23,8 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   // Returns whether the given element is (or is inside) the dropdown trigger.
   isTriggerElement: (element: Element) => boolean;
   expandToViewport?: boolean;
-  hasFiltering: boolean;
+  filteringType?: ButtonDropdownProps.FilteringType;
+  fireLoadItems?: (filteringText: string) => void;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -52,13 +53,15 @@ export function useButtonDropdown({
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
-  hasFiltering,
+  filteringType,
+  fireLoadItems,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const [filteringValue, setFilteringValue] = useState('');
+  const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
 
   const filteredItems = useMemo(
-    () => (hasFiltering && filteringValue ? filterItems(items, filteringValue) : items),
-    [hasFiltering, filteringValue, items]
+    () => (filteringType === 'auto' && filteringValue ? filterItems(items, filteringValue) : items),
+    [filteringType, filteringValue, items]
   );
 
   const showExpandableGroups = hasExpandableGroups && !filteringValue;
@@ -90,7 +93,14 @@ export function useButtonDropdown({
     }
   }, [filteringValue, reset]);
 
-  const { isOpen, closeDropdown: closeDropdownState, ...openStateProps } = useOpenState({ onClose: reset });
+  const {
+    isOpen,
+    closeDropdown: closeDropdownState,
+    ...openStateProps
+  } = useOpenState({
+    onOpen: () => fireLoadItems?.(''),
+    onClose: reset,
+  });
 
   const closeDropdown = () => {
     setFilteringValue('');
