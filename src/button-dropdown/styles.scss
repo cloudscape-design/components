@@ -88,6 +88,10 @@ $dropdown-trigger-icon-offset: 2px;
         &.visual-refresh {
           padding-inline-start: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
         }
+
+        @include theming.one-theme-only {
+          padding-inline: awsui.$space-static-xs;
+        }
       }
     }
   }
