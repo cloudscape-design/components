@@ -21,7 +21,7 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
   // Returns whether the given element is (or is inside) the dropdown trigger.
-  isInside: (element: Element) => boolean;
+  isTriggerElement: (element: Element) => boolean;
   expandToViewport?: boolean;
   hasFiltering: boolean;
 }
@@ -48,7 +48,7 @@ export function useButtonDropdown({
   onItemClick,
   onItemFollow,
   onReturnFocus,
-  isInside,
+  isTriggerElement,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -114,7 +114,10 @@ export function useButtonDropdown({
       // When focus moves from the filter input to the trigger via a mouse click, the trigger's
       // own click handler already closes the dropdown.
       const clickedTrigger =
-        !!relatedTarget && isElement(relatedTarget) && isInside(relatedTarget) && !isKeyboardInteraction(relatedTarget);
+        !!relatedTarget &&
+        isElement(relatedTarget) &&
+        isTriggerElement(relatedTarget) &&
+        !isKeyboardInteraction(relatedTarget);
       if (clickedTrigger) {
         return;
       }

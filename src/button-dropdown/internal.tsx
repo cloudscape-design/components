@@ -3,13 +3,7 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
-import {
-  isThemeActive,
-  Theme,
-  useMergeRefs,
-  useUniqueId,
-  warnOnce,
-} from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -142,11 +136,8 @@ const InternalButtonDropdown = React.forwardRef(
       onItemFollow,
       // Scroll is unnecessary when moving focus back to the dropdown trigger.
       onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
-      // Whether focus moved to the trigger. Once focus has left the dropdown content, the only
-      // focusable that still belongs to the widget root is the trigger (the content is rendered
-      // separately, and portaled out entirely when expandToViewport). InternalButton exposes an
-      // imperative handle rather than a DOM node, so we test containment against the root.
-      isInside: element => !!rootRef.current?.contains(element),
+      // Whether the given element is (or is inside) the dropdown trigger.
+      isTriggerElement: element => !!triggerWrapperRef.current?.contains(element),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
@@ -170,8 +161,10 @@ const InternalButtonDropdown = React.forwardRef(
 
     const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
-    const rootRef = useRef<HTMLDivElement>(null);
-    const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
+    // Wraps the dropdown trigger button (all trigger variants). InternalButton exposes an
+    // imperative handle rather than a DOM node, so trigger containment is tested against this
+    // wrapper element instead of triggerRef.
+    const triggerWrapperRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(
       ref,
@@ -275,7 +268,11 @@ const InternalButtonDropdown = React.forwardRef(
 
     if (customTriggerBuilder) {
       trigger = (
-        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
             ariaExpanded: canBeOpened && isOpen,
@@ -344,6 +341,7 @@ const InternalButtonDropdown = React.forwardRef(
           </div>
           {!showMainActionOnly && (
             <div
+              ref={triggerWrapperRef}
               className={clsx(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
@@ -370,7 +368,11 @@ const InternalButtonDropdown = React.forwardRef(
       );
     } else {
       trigger = (
-        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
           <InternalButton
             ref={triggerRef}
             id={triggerId}
@@ -459,7 +461,7 @@ const InternalButtonDropdown = React.forwardRef(
           baseProps.className
         )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
-        ref={mergedRootRef}
+        ref={__internalRootRef}
       >
         <Dropdown
           open={canBeOpened && isOpen}
