@@ -79,6 +79,18 @@
 .root.in-control-group {
   > .segment-part {
     display: inline-grid;
+
+    // When the ControlGroup wraps (stacks), the segmented control fills the whole
+    // row like the other stacked controls: switch from inline-grid to a full-width
+    // grid so the wrapper stretches. The segment columns are made to share the width
+    // equally by the per-count `repeat(N, 1fr)` override below. box-sizing:border-box
+    // keeps the wrapper's own padding and border inside the 100% so it does not
+    // overflow the slot.
+    @container control-group #{styles.$control-group-stack-query} {
+      display: grid;
+      inline-size: 100%;
+      box-sizing: border-box;
+    }
   }
 
   > .select {
@@ -90,6 +102,14 @@
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
     grid-template-columns: repeat(#{$i}, auto);
+  }
+
+  // Inside a wrapped (stacked) ControlGroup the segments share the full row width
+  // equally instead of sizing to their content.
+  .segment-count-#{$i}.in-control-group {
+    @container control-group #{styles.$control-group-stack-query} {
+      grid-template-columns: repeat(#{$i}, 1fr);
+    }
   }
 }
 
