@@ -17,7 +17,7 @@ class ButtonDropdownDisabledReasonPage extends BasePageObject {
   toggleAlignment() {
     return this.click('[data-testid=alignment]');
   }
-  openDropdown() {
+  clickTrigger() {
     return this.click(this.findButtonDropdown().findNativeButton().toSelector());
   }
   getDisabledReason() {
@@ -42,7 +42,7 @@ const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<v
 
     await browser.url('#/light/button-dropdown/disabled-reason');
     await page.waitForVisible(page.findButtonDropdown().toSelector());
-    await page.openDropdown();
+    await page.clickTrigger();
     await testFn(page);
   });
 };
@@ -142,7 +142,7 @@ describe('Button Dropdown - Disabled Reason', () => {
           // click body to close button dropdown
           await page.click('body');
           await page.toggleAlignment();
-          await page.openDropdown();
+          await page.clickTrigger();
         }
         await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
         await page.waitForVisible(page.findDisabledReason().toSelector());

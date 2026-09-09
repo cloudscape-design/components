@@ -608,10 +608,10 @@ $icon-hover-motion: (
       property: stroke-dashoffset,
       base: (
         stroke-dasharray: 30,
-        stroke-dashoffset: 0,
+        stroke-dashoffset: 60px,
       ),
       to: (
-        stroke-dashoffset: -4px,
+        stroke-dashoffset: 56px,
       ),
     ),
     (
@@ -639,10 +639,10 @@ $icon-hover-motion: (
       property: stroke-dashoffset,
       base: (
         stroke-dasharray: 30,
-        stroke-dashoffset: 0,
+        stroke-dashoffset: 60px,
       ),
       to: (
-        stroke-dashoffset: -4px,
+        stroke-dashoffset: 56px,
       ),
     ),
     (
@@ -1382,10 +1382,10 @@ $icon-hover-motion: (
       property: stroke-dashoffset,
       base: (
         stroke-dasharray: 32 2,
-        stroke-dashoffset: 0,
+        stroke-dashoffset: 34px,
       ),
       to: (
-        stroke-dashoffset: -2px,
+        stroke-dashoffset: 32px,
       ),
     ),
     (
@@ -1739,11 +1739,11 @@ $icon-hover-motion: (
       0%,
       100% {
         stroke-dasharray: 7.4;
-        stroke-dashoffset: 0;
+        stroke-dashoffset: 14.8px;
       }
       50% {
         stroke-dasharray: 6, 7.4;
-        stroke-dashoffset: -0.7px;
+        stroke-dashoffset: 12.7px;
       }
     }
 
@@ -1751,11 +1751,11 @@ $icon-hover-motion: (
       0%,
       100% {
         stroke-dasharray: 7.4;
-        stroke-dashoffset: 0;
+        stroke-dashoffset: 14.8px;
       }
       50% {
         stroke-dasharray: 6, 7.4;
-        stroke-dashoffset: -0.7px;
+        stroke-dashoffset: 12.7px;
       }
     }
 
@@ -1847,11 +1847,11 @@ $icon-hover-motion: (
       40%,
       80%,
       100% {
-        stroke-dashoffset: 0;
+        stroke-dashoffset: 4px;
       }
       20%,
       60% {
-        stroke-dashoffset: -0.049px;
+        stroke-dashoffset: 3.951px;
       }
     }
 
@@ -2197,6 +2197,18 @@ $_spec-keys: (part, animation, to, base, origin, duration, easing, delay, iterat
         (map.get($spec, duration) and map.get($spec, easing))
       {
         @error 'The $icon-hover-motion spec for `#{$name}` sets motion but is missing `duration` or `easing`.';
+      }
+
+      // Safari mishandles negative dash offsets. This check validates no negative offsets exist.
+      // Instead of negative offsets, shift the offset up by one period to keep it positive.
+      @each $state in (base, to) {
+        $values: map.get($spec, $state) or ();
+        $offset: map.get($values, stroke-dashoffset);
+        @if meta.type-of($offset) == 'number' and $offset < 0 {
+          @error 'The $icon-hover-motion spec for `#{$name}` sets a negative `stroke-dashoffset`, ' +
+            'which Safari mishandles. Add one full dash period (the sum of the `stroke-dasharray` ' +
+            'values) to keep it positive — the rendering is identical.';
+        }
       }
     }
   }

@@ -7,12 +7,16 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
   @include styles.styles-reset();
 }
 
 .header {
+  &:not(.header-variant-full-page) {
+    #{custom-props.$inlineLabelBackgroundColor}: awsui.$color-background-container-header;
+  }
   &-variant-full-page.header-refresh {
     padding-block-start: 0;
     padding-inline-start: 0;

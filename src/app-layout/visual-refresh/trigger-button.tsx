@@ -96,6 +96,8 @@ function TriggerButton(
             ref={ref as Ref<HTMLButtonElement>}
             type="button"
             data-testid={testId}
+            data-awsui-motion-trigger="hover"
+            data-awsui-motion-target=""
           >
             <span className={clsx(badge && clsx(styles['trigger-badge-wrapper'], styles['trigger-button-styles']))}>
               {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}

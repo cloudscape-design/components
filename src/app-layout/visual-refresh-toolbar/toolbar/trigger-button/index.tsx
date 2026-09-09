@@ -241,6 +241,8 @@ function TriggerButton(
         type="button"
         data-testid={testId}
         data-shift-focus="awsui-layout-drawer-trigger"
+        data-awsui-motion-trigger="hover"
+        data-awsui-motion-target=""
         {...getAnalyticsMetadataAttribute(triggerEventMetadata)}
       >
         {customSvg ?? ((iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />)}

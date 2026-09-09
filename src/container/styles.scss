@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use './shared' as shared;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
   @include styles.styles-reset;
@@ -25,6 +26,7 @@
     &-default,
     &-stacked {
       background-color: awsui.$color-background-container-content;
+      #{custom-props.$inlineLabelBackgroundColor}: awsui.$color-background-container-content;
       // Border and shadows are applied with ::before and ::after elements (respectively)
       @include styles.container-style;
     }
