@@ -17,6 +17,12 @@ export interface ControlGroupContextProps {
    * their radius and which side collapses the shared seam.
    */
   position?: ControlGroupPosition;
+  /**
+   * True when this control renders a visible inline label. Such a control does not
+   * fuse into the previous control when the group wraps (stacks); it keeps its
+   * spacing and its rounded top corners instead of collapsing the shared seam.
+   */
+  hasInlineLabel?: boolean;
 }
 
 export const ControlGroupContext = createContext<ControlGroupContextProps>({

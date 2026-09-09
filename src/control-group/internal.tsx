@@ -19,6 +19,17 @@ import { InternalControlGroupProps } from './internal-interfaces';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+// A control renders a visible inline label when it is passed `inlineLabelText`
+// (supported by Input, Select, Multiselect, ...). We read it off the child element's
+// props so the group can keep labeled controls from collapsing when it wraps.
+function hasInlineLabelProp(child: React.ReactNode): boolean {
+  return (
+    React.isValidElement<{ inlineLabelText?: string }>(child) &&
+    typeof child.props.inlineLabelText === 'string' &&
+    child.props.inlineLabelText.length > 0
+  );
+}
+
 const InternalControlGroup = forwardRef(
   (
     {
@@ -108,12 +119,21 @@ const InternalControlGroup = forwardRef(
             {flattenedChildren.map((child, index) => {
               const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
               const position = getPosition(index);
+              // A control with a visible inline label should not fuse into the
+              // previous control when the group wraps (stacks): it keeps its spacing
+              // and its rounded top corners instead of collapsing the shared seam.
+              const hasInlineLabel = hasInlineLabelProp(child);
               return (
                 <div
                   key={key ? String(key) : undefined}
-                  className={clsx(styles.control, styles[`control-${position}`], testUtilStyles['control-group-item'])}
+                  className={clsx(
+                    styles.control,
+                    styles[`control-${position}`],
+                    hasInlineLabel && styles['control-labeled'],
+                    testUtilStyles['control-group-item']
+                  )}
                 >
-                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position }}>
+                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position, hasInlineLabel }}>
                     {child}
                   </ControlGroupContext.Provider>
                 </div>

@@ -229,6 +229,16 @@
       @include styles.control-group-grouped-responsive-focus('last');
     }
   }
+  // A labeled control does not fuse into the control above it when the group wraps:
+  // restore its rounded top corners. Placed after the position rules so it wins.
+  &.input-in-control-group-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+  }
 }
 
 // Same grouped treatment for the adorned (prefix/suffix) container, which owns
@@ -254,6 +264,14 @@
     @include styles.control-group-grouped-responsive('last');
     &:focus-within {
       @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  &.input-adorned-container-in-control-group-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
     }
   }
 }
