@@ -11,8 +11,7 @@ import { TableRowProps } from './interfaces';
 import styles from './styles.css.js';
 
 export function Row(
-  props: TableRowProps &
-    InternalBaseComponentProps & { nativeAttributes?: React.HTMLAttributes<HTMLTableRowElement>; __lastRow?: boolean }
+  props: TableRowProps & InternalBaseComponentProps & { nativeAttributes?: React.HTMLAttributes<HTMLTableRowElement> }
 ) {
   const {
     variant,
@@ -24,20 +23,11 @@ export function Row(
     children,
     style,
     nativeAttributes,
-    __lastRow,
     __internalRootRef,
   } = props;
   const { columnLayout, gridTemplateColumns } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
   const baseProps = getBaseProps(props);
-  // Forward TableBody's last-row flag on to each cell so it drops the divider.
-  const cells = __lastRow
-    ? React.Children.map(children, child =>
-        React.isValidElement(child)
-          ? React.cloneElement(child as React.ReactElement<{ __lastRow?: boolean }>, { __lastRow: true })
-          : child
-      )
-    : children;
   return (
     <tr
       {...baseProps}
@@ -55,7 +45,7 @@ export function Row(
       // TableRowProps.Style is a hand-picked subset; widen to CSSProperties for the DOM attribute.
       style={(isGrid ? { gridTemplateColumns, ...style } : style) as React.CSSProperties}
     >
-      {cells}
+      {children}
     </tr>
   );
 }

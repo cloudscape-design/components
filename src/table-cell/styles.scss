@@ -6,17 +6,13 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../table/body-cell/selection-mixins' as sel;
+@use './constants' as c;
 
-$cell-vertical-padding: awsui.$space-scaled-xs;
+$cell-vertical-padding: c.$cell-vertical-padding;
 // Restores full first-column inline padding when the first column is sticky.
 $cell-horizontal-padding: awsui.$space-scaled-l;
-// Block-end carries the selected-border width delta so row height is stable on select (visual refresh).
-$cell-vertical-padding-w-border: calc(
-  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
-);
-// Focus-ring room. The Table body-cell nets this out with a negative margin on its inner wrapper; the
-// bare <td> here can't, so it is folded into the <td> block padding. 1px/side lands the row at 39px.
-$cell-negative-space-vertical: 1px;
+$cell-vertical-padding-w-border: c.$cell-vertical-padding-w-border;
+$cell-negative-space-vertical: c.$cell-negative-space-vertical;
 
 .cell {
   vertical-align: middle;
@@ -164,8 +160,9 @@ $cell-negative-space-vertical: 1px;
 }
 
 // Striped-table divider colour: darken the bottom divider of any shaded row and of any row above a
-// shaded row (covers every divider in an alternating table). Selected rows and the last row are excluded.
-[data-shaded]:not([data-selected]) > .cell:not(.body-cell-last-row),
+// shaded row (covers every divider in an alternating table). Selected rows and the last row are excluded
+// (classic via body-cell-last-row, the atomic path via :not(:last-child)).
+[data-shaded]:not([data-selected]):not(:last-child) > .cell:not(.body-cell-last-row),
 :not([data-shaded]):not([data-selected]):has(+ [data-shaded]) > .cell:not(.body-cell-last-row) {
   border-block-end-color: awsui.$color-border-cell-shaded;
 }

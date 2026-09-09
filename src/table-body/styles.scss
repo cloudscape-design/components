@@ -3,6 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles/tokens' as awsui;
+@use '../table-cell/constants' as c;
+
 .body {
   position: relative;
 }
@@ -10,3 +13,24 @@
 .body-grid {
   display: block;
 }
+
+// Last-row treatment for the standalone atomic path. "Which row is last" is a body-level concern, so it
+// lives here, keyed positionally on the last row. Scoped under .body (this module's own class) so the
+// Table-reuse path — a plain <tbody> whose last data row can precede loader/empty rows — is untouched.
+// Type selectors (tr/td) are required: the row and cell hashed classes are not visible from this module,
+// so element selectors are the only cross-module reach into the last row's cells.
+// stylelint-disable selector-max-type
+.body > tr:last-child:not([data-selected]) > td {
+  // The container draws the table's outer edge, so the last row drops its divider. A 2px transparent
+  // placeholder (the selected-border width) keeps the row height unchanged when it becomes selected.
+  border-block-end: awsui.$border-item-width solid transparent;
+}
+.body > tr[data-selected]:last-child > td {
+  // Selected last row: its bottom border is already 2px in both states, so subtract 1px less than the
+  // general selected rule — the row keeps its height and the container does not grow on select.
+  padding-block-end: calc(
+    #{c.$cell-vertical-padding-w-border} + #{c.$cell-negative-space-vertical} -
+      (#{awsui.$border-width-item-selected} - #{awsui.$border-divider-list-width})
+  );
+}
+// stylelint-enable selector-max-type

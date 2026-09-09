@@ -1,0 +1,15 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles/tokens' as awsui;
+
+// Shared cell vertical-padding constants, used by table-cell (per-state selection compensation) and
+// table-body (positional last-row compensation) so both keep the row height stable in lock-step.
+$cell-vertical-padding: awsui.$space-scaled-xs;
+// Block-end carries the selected-border width delta so row height is stable on select (visual refresh).
+$cell-vertical-padding-w-border: calc(
+  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+// Focus-ring room. The Table body-cell nets this out with a negative margin on its inner wrapper; the
+// bare <td> here can't, so it is folded into the <td> block padding. 1px/side lands the row at 39px.
+$cell-negative-space-vertical: 1px;
