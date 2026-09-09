@@ -9,6 +9,7 @@
     "jsx": "react",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "importHelpers": true,
     "strict": true,

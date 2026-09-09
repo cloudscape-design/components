@@ -1,0 +1,21 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
+import { expandDensityDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/sizes.js';
+
+// core-update size overrides; the full visual-refresh set (parentTokens) is the base.
+const tokens: StyleDictionary.SizesDictionary = {
+  sizeVerticalInput: { comfortable: '30px', compact: '26px' },
+};
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
+  {},
+  parentTokens,
+  expandDensityDictionary(tokens)
+);
+
+export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';
