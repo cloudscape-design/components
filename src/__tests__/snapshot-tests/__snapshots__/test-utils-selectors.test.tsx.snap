@@ -659,7 +659,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
-    "awsui_body-cell_c6tup",
     "awsui_empty_wih1l",
     "awsui_header-cell-ascending_1spae",
     "awsui_header-cell-descending_1spae",

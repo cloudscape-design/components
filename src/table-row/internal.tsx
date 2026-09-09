@@ -10,24 +10,26 @@ import { TableRowProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export function Row(
-  props: TableRowProps & InternalBaseComponentProps & { nativeAttributes?: React.HTMLAttributes<HTMLTableRowElement> }
-) {
-  const {
-    variant,
-    ariaLabel,
-    ariaLabelledby,
-    ariaDescribedby,
-    ariaSelected,
-    ariaRowindex,
-    children,
-    style,
-    nativeAttributes,
-    __internalRootRef,
-  } = props;
+export interface InternalTableRowProps extends TableRowProps, InternalBaseComponentProps {
+  nativeAttributes?: React.HTMLAttributes<HTMLTableRowElement>;
+}
+
+export default function InternalTableRow({
+  variant,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  ariaSelected,
+  ariaRowindex,
+  children,
+  style,
+  nativeAttributes,
+  __internalRootRef,
+  ...rest
+}: InternalTableRowProps) {
   const { columnLayout, gridTemplateColumns } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
   return (
     <tr
       {...baseProps}

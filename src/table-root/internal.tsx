@@ -11,33 +11,30 @@ import { useTableRoot } from './use-table-root';
 
 import styles from './styles.css.js';
 
-type InternalRootProps = TableRootProps & InternalBaseComponentProps;
+export interface InternalTableRootProps extends TableRootProps, InternalBaseComponentProps {}
 
-export function InternalRoot(props: InternalRootProps) {
-  const {
-    columnLayout = { type: 'auto' },
-    ariaRowcount,
-    ariaLabel,
-    ariaLabelledby,
-    ariaDescribedby,
-    children,
-    __internalRootRef,
-  } = props;
-
+export default function InternalTableRoot({
+  columnLayout = { type: 'auto' },
+  ariaRowcount,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  children,
+  __internalRootRef,
+  ...rest
+}: InternalTableRootProps) {
   const isGrid = columnLayout.type === 'grid';
   const table = useTableRoot(columnLayout);
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
       <TableContextProvider value={table}>
-        {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
         <div className={styles['scroll-container']} style={{ overflow: 'visible' }}>
           <div className={styles['body-scroller']}>
             <table
-              // Only stated in grid layout: `display:grid` blockifies the table and drops its
-              // implicit role. In auto layout the native <table> role is used (an explicit
-              // role="table" there is redundant and flagged by a11y validators).
+              // display:grid drops the table's implicit ARIA role, so restore it in grid layout only
+              // (an explicit role is redundant, and flagged by a11y validators, in auto layout).
               role={isGrid ? 'table' : undefined}
               aria-label={ariaLabel}
               aria-labelledby={ariaLabelledby}

@@ -29609,29 +29609,17 @@ virtualization or draggable rows. It is not supported to use this for general st
         "properties": [
           {
             "inlineType": {
-              "name": ""auto" | (string & {}) | Globals | "-moz-max-content" | "-moz-min-content" | "fit-content" | "max-content" | "min-content" | "-webkit-fit-content" | NonNullable<TLength>",
+              "name": "Property.Height<string | number>",
               "type": "union",
               "values": [
-                ""auto"",
-                ""inherit"",
+                "string",
+                "number",
                 "string & {}",
-                ""-moz-initial"",
-                ""initial"",
-                ""revert"",
-                ""revert-layer"",
-                ""unset"",
-                ""-moz-max-content"",
-                ""-moz-min-content"",
-                ""fit-content"",
-                ""max-content"",
-                ""min-content"",
-                ""-webkit-fit-content"",
-                "NonNullable<TLength>",
               ],
             },
             "name": "height",
             "optional": true,
-            "type": ""auto" | (string & {}) | Globals | "-moz-max-content" | "-moz-min-content" | "fit-content" | "max-content" | "min-content" | "-webkit-fit-content" | NonNullable<TLength>",
+            "type": "Property.Height<string | number>",
           },
           {
             "inlineType": {
@@ -30016,29 +30004,17 @@ virtualization or draggable rows. It is not supported to use this for general st
         "properties": [
           {
             "inlineType": {
-              "name": ""auto" | (string & {}) | Globals | "-moz-max-content" | "-moz-min-content" | "fit-content" | "max-content" | "min-content" | "-webkit-fit-content" | NonNullable<TLength>",
+              "name": "Property.Height<string | number>",
               "type": "union",
               "values": [
-                ""auto"",
-                ""inherit"",
+                "string",
+                "number",
                 "string & {}",
-                ""-moz-initial"",
-                ""initial"",
-                ""revert"",
-                ""revert-layer"",
-                ""unset"",
-                ""-moz-max-content"",
-                ""-moz-min-content"",
-                ""fit-content"",
-                ""max-content"",
-                ""min-content"",
-                ""-webkit-fit-content"",
-                "NonNullable<TLength>",
               ],
             },
             "name": "height",
             "optional": true,
-            "type": ""auto" | (string & {}) | Globals | "-moz-max-content" | "-moz-min-content" | "fit-content" | "max-content" | "min-content" | "-webkit-fit-content" | NonNullable<TLength>",
+            "type": "Property.Height<string | number>",
           },
           {
             "inlineType": {

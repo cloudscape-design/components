@@ -10,11 +10,12 @@ import { TableBodyProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export function Body(props: TableBodyProps & InternalBaseComponentProps) {
-  const { children, style, __internalRootRef } = props;
+export interface InternalTableBodyProps extends TableBodyProps, InternalBaseComponentProps {}
+
+export default function InternalTableBody({ children, style, __internalRootRef, ...rest }: InternalTableBodyProps) {
   const { columnLayout } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
   return (
     <tbody
       {...baseProps}

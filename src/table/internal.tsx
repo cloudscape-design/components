@@ -35,7 +35,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
-import { Row as AtomicTableRow } from '../table-row/internal';
+import AtomicTableRow from '../table-row/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { ClearSortButton } from './clear-sort';

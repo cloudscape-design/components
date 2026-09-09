@@ -6,13 +6,13 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TableRowProps } from './interfaces';
-import { Row } from './internal';
+import InternalTableRow from './internal';
 
-export type { TableRowProps };
+export { TableRowProps };
 
 function TableRow(props: TableRowProps) {
   const baseComponentProps = useBaseComponent('TableRow', { props: { variant: props.variant } });
-  return <Row {...props} {...baseComponentProps} />;
+  return <InternalTableRow {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(TableRow, 'TableRow');

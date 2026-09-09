@@ -11,9 +11,9 @@ import { TableCellProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-// Internal reuse surface: consumed only when the Table renders the atomic Cell as its body <td>.
-// The public surface stays TableCellProps = { disablePaddings, children }.
-export interface TableCellInternalProps {
+// Dual-consumer substrate: both the public TableCell wrapper and the Table (as its body <td>, passing
+// the __-prefixed feature props below) render this. The public surface stays TableCellProps.
+export interface InternalTableCellProps extends TableCellProps, InternalBaseComponentProps {
   __ref?: React.Ref<HTMLTableCellElement>;
   __style?: React.CSSProperties;
   __tabIndex?: number;
@@ -37,37 +37,37 @@ export interface TableCellInternalProps {
   __tableVariant?: string;
 }
 
-export function Cell(props: TableCellProps & InternalBaseComponentProps & TableCellInternalProps) {
-  const {
-    children,
-    disablePaddings,
-    __internalRootRef,
-    __ref,
-    __style,
-    __tabIndex,
-    __featureClassName,
-    __nativeAttributes,
-    __onClick,
-    __onFocus,
-    __onBlur,
-    __selected,
-    __shaded,
-    __prevSelected,
-    __nextSelected,
-    __notSelectedNext,
-    __firstRow,
-    __lastRow,
-    __hasFooter,
-    __isVisualRefresh,
-    __hasSelection,
-    __hasStripedRows,
-    __tableVariant,
-  } = props;
+export default function InternalTableCell({
+  children,
+  disablePaddings,
+  __internalRootRef,
+  __ref,
+  __style,
+  __tabIndex,
+  __featureClassName,
+  __nativeAttributes,
+  __onClick,
+  __onFocus,
+  __onBlur,
+  __selected,
+  __shaded,
+  __prevSelected,
+  __nextSelected,
+  __notSelectedNext,
+  __firstRow,
+  __lastRow,
+  __hasFooter,
+  __isVisualRefresh,
+  __hasSelection,
+  __hasStripedRows,
+  __tableVariant,
+  ...rest
+}: InternalTableCellProps) {
   const { columnLayout } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
   const runtimeVisualRefresh = useVisualRefresh();
   const isVisualRefresh = __isVisualRefresh ?? runtimeVisualRefresh;
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
   return (
     <td
       {...baseProps}

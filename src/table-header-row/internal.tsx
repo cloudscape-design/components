@@ -10,11 +10,12 @@ import { TableHeaderRowProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export function HeaderRow(props: TableHeaderRowProps & InternalBaseComponentProps) {
-  const { children, __internalRootRef } = props;
+export interface InternalTableHeaderRowProps extends TableHeaderRowProps, InternalBaseComponentProps {}
+
+export default function InternalTableHeaderRow({ children, __internalRootRef, ...rest }: InternalTableHeaderRowProps) {
   const { columnLayout, gridTemplateColumns } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
   return (
     <tr
       {...baseProps}

@@ -6,13 +6,13 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TableHeadProps } from './interfaces';
-import { Head } from './internal';
+import InternalTableHead from './internal';
 
-export type { TableHeadProps };
+export { TableHeadProps };
 
 function TableHead(props: TableHeadProps) {
   const baseComponentProps = useBaseComponent('TableHead');
-  return <Head {...props} {...baseComponentProps} />;
+  return <InternalTableHead {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(TableHead, 'TableHead');

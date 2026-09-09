@@ -6,13 +6,13 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TableBodyProps } from './interfaces';
-import { Body } from './internal';
+import InternalTableBody from './internal';
 
-export type { TableBodyProps };
+export { TableBodyProps };
 
 function TableBody(props: TableBodyProps) {
   const baseComponentProps = useBaseComponent('TableBody');
-  return <Body {...props} {...baseComponentProps} />;
+  return <InternalTableBody {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(TableBody, 'TableBody');

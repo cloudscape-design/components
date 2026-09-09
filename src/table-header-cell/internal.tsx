@@ -11,12 +11,22 @@ import { TableHeaderCellProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export function HeaderCell(props: TableHeaderCellProps & InternalBaseComponentProps) {
-  const { children, ariaLabel, ariaLabelledby, ariaDescribedby, ariaSort, disablePaddings, __internalRootRef } = props;
+export interface InternalTableHeaderCellProps extends TableHeaderCellProps, InternalBaseComponentProps {}
+
+export default function InternalTableHeaderCell({
+  children,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  ariaSort,
+  disablePaddings,
+  __internalRootRef,
+  ...rest
+}: InternalTableHeaderCellProps) {
   const { columnLayout } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
   const isVisualRefresh = useVisualRefresh();
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(rest);
   return (
     <th
       {...baseProps}

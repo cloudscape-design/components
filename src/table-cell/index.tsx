@@ -6,13 +6,13 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TableCellProps } from './interfaces';
-import { Cell } from './internal';
+import InternalTableCell from './internal';
 
-export type { TableCellProps };
+export { TableCellProps };
 
 function TableCell(props: TableCellProps) {
   const baseComponentProps = useBaseComponent('TableCell');
-  return <Cell {...props} {...baseComponentProps} />;
+  return <InternalTableCell {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(TableCell, 'TableCell');
