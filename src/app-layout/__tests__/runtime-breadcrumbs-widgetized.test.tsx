@@ -62,6 +62,26 @@ afterEach(() => {
   });
 });
 
+test('shares the consumer registry with a same-origin parent window', () => {
+  const originalParentDescriptor = Object.getOwnPropertyDescriptor(window, 'parent')!;
+  const parentWindow = {} as Window;
+  Object.defineProperty(parentWindow, 'parent', { value: parentWindow });
+  Object.defineProperty(window, 'parent', { configurable: true, value: parentWindow });
+  let unregister = () => {};
+
+  try {
+    const first = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() });
+    unregister = first.unregister;
+    const second = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() });
+
+    expect(first.registered).toBe(true);
+    expect(second.registered).toBe(false);
+  } finally {
+    unregister();
+    Object.defineProperty(window, 'parent', originalParentDescriptor);
+  }
+});
+
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   test('renders slot breadcrumbs in an external container and restores App Layout on unregister', async () => {
     const externalContainer = document.createElement('div');

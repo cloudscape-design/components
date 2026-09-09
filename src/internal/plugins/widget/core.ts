@@ -30,6 +30,20 @@ function getWindow() {
   return window as Window as WindowWithApi;
 }
 
+function getBreadcrumbsRegistryWindow(currentWindow = getWindow()): WindowWithApi {
+  try {
+    const parentWindow = currentWindow.parent as WindowWithApi;
+    if (parentWindow === currentWindow) {
+      return currentWindow;
+    }
+    // Accessing custom properties verifies that the parent is same-origin.
+    void parentWindow[storageKeyBreadcrumbsConsumer];
+    return getBreadcrumbsRegistryWindow(parentWindow);
+  } catch {
+    return currentWindow;
+  }
+}
+
 export function getAppLayoutMessageHandler() {
   const win = getWindow();
   return win[storageKeyMessageHandler];
@@ -75,11 +89,11 @@ export function getBreadcrumbsConsumer() {
   if (typeof window === 'undefined') {
     return undefined;
   }
-  return getWindow()[storageKeyBreadcrumbsConsumer];
+  return getBreadcrumbsRegistryWindow()[storageKeyBreadcrumbsConsumer];
 }
 
 export function setBreadcrumbsConsumer(consumer: BreadcrumbsConsumer | undefined) {
-  const win = getWindow();
+  const win = getBreadcrumbsRegistryWindow();
   win[storageKeyBreadcrumbsConsumer] = consumer;
   win[storageKeyBreadcrumbsConsumerListeners]?.forEach(listener => listener(consumer));
 }
@@ -88,7 +102,7 @@ export function subscribeBreadcrumbsConsumer(listener: (consumer: BreadcrumbsCon
   if (typeof window === 'undefined') {
     return () => {};
   }
-  const win = getWindow();
+  const win = getBreadcrumbsRegistryWindow();
   win[storageKeyBreadcrumbsConsumerListeners] ??= new Set();
   win[storageKeyBreadcrumbsConsumerListeners].add(listener);
   return () => {
