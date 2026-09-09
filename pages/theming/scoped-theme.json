@@ -1,0 +1,208 @@
+{
+  "tokens": {
+    "fontFamilyBase": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    "colorTextBodyDefault": { "light": "#0f141a", "dark": "#CCCCD1" },
+
+    "colorBorderButtonNormalDefault": { "light": "#1b232d", "dark": "#f3f3f7" },
+    "colorBorderButtonNormalHover": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBorderButtonNormalActive": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBackgroundButtonNormalDefault": { "light": "#FFFFFF", "dark": "#161d26" },
+    "colorBackgroundButtonNormalHover": { "light": "#F6F6F9", "dark": "#424650" },
+    "colorBackgroundButtonNormalActive": { "light": "#EBEBF0", "dark": "#131920" },
+    "colorTextButtonNormalDefault": { "light": "#1b232d", "dark": "#f3f3f7" },
+    "colorTextButtonNormalHover": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorTextButtonNormalActive": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundButtonPrimaryDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBackgroundButtonPrimaryHover": { "light": "#06080A", "dark": "#FFFFFF" },
+    "colorBackgroundButtonPrimaryActive": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorTextButtonPrimaryDefault": { "light": "#ffffff", "dark": "#131920" },
+    "colorTextButtonPrimaryHover": { "light": "#ffffff", "dark": "#131920" },
+    "colorTextButtonPrimaryActive": { "light": "#ffffff", "dark": "#131920" },
+
+    "colorBackgroundButtonLinkDefault": { "light": "#f6f6f9", "dark": "#232b37" },
+    "colorBackgroundButtonLinkHover": { "light": "#ebebf0", "dark": "#424650" },
+    "colorBackgroundButtonLinkActive": { "light": "#EBEBF0", "dark": "#131920" },
+    "colorTextLinkButtonNormalDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundToggleButtonNormalPressed": { "light": "#EBEBF0", "dark": "#131920" }, 
+    "colorBorderToggleButtonNormalPressed": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorTextToggleButtonNormalPressed": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundControlChecked": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorTextLinkDefault": { "light": "#0f141a", "dark": "#CCCCD1" },
+    "colorTextLinkHover": { "light": "#424650", "dark": "#FFFFFF" },
+    "colorTextLinkSecondaryDefault": { "light": "#295eff", "dark": "#7598ff" },
+    "colorTextLinkSecondaryHover": { "light": "#0033CC", "dark": "#94AFFF" },
+    "colorTextLinkInfoDefault": { "light": "#295eff", "dark": "#7598ff" },
+    "colorTextLinkInfoHover": { "light": "#0033CC", "dark": "#94AFFF" },
+    "colorTextAccent": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBorderItemFocused": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBorderItemSelected": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBackgroundItemSelected": { "light": "#F6F6F9", "dark": "#0F141A" },
+    "colorBackgroundLayoutToggleSelectedDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundSegmentActive": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundSliderRangeDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBackgroundSliderHandleDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundProgressBarValueDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+
+    "colorBackgroundNotificationGreen": { "light": "#008559", "dark": "#008559" },
+    "colorBackgroundNotificationBlue": { "light": "#0033CC", "dark": "#0033CC" },
+    "colorTextNotificationDefault": { "light": "#ffffff", "dark": "#ffffff" },
+
+    "colorTextStatusInfo": { "light": "#0033CC", "dark": "#7598FF" },
+    "colorTextStatusSuccess": { "light": "#006B48", "dark": "#00BD6B" },
+    "colorTextDropdownItemFilterMatch": { "light": "#1b232d", "dark": "#F9F9FB" },
+    "colorBackgroundDropdownItemFilterMatch": { "light": "#F3F3F7", "dark": "#06080A" },
+
+    "colorTextBreadcrumbCurrent": { "light": "#656871", "dark": "#8c8c94" },
+
+    "fontSizeHeadingXl": "24px",
+    "lineHeightHeadingXl": "30px",
+    "fontWeightHeadingXl": "600",
+
+    "fontSizeHeadingL": "20px",
+    "lineHeightHeadingL": "24px",
+    "fontWeightHeadingL": "600",
+
+    "fontSizeHeadingM": "18px",
+    "lineHeightHeadingM": "22px",
+    "fontWeightHeadingM": "600",
+
+    "fontSizeHeadingS": "16px",
+    "lineHeightHeadingS": "20px",
+    "fontWeightHeadingS": "600",
+
+    "fontSizeHeadingXs": "14px",
+    "lineHeightHeadingXs": "20px",
+    "fontWeightHeadingXs": "600",
+
+    "fontWeightButton": "600",
+    "fontWeightTabs": "600",
+    "fontSizeTabs": "16px",
+
+    "spaceAlertVertical": "4px",
+    "spaceButtonHorizontal": "12px",
+    "spaceTabsVertical": "2px",
+    "spaceTokenVertical": "2px",
+    "spaceFieldVertical": { "comfortable": "4px", "compact": "2px" },
+    "sizeVerticalInput": { "comfortable": "30px", "compact": "26px" },
+
+    "borderWidthButton": "1px",
+    "borderWidthToken": "1px",
+    "borderWidthAlert": "0px",
+    "borderItemWidth": "1px",
+    "borderWidthAlertInlineStart": "2px",
+    "borderWidthItemSelected": "1px",
+    "borderWidthCardSelected": "1px",
+
+    "borderRadiusAlert": "2px",
+    "borderRadiusBadge": "16px",
+    "borderRadiusButton": "8px",
+    "borderRadiusContainer": "12px",
+    "borderRadiusDropdown": "8px",
+    "borderRadiusDropzone": "8px",
+    "borderRadiusFlashbar": "4px",
+    "borderRadiusItem": "8px",
+    "borderRadiusInput": "8px",
+    "borderRadiusPopover": "8px",
+    "borderRadiusTabsFocusRing": "10px",
+    "borderRadiusToken": "8px",
+    "borderRadiusTutorialPanelItem": "4px",
+
+    "borderWidthIconSmall": "1.5px",
+    "borderWidthIconNormal": "1.5px",
+    "borderWidthIconMedium": "1.75px",
+    "borderWidthIconBig": "2px",
+    "borderWidthIconLarge": "2.5px"
+  },
+
+  "referenceTokens": {
+    "color": {
+      "primary": {
+        "seed": "#1b232d"
+      }
+    }
+  },
+
+  "contexts": {
+    "top-navigation": {
+      "tokens": {
+        "colorBackgroundContainerContent": { "light": "#ffffff", "dark": "#161d26" },
+        "colorBorderDividerDefault": { "light": "#c6c6cd", "dark": "#424650" },
+        "colorTextTopNavigationTitle": { "light": "#1b232d", "dark": "#f3f3f7" },
+        "colorTextInteractiveDefault": { "light": "#1b232d", "dark": "#f3f3f7" },
+        "colorTextInteractiveHover": { "light": "#1b232d", "dark": "#F9F9FB" },
+        "colorTextInteractiveActive": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextAccent": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextDropdownItemDefault": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextDropdownItemHighlighted": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextDropdown": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextGroupLabel": { "light": "#424650", "dark": "#c6c6cd" },
+        "colorBackgroundDropdownItemDefault": { "light": "#FFFFFF", "dark": "#1b232d" },
+        "colorBackgroundDropdownItemHover": { "light": "#f3f3f7", "dark": "#131920" },
+        "colorBorderDropdownContainer": { "light": "#b4b4bb", "dark": "#656871" },
+        "colorTextBodyDefault": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorBackgroundInputDefault": { "light": "#ffffff", "dark": "#1b232d" },
+        "colorBorderInputDefault": { "light": "#b4b4bb", "dark": "#656871" },
+        "colorTextInputDefault": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextInputPlaceholder": { "light": "#656871", "dark": "#8c8c94" },
+        "colorBorderDropdownItemDefault": { "light": "#e8e8e8", "dark": "#424650" },
+        "colorTextDropdownItemSecondary": { "light": "#424650", "dark": "#c6c6cd" },
+        "colorItemSelected": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorBackgroundDropdownItemSelected": { "light": "#F6F6F9", "dark": "#06080A" },
+        "colorBorderItemSelected": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorTextButtonInlineIconDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
+        "colorTextButtonInlineIconHover": { "light": "#1b232d", "dark": "#F9F9FB" },
+        "colorTextHeadingDefault": { "light": "#06080A", "dark": "#F6F6F9" },
+        "colorBorderDropdownItemFocused": { "light": "#424650", "dark": "#dedee3" },
+        "colorBorderDropdownItemHover": { "light": "#8c8c94", "dark": "#656871" },
+        "colorBorderItemFocused": { "light": "#1b232dff", "dark": "#f9f9fbff" },
+        "colorBackgroundBadgeIcon": { "light": "#db0000", "dark": "#ff7a7a" }
+      }
+    },
+    "header": {
+      "tokens": {
+        "colorBorderButtonNormalDefault": "#f3f3f7",
+        "colorBorderButtonNormalHover": "#F9F9FB",
+        "colorBorderButtonNormalActive": "#F9F9FB",
+        "colorBackgroundButtonNormalHover": "#1B232D",
+        "colorBackgroundButtonNormalActive": "#131920",
+        "colorTextButtonNormalDefault": "#f3f3f7",
+        "colorTextButtonNormalHover": "#F9F9FB",
+        "colorTextButtonNormalActive": "#F9F9FB",
+        "colorBackgroundButtonPrimaryDefault": "#F9F9FB",
+        "colorBackgroundButtonPrimaryHover": "#FFFFFF",
+        "colorBackgroundButtonPrimaryActive": "#F9F9FB",
+        "colorTextButtonPrimaryDefault": "#131920",
+        "colorTextButtonPrimaryHover": "#131920",
+        "colorTextButtonPrimaryActive": "#131920",
+        "colorTextLinkDefault": "#CCCCD1"
+      }
+    },
+    "flashbar": {
+      "tokens": {
+        "colorBackgroundNotificationGreen": { "light": "#008559", "dark": "#008559" },
+        "colorBackgroundNotificationBlue": { "light": "#0033cc", "dark": "#0033cc" },
+        "colorTextNotificationDefault": { "light": "#ffffff", "dark": "#ffffff" }
+      }
+    },
+    "alert": {
+      "tokens": {
+        "colorBackgroundStatusInfo": { "light": "#f6f6f9", "dark": "#232b37" },
+        "colorBackgroundStatusWarning": { "light": "#f6f6f9", "dark": "#232b37" },
+        "colorBackgroundStatusError": { "light": "#f6f6f9", "dark": "#232b37" },
+        "colorBackgroundStatusSuccess": { "light": "#f6f6f9", "dark": "#232b37" },
+        "colorTextStatusInfo": { "light": "#0033CC", "dark": "#7598FF" },
+        "colorBorderStatusInfo": { "light": "#0033CC", "dark": "#7598FF" },
+        "colorTextStatusSuccess": { "light": "#006B48", "dark": "#00BD6B" },
+        "colorBorderStatusSuccess": { "light": "#006B48", "dark": "#00BD6B" }
+      }
+    }
+  }
+}

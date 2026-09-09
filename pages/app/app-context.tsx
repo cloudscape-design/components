@@ -13,11 +13,15 @@ import { THEME } from '~components/internal/environment';
 export enum Theme {
   Default = 'default',
   OneTheme = 'one-theme',
+  // Applied through a pregenerated, scoped stylesheet. See pages/app/index.tsx and
+  // build-tools/tasks/styles.js.
+  CoreUpdate = 'core-update',
 }
 
 const themeClassNames: Record<Theme, string> = {
   [Theme.Default]: '',
   [Theme.OneTheme]: 'awsui-one-theme',
+  [Theme.CoreUpdate]: 'awsui-core-update',
 };
 
 export function applyThemeClass(activeTheme: Theme) {
