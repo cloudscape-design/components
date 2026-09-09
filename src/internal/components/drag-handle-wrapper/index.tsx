@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { isKeyboardInteraction } from '../../utils/focus-visible';
 import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
 import { Direction, DragHandleWrapperProps } from './interfaces';
@@ -57,7 +58,7 @@ export default function DragHandleWrapper({
     // handled in the "pointerup" listener instead. In cases where focus is moved
     // to the button (by manually calling `.focus()`), the buttons should only appear
     // if the action that triggered the focus move was the result of a keypress.
-    if (document.body.dataset.awsuiFocusVisible && !nodeContains(wrapperRef.current, event.relatedTarget)) {
+    if (isKeyboardInteraction(wrapperRef.current) && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
       if (triggerMode === 'focus') {
         setUncontrolledShowButtons(true);

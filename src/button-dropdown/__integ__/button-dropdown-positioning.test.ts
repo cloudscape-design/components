@@ -16,7 +16,7 @@ describe('clicking on the ButtonDropdown', () => {
   test(
     'opens downwards when there is more space below',
     setupTest('topLeftDropdown', async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       await expect(page.isDropdownOpen()).resolves.toBe(true);
       const { bottom: triggerBottom } = await page.getBoundingBox(page.getTrigger());
       const { bottom: dropdownBottom } = await page.getBoundingBox(page.getOpenDropdown());
@@ -27,7 +27,7 @@ describe('clicking on the ButtonDropdown', () => {
   test(
     'opens upwards when there is more space above',
     setupTest('bottomLeftDropdown', async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       await expect(page.isDropdownOpen()).resolves.toBe(true);
       const { bottom: triggerBottom } = await page.getBoundingBox(page.getTrigger());
       const { bottom: dropdownBottom } = await page.getBoundingBox(page.getOpenDropdown());

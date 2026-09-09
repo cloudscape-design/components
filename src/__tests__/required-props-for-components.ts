@@ -7,7 +7,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   tabs: { tabs: [] },
   table: { columnDefinitions: [] },
   cards: { cardDefinition: {} },
-  autosuggest: { options: [], enteredPrefix: '' },
+  autosuggest: { options: [], value: '' },
   'anchor-navigation': { anchors: [] },
   'code-editor': { i18nStrings },
   wizard: {
