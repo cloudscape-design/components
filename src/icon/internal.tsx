@@ -67,7 +67,7 @@ const InternalIcon = ({
   baseProps.className = clsx(
     baseProps.className,
     styles.icon,
-    contextualSize && styles['icon-flex-height'],
+    (contextualSize || size === 'x-small') && styles['icon-flex-height'],
     badge && styles.badge,
     !contextualSize && styles[`size-${iconSize}-mapped-height`],
     styles[`size-${iconSize}`],
