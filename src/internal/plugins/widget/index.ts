@@ -2,9 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getExternalProps } from '../../utils/external-props';
-import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
+import { reportRuntimeApiWarning } from '../helpers/metrics';
+import {
+  getAppLayoutInitialMessages,
+  getAppLayoutMessageHandler,
+  getBreadcrumbsConsumer,
+  pushInitialMessage,
+  setBreadcrumbsConsumer,
+  setInitialMessage,
+} from './core';
 import {
   AppLayoutUpdateMessage,
+  BreadcrumbsConsumerPayload,
+  BreadcrumbsConsumerRegistration,
   DrawerPayload,
   FeatureNotificationsPayload,
   FeatureNotificationsPayloadPublic,
@@ -55,6 +65,32 @@ export function showFeaturePromptIfPossible() {
 
 export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
+}
+
+/**
+ * Registers the surface that renders breadcrumbs outside App Layout.
+ */
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
+  if (getBreadcrumbsConsumer()) {
+    reportRuntimeApiWarning(
+      'breadcrumbs',
+      'A breadcrumbs consumer is already registered. This registration is ignored.'
+    );
+    return { registered: false, unregister: () => {} };
+  }
+
+  const consumer = { ...payload, token: {} };
+  setBreadcrumbsConsumer(consumer);
+  payload.onBreadcrumbsChange(null);
+
+  return {
+    registered: true,
+    unregister: () => {
+      if (getBreadcrumbsConsumer()?.token === consumer.token) {
+        setBreadcrumbsConsumer(undefined);
+      }
+    },
+  };
 }
 
 /**

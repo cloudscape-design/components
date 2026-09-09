@@ -2,16 +2,24 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import { InitialMessage, WidgetMessage } from './interfaces';
+import { BreadcrumbsConsumerPayload, InitialMessage, WidgetMessage } from './interfaces';
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
 const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
+const storageKeyBreadcrumbsConsumer = Symbol.for('awsui-widget-api-breadcrumbs-consumer');
+const storageKeyBreadcrumbsConsumerListeners = Symbol.for('awsui-widget-api-breadcrumbs-consumer-listeners');
+
+export interface BreadcrumbsConsumer extends BreadcrumbsConsumerPayload {
+  token: object;
+}
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: MessageHandler | undefined;
   [storageKeyInitialMessages]: Array<InitialMessage<unknown>> | undefined;
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
+  [storageKeyBreadcrumbsConsumer]: BreadcrumbsConsumer | undefined;
+  [storageKeyBreadcrumbsConsumerListeners]: Set<(consumer: BreadcrumbsConsumer | undefined) => void> | undefined;
 }
 
 const oneTimeMessageTypes = ['emit-notification'];
@@ -61,6 +69,35 @@ export function registerAppLayoutHandler(handler: MessageHandler) {
 
 export function clearInitialMessages() {
   getWindow()[storageKeyInitialMessages] = undefined;
+}
+
+export function getBreadcrumbsConsumer() {
+  if (typeof window === 'undefined') {
+    return undefined;
+  }
+  return getWindow()[storageKeyBreadcrumbsConsumer];
+}
+
+export function setBreadcrumbsConsumer(consumer: BreadcrumbsConsumer | undefined) {
+  const win = getWindow();
+  win[storageKeyBreadcrumbsConsumer] = consumer;
+  win[storageKeyBreadcrumbsConsumerListeners]?.forEach(listener => listener(consumer));
+}
+
+export function subscribeBreadcrumbsConsumer(listener: (consumer: BreadcrumbsConsumer | undefined) => void) {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+  const win = getWindow();
+  win[storageKeyBreadcrumbsConsumerListeners] ??= new Set();
+  win[storageKeyBreadcrumbsConsumerListeners].add(listener);
+  return () => {
+    win[storageKeyBreadcrumbsConsumerListeners]?.delete(listener);
+  };
+}
+
+export function clearBreadcrumbsConsumer() {
+  setBreadcrumbsConsumer(undefined);
 }
 
 /**
