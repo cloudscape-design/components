@@ -1,17 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 
+import AppContext, { AppContextType } from '../app/app-context';
+
 import styles from './styles.scss';
 
-// Prototype for per-group expandability (inherit-override): `expandableGroups` is the
-// dropdown-level default, and each group's `expandable` flag overrides it — `false` forces a
-// group flat even when the default is on, `true` forces it expandable even when the default is
-// off, and an unset flag inherits the default. Toggle the global switch to watch the forced
-// groups hold their behavior while the inheriting ones follow.
+type PageContext = React.Context<
+  AppContextType<{
+    expandToViewport: boolean;
+    expandableGroups: boolean;
+  }>
+>;
+
 export const items: ButtonDropdownProps['items'] = [
   {
     id: 'expandable-1',
@@ -66,26 +70,10 @@ export const items: ButtonDropdownProps['items'] = [
 ];
 
 export default function MixedExpandableScenario() {
-  const [expandToViewport, setExpandToViewport] = useState(false);
-  const [expandableGroups, setExpandableGroups] = useState(true);
-  const [forceMobile, setForceMobile] = useState(false);
-
-  // Force the component into its mobile "restricted view" navigation model without resizing
-  // the window, using the built-in override symbol read by the useMobile hook. Dispatching a
-  // resize event makes the useMobile singleton re-evaluate immediately.
-  useEffect(() => {
-    const forceMobileModeSymbol = Symbol.for('awsui-force-mobile-mode');
-    if (forceMobile) {
-      (globalThis as Record<symbol, unknown>)[forceMobileModeSymbol] = true;
-    } else {
-      delete (globalThis as Record<symbol, unknown>)[forceMobileModeSymbol];
-    }
-    window.dispatchEvent(new Event('resize'));
-    return () => {
-      delete (globalThis as Record<symbol, unknown>)[forceMobileModeSymbol];
-      window.dispatchEvent(new Event('resize'));
-    };
-  }, [forceMobile]);
+  const {
+    urlParams: { expandToViewport = false, expandableGroups = true },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
 
   return (
     <div className={styles.container}>
@@ -98,17 +86,13 @@ export default function MixedExpandableScenario() {
           forced groups hold their behavior while the inheriting ones follow. Use arrow keys to verify navigation
           confines to the current plane and steps across flat groups inline.
         </p>
-        <p>
-          Turn on <strong>Force mobile mode</strong> and open a dropdown with the keyboard: on mobile the flat group
-          renders inline and arrow keys step onto its children (the top-plane fix).
-        </p>
         <SpaceBetween size="m" direction="horizontal">
           <label>
             <input
               id="expandToViewport"
               type="checkbox"
               checked={expandToViewport}
-              onChange={e => setExpandToViewport(!!e.target.checked)}
+              onChange={e => setUrlParams({ expandToViewport: !!e.target.checked })}
             />{' '}
             expandToViewport
           </label>
@@ -117,18 +101,9 @@ export default function MixedExpandableScenario() {
               id="expandableGroups"
               type="checkbox"
               checked={expandableGroups}
-              onChange={e => setExpandableGroups(!!e.target.checked)}
+              onChange={e => setUrlParams({ expandableGroups: !!e.target.checked })}
             />{' '}
             expandableGroups (global)
-          </label>
-          <label>
-            <input
-              id="forceMobile"
-              type="checkbox"
-              checked={forceMobile}
-              onChange={e => setForceMobile(!!e.target.checked)}
-            />{' '}
-            Force mobile mode (restricted view)
           </label>
         </SpaceBetween>
 

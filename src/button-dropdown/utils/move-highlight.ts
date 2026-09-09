@@ -41,8 +41,8 @@ export default function moveHighlight({
       return null;
     }
 
-    // don't step into a disabled expandable group; a flat group's children stay navigable
-    if (next.parent && isExpandable(next.parent) && next.parent.disabled) {
+    // A disabled expandable group can't be opened, so its children are never rendered — skip them.
+    if (next.parent?.disabled && isExpandable(next.parent)) {
       return tryMove(next.index);
     }
 
