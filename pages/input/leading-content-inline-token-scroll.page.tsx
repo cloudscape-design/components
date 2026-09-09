@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useRef, useState } from 'react';
 
 import FormField from '~components/form-field';
 import Input, { InputProps } from '~components/input';
+import LiveRegion from '~components/live-region';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
 import Token from '~components/token';
@@ -19,23 +20,6 @@ type PageContext = React.Context<
     warning?: boolean;
   }>
 >;
-
-// ---------------------------------------------------------------------------
-// TokenizedInput — full consumer example
-//
-// Keyboard contract (consumer-owned per the leadingContent API contract):
-//   Enter on non-empty input      — commits a new token, clears the field
-//   Backspace on empty input      — moves focus to last token's dismiss button
-//   ArrowLeft / ArrowRight        — navigate between dismiss buttons
-//   Delete / Backspace on token   — removes token, shifts focus to next/prev/input
-//   Tab                           — exits slot area normally
-//
-// ARIA:
-//   role="list" + aria-label on token container — announces token count
-//   role="listitem" on each token wrapper       — each is a list member
-//   aria-live="polite" region                   — announces add/remove events
-//   dynamic ariaLabel on Input                  — includes current filter count
-// ---------------------------------------------------------------------------
 
 const INITIAL_TOKENS = ['us-east-1', 'prod'];
 
@@ -123,15 +107,7 @@ function TokenizedInput({
 
   return (
     <div>
-      {/* Live region for screen reader announcements */}
-      <span
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}
-      >
-        {announcement}
-      </span>
+      <LiveRegion hidden={true}>{announcement}</LiveRegion>
 
       <Input
         ref={inputRef}
@@ -188,7 +164,7 @@ export default function LeadingContentFullExamplePage() {
 
   return (
     <SimplePage
-      title="Input — leadingContent (full example)"
+      title="Input — leadingContent inline token scroll"
       settings={
         <SpaceBetween direction="horizontal" size="s" alignItems="center">
           <Toggle checked={disabled} onChange={({ detail }) => setUrlParams({ disabled: detail.checked })}>
