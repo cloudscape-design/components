@@ -89,7 +89,9 @@
 
   &-input {
     inline-size: 87px;
-    margin-block-start: -0.6em;
+    // This element contains the inline label and the HTML input element.
+    // Push it upwards to let the HTML input element look vertically centered.
+    margin-block-start: calc(-2 * #{awsui.$space-scaled-xs});
     overflow: visible;
   }
 }

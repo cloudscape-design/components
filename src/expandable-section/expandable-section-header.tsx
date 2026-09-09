@@ -69,6 +69,7 @@ const ExpandIconButton = ({
       aria-labelledby={ariaLabelledBy}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
       onClick={
         stopPropagation
           ? event => {
@@ -169,6 +170,7 @@ const ExpandableDeprecatedHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
@@ -210,6 +212,7 @@ const ExpandableNavigationHeader = ({
         analyticsSelectors['header-label'],
         expandIconPosition === 'end' && styles['header-icon-end']
       )}
+      data-awsui-motion-trigger="hover"
     >
       {expandIconPosition === 'end' ? (
         <>
@@ -273,6 +276,13 @@ const ExpandableHeaderTextWrapper = ({
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
 
+  // The hover-motion trigger follows whichever element actually owns the click handler above —
+  // that element is the real interactive surface, so it's also the sane hover boundary for the caret.
+  const motionTriggerAttribute = { 'data-awsui-motion-trigger': 'hover' } as const;
+  const headerButtonMotionTrigger = headerButtonListeners ? motionTriggerAttribute : undefined;
+  const headingTagMotionTrigger = headingTagListeners ? motionTriggerAttribute : undefined;
+  const wrapperMotionTrigger = wrapperListeners ? motionTriggerAttribute : undefined;
+
   // Standalone caret button — used when the icon is rendered OUTSIDE the headerButton
   // (end-position with container or actions). Must be its own <button> for accessibility.
   const expandButton = (
@@ -325,6 +335,7 @@ const ExpandableHeaderTextWrapper = ({
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
+      {...headerButtonMotionTrigger}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       {renderIconOutsideHeader ? (
@@ -347,6 +358,7 @@ const ExpandableHeaderTextWrapper = ({
     <div
       className={clsx(className, wrapperListeners && styles['click-target'], iconAtEnd && styles['header-icon-end'])}
       {...wrapperListeners}
+      {...wrapperMotionTrigger}
       {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       {isContainer ? (
@@ -370,6 +382,7 @@ const ExpandableHeaderTextWrapper = ({
             <HeadingTag
               className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
               {...headingTagListeners}
+              {...headingTagMotionTrigger}
               {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
             >
               {headerButton}
@@ -412,6 +425,7 @@ export const ExpandableSectionHeader = ({
       size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
       className={clsx(styles.icon, expanded && styles.expanded)}
       name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+      nativeAttributes={{ 'data-awsui-motion-target': '' }}
     />
   );
   const defaultHeaderProps = {
