@@ -65,7 +65,7 @@ const permutations = createPermutations<ControlGroupProps>([
     ariaLabel: ['Aggregation'],
     dismissible: [true],
     onDismiss: [() => {}],
-    i18nStrings: [{ dismissAriaLabel: 'Remove aggregation' }],
+    i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove aggregation' }],
     children: [
       <>
         <Select
@@ -102,7 +102,7 @@ const permutations = createPermutations<ControlGroupProps>([
     ariaLabel: ['Metric'],
     dismissible: [true],
     onDismiss: [() => {}],
-    i18nStrings: [{ dismissAriaLabel: 'Remove metric' }],
+    i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove metric' }],
     children: [
       <Input
         key="metric"
@@ -120,7 +120,7 @@ const permutations = createPermutations<ControlGroupProps>([
     ariaLabel: ['Label'],
     dismissible: [true],
     onDismiss: [() => {}],
-    i18nStrings: [{ dismissAriaLabel: 'Remove label' }],
+    i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove label' }],
     children: [
       <>
         <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
@@ -135,7 +135,7 @@ const permutations = createPermutations<ControlGroupProps>([
     ariaLabel: ['Multiselect with inline tokens'],
     dismissible: [true],
     onDismiss: [() => {}],
-    i18nStrings: [{ dismissAriaLabel: 'Remove options' }],
+    i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove options' }],
     children: [
       <Multiselect
         key="options"
