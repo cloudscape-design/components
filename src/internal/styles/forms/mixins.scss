@@ -462,3 +462,13 @@ $inline-label-border-radius: 2px;
 @mixin control-group-grouped-stacked($position, $radius: constants.$control-border-radius) {
   @include control-group-grouped-stacked-corners($position, $radius: $radius);
 }
+
+// Detached stacked variant for a control that carries a visible inline label: when
+// the ControlGroup wraps, such a control does NOT fuse into the control above it. It
+// keeps its rounded TOP corners (the ControlGroup restores the spacing above it and
+// drops the block-axis seam overlap), while its bottom corners still follow the
+// stacked treatment so a following fused control reads as one unit with it.
+@mixin control-group-grouped-stacked-detached-corners($position, $radius: constants.$control-border-radius) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+}

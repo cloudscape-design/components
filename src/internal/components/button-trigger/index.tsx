@@ -75,7 +75,11 @@ const ButtonTrigger = (
   // When inside a ControlGroup, the trigger keeps its own border but fuses with
   // neighbors (squared interior corners + collapsed seam). Its position decides
   // which sides.
-  const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+  const {
+    isInControlGroup,
+    position: controlGroupPosition,
+    hasInlineLabel: inControlGroupLabeled,
+  } = useControlGroupContext();
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -94,6 +98,7 @@ const ButtonTrigger = (
       inlineTokens && styles['inline-tokens'],
       isInControlGroup && styles['in-control-group'],
       isInControlGroup && controlGroupPosition && styles[`in-control-group-${controlGroupPosition}`],
+      isInControlGroup && inControlGroupLabeled && styles['in-control-group-labeled'],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,

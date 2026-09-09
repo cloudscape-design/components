@@ -153,7 +153,11 @@ function InternalInput(
   // When inside a ControlGroup, this control keeps its own border but drops the
   // radius and doubled border on the sides where it meets a neighbor, so the
   // group reads as one fused unit. Its position decides which sides.
-  const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+  const {
+    isInControlGroup,
+    position: controlGroupPosition,
+    hasInlineLabel: inControlGroupLabeled,
+  } = useControlGroupContext();
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
@@ -187,6 +191,7 @@ function InternalInput(
       __noBorderRadius && styles['input-has-no-border-radius'],
       isInControlGroup && styles['input-in-control-group'],
       isInControlGroup && controlGroupPosition && styles[`input-in-control-group-${controlGroupPosition}`],
+      isInControlGroup && inControlGroupLabeled && styles['input-in-control-group-labeled'],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -322,7 +327,8 @@ function InternalInput(
             isInControlGroup && styles['input-adorned-container-in-control-group'],
             isInControlGroup &&
               controlGroupPosition &&
-              styles[`input-adorned-container-in-control-group-${controlGroupPosition}`]
+              styles[`input-adorned-container-in-control-group-${controlGroupPosition}`],
+            isInControlGroup && inControlGroupLabeled && styles['input-adorned-container-in-control-group-labeled']
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}

@@ -204,4 +204,15 @@ $icon-offset: awsui.$space-xxxs;
       @include styles.control-group-grouped-responsive-focus('last');
     }
   }
+  // A labeled trigger (select/multiselect with an inline label) does not fuse into
+  // the control above it when the group wraps: restore its rounded top corners.
+  // Placed after the position rules so it wins.
+  &.in-control-group-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: awsui.$border-radius-input);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: awsui.$border-radius-input);
+      }
+    }
+  }
 }

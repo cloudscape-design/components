@@ -73,6 +73,15 @@
       margin-inline-start: 0;
       margin-block-start: calc(-1 * #{awsui.$border-width-field});
     }
+
+    // A control with a visible inline label does not fuse into the control above it
+    // when the group wraps: instead of overlapping the seam, keep a gap so it reads
+    // as a separate, detached control (its rounded top corners are restored by the
+    // control itself). Overrides the block overlap above (later + same specificity).
+    &.control-labeled.control-middle,
+    &.control-labeled.control-last {
+      margin-block-start: awsui.$space-scaled-xs;
+    }
   }
 }
 
