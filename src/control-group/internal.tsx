@@ -67,8 +67,11 @@ const InternalControlGroup = forwardRef(
     if (isDevelopment && !ariaLabel && !ariaLabelledby) {
       warnOnce('ControlGroup', 'You should provide either `ariaLabel` or `ariaLabelledby` to name the group.');
     }
-    if (isDevelopment && dismissible && !i18nStrings?.dismissAriaLabel) {
-      warnOnce('ControlGroup', 'You should provide `i18nStrings.dismissAriaLabel` when `dismissible` is set.');
+    if (isDevelopment && dismissible && !i18nStrings?.dismissText && !i18nStrings?.dismissAriaLabel) {
+      warnOnce(
+        'ControlGroup',
+        'You should provide `i18nStrings.dismissText` (or `i18nStrings.dismissAriaLabel`) to name the remove button when `dismissible` is set.'
+      );
     }
 
     const descriptionId = description ? `${groupId}-description` : undefined;
@@ -123,6 +126,14 @@ const InternalControlGroup = forwardRef(
               // previous control when the group wraps (stacks): it keeps its spacing
               // and its rounded top corners instead of collapsing the shared seam.
               const hasInlineLabel = hasInlineLabelProp(child);
+              // The control directly above a control that detaches when the group
+              // wraps must keep its bottom corners squared, so it does not round off
+              // against the gap. A control detaches if it has a visible inline label,
+              // or if it is the last real child followed by the standalone dismiss
+              // button.
+              const isLastRealChild = index === flattenedChildren.length - 1;
+              const precedesDetached =
+                hasInlineLabelProp(flattenedChildren[index + 1]) || (isLastRealChild && !!dismissible);
               return (
                 <div
                   key={key ? String(key) : undefined}
@@ -133,7 +144,9 @@ const InternalControlGroup = forwardRef(
                     testUtilStyles['control-group-item']
                   )}
                 >
-                  <ControlGroupContext.Provider value={{ isInControlGroup: true, position, hasInlineLabel }}>
+                  <ControlGroupContext.Provider
+                    value={{ isInControlGroup: true, position, hasInlineLabel, precedesDetached }}
+                  >
                     {child}
                   </ControlGroupContext.Provider>
                 </div>
@@ -144,20 +157,33 @@ const InternalControlGroup = forwardRef(
                 className={clsx(
                   styles.control,
                   styles[`control-${getPosition(controlCount - 1)}`],
+                  styles['control-standalone'],
                   testUtilStyles['control-group-item']
                 )}
               >
                 <ControlGroupContext.Provider
-                  value={{ isInControlGroup: true, position: getPosition(controlCount - 1) }}
+                  value={{
+                    isInControlGroup: true,
+                    position: getPosition(controlCount - 1),
+                    standaloneWhenStacked: true,
+                  }}
                 >
+                  {/*
+                    One button renders both the close icon and the "Remove" text.
+                    CSS shows only the icon (square icon-button look) while the group
+                    is laid out in a row, and swaps to the text (primary button) when
+                    the group wraps. See `in-control-group-standalone` in button styles.
+                  */}
                   <InternalButton
-                    variant="icon"
+                    variant="primary"
                     iconName="close"
                     formAction="none"
-                    ariaLabel={i18nStrings?.dismissAriaLabel}
+                    ariaLabel={i18nStrings?.dismissAriaLabel ?? i18nStrings?.dismissText}
                     className={testUtilStyles['dismiss-button']}
                     onClick={() => fireNonCancelableEvent(onDismiss)}
-                  />
+                  >
+                    {i18nStrings?.dismissText}
+                  </InternalButton>
                 </ControlGroupContext.Provider>
               </div>
             )}

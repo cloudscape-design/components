@@ -472,3 +472,12 @@ $inline-label-border-radius: 2px;
   border-start-start-radius: $radius;
   border-start-end-radius: $radius;
 }
+
+// Rounds the BOTTOM (block-end) corners of a control that sits directly above a
+// control that detaches when the group wraps (a labeled control, or the standalone
+// dismiss button). Since the control below is separated by a gap and no longer fused,
+// this control is the bottom of its own segment and should keep its rounded corners.
+@mixin control-group-grouped-stacked-precedes-detached-corners($position, $radius: constants.$control-border-radius) {
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}

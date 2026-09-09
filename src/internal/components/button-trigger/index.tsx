@@ -79,6 +79,7 @@ const ButtonTrigger = (
     isInControlGroup,
     position: controlGroupPosition,
     hasInlineLabel: inControlGroupLabeled,
+    precedesDetached: inControlGroupPrecedesLabeled,
   } = useControlGroupContext();
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
@@ -99,6 +100,7 @@ const ButtonTrigger = (
       isInControlGroup && styles['in-control-group'],
       isInControlGroup && controlGroupPosition && styles[`in-control-group-${controlGroupPosition}`],
       isInControlGroup && inControlGroupLabeled && styles['in-control-group-labeled'],
+      isInControlGroup && inControlGroupPrecedesLabeled && styles['in-control-group-precedes-labeled'],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,

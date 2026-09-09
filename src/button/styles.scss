@@ -274,6 +274,62 @@ $tokens: style-api.resolve($props, carrier);
       }
     }
   }
+  // The built-in dismiss button renders BOTH a close icon and a "Remove" text label
+  // in a single (primary) button, and switches presentation based on wrap state:
+  //   - Row (default): show only the icon and keep the square, field-styled icon
+  //     button produced by `.in-control-group` above (unchanged from before).
+  //   - Wrapped (stacked): show the text, hide the icon, and restore the primary
+  //     button appearance as a standalone, rounded, right-aligned button.
+  &.in-control-group-standalone {
+    // Row layout: hide the text so only the icon shows (square icon-button look).
+    // The button uses the primary variant (so it can show text when wrapped), so its
+    // primary colors would otherwise leak on hover/active in row mode — re-assert the
+    // field appearance across states to match the original icon button.
+    > .content {
+      display: none;
+    }
+    &,
+    &:hover,
+    &:active {
+      background-color: awsui.$color-background-input-default;
+      border-color: awsui.$color-border-input-default;
+      color: awsui.$color-text-interactive-default;
+    }
+
+    @container control-group #{styles.$control-group-stack-query} {
+      // Restore the full primary-variant appearance (all states), which the
+      // `.in-control-group` field styling had overridden, and let the button size to
+      // its label instead of the fixed square.
+      @include adjust-for-variant(map.get(constants.$variants, 'primary'));
+      inline-size: auto;
+      block-size: auto;
+      min-block-size: awsui.$size-vertical-input;
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
+      // All four corners rounded (standalone). Right-alignment and the gap above are
+      // handled by the ControlGroup slot.
+      border-start-start-radius: awsui.$border-radius-input;
+      border-start-end-radius: awsui.$border-radius-input;
+      border-end-start-radius: awsui.$border-radius-input;
+      border-end-end-radius: awsui.$border-radius-input;
+
+      // Swap to the text label; hide the close icon.
+      > .content {
+        display: inline;
+      }
+      > .icon {
+        display: none;
+      }
+      @include focus-visible.when-visible {
+        &::before {
+          border-start-start-radius: awsui.$border-radius-input;
+          border-start-end-radius: awsui.$border-radius-input;
+          border-end-start-radius: awsui.$border-radius-input;
+          border-end-end-radius: awsui.$border-radius-input;
+        }
+      }
+    }
+  }
 
   &.variant-icon,
   &.variant-inline-icon,
@@ -338,6 +394,16 @@ $tokens: style-api.resolve($props, carrier);
     margin-inline-start: auto;
     margin-inline-end: auto;
     inset-inline: 0;
+  }
+
+  // In row layout the standalone dismiss button shows only its icon (the text is
+  // hidden). It keeps `shouldHaveContent`, so `.button-no-text` is not applied and
+  // the icon retains the leading offset/trailing margin meant for an icon-with-text
+  // button — which pushes it off-center in the square. Neutralize that so it centers.
+  // Placed after the base `> .icon-left` rule to keep specificity in ascending order.
+  &.in-control-group-standalone > .icon-left {
+    inset-inline-start: 0;
+    margin-inline-end: 0;
   }
 }
 

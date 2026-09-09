@@ -36,8 +36,10 @@ export interface ControlGroupProps extends BaseComponentProps {
 
   /**
    * Renders a remove button as the last control in the group, fused with the
-   * other controls. Use `onDismiss` to handle activation and
-   * `i18nStrings.dismissAriaLabel` to provide its accessible label.
+   * other controls. Use `onDismiss` to handle activation,
+   * `i18nStrings.dismissText` to provide its visible label (for example
+   * "Remove"), and optionally `i18nStrings.dismissAriaLabel` to override its
+   * accessible name.
    */
   dismissible?: boolean;
 
@@ -90,7 +92,15 @@ export namespace ControlGroupProps {
     warningIconAriaLabel?: string;
 
     /**
+     * Visible text of the remove button rendered when `dismissible` is set
+     * (for example, "Remove"). It's also used as the button's accessible name
+     * unless `dismissAriaLabel` overrides it.
+     */
+    dismissText?: string;
+
+    /**
      * Provides an `aria-label` for the remove button rendered when `dismissible` is set.
+     * Use this to override the accessible name when it should differ from `dismissText`.
      */
     dismissAriaLabel?: string;
   }

@@ -139,7 +139,11 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
-    const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+    const {
+      isInControlGroup,
+      position: controlGroupPosition,
+      standaloneWhenStacked: inControlGroupStandalone,
+    } = useControlGroupContext();
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
@@ -203,6 +207,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-compact']]: __compact,
       [styles['in-control-group']]: isInControlGroup,
       [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
+      [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
       [styles.link]: isAnchor,
     });
 
