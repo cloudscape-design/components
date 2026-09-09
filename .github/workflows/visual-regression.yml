@@ -168,8 +168,8 @@ jobs:
 
   report:
     name: Generate Allure Report
-    if: always()
-    needs: [visual]
+    if: ${{ always() && needs.check-override.outputs.overridden != 'true' }}
+    needs: [check-override, visual]
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js
@@ -196,8 +196,8 @@ jobs:
 
   deploy-report:
     name: Deploy Allure Report
-    if: always()
-    needs: [report]
+    if: ${{ always() && needs.check-override.outputs.overridden != 'true' }}
+    needs: [check-override, report]
     uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
