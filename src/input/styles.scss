@@ -239,6 +239,17 @@
       }
     }
   }
+  // A control directly above a control that detaches when wrapping (a labeled control
+  // or the standalone dismiss button) is no longer fused to it, so it keeps its
+  // rounded bottom corners.
+  &.input-in-control-group-precedes-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+  }
 }
 
 // Same grouped treatment for the adorned (prefix/suffix) container, which owns
@@ -271,6 +282,14 @@
       @include styles.control-group-grouped-stacked-detached-corners('middle');
       &:focus-within {
         @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+  }
+  &.input-adorned-container-in-control-group-precedes-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
       }
     }
   }

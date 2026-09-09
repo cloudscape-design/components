@@ -215,4 +215,21 @@ $icon-offset: awsui.$space-xxxs;
       }
     }
   }
+  // A trigger directly above a control that detaches when wrapping (a labeled control
+  // or the standalone dismiss button) is no longer fused to it, so it keeps its
+  // rounded bottom corners.
+  &.in-control-group-precedes-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners(
+        'middle',
+        $radius: awsui.$border-radius-input
+      );
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners(
+          'middle',
+          $radius: awsui.$border-radius-input
+        );
+      }
+    }
+  }
 }

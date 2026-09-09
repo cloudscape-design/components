@@ -74,13 +74,23 @@
       margin-block-start: calc(-1 * #{awsui.$border-width-field});
     }
 
-    // A control with a visible inline label does not fuse into the control above it
-    // when the group wraps: instead of overlapping the seam, keep a gap so it reads
-    // as a separate, detached control (its rounded top corners are restored by the
-    // control itself). Overrides the block overlap above (later + same specificity).
+    // A control that detaches when the group wraps does not fuse into the control
+    // above it: instead of overlapping the seam, keep a gap so it reads as a separate
+    // control (its corners are restored by the control itself). Overrides the block
+    // overlap above (later + same specificity). This covers controls with a visible
+    // inline label and the built-in dismiss button, which becomes fully standalone.
     &.control-labeled.control-middle,
-    &.control-labeled.control-last {
+    &.control-labeled.control-last,
+    &.control-standalone.control-middle,
+    &.control-standalone.control-last {
       margin-block-start: awsui.$space-scaled-xs;
+    }
+
+    // The standalone dismiss button is right-aligned within its full-width row when
+    // the group wraps, instead of stretching across it.
+    &.control-standalone {
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }

@@ -23,6 +23,19 @@ export interface ControlGroupContextProps {
    * spacing and its rounded top corners instead of collapsing the shared seam.
    */
   hasInlineLabel?: boolean;
+  /**
+   * True when the NEXT control detaches when the group wraps (it has a visible inline
+   * label, or it is the built-in dismiss button, which becomes standalone). Such a
+   * control leaves a gap, so this control (its predecessor) must keep its bottom
+   * corners squared instead of rounding them off against the gap.
+   */
+  precedesDetached?: boolean;
+  /**
+   * True for the built-in dismiss button, which becomes a fully standalone control
+   * when the group wraps (stacks): a gap above it and all four corners rounded,
+   * instead of fusing to the control above it.
+   */
+  standaloneWhenStacked?: boolean;
 }
 
 export const ControlGroupContext = createContext<ControlGroupContextProps>({
