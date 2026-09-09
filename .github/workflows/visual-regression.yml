@@ -58,6 +58,8 @@ jobs:
           OVERRIDDEN=$(gh api \
             "repos/${REPO}/commits/${SHA}/status" \
             --jq 'any(.statuses[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
+          echo "Override status present for ${SHA}: ${OVERRIDDEN}"
+          echo "overridden=${OVERRIDDEN}" >> "$GITHUB_OUTPUT"
 
   visual:
     name: Visual regression (shard ${{ matrix.shard }})
