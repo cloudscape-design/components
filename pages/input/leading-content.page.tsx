@@ -83,6 +83,7 @@ export default function LeadingContentPage() {
   const [interactiveValue, setInteractiveValue] = useState('');
   const [textValue, setTextValue] = useState('');
   const [prefixSuffixValue, setPrefixSuffixValue] = useState('');
+  const [maxContentValue, setMaxContentValue] = useState('');
 
   const sharedInputProps: Partial<InputProps> = { type, disabled, readOnly, invalid, warning };
   const sharedFieldProps = {
@@ -204,6 +205,19 @@ export default function LeadingContentPage() {
               leadingContent={singleToken(disabled, readOnly)}
             />
           </div>
+        </FormField>
+
+        {/* 7. All slots at maximum content — exercises overflow and layout under load */}
+        <FormField label="Max content (prefix + leadingContent + suffix all overflowing)" {...sharedFieldProps}>
+          <Input
+            ariaLabel="Filter with max content"
+            value={maxContentValue}
+            onChange={({ detail }) => setMaxContentValue(detail.value)}
+            prefix="https://very-long-prefix-that-overflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflowsoverflows"
+            suffix=".ec2.internal.very-long-suffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffix"
+            {...sharedInputProps}
+            leadingContent={overflowTokens(disabled, readOnly)}
+          />
         </FormField>
       </SpaceBetween>
     </SimplePage>

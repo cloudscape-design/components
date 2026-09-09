@@ -324,7 +324,7 @@
   display: flex;
   align-items: center;
   flex-shrink: 1;
-  max-inline-size: calc(50% - 6rem);
+  max-inline-size: calc(30% - 6rem);
   min-inline-size: 0;
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
@@ -336,6 +336,13 @@
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
+
+  // Fade the inline-end edge to signal overflow content
+  mask-image: linear-gradient(270deg, transparent, white 20px, white);
+
+  @include styles.with-direction('rtl') {
+    mask-image: linear-gradient(-270deg, transparent, white 20px, white);
+  }
 }
 
 .input-adornment-content {

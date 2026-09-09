@@ -55,6 +55,7 @@ function TokenizedInput({
   const [announcement, setAnnouncement] = useState('');
   const inputRef = useRef<InputProps.Ref | null>(null);
   const tokenRefs = useRef<Array<HTMLElement | null>>([]);
+  const slotRef = useRef<HTMLSpanElement | null>(null);
 
   const focusTokenAt = useCallback((index: number) => {
     queueMicrotask(() => {
@@ -90,6 +91,15 @@ function TokenizedInput({
         return next;
       });
       setInputValue('');
+      // Scroll the slot to the right so the newly added token is visible.
+      // slotRef is the inner list span; its parent is the .input-leading-content
+      // wrapper which has overflow-x: auto.
+      queueMicrotask(() => {
+        const scrollable = slotRef.current?.parentElement;
+        if (scrollable) {
+          scrollable.scrollLeft = scrollable.scrollWidth;
+        }
+      });
     }
     if (event.detail.key === 'Backspace' && inputValue === '' && tokens.length > 0) {
       focusTokenAt(tokens.length - 1);
@@ -136,7 +146,12 @@ function TokenizedInput({
         warning={warning}
         leadingContent={
           tokens.length > 0 ? (
-            <span role="list" aria-label="Applied filters" style={{ display: 'flex', flexWrap: 'nowrap', gap: '4px' }}>
+            <span
+              role="list"
+              aria-label="Applied filters"
+              ref={slotRef}
+              style={{ display: 'flex', flexWrap: 'nowrap', gap: '4px' }}
+            >
               {tokens.map((token, index) => (
                 <span
                   key={token}
