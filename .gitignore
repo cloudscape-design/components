@@ -2,7 +2,6 @@ build
 node_modules
 coverage
 .idea
-tsconfig.tsbuildinfo
 # build output
 lib
 # generated sources

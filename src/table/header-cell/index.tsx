@@ -9,7 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
-import { IconGroup } from '../../icon-provider/icon-group';
+import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
@@ -42,6 +42,7 @@ export interface TableHeaderCellProps<ItemType> extends BaseHeaderCellProps {
   multiColumnSort?: TableProps.MultiColumnSort<ItemType>;
   i18nStrings?: TableProps.I18nStrings;
   ariaLabels?: TableProps.AriaLabels<ItemType>;
+  icons?: TableProps.Icons;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   isEditable?: boolean;
   columnId: PropertyKey;
@@ -91,6 +92,7 @@ export function TableHeaderCell<ItemType>({
   multiColumnSort,
   i18nStrings,
   ariaLabels,
+  icons,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -311,9 +313,8 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <IconGroup
-                groupName="sorting-indicator"
-                state={{ sortingState: sortingStatus }}
+              <CustomizableIcon
+                customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
                 name={getSortingIconName(sortingStatus)}
                 fallback={{ nativeAttributes: { 'data-awsui-motion-target': '' } }}
               />

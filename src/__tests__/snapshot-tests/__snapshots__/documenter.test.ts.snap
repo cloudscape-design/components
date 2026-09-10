@@ -13495,6 +13495,38 @@ slot (not with the deprecated \`header\`), and not with the navigation variant."
       "type": "string",
     },
     {
+      "description": "Custom icons, replacing the built-in ones. Use \`size="inherit"\` on a custom \`<Icon>\`
+(or provide a plain SVG) so it matches the default icon size.
+
+Supported icons:
+* \`expandToggle\` (({ expanded: boolean }) => ReactNode) - The expand/collapse toggle in the header.",
+      "inlineType": {
+        "name": "ExpandableSectionProps.Icons",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(state: { expanded: boolean; }) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "{ expanded: boolean; }",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "expandToggle",
+            "optional": true,
+            "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "icons",
+      "optional": true,
+      "type": "ExpandableSectionProps.Icons",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -16002,63 +16034,6 @@ exports[`Components definition for icon-provider matches the snapshot: icon-prov
       "name": "className",
       "optional": true,
       "type": "string",
-    },
-    {
-      "description": "Higher-precedence, role-based icon groups applied *on top* of \`icons\`.
-
-While \`icons\` replaces a glyph by name wherever it appears (including carets), \`iconGroups\` target
-specific, stateful roles — such as the expand/collapse toggle (\`expand-toggle\`) or the sorting
-indicator (\`sorting-indicator\`) — for cases when more precision is needed. An icon group only
-affects its role, so a \`sorting-indicator\` group never changes an unrelated caret used in a cell or header.
-
-Each icon group is a render function that receives the role's current state and returns the icon to
-display. Because the groups replace the default rendering entirely, the returned node is responsible
-for representing every state (including any expand/collapse animation). Return \`null\` from a renderer
-to fall back to what \`icons\` (or the default set) would render for that state.
-
-Icon groups are inherited by nested providers (closest provider wins). Set a specific group to
-\`null\` to reset it, or set the whole property to \`null\` to reset all groups.",
-      "inlineType": {
-        "name": "IconProviderProps.IconGroups",
-        "properties": [
-          {
-            "inlineType": {
-              "name": "IconGroupRenderer<"expand-toggle">",
-              "parameters": [
-                {
-                  "name": "state",
-                  "type": "IconGroupStates[K]",
-                },
-              ],
-              "returnType": "React.ReactNode",
-              "type": "function",
-            },
-            "name": "expand-toggle",
-            "optional": true,
-            "type": "IconGroupRenderer<"expand-toggle"> | null",
-          },
-          {
-            "inlineType": {
-              "name": "IconGroupRenderer<"sorting-indicator">",
-              "parameters": [
-                {
-                  "name": "state",
-                  "type": "IconGroupStates[K]",
-                },
-              ],
-              "returnType": "React.ReactNode",
-              "type": "function",
-            },
-            "name": "sorting-indicator",
-            "optional": true,
-            "type": "IconGroupRenderer<"sorting-indicator"> | null",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "iconGroups",
-      "optional": true,
-      "type": "IconProviderProps.IconGroups | null",
     },
     {
       "description": "Specifies icon overrides using existing icon names, for example, \`{'add-plus': <svg>...</svg>}\`.
@@ -29147,6 +29122,55 @@ When multi-column sorting is enabled it provides the sort UI labels:
       "type": "TableProps.I18nStrings",
     },
     {
+      "description": "Custom icons, replacing the built-in ones. Use \`size="inherit"\` on a custom \`<Icon>\`
+(or provide a plain SVG) so it matches the default icon size.
+
+Supported icons:
+* \`expandToggle\` (({ expanded: boolean }) => ReactNode) - The row expand/collapse toggle, used with expandable rows.
+* \`sortingIndicator\` (({ sortingState: 'sortable' | 'ascending' | 'descending' }) => ReactNode) - The sorting indicator in column headers.",
+      "inlineType": {
+        "name": "TableProps.Icons",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(state: { expanded: boolean; }) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "{ expanded: boolean; }",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "expandToggle",
+            "optional": true,
+            "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+          },
+          {
+            "inlineType": {
+              "name": "(state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "{ sortingState: "ascending" | "descending" | "sortable"; }",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "sortingIndicator",
+            "optional": true,
+            "type": "((state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "icons",
+      "optional": true,
+      "type": "TableProps.Icons",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -33844,6 +33868,38 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "TreeViewProps.I18nStrings<T>",
     },
     {
+      "description": "Custom icons, replacing the built-in ones. Use \`size="inherit"\` on a custom \`<Icon>\`
+(or provide a plain SVG) so it matches the default icon size.
+
+Supported icons:
+* \`expandToggle\` (({ expanded: boolean }) => ReactNode) - The item expand/collapse toggle.",
+      "inlineType": {
+        "name": "TreeViewProps.Icons",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(state: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": "TreeViewProps.ItemToggleRenderIconData",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "expandToggle",
+            "optional": true,
+            "type": "((state: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "icons",
+      "optional": true,
+      "type": "TreeViewProps.Icons",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -33885,7 +33941,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "(item: T, index: number) => TreeViewProps.TreeItem",
     },
     {
-      "deprecatedTag": "Use the \`IconProvider\` \`iconGroups\` property with the \`expand-toggle\` icon group instead.",
+      "deprecatedTag": "Use \`icons.expandToggle\` instead. This property is ignored when \`icons.expandToggle\` is set.",
       "description": "Use this property to display a custom icon in the toggle button.",
       "inlineType": {
         "name": "(data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",

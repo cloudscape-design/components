@@ -22,6 +22,7 @@ interface InternalTreeItemProps<T>
     | 'getItemId'
     | 'getItemChildren'
     | 'renderItemToggleIcon'
+    | 'icons'
     | 'i18nStrings'
     | 'connectorLines'
   > {
@@ -42,6 +43,7 @@ const InternalTreeItem = <T,>({
   expandedItems = [],
   connectorLines,
   renderItemToggleIcon,
+  icons,
   renderItem,
   getItemId,
   getItemChildren,
@@ -60,7 +62,7 @@ const InternalTreeItem = <T,>({
   const showVerticalConnectorLines = connectorLines === 'vertical' && isExpanded;
 
   let customIcon: React.ReactNode | undefined = undefined;
-  if (isExpandable && renderItemToggleIcon) {
+  if (isExpandable && renderItemToggleIcon && !icons?.expandToggle) {
     customIcon = renderItemToggleIcon({ expanded: isExpanded });
   }
 
@@ -93,6 +95,7 @@ const InternalTreeItem = <T,>({
               <ExpandToggleButton
                 isExpanded={isExpanded}
                 customIcon={customIcon}
+                expandToggleIcon={icons?.expandToggle}
                 expandButtonLabel={joinStrings(
                   i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
                   itemLabelToAnnounce
@@ -142,6 +145,7 @@ const InternalTreeItem = <T,>({
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
+                icons={icons}
                 allVisibleItemsIndices={allVisibleItemsIndices}
                 connectorLines={connectorLines}
               />

@@ -25,6 +25,7 @@ const InternalTreeView = <T,>({
   getItemChildren,
   onItemToggle,
   renderItemToggleIcon,
+  icons,
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
@@ -79,6 +80,7 @@ const InternalTreeView = <T,>({
                 getItemId={getItemId}
                 getItemChildren={getItemChildren}
                 renderItemToggleIcon={renderItemToggleIcon}
+                icons={icons}
                 allVisibleItemsIndices={allVisibleItemsIndices}
                 connectorLines={connectorLines}
               />

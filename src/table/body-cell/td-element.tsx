@@ -50,6 +50,7 @@ export interface TableTdElementProps {
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
+  expandToggleIcon?: (state: { expanded: boolean }) => React.ReactNode;
   verticalAlign?: TableProps.VerticalAlign;
   resizableColumns?: boolean;
   resizableStyle?: ColumnWidthStyle;
@@ -91,6 +92,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
+      expandToggleIcon,
       verticalAlign,
       resizableColumns,
       resizableStyle,
@@ -164,6 +166,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
               onExpandableItemToggle={onExpandableItemToggle}
               expandButtonLabel={expandButtonLabel}
               collapseButtonLabel={collapseButtonLabel}
+              expandToggleIcon={expandToggleIcon}
             />
           </div>
         )}

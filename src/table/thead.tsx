@@ -33,6 +33,7 @@ export interface TheadProps {
   multiColumnSort?: TableProps.MultiColumnSort<any>;
   i18nStrings?: TableProps.I18nStrings;
   ariaLabels?: TableProps.AriaLabels<any>;
+  icons?: TableProps.Icons;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   wrapLines: boolean | undefined;
@@ -72,6 +73,7 @@ const Thead = React.forwardRef(
       multiColumnSort,
       i18nStrings,
       ariaLabels,
+      icons,
       resizableColumns,
       variant,
       tableVariant,
@@ -180,6 +182,7 @@ const Thead = React.forwardRef(
                   multiColumnSort={multiColumnSort}
                   i18nStrings={i18nStrings}
                   ariaLabels={ariaLabels}
+                  icons={icons}
                   wrapLines={wrapLines}
                   colIndex={selectionType ? colIndex + 1 : colIndex}
                   columnId={columnId}
@@ -418,6 +421,7 @@ const Thead = React.forwardRef(
                     multiColumnSort={multiColumnSort}
                     i18nStrings={i18nStrings}
                     ariaLabels={ariaLabels}
+                    icons={icons}
                     wrapLines={wrapLines}
                     colIndex={selectionType ? colIndex + 1 : colIndex}
                     columnId={columnId}
