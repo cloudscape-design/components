@@ -16,7 +16,6 @@ export default function Dialog(props: DialogProps) {
     props: {},
     metadata: {
       hasHeaderActions: Boolean(props.headerActions),
-      hasContent: Boolean(props.children),
       hasFooter: Boolean(props.footer),
     },
   });
