@@ -96,6 +96,34 @@ describe('Modal component', () => {
       wrapper.findDismissButton().click();
       expect(onDismissSpy).toHaveBeenCalled();
     });
+
+    it('propagates one-theme class to the portaled root when one theme is active', () => {
+      const themeRoot = document.createElement('div');
+      themeRoot.className = 'awsui-one-theme';
+      document.body.appendChild(themeRoot);
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+
+      try {
+        render(<Modal visible={true} modalRoot={modalRoot} />);
+        expect(createWrapper(modalRoot).findModal()!.getElement()).toHaveClass('awsui-one-theme');
+      } finally {
+        modalRoot.remove();
+        themeRoot.remove();
+      }
+    });
+
+    it('does not stamp one-theme class on the portaled root when one theme is inactive', () => {
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+
+      try {
+        render(<Modal visible={true} modalRoot={modalRoot} />);
+        expect(createWrapper(modalRoot).findModal()!.getElement()).not.toHaveClass('awsui-one-theme');
+      } finally {
+        modalRoot.remove();
+      }
+    });
   });
 
   describe('no paddings', () => {

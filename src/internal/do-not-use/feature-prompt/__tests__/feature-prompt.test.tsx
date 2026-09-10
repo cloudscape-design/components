@@ -169,4 +169,27 @@ describe('FeaturePrompt', () => {
     expect(onDismissMock).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'click-outside' } }));
     expect(wrapper.findContent()).toBeFalsy();
   });
+
+  test('should propagate one-theme class to the portaled feature prompt when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+
+    try {
+      const { getByTestId, wrapper } = renderComponent(<TestComponent />);
+      getByTestId('trigger-button').click();
+
+      expect(wrapper.findContent()!.getElement().closest('.awsui-one-theme')).not.toBeNull();
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  test('should not stamp one-theme class on the portaled feature prompt when one theme is inactive', () => {
+    const { getByTestId, wrapper } = renderComponent(<TestComponent />);
+
+    getByTestId('trigger-button').click();
+
+    expect(wrapper.findContent()!.getElement().closest('.awsui-one-theme')).toBeNull();
+  });
 });

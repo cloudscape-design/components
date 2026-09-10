@@ -27,6 +27,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
+import { useOneThemePortalClass } from '../internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
@@ -78,14 +79,18 @@ type InternalModalProps = SomeRequired<ModalProps, 'size'> &
   };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
+  const portalClasses = useOneThemePortalClass();
+
   return (
     <Portal container={modalRoot} getContainer={getModalRoot} removeContainer={removeModalRoot}>
-      <PortaledModal {...rest} />
+      <PortaledModal {...rest} portalClasses={portalClasses} />
     </Portal>
   );
 }
 
-type PortaledModalProps = Omit<InternalModalProps, 'modalRoot' | 'getModalRoot' | 'removeModalRoot'>;
+type PortaledModalProps = Omit<InternalModalProps, 'modalRoot' | 'getModalRoot' | 'removeModalRoot'> & {
+  portalClasses: string;
+};
 
 // Separate component to prevent the Portal from getting in the way of refs, as it needs extra cycles to render the inner components.
 // useContainerQuery needs its targeted element to exist on the first render in order to work properly.
@@ -108,6 +113,7 @@ function PortaledModal({
   __subStepRef,
   __subStepFunnelProps,
   referrerId,
+  portalClasses,
   ...rest
 }: PortaledModalProps) {
   const instanceUniqueId = useUniqueId();
@@ -243,6 +249,7 @@ function PortaledModal({
             {...__funnelProps}
             {...__funnelStepProps}
             className={clsx(
+              portalClasses,
               styles.root,
               { [styles.hidden]: !visible },
               baseProps.className,
