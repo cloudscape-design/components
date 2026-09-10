@@ -305,15 +305,23 @@ function NestedInFormFieldControl() {
 }
 
 export default function () {
+  const examples = [
+    <InteractiveLabelMatcher key="matcher" prefix="matcher" labeled={false} />,
+    <InteractiveLabelMatcher key="labeledMatcher" prefix="labeledMatcher" labeled={true} />,
+    <InteractiveFilterControl key="filter" />,
+    <InteractiveDisabledControl key="disabled" />,
+    <InteractiveMultiselectControl key="multiselect" />,
+    <NestedInFormFieldControl key="nested" />,
+  ];
   return (
     <SimplePage title="Control group scenarios">
       <SpaceBetween size="xl">
-        <InteractiveLabelMatcher prefix="matcher" labeled={false} />
-        <InteractiveLabelMatcher prefix="labeledMatcher" labeled={true} />
-        <InteractiveFilterControl />
-        <InteractiveDisabledControl />
-        <InteractiveMultiselectControl />
-        <NestedInFormFieldControl />
+        {examples.map((example, index) => (
+          <React.Fragment key={example.key}>
+            {index > 0 && <hr />}
+            {example}
+          </React.Fragment>
+        ))}
       </SpaceBetween>
     </SimplePage>
   );
