@@ -32,25 +32,23 @@ $section-gap: awsui.$space-dialog-section-gap;
   flex-direction: column;
   min-inline-size: 0;
   max-inline-size: 100%;
-  background: awsui.$color-background-dialog;
+  background: awsui.$color-background-dialog-default;
   box-shadow: awsui.$shadow-dialog;
 
   &::before {
     @include styles.base-pseudo-element;
     @include apply-border-radius;
 
-    border-block: solid awsui.$border-width-dialog awsui.$color-border-dialog;
-    border-inline: solid awsui.$border-width-dialog awsui.$color-border-dialog;
+    border-block: solid awsui.$border-width-dialog awsui.$color-border-dialog-default;
+    border-inline: solid awsui.$border-width-dialog awsui.$color-border-dialog-default;
     box-shadow: none;
-  }
-
-  &:not(.refresh)::before {
-    border-block-start: solid awsui.$border-dialog-top-width awsui.$color-border-dialog-top;
   }
 }
 
 .header {
-  display: flex;
+  display: grid;
+  grid-template-areas: 'heading dismiss';
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
   column-gap: $header-gap;
 
@@ -59,21 +57,38 @@ $section-gap: awsui.$space-dialog-section-gap;
   padding-block: calc($section-padding-block - $action-padding-block);
   padding-inline-start: $section-padding-inline;
   padding-inline-end: calc($section-padding-inline - $action-padding-inline);
+
+  &.header-with-actions {
+    grid-template-areas: 'heading actions dismiss';
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  &.header-narrow {
+    grid-template-areas:
+      'heading dismiss'
+      '. actions';
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: $header-gap;
+  }
 }
 
 .header-content {
   @include styles.font-heading-s;
 
-  flex: 1;
+  grid-area: heading;
   min-inline-size: 0;
 }
 
 .header-actions {
+  grid-area: actions;
   display: flex;
-  flex-shrink: 0;
   align-items: center;
+  justify-self: end;
   column-gap: $header-gap;
-  margin-inline-start: auto;
+}
+
+.dismiss-button {
+  grid-area: dismiss;
 }
 
 .content,
