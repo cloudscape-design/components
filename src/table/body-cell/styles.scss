@@ -165,7 +165,10 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 
     // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
     // Adjust padding-bottom prevents a slight jump in the table height.
-    tr:last-child > &.is-visual-refresh {
+    // `:not(.body-cell-edit-active)`: the positional `tr:last-child` raises this rule's specificity
+    // above the edit-active padding rule, so an actively-edited selected last row must be excluded
+    // here or it would keep the selected padding instead of the editor's.
+    tr:last-child > &.is-visual-refresh:not(.body-cell-edit-active) {
       @include cell-base.cell-padding-block-end(
         calc(#{cell-base.$cell-vertical-padding} + #{awsui.$border-divider-list-width})
       );
