@@ -18,7 +18,6 @@ export interface BaseButtonProps {
   /**
    * Provides a reason why the button is disabled (only when `disabled` is `true`).
    * If provided, the button becomes focusable.
-   * Applicable for all button variants, except link.
    */
   disabledReason?: string;
   /**

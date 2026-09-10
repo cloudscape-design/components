@@ -33,6 +33,19 @@ export default function ButtonsScenario() {
           iconName="star"
           ariaLabel="Disabled reason icon button"
         />
+        <Button variant="link" disabled={true} disabledReason="disabled reason">
+          Link
+        </Button>
+        <Button variant="inline-link" disabled={true} disabledReason="disabled reason">
+          Inline link
+        </Button>
+        <Button
+          variant="inline-icon"
+          disabled={true}
+          disabledReason="disabled reason"
+          iconName="star"
+          ariaLabel="Disabled reason inline icon button"
+        />
       </ScreenshotArea>
     </article>
   );
