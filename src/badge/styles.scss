@@ -28,6 +28,13 @@ $tokens: style-api.resolve(style-api.combine(style-api.$surface, (padding-block,
   padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xs);
   color: style-api.value($tokens, color, awsui.$color-text-notification-default);
 
+  &.badge-with-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    column-gap: awsui.$space-xxs;
+  }
+
   &.badge-color-grey {
     background-color: style-api.value($tokens, background-color, awsui.$color-background-badge-grey);
     border-color: style-api.value($tokens, border-color, awsui.$color-border-badge-grey);

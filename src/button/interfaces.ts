@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../types/base-component';
+import { BaseIconProps } from '../types/base-icon';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../types/events';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../types/native-attributes';
 
-export interface BaseButtonProps {
+export interface BaseButtonProps extends BaseIconProps {
   /**
    * Renders the button as disabled and prevents clicks.
    */
@@ -30,16 +30,6 @@ export interface BaseButtonProps {
    * Specifies the text that screen reader announces when the button is in a loading state.
    */
   loadingText?: string;
-  /**
-   * Displays an icon next to the text. You can use the `iconAlign` property to position the icon.
-   */
-  iconName?: IconProps.Name;
-  /**
-   * Specifies the URL of a custom icon. Use this property if the icon you want isn't available.
-   *
-   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
-   */
-  iconUrl?: string;
   /**
    * Specifies the SVG of a custom icon.
    *
@@ -206,12 +196,6 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * * `inline-link` to display a tertiary button with no outer padding.
    */
   variant?: ButtonProps.Variant;
-
-  /**
-   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
-   * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
-   */
-  iconAlt?: string;
 
   /**
    * An object containing CSS properties to customize the button's visual appearance.

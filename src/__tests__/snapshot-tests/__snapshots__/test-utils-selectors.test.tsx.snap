@@ -77,6 +77,8 @@ exports[`test-utils selectors 1`] = `
   ],
   "badge": [
     "awsui_badge_1yjyg",
+    "awsui_content_1gxp6",
+    "awsui_icon_1gxp6",
   ],
   "bar-chart": [
     "awsui_root_1gfe1",
