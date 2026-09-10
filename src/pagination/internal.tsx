@@ -70,6 +70,7 @@ function PageButton({
         tabIndex={disabled ? -1 : 0}
         onClick={handleClick}
         aria-current={isCurrent}
+        data-awsui-motion-trigger="hover"
         {...(disabled
           ? {}
           : getAnalyticsMetadataAttribute({
@@ -259,7 +260,11 @@ const InternalPagination = React.forwardRef(
                 },
               }))}
         >
-          <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
+          <InternalIcon
+            name="angle-left"
+            variant={disabled ? 'disabled' : 'normal'}
+            nativeAttributes={{ 'data-awsui-motion-target': '' }}
+          />
         </PageButton>
         {pagesVariant === 'compact' ? (
           <li aria-disabled={disabled ? true : undefined} className={styles['pages-compact']}>
@@ -317,7 +322,11 @@ const InternalPagination = React.forwardRef(
                 },
               }))}
         >
-          <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
+          <InternalIcon
+            name="angle-right"
+            variant={disabled ? 'disabled' : 'normal'}
+            nativeAttributes={{ 'data-awsui-motion-target': '' }}
+          />
         </PageButton>
         {jumpToPage && (
           <li className={styles['jump-to-page']}>

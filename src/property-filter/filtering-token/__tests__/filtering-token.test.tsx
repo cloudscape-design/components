@@ -84,6 +84,13 @@ test('renders a single token as role="group" with token ARIA label and dismiss b
   expect(token.findTokenOperation()!).toBeNull();
 });
 
+test('the dismiss button is a hover-motion trigger and its close icon carries the motion target', () => {
+  const token = renderToken({ tokens: [token1] });
+  const removeButton = token.findRemoveButton()!.getElement();
+  expect(removeButton).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+  expect(removeButton.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+});
+
 test('renders 3 tokens as role="group" with group ARIA label no dismiss button', () => {
   const token = renderToken({ tokens: [token1, token2, token3], groupAriaLabel: 'filter group with 3 tokens' });
   expect(token.getElement()).toHaveAttribute('role', 'group');
