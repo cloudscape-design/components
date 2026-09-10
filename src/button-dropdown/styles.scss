@@ -90,7 +90,7 @@ $dropdown-trigger-icon-offset: 2px;
         }
 
         @include theming.one-theme-only {
-          padding-inline: awsui.$space-static-xs;
+          padding-inline: awsui.$space-button-icon-only-horizontal;
         }
       }
     }
