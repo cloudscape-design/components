@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import Button from '~components/button';
+import Container from '~components/container';
 import ControlGroup from '~components/control-group';
 import FormField from '~components/form-field';
+import Header from '~components/header';
 import Input from '~components/input';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SegmentedControl from '~components/segmented-control';
@@ -86,49 +87,40 @@ function InteractiveLabelMatcher<Prefix extends string>({ prefix, labeled }: { p
       ? 'Negative matchers can match a large number of series and may be slow.'
       : undefined;
 
-  return (
-    <SpaceBetween size="xs">
-      <Box variant="h3">Label matcher{labeled ? ' with visible labels' : ''} (triggers error / warning)</Box>
-      <Box variant="small">
-        Pick <code>=~</code> or <code>!~</code> and type an invalid regex (for example <code>[abc</code>) to trigger an
-        error. Pick <code>!=</code> or <code>!~</code> to trigger a warning. The remove button unmounts the group.
-      </Box>
-      {removed ? (
-        <Button iconName="add-plus" onClick={() => set(removedKey, false)}>
-          Restore label matcher
-        </Button>
-      ) : (
-        <ControlGroup
-          ariaLabel="Label matcher"
-          dismissible={true}
-          onDismiss={() => set(removedKey, true)}
-          i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label matcher' }}
-          errorText={errorText}
-          warningText={warningText}
-        >
-          <Input
-            inlineLabelText="Label"
-            value={name}
-            placeholder="Label name"
-            onChange={e => set(nameKey, e.detail.value)}
-          />
-          <Select
-            ariaLabel={labeled ? undefined : 'Operator'}
-            inlineLabelText={labeled ? 'Operator' : undefined}
-            selectedOption={operator}
-            options={OPERATORS}
-            onChange={e => set(operatorKey, e.detail.selectedOption.value ?? '=')}
-          />
-          <Input
-            ariaLabel={labeled ? undefined : 'Label value'}
-            inlineLabelText={labeled ? 'Value' : undefined}
-            value={value}
-            placeholder="Label value"
-            onChange={e => set(valueKey, e.detail.value)}
-          />
-        </ControlGroup>
-      )}
-    </SpaceBetween>
+  return removed ? (
+    <Button iconName="add-plus" onClick={() => set(removedKey, false)}>
+      Restore label matcher
+    </Button>
+  ) : (
+    <ControlGroup
+      ariaLabel="Label matcher"
+      dismissible={true}
+      onDismiss={() => set(removedKey, true)}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label matcher' }}
+      errorText={errorText}
+      warningText={warningText}
+    >
+      <Input
+        inlineLabelText="Label"
+        value={name}
+        placeholder="Label name"
+        onChange={e => set(nameKey, e.detail.value)}
+      />
+      <Select
+        ariaLabel={labeled ? undefined : 'Operator'}
+        inlineLabelText={labeled ? 'Operator' : undefined}
+        selectedOption={operator}
+        options={OPERATORS}
+        onChange={e => set(operatorKey, e.detail.selectedOption.value ?? '=')}
+      />
+      <Input
+        ariaLabel={labeled ? undefined : 'Label value'}
+        inlineLabelText={labeled ? 'Value' : undefined}
+        value={value}
+        placeholder="Label value"
+        onChange={e => set(valueKey, e.detail.value)}
+      />
+    </ControlGroup>
   );
 }
 
@@ -145,30 +137,24 @@ function InteractiveFilterControl() {
     mode === 'highlight' && query.trim().length === 0 ? 'Enter a query to highlight matching results.' : undefined;
 
   return (
-    <SpaceBetween size="xs">
-      <Box variant="h3">Filter results (input + segmented control)</Box>
-      <Box variant="small">
-        Choose <code>Highlight</code> with an empty query to trigger a warning.
-      </Box>
-      <ControlGroup ariaLabel="Filter results" warningText={warningText}>
-        <Input
-          ariaLabel="Filter results"
-          type="search"
-          value={query}
-          placeholder="Filter results"
-          onChange={e => setUrlParams({ filterQuery: e.detail.value })}
-        />
-        <SegmentedControl
-          selectedId={mode}
-          label="Filter mode"
-          options={[
-            { id: 'filter', text: 'Filter' },
-            { id: 'highlight', text: 'Highlight' },
-          ]}
-          onChange={e => setUrlParams({ filterMode: e.detail.selectedId })}
-        />
-      </ControlGroup>
-    </SpaceBetween>
+    <ControlGroup ariaLabel="Filter results" warningText={warningText}>
+      <Input
+        ariaLabel="Filter results"
+        type="search"
+        value={query}
+        placeholder="Filter results"
+        onChange={e => setUrlParams({ filterQuery: e.detail.value })}
+      />
+      <SegmentedControl
+        selectedId={mode}
+        label="Filter mode"
+        options={[
+          { id: 'filter', text: 'Filter' },
+          { id: 'highlight', text: 'Highlight' },
+        ]}
+        onChange={e => setUrlParams({ filterMode: e.detail.selectedId })}
+      />
+    </ControlGroup>
   );
 }
 
@@ -189,28 +175,16 @@ function InteractiveDisabledControl() {
       : undefined;
 
   return (
-    <SpaceBetween size="xs">
-      <Box variant="h3">Aggregation (with a disabled control)</Box>
-      <Box variant="small">
-        Choose <code>count_values</code> to trigger an error. The trailing &ldquo;By&rdquo; select is disabled.
-      </Box>
-      <ControlGroup ariaLabel="Aggregation" errorText={errorText}>
-        <Select
-          ariaLabel="Aggregation"
-          inlineLabelText="Aggregation"
-          selectedOption={aggregation}
-          options={AGGREGATIONS}
-          onChange={e => setUrlParams({ aggregation: e.detail.selectedOption.value ?? 'sum' })}
-        />
-        <Select
-          ariaLabel="By"
-          selectedOption={BY_OPTIONS[0]}
-          options={BY_OPTIONS}
-          onChange={() => {}}
-          disabled={true}
-        />
-      </ControlGroup>
-    </SpaceBetween>
+    <ControlGroup ariaLabel="Aggregation" errorText={errorText}>
+      <Select
+        ariaLabel="Aggregation"
+        inlineLabelText="Aggregation"
+        selectedOption={aggregation}
+        options={AGGREGATIONS}
+        onChange={e => setUrlParams({ aggregation: e.detail.selectedOption.value ?? 'sum' })}
+      />
+      <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} disabled={true} />
+    </ControlGroup>
   );
 }
 
@@ -229,32 +203,26 @@ function InteractiveMultiselectControl() {
 
   const warningText = selectedOptions.length === 0 ? 'Select at least one option.' : undefined;
 
-  return (
-    <SpaceBetween size="xs">
-      <Box variant="h3">Multiselect (inline tokens)</Box>
-      <Box variant="small">Clear the selection to trigger a warning. The remove button unmounts the group.</Box>
-      {removed ? (
-        <Button iconName="add-plus" onClick={() => setUrlParams({ optionsRemoved: false })}>
-          Restore multiselect
-        </Button>
-      ) : (
-        <ControlGroup
-          ariaLabel="Options"
-          dismissible={true}
-          onDismiss={() => setUrlParams({ optionsRemoved: true })}
-          i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove options' }}
-          warningText={warningText}
-        >
-          <Multiselect
-            ariaLabel="Options"
-            inlineTokens={true}
-            selectedOptions={selectedOptions}
-            options={MULTI_OPTIONS}
-            onChange={e => setUrlParams({ options: e.detail.selectedOptions.map(option => option.value).join(',') })}
-          />
-        </ControlGroup>
-      )}
-    </SpaceBetween>
+  return removed ? (
+    <Button iconName="add-plus" onClick={() => setUrlParams({ optionsRemoved: false })}>
+      Restore multiselect
+    </Button>
+  ) : (
+    <ControlGroup
+      ariaLabel="Options"
+      dismissible={true}
+      onDismiss={() => setUrlParams({ optionsRemoved: true })}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove options' }}
+      warningText={warningText}
+    >
+      <Multiselect
+        ariaLabel="Options"
+        inlineTokens={true}
+        selectedOptions={selectedOptions}
+        options={MULTI_OPTIONS}
+        onChange={e => setUrlParams({ options: e.detail.selectedOptions.map(option => option.value).join(',') })}
+      />
+    </ControlGroup>
   );
 }
 
@@ -274,53 +242,102 @@ function NestedInFormFieldControl() {
   const state = FIELD_STATES.find(option => option.value === urlParams.fieldState) ?? FIELD_STATES[0];
 
   return (
-    <SpaceBetween size="xs">
-      <Box variant="h3">ControlGroup nested in a FormField</Box>
-      <Box variant="small">
-        Toggle the FormField&rsquo;s validation state. The message renders once below the group, and the invalid /
-        warning styling propagates to every control in the group.
-      </Box>
-      <SpaceBetween size="s">
-        <Select
-          ariaLabel="FormField validation state"
-          selectedOption={state}
-          options={FIELD_STATES}
-          onChange={e => setUrlParams({ fieldState: e.detail.selectedOption.value ?? 'none' })}
-        />
-        <FormField
-          label="Label"
-          description="A ControlGroup rendered as this FormField's control."
-          errorText={state.value === 'error' ? 'This field has a FormField-level error.' : undefined}
-          warningText={state.value === 'warning' ? 'This field has a FormField-level warning.' : undefined}
-        >
-          <ControlGroup ariaLabel="Label matcher">
-            <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={() => {}} />
-            <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
-            <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
-          </ControlGroup>
-        </FormField>
-      </SpaceBetween>
+    <SpaceBetween size="s">
+      <Select
+        ariaLabel="FormField validation state"
+        selectedOption={state}
+        options={FIELD_STATES}
+        onChange={e => setUrlParams({ fieldState: e.detail.selectedOption.value ?? 'none' })}
+      />
+      <FormField
+        label="Label"
+        description="A ControlGroup rendered as this FormField's control."
+        errorText={state.value === 'error' ? 'This field has a FormField-level error.' : undefined}
+        warningText={state.value === 'warning' ? 'This field has a FormField-level warning.' : undefined}
+      >
+        <ControlGroup ariaLabel="Label matcher">
+          <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={() => {}} />
+          <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+          <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
+        </ControlGroup>
+      </FormField>
     </SpaceBetween>
   );
 }
 
+interface Scenario {
+  key: string;
+  title: string;
+  description: React.ReactNode;
+  content: React.ReactNode;
+}
+
+const scenarios: Scenario[] = [
+  {
+    key: 'matcher',
+    title: 'Label matcher (triggers error / warning)',
+    description: (
+      <>
+        Pick <code>=~</code> or <code>!~</code> and type an invalid regex (for example <code>[abc</code>) to trigger an
+        error. Pick <code>!=</code> or <code>!~</code> to trigger a warning. The remove button unmounts the group.
+      </>
+    ),
+    content: <InteractiveLabelMatcher prefix="matcher" labeled={false} />,
+  },
+  {
+    key: 'labeledMatcher',
+    title: 'Label matcher with visible labels (triggers error / warning)',
+    description: (
+      <>
+        Same as above, but every control shows a visible inline label. Pick <code>=~</code> or <code>!~</code> and type
+        an invalid regex to trigger an error; pick <code>!=</code> or <code>!~</code> to trigger a warning.
+      </>
+    ),
+    content: <InteractiveLabelMatcher prefix="labeledMatcher" labeled={true} />,
+  },
+  {
+    key: 'filter',
+    title: 'Filter results (input + segmented control)',
+    description: (
+      <>
+        Choose <code>Highlight</code> with an empty query to trigger a warning.
+      </>
+    ),
+    content: <InteractiveFilterControl />,
+  },
+  {
+    key: 'disabled',
+    title: 'Aggregation (with a disabled control)',
+    description: (
+      <>
+        Choose <code>count_values</code> to trigger an error. The trailing &ldquo;By&rdquo; select is disabled.
+      </>
+    ),
+    content: <InteractiveDisabledControl />,
+  },
+  {
+    key: 'multiselect',
+    title: 'Multiselect (inline tokens)',
+    description: 'Clear the selection to trigger a warning. The remove button unmounts the group.',
+    content: <InteractiveMultiselectControl />,
+  },
+  {
+    key: 'nested',
+    title: 'ControlGroup nested in a FormField',
+    description:
+      "Toggle the FormField's validation state. The message renders once below the group, and the invalid / warning styling propagates to every control in the group.",
+    content: <NestedInFormFieldControl />,
+  },
+];
+
 export default function () {
-  const examples = [
-    <InteractiveLabelMatcher key="matcher" prefix="matcher" labeled={false} />,
-    <InteractiveLabelMatcher key="labeledMatcher" prefix="labeledMatcher" labeled={true} />,
-    <InteractiveFilterControl key="filter" />,
-    <InteractiveDisabledControl key="disabled" />,
-    <InteractiveMultiselectControl key="multiselect" />,
-    <NestedInFormFieldControl key="nested" />,
-  ];
   return (
     <SimplePage title="Control group scenarios">
-      <SpaceBetween size="xl">
-        {examples.map((example, index) => (
-          <React.Fragment key={example.key}>
-            {index > 0 && <hr />}
-            {example}
-          </React.Fragment>
+      <SpaceBetween size="l">
+        {scenarios.map(scenario => (
+          <Container key={scenario.key} header={<Header description={scenario.description}>{scenario.title}</Header>}>
+            {scenario.content}
+          </Container>
         ))}
       </SpaceBetween>
     </SimplePage>
