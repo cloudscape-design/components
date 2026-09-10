@@ -352,7 +352,11 @@ $inline-label-border-radius: 2px;
   padding-block-end: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
-  z-index: 1;
+  // Sit above the field, including when the field is raised (`position: relative;
+  // z-index: 1`) on focus inside a ControlGroup. Otherwise the focused control's
+  // focus ring would paint over the label, since an equal z-index resolves in
+  // favor of the later element in DOM order (the field comes after the label).
+  z-index: 2;
 }
 
 @mixin inline-label-disabled {
@@ -361,4 +365,128 @@ $inline-label-border-radius: 2px;
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
     awsui.$color-background-input-disabled
   );
+}
+
+// Corner radii for a control fused with horizontal neighbors: keep the corners on
+// the group's outer edge and square the interior (seam) corners. `$position` is
+// one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-corners($position, $radius: constants.$control-border-radius) {
+  @if $position == 'first' {
+    border-start-start-radius: $radius;
+    border-end-start-radius: $radius;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  } @else if $position == 'last' {
+    border-start-end-radius: $radius;
+    border-end-end-radius: $radius;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  } @else if $position == 'middle' {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  } @else if $position == 'only' {
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+  }
+}
+
+// Groups a bordered control with its horizontal neighbors inside a ControlGroup:
+// squared interior corners only. The shared seam is collapsed by the ControlGroup
+// at the SLOT level (each non-first slot overlaps its predecessor by one border
+// width), so every control keeps its normal full border on all sides. Doing the
+// overlap on the slot rather than on the control's own box keeps it identical for
+// every control type (auto-width input vs width:100% select trigger) and makes the
+// geometry identical at rest and on focus, so showing the focus ring never shifts
+// the control. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped($position, $radius: constants.$control-border-radius) {
+  @include control-group-grouped-corners($position, $radius: $radius);
+}
+
+// Responsive grouped treatment: horizontal (inline-axis) fusing by default, and
+// vertical (block-axis) fusing once the ControlGroup stacks on small screens.
+// Use this at a control's `-in-control-group-{position}` selector so its corner
+// squaring follows the group's layout direction. `$position` is one of
+// 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-responsive($position, $radius: constants.$control-border-radius) {
+  @include control-group-grouped($position, $radius: $radius);
+
+  // Flip the squared corners to the block axis when the ControlGroup's own
+  // container (not the viewport) is too narrow to lay the controls out in a row.
+  @container control-group #{constants.$control-group-stack-query} {
+    @include control-group-grouped-stacked($position, $radius: $radius);
+  }
+}
+
+// Focus variant of the responsive grouped treatment. The seam border is always in
+// the layout with its full border on every side; the shared seam is collapsed by a
+// one-border-width slot overlap in the ControlGroup, so geometry does not change
+// between rest and focus and the focus ring never shifts the control. This variant
+// only re-squares the interior corners, which the control's own focus styles would
+// otherwise round back to full radii. The focused slot is raised (z-index above the
+// neighbor), so the full, colored focus border paints over the seam without doubling
+// it. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-responsive-focus($position, $radius: constants.$control-border-radius) {
+  @include control-group-grouped-corners($position, $radius: $radius);
+
+  @container control-group #{constants.$control-group-stack-query} {
+    @include control-group-grouped-stacked-corners($position, $radius: $radius);
+  }
+}
+
+// Corner radii for a control fused with block-axis (stacked) neighbors: keep the
+// corners on the group's outer (top/bottom) edge and square the interior corners.
+@mixin control-group-grouped-stacked-corners($position, $radius: constants.$control-border-radius) {
+  @if $position == 'first' {
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  } @else if $position == 'last' {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+  } @else if $position == 'middle' {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  } @else if $position == 'only' {
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+  }
+}
+
+// Block-axis variant used when a ControlGroup stacks vertically: square the corners
+// on the block axis instead of the inline axis. The seam overlap itself is handled
+// at the slot level by the ControlGroup (it switches the overlap from the inline to
+// the block axis under the same container query), so this only needs the corners.
+// `$position` is one of 'first' | 'middle' | 'last' | 'only'.
+@mixin control-group-grouped-stacked($position, $radius: constants.$control-border-radius) {
+  @include control-group-grouped-stacked-corners($position, $radius: $radius);
+}
+
+// Detached stacked variant for a control that carries a visible inline label: when
+// the ControlGroup wraps, such a control does NOT fuse into the control above it. It
+// keeps its rounded TOP corners (the ControlGroup restores the spacing above it and
+// drops the block-axis seam overlap), while its bottom corners still follow the
+// stacked treatment so a following fused control reads as one unit with it.
+@mixin control-group-grouped-stacked-detached-corners($position, $radius: constants.$control-border-radius) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+}
+
+// Rounds the BOTTOM (block-end) corners of a control that sits directly above a
+// control that detaches when the group wraps (a labeled control, or the standalone
+// dismiss button). Since the control below is separated by a gap and no longer fused,
+// this control is the bottom of its own segment and should keep its rounded corners.
+@mixin control-group-grouped-stacked-precedes-detached-corners($position, $radius: constants.$control-border-radius) {
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
 }

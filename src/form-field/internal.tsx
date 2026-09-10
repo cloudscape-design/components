@@ -54,13 +54,13 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
 
   return (
     <>
-      <div id={id} className={styles.error}>
+      <div id={id} className={clsx(styles.error, testStyles.error)}>
         <div className={styles['error-icon-shake-wrapper']}>
           <div className={styles['error-icon-scale-wrapper']}>
             <InternalIcon name="status-negative" size="small" ariaLabel={i18nErrorIconAriaLabel} />
           </div>
         </div>
-        <span className={styles.error__message} ref={contentRef}>
+        <span className={clsx(styles.error__message, testStyles['error-message'])} ref={contentRef}>
           {children}
         </span>
       </div>
@@ -77,13 +77,13 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
 
   return (
     <>
-      <div id={id} className={styles.warning}>
+      <div id={id} className={clsx(styles.warning, testStyles.warning)}>
         <div className={styles['warning-icon-shake-wrapper']}>
           <div className={styles['warning-icon-scale-wrapper']}>
             <InternalIcon name="status-warning" size="small" ariaLabel={i18nWarningIconAriaLabel} />
           </div>
         </div>
-        <span className={styles.warning__message} ref={contentRef}>
+        <span className={clsx(styles.warning__message, testStyles['warning-message'])} ref={contentRef}>
           {children}
         </span>
       </div>
@@ -282,7 +282,7 @@ export default function InternalFormField({
       </div>
 
       {(constraintText || characterCountText || errorText || warningText) && (
-        <div className={styles.hints}>
+        <div className={clsx(styles.hints, testStyles.hints)}>
           {errorText && (
             <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
               {errorText}

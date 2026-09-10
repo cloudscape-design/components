@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalFormField from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalSelect, { InternalSelectProps } from '../select/internal';
@@ -27,6 +28,10 @@ export default function InternalSegmentedControl({
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
 
+  // When inside a ControlGroup, the segment wrapper fuses with its neighbors
+  // (squared interior corners + collapsed seam). Its position decides which sides.
+  const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+
   const selectOptions = (options || []).map(option => {
     const label = option.text || option.iconAlt;
     return { ...option, label, value: option.id };
@@ -45,7 +50,11 @@ export default function InternalSegmentedControl({
   };
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, isInControlGroup && styles['in-control-group'])}
+      ref={__internalRootRef}
+    >
       <InternalSegmentedControlComponent
         selectedId={selectedId}
         options={options}
@@ -53,6 +62,7 @@ export default function InternalSegmentedControl({
         ariaLabelledby={ariaLabelledby}
         onChange={onChange}
         style={style}
+        controlGroupPosition={isInControlGroup ? controlGroupPosition : undefined}
       />
       <div className={styles.select}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}

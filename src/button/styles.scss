@@ -171,6 +171,166 @@ $tokens: style-api.resolve($props, carrier);
     text-align: center;
   }
 
+  // Inside a ControlGroup the button renders a field-style border (icon buttons
+  // are normally borderless) so it fuses flush with the neighboring controls.
+  // It is square (width == height == control height), interior corners are
+  // squared and the shared seam border is collapsed. A focused button raises
+  // above its neighbors so its focus ring is not clipped, and the ring hugs the
+  // square edges (zero gutter) instead of the default rounded icon-button ring.
+  &.in-control-group {
+    // Match the field controls (input, select) so heights and border widths line up.
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+    background-color: awsui.$color-background-input-default;
+    box-sizing: border-box;
+    // Square: equal block and inline size, matching the field control height.
+    min-block-size: awsui.$size-vertical-input;
+    block-size: awsui.$size-vertical-input;
+    inline-size: awsui.$size-vertical-input;
+    padding-inline: 0;
+    // Center the icon within the square.
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    // When the group stacks (its container is narrow), the remove button fills
+    // the row like the other controls instead of staying a square.
+    @container control-group #{styles.$control-group-stack-query} {
+      inline-size: 100%;
+    }
+
+    // Keep the field border on hover/active; icon buttons otherwise clear it to transparent.
+    &:hover,
+    &:active {
+      border-color: awsui.$color-border-input-default;
+    }
+
+    // The focus ring hugs the square edges (no gutter). Its corner radius matches
+    // the button's own grouped corners, set per position below.
+    @include focus-visible.when-visible {
+      position: relative;
+      z-index: 1;
+      @include style-api.focus-highlight($gutter-block: 0, $gutter-inline: 0, $radius: 0);
+      // The button is an inline-flex container (to center the icon); a percentage
+      // size on the abspos ring can resolve to 0 there, so pin the ring to the
+      // button box directly.
+      &::before {
+        inset: 0;
+        inline-size: auto;
+        block-size: auto;
+      }
+    }
+  }
+  &.in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    // Ring rounds only the leading corners, matching the button (inline axis by
+    // default, block axis once the group stacks).
+    @include focus-visible.when-visible {
+      &::before {
+        border-start-start-radius: awsui.$border-radius-input;
+        border-end-start-radius: awsui.$border-radius-input;
+      }
+      @container control-group #{styles.$control-group-stack-query} {
+        &::before {
+          border-start-start-radius: awsui.$border-radius-input;
+          border-start-end-radius: awsui.$border-radius-input;
+          border-end-start-radius: 0;
+          border-end-end-radius: 0;
+        }
+      }
+    }
+  }
+  &.in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+  }
+  &.in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    // Ring rounds only the trailing corners, matching the button (inline axis by
+    // default, block axis once the group stacks).
+    @include focus-visible.when-visible {
+      &::before {
+        border-start-end-radius: awsui.$border-radius-input;
+        border-end-end-radius: awsui.$border-radius-input;
+      }
+      @container control-group #{styles.$control-group-stack-query} {
+        &::before {
+          border-start-start-radius: 0;
+          border-start-end-radius: 0;
+          border-end-start-radius: awsui.$border-radius-input;
+          border-end-end-radius: awsui.$border-radius-input;
+        }
+      }
+    }
+  }
+  &.in-control-group-only {
+    @include styles.control-group-grouped-responsive('only');
+    // Ring rounds all corners, matching the standalone button.
+    @include focus-visible.when-visible {
+      &::before {
+        border-start-start-radius: awsui.$border-radius-input;
+        border-start-end-radius: awsui.$border-radius-input;
+        border-end-start-radius: awsui.$border-radius-input;
+        border-end-end-radius: awsui.$border-radius-input;
+      }
+    }
+  }
+  // The built-in dismiss button renders BOTH a close icon and a "Remove" text label
+  // in a single (primary) button, and switches presentation based on wrap state:
+  //   - Row (default): show only the icon and keep the square, field-styled icon
+  //     button produced by `.in-control-group` above (unchanged from before).
+  //   - Wrapped (stacked): show the text, hide the icon, and restore the primary
+  //     button appearance as a standalone, rounded, right-aligned button.
+  &.in-control-group-standalone {
+    // Row layout: hide the text so only the icon shows (square icon-button look).
+    // The button uses the primary variant (so it can show text when wrapped), so its
+    // primary colors would otherwise leak on hover/active in row mode — re-assert the
+    // field appearance across states to match the original icon button.
+    > .content {
+      display: none;
+    }
+    &,
+    &:hover,
+    &:active {
+      background-color: awsui.$color-background-input-default;
+      border-color: awsui.$color-border-input-default;
+      color: awsui.$color-text-interactive-default;
+    }
+
+    @container control-group #{styles.$control-group-stack-query} {
+      // Restore the full primary-variant appearance (all states), which the
+      // `.in-control-group` field styling had overridden, and let the button size to
+      // its label instead of the fixed square.
+      @include adjust-for-variant(map.get(constants.$variants, 'primary'));
+      inline-size: auto;
+      block-size: auto;
+      min-block-size: awsui.$size-vertical-input;
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
+      // All four corners rounded (standalone). Right-alignment and the gap above are
+      // handled by the ControlGroup slot.
+      border-start-start-radius: awsui.$border-radius-input;
+      border-start-end-radius: awsui.$border-radius-input;
+      border-end-start-radius: awsui.$border-radius-input;
+      border-end-end-radius: awsui.$border-radius-input;
+
+      // Swap to the text label; hide the close icon.
+      > .content {
+        display: inline;
+      }
+      > .icon {
+        display: none;
+      }
+      @include focus-visible.when-visible {
+        &::before {
+          border-start-start-radius: awsui.$border-radius-input;
+          border-start-end-radius: awsui.$border-radius-input;
+          border-end-start-radius: awsui.$border-radius-input;
+          border-end-end-radius: awsui.$border-radius-input;
+        }
+      }
+    }
+  }
+
   &.variant-icon,
   &.variant-inline-icon,
   &.variant-inline-icon-pointer-target,
@@ -234,6 +394,16 @@ $tokens: style-api.resolve($props, carrier);
     margin-inline-start: auto;
     margin-inline-end: auto;
     inset-inline: 0;
+  }
+
+  // In row layout the standalone dismiss button shows only its icon (the text is
+  // hidden). It keeps `shouldHaveContent`, so `.button-no-text` is not applied and
+  // the icon retains the leading offset/trailing margin meant for an icon-with-text
+  // button — which pushes it off-center in the square. Neutralize that so it centers.
+  // Placed after the base `> .icon-left` rule to keep specificity in ascending order.
+  &.in-control-group-standalone > .icon-left {
+    inset-inline-start: 0;
+    margin-inline-end: 0;
   }
 }
 

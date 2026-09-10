@@ -1,0 +1,123 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: block;
+  // Establish a query container so the group's responsiveness follows the width
+  // available in its parent, not the viewport. The child controls flip their
+  // fused corners to the block axis via `@container control-group (...)`.
+  container: control-group / inline-size;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // Align controls along their bottom edge so their field boxes line up even when
+  // one control is taller (for example, a control with an inline label that sits
+  // above its field). The label floats above; the fields stay on one line.
+  align-items: flex-end;
+  // The group only lays the controls out; each control owns its own border and
+  // radius (and collapses the shared seams itself via ControlGroupContext), so
+  // the group does not shrink or stretch to a shared border box.
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+.control {
+  min-inline-size: 0;
+  // Raise the focused control's slot above its neighbors so its focus ring is
+  // painted over the adjacent control's seam border (stacking must happen at the
+  // slot level — raising the control's inner element only affects its own slot).
+  position: relative;
+  // Establish a stacking context per slot so a control's internal z-indexes (for
+  // example an inline label's `z-index`) stay contained within its own slot and
+  // cannot paint over adjacent controls.
+  isolation: isolate;
+
+  &:focus-within {
+    z-index: 1;
+  }
+
+  &:empty {
+    display: none;
+  }
+
+  // Collapse the shared seam at the SLOT level: overlap each non-first slot onto
+  // its predecessor by one border width, so the two adjacent 1px borders coincide
+  // into a single 1px seam. Doing this on the slot (a plain flex item) rather than
+  // on the control's inner element keeps it identical for every control type —
+  // input, select trigger, segmented control, button — regardless of whether the
+  // inner element is auto-width or width:100%. The overlap is constant at rest and
+  // on focus, so showing the focus ring never shifts a control; the focused slot is
+  // raised (z-index above) so its full, colored border paints over the neighbor's
+  // seam without doubling.
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+  }
+}
+
+// When stacked, the seam is on the block axis: overlap each non-first slot onto the
+// one above it instead, and drop the inline overlap.
+@container control-group #{styles.$control-group-stack-query} {
+  .control {
+    &.control-middle,
+    &.control-last {
+      margin-inline-start: 0;
+      margin-block-start: calc(-1 * #{awsui.$border-width-field});
+    }
+
+    // A control that detaches when the group wraps does not fuse into the control
+    // above it: instead of overlapping the seam, keep a gap so it reads as a separate
+    // control (its corners are restored by the control itself). Overrides the block
+    // overlap above (later + same specificity). This covers controls with a visible
+    // inline label and the built-in dismiss button, which becomes fully standalone.
+    &.control-labeled.control-middle,
+    &.control-labeled.control-last,
+    &.control-standalone.control-middle,
+    &.control-standalone.control-last {
+      margin-block-start: awsui.$space-scaled-xs;
+    }
+
+    // The standalone dismiss button is right-aligned within its full-width row when
+    // the group wraps, instead of stretching across it.
+    &.control-standalone {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.hints {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
+.description {
+  @include styles.form-control-description;
+}
+
+/*
+ * Responsiveness: when the group's own container gets narrow, the controls go
+ * full-width and stack vertically. Each control's own seam styling switches from
+ * the inline axis to the block axis (handled per-control via container queries),
+ * so the group just changes direction.
+ */
+@container control-group #{styles.$control-group-stack-query} {
+  .group {
+    flex-direction: column;
+    // Stacked controls fill the width; bottom-alignment no longer applies.
+    align-items: stretch;
+    inline-size: 100%;
+  }
+
+  .control {
+    inline-size: 100%;
+  }
+}

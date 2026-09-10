@@ -10678,6 +10678,132 @@ Note that the secondary header will not have a high-contrast treatement, even if
 }
 `;
 
+exports[`Components definition for control-group matches the snapshot: control-group 1`] = `
+{
+  "dashCaseName": "control-group",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user activates the remove button rendered by \`dismissible\`.",
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [],
+  "name": "ControlGroup",
+  "properties": [
+    {
+      "description": "Adds an \`aria-label\` to the group element. The group is rendered with
+\`role="group"\`, so this label provides the accessible name that
+announces the grouped controls as a single unit.
+
+Use this to give each control group a unique, descriptive name
+(for example, \`"Label matcher"\`). Provide either \`ariaLabel\` or
+\`ariaLabelledby\`. This does not name the individual controls: each control
+still needs its own accessible name.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` property on the group element. Use this instead of
+\`ariaLabel\` when the group is named by a visible element elsewhere on the page
+(pass that element's \`id\`). Provide either \`ariaLabel\` or \`ariaLabelledby\`.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Renders a remove button as the last control in the group, fused with the
+other controls. Use \`onDismiss\` to handle activation and
+\`i18nStrings.dismissAriaLabel\` to provide its accessible label.",
+      "name": "dismissible",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ControlGroupProps.I18nStrings",
+        "properties": [
+          {
+            "name": "dismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ControlGroupProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The controls that make up the group (for example, \`Input\`, \`Select\`,
+\`Multiselect\`, or \`SegmentedControl\`). They render in DOM order, so keyboard
+\`Tab\` navigation flows through them naturally, and their borders are fused
+into a single visual unit.",
+      "displayName": "controls",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Detailed information about the group that's displayed below the controls.
+It's associated with the group through \`aria-describedby\`.",
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "description": "Text that displays as a group-level validation error message. If this is
+set to a non-empty string, the group renders in an invalid state and the
+message is associated with the group through \`aria-describedby\`.
+
+A group-level error takes precedence over a group-level warning.",
+      "isDefault": false,
+      "name": "errorText",
+    },
+    {
+      "description": "Text that displays as a group-level validation warning message. If this is
+set to a non-empty string, the group renders in a warning state and the
+message is associated with the group through \`aria-describedby\`.
+
+It's not shown when \`errorText\` is also set.",
+      "isDefault": false,
+      "name": "warningText",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
 {
   "dashCaseName": "copy-to-clipboard",
@@ -39787,6 +39913,76 @@ Note that, despite its typings, this may return null for group items since group
     {
       "methods": [
         {
+          "description": "Finds all control slots (one per child control) in DOM order.",
+          "name": "findControls",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the group-level description, if present.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the remove button rendered when the \`dismissible\` prop is set, if present.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the group-level error message text, if present.",
+          "name": "findError",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the group-level warning message text, if present.",
+          "name": "findWarning",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ControlGroupWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findCopyButton",
           "parameters": [],
           "returnType": {
@@ -51417,6 +51613,61 @@ Note that, despite its typings, this may return null for group items since group
         },
       ],
       "name": "ContentLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds all control slots (one per child control) in DOM order.",
+          "name": "findControls",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the group-level description, if present.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the remove button rendered when the \`dismissible\` prop is set, if present.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the group-level error message text, if present.",
+          "name": "findError",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the group-level warning message text, if present.",
+          "name": "findWarning",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ControlGroupWrapper",
     },
     {
       "methods": [
