@@ -116,8 +116,6 @@ export default function InlineEditorPermutations() {
                       isEditable={true}
                       isFirstRow={false}
                       isLastRow={false}
-                      isNextSelected={false}
-                      isPrevSelected={false}
                       isSelected={false}
                       onEditStart={() => {}}
                       onEditEnd={() => {}}

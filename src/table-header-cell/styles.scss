@@ -1,0 +1,67 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.header-cell {
+  position: relative;
+  // Override the user-agent `th { text-align: center }` default.
+  text-align: start;
+  vertical-align: middle;
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  @include styles.font-smoothing;
+  // Match the Table header height: body-m (20px), not heading-xs (18px, which is 2px shorter).
+  line-height: awsui.$line-height-body-m;
+  padding-block: calc(2 * #{awsui.$space-scaled-xxs});
+  padding-inline: awsui.$space-scaled-l;
+  box-sizing: border-box;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+}
+
+.header-cell-grid {
+  min-inline-size: 0;
+}
+
+.header-cell::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  margin-block: auto;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - (2 * #{awsui.$space-xs} + #{awsui.$space-xxxs}));
+  inline-size: 0;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.header-cell:last-child::after {
+  display: none;
+}
+
+.header-cell:first-child {
+  padding-inline-start: awsui.$space-xxxs;
+  // Reserve the same transparent first-column placeholder the body cell keeps, so header/body text align.
+  border-inline-start: awsui.$border-item-width solid transparent;
+}
+
+// Reclaim the placeholder in visual refresh for genuine data columns (a control column keeps it via
+// disable-paddings), mirroring the body cell's reclaim rule.
+.header-cell.is-visual-refresh:first-child:not(.disable-paddings) {
+  border-inline-start: none;
+}
+
+.header-cell.disable-paddings,
+.header-cell.disable-paddings:first-child {
+  padding-block: 0;
+  padding-inline: 0;
+  // Stretch to full header height so an empty grid-centred control cell doesn't collapse to a stray
+  // 1px divider line. Inert on the Table-reuse path.
+  align-self: stretch;
+}

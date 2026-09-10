@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.row {
+  position: relative;
+  box-sizing: border-box;
+  // Divider and selection/shaded paint live on the cell (see table-cell/styles.scss); the row only
+  // carries grid layout and the data-selected / data-shaded gate.
+}
+
+.row-grid {
+  display: grid;
+  inline-size: 100%;
+  align-items: center;
+  grid-auto-rows: minmax(
+    calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-scaled-xs} + 4px - #{awsui.$border-divider-list-width}),
+    auto
+  );
+}

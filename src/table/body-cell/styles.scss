@@ -6,18 +6,16 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './selection-mixins' as sel;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
-// Calculate padding to prevent a shift in content after selection due to the difference
-// between selected border widths and normal row divider widths (visual refresh).
+// Padding compensates for the selected-border vs row-divider width difference to avoid content shift (VR).
 $cell-vertical-padding-w-border: calc(
   #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
 $cell-horizontal-padding: awsui.$space-scaled-l;
 $cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
 $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
-$selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
-$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 // Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
@@ -34,8 +32,7 @@ $cell-negative-space-vertical: 2px;
 @mixin safe-focus-highlight($params) {
   @include styles.focus-highlight($params);
 
-  // @mixin focus-highlight sets cell's position to "relative".
-  // Reinforcing sticky position for it to take precedence.
+  // focus-highlight sets position:relative; reassert sticky so it wins.
   &.sticky-cell {
     position: sticky;
   }
@@ -174,8 +171,7 @@ $cell-negative-space-vertical: 2px;
     @include cell-padding-inline-start(awsui.$space-xxxs);
     @include body-cell-active-hover-padding(awsui.$space-xxxs);
 
-    // Using slightly larger padding for tables with striped rows because the shaded background
-    // makes the child content appear too close to the table edge.
+    // Slightly larger padding for striped rows: the shaded background makes content look too close to the edge.
     &:first-child.has-striped-rows {
       @include cell-padding-inline-start(awsui.$space-xxs);
       @include body-cell-active-hover-padding(awsui.$space-xxs);
@@ -186,17 +182,12 @@ $cell-negative-space-vertical: 2px;
       }
     }
 
-    // Using normal padding when 1st column is sticky.
     &.sticky-cell-pad-inline-start:not(.has-selection) {
       @include cell-padding-inline-start($cell-horizontal-padding);
       @include body-cell-active-hover-padding($cell-horizontal-padding);
     }
 
-    /*
-      Remove the placeholder border if the row is not selectable.
-      Rows that are not selectable will reserve the horizontal space
-      that the placeholder border would consume.
-    */
+    // Non-selectable rows reserve the placeholder border's horizontal space, so drop the border itself.
     &:not(.has-selection):not(.body-cell-editable) {
       border-inline-start: none;
     }
@@ -204,52 +195,36 @@ $cell-negative-space-vertical: 2px;
   &-first-row {
     border-block-start: $border-placeholder;
   }
-  &-last-row:not(.body-cell-selected) {
+  &-last-row:not([data-selected]) {
     &:not(.has-footer) {
       // skip the border for the last row because the container already has a border
       border-block-end: $border-placeholder;
     }
 
     &.has-footer {
-      /*
-      Add a bottom border to the body cells of the last row as a separator between the
-      table and the footer
-      */
+      // Bottom border on the last row's cells separates the table body from the footer.
       border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
   }
   &-shaded {
-    background: awsui.$color-background-cell-shaded;
+    @include sel.shaded-cell;
   }
-  &.has-striped-rows:not(.body-cell-selected):not(.body-cell-last-row) {
+  &.has-striped-rows:not([data-selected]):not(.body-cell-last-row) {
     border-block-end-color: awsui.$color-border-cell-shaded;
   }
-  &-selected {
-    background-color: awsui.$color-background-item-selected;
-    border-block-start: $selected-border;
-    border-block-end: $selected-border;
-    @include cell-padding-block-end($cell-vertical-padding);
-
-    // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
-    // Adjust padding-bottom prevents a slight jump in the table height.
-    &.body-cell-last-row.is-visual-refresh {
-      @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
-    }
-
-    &:first-child {
-      border-inline-start: $selected-border;
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: 0;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: 0;
-    }
-    &:last-child {
-      border-inline-end: $selected-border;
-      border-start-start-radius: 0;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: 0;
-      border-end-end-radius: awsui.$border-radius-item;
-    }
+  // Selection state lives on the row (data-selected/data-shaded); cells paint via the row ancestor +
+  // CSS adjacency, uniformly for the Table's own <tr> path and the reused atomic row.
+  [data-selected] > & {
+    @include sel.selected-cell;
+  }
+  [data-selected] + [data-selected] > & {
+    @include sel.prev-selected-cell;
+  }
+  [data-selected]:has(+ [data-selected]) > & {
+    @include sel.next-selected-cell;
+  }
+  :not([data-selected]):has(+ [data-selected]) > & {
+    @include sel.not-selected-next-cell;
   }
 
   &.sticky-cell {
@@ -264,13 +239,14 @@ $cell-negative-space-vertical: 2px;
     &.table-variant-full-page {
       background: awsui.$color-background-layout-main;
     }
-    &.body-cell-shaded {
+    // Sticky-only stripe fill, driven by the row's data-shaded so it also covers reused atomic rows.
+    [data-shaded] > & {
       background: awsui.$color-background-cell-shaded;
     }
-    &.body-cell-selected {
+    // Opaque background + box-shadow/clip occlude cells scrolling underneath the sticky column.
+    [data-selected] > & {
       background-color: awsui.$color-background-item-selected;
 
-      // Create a background using box-shadow and clip path to hide underlying elements
       &:first-child {
         box-shadow: 0 0 0 4px awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
@@ -311,40 +287,6 @@ $cell-negative-space-vertical: 2px;
     }
   }
 
-  // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
-  &-selected:not(:first-child) {
-    @include cell-padding-block-start($cell-vertical-padding-w-border);
-  }
-  &:not(.body-cell-selected).body-cell-next-selected {
-    border-block-end: 0;
-    @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
-  }
-  &-selected.body-cell-prev-selected {
-    border-block-start: $selected-border-placeholder;
-    @include cell-padding-block-start($cell-vertical-padding-w-border);
-  }
-  &-selected.body-cell-next-selected {
-    border-block-end-width: awsui.$border-divider-list-width;
-  }
-  // Remove border radii for consecutive selected rows (visual refresh)
-  &-selected.body-cell-next-selected:first-child {
-    border-end-start-radius: 0;
-  }
-  &-selected.body-cell-next-selected:last-child {
-    border-end-end-radius: 0;
-  }
-  &-selected.body-cell-prev-selected:first-child {
-    border-start-start-radius: 0;
-  }
-  &-selected.body-cell-prev-selected:last-child {
-    border-start-end-radius: 0;
-  }
-  // Reset padding for selected rows with no adjacent selected row above it,
-  // because rows reuse adjacent selected borders (visual refresh)
-  &-selected:not(.body-cell-prev-selected) {
-    @include cell-padding-block-start($cell-vertical-padding);
-  }
-
   &-editor-wrapper {
     padding-block: 0;
     padding-inline-start: 0;
@@ -368,7 +310,6 @@ $cell-negative-space-vertical: 2px;
     justify-content: flex-end;
   }
   &-editor {
-    // Reset some native <button> styles
     cursor: pointer;
     outline: 0;
     background: 0;
@@ -377,8 +318,7 @@ $cell-negative-space-vertical: 2px;
     padding-block: awsui.$space-scaled-xxs;
     padding-inline: awsui.$space-scaled-xxs;
 
-    // This gives the editor button a small area even when the icon is not rendered.
-    // That is to allow programmatic interaction in tests.
+    // Keep a minimal hit area when the icon is hidden so tests can interact programmatically.
     min-block-size: 10px;
     min-inline-size: 10px;
 
@@ -407,7 +347,6 @@ $cell-negative-space-vertical: 2px;
       flex-shrink: 0;
     }
     &-row-editor {
-      // 6 space-xxs: 2 * icon left padding + 2 * icon right padding + space between icons + space between icons and editor
       max-inline-size: calc(100% - 6 * #{awsui.$space-xxs} - 2 * #{awsui.$size-icon-normal});
     }
 
@@ -468,9 +407,8 @@ $cell-negative-space-vertical: 2px;
         opacity: 0;
       }
 
-      // The editable cells are interactive but the actual focus lands on the edit button which is decorative.
-      // That is why we use focus-within to detect if the focus is on the edit button to draw the outline around the cell.
-      // For expandable+editable cells the edit button works as a normal button because the cell itself is not interactive.
+      // Focus lands on the decorative edit button, so focus-within draws the cell outline; for
+      // expandable+editable cells the button is a normal button (the cell itself isn't interactive).
       &:not(.body-cell-expandable) {
         &:focus-within {
           @include cell-focus-outline;
@@ -484,7 +422,7 @@ $cell-negative-space-vertical: 2px;
           display: unset;
         }
         &.body-cell-has-success {
-          // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
+          // Extra padding so text doesn't overflow the success icon shown next to the edit button.
           @include cell-padding-inline-end(
             calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing})
           );
@@ -536,16 +474,19 @@ $cell-negative-space-vertical: 2px;
             calc(#{$success-icon-padding-right} - (2 * #{awsui.$border-divider-list-width}))
           );
         }
-        &.body-cell-last-row.body-cell-selected,
-        &.body-cell-next-selected {
+        &.body-cell-last-row[data-selected] {
           @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2)));
         }
-        &.body-cell-last-row:not(.body-cell-expandable):not(.body-cell-selected) {
+        // Next row selected: mirror the with-border padding compensation.
+        :has(+ [data-selected]) > & {
+          @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2)));
+        }
+        &.body-cell-last-row:not(.body-cell-expandable):not([data-selected]) {
           @include cell-padding-block-start(
             calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}))
           );
         }
-        &.body-cell-first-row:not(.body-cell-expandable):not(.body-cell-selected) {
+        &.body-cell-first-row:not(.body-cell-expandable):not([data-selected]) {
           @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
         }
         @include focused-editor-styles;

@@ -68,8 +68,6 @@ const commonProps: TestBodyCellProps = {
   onEditStart: onEditStart,
   onEditEnd: onEditEnd,
   isEditable: true,
-  isPrevSelected: false,
-  isNextSelected: false,
   isFirstRow: true,
   isLastRow: true,
   isSelected: false,

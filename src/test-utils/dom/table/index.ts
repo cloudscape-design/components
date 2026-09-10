@@ -89,7 +89,11 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findBodyCell(rowIndex: number, columnIndex: number): ElementWrapper | null {
     return this.findNativeTable().find(
-      `tbody tr:nth-child(${rowIndex}) .${bodyCellStyles['body-cell']}:nth-child(${columnIndex})`
+      // Column cells are located by position, not by styling class: plain data and selection-control
+      // columns are rendered by the reused atomic Cell (class `cell`, not `body-cell`), while
+      // row-header / editable / expandable columns stay on the Table's own `body-cell`. Matching the
+      // row's Nth child covers both without coupling the locator to either styling module.
+      `tbody tr:nth-child(${rowIndex}) > :nth-child(${columnIndex})`
     );
   }
 

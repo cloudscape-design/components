@@ -659,7 +659,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
-    "awsui_body-cell_c6tup",
     "awsui_empty_wih1l",
     "awsui_header-cell-ascending_1spae",
     "awsui_header-cell-descending_1spae",
@@ -679,6 +678,27 @@ exports[`test-utils selectors 1`] = `
     "awsui_tools-pagination_wih1l",
     "awsui_tools-preferences_wih1l",
     "awsui_wrapper_wih1l",
+  ],
+  "table-body": [
+    "awsui_body_1i6l7",
+  ],
+  "table-cell": [
+    "awsui_cell_1reth",
+  ],
+  "table-head": [
+    "awsui_head_1otu2",
+  ],
+  "table-header-cell": [
+    "awsui_header-cell_uzgsh",
+  ],
+  "table-header-row": [
+    "awsui_header-row_1wc8l",
+  ],
+  "table-root": [
+    "awsui_root_1pkvc",
+  ],
+  "table-row": [
+    "awsui_row_3yyds",
   ],
   "tabs": [
     "awsui_actions-container_14rmt",
