@@ -5,6 +5,13 @@ on:
     branches:
       - main
 
+# Cancel superseded runs for the same ref to free shared runner capacity.
+# The condition keeps cancellation limited to pull_request events, so a run is
+# never cancelled on main or in a merge queue.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   id-token: write
   actions: read

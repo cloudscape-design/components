@@ -10,6 +10,13 @@ on:
     branches:
       - main
 
+# Cancel superseded runs for the same ref to free shared runner capacity.
+# The condition keeps cancellation limited to pull_request events, so
+# merge_group and workflow_dispatch runs are never cancelled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   dry-run:
     uses: cloudscape-design/actions/.github/workflows/dry-run.yml@main

@@ -8,6 +8,13 @@ on:
       - synchronize
   merge_group:
 
+# Cancel superseded runs for the same ref to free shared runner capacity.
+# The condition keeps cancellation limited to PR events, so merge_group runs
+# are never cancelled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request_target' }}
+
 jobs:
   dry-run:
     uses: cloudscape-design/actions/.github/workflows/lint-pr.yml@main
