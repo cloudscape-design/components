@@ -5,6 +5,7 @@ import React from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import ControlGroup from '~components/control-group';
+import FormField from '~components/form-field';
 import Input from '~components/input';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SegmentedControl from '~components/segmented-control';
@@ -257,6 +258,52 @@ function InteractiveMultiselectControl() {
   );
 }
 
+const FIELD_STATES: SelectProps.Option[] = [
+  { value: 'none', label: 'No validation' },
+  { value: 'error', label: 'Error' },
+  { value: 'warning', label: 'Warning' },
+];
+
+// A ControlGroup nested inside a FormField. The FormField's errorText / warningText
+// is toggled via URL param to show how the FormField-level validation propagates:
+// the message renders once below the group (from the FormField), and the invalid /
+// warning state flows through FormFieldContext to every control in the group.
+function NestedInFormFieldControl() {
+  const { urlParams, setUrlParams } = useAppContext<'fieldState'>();
+
+  const state = FIELD_STATES.find(option => option.value === urlParams.fieldState) ?? FIELD_STATES[0];
+
+  return (
+    <SpaceBetween size="xs">
+      <Box variant="h3">ControlGroup nested in a FormField</Box>
+      <Box variant="small">
+        Toggle the FormField&rsquo;s validation state. The message renders once below the group, and the invalid /
+        warning styling propagates to every control in the group.
+      </Box>
+      <SpaceBetween size="s">
+        <Select
+          ariaLabel="FormField validation state"
+          selectedOption={state}
+          options={FIELD_STATES}
+          onChange={e => setUrlParams({ fieldState: e.detail.selectedOption.value ?? 'none' })}
+        />
+        <FormField
+          label="Label"
+          description="A ControlGroup rendered as this FormField's control."
+          errorText={state.value === 'error' ? 'This field has a FormField-level error.' : undefined}
+          warningText={state.value === 'warning' ? 'This field has a FormField-level warning.' : undefined}
+        >
+          <ControlGroup ariaLabel="Label matcher">
+            <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={() => {}} />
+            <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+            <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
+          </ControlGroup>
+        </FormField>
+      </SpaceBetween>
+    </SpaceBetween>
+  );
+}
+
 export default function () {
   return (
     <SimplePage title="Control group scenarios">
@@ -266,6 +313,7 @@ export default function () {
         <InteractiveFilterControl />
         <InteractiveDisabledControl />
         <InteractiveMultiselectControl />
+        <NestedInFormFieldControl />
       </SpaceBetween>
     </SimplePage>
   );
