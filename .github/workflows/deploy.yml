@@ -47,7 +47,6 @@ jobs:
         env:
           NODE_ENV: production
           REACT_VERSION: ${{ matrix.react }}
-          INCLUDE_ONE_THEME: 'true'
 
       - name: Upload dev pages artifact
         uses: actions/upload-artifact@v4
