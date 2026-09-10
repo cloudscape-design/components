@@ -159,6 +159,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundFlashbarWarning: { light: '#fcfadb', dark: '#372603' },
   colorTextFlashbarIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorTextFlashbarIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
+  colorBackgroundNotificationStackBar: { light: '{colorNeutral650}', dark: '{colorNeutral750}' },
+  colorBackgroundNotificationStackBarActive: { light: '{colorNeutral750}', dark: '{colorNeutral750}' },
+  colorBackgroundNotificationStackBarHover: { light: '{colorNeutral650}', dark: '{colorNeutral650}' },
 
   // Alert
   colorBackgroundAlertError: { light: '#fceded', dark: '#460303' },
