@@ -62,8 +62,6 @@ const longContent = (
   </SpaceBetween>
 );
 
-// The close button is always present. The closed playground state renders no Dialog,
-// so neither is a permutation axis.
 const permutations = createPermutations<DialogProps>([
   {
     onDismiss: [() => {}],
@@ -73,7 +71,7 @@ const permutations = createPermutations<DialogProps>([
       'Tell us which production workload and deployment environment you want to optimize first',
     ],
     headerActions: [undefined, headerActions],
-    children: [undefined, content, longContent],
+    children: [content, longContent],
     footer: [undefined, footer],
   },
 ]);
