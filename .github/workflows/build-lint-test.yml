@@ -21,7 +21,7 @@ permissions:
 # The condition keeps cancellation limited to pull_request events, so runs on
 # main (push) and in the merge queue (merge_group) are never cancelled.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
