@@ -79,4 +79,14 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Note that the secondary header will not have a high-contrast treatement, even if you set `headerVariant` to `high-contrast`.
    */
   secondaryHeader?: React.ReactNode;
+
+  /**
+   * When set to `true`, the header slot spans the full available width of the layout, edge-to-edge,
+   * ignoring the `maxContentWidth` constraint. The header background already spans full width;
+   * this prop additionally makes the header **content** bleed to the edges.
+   * Use this when you want header content (such as a hero image or a custom banner)
+   * to occupy the full viewport width.
+   * Defaults to `false`.
+   */
+  fullBleedHeader?: boolean;
 }
