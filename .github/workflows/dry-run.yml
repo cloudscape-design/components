@@ -14,7 +14,7 @@ on:
 # The condition keeps cancellation limited to pull_request events, so
 # merge_group and workflow_dispatch runs are never cancelled.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
