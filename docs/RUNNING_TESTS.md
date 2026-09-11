@@ -86,5 +86,4 @@ When the CI job fails, check the deployed Allure report (linked from the GitHub 
 
 ### Adding tests for a new component
 
-1. Create `test/definitions/visual/<component>.ts` exporting a `TestSuite`.
-2. Add the import to `test/definitions/index.ts`.
+Create `test/definitions/visual/<component>.ts` exporting a `TestSuite`. The build picks it up automatically — the suite is grouped by its `componentName`, and the barrel (`lib/test-definitions/index.js`) is generated from the files in `test/definitions/visual`, so there is no index to update it by hand.
