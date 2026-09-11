@@ -28,8 +28,22 @@ export interface CopyToClipboardProps extends BaseComponentProps {
 
   /**
    * The text content to be copied. It is displayed next to the copy button when `variant="inline"` unless when `content` is specified, and is not shown otherwise.
+   * When `getTextToCopy` is also provided, `getTextToCopy` takes precedence for the actual clipboard write, but `textToCopy` is still used for the inline display text.
    */
   textToCopy: string;
+
+  /**
+   * An optional function that returns the text to copy, either synchronously or as a `Promise<string>`.
+   * Use this when the text is expensive to compute or must be fetched asynchronously — it is only
+   * called at the moment the user clicks the copy button, so large content does not need to be
+   * pre-populated.
+   *
+   * When provided, this takes precedence over `textToCopy` for the clipboard write operation.
+   * The `detail.text` field of `onCopySuccess` / `onCopyFailure` will contain the resolved value.
+   *
+   * While the function is executing the button enters a loading state and cannot be clicked again.
+   */
+  getTextToCopy?: () => string | Promise<string>;
 
   /**
    * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
