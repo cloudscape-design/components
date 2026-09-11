@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { findAllPages } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
-type Theme = 'visual-refresh';
+type Theme = 'visual-refresh' | 'one-theme';
 type Mode = 'light' | 'dark';
 
 function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>) {
@@ -18,8 +18,9 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
   });
 }
 
-function urlFormatter(inputUrl: string, mode: Mode) {
-  return `#/${mode}/${inputUrl}`;
+function urlFormatter(inputUrl: string, mode: Mode, theme: Theme) {
+  const params = theme === 'one-theme' ? '?oneTheme=true' : '';
+  return `#/${mode}/${inputUrl}${params}`;
 }
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
@@ -36,7 +37,7 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         'app-layout-toolbar/without-toolbar-nested',
       ];
       const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
-      const url = urlFormatter(inputUrl, mode);
+      const url = urlFormatter(inputUrl, mode, theme);
       testFunction(
         url,
         setupTest(url, page => page.assertNoAxeViolations())
