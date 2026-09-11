@@ -31,7 +31,7 @@ function collectDefinitions() {
 function generateIndexJs(definitions) {
   const lines = definitions.map(file => {
     const exportName = toCamelCase(file);
-    return `exports.${exportName} = require('./visual/${file}').default;`;
+    return `exports.${exportName} = [require('./visual/${file}').default];`;
   });
 
   return (
@@ -44,7 +44,7 @@ function generateIndexJs(definitions) {
 }
 
 function generateIndexDts(definitions) {
-  const lines = definitions.map(file => `export declare const ${toCamelCase(file)}: TestSuite;`);
+  const lines = definitions.map(file => `export declare const ${toCamelCase(file)}: TestSuite[];`);
 
   return (
     header +
