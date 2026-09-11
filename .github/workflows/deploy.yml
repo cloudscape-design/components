@@ -6,8 +6,7 @@ on:
       - main
 
 # Cancel superseded runs for the same ref to free shared runner capacity.
-# The condition keeps cancellation limited to pull_request events, so a run is
-# never cancelled on main or in a merge queue.
+# Only cancel PR runs; other events keep their runs.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}

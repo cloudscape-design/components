@@ -18,8 +18,8 @@ permissions:
   security-events: write
 
 # Cancel superseded runs for the same ref to free shared runner capacity.
-# The condition keeps cancellation limited to pull_request events, so runs on
-# main (push) and in the merge queue (merge_group) are never cancelled.
+# Only cancel PR runs; other events get a unique group so their runs never
+# cancel or drop each other.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
