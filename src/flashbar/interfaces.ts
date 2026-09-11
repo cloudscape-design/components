@@ -5,6 +5,7 @@ import React from 'react';
 import { ButtonProps } from '../button/interfaces';
 import { ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
 
 export namespace FlashbarProps {
   export interface MessageDefinition {
@@ -32,6 +33,10 @@ export namespace FlashbarProps {
   export interface PersistenceConfig {
     uniqueKey: string;
     crossServicePersistence?: boolean;
+  }
+
+  export interface ToggleDetail {
+    expanded: boolean;
   }
 
   export interface I18nStrings {
@@ -196,6 +201,21 @@ export interface FlashbarProps extends BaseComponentProps {
    * Specifies whether flash messages should be stacked.
    */
   stackItems?: boolean;
+
+  /**
+   * Determines whether the stacked notifications group is initially expanded.
+   * Only has an effect when `stackItems` is set to `true`. Defaults to `false`
+   * (the group starts collapsed). This property is applied on the initial
+   * render only; afterwards the expanded state is managed by the component.
+   */
+  defaultExpanded?: boolean;
+
+  /**
+   * Called when the user expands or collapses the stacked notifications group
+   * by activating the notification bar. Only fires when `stackItems` is set to
+   * `true`. The event `detail` contains the new value of the expanded state.
+   */
+  onToggle?: NonCancelableEventHandler<FlashbarProps.ToggleDetail>;
 
   /**
    * An object containing all the necessary localized strings required by the component. The object should contain:
