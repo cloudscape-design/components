@@ -189,7 +189,7 @@ export interface IconProviderProps extends BaseComponentProps {
    * However, if the icon name is the same as the key, for example, `{'close': <Icon name='close' />}` an infinite loop will be created.
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
-  icons: IconProviderProps.Icons | null;
+  icons?: IconProviderProps.Icons | null;
 
   /**
    * Custom icons for specific components, replacing built-in stateful icons such as expand toggles
@@ -203,7 +203,7 @@ export interface IconProviderProps extends BaseComponentProps {
    *
    * Component icons apply to nested usage as well, for example, expandable sections rendered inside
    * side navigation or wizard. They are inherited by nested providers (closest provider wins).
-   * Set to `null` to reset all component icons.
+   * Set to `null` to reset all component icons, or set a specific component to `null` to reset its icons.
    */
   componentIcons?: IconProviderProps.ComponentIcons | null;
 }
@@ -214,25 +214,21 @@ export namespace IconProviderProps {
   };
 
   export interface ComponentIcons {
-    table?: TableIcons;
-    'tree-view'?: TreeViewIcons;
-    'expandable-section'?: ExpandableSectionIcons;
+    table?: TableIcons | null;
+    'tree-view'?: TreeViewIcons | null;
+    'expandable-section'?: ExpandableSectionIcons | null;
   }
 
   export interface TableIcons {
-    /** The row expand/collapse toggle, used with expandable rows. */
     expandToggle?: (state: { expanded: boolean }) => ReactNode;
-    /** The sorting indicator in column headers. */
     sortingIndicator?: (state: { sortingState: 'sortable' | 'ascending' | 'descending' }) => ReactNode;
   }
 
   export interface TreeViewIcons {
-    /** The item expand/collapse toggle. */
     expandToggle?: (state: { expanded: boolean }) => ReactNode;
   }
 
   export interface ExpandableSectionIcons {
-    /** The expand/collapse toggle in the header. */
     expandToggle?: (state: { expanded: boolean }) => ReactNode;
   }
 }

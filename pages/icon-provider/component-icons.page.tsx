@@ -64,19 +64,20 @@ export default function Page() {
   } = useContext(AppContext as PageContext);
 
   const expandToggle = overrideExpandToggles ? expandToggleIcon : undefined;
+  const sortingIndicator = overrideSortingIndicators ? sortingIndicatorIcon : undefined;
   const componentIcons: IconProviderProps.ComponentIcons = {
-    table: { expandToggle, sortingIndicator: overrideSortingIndicators ? sortingIndicatorIcon : undefined },
+    table: { expandToggle, sortingIndicator },
     'tree-view': { expandToggle },
     'expandable-section': { expandToggle },
   };
 
   return (
     <SimplePage
-      title="Icon provider: component icons"
+      title="Icon provider: Component icons"
       subtitle={
         <span>
           Demonstrates the use of the <Box variant="awsui-inline-code">componentIcons</Box> property to override
-          specific component icons, including nested usage (expandable sections inside side navigation).
+          specific component icons, including nested usage (like expandable sections inside side navigation).
         </span>
       }
       settings={

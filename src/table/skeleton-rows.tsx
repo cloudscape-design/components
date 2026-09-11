@@ -16,7 +16,6 @@ const noop = () => {};
 
 interface SkeletonRowsProps {
   count: number;
-  hasDataRows: boolean;
   totalColumnsCount: number;
   loadingText: string | undefined;
   hasSelection: boolean;
@@ -35,7 +34,6 @@ interface SkeletonRowsProps {
 
 export function SkeletonRows({
   count,
-  hasDataRows,
   totalColumnsCount,
   loadingText,
   hasSelection,
@@ -59,16 +57,12 @@ export function SkeletonRows({
         </td>
       </tr>
       {Array.from({ length: count }, (_, i) => {
-        const isFirstRow = !hasDataRows && i === 0;
-        const isLastRow = i === count - 1;
         return (
           <tr key={`skeleton-row-${i}`} className={styles.row} aria-hidden="true">
             {hasSelection && <td className={styles['selection-control']} />}
             {visibleColumnDefinitions.map((column: any, colIndex: number) => (
               <TableBodyCell
                 key={`skeleton-${getColumnKey(column, colIndex)}`}
-                isFirstRow={isFirstRow}
-                isLastRow={isLastRow}
                 isSelected={false}
                 isPrevSelected={false}
                 isNextSelected={false}

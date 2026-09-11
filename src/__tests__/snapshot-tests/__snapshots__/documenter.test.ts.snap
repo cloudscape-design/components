@@ -16015,7 +16015,7 @@ a custom \`<Icon>\` (or provide a plain SVG) so it matches the default icon size
 
 Component icons apply to nested usage as well, for example, expandable sections rendered inside
 side navigation or wizard. They are inherited by nested providers (closest provider wins).
-Set to \`null\` to reset all component icons.",
+Set to \`null\` to reset all component icons, or set a specific component to \`null\` to reset its icons.",
       "inlineType": {
         "name": "IconProviderProps.ComponentIcons",
         "properties": [
@@ -16044,7 +16044,7 @@ Set to \`null\` to reset all component icons.",
             },
             "name": "expandable-section",
             "optional": true,
-            "type": "IconProviderProps.ExpandableSectionIcons",
+            "type": "IconProviderProps.ExpandableSectionIcons | null",
           },
           {
             "inlineType": {
@@ -16087,7 +16087,7 @@ Set to \`null\` to reset all component icons.",
             },
             "name": "table",
             "optional": true,
-            "type": "IconProviderProps.TableIcons",
+            "type": "IconProviderProps.TableIcons | null",
           },
           {
             "inlineType": {
@@ -16114,7 +16114,7 @@ Set to \`null\` to reset all component icons.",
             },
             "name": "tree-view",
             "optional": true,
-            "type": "IconProviderProps.TreeViewIcons",
+            "type": "IconProviderProps.TreeViewIcons | null",
           },
         ],
         "type": "object",
@@ -16857,7 +16857,7 @@ The same applies to switching icons in the same configuration (for example, \`{'
         "type": "object",
       },
       "name": "icons",
-      "optional": false,
+      "optional": true,
       "type": "IconProviderProps.Icons | null",
     },
     {

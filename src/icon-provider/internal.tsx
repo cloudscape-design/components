@@ -35,7 +35,8 @@ function InternalIconProvider({ children, icons, componentIcons }: IconProviderP
   } else if (componentIcons) {
     componentIconsToProvide = { ...contextComponentIcons };
     for (const name of Object.keys(componentIcons) as (keyof IconProviderProps.ComponentIcons)[]) {
-      componentIconsToProvide[name] = { ...contextComponentIcons[name], ...componentIcons[name] };
+      const value = componentIcons[name];
+      componentIconsToProvide[name] = value === null ? undefined : { ...contextComponentIcons[name], ...value };
     }
   }
 
