@@ -283,7 +283,9 @@ settings icon in the pagination slot.
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+  // Opt-in gate: a control header (`disablePaddings`) omits `.with-paddings`, so this high-specificity
+  // <th> offset simply doesn't apply — a low-specificity reset could not override it.
+  &:first-child.with-paddings:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
       .header-cell-grouped
     ) {
     @include cell-offset(awsui.$space-xxxs);
@@ -294,7 +296,9 @@ settings icon in the pagination slot.
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(.header-cell-grouped) {
+  &:first-child.with-paddings.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+      .header-cell-grouped
+    ) {
     @include cell-offset(awsui.$space-xxs);
   }
 
