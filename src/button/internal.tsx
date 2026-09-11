@@ -97,6 +97,7 @@ export const InternalButton = React.forwardRef(
       ariaExpanded,
       ariaHaspopup,
       ariaControls,
+      tooltipText,
       fullWidth,
       badge,
       i18nStrings,
@@ -124,6 +125,10 @@ export const InternalButton = React.forwardRef(
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason =
       (variant === 'normal' || variant === 'primary' || variant === 'icon') && !!disabledReason && disabled;
+
+    // tooltipText is shown on hover/focus when the button is fully interactive. When
+    // the button is disabled-with-reason, disabledReason takes precedence.
+    const hasTooltipText = !!tooltipText && !isNotInteractive && !isDisabledWithReason;
 
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
@@ -309,6 +314,24 @@ export const InternalButton = React.forwardRef(
       </>
     );
 
+    const tooltipTextProps =
+      hasTooltipText && !(disabled && !!disabledReason)
+        ? {
+            onFocus: () => setShowTooltip(true),
+            onBlur: () => setShowTooltip(false),
+            onMouseEnter: () => setShowTooltip(true),
+            onMouseLeave: () => setShowTooltip(false),
+          }
+        : {};
+    const tooltipTextContent = hasTooltipText && showTooltip && (
+      <Tooltip
+        className={testUtilStyles.tooltip}
+        getTrack={() => buttonRef.current}
+        content={tooltipText!}
+        onEscape={() => setShowTooltip(false)}
+      />
+    );
+
     const stylePropertiesAndVariables = getButtonStyles(style);
 
     if (isAnchor) {
@@ -326,6 +349,7 @@ export const InternalButton = React.forwardRef(
           <WithNativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>
             {...buttonProps}
             {...disabledReasonProps}
+            {...tooltipTextProps}
             tag="a"
             componentName="Button"
             nativeAttributes={nativeAnchorAttributes}
@@ -342,6 +366,7 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
             {isDisabledWithReason && disabledReasonContent}
+            {tooltipTextContent}
           </WithNativeAttributes>
           {loading && loadingText && (
             <InternalLiveRegion tagName="span" hidden={true}>
@@ -357,6 +382,7 @@ export const InternalButton = React.forwardRef(
         <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
           {...buttonProps}
           {...disabledReasonProps}
+          {...tooltipTextProps}
           tag="button"
           componentName="Button"
           nativeAttributes={nativeButtonAttributes}
@@ -368,6 +394,7 @@ export const InternalButton = React.forwardRef(
         >
           {buttonContent}
           {isDisabledWithReason && disabledReasonContent}
+          {tooltipTextContent}
         </WithNativeAttributes>
         {loading && loadingText && (
           <InternalLiveRegion tagName="span" hidden={true}>

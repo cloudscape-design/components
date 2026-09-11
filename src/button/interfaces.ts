@@ -208,6 +208,12 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   variant?: ButtonProps.Variant;
 
   /**
+   * The text displayed in a tooltip on hover or focus.
+   * If `disabledReason` is also provided, it takes precedence over `tooltipText` when disabled.
+   */
+  tooltipText?: string;
+
+  /**
    * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
    * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
    */
