@@ -4,6 +4,8 @@ coverage
 .idea
 # build output
 lib
+# scratch script for build-tools/utils/__tests__/themes-persistence.test.js
+.theme-watch-tmp-script-*.js
 # generated sources
 src/index.ts
 src/test-utils/dom/index.ts

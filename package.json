@@ -21,7 +21,7 @@
     "build:react18": "cross-env NODE_ENV=production REACT_VERSION=18 gulp build",
     "generate:visual-tests": "node -e \"require('./build-tools/tasks/generate-visual-tests')()\"",
     "start": "npm-run-all --parallel start:watch start:dev",
-    "start:watch": "gulp watch",
+    "start:watch": "cross-env AWSUI_THEME_PRESET=dev gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.cjs",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.cjs",
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",
