@@ -655,6 +655,12 @@ An \`onButtonClick\` event is fired when the user clicks it.",
       "isDefault": false,
       "name": "header",
     },
+    {
+      "description": "Specifies a secondary action for the alert message, displayed alongside the primary action.
+Although it is technically possible to insert any content, our UX guidelines only allow you to add a button.",
+      "isDefault": false,
+      "name": "secondaryAction",
+    },
   ],
   "releaseStatus": "stable",
 }
@@ -34772,6 +34778,22 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             ],
           },
         },
+        {
+          "description": "Returns the secondary action slot.
+
+The secondary action slot is only rendered when the \`secondaryAction\` property is set.",
+          "name": "findSecondaryActionSlot",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
       ],
       "name": "AlertWrapper",
     },
@@ -41579,6 +41601,22 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             ],
           },
         },
+        {
+          "description": "Returns the secondary action slot.
+
+The secondary action slot is only rendered when the \`secondaryAction\` property is set.",
+          "name": "findSecondaryAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
       ],
       "name": "FlashWrapper",
     },
@@ -47791,6 +47829,17 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             "name": "ElementWrapper",
           },
         },
+        {
+          "description": "Returns the secondary action slot.
+
+The secondary action slot is only rendered when the \`secondaryAction\` property is set.",
+          "name": "findSecondaryActionSlot",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
       ],
       "name": "AlertWrapper",
     },
@@ -52634,6 +52683,17 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
         {
           "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the secondary action slot.
+
+The secondary action slot is only rendered when the \`secondaryAction\` property is set.",
+          "name": "findSecondaryAction",
           "parameters": [],
           "returnType": {
             "isNullable": false,

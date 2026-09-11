@@ -22,7 +22,7 @@ const defaultProps = {
   action: null,
   buttonText: 'Action',
   onButtonClick: () => {},
-  testUtilClasses: { actionButton: '', actionSlot: '' },
+  testUtilClasses: { actionButton: '', actionSlot: '', secondaryActionSlot: '' },
   discoveredActions: [],
 };
 
