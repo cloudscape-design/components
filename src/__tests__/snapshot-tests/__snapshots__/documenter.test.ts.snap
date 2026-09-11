@@ -16004,6 +16004,126 @@ exports[`Components definition for icon-provider matches the snapshot: icon-prov
       "type": "string",
     },
     {
+      "description": "Custom icons for specific components, replacing built-in stateful icons such as expand toggles
+and sorting indicators. Unlike \`icons\`, these target a specific component and receive the icon's
+current state.
+
+Each entry is a render function: it receives the state and returns the icon to display. The
+custom icon replaces the default rendering entirely (including built-in animations), so it must
+represent every state. Return \`null\` to fall back to the default icon. Use \`size="inherit"\` on
+a custom \`<Icon>\` (or provide a plain SVG) so it matches the default icon size.
+
+Component icons apply to nested usage as well, for example, expandable sections rendered inside
+side navigation or wizard. They are inherited by nested providers (closest provider wins).
+Set to \`null\` to reset all component icons, or set a specific component to \`null\` to reset its icons.",
+      "inlineType": {
+        "name": "IconProviderProps.ComponentIcons",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "IconProviderProps.ExpandableSectionIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "expandable-section",
+            "optional": true,
+            "type": "IconProviderProps.ExpandableSectionIcons | null",
+          },
+          {
+            "inlineType": {
+              "name": "IconProviderProps.TableIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+                {
+                  "inlineType": {
+                    "name": "(state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ sortingState: "ascending" | "descending" | "sortable"; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "sortingIndicator",
+                  "optional": true,
+                  "type": "((state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "table",
+            "optional": true,
+            "type": "IconProviderProps.TableIcons | null",
+          },
+          {
+            "inlineType": {
+              "name": "IconProviderProps.TreeViewIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "tree-view",
+            "optional": true,
+            "type": "IconProviderProps.TreeViewIcons | null",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "componentIcons",
+      "optional": true,
+      "type": "IconProviderProps.ComponentIcons | null",
+    },
+    {
       "description": "Specifies icon overrides using existing icon names, for example, \`{'add-plus': <svg>...</svg>}\`.
 
 These icon overrides will automatically be applied to any component that is a descendant of this provider, including nested providers.
@@ -16737,7 +16857,7 @@ The same applies to switching icons in the same configuration (for example, \`{'
         "type": "object",
       },
       "name": "icons",
-      "optional": false,
+      "optional": true,
       "type": "IconProviderProps.Icons | null",
     },
     {
@@ -33828,6 +33948,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "(item: T, index: number) => TreeViewProps.TreeItem",
     },
     {
+      "deprecatedTag": "Use the \`IconProvider\` \`componentIcons['tree-view'].expandToggle\` property instead.
+This property takes precedence when both are set.",
       "description": "Use this property to display a custom icon in the toggle button.",
       "inlineType": {
         "name": "(data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",

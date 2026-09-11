@@ -9,6 +9,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
+import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
@@ -194,6 +196,7 @@ export function TableHeaderCell<ItemType>({
   };
 
   const headerId = useUniqueId('table-header-');
+  const icons = useInternalComponentIcons('table');
 
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
@@ -310,9 +313,10 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <InternalIcon
+              <CustomizableIcon
+                customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
                 name={getSortingIconName(sortingStatus)}
-                nativeAttributes={{ 'data-awsui-motion-target': '' }}
+                fallback={{ nativeAttributes: { 'data-awsui-motion-target': '' } }}
               />
             </span>
           )}
