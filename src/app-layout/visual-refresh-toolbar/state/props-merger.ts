@@ -90,7 +90,7 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
 export const getPropsToMerge = (props: AppLayoutInternalProps, appLayoutState: AppLayoutPendingState): SharedProps => {
   const state = appLayoutState.widgetizedState;
   return {
-    breadcrumbs: props.breadcrumbs,
+    breadcrumbs: state ? state.breadcrumbs : props.breadcrumbs,
     ariaLabels: state ? state.ariaLabels : props.ariaLabels,
     navigation: !props.navigationTriggerHide && !props.navigationHide,
     navigationOpen: state ? state.navigationOpen : props.navigationOpen,
