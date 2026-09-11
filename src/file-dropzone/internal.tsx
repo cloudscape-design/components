@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { filterByAccept } from '../internal/utils/accept-filter';
+import { processDataTransfer } from '../internal/utils/folder-traversal';
 import { FileDropzoneProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -14,6 +16,7 @@ import styles from './styles.css.js';
 export default function InternalFileDropzone({
   onChange,
   children,
+  accept,
   __internalRootRef,
   ...restProps
 }: FileDropzoneProps & InternalBaseComponentProps) {
@@ -37,11 +40,17 @@ export default function InternalFileDropzone({
     }
   };
 
-  const onDrop = (event: React.DragEvent) => {
+  const onDrop = async (event: React.DragEvent) => {
     event.preventDefault();
     setDropzoneHovered(false);
 
-    fireNonCancelableEvent(onChange, { value: Array.from(event.dataTransfer.files) });
+    // Process DataTransfer to handle both files and folders
+    const allFiles = await processDataTransfer(event.dataTransfer);
+
+    // Apply accept filter to the collected files
+    const filteredFiles = filterByAccept(allFiles, accept);
+
+    fireNonCancelableEvent(onChange, { value: filteredFiles });
   };
 
   return (
