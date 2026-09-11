@@ -102,6 +102,7 @@ import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TruncatedTextWrapper from './truncated-text';
 import TutorialPanelWrapper from './tutorial-panel';
+import VirtualTableWrapper from './virtual-table';
 import WizardWrapper from './wizard';
 
 
@@ -198,6 +199,7 @@ export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TruncatedTextWrapper };
 export { TutorialPanelWrapper };
+export { VirtualTableWrapper };
 export { WizardWrapper };
 
 declare module '@cloudscape-design/test-utils-core/dist/dom' {
@@ -2808,6 +2810,34 @@ findAllTutorialPanels(selector?: string): Array<TutorialPanelWrapper>;
  */
 findClosestTutorialPanel(): TutorialPanelWrapper | null;
 /**
+ * Returns the wrapper of the first VirtualTable that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first VirtualTable.
+ * If no matching VirtualTable is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {VirtualTableWrapper | null}
+ */
+findVirtualTable(selector?: string): VirtualTableWrapper | null;
+
+/**
+ * Returns an array of VirtualTable wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the VirtualTables inside the current wrapper.
+ * If no matching VirtualTable is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<VirtualTableWrapper>}
+ */
+findAllVirtualTables(selector?: string): Array<VirtualTableWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent VirtualTable for the current element,
+ * or the element itself if it is an instance of VirtualTable.
+ * If no VirtualTable is found, returns \`null\`.
+ *
+ * @returns {VirtualTableWrapper | null}
+ */
+findClosestVirtualTable(): VirtualTableWrapper | null;
+/**
  * Returns the wrapper of the first Wizard that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Wizard.
  * If no matching Wizard is found, returns \`null\`.
@@ -4048,6 +4078,19 @@ ElementWrapper.prototype.findTutorialPanel = function(selector) {
 ElementWrapper.prototype.findAllTutorialPanels = function(selector) {
   return this.findAllComponents(TutorialPanelWrapper, selector);
 };
+ElementWrapper.prototype.findVirtualTable = function(selector) {
+  let rootSelector = \`.\${VirtualTableWrapper.rootSelector}\`;
+  if("legacyRootSelector" in VirtualTableWrapper && VirtualTableWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${VirtualTableWrapper.rootSelector}, .\${VirtualTableWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, VirtualTableWrapper);
+};
+
+ElementWrapper.prototype.findAllVirtualTables = function(selector) {
+  return this.findAllComponents(VirtualTableWrapper, selector);
+};
 ElementWrapper.prototype.findWizard = function(selector) {
   let rootSelector = \`.\${WizardWrapper.rootSelector}\`;
   if("legacyRootSelector" in WizardWrapper && WizardWrapper.legacyRootSelector){
@@ -4527,6 +4570,11 @@ ElementWrapper.prototype.findClosestTutorialPanel = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(TutorialPanelWrapper);
 };
+ElementWrapper.prototype.findClosestVirtualTable = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(VirtualTableWrapper);
+};
 ElementWrapper.prototype.findClosestWizard = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4644,6 +4692,7 @@ import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TruncatedTextWrapper from './truncated-text';
 import TutorialPanelWrapper from './tutorial-panel';
+import VirtualTableWrapper from './virtual-table';
 import WizardWrapper from './wizard';
 
 
@@ -4740,6 +4789,7 @@ export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TruncatedTextWrapper };
 export { TutorialPanelWrapper };
+export { VirtualTableWrapper };
 export { WizardWrapper };
 
 declare module '@cloudscape-design/test-utils-core/dist/selectors' {
@@ -6327,6 +6377,23 @@ findTutorialPanel(selector?: string): TutorialPanelWrapper;
  */
 findAllTutorialPanels(selector?: string): MultiElementWrapper<TutorialPanelWrapper>;
 /**
+ * Returns a wrapper that matches the VirtualTables with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches VirtualTables.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {VirtualTableWrapper}
+ */
+findVirtualTable(selector?: string): VirtualTableWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches VirtualTables with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches VirtualTables.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<VirtualTableWrapper>}
+ */
+findAllVirtualTables(selector?: string): MultiElementWrapper<VirtualTableWrapper>;
+/**
  * Returns a wrapper that matches the Wizards with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Wizards.
  *
@@ -7555,6 +7622,19 @@ ElementWrapper.prototype.findTutorialPanel = function(selector) {
 
 ElementWrapper.prototype.findAllTutorialPanels = function(selector) {
   return this.findAllComponents(TutorialPanelWrapper, selector);
+};
+ElementWrapper.prototype.findVirtualTable = function(selector) {
+  let rootSelector = \`.\${VirtualTableWrapper.rootSelector}\`;
+  if("legacyRootSelector" in VirtualTableWrapper && VirtualTableWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${VirtualTableWrapper.rootSelector}, .\${VirtualTableWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, VirtualTableWrapper);
+};
+
+ElementWrapper.prototype.findAllVirtualTables = function(selector) {
+  return this.findAllComponents(VirtualTableWrapper, selector);
 };
 ElementWrapper.prototype.findWizard = function(selector) {
   let rootSelector = \`.\${WizardWrapper.rootSelector}\`;
