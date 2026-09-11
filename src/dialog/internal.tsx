@@ -10,7 +10,6 @@ import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { DialogProps } from './interfaces';
 
@@ -35,8 +34,6 @@ export default function InternalDialog({
   const headerId = useUniqueId('dialog-header-');
   const dialogRef = useRef<HTMLDivElement>(null);
   const restoreFocusTargetRef = useRef<HTMLOrSVGElement | null>(null);
-  const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xxs']);
-  const isNarrow = breakpoint === 'default';
 
   const restoreFocusHandler = useCallback((element: HTMLDivElement | null) => {
     if (element === null) {
@@ -45,8 +42,11 @@ export default function InternalDialog({
     }
   }, []);
 
-  const mergedRootRef = useMergeRefs(dialogRef, breakpointsRef, __internalRootRef);
+  const mergedRootRef = useMergeRefs(dialogRef, __internalRootRef);
 
+  // Mounting Dialog moves focus inside it. Consumers should preserve the same
+  // mounted instance when repositioning Dialog because moving it between render
+  // branches remounts it and triggers initial focus again.
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) {
@@ -87,14 +87,7 @@ export default function InternalDialog({
       className={clsx(baseProps.className, styles.root, testStyles.root)}
       onKeyDown={onKeyDown}
     >
-      <div
-        ref={restoreFocusHandler}
-        className={clsx(
-          styles.header,
-          headerActions && styles['header-with-actions'],
-          headerActions && isNarrow && styles['header-narrow']
-        )}
-      >
+      <div ref={restoreFocusHandler} className={clsx(styles.header, headerActions && styles['header-with-actions'])}>
         <div className={styles['header-content']}>
           <span id={headerId} className={testStyles.header}>
             {header}
