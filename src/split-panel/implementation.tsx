@@ -42,6 +42,8 @@ export function SplitPanelImplementation({
   headerBefore,
   headerDescription,
   headerInfo,
+  toggleIconOpen,
+  toggleIconClosed,
   ...restProps
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
@@ -152,12 +154,15 @@ export function SplitPanelImplementation({
             <InternalButton
               className={testUtilStyles['close-button']}
               iconName={
-                isRefresh && closeBehavior === 'collapse'
-                  ? position === 'side'
-                    ? 'angle-right'
-                    : 'angle-down'
-                  : 'close'
+                toggleIconOpen
+                  ? undefined
+                  : isRefresh && closeBehavior === 'collapse'
+                    ? position === 'side'
+                      ? 'angle-right'
+                      : 'angle-down'
+                    : 'close'
               }
+              iconSvg={toggleIconOpen ?? undefined}
               variant="icon"
               onClick={onToggle}
               formAction="none"
@@ -167,7 +172,8 @@ export function SplitPanelImplementation({
           ) : position === 'side' || closeBehavior === 'hide' ? null : (
             <InternalButton
               className={testUtilStyles['open-button']}
-              iconName="angle-up"
+              iconName={toggleIconClosed ? undefined : 'angle-up'}
+              iconSvg={toggleIconClosed ?? undefined}
               variant="icon"
               formAction="none"
               ariaLabel={i18nStrings.openButtonAriaLabel}
@@ -260,6 +266,7 @@ export function SplitPanelImplementation({
           panelHeaderId={panelHeaderId}
           ariaLabel={ariaLabel}
           closeBehavior={closeBehavior}
+          toggleIconClosed={toggleIconClosed}
         >
           <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
         </SplitPanelContentSide>
