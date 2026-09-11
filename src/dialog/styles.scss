@@ -62,14 +62,6 @@ $section-gap: awsui.$space-dialog-section-gap;
     grid-template-areas: 'heading actions dismiss';
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
-
-  &.header-narrow {
-    grid-template-areas:
-      'heading dismiss'
-      '. actions';
-    grid-template-columns: minmax(0, 1fr) auto;
-    row-gap: $header-gap;
-  }
 }
 
 .header-content {
