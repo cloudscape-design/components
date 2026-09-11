@@ -37,6 +37,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DialogWrapper from './dialog';
 import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
@@ -133,6 +134,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DialogWrapper };
 export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
@@ -987,6 +989,34 @@ findAllDateRangePickers(selector?: string): Array<DateRangePickerWrapper>;
  * @returns {DateRangePickerWrapper | null}
  */
 findClosestDateRangePicker(): DateRangePickerWrapper | null;
+/**
+ * Returns the wrapper of the first Dialog that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Dialog.
+ * If no matching Dialog is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DialogWrapper | null}
+ */
+findDialog(selector?: string): DialogWrapper | null;
+
+/**
+ * Returns an array of Dialog wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Dialogs inside the current wrapper.
+ * If no matching Dialog is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DialogWrapper>}
+ */
+findAllDialogs(selector?: string): Array<DialogWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Dialog for the current element,
+ * or the element itself if it is an instance of Dialog.
+ * If no Dialog is found, returns \`null\`.
+ *
+ * @returns {DialogWrapper | null}
+ */
+findClosestDialog(): DialogWrapper | null;
 /**
  * Returns the wrapper of the first Divider that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Divider.
@@ -3203,6 +3233,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
 };
+ElementWrapper.prototype.findDialog = function(selector) {
+  let rootSelector = \`.\${DialogWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DialogWrapper && DialogWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DialogWrapper.rootSelector}, .\${DialogWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DialogWrapper);
+};
+
+ElementWrapper.prototype.findAllDialogs = function(selector) {
+  return this.findAllComponents(DialogWrapper, selector);
+};
 ElementWrapper.prototype.findDivider = function(selector) {
   let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
   if("legacyRootSelector" in DividerWrapper && DividerWrapper.legacyRootSelector){
@@ -4202,6 +4245,11 @@ ElementWrapper.prototype.findClosestDateRangePicker = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(DateRangePickerWrapper);
 };
+ElementWrapper.prototype.findClosestDialog = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DialogWrapper);
+};
 ElementWrapper.prototype.findClosestDivider = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4579,6 +4627,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DialogWrapper from './dialog';
 import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
@@ -4675,6 +4724,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DialogWrapper };
 export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
@@ -5221,6 +5271,23 @@ findDateRangePicker(selector?: string): DateRangePickerWrapper;
  * @returns {MultiElementWrapper<DateRangePickerWrapper>}
  */
 findAllDateRangePickers(selector?: string): MultiElementWrapper<DateRangePickerWrapper>;
+/**
+ * Returns a wrapper that matches the Dialogs with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Dialogs.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DialogWrapper}
+ */
+findDialog(selector?: string): DialogWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Dialogs with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Dialogs.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<DialogWrapper>}
+ */
+findAllDialogs(selector?: string): MultiElementWrapper<DialogWrapper>;
 /**
  * Returns a wrapper that matches the Dividers with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Dividers.
@@ -6710,6 +6777,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
+};
+ElementWrapper.prototype.findDialog = function(selector) {
+  let rootSelector = \`.\${DialogWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DialogWrapper && DialogWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DialogWrapper.rootSelector}, .\${DialogWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DialogWrapper);
+};
+
+ElementWrapper.prototype.findAllDialogs = function(selector) {
+  return this.findAllComponents(DialogWrapper, selector);
 };
 ElementWrapper.prototype.findDivider = function(selector) {
   let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
