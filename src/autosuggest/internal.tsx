@@ -55,6 +55,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     expandToViewport,
     onSelect,
     renderHighlightedAriaLive,
+    openOnFocus = true,
     style,
     renderOption,
     __internalRootRef,
@@ -122,8 +123,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   const handleFocus = () => {
-    autosuggestItemsHandlers.setShowAll(true);
-    autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+    if (openOnFocus) {
+      autosuggestItemsHandlers.setShowAll(true);
+      autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+    }
     fireNonCancelableEvent(onFocus, null);
   };
 
@@ -224,6 +227,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
+      openOnFocus={openOnFocus}
       style={style}
       dropdownContent={
         shouldRenderDropdownContent && (
