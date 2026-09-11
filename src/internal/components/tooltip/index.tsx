@@ -8,6 +8,8 @@ import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
+import { usePortalContainer } from '../../hooks/use-portal-container';
+import { getOwnerWindow } from '../../utils/dom';
 import { Transition } from '../transition';
 
 import testUtilsStyles from '../../../tooltip/test-classes/styles.css.js';
@@ -46,8 +48,9 @@ export default function Tooltip({
   }
 
   useEffect(() => {
+    const targetWindow = getOwnerWindow(trackRef.current);
     const controller = new AbortController();
-    window.addEventListener(
+    targetWindow.addEventListener(
       'keydown',
       (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -67,10 +70,12 @@ export default function Tooltip({
     return () => {
       controller.abort();
     };
-  }, [onDismiss]);
+  }, [trackRef, onDismiss]);
+
+  const portalContainer = usePortalContainer(() => trackRef.current);
 
   return (
-    <Portal>
+    <Portal container={portalContainer}>
       <div className={`${styles.root} ${testUtilsStyles.root}`} {...contentAttributes} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
