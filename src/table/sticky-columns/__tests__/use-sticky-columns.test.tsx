@@ -153,6 +153,57 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
   });
 });
 
+test('minScrollableWidth=0 keeps sticky columns active when default threshold would deactivate them', () => {
+  // wrapper=300, table=500 (scrollable). First sticky column is 200px wide.
+  // With the default 148px minimum, 200 + 148 = 348 > 300 -> feature is deactivated (see test above).
+  // Overriding minScrollableWidth to 0 makes 200 + 0 = 200 < 300 -> feature stays active.
+  const { result, rerender } = renderHook(() =>
+    useStickyColumns({ visibleColumns: [1, 2, 3], stickyColumnsFirst: 1, stickyColumnsLast: 0, minScrollableWidth: 0 })
+  );
+  createMockTable(result.current, 300, 500, 200, 300, 100);
+
+  // Wait for effect
+  rerender({});
+
+  expect(result.current.store.get()).toEqual({
+    cellState: new Map([
+      [
+        1,
+        {
+          lastInsetInlineStart: false,
+          lastInsetInlineEnd: false,
+          padInlineStart: false,
+          offset: { insetInlineStart: 0 },
+        },
+      ],
+    ]),
+    wrapperState: { scrollPaddingInlineStart: 200, scrollPaddingInlineEnd: 0 },
+  });
+});
+
+test('a large minScrollableWidth deactivates sticky columns even when the default threshold would allow them', () => {
+  // wrapper=300, table=500 (scrollable). First sticky column is only 50px wide.
+  // With the default 148px minimum, 50 + 148 = 198 < 300 -> feature would be active.
+  // Raising minScrollableWidth to 300 makes 50 + 300 = 350 > 300 -> feature is deactivated.
+  const { result, rerender } = renderHook(() =>
+    useStickyColumns({
+      visibleColumns: [1, 2, 3],
+      stickyColumnsFirst: 1,
+      stickyColumnsLast: 0,
+      minScrollableWidth: 300,
+    })
+  );
+  createMockTable(result.current, 300, 500, 50, 300, 150);
+
+  // Wait for effect
+  rerender({});
+
+  expect(result.current.store.get()).toEqual({
+    cellState: new Map(),
+    wrapperState: { scrollPaddingInlineStart: 50, scrollPaddingInlineEnd: 0 },
+  });
+});
+
 test('generates non-empty styles for sticky cells', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: [1, 2, 3], stickyColumnsFirst: 0, stickyColumnsLast: 1 })
