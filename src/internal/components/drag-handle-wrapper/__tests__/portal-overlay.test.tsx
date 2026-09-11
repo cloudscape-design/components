@@ -109,3 +109,40 @@ test('resumes position updates when enabled after being disabled', async () => {
     expect(portalOverlay.style.height).toBe('20px');
   });
 });
+
+test('propagates one-theme class to the portal overlay when one theme is active', async () => {
+  const themeRoot = document.createElement('div');
+  themeRoot.className = 'awsui-one-theme';
+  document.body.appendChild(themeRoot);
+  const mockRef = createMockRef();
+
+  try {
+    render(
+      <PortalOverlay track={mockRef} isDisabled={false}>
+        <div id="overlay">Overlay</div>
+      </PortalOverlay>
+    );
+
+    const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
+    await waitFor(() => {
+      expect(portalOverlay).toHaveClass('awsui-one-theme');
+    });
+  } finally {
+    themeRoot.remove();
+  }
+});
+
+test('does not stamp one-theme class on the portal overlay when one theme is inactive', async () => {
+  const mockRef = createMockRef();
+
+  render(
+    <PortalOverlay track={mockRef} isDisabled={false}>
+      <div id="overlay">Overlay</div>
+    </PortalOverlay>
+  );
+
+  const portalOverlay = document.querySelector<HTMLElement>(`.${styles['portal-overlay']}`)!;
+  await waitFor(() => {
+    expect(portalOverlay).not.toHaveClass('awsui-one-theme');
+  });
+});

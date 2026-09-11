@@ -10,6 +10,8 @@ import {
   Portal,
 } from '@cloudscape-design/component-toolkit/internal';
 
+import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
+
 import styles from './styles.css.js';
 
 export default function PortalOverlay({
@@ -25,6 +27,7 @@ export default function PortalOverlay({
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const portalClasses = usePortalModeClasses(track);
 
   useLayoutEffect(() => {
     if (track.current) {
@@ -90,7 +93,7 @@ export default function PortalOverlay({
       <span
         ref={ref}
         data-awsui-referrer-id={referrerId}
-        className={clsx(styles['portal-overlay'], isDisabled && styles['portal-overlay-disabled'])}
+        className={clsx(portalClasses, styles['portal-overlay'], isDisabled && styles['portal-overlay-disabled'])}
       >
         <span className={styles['portal-overlay-contents']}>{children}</span>
       </span>

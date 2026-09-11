@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import VisualContext from '../../../../../lib/components/internal/components/visual-context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../../../lib/components/internal/do-not-use/feature-prompt';
 import FeaturePromptWrapper from '../../../../../lib/components/test-utils/dom/internal/feature-prompt';
 
@@ -168,5 +169,43 @@ describe('FeaturePrompt', () => {
     expect(onDismissMock).toHaveBeenCalledTimes(1);
     expect(onDismissMock).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'click-outside' } }));
     expect(wrapper.findContent()).toBeFalsy();
+  });
+
+  test('should propagate one-theme class to the portaled feature prompt when one theme is active', () => {
+    const themeRoot = document.createElement('div');
+    themeRoot.className = 'awsui-one-theme';
+    document.body.appendChild(themeRoot);
+
+    try {
+      const { getByTestId, wrapper } = renderComponent(<TestComponent />);
+      getByTestId('trigger-button').click();
+
+      expect(wrapper.findContent()!.getElement().closest('.awsui-one-theme')).not.toBeNull();
+    } finally {
+      themeRoot.remove();
+    }
+  });
+
+  test('should not stamp one-theme class on the portaled feature prompt when one theme is inactive', () => {
+    const { getByTestId, wrapper } = renderComponent(<TestComponent />);
+
+    getByTestId('trigger-button').click();
+
+    expect(wrapper.findContent()!.getElement().closest('.awsui-one-theme')).toBeNull();
+  });
+
+  test('should not propagate visual context to the portaled feature prompt', () => {
+    const { getByTestId, wrapper } = renderComponent(
+      <div className="awsui-polaris-dark-mode">
+        <VisualContext contextName="alert">
+          <TestComponent />
+        </VisualContext>
+      </div>
+    );
+
+    getByTestId('trigger-button').click();
+
+    expect(wrapper.findContent()!.getElement().closest('.awsui-polaris-dark-mode')).not.toBeNull();
+    expect(wrapper.findContent()!.getElement().closest('.awsui-context-alert')).toBeNull();
   });
 });
