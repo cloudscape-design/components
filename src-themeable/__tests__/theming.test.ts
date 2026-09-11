@@ -70,6 +70,7 @@ describe('generateThemeStylesheet', () => {
       override: theme,
       preset,
       selector: '.my-theme',
+      baseThemeId: 'visual-refresh',
     });
   });
 });
