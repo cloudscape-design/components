@@ -35,6 +35,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import { defaultTableContext, TableContextProvider } from '../table-root/context';
+import { RowVariantContextProvider } from '../table-row/context';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { ClearSortButton } from './clear-sort';
@@ -510,7 +512,7 @@ const InternalTable = React.forwardRef(
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
     const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
-    return (
+    const tableContent = (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef, headerRef }}>
           <ColumnWidthsProvider
@@ -724,6 +726,8 @@ const InternalTable = React.forwardRef(
                               <tr
                                 key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                {...focusMarkers.item}
+                                {...rowRoleProps}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click
@@ -732,12 +736,10 @@ const InternalTable = React.forwardRef(
                                     stickyHeaderRef.current?.scrollToRow(currentTarget);
                                   }
                                 }}
-                                {...focusMarkers.item}
                                 onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
                                 onContextMenu={
                                   onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
                                 }
-                                {...rowRoleProps}
                               >
                                 {selection.getItemSelectionProps && (
                                   <TableBodySelectionCell
@@ -909,6 +911,12 @@ const InternalTable = React.forwardRef(
           </ColumnWidthsProvider>
         </TableComponentsContextProvider>
       </LinkDefaultVariantContext.Provider>
+    );
+
+    return (
+      <TableContextProvider value={defaultTableContext}>
+        <RowVariantContextProvider value="default">{tableContent}</RowVariantContextProvider>
+      </TableContextProvider>
     );
   }
 ) as TableForwardRefType;
