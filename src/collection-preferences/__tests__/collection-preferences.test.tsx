@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import CollectionPreferences from '../../../lib/components/collection-preferences';
+import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
@@ -305,5 +305,76 @@ describe('i18n', () => {
       'Custom content display description'
     );
     expect(modal.findContentDisplayPreference()!.find('[aria-label*="Custom drag handle"')).toBeTruthy();
+  });
+});
+
+describe('Collection preferences - Reset to defaults', () => {
+  const resetToDefaults: CollectionPreferencesProps.ResetToDefaults = {
+    label: 'Reset to defaults',
+    preferences: { pageSize: 10, wrapLines: false },
+  };
+
+  test('does not render the reset button when resetToDefaults is not provided', () => {
+    const wrapper = renderCollectionPreferences({});
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findResetButton()).toBeNull();
+  });
+
+  test('renders the reset button with the provided label when resetToDefaults is set', () => {
+    const wrapper = renderCollectionPreferences({ resetToDefaults });
+    wrapper.findTriggerButton().click();
+    const resetButton = wrapper.findModal()!.findResetButton();
+    expect(resetButton).not.toBeNull();
+    expect(resetButton!.findTextRegion()!.getElement()).toHaveTextContent('Reset to defaults');
+  });
+
+  test('calls onReset with the default preferences when clicking the reset button', () => {
+    const onResetSpy = jest.fn();
+    const wrapper = renderCollectionPreferences({
+      resetToDefaults,
+      onReset: onResetSpy,
+      preferences: { pageSize: 50, wrapLines: true },
+    });
+    wrapper.findTriggerButton().click();
+    wrapper.findModal()!.findResetButton()!.click();
+    expect(onResetSpy).toHaveBeenCalledTimes(1);
+    expect(onResetSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { pageSize: 10, wrapLines: false } }));
+  });
+
+  test('does not throw when onReset is not provided', () => {
+    const wrapper = renderCollectionPreferences({ resetToDefaults });
+    wrapper.findTriggerButton().click();
+    expect(() => wrapper.findModal()!.findResetButton()!.click()).not.toThrow();
+  });
+
+  test('restores the working state so that confirm applies the default preferences', () => {
+    const onConfirmSpy = jest.fn();
+    const wrapper = renderCollectionPreferences({
+      resetToDefaults,
+      onConfirm: onConfirmSpy,
+      preferences: { pageSize: 50, wrapLines: true },
+    });
+    wrapper.findTriggerButton().click();
+    wrapper.findModal()!.findResetButton()!.click();
+    wrapper.findModal()!.findConfirmButton()!.click();
+    expect(onConfirmSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { pageSize: 10, wrapLines: false } }));
+  });
+
+  test('does not close the modal when clicking the reset button', () => {
+    const wrapper = renderCollectionPreferences({ resetToDefaults });
+    wrapper.findTriggerButton().click();
+    wrapper.findModal()!.findResetButton()!.click();
+    expect(wrapper.findModal()).not.toBeNull();
+  });
+
+  test('supports using resetToDefaults label from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ 'collection-preferences': { 'resetToDefaults.label': 'Custom reset' } }}>
+        <CollectionPreferences resetToDefaults={{ preferences: {} }} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findCollectionPreferences()!;
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findResetButton()!.findTextRegion()!.getElement()).toHaveTextContent('Custom reset');
   });
 });

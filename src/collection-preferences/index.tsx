@@ -64,6 +64,8 @@ export default function CollectionPreferences({
   getModalRoot,
   removeModalRoot,
   contentBefore,
+  resetToDefaults,
+  onReset,
   ...rest
 }: CollectionPreferencesProps) {
   const parentMetadata = useContext(CollectionPreferencesMetadata);
@@ -108,6 +110,12 @@ export default function CollectionPreferences({
     fireNonCancelableEvent(onCancel, {});
     setModalVisible(false);
     setTemporaryPreferences(copyPreferences(preferences || {}));
+  };
+
+  const onResetListener = () => {
+    const resetPreferences = copyPreferences(resetToDefaults?.preferences || {});
+    setTemporaryPreferences(resetPreferences);
+    fireNonCancelableEvent(onReset, resetPreferences);
   };
 
   const hasContentOnTheLeft = !!(
@@ -188,28 +196,64 @@ export default function CollectionPreferences({
             header={i18n('title', title)}
             referrerId={referrerId}
             footer={
-              <InternalBox float="right">
-                <InternalSpaceBetween direction="horizontal" size="xs">
+              resetToDefaults ? (
+                <div className={styles.footer}>
                   <InternalButton
-                    className={styles['cancel-button']}
+                    className={styles['reset-button']}
                     variant="link"
                     formAction="none"
-                    onClick={onCancelListener}
-                    analyticsAction="cancel"
+                    onClick={onResetListener}
+                    analyticsAction="reset"
                   >
-                    {i18n('cancelLabel', cancelLabel)}
+                    {i18n('resetToDefaults.label', resetToDefaults.label)}
                   </InternalButton>
-                  <InternalButton
-                    className={styles['confirm-button']}
-                    variant="primary"
-                    formAction="none"
-                    onClick={onConfirmListener}
-                    analyticsAction="confirm"
-                  >
-                    {i18n('confirmLabel', confirmLabel)}
-                  </InternalButton>
-                </InternalSpaceBetween>
-              </InternalBox>
+                  <InternalBox float="right">
+                    <InternalSpaceBetween direction="horizontal" size="xs">
+                      <InternalButton
+                        className={styles['cancel-button']}
+                        variant="link"
+                        formAction="none"
+                        onClick={onCancelListener}
+                        analyticsAction="cancel"
+                      >
+                        {i18n('cancelLabel', cancelLabel)}
+                      </InternalButton>
+                      <InternalButton
+                        className={styles['confirm-button']}
+                        variant="primary"
+                        formAction="none"
+                        onClick={onConfirmListener}
+                        analyticsAction="confirm"
+                      >
+                        {i18n('confirmLabel', confirmLabel)}
+                      </InternalButton>
+                    </InternalSpaceBetween>
+                  </InternalBox>
+                </div>
+              ) : (
+                <InternalBox float="right">
+                  <InternalSpaceBetween direction="horizontal" size="xs">
+                    <InternalButton
+                      className={styles['cancel-button']}
+                      variant="link"
+                      formAction="none"
+                      onClick={onCancelListener}
+                      analyticsAction="cancel"
+                    >
+                      {i18n('cancelLabel', cancelLabel)}
+                    </InternalButton>
+                    <InternalButton
+                      className={styles['confirm-button']}
+                      variant="primary"
+                      formAction="none"
+                      onClick={onConfirmListener}
+                      analyticsAction="confirm"
+                    >
+                      {i18n('confirmLabel', confirmLabel)}
+                    </InternalButton>
+                  </InternalSpaceBetween>
+                </InternalBox>
+              )
             }
             closeAriaLabel={closeAriaLabel || cancelLabel}
             size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
