@@ -34,7 +34,7 @@ function firstEnabledTab(tabs: ReadonlyArray<TabsProps.Tab>) {
 function shouldRenderTabContent(tab: TabsProps.Tab, viewedTabs: Set<string>) {
   switch (tab.contentRenderStrategy) {
     case 'active':
-      return false; // rendering active tab is handled directly in component
+      return false;
     case 'eager':
       return true;
     case 'lazy':
@@ -56,13 +56,14 @@ export default function Tabs({
   keyboardActivationMode = 'automatic',
   actions,
   style,
+  overflowBehavior = 'scroll',
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
-    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode },
+    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode, overflowBehavior },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasHeaderActions: !!actions,
@@ -156,6 +157,7 @@ export default function Tabs({
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
       style={style}
+      overflowBehavior={overflowBehavior}
     />
   );
 
