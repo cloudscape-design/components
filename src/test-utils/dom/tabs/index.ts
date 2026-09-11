@@ -128,4 +128,29 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   findActions(): ElementWrapper | null {
     return this.find(`.${styles['actions-container']}`);
   }
+
+  /**
+   * Finds the drag handle for the tab at the given position (1-based).
+   * Returns `null` when the tab is not reorderable or is pinned (`disableReorder`).
+   *
+   * @param index 1-based index of the tab.
+   */
+  findTabDragHandle(index: number): ElementWrapper<HTMLElement> | null {
+    return this.find(`.${styles['tabs-tab']}:nth-child(${index}) .${testUtilStyles['tab-drag-handle']}`);
+  }
+
+  /**
+   * Finds the drag handle for the tab with the given id.
+   * Returns `null` when the tab is not reorderable or is pinned (`disableReorder`).
+   */
+  findTabDragHandleByTabId(id: string): ElementWrapper<HTMLElement> | null {
+    return this.find(`[data-testid="awsui-tab-drag-handle-${id}"]`);
+  }
+
+  /**
+   * Finds the trailing "+" add-tab button rendered when `addTabButton` is set.
+   */
+  findAddTabButton(): ButtonWrapper | null {
+    return this.findComponent(`.${testUtilStyles['add-tab-button']}`, ButtonWrapper);
+  }
 }

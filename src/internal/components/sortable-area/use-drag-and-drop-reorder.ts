@@ -13,6 +13,8 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
 import { SortableAreaProps } from './interfaces';
 import { KeyboardAndUAPCoordinateGetter, KeyboardAndUAPSensor } from './keyboard-sensor';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -37,9 +39,11 @@ import { EventName } from './keyboard-sensor/utilities/events';
 export default function useDragAndDropReorder<Item>({
   items,
   itemDefinition,
+  direction = 'vertical',
 }: {
   items: readonly Item[];
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
+  direction?: SortableAreaProps.Direction;
 }) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
@@ -57,9 +61,9 @@ export default function useDragAndDropReorder<Item>({
     if (isKeyboard.current && activeItemId) {
       const currentTargetIndex =
         items.findIndex(item => itemDefinition.id(item) === activeItemId) + positionDelta.current;
-      if ((event.key === 'ArrowDown' || event.type === EventName.CustomDown) && currentTargetIndex < items.length - 1) {
+      if (isMoveToEndKey(event, direction) && currentTargetIndex < items.length - 1) {
         positionDelta.current += 1;
-      } else if ((event.key === 'ArrowUp' || event.type === EventName.CustomUp) && currentTargetIndex > 0) {
+      } else if (isMoveToStartKey(event, direction) && currentTargetIndex > 0) {
         positionDelta.current -= 1;
       }
     }
@@ -147,6 +151,7 @@ export default function useDragAndDropReorder<Item>({
     }),
     useSensor(KeyboardAndUAPSensor, {
       coordinateGetter,
+      direction,
       onActivation: () => {
         isKeyboard.current = true;
       },
@@ -193,3 +198,34 @@ function getCollidingContainer({
 }
 
 const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
+
+// Maps a keyboard/custom event to a "move towards the end of the list" intent (index += 1).
+// Vertical lists use ArrowDown; horizontal lists use ArrowRight (ArrowLeft in RTL).
+// The UAP direction-button custom events are logical, so they are orientation-independent.
+function isMoveToEndKey(event: React.KeyboardEvent, direction: SortableAreaProps.Direction) {
+  if (event.type === EventName.CustomDown) {
+    return true;
+  }
+  if (event.type === EventName.CustomUp) {
+    return false;
+  }
+  if (direction === 'horizontal') {
+    return event.key === (getIsRtl(event.currentTarget as HTMLElement) ? 'ArrowLeft' : 'ArrowRight');
+  }
+  return event.key === 'ArrowDown';
+}
+
+// Maps a keyboard/custom event to a "move towards the start of the list" intent (index -= 1).
+// Vertical lists use ArrowUp; horizontal lists use ArrowLeft (ArrowRight in RTL).
+function isMoveToStartKey(event: React.KeyboardEvent, direction: SortableAreaProps.Direction) {
+  if (event.type === EventName.CustomUp) {
+    return true;
+  }
+  if (event.type === EventName.CustomDown) {
+    return false;
+  }
+  if (direction === 'horizontal') {
+    return event.key === (getIsRtl(event.currentTarget as HTMLElement) ? 'ArrowRight' : 'ArrowLeft');
+  }
+  return event.key === 'ArrowUp';
+}
