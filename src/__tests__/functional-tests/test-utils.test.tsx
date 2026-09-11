@@ -13,10 +13,15 @@ import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/in
 
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
-import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapperDom from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
+
+// Authoritative pluralization used by the test-utils generator (build-tools/tasks/test-utils.js),
+// so the finder-name derivation here can never drift from the generated finder names.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { pluralizeComponentName } = require('../../../build-tools/utils/pluralize');
 
 const globalWithFlags = globalThis as any;
 
@@ -82,16 +87,14 @@ function renderComponents(componentName: string, props = RENDER_COMPONENTS_DEFAU
 
 function getComponentSelectors(componentName: string) {
   const componentNamePascalCase = pascalCase(componentName);
-  const findAllRegex = new RegExp(`findAll${componentNamePascalCase}.*`);
 
-  // The same set of selector functions are present in both dom and selectors.
-  // For this reason, looking into DOM is representative of both groups.
-  const wrapperPropsList = Object.keys(DomElementWrapper.prototype);
-
-  // Every component has the same set of selector functions.
-  // For this reason, casting the function names into the Alert component.
+  // The findAll finder uses the pluralized component name, which is not always the
+  // singular name plus a suffix (e.g. TableBody -> TableBodies). Derive it from the
+  // same pluralization map the test-utils generator uses so the two never diverge.
+  // Every component has the same set of selector functions, so casting to the Alert
+  // component's finder names is representative.
   const findName = `find${componentNamePascalCase}` as 'findAlert';
-  const findAllName = wrapperPropsList.find(selector => findAllRegex.test(selector)) as 'findAllAlerts';
+  const findAllName = `findAll${pluralizeComponentName(componentNamePascalCase)}` as 'findAllAlerts';
 
   return { findName, findAllName };
 }

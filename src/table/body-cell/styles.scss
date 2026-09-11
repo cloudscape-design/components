@@ -135,8 +135,9 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
       border-inline-start: none;
     }
   }
-  // Guard selected out: a selected first row must keep its (thicker, coloured) selected
-  // top border, which the transparent placeholder would otherwise cover.
+  // First/last-row transparent placeholder. `:not(.body-cell-selected)` keeps a selected row's own border.
+  // Stays on `.body-cell` (not consolidated into the atomic `.cell` rules): ungrid-guarded, it is also the
+  // source of the placeholder for atomic GRID cells — load-bearing for grid selection-control centering.
   tr:first-child > &:not(.body-cell-selected) {
     border-block-start: cell-base.$border-placeholder;
   }
@@ -504,4 +505,31 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
   @include focus-visible.when-visible {
     @include cell-focus-outline;
   }
+}
+
+// Atomic-only hook (classic never applies `disable-paddings`): opt out of the built-in cell padding
+// (e.g. a selection-control column). Keyed on the content wrapper, where the padding lives.
+.body-cell-content.disable-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  // Control cells hold a control, not truncatable text; keep overflow visible so the clip doesn't crop
+  // the control's focus ring.
+  overflow: visible;
+}
+
+// Hold the block reset in the selected state: the selected block-start rules (0,3,0) inject a lopsided top
+// pad + negative margin the (0,2,0) reset can't neutralise, shoving a grid-centred control down. Match
+// (0,3,0) here (wins on source order). Block axis only — inline first-child padding must stay unchanged.
+.body-cell-selected > .body-cell-content.disable-paddings {
+  padding-block: 0;
+  margin-block: 0;
+}
+
+// The last-row VR rule (`tr:last-child > .body-cell-selected.is-visual-refresh > .body-cell-content`, 0,3,1)
+// out-specifies the (0,3,0) reset via its `tr` selector, re-bumping the control wrapper's block-end padding
+// (~4px up). Mirror it + `.disable-paddings` (0,4,1) to hold the reset. Block-end only.
+tr:last-child > .body-cell-selected.is-visual-refresh > .body-cell-content.disable-paddings {
+  padding-block-end: 0;
 }

@@ -1,0 +1,61 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.header-cell {
+  box-sizing: border-box;
+}
+
+// Vertical divider between header cells, reproduced as a presentation-only `::after` (the substrate has no
+// Resizer/Divider child). A consumer with its own divider opts out via `disableDivider` (the existing Table
+// does). `.header-cell` is position:relative so this anchors to the cell.
+.header-cell:not(:last-child):not(.no-divider)::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - (2 * #{awsui.$space-xs} + #{awsui.$space-xxxs}));
+  margin-block: auto;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+// Grid mode only (mirrors body `.cell-grid`): shrink + stretch each header cell to the row track, else an
+// empty control header collapses to ~1px and leaves a stray divider stub. Auto mode untouched.
+.header-cell-grid {
+  min-inline-size: 0;
+  align-self: stretch;
+  display: grid;
+  align-items: center;
+}
+
+// Opt out of built-in padding (e.g. a selection-control column); base padding lives on `.header-cell`.
+.header-cell.disable-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.header-cell-content {
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline-start: awsui.$space-s;
+  padding-inline-end: awsui.$space-s;
+  line-height: awsui.$line-height-body-m;
+}
+
+// Carry disablePaddings through to the content box so a control cell has no residual padding.
+.header-cell.disable-paddings > .header-cell-content {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+// Visual refresh: zero the first column's content inline-start offset so it hugs the table edge (matching
+// the existing Table) instead of adding the body offset.
+.header-cell.is-visual-refresh:first-child > .header-cell-content {
+  padding-inline-start: 0;
+}

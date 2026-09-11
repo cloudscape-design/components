@@ -1,0 +1,121 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.cell {
+  box-sizing: border-box;
+}
+
+// No overflow/clip here — it would crop an interactive control's focus ring.
+.cell-grid {
+  min-inline-size: 0;
+  align-self: stretch;
+  display: grid;
+  align-items: center;
+}
+
+// Selection is a layout-neutral overlay ring (`::after` below), not real borders — a real border would grow
+// the grid row track and shift content on toggle. Rules below neutralize body-cell-selected's border/radius
+// (keeping its background), ordered by ascending specificity (stylelint no-descending-specificity).
+[data-variant-selected] > .cell {
+  border-block-start: awsui.$border-divider-list-width solid transparent;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+}
+
+// Restore the unselected block-end padding that `body-cell-selected` reclaims (its reclaim offsets a real
+// 2px border the atomic doesn't paint, so it would drop content ~0.5px on select). `:not(disable-paddings)`
+// excludes the control cell — without it the restore raises the grid-centred control ~5px on select (equal
+// specificity, so source order wouldn't protect it). Fragment selector matches the cross-module hashed wrapper.
+[data-variant-selected] > .cell-grid > [class*='body-cell-content']:not([class*='disable-paddings']) {
+  padding-block-end: calc(
+    #{awsui.$space-scaled-xs} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width}) -
+      #{awsui.$border-divider-list-width} + 2px
+  );
+}
+
+// Striped-divider darkening. The atomic has no table-level flag, only per-row `variant='shaded'`, so it
+// darkens dividers by adjacency (above a shaded row + a shaded row's own bottom; last row excluded). Keyed
+// on `data-variant-shaded`, inert for the Table.
+tr:has(+ [data-variant-shaded]) > .cell {
+  border-block-end-color: awsui.$color-border-cell-shaded;
+}
+[data-variant-shaded]:not(:last-child) > .cell {
+  border-block-end-color: awsui.$color-border-cell-shaded;
+}
+
+// Hide the first-of-pair's own grey divider (the seam is drawn by its 2px `::after` block-end below).
+[data-variant-selected]:has(+ [data-variant-selected]) > .cell {
+  border-block-end-color: transparent;
+}
+
+// Drop the inline selection border + radius `body-cell-selected` adds, so inline geometry equals the
+// unselected row (the ring draws these edges; last column keeps its 2px transparent placeholder).
+[data-variant-selected] > .cell:first-child {
+  border-inline-start: none;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+[data-variant-selected] > .cell:last-child {
+  border-inline-end: awsui.$border-item-width solid transparent;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+// Make the unselected row-above's bottom divider transparent so no grey line abuts the ring's top edge.
+tr:not([data-variant-selected]):has(+ [data-variant-selected]) > .cell {
+  border-block-end-color: transparent;
+}
+
+// A selected first GRID row is neutralized to 1px block-start, but unselected carries classic's 2px
+// placeholder — restore 2px here so the first row's border-box (40px) is equal in both states and content
+// doesn't shift on toggle (matches classic). Inert for the Table.
+tr:first-child[data-variant-selected] > .cell-grid {
+  border-block-start: awsui.$border-item-width solid transparent;
+}
+
+// Auto-layout first/last-row transparent placeholder (renders the edge rows 1px taller, matching classic).
+// Grid cells get theirs from classic's ungrid-guarded `.body-cell` rules (load-bearing for grid selection-
+// control centering), so `.cell-grid` is excluded here to avoid double-stamping. A composing feature that
+// owns an edge sets suppressBlock*Placeholder → these marker classes skip it. Header row is inert (`.header-cell`).
+tr:first-child > .cell:not(.cell-grid):not(.no-block-start-placeholder) {
+  border-block-start: awsui.$border-item-width solid transparent;
+}
+tr:last-child > .cell:not(.cell-grid):not(.no-block-end-placeholder) {
+  border-block-end: awsui.$border-item-width solid transparent;
+}
+
+[data-variant-selected]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  // In grid mode this abspos ::after is a grid item, so its containing block is the grid AREA it spans
+  // (the column tracks), not the row box. `inset:0` then hugs the columns: the outline stops at the last
+  // column when tracks underfill the row and follows them when they overflow. Ignored in auto layout (the
+  // row is not a grid), where it falls back to the row box.
+  grid-column: 1 / -1;
+  grid-row: 1;
+  border-block-start: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-block-end: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-inline-start: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-inline-end: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+  pointer-events: none;
+}
+
+// Merge a run of selected rows into one outline: the first-of-pair keeps its 2px `::after` bottom edge (the
+// seam) and squares its bottom corners; a following row zeroes its top edge and squares its top corners.
+[data-variant-selected]:has(+ [data-variant-selected])::after {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+[data-variant-selected] + [data-variant-selected]::after {
+  border-block-start-width: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
