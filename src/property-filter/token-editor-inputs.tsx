@@ -103,6 +103,12 @@ export function OperatorInput({
     if (property) {
       return operatorToDescription(op, i18nStrings, property);
     }
+    // Prefer an explicit free-text operator description when the consumer provides one.
+    const freeTextDescription = freeTextFiltering.getOperatorDescription(op);
+    if (freeTextDescription) {
+      return freeTextDescription;
+    }
+    // Fall back to reusing a matching property operator description, then to the built-in i18n string.
     const freeTextProperty = filteringProperties.find(prop => prop.getOperatorDescription(op) !== null);
     return operatorToDescription(op, i18nStrings, freeTextProperty);
   };

@@ -103,6 +103,7 @@ const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
     disabled: false,
     operators: [':', '!:'],
     defaultOperator: ':',
+    getOperatorDescription: () => null,
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [
