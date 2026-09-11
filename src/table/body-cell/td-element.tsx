@@ -7,6 +7,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
@@ -50,7 +51,6 @@ export interface TableTdElementProps {
   onExpandableItemToggle?: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
-  expandToggleIcon?: (state: { expanded: boolean }) => React.ReactNode;
   verticalAlign?: TableProps.VerticalAlign;
   resizableColumns?: boolean;
   resizableStyle?: ColumnWidthStyle;
@@ -92,7 +92,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onExpandableItemToggle,
       expandButtonLabel,
       collapseButtonLabel,
-      expandToggleIcon,
       verticalAlign,
       resizableColumns,
       resizableStyle,
@@ -122,6 +121,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const cellRefObject = useRef<HTMLTableCellElement>(null);
     const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellRefObject);
     const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
+    const tableIcons = useInternalComponentIcons('table');
     const isEditingActive = isEditing && !isEditingDisabled;
 
     return (
@@ -166,7 +166,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
               onExpandableItemToggle={onExpandableItemToggle}
               expandButtonLabel={expandButtonLabel}
               collapseButtonLabel={collapseButtonLabel}
-              expandToggleIcon={expandToggleIcon}
+              expandToggleIcon={tableIcons?.expandToggle}
             />
           </div>
         )}

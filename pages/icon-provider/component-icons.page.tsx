@@ -14,18 +14,18 @@ import {
   Icon,
   IconProvider,
   IconProviderProps,
+  SideNavigation,
   SpaceBetween,
   Table,
-  TableProps,
   TreeView,
 } from '~components';
 
-import AppContext, { AppContextType } from './app/app-context';
-import { SimplePage } from './app/templates';
-import { ariaLabels } from './table/expandable-rows/common';
-import { createColumns } from './table/expandable-rows/expandable-rows-configs';
-import { allInstances } from './table/expandable-rows/expandable-rows-data';
-import { items as treeItems } from './tree-view/items/basic-page-items';
+import AppContext, { AppContextType } from '../app/app-context';
+import { SimplePage } from '../app/templates';
+import { ariaLabels } from '../table/expandable-rows/common';
+import { createColumns } from '../table/expandable-rows/expandable-rows-configs';
+import { allInstances } from '../table/expandable-rows/expandable-rows-data';
+import { items as treeItems } from '../tree-view/items/basic-page-items';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -46,7 +46,7 @@ const expandToggleIcon = ({ expanded }: { expanded: boolean }) => (
   <Icon name={expanded ? 'treeview-collapse' : 'treeview-expand'} size="inherit" />
 );
 
-const sortingIndicatorIcon: TableProps.Icons['sortingIndicator'] = ({ sortingState }) => {
+const sortingIndicatorIcon: IconProviderProps.TableIcons['sortingIndicator'] = ({ sortingState }) => {
   switch (sortingState) {
     case 'ascending':
       return <Icon name="arrow-up" size="inherit" />;
@@ -62,13 +62,21 @@ export default function Page() {
     urlParams: { overrideCarets = false, overrideExpandToggles = true, overrideSortingIndicators = true },
     setUrlParams,
   } = useContext(AppContext as PageContext);
+
+  const expandToggle = overrideExpandToggles ? expandToggleIcon : undefined;
+  const componentIcons: IconProviderProps.ComponentIcons = {
+    table: { expandToggle, sortingIndicator: overrideSortingIndicators ? sortingIndicatorIcon : undefined },
+    'tree-view': { expandToggle },
+    'expandable-section': { expandToggle },
+  };
+
   return (
     <SimplePage
-      title="Component icons"
+      title="Icon provider: component icons"
       subtitle={
         <span>
-          Demonstrates the use of <Box variant="awsui-inline-code">icons</Box> property to override specific component
-          icons. These take precedence over icon provider overrides.
+          Demonstrates the use of the <Box variant="awsui-inline-code">componentIcons</Box> property to override
+          specific component icons, including nested usage (expandable sections inside side navigation).
         </span>
       }
       settings={
@@ -77,7 +85,7 @@ export default function Page() {
             checked={overrideCarets}
             onChange={({ detail }) => setUrlParams({ overrideCarets: detail.checked })}
           >
-            Override carets with icon provider
+            Override carets with icons
           </Checkbox>
           <Checkbox
             checked={overrideExpandToggles}
@@ -96,25 +104,17 @@ export default function Page() {
       i18n={{}}
       screenshotArea={{}}
     >
-      <IconProvider icons={overrideCarets ? caretIcons : {}}>
+      <IconProvider icons={overrideCarets ? caretIcons : {}} componentIcons={componentIcons}>
         <DemoTable />
         <DemoTreeView />
         <DemoExpandableSection />
+        <DemoSideNavigation />
       </IconProvider>
     </SimplePage>
   );
 }
 
-function useIcons() {
-  const { urlParams } = useContext(AppContext as PageContext);
-  return {
-    expandToggle: (urlParams.overrideExpandToggles ?? true) ? expandToggleIcon : undefined,
-    sortingIndicator: (urlParams.overrideSortingIndicators ?? true) ? sortingIndicatorIcon : undefined,
-  };
-}
-
 function DemoTable() {
-  const icons = useIcons();
   const columnDefinitions = createColumns({ terminationReasons: new Map() });
   const { items, collectionProps } = useCollection(allInstances, {
     sorting: { defaultState: { sortingColumn: { sortingField: 'name' } } },
@@ -127,7 +127,6 @@ function DemoTable() {
       items={items}
       columnDefinitions={columnDefinitions}
       ariaLabels={ariaLabels}
-      icons={icons}
       header={<Header variant="h2">Table (expand toggles + sorting indicators)</Header>}
       variant="stacked"
     />
@@ -135,13 +134,11 @@ function DemoTable() {
 }
 
 function DemoTreeView() {
-  const icons = useIcons();
   return (
     <Container header={<Header variant="h2">Tree view (expand toggles)</Header>} variant="stacked">
       <TreeView
         ariaLabel="Demo tree view"
         items={treeItems}
-        icons={icons}
         renderItem={item => ({ content: item.content })}
         getItemId={item => item.id}
         getItemChildren={item => item.children}
@@ -151,14 +148,8 @@ function DemoTreeView() {
 }
 
 function DemoExpandableSection() {
-  const icons = useIcons();
   return (
-    <ExpandableSection
-      variant="stacked"
-      headerText="Expandable section (expand toggle)"
-      defaultExpanded={true}
-      icons={icons}
-    >
+    <ExpandableSection variant="stacked" headerText="Expandable section (expand toggle)" defaultExpanded={true}>
       <SpaceBetween size="s" direction="horizontal">
         <Icon name="caret-down" size="medium" />
         <Icon name="caret-up" size="medium" />
@@ -166,5 +157,33 @@ function DemoExpandableSection() {
         <Icon name="caret-up-filled" size="medium" />
       </SpaceBetween>
     </ExpandableSection>
+  );
+}
+
+function DemoSideNavigation() {
+  return (
+    <Container
+      header={<Header variant="h2">Side navigation (nested expandable section expand toggles)</Header>}
+      variant="stacked"
+    >
+      <SideNavigation
+        items={[
+          {
+            type: 'section',
+            text: 'Section 1',
+            items: [
+              { type: 'link', text: 'Page 1', href: '#/page1' },
+              { type: 'link', text: 'Page 2', href: '#/page2' },
+            ],
+          },
+          {
+            type: 'section',
+            text: 'Section 2',
+            defaultExpanded: false,
+            items: [{ type: 'link', text: 'Page 3', href: '#/page3' }],
+          },
+        ]}
+      />
+    </Container>
   );
 }

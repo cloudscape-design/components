@@ -129,7 +129,6 @@ const InternalTable = React.forwardRef(
       sortingDisabled,
       multiColumnSort,
       i18nStrings,
-      icons,
       visibleColumns,
       stickyHeader,
       stickyHeaderVerticalOffset,
@@ -438,7 +437,6 @@ const InternalTable = React.forwardRef(
       multiColumnSort,
       i18nStrings,
       ariaLabels,
-      icons,
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
@@ -819,7 +817,6 @@ const InternalTable = React.forwardRef(
                                       tableVariant={computedVariant}
                                       counter={counter}
                                       {...cellExpandableProps}
-                                      expandToggleIcon={icons?.expandToggle}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
                                   );

@@ -190,10 +190,49 @@ export interface IconProviderProps extends BaseComponentProps {
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
+
+  /**
+   * Custom icons for specific components, replacing built-in stateful icons such as expand toggles
+   * and sorting indicators. Unlike `icons`, these target a specific component and receive the icon's
+   * current state.
+   *
+   * Each entry is a render function: it receives the state and returns the icon to display. The
+   * custom icon replaces the default rendering entirely (including built-in animations), so it must
+   * represent every state. Return `null` to fall back to the default icon. Use `size="inherit"` on
+   * a custom `<Icon>` (or provide a plain SVG) so it matches the default icon size.
+   *
+   * Component icons apply to nested usage as well, for example, expandable sections rendered inside
+   * side navigation or wizard. They are inherited by nested providers (closest provider wins).
+   * Set to `null` to reset all component icons.
+   */
+  componentIcons?: IconProviderProps.ComponentIcons | null;
 }
 
 export namespace IconProviderProps {
   export type Icons = {
     [name in IconProps.Name]?: ReactNode | null;
   };
+
+  export interface ComponentIcons {
+    table?: TableIcons;
+    'tree-view'?: TreeViewIcons;
+    'expandable-section'?: ExpandableSectionIcons;
+  }
+
+  export interface TableIcons {
+    /** The row expand/collapse toggle, used with expandable rows. */
+    expandToggle?: (state: { expanded: boolean }) => ReactNode;
+    /** The sorting indicator in column headers. */
+    sortingIndicator?: (state: { sortingState: 'sortable' | 'ascending' | 'descending' }) => ReactNode;
+  }
+
+  export interface TreeViewIcons {
+    /** The item expand/collapse toggle. */
+    expandToggle?: (state: { expanded: boolean }) => ReactNode;
+  }
+
+  export interface ExpandableSectionIcons {
+    /** The expand/collapse toggle in the header. */
+    expandToggle?: (state: { expanded: boolean }) => ReactNode;
+  }
 }

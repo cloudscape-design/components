@@ -7,6 +7,7 @@ import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-too
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
+import { useInternalComponentIcons } from '../icon-provider/use-component-icons';
 import { CustomizableIcon } from '../internal/components/customizable-icon';
 import { isDevelopment } from '../internal/is-development';
 import {
@@ -126,7 +127,6 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
   hideExpandIcon?: boolean;
-  icons?: ExpandableSectionProps.Icons;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -419,9 +419,9 @@ export const ExpandableSectionHeader = ({
   onClick,
   expandIconPosition,
   hideExpandIcon,
-  icons,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
+  const icons = useInternalComponentIcons('expandable-section');
   const icon = (
     <CustomizableIcon
       customIcon={icons?.expandToggle?.({ expanded: !!expanded })}

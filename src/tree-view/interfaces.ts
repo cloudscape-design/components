@@ -73,24 +73,13 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   /**
    * Use this property to display a custom icon in the toggle button.
    *
-   * @deprecated Use `icons.expandToggle` instead. This property is ignored when `icons.expandToggle` is set.
+   * @deprecated Use the `IconProvider` `componentIcons['tree-view'].expandToggle` property instead.
+   * This property takes precedence when both are set.
    */
   renderItemToggleIcon?: (data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode;
-
-  /**
-   * Custom icons, replacing the built-in ones. Use `size="inherit"` on a custom `<Icon>`
-   * (or provide a plain SVG) so it matches the default icon size.
-   *
-   * Supported icons:
-   * * `expandToggle` (({ expanded: boolean }) => ReactNode) - The item expand/collapse toggle.
-   */
-  icons?: TreeViewProps.Icons;
 }
 
 export namespace TreeViewProps {
-  export interface Icons {
-    expandToggle?: (state: ItemToggleRenderIconData) => React.ReactNode;
-  }
   export interface TreeItem {
     content: React.ReactNode;
     icon?: React.ReactNode;

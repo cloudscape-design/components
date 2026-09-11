@@ -292,16 +292,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
   i18nStrings?: TableProps.I18nStrings;
 
   /**
-   * Custom icons, replacing the built-in ones. Use `size="inherit"` on a custom `<Icon>`
-   * (or provide a plain SVG) so it matches the default icon size.
-   *
-   * Supported icons:
-   * * `expandToggle` (({ expanded: boolean }) => ReactNode) - The row expand/collapse toggle, used with expandable rows.
-   * * `sortingIndicator` (({ sortingState: 'sortable' | 'ascending' | 'descending' }) => ReactNode) - The sorting indicator in column headers.
-   */
-  icons?: TableProps.Icons;
-
-  /**
    * Specifies the number of first and/or last columns that should be sticky.
    *
    * If the available scrollable space is less than a certain threshold, the feature is deactivated.
@@ -529,11 +519,6 @@ export namespace TableProps {
   }
 
   export type TrackBy<T> = string | ((item: T) => string);
-
-  export interface Icons {
-    expandToggle?: (state: { expanded: boolean }) => React.ReactNode;
-    sortingIndicator?: (state: { sortingState: 'sortable' | 'ascending' | 'descending' }) => React.ReactNode;
-  }
 
   export interface CellContext<V> {
     currentValue: Optional<V>;

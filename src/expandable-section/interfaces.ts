@@ -15,12 +15,7 @@ export namespace ExpandableSectionProps {
     expanded: boolean;
   }
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
-
-  export interface Icons {
-    expandToggle?: (state: { expanded: boolean }) => React.ReactNode;
-  }
 }
-
 export interface ExpandableSectionProps extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
@@ -114,12 +109,4 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * Actions for the header. Use with the default or container variant.
    */
   headerActions?: React.ReactNode;
-  /**
-   * Custom icons, replacing the built-in ones. Use `size="inherit"` on a custom `<Icon>`
-   * (or provide a plain SVG) so it matches the default icon size.
-   *
-   * Supported icons:
-   * * `expandToggle` (({ expanded: boolean }) => ReactNode) - The expand/collapse toggle in the header.
-   */
-  icons?: ExpandableSectionProps.Icons;
 }
