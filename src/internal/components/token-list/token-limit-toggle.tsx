@@ -64,9 +64,13 @@ export default function TokenLimitToggle({
       aria-controls={controlId}
       aria-expanded={expanded}
       aria-label={ariaLabel}
+      data-awsui-motion-trigger="hover"
       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
     >
-      <InternalIcon name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
+      <InternalIcon
+        name={expanded ? 'treeview-collapse' : 'treeview-expand'}
+        nativeAttributes={{ 'data-awsui-motion-target': '' }}
+      />
       <span className={styles.description}>{description}</span>
     </button>
   );

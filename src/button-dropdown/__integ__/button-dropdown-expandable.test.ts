@@ -26,7 +26,7 @@ describe.each([true, false])(
     test(
       'groups are initially closed',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         expect(await page.getItemCount('category1Subitem1')).toEqual(0);
         expect(await page.getItemCount('category2Subitem1')).toEqual(0);
       })
@@ -34,7 +34,7 @@ describe.each([true, false])(
     test(
       'group expands when you click on the header',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         await page.toggleGroup('category1');
         expect(await page.getItemCount('category1Subitem1')).toEqual(1);
       })
@@ -42,7 +42,7 @@ describe.each([true, false])(
     test(
       'more items are rendered when group is expanded',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         const visibleItemsBefore = await page.getAllItemsCount();
         await page.toggleGroup('category1');
         const visibleItemsAfter = await page.getAllItemsCount();
@@ -52,7 +52,7 @@ describe.each([true, false])(
     test(
       'group collapses when you expand another group',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         await page.toggleGroup('category1');
         await page.toggleGroup('category2');
         expect(await page.getItemCount('category1Subitem1')).toEqual(0);
@@ -62,7 +62,7 @@ describe.each([true, false])(
     test(
       'group collapses when you click on the header of the opened group',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         await page.toggleGroup('category1');
         await page.toggleGroup('category1');
         expect(await page.getItemCount('category1Subitem1')).toEqual(0);
@@ -71,7 +71,7 @@ describe.each([true, false])(
     test(
       'left-aligned dropdown opens group to the right',
       setupTest(expandToViewport, async page => {
-        await page.openDropdown();
+        await page.clickTrigger();
         await page.toggleGroup('category1');
         const { right: triggerRight } = await page.getBoundingBox(page.getCategoryItem('category1'));
         const { right: itemRight, left: itemLeft } = await page.getBoundingBox(page.getItem('category1Subitem1'));
@@ -84,7 +84,7 @@ describe.each([true, false])(
       setupTest(
         expandToViewport,
         async page => {
-          await page.openDropdown();
+          await page.clickTrigger();
           await page.toggleGroup('category1');
           const { left: triggerLeft } = await page.getBoundingBox(page.getCategoryItem('category1'));
           const { right: itemRight, left: itemLeft } = await page.getBoundingBox(page.getItem('category1Subitem1'));
@@ -246,7 +246,7 @@ describe.each([true, false])(
       test(
         'Child dropdown which was opened by click should be used when navigating with keyboard',
         setupTest(expandToViewport, async page => {
-          await page.openDropdown();
+          await page.clickTrigger();
           await page.toggleGroup('category2');
           expect(await page.getItemCount('category2Subitem1')).toEqual(1);
           await page.keys(['ArrowDown']);
@@ -268,7 +268,7 @@ describe.each([true, false])(
       test(
         'when opening dropdown with mouse and navigating with keyboard',
         setupTest(expandToViewport, async page => {
-          await page.openDropdown();
+          await page.clickTrigger();
           await expect(page.isDropdownOpen()).resolves.toBe(true);
           await page.keys(['ArrowDown']);
           expect(await page.getFocusedElementText()).toBe('category2');
