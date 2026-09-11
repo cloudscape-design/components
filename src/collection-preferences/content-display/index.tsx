@@ -88,6 +88,7 @@ interface HierarchicalContentDisplayProps {
   ariaDescribedby?: string;
   i18nStrings: SortableAreaProps.DndAreaI18nStrings;
   sortDisabled: boolean;
+  lockedItemsCount?: number;
   parentGroupLabel?: string;
   groupLabelFormatter: (label: string, count: number) => string;
 }
@@ -143,6 +144,7 @@ function HierarchicalContentDisplay({
   ariaDescribedby,
   i18nStrings,
   sortDisabled,
+  lockedItemsCount,
   parentGroupLabel,
   groupLabelFormatter,
 }: HierarchicalContentDisplayProps) {
@@ -151,6 +153,7 @@ function HierarchicalContentDisplay({
       items={tree}
       sortDisabled={sortDisabled}
       sortable={true}
+      lockedItemsCount={lockedItemsCount}
       disableItemPaddings={true}
       ariaLabel={ariaLabel}
       ariaLabelledby={ariaLabelledby}
@@ -198,6 +201,7 @@ export default function ContentDisplayPreference({
   groups,
   onChange,
   enableColumnFiltering = false,
+  lockedItemsCount = 0,
   i18nStrings,
   ...dndProps
 }: ContentDisplayPreferenceProps) {
@@ -232,10 +236,19 @@ export default function ContentDisplayPreference({
     [optionTree, columnFilteringText]
   );
 
+  // Compute effective locked count: clamp to [0, total items], disable locking while filtering.
+  const effectiveLockedCount = isFiltering ? 0 : Math.max(0, Math.min(lockedItemsCount, sortedOptions.length));
+
   const handleToggle = (id: string) => {
     // For flat (non-grouped) mode, rebuild from sortedOptions to handle items not in value
     if (!hasGroups) {
-      onChange(sortedOptions.map(opt => ({ id: opt.id, visible: opt.id === id ? !opt.visible : opt.visible })));
+      onChange(
+        sortedOptions.map((opt, index) => ({
+          id: opt.id,
+          // Locked items always stay visible; toggling them is a no-op
+          visible: index < effectiveLockedCount ? true : opt.id === id ? !opt.visible : opt.visible,
+        }))
+      );
       return;
     }
     // For grouped mode, walk the tree and flip the matching item
@@ -251,6 +264,20 @@ export default function ContentDisplayPreference({
     onChange(toggle(value));
   };
   const noResults = filteredTree ? filteredTree.length === 0 : filteredOptions.length === 0;
+
+  // Build display options with locked items forced visible and non-toggleable
+  const displayOptions = useMemo(
+    () =>
+      sortedOptions.map((opt, index) =>
+        index < effectiveLockedCount ? { ...opt, visible: true, alwaysVisible: true } : opt
+      ),
+    [sortedOptions, effectiveLockedCount]
+  );
+  const displayFilteredOptions = useMemo(
+    () => getFilteredOptions(displayOptions, columnFilteringText),
+    [displayOptions, columnFilteringText]
+  );
+
   return (
     <div
       role="group"
@@ -322,13 +349,15 @@ export default function ContentDisplayPreference({
             ariaDescribedby={descriptionId}
             i18nStrings={listI18nStrings}
             sortDisabled={isFiltering}
+            lockedItemsCount={effectiveLockedCount}
             groupLabelFormatter={groupLabelFormatter}
           />
         ) : (
           <InternalList
-            items={filteredOptions}
+            items={isFiltering ? displayFilteredOptions : displayOptions}
             sortable={true}
             sortDisabled={isFiltering}
+            lockedItemsCount={isFiltering ? 0 : effectiveLockedCount}
             disableItemPaddings={true}
             ariaLabelledby={titleId}
             ariaDescribedby={descriptionId}

@@ -26,6 +26,7 @@ export default function SortableArea<Item>({
   renderItem,
   onItemsChange,
   disableReorder,
+  lockedItemsCount = 0,
   i18nStrings,
 }: SortableAreaProps<Item>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors, isKeyboard } =
@@ -37,6 +38,9 @@ export default function SortableArea<Item>({
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
   const portalContainer = usePortalContainer();
+
+  const effectiveLockedCount = Math.max(0, Math.min(lockedItemsCount, items.length));
+
   return (
     <DndContext
       sensors={sensors}
@@ -57,7 +61,14 @@ export default function SortableArea<Item>({
           const movedItem = items.find(item => itemDefinition.id(item) === active.id)!;
           const oldIndex = items.findIndex(item => itemDefinition.id(item) === active.id);
           const newIndex = items.findIndex(item => itemDefinition.id(item) === over.id);
-          fireNonCancelableEvent(onItemsChange, { items: arrayMove([...items], oldIndex, newIndex), movedItem });
+          // Clamp: non-locked items cannot be dropped into the locked zone (index < effectiveLockedCount).
+          const clampedNewIndex = Math.max(newIndex, effectiveLockedCount);
+          if (oldIndex !== clampedNewIndex) {
+            fireNonCancelableEvent(onItemsChange, {
+              items: arrayMove([...items], oldIndex, clampedNewIndex),
+              movedItem,
+            });
+          }
         }
       }}
       onDragCancel={() => setActiveItemId(null)}
@@ -67,7 +78,7 @@ export default function SortableArea<Item>({
         items={items.map(item => itemDefinition.id(item))}
         strategy={verticalListSortingStrategy}
       >
-        {items.map(item => (
+        {items.map((item, index) => (
           <DraggableItem
             key={itemDefinition.id(item)}
             item={item}
@@ -76,6 +87,7 @@ export default function SortableArea<Item>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
+            locked={index < effectiveLockedCount}
           />
         ))}
       </SortableContext>
@@ -133,6 +145,7 @@ function DraggableItem<Item>({
   showDirectionButtons,
   onKeyDown,
   renderItem,
+  locked = false,
 }: {
   item: Item;
   itemDefinition: SortableAreaProps.ItemDefinition<Item>;
@@ -140,13 +153,16 @@ function DraggableItem<Item>({
   showDirectionButtons: boolean;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode;
+  locked?: boolean;
 }) {
   const id = itemDefinition.id(item);
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
     id,
+    disabled: locked || undefined,
   });
   const style = { transform: CSS.Translate.toString(transform) };
-  const dragHandleListeners = attributes['aria-disabled']
+  const isDisabled = locked || !!attributes['aria-disabled'];
+  const dragHandleListeners = isDisabled
     ? {}
     : {
         ...listeners,
@@ -180,7 +196,7 @@ function DraggableItem<Item>({
           active: isDragging,
           ariaLabel: joinStrings(dragHandleAriaLabel, itemDefinition.label(item)) ?? '',
           ariaDescribedby: attributes['aria-describedby'],
-          disabled: attributes['aria-disabled'],
+          disabled: isDisabled,
           triggerMode: 'controlled',
           controlledShowButtons: showDirectionButtons,
           ref: dragHandleRef,
