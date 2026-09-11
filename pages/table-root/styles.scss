@@ -1,0 +1,66 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as tokens;
+
+// A minimal sort control for the demo: a native button that inherits the header cell's colour and
+// typography (so the label stays the column-header colour, not link blue). It fills the cell and
+// pushes the caret to the end, so the label stays left-aligned with the column while the sort
+// indicator sits at the right.
+.sort-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  gap: tokens.$space-static-xxs;
+  padding-block: 0;
+  padding-inline: 0;
+  border-block: none;
+  border-inline: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+// Centres the selection control within a disablePaddings control cell, matching classic Table.
+// The Cloudscape checkbox/radio control carries an intrinsic 2px top margin (it aligns the box with
+// the first line of a label); with no visible label in a centred control column that margin biases
+// the control ~1px below centre. Classic's own SelectionControl absorbs it with a compensating
+// block-end padding on the control label; mirror that here so the control lands on the row centre.
+.selection-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block-end: 2px;
+}
+
+// Screen-reader-only label text (gives a bare control an accessible name without visible text).
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: -1px;
+  margin-inline: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-block: none;
+  border-inline: none;
+}
+
+// Sort affordance at the right of a sortable header (caret + optional multi-sort priority badge).
+.sort-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-static-xxs;
+}
+
+// Priority number shown next to each caret when more than one column is sorted (multi-column sort).
+.sort-order {
+  font-size: 0.75em;
+  font-weight: 700;
+}
