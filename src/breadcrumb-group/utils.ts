@@ -41,3 +41,27 @@ const computeNumberOfCollapsedItems = (itemWidths: Array<number>, navWidth: numb
   }
   return collapsedItems;
 };
+
+/**
+ * Compute the number of middle items to hide when `maxItems` is set.
+ *
+ * Rules:
+ * - The first item (index 0) is always visible.
+ * - The last item (index n-1) is always visible.
+ * - When `totalItems <= maxItems` nothing is hidden.
+ * - Otherwise `totalItems - maxItems` middle items (starting from index 1) are collapsed.
+ *
+ * Returns 0 when `maxItems` is undefined, not a finite number, or less than 2.
+ */
+export const getMaxItemsCollapsed = (totalItems: number, maxItems: number | undefined): number => {
+  if (maxItems === undefined || !Number.isFinite(maxItems) || maxItems < 2) {
+    return 0;
+  }
+  const cap = Math.floor(maxItems);
+  if (totalItems <= cap) {
+    return 0;
+  }
+  // We always keep the first and last item visible, so we can collapse at most totalItems - 2
+  // middle items.  The number of items to collapse is the excess beyond the cap.
+  return Math.min(totalItems - cap, totalItems - 2);
+};
