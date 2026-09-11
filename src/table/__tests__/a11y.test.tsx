@@ -130,6 +130,16 @@ describe('labels', () => {
       expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toBeNull();
     });
 
+    test('aria-rowcount should be -1 if the table is loading', () => {
+      const wrapper = renderTableWrapper({ loading: true, loadingText: 'Loading items', totalItemsCount: 500 });
+      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('-1');
+    });
+
+    test('aria-rowcount should be 2 (header and empty state cell) if the empty state is rendered', () => {
+      const wrapper = renderTableWrapper({ items: [], totalItemsCount: 500 });
+      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('2');
+    });
+
     test.each([undefined, 21])('sets aria-rowindex on table rows', firstIndex => {
       const expectedFirstIndex = firstIndex ?? 1;
       const wrapper = renderTableWrapper({ firstIndex });
