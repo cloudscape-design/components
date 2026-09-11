@@ -96,6 +96,7 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  hideCloseButton = false,
   position = 'center',
   onButtonClick = () => {},
   onDismiss,
@@ -281,20 +282,22 @@ function PortaledModal({
                       variant="h2"
                       __disableActionsWrapping={true}
                       actions={
-                        <div
-                          {...getAnalyticsMetadataAttribute({
-                            action: 'dismiss',
-                          } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
-                        >
-                          <InternalButton
-                            ariaLabel={closeAriaLabel}
-                            className={styles['dismiss-control']}
-                            variant="modal-dismiss"
-                            iconName="close"
-                            formAction="none"
-                            onClick={onCloseButtonClick}
-                          />
-                        </div>
+                        !hideCloseButton ? (
+                          <div
+                            {...getAnalyticsMetadataAttribute({
+                              action: 'dismiss',
+                            } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
+                          >
+                            <InternalButton
+                              ariaLabel={closeAriaLabel}
+                              className={styles['dismiss-control']}
+                              variant="modal-dismiss"
+                              iconName="close"
+                              formAction="none"
+                              onClick={onCloseButtonClick}
+                            />
+                          </div>
+                        ) : undefined
                       }
                     >
                       <span ref={headerTextRef} id={headerId} className={styles['header--text']}>

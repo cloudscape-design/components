@@ -76,6 +76,38 @@ describe('Modal component', () => {
     });
   });
 
+  describe('hideCloseButton', () => {
+    it('shows the dismiss button by default', () => {
+      const wrapper = renderModal({});
+      expect(wrapper.findDismissButton()).not.toBe(null);
+    });
+
+    it('hides the dismiss button when hideCloseButton is true', () => {
+      const wrapper = renderModal({ hideCloseButton: true });
+      expect(wrapper.findDismissButton()).toBe(null);
+    });
+
+    it('shows the dismiss button when hideCloseButton is false', () => {
+      const wrapper = renderModal({ hideCloseButton: false });
+      expect(wrapper.findDismissButton()).not.toBe(null);
+    });
+
+    it('does not prevent overlay dismiss when hideCloseButton is true', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ hideCloseButton: true, onDismiss: onDismissSpy, visible: true });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('does not prevent ESC dismiss when hideCloseButton is true', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ hideCloseButton: true, onDismiss: onDismissSpy, visible: true });
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+  });
+
   describe('visibility', () => {
     it('hides the modal by default', () => {
       const wrapper = renderModal();
