@@ -104,6 +104,22 @@ export interface WizardProps extends BaseComponentProps {
   allowSkipTo?: boolean;
 
   /**
+   * When set to `true`, users can navigate directly to any step ahead of the
+   * current one from the navigation pane, rather than only to previously visited
+   * steps or optional steps that can be skipped over. This enables non-linear
+   * navigation where every step is directly reachable.
+   *
+   * Navigating to a not-yet-visited step fires `onNavigate` with a `reason` of `skip`.
+   *
+   * This is an opt-in enhancement of the navigation pane and is independent of
+   * `allowSkipTo` (which controls the in-form *skip-to* button). The two can be
+   * combined.
+   *
+   * Defaults to `false`.
+   */
+  allowNonLinearNavigation?: boolean;
+
+  /**
    * Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).
    */
   customPrimaryActions?: React.ReactNode;
