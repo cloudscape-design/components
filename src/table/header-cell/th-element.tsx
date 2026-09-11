@@ -7,7 +7,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { InternalTableHeaderCell } from '../../table-header-cell/internal';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -86,8 +86,6 @@ export function TableThElement({
   stickyBoundaryColumnId,
   ...props
 }: TableThElementProps) {
-  const isVisualRefresh = useVisualRefresh();
-
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
     columnId,
@@ -99,17 +97,35 @@ export function TableThElement({
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
+  // The bare `.header-cell` substrate (the <th> element, base padding, ref) is provided by
+  // the extracted InternalTableHeaderCell. All feature layering stays here, keyed on the same
+  // `.header-cell` class so the compound `.header-cell.<feature>` CSS continues to match
+  // unchanged, and every computed native attribute is threaded through verbatim.
+  const nativeAttributes = {
+    'data-focus-id': `header-${String(columnId)}`,
+    colSpan,
+    rowSpan,
+    ...getTableColHeaderRoleProps({
+      tableRole,
+      sortingStatus: suppressAriaSort ? undefined : sortingStatus,
+      colIndex,
+    }),
+    scope: scope ?? 'col',
+    ...copyAnalyticsMetadataAttribute(props),
+    ...(ariaLabel ? { 'aria-label': ariaLabel } : {}),
+    ...(isLast ? { 'data-rightmost': true } : {}),
+    ...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {}),
+    ...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {}),
+  };
+
   return (
-    <th
-      data-focus-id={`header-${String(columnId)}`}
+    <InternalTableHeaderCell
       className={clsx(
-        styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
         sticky && styles['header-cell-sticky'],
         resizable && styles['header-cell-resizable'],
         stuck && styles['header-cell-stuck'],
         stripedRows && styles['has-striped-rows'],
-        isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         tableVariant && styles[`table-variant-${tableVariant}`],
         scope === 'colgroup' && styles['header-cell-group'],
@@ -126,24 +142,14 @@ export function TableThElement({
         },
         stickyStyles.className
       )}
-      colSpan={colSpan}
-      rowSpan={rowSpan}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({
-        tableRole,
-        sortingStatus: suppressAriaSort ? undefined : sortingStatus,
-        colIndex,
-      })}
-      scope={scope ?? 'col'}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
-      {...copyAnalyticsMetadataAttribute(props)}
-      {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
-      {...(isLast ? { 'data-rightmost': true } : {})}
-      {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
-      {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
+      nativeAttributes={nativeAttributes}
+      disableContentWrapper={true}
+      disableDivider={true}
     >
       {children}
-    </th>
+    </InternalTableHeaderCell>
   );
 }
