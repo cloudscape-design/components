@@ -138,7 +138,9 @@ export default function Grid({
               const isFocusable = !!focusableDate && isSameDate(date, focusableDate);
               const isSelected = !!selectedDate && isSameDate(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
-              const disabledReason = dateDisabledReason(date);
+              // Per the public API contract, `dateDisabledReason` is only relevant (and only invoked)
+              // for dates that are not enabled.
+              const disabledReason = !isEnabled ? dateDisabledReason(date) : '';
               const isDisabledWithReason = !isEnabled && !!disabledReason;
               const isCurrentDate = isSameDate(date, new Date());
 
