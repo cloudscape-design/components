@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
@@ -28,16 +28,13 @@ export default function DialogSimplePage() {
   } = useContext(AppContext as PageContext);
   const [goal, setGoal] = useState('increase');
   const focusTargetRef = useRef<ButtonProps.Ref>(null);
-  const wasOpenRef = useRef(dialogOpen);
 
-  useEffect(() => {
-    if (wasOpenRef.current && !dialogOpen && removeTrigger) {
+  const dismissDialog = () => {
+    setUrlParams({ dialogOpen: false });
+    if (removeTrigger) {
       focusTargetRef.current?.focus();
     }
-    wasOpenRef.current = dialogOpen;
-  }, [dialogOpen, removeTrigger]);
-
-  const dismissDialog = () => setUrlParams({ dialogOpen: false });
+  };
 
   return (
     <SimplePage
