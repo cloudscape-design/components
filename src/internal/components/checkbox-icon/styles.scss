@@ -71,7 +71,7 @@
 
     &[data-awsui-motion-ready] {
       @include checkbox-expressive-with-motion {
-        animation: awsui-checkbox-draw 300ms linear;
+        animation: awsui-checkbox-draw 250ms linear;
       }
     }
   }
