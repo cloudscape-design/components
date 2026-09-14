@@ -25,7 +25,7 @@
     "colorBackgroundButtonLinkActive": { "light": "#EBEBF0", "dark": "#131920" },
     "colorTextLinkButtonNormalDefault": { "light": "#1b232d", "dark": "#F9F9FB" },
 
-    "colorBackgroundToggleButtonNormalPressed": { "light": "#EBEBF0", "dark": "#131920" }, 
+    "colorBackgroundToggleButtonNormalPressed": { "light": "#EBEBF0", "dark": "#131920" },
     "colorBorderToggleButtonNormalPressed": { "light": "#1b232d", "dark": "#F9F9FB" },
     "colorTextToggleButtonNormalPressed": { "light": "#1b232d", "dark": "#F9F9FB" },
 
@@ -142,7 +142,6 @@
         "colorTextAccent": { "light": "#06080A", "dark": "#F6F6F9" },
         "colorTextDropdownItemDefault": { "light": "#06080A", "dark": "#F6F6F9" },
         "colorTextDropdownItemHighlighted": { "light": "#06080A", "dark": "#F6F6F9" },
-        "colorTextDropdown": { "light": "#06080A", "dark": "#F6F6F9" },
         "colorTextGroupLabel": { "light": "#424650", "dark": "#c6c6cd" },
         "colorBackgroundDropdownItemDefault": { "light": "#FFFFFF", "dark": "#1b232d" },
         "colorBackgroundDropdownItemHover": { "light": "#f3f3f7", "dark": "#131920" },
@@ -150,7 +149,6 @@
         "colorTextBodyDefault": { "light": "#06080A", "dark": "#F6F6F9" },
         "colorBackgroundInputDefault": { "light": "#ffffff", "dark": "#1b232d" },
         "colorBorderInputDefault": { "light": "#b4b4bb", "dark": "#656871" },
-        "colorTextInputDefault": { "light": "#06080A", "dark": "#F6F6F9" },
         "colorTextInputPlaceholder": { "light": "#656871", "dark": "#8c8c94" },
         "colorBorderDropdownItemDefault": { "light": "#e8e8e8", "dark": "#424650" },
         "colorTextDropdownItemSecondary": { "light": "#424650", "dark": "#c6c6cd" },
