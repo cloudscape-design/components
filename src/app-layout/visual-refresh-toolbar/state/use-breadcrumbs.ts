@@ -8,6 +8,7 @@ import { BreadcrumbsGlobalRegistration } from '../../../internal/plugins/control
 import {
   BreadcrumbsConsumer,
   getBreadcrumbsConsumer,
+  isBreadcrumbsOwnedExternally,
   subscribeBreadcrumbsConsumer,
 } from '../../../internal/plugins/widget/core';
 
@@ -71,7 +72,7 @@ export function useBreadcrumbs({ hasToolbar, isVisible, ownBreadcrumbs }: UseBre
   ownBreadcrumbsPropsRef.current = ownBreadcrumbsProps;
   const hasOwnBreadcrumbsProps = !!ownBreadcrumbsProps;
   const canRenderExternally = !ownBreadcrumbs || !!ownBreadcrumbsProps;
-  const isExternallyOwned = !!consumer && hasToolbar && canRenderExternally;
+  const isExternallyOwned = (isBreadcrumbsOwnedExternally() || !!consumer) && hasToolbar && canRenderExternally;
   const shouldRegisterAppLayout = hasToolbar && isVisible && (!ownBreadcrumbs || isExternallyOwned);
   const [discoveredBreadcrumbs, setDiscoveredBreadcrumbs] = useState<BreadcrumbGroupProps | null>(null);
 

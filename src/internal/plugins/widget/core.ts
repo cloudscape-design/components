@@ -9,6 +9,7 @@ const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages'
 const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
 const storageKeyBreadcrumbsConsumer = Symbol.for('awsui-widget-api-breadcrumbs-consumer');
 const storageKeyBreadcrumbsConsumerListeners = Symbol.for('awsui-widget-api-breadcrumbs-consumer-listeners');
+const storageKeyExternalOwnedBreadcrumbs = Symbol.for('awsui-widget-api-external-owned-breadcrumbs');
 
 export interface BreadcrumbsConsumer extends BreadcrumbsConsumerPayload {
   token: object;
@@ -20,6 +21,7 @@ interface WindowWithApi extends Window {
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
   [storageKeyBreadcrumbsConsumer]: BreadcrumbsConsumer | undefined;
   [storageKeyBreadcrumbsConsumerListeners]: Set<(consumer: BreadcrumbsConsumer | undefined) => void> | undefined;
+  [storageKeyExternalOwnedBreadcrumbs]: boolean | undefined;
 }
 
 const oneTimeMessageTypes = ['emit-notification'];
@@ -90,6 +92,17 @@ export function getBreadcrumbsConsumer() {
     return undefined;
   }
   return getBreadcrumbsRegistryWindow()[storageKeyBreadcrumbsConsumer];
+}
+
+/**
+ * Reads the startup ownership reservation set by the console shell before AppLayout renders:
+ * window[Symbol.for('awsui-widget-api-external-owned-breadcrumbs')] = true
+ */
+export function isBreadcrumbsOwnedExternally() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  return getBreadcrumbsRegistryWindow()[storageKeyExternalOwnedBreadcrumbs] === true;
 }
 
 export function setBreadcrumbsConsumer(consumer: BreadcrumbsConsumer | undefined) {

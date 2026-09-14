@@ -90,6 +90,24 @@ describe('global breadcrumbs consumer', () => {
   );
 
   test(
+    'reserves external ownership before the consumer loads',
+    setupTest('global-nav-breadcrumbs-reserved', {}, async page => {
+      await expect(page.hasConsumerBreadcrumbs()).resolves.toBe(false);
+      await expect(page.hasAppLayoutBreadcrumbs()).resolves.toBe(false);
+      await expect(page.getBreadcrumbGroupsCount()).resolves.toBe(0);
+
+      await page.clickTestId('toggle-nav-header');
+      await page.waitForVisible(consumerBreadcrumbs.toSelector());
+      await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Resource');
+      await expect(page.hasAppLayoutBreadcrumbs()).resolves.toBe(false);
+      await expect(page.getBreadcrumbGroupsCount()).resolves.toBe(1);
+
+      await page.clickTestId('toggle-nav-header');
+      await page.waitForAssertion(() => expect(page.getBreadcrumbGroupsCount()).resolves.toBe(0));
+    })
+  );
+
+  test(
     'coordinates breadcrumbs from multiple App Layout instances',
     setupTest('global-nav-breadcrumbs-multi-layout', {}, async page => {
       await page.waitForVisible(consumerBreadcrumbs.toSelector());
