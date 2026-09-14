@@ -107,7 +107,6 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
-  const isOneTheme = useOneTheme();
 
   const activeIndicatorRef = useRef<HTMLSpanElement>(null);
   const indicatorMeasuredRef = useRef(false);
@@ -201,9 +200,6 @@ export function TabHeaderBar({
   }, [activeTabId]);
 
   useEffect(() => {
-    if (!isOneTheme) {
-      return;
-    }
     const indicator = activeIndicatorRef.current;
     const list = headerBarRef.current;
     if (!indicator || !list) {
@@ -215,8 +211,16 @@ export function TabHeaderBar({
       return;
     }
 
-    const offset = activeTabElement.offsetLeft;
-    const width = activeTabElement.offsetWidth;
+    // Measure the tab header container the underline used to be attached to, so the
+    // indicator's width and position match the previous per-tab `::after` geometry
+    // (which was `calc(100% - 1px)` of that element). Falls back to the tab element.
+    const headerContainer =
+      activeTabElement.querySelector<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
+      activeTabElement.closest<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
+      activeTabElement;
+
+    const offset = headerContainer.offsetLeft;
+    const width = headerContainer.offsetWidth - 1;
 
     const apply = () => {
       indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-offset', `${offset}px`);
@@ -235,7 +239,7 @@ export function TabHeaderBar({
     } else {
       apply();
     }
-  }, [isOneTheme, activeTabId, widthChange, tabs]);
+  }, [activeTabId, widthChange, tabs]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -405,9 +409,7 @@ export function TabHeaderBar({
             onFocus={onFocus}
             onBlur={onBlur}
           >
-            {isOneTheme && (
-              <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
-            )}
+            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
             {tabs.map(renderTabHeader)}
           </TabList>
         </SingleTabStopNavigationProvider>
