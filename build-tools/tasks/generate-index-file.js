@@ -3,13 +3,14 @@
 const { pascalCase } = require('change-case');
 const { writeFile, listPublicItems } = require('../utils/files');
 
-const footer = `export * from './interfaces';\n`;
+// Specifiers name the emitted file, so the published package resolves under Node's ESM rules.
+const footer = `export * from './interfaces.js';\n`;
 
 module.exports = function generateIndexFile() {
   const content = listPublicItems('src')
     .map(componentDir => {
       const componentName = pascalCase(componentDir);
-      return `export { default as ${componentName}, ${componentName}Props } from './${componentDir}';\n`;
+      return `export { default as ${componentName}, ${componentName}Props } from './${componentDir}/index.js';\n`;
     })
     .join('');
   writeFile('src/index.ts', content + footer);

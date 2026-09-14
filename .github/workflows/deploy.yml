@@ -103,6 +103,7 @@ jobs:
         env:
           NODE_ENV: production
           REACT_VERSION: 18
+          INCLUDE_ONE_THEME: 'true'
 
       - name: Bundle baseline pages
         run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
