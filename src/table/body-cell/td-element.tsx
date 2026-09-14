@@ -22,8 +22,6 @@ import styles from './styles.css.js';
 export interface TableTdElementProps {
   wrapLines: boolean | undefined;
   isRowHeader?: boolean;
-  isFirstRow: boolean;
-  isLastRow: boolean;
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
@@ -67,8 +65,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       children,
       wrapLines,
       isRowHeader,
-      isFirstRow,
-      isLastRow,
       isSelected,
       isNextSelected,
       isPrevSelected,
@@ -127,8 +123,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
           styles['body-cell'],
-          isFirstRow && styles['body-cell-first-row'],
-          isLastRow && styles['body-cell-last-row'],
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
           isPrevSelected && styles['body-cell-prev-selected'],

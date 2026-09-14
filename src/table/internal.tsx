@@ -666,7 +666,6 @@ const InternalTable = React.forwardRef(
                       {skeleton && allItems.length === 0 && loading ? (
                         <SkeletonRows
                           count={skeletonRowsCount}
-                          hasDataRows={false}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
                           hasSelection={hasSelection}
@@ -696,11 +695,6 @@ const InternalTable = React.forwardRef(
                         </tr>
                       ) : (
                         allRows.map((row, rowIndex) => {
-                          const isFirstRow = rowIndex === 0;
-                          const hasSkeletonBelow =
-                            loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0;
-                          const isLastDataRow = rowIndex === allRows.length - 1;
-                          const isLastRow = isLastDataRow && !hasSkeletonBelow;
                           const rowExpandableProps =
                             row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
                           const rowRoleProps = getTableRowRoleProps({
@@ -713,11 +707,10 @@ const InternalTable = React.forwardRef(
                           });
                           const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                           const sharedCellProps = {
-                            isFirstRow,
-                            isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
-                            isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
-                            isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
+                            isPrevSelected: hasSelection && rowIndex > 0 && isRowSelected(allRows[rowIndex - 1]),
+                            isNextSelected:
+                              hasSelection && rowIndex < allRows.length - 1 && isRowSelected(allRows[rowIndex + 1]),
                             isEvenRow: rowIndex % 2 === 0,
                             stripedRows,
                             hasSelection,
@@ -882,7 +875,6 @@ const InternalTable = React.forwardRef(
                       {loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0 && (
                         <SkeletonRows
                           count={skeletonRowsCount - allItems.length}
-                          hasDataRows={true}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
                           hasSelection={hasSelection}
