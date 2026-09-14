@@ -82,6 +82,8 @@ export function AppLayoutToolbarImplementation({
   const {
     breadcrumbs,
     discoveredBreadcrumbs,
+    breadcrumbsExternallyOwned,
+    registerBreadcrumbs,
     verticalOffsets,
     isMobile,
     setToolbarHeight,
@@ -231,6 +233,8 @@ export function AppLayoutToolbarImplementation({
             <ToolbarBreadcrumbsSection
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+              breadcrumbsExternallyOwned={breadcrumbsExternallyOwned}
+              registerBreadcrumbs={registerBreadcrumbs}
               includeTestUtils={true}
             />
           </AppLayoutBuiltInErrorBoundary>

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -12,6 +12,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { BreadcrumbsSlotContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { InternalButton } from '../button/internal';
 import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
 import InternalButtonDropdown from '../button-dropdown/internal';
@@ -20,6 +21,7 @@ import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { getExternalProps } from '../internal/utils/external-props';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { AllItemsDropdown } from './all-items-dropdown';
 import {
@@ -122,6 +124,35 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   __injectAnalyticsComponentMetadata,
   ...props
 }: InternalBreadcrumbGroupProps<T>) {
+  const { registerBreadcrumbs } = useContext(BreadcrumbsSlotContext) ?? {};
+  const reportedProps = getExternalProps({
+    ...props,
+    items,
+    ariaLabel,
+    expandAriaLabel,
+    onClick,
+    onFollow,
+  }) as BreadcrumbGroupProps;
+  const breadcrumbsRegistrationRef = useRef<ReturnType<NonNullable<typeof registerBreadcrumbs>> | null>(null);
+
+  useLayoutEffect(() => {
+    if (!registerBreadcrumbs) {
+      return;
+    }
+    const registration = registerBreadcrumbs(reportedProps);
+    breadcrumbsRegistrationRef.current = registration;
+    return () => {
+      breadcrumbsRegistrationRef.current = null;
+      registration.cleanup();
+    };
+    // Prop updates are handled by the following layout effect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerBreadcrumbs]);
+
+  useLayoutEffect(() => {
+    breadcrumbsRegistrationRef.current?.update(reportedProps);
+  });
+
   for (const item of items) {
     checkSafeUrl('BreadcrumbGroup', item.href);
   }
