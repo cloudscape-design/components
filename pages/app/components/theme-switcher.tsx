@@ -4,52 +4,42 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH, INCLUDE_ONE_THEME } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
-import AppContext, { Theme } from '../app-context';
+import AppContext, { SELECTABLE_THEMES } from '../app-context';
+
+const THEME_LABELS: Record<string, string> = {
+  classic: 'Classic',
+  'visual-refresh': 'Visual refresh',
+  'one-theme': 'One theme',
+  core: 'Core',
+};
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
-    setUrlParams({
-      visualRefresh: theme === 'visualRefresh',
-      theme: theme === 'oneTheme' ? Theme.OneTheme : Theme.Default,
-    });
+  function activateTheme(themeId: string) {
+    setUrlParams({ theme: themeId });
     window.location.reload();
-  }
-
-  const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
-    id: 'visual-refresh-toggle',
-    type: 'checkbox',
-  };
-
-  if (ALWAYS_VISUAL_REFRESH) {
-    vrSwitchProps.checked = true;
-    vrSwitchProps.readOnly = true;
-  } else {
-    vrSwitchProps.checked = urlParams.visualRefresh && urlParams.theme !== Theme.OneTheme;
-    vrSwitchProps.onChange = event => activateTheme(event.target.checked ? 'visualRefresh' : 'classic');
   }
 
   return (
     <SpaceBetween direction="horizontal" size="xs">
       <label>
-        <input {...vrSwitchProps} />
-        Visual refresh
+        Theme{' '}
+        <select
+          id="theme-selector"
+          value={urlParams.theme}
+          disabled={SELECTABLE_THEMES.length <= 1}
+          onChange={event => activateTheme(event.target.value)}
+        >
+          {SELECTABLE_THEMES.map(themeId => (
+            <option key={themeId} value={themeId}>
+              {THEME_LABELS[themeId] ?? themeId}
+            </option>
+          ))}
+        </select>
       </label>
-      {INCLUDE_ONE_THEME && (
-        <label>
-          <input
-            id="one-theme-toggle"
-            type="checkbox"
-            checked={urlParams.theme === Theme.OneTheme}
-            onChange={event => activateTheme(event.target.checked ? 'oneTheme' : 'classic')}
-          />
-          One theme
-        </label>
-      )}
       <label>
         <input
           id="mode-toggle"
