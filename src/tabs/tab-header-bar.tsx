@@ -20,7 +20,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
@@ -107,6 +107,10 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = useOneTheme();
+
+  const activeIndicatorRef = useRef<HTMLSpanElement>(null);
+  const indicatorMeasuredRef = useRef(false);
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
@@ -195,6 +199,43 @@ export function TabHeaderBar({
       }
     }
   }, [activeTabId]);
+
+  useEffect(() => {
+    if (!isOneTheme) {
+      return;
+    }
+    const indicator = activeIndicatorRef.current;
+    const list = headerBarRef.current;
+    if (!indicator || !list) {
+      return;
+    }
+    const activeTabElement = activeTabId ? tabRefs.current.get(activeTabId) : undefined;
+    if (!activeTabElement || (activeTabId && tabs.find(tab => tab.id === activeTabId)?.disabled)) {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '0');
+      return;
+    }
+
+    const offset = activeTabElement.offsetLeft;
+    const width = activeTabElement.offsetWidth;
+
+    const apply = () => {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-offset', `${offset}px`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-scale', `${width}`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '1');
+    };
+
+    if (!indicatorMeasuredRef.current) {
+      const previousTransition = indicator.style.transition;
+      indicator.style.transition = 'none';
+      apply();
+
+      void indicator.offsetWidth;
+      indicator.style.transition = previousTransition;
+      indicatorMeasuredRef.current = true;
+    } else {
+      apply();
+    }
+  }, [isOneTheme, activeTabId, widthChange, tabs]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -364,6 +405,9 @@ export function TabHeaderBar({
             onFocus={onFocus}
             onBlur={onBlur}
           >
+            {isOneTheme && (
+              <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
+            )}
             {tabs.map(renderTabHeader)}
           </TabList>
         </SingleTabStopNavigationProvider>
