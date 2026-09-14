@@ -1,0 +1,38 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin checkbox-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+// Draws the checkmark in by sliding the dash offset to zero.
+@mixin keyframes {
+  @if theming.has-expressive-motion() {
+    @keyframes awsui-checkbox-draw {
+      from {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20px;
+      }
+      to {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 0;
+      }
+    }
+  }
+}
+
+// Include inside the checkmark line rule.
+@mixin draw-in {
+  &[data-awsui-motion-ready] {
+    @include checkbox-expressive-with-motion {
+      animation: awsui-checkbox-draw 250ms linear;
+    }
+  }
+}

@@ -6,74 +6,68 @@ import * as sass from 'sass';
 
 const SRC_ROOT = path.resolve(__dirname, '../../../..'); // .../src
 
-const ICON_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/components/checkbox-icon/styles.scss'), 'utf8');
+const MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/components/checkbox-icon/motion.scss'), 'utf8');
 const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
-const MOTION_MIXINS_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/motion/mixins.scss'), 'utf8');
 
 const THEME = '.awsui-one-theme';
 
 /**
- * Compiles the checkbox-icon stylesheet against the real theming gate.
+ * Compiles `motion.scss` against the real `theming.scss`, for an artefact whose
+ * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
+ * jest's jsdom environment, so every module is served from memory.
  */
 function compile(optedInThemes: string[]): string {
-  return sass.compileString(ICON_SOURCE, {
-    importers: [
-      {
-        canonicalize(url: string) {
-          if (url.endsWith('styles/tokens')) {
-            return new URL('mem:tokens');
-          }
-          if (url.endsWith('theming')) {
-            return new URL('mem:theming');
-          }
-          if (url.endsWith('/styles')) {
-            return new URL('mem:styles');
-          }
-          if (url.startsWith('awsui:')) {
-            return new URL('mem:resolved-tokens');
-          }
-          return null;
+  return sass.compileString(
+    `@use 'motion' as motion;\n@include motion.keyframes;\n.styled-line { @include motion.draw-in; }`,
+    {
+      importers: [
+        {
+          canonicalize(url: string) {
+            if (url.endsWith('motion')) {
+              return new URL('mem:motion');
+            }
+            if (url.endsWith('theming')) {
+              return new URL('mem:theming');
+            }
+            if (url.startsWith('awsui:')) {
+              return new URL('mem:resolved-tokens');
+            }
+            return null;
+          },
+          load(canonicalUrl: URL) {
+            const contents = {
+              'mem:motion': MOTION_SOURCE,
+              'mem:theming': THEMING_SOURCE,
+              'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
+                .map(selector => `(selector: "${selector}", tokens: ())`)
+                .join(',')}];`,
+            }[canonicalUrl.href];
+            return { contents: contents ?? '', syntax: 'scss' as const };
+          },
         },
-        load(canonicalUrl: URL) {
-          const contents = {
-            'mem:styles': MOTION_MIXINS_SOURCE,
-            'mem:theming': THEMING_SOURCE,
-            'mem:tokens': ICON_SOURCE.match(/awsui\.\$[\w-]+/g)!
-              .map(token => `${token.slice('awsui.'.length)}: initial;`)
-              .join('\n'),
-            'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
-              .map(selector => `(selector: "${selector}", tokens: ())`)
-              .join(',')}];`,
-          }[canonicalUrl.href];
-          return { contents: contents ?? '', syntax: 'scss' as const };
-        },
-      },
-    ],
-  }).css;
+      ],
+    }
+  ).css;
 }
 
 describe('checkbox draw-in animation, as compiled', () => {
-  test('emits neither the animation nor its keyframes for an artefact with no opted-in theme', () => {
-    const css = compile([]);
-    expect(css).not.toContain('awsui-checkbox-draw');
-    expect(css).not.toMatch(/@keyframes/);
+  test('emits nothing for an artefact with no opted-in theme', () => {
+    expect(compile([])).toBe('');
   });
 
-  test('emits the animation scoped to the theme once the theme opts in', () => {
+  test('emits the animation and its keyframes, scoped to the theme, once the theme opts in', () => {
     const css = compile([THEME]);
-    const block = css.split('}').find(b => b.includes('animation: awsui-checkbox-draw'));
-
-    expect(block).toBeDefined();
-    expect(block).toContain(THEME);
-    expect(block).toContain('styled-line[data-awsui-motion-ready]');
     expect(css).toMatch(/@keyframes awsui-checkbox-draw\s*\{/);
+    expect(css).toContain('animation: awsui-checkbox-draw');
+    expect(css).toContain(
+      `:global(${THEME}:not(.awsui-motion-disabled):not(.awsui-mode-entering)) .styled-line[data-awsui-motion-ready]`
+    );
   });
 
-  test('the animation rule carries both mode exclusions in the theme compound', () => {
+  test('reduced motion is one wrapping media query, not a per-rule override', () => {
     const css = compile([THEME]);
-    const block = css.split('}').find(b => b.includes('animation: awsui-checkbox-draw'))!;
-    const selector = block.slice(0, block.lastIndexOf('{')).split('{').pop()!.trim();
-    expect(selector).toContain(`${THEME}:not(.awsui-motion-disabled):not(.awsui-mode-entering)`);
+    expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(1);
+    expect(css).not.toMatch(/animation:\s*none/);
   });
 
   test('never sets a negative stroke-dashoffset (Safari mishandles them)', () => {
