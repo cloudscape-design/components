@@ -5,6 +5,30 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin checkbox-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+// Draws the checkmark in by sliding the dash offset to zero.
+@if theming.has-expressive-motion() {
+  @keyframes awsui-checkbox-draw {
+    from {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20px;
+    }
+    to {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 0;
+    }
+  }
+}
 
 .root {
   position: absolute;
@@ -43,6 +67,12 @@
     }
     &-readonly {
       stroke: awsui.$color-foreground-control-read-only;
+    }
+
+    &[data-awsui-motion-ready] {
+      @include checkbox-expressive-with-motion {
+        animation: awsui-checkbox-draw 300ms linear;
+      }
     }
   }
 }
