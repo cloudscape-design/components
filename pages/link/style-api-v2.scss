@@ -1,0 +1,39 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.link-brand {
+  --awsui-style-color: #{palette.$accent};
+  --awsui-style-focus-ring-color: #{palette.$accent};
+  --awsui-style-focus-ring-width: 3px;
+  --awsui-style-focus-ring-radius: 4px;
+
+  &:hover {
+    --awsui-style-color: #{palette.$accent-hover};
+  }
+
+  &:active {
+    --awsui-style-color: #{palette.$accent-active};
+  }
+}
+
+.link-inverted {
+  --awsui-style-color: hsl(330, 75%, 78%);
+  --awsui-style-focus-ring-color: hsl(330, 75%, 78%);
+  --awsui-style-focus-ring-width: 3px;
+  --awsui-style-focus-ring-radius: 4px;
+
+  &:hover,
+  &:active {
+    --awsui-style-color: hsl(330, 75%, 90%);
+  }
+}
+
+.container-inverted {
+  padding-block: 5px;
+  padding-inline: 5px;
+  background-color: hsl(220, 30%, 15%);
+}
