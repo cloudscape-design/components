@@ -29,9 +29,10 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
 }
 
 // Emits `var(<carrier>, <fallback>)` when enabled, or just `<fallback>` when disabled — so a read
-// leaves no trace in the compiled CSS for gated-off systems.
+// leaves no trace in the compiled CSS for gated-off systems. A null `$tokens` map also yields the
+// fallback: the caller is not in a Style API context.
 @function value($tokens, $token, $fallback) {
-  @if not enabled() {
+  @if not enabled() or not $tokens {
     @return $fallback;
   }
   @return var(#{toolkit.read($tokens, $token)}, #{$fallback});
