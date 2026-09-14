@@ -14,6 +14,7 @@ import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
+import { BreadcrumbsSlotContextType } from './contexts';
 import { FeatureNotificationsProps } from './state/use-feature-notifications';
 
 export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
@@ -63,6 +64,8 @@ export interface AppLayoutInternals {
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
+  breadcrumbsExternallyOwned?: boolean;
+  registerBreadcrumbs?: BreadcrumbsSlotContextType['registerBreadcrumbs'];
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
   verticalOffsets: VerticalLayoutOutput;
