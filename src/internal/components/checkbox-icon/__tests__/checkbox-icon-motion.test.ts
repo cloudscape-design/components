@@ -17,37 +17,34 @@ const THEME = '.awsui-one-theme';
  * jest's jsdom environment, so every module is served from memory.
  */
 function compile(optedInThemes: string[]): string {
-  return sass.compileString(
-    `@use 'motion' as motion;\n@include motion.keyframes;\n.styled-line { @include motion.draw-in; }`,
-    {
-      importers: [
-        {
-          canonicalize(url: string) {
-            if (url.endsWith('motion')) {
-              return new URL('mem:motion');
-            }
-            if (url.endsWith('theming')) {
-              return new URL('mem:theming');
-            }
-            if (url.startsWith('awsui:')) {
-              return new URL('mem:resolved-tokens');
-            }
-            return null;
-          },
-          load(canonicalUrl: URL) {
-            const contents = {
-              'mem:motion': MOTION_SOURCE,
-              'mem:theming': THEMING_SOURCE,
-              'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
-                .map(selector => `(selector: "${selector}", tokens: ())`)
-                .join(',')}];`,
-            }[canonicalUrl.href];
-            return { contents: contents ?? '', syntax: 'scss' as const };
-          },
+  return sass.compileString(`@use 'motion' as motion;\n.styled-line { @include motion.draw-in; }`, {
+    importers: [
+      {
+        canonicalize(url: string) {
+          if (url.endsWith('motion')) {
+            return new URL('mem:motion');
+          }
+          if (url.endsWith('theming')) {
+            return new URL('mem:theming');
+          }
+          if (url.startsWith('awsui:')) {
+            return new URL('mem:resolved-tokens');
+          }
+          return null;
         },
-      ],
-    }
-  ).css;
+        load(canonicalUrl: URL) {
+          const contents = {
+            'mem:motion': MOTION_SOURCE,
+            'mem:theming': THEMING_SOURCE,
+            'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
+              .map(selector => `(selector: "${selector}", tokens: ())`)
+              .join(',')}];`,
+          }[canonicalUrl.href];
+          return { contents: contents ?? '', syntax: 'scss' as const };
+        },
+      },
+    ],
+  }).css;
 }
 
 describe('checkbox draw-in animation, as compiled', () => {

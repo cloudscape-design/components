@@ -7,8 +7,6 @@
 @use '../../styles/tokens' as awsui;
 @use './motion' as motion;
 
-@include motion.keyframes;
-
 .root {
   position: absolute;
   inline-size: 100%;

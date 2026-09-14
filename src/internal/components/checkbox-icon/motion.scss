@@ -12,26 +12,24 @@
   }
 }
 
-// Draws the checkmark in by sliding the dash offset to zero.
-@mixin keyframes {
-  @if theming.has-expressive-motion() {
-    @keyframes awsui-checkbox-draw {
-      from {
-        stroke-dasharray: 20;
-        stroke-dashoffset: 20px;
-      }
-      to {
-        stroke-dasharray: 20;
-        stroke-dashoffset: 0;
-      }
-    }
-  }
-}
-
+// Include inside the checkmark line rule. Draws the checkmark in by sliding the dash offset to zero.
 @mixin draw-in {
   &[data-awsui-motion-ready] {
     @include checkbox-expressive-with-motion {
       animation: awsui-checkbox-draw 250ms linear;
+    }
+
+    @if theming.has-expressive-motion() {
+      @keyframes awsui-checkbox-draw {
+        from {
+          stroke-dasharray: 20;
+          stroke-dashoffset: 20px;
+        }
+        to {
+          stroke-dasharray: 20;
+          stroke-dashoffset: 0;
+        }
+      }
     }
   }
 }
