@@ -28,7 +28,6 @@
   }
 }
 
-// Include inside the checkmark line rule.
 @mixin draw-in {
   &[data-awsui-motion-ready] {
     @include checkbox-expressive-with-motion {
