@@ -46,6 +46,14 @@ describe('expandable section', () => {
     expect(container.querySelector(`.${expandableSectionStyles.icon}`)).toBeTruthy();
   });
 
+  it('falls back to the default icon when the renderer returns a falsy node', () => {
+    const { container } = renderWithProvider(
+      { 'expandable-section': { expandToggle: ({ expanded }) => expanded && <span data-testid="expanded" /> } },
+      <ExpandableSection headerText="Section" />
+    );
+    expect(container.querySelector(`.${expandableSectionStyles.icon}`)).toBeTruthy();
+  });
+
   it('applies to expandable sections rendered inside side navigation', () => {
     const { queryByTestId } = renderWithProvider(
       { 'expandable-section': { expandToggle } },
@@ -54,6 +62,16 @@ describe('expandable section', () => {
       />
     );
     expect(queryByTestId('toggle-expanded')).toBeTruthy();
+  });
+
+  it('applies size text metrics to the custom icon wrapper', () => {
+    const { queryByTestId } = renderWithProvider(
+      { 'expandable-section': { expandToggle } },
+      <ExpandableSection headerText="Section" />
+    );
+    // The wrapper carries a size class so nested `size="inherit"` icons resolve to the wrapper size.
+    const wrapper = queryByTestId('toggle-collapsed')!.parentElement!;
+    expect(wrapper.className).toEqual(expect.stringContaining('size-normal'));
   });
 });
 

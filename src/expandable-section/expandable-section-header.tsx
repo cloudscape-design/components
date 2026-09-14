@@ -426,6 +426,7 @@ export const ExpandableSectionHeader = ({
     <CustomizableIcon
       customIcon={icons?.expandToggle?.({ expanded: !!expanded })}
       size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
+      className={styles['icon-position']}
       fallback={{
         name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
         className: clsx(styles.icon, expanded && styles.expanded),

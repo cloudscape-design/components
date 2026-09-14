@@ -315,8 +315,10 @@ export function TableHeaderCell<ItemType>({
               )}
               <CustomizableIcon
                 customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
-                name={getSortingIconName(sortingStatus)}
-                fallback={{ nativeAttributes: { 'data-awsui-motion-target': '' } }}
+                fallback={{
+                  name: getSortingIconName(sortingStatus),
+                  nativeAttributes: { 'data-awsui-motion-target': '' },
+                }}
               />
             </span>
           )}

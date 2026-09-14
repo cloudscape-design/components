@@ -2,15 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
+
+import styles from './styles.css.js';
 
 export interface CustomizableIconProps extends IconProps {
   /**
    * A custom icon replacing the default one, for example, provided by the consumer via the host
    * component's `icons` property. When set, it renders inside the same element as the default icon,
-   * so it inherits the same size/box. When empty, the default icon with fallback props is rendered.
+   * so it inherits the same size/box. When empty (any falsy value, which would otherwise render an
+   * empty icon box), the default icon with fallback props is rendered.
    */
   customIcon?: React.ReactNode;
   /**
@@ -22,5 +26,9 @@ export interface CustomizableIconProps extends IconProps {
 }
 
 export function CustomizableIcon({ customIcon, fallback, ...shared }: CustomizableIconProps) {
-  return customIcon ? <InternalIcon {...shared} override={customIcon} /> : <InternalIcon {...shared} {...fallback} />;
+  if (customIcon) {
+    const metricsClassName = clsx(styles['custom-icon'], styles[`size-${shared.size ?? 'normal'}`]);
+    return <InternalIcon {...shared} override={<span className={metricsClassName}>{customIcon}</span>} />;
+  }
+  return <InternalIcon {...shared} {...fallback} className={clsx(shared.className, fallback?.className)} />;
 }

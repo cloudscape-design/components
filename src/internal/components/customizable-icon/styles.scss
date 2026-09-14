@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../icon/mixins' as icon-mixins;
+
+// Gives icon font context with respect to icon size and theme.
+// This is needed to support custom icons that use size="inherit".
+@include icon-mixins.make-icon-size-text-metrics;
+
+// This wrapper is box-less by design: it only passes font size down to the custom icon through inheritance.
+.custom-icon {
+  display: contents;
+}
