@@ -60,12 +60,8 @@
       padding-inline: awsui.$space-button-horizontal;
       border-block: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
       border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
-      @include styles.logical-radius(awsui.$border-radius-item);
+      @include styles.logical-radius(awsui.$border-radius-dropdown);
       z-index: 2;
-
-      @include theming.one-theme-only {
-        @include styles.logical-radius(calc(#{awsui.$border-radius-item} + 2px));
-      }
 
       &.no-content-styling {
         padding-block: 0;

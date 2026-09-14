@@ -6,7 +6,6 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '../../generated/custom-css-properties/index' as custom-props;
-@use '../../styles/utils/theming' as theming;
 
 // Box-shadow spread values for simulating borders without layout shifts
 $border-offset: awsui.$border-width-item-selected;
@@ -134,9 +133,7 @@ $neg-divider-w: calc(-1 * #{$divider-w});
     z-index: 3;
     background-color: var(#{custom-props.$optionBackgroundHighlighted}, #{awsui.$color-background-dropdown-item-hover});
     @include highlighted-shadow;
-    @include theming.one-theme-only {
-      @include styles.logical-radius(calc(awsui.$border-radius-item + 2px));
-    }
+    @include styles.logical-radius(awsui.$border-radius-dropdown);
     &.disabled {
       box-shadow: inset 0 0 0 $border-offset awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;
