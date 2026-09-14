@@ -6,6 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '../../generated/custom-css-properties/index' as custom-props;
+@use '../../styles/utils/theming' as theming;
 
 // Box-shadow spread values for simulating borders without layout shifts
 $border-offset: awsui.$border-width-item-selected;
@@ -14,13 +15,6 @@ $border-offset-double: calc(2 * #{$border-offset});
 // Divider widths (and negative) for reuse
 $divider-w: awsui.$border-divider-list-width;
 $neg-divider-w: calc(-1 * #{$divider-w});
-
-@mixin logical-radius($radius) {
-  border-start-start-radius: $radius;
-  border-start-end-radius: $radius;
-  border-end-start-radius: $radius;
-  border-end-end-radius: $radius;
-}
 
 @function add-offset($value, $offset: $border-offset) {
   @return calc(#{$value} + #{$offset});
@@ -133,13 +127,16 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   &.highlighted,
   &.selected {
     color: var(#{custom-props.$optionColorHighlighted}, #{awsui.$color-text-dropdown-item-highlighted});
-    @include logical-radius(awsui.$border-radius-item);
+    @include styles.logical-radius(awsui.$border-radius-item);
   }
 
   &.highlighted {
     z-index: 3;
     background-color: var(#{custom-props.$optionBackgroundHighlighted}, #{awsui.$color-background-dropdown-item-hover});
     @include highlighted-shadow;
+    @include theming.one-theme-only {
+      @include styles.logical-radius(calc(awsui.$border-radius-item + 2px));
+    }
     &.disabled {
       box-shadow: inset 0 0 0 $border-offset awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;

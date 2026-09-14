@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming' as theming;
 
 .item-element {
   position: relative;
@@ -40,10 +41,10 @@
 
     background-color: awsui.$color-background-dropdown-item-hover;
     border-color: awsui.$color-border-dropdown-item-hover;
-    border-start-start-radius: awsui.$border-radius-item;
-    border-start-end-radius: awsui.$border-radius-item;
-    border-end-start-radius: awsui.$border-radius-item;
-    border-end-end-radius: awsui.$border-radius-item;
+    @include styles.logical-radius(awsui.$border-radius-item);
+    @include theming.one-theme-only {
+      @include styles.logical-radius(calc(awsui.$border-radius-item + 2px));
+    }
 
     &.disabled {
       color: awsui.$color-text-dropdown-item-dimmed;
