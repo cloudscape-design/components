@@ -108,6 +108,9 @@ export function TabHeaderBar({
 
   const isVisualRefresh = useVisualRefresh();
 
+  const activeIndicatorRef = useRef<HTMLSpanElement>(null);
+  const indicatorMeasuredRef = useRef(false);
+
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
   const documentRefCallback = (node: null | Element) => (documentRef.current = node?.ownerDocument ?? document);
@@ -195,6 +198,45 @@ export function TabHeaderBar({
       }
     }
   }, [activeTabId]);
+
+  useEffect(() => {
+    const indicator = activeIndicatorRef.current;
+    const list = headerBarRef.current;
+    if (!indicator || !list) {
+      return;
+    }
+    const activeTabElement = activeTabId ? tabRefs.current.get(activeTabId) : undefined;
+    if (!activeTabElement || (activeTabId && tabs.find(tab => tab.id === activeTabId)?.disabled)) {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '0');
+      return;
+    }
+
+    const headerContainer =
+      activeTabElement.querySelector<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
+      activeTabElement.closest<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
+      activeTabElement;
+
+    const offset = headerContainer.offsetLeft;
+    const width = headerContainer.offsetWidth - 1;
+
+    const apply = () => {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-offset', `${offset}px`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-scale', `${width}`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '1');
+    };
+
+    if (!indicatorMeasuredRef.current) {
+      const previousTransition = indicator.style.transition;
+      indicator.style.transition = 'none';
+      apply();
+
+      void indicator.offsetWidth;
+      indicator.style.transition = previousTransition;
+      indicatorMeasuredRef.current = true;
+    } else {
+      apply();
+    }
+  }, [activeTabId, widthChange, tabs]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -365,6 +407,7 @@ export function TabHeaderBar({
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
+            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (
