@@ -126,13 +126,15 @@ export default function StatusIndicator({
           __animate && styles['container-fade-in']
         )}
       >
-        <InternalStatusIcon
-          type={type}
-          iconAriaLabel={iconAriaLabel}
-          animate={__animate}
-          display={__display}
-          size={__size}
-        />
+        <span className={styles['icon-wrapper']}>
+          <InternalStatusIcon
+            type={type}
+            iconAriaLabel={iconAriaLabel}
+            animate={__animate}
+            display={__display}
+            size={__size}
+          />
+        </span>
         <span>{children}</span>
       </span>
     </WithNativeAttributes>
