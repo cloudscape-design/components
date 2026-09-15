@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../table/cell-base/cell-box' as cell-base;
+
+.row {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.row-grid {
+  display: grid;
+  inline-size: 100%;
+  align-items: center;
+  // Min row track = the cell's box height, derived from the same cell-base tokens as the cell padding so
+  // the two can't drift.
+  grid-auto-rows: minmax(
+    calc(
+      #{awsui.$line-height-body-m} + 2 * #{cell-base.$cell-vertical-padding} + 2 *
+        #{cell-base.$cell-negative-space-vertical} - #{awsui.$border-divider-list-width}
+    ),
+    auto
+  );
+}
