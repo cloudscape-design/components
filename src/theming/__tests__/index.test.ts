@@ -53,6 +53,21 @@ test('applyTheme appends and removes awsui style node', () => {
   expect(findStyleNode()).toBeNull();
 });
 
+test('applyTheme with selector generates a scoped, self-contained stylesheet', () => {
+  applyTheme({ theme, selector: '.my-scope' });
+
+  const styleNode = findStyleNode();
+  expect(styleNode!.textContent).toContain('.my-scope');
+  // Scoped stylesheets rely on the base theme cascade layer instead of specificity bumps.
+  expect(styleNode!.textContent).not.toContain(':not(#\\9)');
+});
+
+test('generateThemeStylesheet with selector scopes all rules to the selector', () => {
+  const stylesheet = generateThemeStylesheet({ theme, selector: '.my-scope' });
+  expect(stylesheet).toContain('.my-scope');
+  expect(stylesheet).not.toContain(':not(#\\9)');
+});
+
 test('applyTheme respects nonce meta elements', () => {
   const nonce = 'fgw4g5saf';
   attachNonceMetaElement(nonce);
