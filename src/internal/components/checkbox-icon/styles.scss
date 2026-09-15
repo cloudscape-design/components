@@ -5,6 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use './motion' as motion;
 
 .root {
   position: absolute;
@@ -44,5 +45,6 @@
     &-readonly {
       stroke: awsui.$color-foreground-control-read-only;
     }
+    @include motion.draw-in;
   }
 }
