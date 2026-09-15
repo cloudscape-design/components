@@ -57,7 +57,7 @@ jobs:
             admin|write|maintain)
               echo "Authorized." ;;
             *)
-              echo "::error::@${ACTOR} is not authorized to override the visual regression check (requires write access)."
+              echo "::error::@${ACTOR} is not authorized to override the visual regression check (requires admin, write or maintain access)."
               exit 1 ;;
           esac
 
