@@ -10,7 +10,6 @@ import { useControllable } from '../../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../../internal/hooks/use-intersection-observer';
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { metrics } from '../../../internal/metrics';
-import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
 import { WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
@@ -30,6 +29,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useBreadcrumbs } from './use-breadcrumbs';
 import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
@@ -436,7 +436,11 @@ export const useAppLayout = (
 
   const rootRef = useMergeRefs(rootRefInternal, intersectionObserverRef, onMountRootRef);
 
-  const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
+  const { breadcrumbs: resolvedBreadcrumbs, discoveredBreadcrumbs } = useBreadcrumbs({
+    hasToolbar,
+    isVisible: isIntersecting,
+    ownBreadcrumbs: breadcrumbs,
+  });
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
@@ -458,7 +462,7 @@ export const useAppLayout = (
     ariaLabels: ariaLabelsWithDrawers,
     headerVariant,
     isMobile,
-    breadcrumbs,
+    breadcrumbs: resolvedBreadcrumbs,
     discoveredBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
