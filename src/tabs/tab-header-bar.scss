@@ -162,55 +162,9 @@ $label-horizontal-spacing: awsui.$space-xs;
         opacity awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c;
     }
   }
-
-  @include theming.expressive-motion-only {
-    &:after {
-      display: none;
-    }
-  }
 }
 
-.tabs-active-indicator {
-  @include theming.expressive-motion-only {
-    position: absolute;
-    inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    inset-inline-start: 0;
-    inline-size: 1px;
-    block-size: var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width);
-    border-start-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
-    );
-    border-start-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
-    );
-    border-end-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
-    );
-    border-end-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
-    );
-    background: var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline);
-    transform-origin: left center;
-    transform: translateX(var(--awsui-internal-style-tabs-active-indicator-offset, 0))
-      scaleX(var(--awsui-internal-style-tabs-active-indicator-scale, 0));
-    opacity: var(--awsui-internal-style-tabs-active-indicator-opacity, 0);
-    pointer-events: none;
-  }
-
-  @include theming.expressive-motion-only {
-    @include styles.with-motion {
-      transition:
-        transform awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c,
-        opacity awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c;
-    }
-  }
-}
-
-.tabs-tab:not(:last-child) {
+.tabs-tab:not(:nth-last-child(2)) {
   & > .tabs-tab-header-container {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
     // This is the divider for the tab
@@ -301,8 +255,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
-// Remediate focus shadow
-.tabs-tab:last-child {
+.tabs-tab:nth-last-child(2) {
   margin-inline-end: 1px;
   scroll-margin-inline-end: 1px;
   & > .tabs-tab-header-container {

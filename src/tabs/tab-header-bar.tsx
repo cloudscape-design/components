@@ -20,7 +20,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
@@ -211,9 +211,6 @@ export function TabHeaderBar({
       return;
     }
 
-    // Measure the tab header container the underline used to be attached to, so the
-    // indicator's width and position match the previous per-tab `::after` geometry
-    // (which was `calc(100% - 1px)` of that element). Falls back to the tab element.
     const headerContainer =
       activeTabElement.querySelector<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
       activeTabElement.closest<HTMLElement>(`.${styles['tabs-tab-header-container']}`) ??
@@ -409,8 +406,8 @@ export function TabHeaderBar({
             onFocus={onFocus}
             onBlur={onBlur}
           >
-            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
             {tabs.map(renderTabHeader)}
+            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (

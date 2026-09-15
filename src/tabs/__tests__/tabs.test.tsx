@@ -1412,3 +1412,43 @@ describe('Tabs', () => {
     expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
   });
 });
+
+describe('active-tab indicator', () => {
+  function findIndicator(container: HTMLElement) {
+    return container.querySelector(`.${styles['tabs-active-indicator']}`) as HTMLElement | null;
+  }
+  function indicatorOpacity(container: HTMLElement) {
+    return findIndicator(container)?.style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-opacity');
+  }
+
+  test('renders a single shared indicator', () => {
+    const { container } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(container.querySelectorAll(`.${styles['tabs-active-indicator']}`)).toHaveLength(1);
+  });
+
+  test('positions the indicator over the active tab', () => {
+    const { container } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    const indicator = findIndicator(container)!;
+    expect(indicator).not.toBeNull();
+    // The measuring effect sets the offset/scale custom properties and shows the indicator.
+    expect(indicator.style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-offset')).not.toBe('');
+    expect(indicator.style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-scale')).not.toBe('');
+    expect(indicatorOpacity(container)).toBe('1');
+  });
+
+  test('repositions the indicator when the active tab changes', () => {
+    function Wrapper() {
+      const [activeTabId, setActiveTabId] = useState('first');
+      return <Tabs tabs={defaultTabs} activeTabId={activeTabId} onChange={e => setActiveTabId(e.detail.activeTabId)} />;
+    }
+    const { container, wrapper } = renderTabs(<Wrapper />);
+    wrapper.findTabLinkById('second')!.click();
+    expect(indicatorOpacity(container)).toBe('1');
+  });
+
+  test('hides the indicator when the active tab is disabled', () => {
+    // 'third' is disabled in defaultTabs.
+    const { container } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
+    expect(indicatorOpacity(container)).toBe('0');
+  });
+});
