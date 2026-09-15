@@ -64,13 +64,14 @@ $_background-overrides: (
       color: #{map.get($_color-overrides, $color)};
     }
   }
+
   @each $status in map.keys($_status-backgrounds) {
-    &.status-#{$status} > .container {
+    &.status-#{$status}:not(.embedded) > .container {
       background: #{map.get($_status-backgrounds, $status)};
     }
   }
   @each $color in map.keys($_background-overrides) {
-    &.color-override-#{$color} > .container {
+    &.color-override-#{$color}:not(.embedded) > .container {
       background: #{map.get($_background-overrides, $color)};
     }
   }
