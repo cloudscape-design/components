@@ -3,12 +3,13 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../types/base-component';
+import { BaseIconProps } from '../types/base-icon';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../types/native-attributes';
 
-export interface BadgeProps extends BaseComponentProps {
+export interface BadgeProps extends BaseComponentProps, BaseIconProps {
   /**
    * Specifies the badge color.
    */
@@ -27,6 +28,23 @@ export interface BadgeProps extends BaseComponentProps {
    * Text displayed inside the badge.
    */
   children?: React.ReactNode;
+
+  /**
+   * Specifies the alignment of the icon.
+   */
+  iconAlign?: BadgeProps.IconAlign;
+
+  /**
+   * Specifies the SVG of a custom icon.
+   *
+   * Use this property if you want your custom icon to inherit colors dictated by the badge color.
+   * When this property is set, the component will be decorated with `aria-hidden="true"`. Ensure that the `svg` element:
+   * - has attribute `focusable="false"`.
+   * - has `viewBox="0 0 16 16"`.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconSvg?: React.ReactNode;
 
   /**
    * An object containing CSS properties to customize the badge's visual appearance.
@@ -49,6 +67,8 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 export namespace BadgeProps {
+  export type IconAlign = 'left' | 'right';
+
   export interface Style {
     root?: {
       background?: string;
