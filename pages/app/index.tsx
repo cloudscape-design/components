@@ -26,6 +26,7 @@ import styles from './styles.scss';
 interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
+  breadcrumbsOwnedExternally?: boolean;
   oneTheme?: boolean;
 }
 // used for local dev / testing
@@ -99,9 +100,15 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, theme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
-  history.location.search
-);
+const {
+  direction,
+  visualRefresh,
+  theme,
+  appLayoutWidget,
+  appLayoutToolbar,
+  appLayoutDelayedWidget,
+  breadcrumbsOwnedExternally,
+} = parseQuery(history.location.search);
 const oneTheme = theme === Theme.OneTheme;
 // core-update is an override on top of visual refresh, so it always requires the visual refresh base.
 const coreNew = theme === Theme.CoreUpdate;
@@ -117,6 +124,7 @@ if (!window[awsuiCustomFlagsSymbol]) {
 }
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
+window[awsuiGlobalFlagsSymbol].breadcrumbsOwnedExternally = breadcrumbsOwnedExternally;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
 
