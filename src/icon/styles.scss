@@ -10,12 +10,8 @@
 
 .icon {
   position: relative;
-  display: inline-block;
-  vertical-align: top;
-  &-flex-height {
-    display: inline-flex;
-    align-items: center;
-  }
+  display: inline-flex;
+  align-items: center;
 
   /* stylelint-disable-next-line selector-max-type */
   > svg {
