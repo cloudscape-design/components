@@ -196,6 +196,103 @@
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
+
+  // Inside a ControlGroup the input keeps its own border but fuses with its
+  // neighbors: interior corners are squared and the shared seam border is
+  // collapsed. A focused control raises above its neighbors so its focus ring
+  // is not clipped by the adjacent control.
+  &.input-in-control-group {
+    &:focus {
+      position: relative;
+      z-index: 1;
+    }
+  }
+  // Re-apply the fused corners at rest AND on focus, since the control's own focus
+  // styles otherwise restore all four corners at the full radius. The seam border
+  // stays in the layout (transparent at rest), so geometry is identical at rest and
+  // on focus and the raised focus ring does not shift the control.
+  &.input-in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('first');
+    }
+  }
+  &.input-in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('middle');
+    }
+  }
+  &.input-in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  // A labeled control does not fuse into the control above it when the group wraps:
+  // restore its rounded top corners. Placed after the position rules so it wins.
+  &.input-in-control-group-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+  }
+  // A control directly above a control that detaches when wrapping (a labeled control
+  // or the standalone dismiss button) is no longer fused to it, so it keeps its
+  // rounded bottom corners.
+  &.input-in-control-group-precedes-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+  }
+}
+
+// Same grouped treatment for the adorned (prefix/suffix) container, which owns
+// the border when prefix/suffix are present.
+.input-adorned-container.input-adorned-container-in-control-group {
+  &:focus-within {
+    position: relative;
+    z-index: 1;
+  }
+  &.input-adorned-container-in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('first');
+    }
+  }
+  &.input-adorned-container-in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('middle');
+    }
+  }
+  &.input-adorned-container-in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  &.input-adorned-container-in-control-group-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+  }
+  &.input-adorned-container-in-control-group-precedes-labeled {
+    @container control-group #{styles.$control-group-stack-query} {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+  }
 }
 
 .input-container {
@@ -208,12 +305,16 @@
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
+  // Stay above the input, including when the input is raised (z-index: 1) inside a
+  // focused ControlGroup — otherwise the focused field would paint over the icon.
+  z-index: 2;
 }
 
 .input-icon-end {
   position: absolute;
   inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+  z-index: 2;
 }
 
 .input-button-right {
