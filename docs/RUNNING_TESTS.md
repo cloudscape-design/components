@@ -82,7 +82,7 @@ The visual regression workflow (`.github/workflows/visual-regression.yml`):
 5. Produces an Allure report with image diffs for any failures, deployed to a preview environment.
 6. The deploy workflow's `Visual regression result` job surfaces the pass/fail outcome as the required check.
 
-The `Visual regression result` check (from `deploy.yml`) passes only when every shard passed, or when the commit was overridden (see below).
+The `Visual regression result` check (from `deploy.yml`) passes when every shard passes, when the commit is overridden (see below), or for fork PRs where visual regression is skipped.
 
 ### Reviewing failures
 
