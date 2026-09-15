@@ -81,10 +81,43 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
 }
 `;
 
+exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "label",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "name": "description",
+      "tokens": [
+        "color",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
   "badge",
   "button",
+  "checkbox",
 ]
 `;

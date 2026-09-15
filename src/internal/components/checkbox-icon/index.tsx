@@ -14,6 +14,7 @@ interface CheckboxIconProps extends BaseComponentProps {
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  styleApiEnabled?: boolean;
   style?: {
     box?: {
       fill?: string;
@@ -66,6 +67,7 @@ const CheckboxIcon = ({
   indeterminate,
   disabled = false,
   readOnly = false,
+  styleApiEnabled = false,
   style,
   ...restProps
 }: CheckboxIconProps) => {
@@ -75,7 +77,13 @@ const CheckboxIcon = ({
   const dimensions = dimensionsByTheme[theme];
 
   return (
-    <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
+    <svg
+      className={clsx(styles.root, styleApiEnabled && styles['style-api-enabled'])}
+      viewBox={dimensions.viewBox}
+      aria-hidden="true"
+      focusable="false"
+      {...baseProps}
+    >
       <rect
         className={clsx(styles['styled-box'], {
           [styles['styled-box-checked']]: checked,

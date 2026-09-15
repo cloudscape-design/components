@@ -5,6 +5,43 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/style-api' as style-api;
+
+$_control-tokens: style-api.resolve((color, background-color, border-color), carrier);
+
+@function _value($tokens, $token, $fallback) {
+  @if not $tokens {
+    @return $fallback;
+  }
+  @return style-api.value($tokens, $token, $fallback);
+}
+
+@mixin box-colors($tokens: null) {
+  fill: _value($tokens, background-color, awsui.$color-background-control-default);
+  stroke: _value($tokens, border-color, awsui.$color-border-control-default);
+  @content;
+  &-checked,
+  &-indeterminate {
+    fill: _value($tokens, background-color, awsui.$color-background-control-checked);
+    stroke: _value($tokens, border-color, awsui.$color-border-control-checked);
+  }
+  &-disabled,
+  &-readonly {
+    fill: _value($tokens, background-color, awsui.$color-background-control-disabled);
+    stroke: _value($tokens, border-color, awsui.$color-border-control-disabled);
+  }
+}
+
+@mixin line-colors($tokens: null) {
+  stroke: _value($tokens, color, awsui.$color-foreground-control-default);
+  @content;
+  &-disabled {
+    stroke: _value($tokens, color, awsui.$color-foreground-control-disabled);
+  }
+  &-readonly {
+    stroke: _value($tokens, color, awsui.$color-foreground-control-read-only);
+  }
+}
 
 .root {
   position: absolute;
@@ -14,35 +51,31 @@
   inset-inline-start: 0;
 
   > .styled-box {
-    fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
-    stroke-width: awsui.$border-width-field;
-    @include styles.with-motion {
-      transition:
-        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
-        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
-    }
-    &-checked,
-    &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
-    }
-    &-disabled,
-    &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
+    @include box-colors {
+      stroke-width: awsui.$border-width-field;
+      @include styles.with-motion {
+        transition:
+          fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+          stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+      }
     }
   }
 
   > .styled-line {
-    stroke: awsui.$color-foreground-control-default;
-    stroke-width: 2;
-    fill: none;
-    &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+    @include line-colors {
+      stroke-width: 2;
+      fill: none;
     }
-    &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+  }
+
+  @if style-api.enabled() {
+    &.style-api-enabled {
+      > .styled-box {
+        @include box-colors($_control-tokens);
+      }
+      > .styled-line {
+        @include line-colors($_control-tokens);
+      }
     }
   }
 }
