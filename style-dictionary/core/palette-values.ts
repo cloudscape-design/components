@@ -269,7 +269,7 @@ const paletteTokens: StyleDictionary.ColorPaletteDictionary = {
   colorAwsSquidInk: '#232f3e',
   colorTransparent: 'transparent',
   colorBlack: '#000000',
-  colorWhite: '#ffffff',
+  colorWhite: '#eeeeee',
 };
 
 export { paletteTokens };
