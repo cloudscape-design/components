@@ -81,6 +81,22 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
 }
 `;
 
+exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "slots": [
+    {
+      "name": "dropdown",
+      "tokens": [
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 {
   "slots": [
@@ -102,6 +118,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "alert",
   "badge",
   "button",
+  "dropdown",
   "link",
 ]
 `;
