@@ -5183,7 +5183,9 @@ The object accepts the following fields:
   \`full\` for fully rounded corners. When not set, the wrapper has no border radius. Set it to
   \`full\` together with \`aspectRatio: 'equal'\` to render a circle.
 
-Composes with existing Box props such as \`padding\` and \`margin\`.",
+Composes with existing Box props such as \`padding\` and \`margin\`.
+
+This is a One Theme only feature and must not be used in VR.",
       "inlineType": {
         "name": "BoxProps.VisualAccent",
         "properties": [
@@ -5251,6 +5253,9 @@ Composes with existing Box props such as \`padding\` and \`margin\`.",
       },
       "name": "visualAccent",
       "optional": true,
+      "systemTags": [
+        "one-theme",
+      ],
       "type": "BoxProps.VisualAccent",
     },
   ],
@@ -5578,8 +5583,7 @@ The text will also be added to the \`title\` attribute of the button.",
     },
     {
       "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
-If provided, the button becomes focusable.
-Applicable for all button variants, except link.",
+If provided, the button becomes focusable.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
@@ -10762,8 +10766,7 @@ and to distinguish between multiple buttons with identical visible text. The tex
     },
     {
       "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
-If provided, the copy to clipboard button becomes focusable.
-Applicable for all variants except inline.",
+If provided, the copy to clipboard button becomes focusable.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
