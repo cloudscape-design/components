@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 const fs = require('fs');
 const path = require('path');
+const { camelCase } = require('change-case');
 
 const { writeFile } = require('../utils/files');
 
@@ -14,11 +15,6 @@ const header = `// Copyright Amazon.com, Inc. or its affiliates. All Rights Rese
 // Do not edit it manually.
 `;
 
-// action-card -> actionCard
-function toCamelCase(kebab) {
-  return kebab.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-}
-
 // Collects the visual definition file names (without extension).
 function collectDefinitions() {
   return fs
@@ -30,7 +26,7 @@ function collectDefinitions() {
 
 function generateIndexJs(definitions) {
   const lines = definitions.map(file => {
-    const exportName = toCamelCase(file);
+    const exportName = camelCase(file);
     return `exports.${exportName} = [require('./visual/${file}').default];`;
   });
 
@@ -44,7 +40,7 @@ function generateIndexJs(definitions) {
 }
 
 function generateIndexDts(definitions) {
-  const lines = definitions.map(file => `export declare const ${toCamelCase(file)}: TestSuite[];`);
+  const lines = definitions.map(file => `export declare const ${camelCase(file)}: TestSuite[];`);
 
   return (
     header +
