@@ -32,6 +32,7 @@ import CodeEditorWrapper from './code-editor';
 import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
+import ContentDisplayPreferenceWrapper from './content-display-preference';
 import ContentLayoutWrapper from './content-layout';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
@@ -128,6 +129,7 @@ export { CodeEditorWrapper };
 export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
+export { ContentDisplayPreferenceWrapper };
 export { ContentLayoutWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
@@ -847,6 +849,34 @@ findAllContainers(selector?: string): Array<ContainerWrapper>;
  * @returns {ContainerWrapper | null}
  */
 findClosestContainer(): ContainerWrapper | null;
+/**
+ * Returns the wrapper of the first ContentDisplayPreference that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ContentDisplayPreference.
+ * If no matching ContentDisplayPreference is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ContentDisplayPreferenceWrapper | null}
+ */
+findContentDisplayPreference(selector?: string): ContentDisplayPreferenceWrapper | null;
+
+/**
+ * Returns an array of ContentDisplayPreference wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ContentDisplayPreferences inside the current wrapper.
+ * If no matching ContentDisplayPreference is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ContentDisplayPreferenceWrapper>}
+ */
+findAllContentDisplayPreferences(selector?: string): Array<ContentDisplayPreferenceWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ContentDisplayPreference for the current element,
+ * or the element itself if it is an instance of ContentDisplayPreference.
+ * If no ContentDisplayPreference is found, returns \`null\`.
+ *
+ * @returns {ContentDisplayPreferenceWrapper | null}
+ */
+findClosestContentDisplayPreference(): ContentDisplayPreferenceWrapper | null;
 /**
  * Returns the wrapper of the first ContentLayout that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first ContentLayout.
@@ -3138,6 +3168,19 @@ ElementWrapper.prototype.findContainer = function(selector) {
 ElementWrapper.prototype.findAllContainers = function(selector) {
   return this.findAllComponents(ContainerWrapper, selector);
 };
+ElementWrapper.prototype.findContentDisplayPreference = function(selector) {
+  let rootSelector = \`.\${ContentDisplayPreferenceWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ContentDisplayPreferenceWrapper && ContentDisplayPreferenceWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ContentDisplayPreferenceWrapper.rootSelector}, .\${ContentDisplayPreferenceWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentDisplayPreferenceWrapper);
+};
+
+ElementWrapper.prototype.findAllContentDisplayPreferences = function(selector) {
+  return this.findAllComponents(ContentDisplayPreferenceWrapper, selector);
+};
 ElementWrapper.prototype.findContentLayout = function(selector) {
   let rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
   if("legacyRootSelector" in ContentLayoutWrapper && ContentLayoutWrapper.legacyRootSelector){
@@ -4177,6 +4220,11 @@ ElementWrapper.prototype.findClosestContainer = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(ContainerWrapper);
 };
+ElementWrapper.prototype.findClosestContentDisplayPreference = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ContentDisplayPreferenceWrapper);
+};
 ElementWrapper.prototype.findClosestContentLayout = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4574,6 +4622,7 @@ import CodeEditorWrapper from './code-editor';
 import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
+import ContentDisplayPreferenceWrapper from './content-display-preference';
 import ContentLayoutWrapper from './content-layout';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
@@ -4670,6 +4719,7 @@ export { CodeEditorWrapper };
 export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
+export { ContentDisplayPreferenceWrapper };
 export { ContentLayoutWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
@@ -5136,6 +5186,23 @@ findContainer(selector?: string): ContainerWrapper;
  * @returns {MultiElementWrapper<ContainerWrapper>}
  */
 findAllContainers(selector?: string): MultiElementWrapper<ContainerWrapper>;
+/**
+ * Returns a wrapper that matches the ContentDisplayPreferences with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ContentDisplayPreferences.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ContentDisplayPreferenceWrapper}
+ */
+findContentDisplayPreference(selector?: string): ContentDisplayPreferenceWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ContentDisplayPreferences with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ContentDisplayPreferences.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ContentDisplayPreferenceWrapper>}
+ */
+findAllContentDisplayPreferences(selector?: string): MultiElementWrapper<ContentDisplayPreferenceWrapper>;
 /**
  * Returns a wrapper that matches the ContentLayouts with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches ContentLayouts.
@@ -6645,6 +6712,19 @@ ElementWrapper.prototype.findContainer = function(selector) {
 
 ElementWrapper.prototype.findAllContainers = function(selector) {
   return this.findAllComponents(ContainerWrapper, selector);
+};
+ElementWrapper.prototype.findContentDisplayPreference = function(selector) {
+  let rootSelector = \`.\${ContentDisplayPreferenceWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ContentDisplayPreferenceWrapper && ContentDisplayPreferenceWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ContentDisplayPreferenceWrapper.rootSelector}, .\${ContentDisplayPreferenceWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentDisplayPreferenceWrapper);
+};
+
+ElementWrapper.prototype.findAllContentDisplayPreferences = function(selector) {
+  return this.findAllComponents(ContentDisplayPreferenceWrapper, selector);
 };
 ElementWrapper.prototype.findContentLayout = function(selector) {
   let rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
