@@ -83,4 +83,5 @@ $sizes-vertical: (
 
 .child-aligned {
   display: flex;
+  align-items: inherit;
 }
