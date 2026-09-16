@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -8,7 +8,7 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { useFocusRestore } from '../internal/components/focus-lock/use-focus-restore';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { DialogProps } from './interfaces';
@@ -32,33 +32,12 @@ export default function InternalDialog({
   const i18n = useInternalI18n('dialog');
   const dismissAriaLabel = i18n('i18nStrings.dismissAriaLabel', i18nStrings?.dismissAriaLabel);
   const headerId = useUniqueId('dialog-header-');
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const restoreFocusTargetRef = useRef<HTMLOrSVGElement | null>(null);
 
-  const restoreFocusHandler = useCallback((element: HTMLDivElement | null) => {
-    if (element === null) {
-      restoreFocusTargetRef.current?.focus();
-      restoreFocusTargetRef.current = null;
-    }
-  }, []);
-
-  const mergedRootRef = useMergeRefs(dialogRef, __internalRootRef);
-
-  // Mounting Dialog moves focus inside it. Consumers should preserve the same
-  // mounted instance when repositioning Dialog because moving it between render
-  // branches remounts it and triggers initial focus again.
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) {
-      return;
-    }
-
-    const activeElement = dialog.ownerDocument.activeElement;
-    if (activeElement && !dialog.contains(activeElement)) {
-      restoreFocusTargetRef.current = activeElement as unknown as HTMLOrSVGElement;
-    }
-    getFirstFocusable(dialog)?.focus();
-  }, []);
+  // Move focus into the dialog when it mounts and restore it to the previously focused element when it unmounts.
+  // Moving dialog between render branches (for example, swapping containers on a media breakpoint) remounts it and
+  // re-triggers this focus. Consumers should keep the same mounted instance when repositioning to avoid the focus from changing.
+  const focusRestoreRef = useFocusRestore({ autoFocus: true, restoreFocus: true });
+  const mergedRootRef = useMergeRefs(focusRestoreRef, __internalRootRef);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Escape') {
@@ -87,7 +66,7 @@ export default function InternalDialog({
       className={clsx(baseProps.className, styles.root, testStyles.root)}
       onKeyDown={onKeyDown}
     >
-      <div ref={restoreFocusHandler} className={clsx(styles.header, headerActions && styles['header-with-actions'])}>
+      <div className={clsx(styles.header, headerActions && styles['header-with-actions'])}>
         <div className={styles['header-content']}>
           <span id={headerId} className={testStyles.header}>
             {header}
