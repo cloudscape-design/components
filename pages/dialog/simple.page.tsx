@@ -14,12 +14,7 @@ import Toggle from '~components/toggle';
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-export type PageContext = React.Context<
-  AppContextType<{
-    dialogOpen?: boolean;
-    removeTrigger?: boolean;
-  }>
->;
+export type PageContext = React.Context<AppContextType<{ dialogOpen?: boolean; removeTrigger?: boolean }>>;
 
 export default function DialogSimplePage() {
   const {

@@ -23,8 +23,7 @@ export interface DialogProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Specifies a footer for the dialog, typically action buttons. If empty, the footer
-   * isn't displayed.
+   * Specifies a footer for the dialog, typically action buttons. If empty, the footer isn't displayed.
    */
   footer?: React.ReactNode;
 
@@ -37,10 +36,9 @@ export interface DialogProps extends BaseComponentProps {
   i18nStrings?: DialogProps.I18nStrings;
 
   /**
-   * Called when the user dismisses the dialog by using the close button or pressing `Escape`.
-   *
-   * Remove the dialog from the render tree in response. When the dialog unmounts, it returns
-   * focus to the element that was focused before it mounted, as long as that element still exists.
+   * Called when the user dismisses the dialog using the close button or the Escape key.
+   * Handle it by removing the dialog from the page, for example with conditional rendering.
+   * When the dialog unmounts, it returns focus to the element that was focused before it mounted, as long as that element still exists.
    */
   onDismiss: NonCancelableEventHandler;
 }
