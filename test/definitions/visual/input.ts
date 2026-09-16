@@ -16,6 +16,11 @@ const suite: TestSuite = {
       path: 'input/style-permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Inline label permutations',
+      path: 'input/inline-label-permutations',
+      screenshotType: 'permutations',
+    },
   ],
 };
 
