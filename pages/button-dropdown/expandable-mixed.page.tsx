@@ -81,10 +81,10 @@ export default function MixedExpandableScenario() {
         <h1>Mixed expandable / flat groups (prototype)</h1>
         <p>
           Each group&apos;s <code>expandable</code> flag overrides the dropdown-level <code>expandableGroups</code>:
-          category 2 is forced flat (<code>expandable: false</code>), the forced-expandable category is forced open (
-          <code>expandable: true</code>), and the rest inherit the global. Toggle <code>expandableGroups</code> — the
-          forced groups hold their behavior while the inheriting ones follow. Use arrow keys to verify navigation
-          confines to the current plane and steps across flat groups inline.
+          category 2 is forced flat (<code>expandable: false</code>), the forced-expandable category is forced
+          expandable (<code>expandable: true</code>), and the rest inherit the global. Toggle{' '}
+          <code>expandableGroups</code> — the forced groups hold their behavior while the inheriting ones follow. Use
+          arrow keys to verify navigation confines to the current plane and steps across flat groups inline.
         </p>
         <SpaceBetween size="m" direction="horizontal">
           <label>
