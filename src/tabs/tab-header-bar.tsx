@@ -202,6 +202,7 @@ export function TabHeaderBar({
   useEffect(() => {
     const indicator = activeIndicatorRef.current;
     const list = headerBarRef.current;
+    /* istanbul ignore if: refs are always attached when the effect runs */
     if (!indicator || !list) {
       return;
     }

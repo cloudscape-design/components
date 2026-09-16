@@ -1451,4 +1451,18 @@ describe('active-tab indicator', () => {
     const { container } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
     expect(indicatorOpacity(container)).toBe('0');
   });
+
+  test('falls back to the active tab element when no header container is present', () => {
+    function Wrapper() {
+      const [activeTabId, setActiveTabId] = useState('first');
+      return <Tabs tabs={defaultTabs} activeTabId={activeTabId} onChange={e => setActiveTabId(e.detail.activeTabId)} />;
+    }
+    const { container, wrapper } = renderTabs(<Wrapper />);
+    container
+      .querySelectorAll(`.${styles['tabs-tab-header-container']}`)
+      .forEach(element => element.classList.remove(styles['tabs-tab-header-container']));
+
+    wrapper.findTabLinkById('second')!.click();
+    expect(indicatorOpacity(container)).toBe('1');
+  });
 });
