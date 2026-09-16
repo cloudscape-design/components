@@ -44,6 +44,11 @@ export interface TableRootProps extends BaseComponentProps {
    * subset of rows, such as with virtualization; otherwise it is derived from the DOM.
    */
   ariaRowcount?: number;
+
+  /** Pins the header to the top of the page as the body scrolls. Supported with grid layout. */
+  stickyHeader?: boolean;
+  /** Distance in pixels from the top at which the sticky header pins. */
+  stickyHeaderOffset?: number;
 }
 
 export namespace TableRootProps {

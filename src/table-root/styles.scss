@@ -6,6 +6,7 @@
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/components/sticky-header/tokens' as sticky-header;
 
 .root {
   @include styles.styles-reset;
@@ -36,4 +37,24 @@
 
 .table-grid {
   display: block;
+}
+
+.sticky-slot {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  position: sticky;
+  inset-block-start: 0;
+  z-index: sticky-header.$slot-z-index;
+  background: awsui.$color-background-table-header;
+}
+
+.sticky-slot-stuck {
+  @include sticky-header.stuck-elevation;
+}
+
+.sticky-copy-scroller {
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
