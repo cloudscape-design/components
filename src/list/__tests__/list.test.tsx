@@ -7,6 +7,8 @@ import { Icon } from '../../../lib/components';
 import List, { ListProps } from '../../../lib/components/list';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/list/styles.selectors.js';
+
 interface Item {
   id: string;
   content: string;
@@ -68,5 +70,36 @@ describe('List', () => {
   test('can render as ol', () => {
     const wrapper = renderList({ tagOverride: 'ol' });
     expect(wrapper.getElement().tagName).toBe('OL');
+  });
+
+  test('renders items without padding modifiers by default', () => {
+    const item = renderList().findItemByIndex(1)!.getElement();
+    expect(item).not.toHaveClass(styles['disable-paddings']);
+    expect(item).not.toHaveClass(styles['disable-item-paddings']);
+  });
+
+  test('disablePaddings applies to items', () => {
+    const item = renderList({ disablePaddings: true }).findItemByIndex(1)!.getElement();
+    expect(item).toHaveClass(styles['disable-paddings']);
+    expect(item).not.toHaveClass(styles['disable-item-paddings']);
+  });
+
+  test('disableItemPaddings applies to items', () => {
+    const item = renderList({ disableItemPaddings: true }).findItemByIndex(1)!.getElement();
+    expect(item).toHaveClass(styles['disable-item-paddings']);
+    expect(item).not.toHaveClass(styles['disable-paddings']);
+  });
+
+  test('keeps the root element when toggling sortable', () => {
+    const props = {
+      items: defaultItems,
+      renderItem: (item: Item) => ({ id: item.id, content: item.content }),
+      tagOverride: 'ol' as const,
+    };
+    const { container, rerender } = render(<List {...props} />);
+    const rootBefore = createWrapper(container).findList()!.getElement();
+
+    rerender(<List {...props} sortable={true} />);
+    expect(createWrapper(container).findList()!.getElement()).toBe(rootBefore);
   });
 });
