@@ -298,6 +298,57 @@ describe('fallback customization with i18n', () => {
     expect(findHeader().getElement()).toHaveTextContent('Ooops, <Link>share feedback</Link>');
     expect(findDescription().getElement()).toHaveTextContent('Please, <Link>share feedback</Link>');
   });
+
+  test('renders the raw description when an unknown tag is nested inside <Feedback>', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: {
+        descriptionText: 'Try again, <Feedback>a<Link>b</Link>c</Feedback>.',
+        components: { Feedback: () => <>custom</> },
+      },
+    });
+    expect(findDescription().getElement()).toHaveTextContent('Try again, <Feedback>a<Link>b</Link>c</Feedback>.');
+  });
+
+  test('drops <Feedback> content when no Feedback component is provided', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: { descriptionText: 'Try again, <Feedback>share feedback</Feedback>.' },
+    });
+    expect(findDescription().getElement()).toHaveTextContent('Try again, .');
+    expect(findFeedbackAction()).toBe(null);
+  });
+
+  test('tolerates whitespace before the closing angle bracket of a <Feedback> tag', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: {
+        descriptionText: 'Try again, <Feedback >share feedback</Feedback >.',
+        components: { Feedback: ({ children }) => <a href="https://feed.back">{children}</a> },
+      },
+    });
+    expect(findDescription().getElement()).toHaveTextContent('Try again, share feedback.');
+    expect(findFeedbackAction()!.find('a')!.getElement()).toHaveTextContent('share feedback');
+  });
+
+  test.each([
+    [true, 'Try again, share feedback.'],
+    [false, 'Try again.'],
+  ])('resolves a hasFeedback select in i18n strings (Feedback provided: %s)', (provided, expected) => {
+    const Feedback = ({ children }: { children: React.ReactNode }) => <a href="https://feed.back">{children}</a>;
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: {
+        descriptionText:
+          '{hasFeedback, select, true {Try again, <Feedback>share feedback</Feedback>.} other {Try again.}}',
+        components: provided ? { Feedback } : undefined,
+      },
+    });
+    expect(findDescription().getElement()).toHaveTextContent(expected);
+  });
+
+  test('unescapes doubled quotes in i18n strings', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: { descriptionText: "It''s broken." },
+    });
+    expect(findDescription().getElement()).toHaveTextContent("It's broken.");
+  });
 });
 
 describe('fallback customization with renderFallback', () => {
