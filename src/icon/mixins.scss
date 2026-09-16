@@ -69,10 +69,11 @@ $_icon-sizes: (
 );
 
 // Emits per-size text metrics so a nested `size="inherit"` icon resolves to the wrapper's size.
+// The line height equals the icon size (not the supported line height), so that the nested icon's
+// measured box exactly fits the wrapper's content area.
 @mixin make-icon-size-text-metrics {
   @each $type in $_icon-sizes {
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
-    .size-#{map.get($type, 'name')} {
+    &.size-#{map.get($type, 'name')} {
       font-size: map.get($type, 'supportedFontSize');
       line-height: map.get($type, 'size');
     }

@@ -7,8 +7,6 @@ import clsx from 'clsx';
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
 
-import styles from './styles.css.js';
-
 export interface CustomizableIconProps extends IconProps {
   /**
    * A custom icon replacing the default one, for example, provided by the consumer via the host
@@ -27,8 +25,7 @@ export interface CustomizableIconProps extends IconProps {
 
 export function CustomizableIcon({ customIcon, fallback, ...shared }: CustomizableIconProps) {
   if (customIcon) {
-    const metricsClassName = clsx(styles['custom-icon'], styles[`size-${shared.size ?? 'normal'}`]);
-    return <InternalIcon {...shared} override={<span className={metricsClassName}>{customIcon}</span>} />;
+    return <InternalIcon {...shared} override={customIcon} />;
   }
   return <InternalIcon {...shared} {...fallback} className={clsx(shared.className, fallback?.className)} />;
 }

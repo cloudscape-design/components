@@ -64,14 +64,14 @@ describe('expandable section', () => {
     expect(queryByTestId('toggle-expanded')).toBeTruthy();
   });
 
-  it('applies size text metrics to the custom icon wrapper', () => {
+  it('wraps the custom icon in a metrics span', () => {
     const { queryByTestId } = renderWithProvider(
       { 'expandable-section': { expandToggle } },
       <ExpandableSection headerText="Section" />
     );
-    // The wrapper carries a size class so nested `size="inherit"` icons resolve to the wrapper size.
-    const wrapper = queryByTestId('toggle-collapsed')!.parentElement!;
-    expect(wrapper.className).toEqual(expect.stringContaining('size-normal'));
+    const metricsSpan = queryByTestId('toggle-collapsed')!.parentElement!;
+    expect(metricsSpan.className).toEqual(expect.stringContaining('custom-icon'));
+    expect(metricsSpan.className).toEqual(expect.stringContaining('size-normal'));
   });
 });
 
