@@ -11,22 +11,21 @@ export default class DialogWrapper extends ComponentWrapper<HTMLDivElement> {
   static rootSelector: string = styles.root;
 
   /**
-   * Finds the dialog heading. This element is also the dialog's accessible name
-   * (referenced by the `role="dialog"` element via `aria-labelledby`).
+   * Finds the header slot of the dialog.
    */
   findHeader(): ElementWrapper | null {
     return this.findByClassName(testStyles.header);
   }
 
   /**
-   * Finds the header actions slot.
+   * Finds the header actions slot of the dialog.
    */
   findHeaderActions(): ElementWrapper | null {
     return this.findByClassName(testStyles['header-actions']);
   }
 
   /**
-   * Finds the content slot of the dialog.
+   * Finds the header actions slot of the dialog.
    */
   findContent(): ElementWrapper | null {
     return this.findByClassName(testStyles.content);
@@ -40,7 +39,7 @@ export default class DialogWrapper extends ComponentWrapper<HTMLDivElement> {
   }
 
   /**
-   * Finds the dismiss (close) button, which is always present.
+   * Finds the dismiss button of the dialog.
    */
   findDismissButton(): ButtonWrapper | null {
     return this.findComponent(`.${testStyles['dismiss-button']}`, ButtonWrapper);

@@ -40890,7 +40890,7 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Finds the content slot of the dialog.",
+          "description": "Finds the header actions slot of the dialog.",
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -40904,7 +40904,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Finds the dismiss (close) button, which is always present.",
+          "description": "Finds the dismiss button of the dialog.",
           "name": "findDismissButton",
           "parameters": [],
           "returnType": {
@@ -40927,8 +40927,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Finds the dialog heading. This element is also the dialog's accessible name
-(referenced by the \`role="dialog"\` element via \`aria-labelledby\`).",
+          "description": "Finds the header slot of the dialog.",
           "name": "findHeader",
           "parameters": [],
           "returnType": {
@@ -40942,7 +40941,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Finds the header actions slot.",
+          "description": "Finds the header actions slot of the dialog.",
           "name": "findHeaderActions",
           "parameters": [],
           "returnType": {
@@ -52218,7 +52217,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
-          "description": "Finds the content slot of the dialog.",
+          "description": "Finds the header actions slot of the dialog.",
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -52227,7 +52226,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
-          "description": "Finds the dismiss (close) button, which is always present.",
+          "description": "Finds the dismiss button of the dialog.",
           "name": "findDismissButton",
           "parameters": [],
           "returnType": {
@@ -52245,8 +52244,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
-          "description": "Finds the dialog heading. This element is also the dialog's accessible name
-(referenced by the \`role="dialog"\` element via \`aria-labelledby\`).",
+          "description": "Finds the header slot of the dialog.",
           "name": "findHeader",
           "parameters": [],
           "returnType": {
@@ -52255,7 +52253,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
-          "description": "Finds the header actions slot.",
+          "description": "Finds the header actions slot of the dialog.",
           "name": "findHeaderActions",
           "parameters": [],
           "returnType": {
