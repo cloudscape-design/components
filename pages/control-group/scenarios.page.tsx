@@ -265,6 +265,73 @@ function NestedInFormFieldControl() {
   );
 }
 
+// Two ControlGroups laid out on the same line (a metric clause and a label matcher),
+// followed by a standalone "add" button — like a query-builder row where several
+// grouped clauses sit side by side.
+function MultipleGroupsInLine() {
+  return (
+    <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+      <ControlGroup
+        ariaLabel="Metric"
+        dismissible={true}
+        onDismiss={() => {}}
+        i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove metric' }}
+      >
+        <Input
+          ariaLabel="Metric"
+          inlineLabelText="Metric"
+          value=""
+          placeholder="Select metric name"
+          onChange={() => {}}
+        />
+      </ControlGroup>
+      <ControlGroup
+        ariaLabel="Label"
+        dismissible={true}
+        onDismiss={() => {}}
+        i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label' }}
+      >
+        <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
+        <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+        <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
+      </ControlGroup>
+      <Button iconName="add-plus" ariaLabel="Add clause" onClick={() => {}} />
+    </SpaceBetween>
+  );
+}
+
+// A long control group whose natural row width is well over 465px (many controls),
+// so you can observe at which container width it collapses / stacks.
+function LongControlGroup() {
+  return (
+    <ControlGroup
+      ariaLabel="Long label matcher"
+      dismissible={true}
+      onDismiss={() => {}}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove clause' }}
+    >
+      <Input
+        ariaLabel="Label name"
+        inlineLabelText="Label"
+        value="service"
+        placeholder="Label name"
+        onChange={() => {}}
+      />
+      <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+      <Input ariaLabel="Label value" value="production" placeholder="Label value" onChange={() => {}} />
+      <Select
+        ariaLabel="Aggregation"
+        inlineLabelText="Aggregation"
+        selectedOption={AGGREGATIONS[1]}
+        options={AGGREGATIONS}
+        onChange={() => {}}
+      />
+      <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
+      <Input ariaLabel="Limit" inlineLabelText="Limit" value="100" placeholder="Limit" onChange={() => {}} />
+    </ControlGroup>
+  );
+}
+
 interface Scenario {
   key: string;
   title: string;
@@ -327,6 +394,19 @@ const scenarios: Scenario[] = [
     description:
       "Toggle the FormField's validation state. The message renders once below the group, and the invalid / warning styling propagates to every control in the group.",
     content: <NestedInFormFieldControl />,
+  },
+  {
+    key: 'multiple',
+    title: 'Multiple control groups in one line',
+    description: 'Several grouped clauses laid out side by side on the same line, followed by a standalone add button.',
+    content: <MultipleGroupsInLine />,
+  },
+  {
+    key: 'long',
+    title: 'Long control group (wider than 465px)',
+    description:
+      'A group with many controls, so its natural row width exceeds the 465px stack threshold. Narrow the browser to observe at which container width it collapses / stacks.',
+    content: <LongControlGroup />,
   },
 ];
 
