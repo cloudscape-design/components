@@ -34,6 +34,9 @@ export default function ItemsList({
   filteringEnabled,
   menuId,
   filteringDescriptionId,
+  asyncLoadingProps,
+  getExpandableItemsAsyncLoadingState,
+  onLoadItems,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -112,6 +115,9 @@ export default function ItemsList({
             filteringEnabled={filteringEnabled}
             menuId={menuId}
             filteringDescriptionId={filteringDescriptionId}
+            asyncLoadingProps={asyncLoadingProps}
+            getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+            onLoadItems={onLoadItems}
           />
         )
       ) : null;

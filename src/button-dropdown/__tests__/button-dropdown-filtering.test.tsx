@@ -465,6 +465,22 @@ describe('Button dropdown filtering', () => {
   });
 
   describe('filtered expandable groups', () => {
+    test('keeps expandable groups expandable while filtering in manual mode', () => {
+      // In manual mode the parent controls the returned items (they are not flattened
+      // client-side), so the provided expandable group structure must be preserved even
+      // while the filtering input has a value.
+      const { wrapper } = renderDropdown({
+        filteringType: 'manual',
+        items: expandableItems,
+        expandableGroups: true,
+        onLoadItems: () => {},
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Start');
+
+      expect(wrapper.findExpandableCategoryById('states')).not.toBeNull();
+    });
+
     test('renders matching nested items and collapses expandable groups', () => {
       const { wrapper } = renderDropdown({
         filteringType: 'auto',
