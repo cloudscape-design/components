@@ -7,7 +7,7 @@ import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-gr
 import Button from '~components/button';
 import Container from '~components/container';
 import Header from '~components/header';
-import { registerBreadcrumbsConsumer } from '~components/internal/plugins/widget';
+import { registerBreadcrumbsConsumer } from '~components/plugins';
 import SpaceBetween from '~components/space-between';
 
 import labels from './utils/labels';

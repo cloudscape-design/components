@@ -21,7 +21,6 @@ import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { getExternalProps } from '../internal/utils/external-props';
 import { createWidgetizedComponent } from '../internal/widgets';
 import { AllItemsDropdown } from './all-items-dropdown';
 import {
@@ -125,14 +124,14 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   ...props
 }: InternalBreadcrumbGroupProps<T>) {
   const { registerBreadcrumbs } = useContext(BreadcrumbsSlotContext) ?? {};
-  const reportedProps = getExternalProps({
+  const reportedProps = {
     ...props,
     items,
     ariaLabel,
     expandAriaLabel,
     onClick,
     onFollow,
-  }) as BreadcrumbGroupProps;
+  } as BreadcrumbGroupProps;
   const breadcrumbsRegistrationRef = useRef<ReturnType<NonNullable<typeof registerBreadcrumbs>> | null>(null);
 
   useLayoutEffect(() => {

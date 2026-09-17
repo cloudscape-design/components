@@ -7,8 +7,8 @@ import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import * as widgetPlugins from '../../../lib/components/internal/plugins/widget';
-import { clearBreadcrumbsConsumer } from '../../../lib/components/internal/plugins/widget/core';
+import { clearInitialMessages } from '../../../lib/components/internal/plugins/widget/core';
+import * as widgetPlugins from '../../../lib/components/plugins';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
 
@@ -69,38 +69,18 @@ function ExternalBreadcrumbGroup() {
 
 beforeEach(() => {
   setBreadcrumbsOwnedExternally(undefined);
-  clearBreadcrumbsConsumer();
+  clearInitialMessages();
 });
 
 afterEach(() => {
   cleanup();
-  clearBreadcrumbsConsumer();
+  clearInitialMessages();
   setBreadcrumbsOwnedExternally(undefined);
   expect(awsuiPluginsInternal.breadcrumbs.getStateForTesting()).toEqual({
     appLayoutUpdateCallback: null,
     breadcrumbInstances: [],
     breadcrumbRegistrations: [],
   });
-});
-
-test('shares the consumer registry with a same-origin parent window', () => {
-  const originalParentDescriptor = Object.getOwnPropertyDescriptor(window, 'parent')!;
-  const parentWindow = {} as Window;
-  Object.defineProperty(parentWindow, 'parent', { value: parentWindow });
-  Object.defineProperty(window, 'parent', { configurable: true, value: parentWindow });
-  let unregister = () => {};
-
-  try {
-    const first = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() });
-    unregister = first.unregister;
-    const second = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() });
-
-    expect(first.registered).toBe(true);
-    expect(second.registered).toBe(false);
-  } finally {
-    unregister();
-    Object.defineProperty(window, 'parent', originalParentDescriptor);
-  }
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
@@ -156,6 +136,46 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     await waitFor(() => expect(received[received.length - 1]?.items).toEqual(defaultItems));
     expect(received[received.length - 1]?.onFollow).toBe(onFollow);
+  });
+
+  test('preserves event handlers that read producer React context', async () => {
+    const SourceContext = React.createContext('default');
+    const onContextClick = jest.fn();
+
+    function ContextualBreadcrumbs() {
+      const contextValue = React.useContext(SourceContext);
+      return (
+        <BreadcrumbGroup
+          items={defaultItems}
+          onClick={event => {
+            event.preventDefault();
+            onContextClick(contextValue);
+          }}
+        />
+      );
+    }
+
+    render(
+      <AppLayout
+        breadcrumbs={
+          <SourceContext.Provider value="producer-context">
+            <ContextualBreadcrumbs />
+          </SourceContext.Provider>
+        }
+      />
+    );
+
+    const externalContainer = document.createElement('div');
+    document.body.appendChild(externalContainer);
+    const externalRoot = render(<ExternalBreadcrumbGroup />, { container: externalContainer });
+    const externalWrapper = createWrapper(externalContainer);
+
+    await waitFor(() => expect(externalWrapper.findBreadcrumbGroup()).toBeTruthy());
+    externalWrapper.findBreadcrumbGroup()!.findBreadcrumbLink(1)!.click();
+    expect(onContextClick).toHaveBeenCalledWith('producer-context');
+
+    externalRoot.unmount();
+    externalContainer.remove();
   });
 
   test('publishes updates to slot breadcrumbs without replacing the consumer', async () => {

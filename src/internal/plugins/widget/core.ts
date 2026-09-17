@@ -2,25 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import { BreadcrumbsConsumerPayload, InitialMessage, WidgetMessage } from './interfaces';
+import { InitialMessage, WidgetMessage } from './interfaces';
 
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
 const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
-const storageKeyBreadcrumbsConsumer = Symbol.for('awsui-widget-api-breadcrumbs-consumer');
-const storageKeyBreadcrumbsConsumerListeners = Symbol.for('awsui-widget-api-breadcrumbs-consumer-listeners');
 const storageKeyExternalOwnedBreadcrumbs = Symbol.for('awsui-widget-api-external-owned-breadcrumbs');
-
-export interface BreadcrumbsConsumer extends BreadcrumbsConsumerPayload {
-  token: object;
-}
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: MessageHandler | undefined;
   [storageKeyInitialMessages]: Array<InitialMessage<unknown>> | undefined;
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
-  [storageKeyBreadcrumbsConsumer]: BreadcrumbsConsumer | undefined;
-  [storageKeyBreadcrumbsConsumerListeners]: Set<(consumer: BreadcrumbsConsumer | undefined) => void> | undefined;
   [storageKeyExternalOwnedBreadcrumbs]: boolean | undefined;
 }
 
@@ -30,20 +22,6 @@ type MessageHandler = (event: WidgetMessage<unknown>) => void;
 
 function getWindow() {
   return window as Window as WindowWithApi;
-}
-
-function getBreadcrumbsRegistryWindow(currentWindow = getWindow()): WindowWithApi {
-  try {
-    const parentWindow = currentWindow.parent as WindowWithApi;
-    if (parentWindow === currentWindow) {
-      return currentWindow;
-    }
-    // Accessing custom properties verifies that the parent is same-origin.
-    void parentWindow[storageKeyBreadcrumbsConsumer];
-    return getBreadcrumbsRegistryWindow(parentWindow);
-  } catch {
-    return currentWindow;
-  }
 }
 
 export function getAppLayoutMessageHandler() {
@@ -87,13 +65,6 @@ export function clearInitialMessages() {
   getWindow()[storageKeyInitialMessages] = undefined;
 }
 
-export function getBreadcrumbsConsumer() {
-  if (typeof window === 'undefined') {
-    return undefined;
-  }
-  return getBreadcrumbsRegistryWindow()[storageKeyBreadcrumbsConsumer];
-}
-
 /**
  * Reads the startup ownership reservation set by the console shell before AppLayout renders:
  * window[Symbol.for('awsui-widget-api-external-owned-breadcrumbs')] = true
@@ -102,29 +73,7 @@ export function isBreadcrumbsOwnedExternally() {
   if (typeof window === 'undefined') {
     return false;
   }
-  return getBreadcrumbsRegistryWindow()[storageKeyExternalOwnedBreadcrumbs] === true;
-}
-
-export function setBreadcrumbsConsumer(consumer: BreadcrumbsConsumer | undefined) {
-  const win = getBreadcrumbsRegistryWindow();
-  win[storageKeyBreadcrumbsConsumer] = consumer;
-  win[storageKeyBreadcrumbsConsumerListeners]?.forEach(listener => listener(consumer));
-}
-
-export function subscribeBreadcrumbsConsumer(listener: (consumer: BreadcrumbsConsumer | undefined) => void) {
-  if (typeof window === 'undefined') {
-    return () => {};
-  }
-  const win = getBreadcrumbsRegistryWindow();
-  win[storageKeyBreadcrumbsConsumerListeners] ??= new Set();
-  win[storageKeyBreadcrumbsConsumerListeners].add(listener);
-  return () => {
-    win[storageKeyBreadcrumbsConsumerListeners]?.delete(listener);
-  };
-}
-
-export function clearBreadcrumbsConsumer() {
-  setBreadcrumbsConsumer(undefined);
+  return getWindow()[storageKeyExternalOwnedBreadcrumbs] === true;
 }
 
 /**
