@@ -49,6 +49,17 @@ describe('Table skeleton loading', () => {
       expect(rows).toHaveLength(0);
     });
 
+    test('renders the empty state when loading has finished with no items', () => {
+      const wrapper = renderTable({
+        items: [],
+        loading: false,
+        skeleton: { totalRows: 5 },
+        empty: 'No resources',
+      });
+      expect(wrapper.findAll('tr[aria-hidden="true"]')).toHaveLength(0);
+      expect(wrapper.findTable()!.findEmptySlot()!.getElement()).toHaveTextContent('No resources');
+    });
+
     test('renders a screen-reader-only loading announcement', () => {
       const wrapper = renderTable({
         items: [],
