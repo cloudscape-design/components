@@ -8,6 +8,7 @@
 @use '../foundation' as foundation;
 @use '../utils' as utils;
 @use './constants' as constants;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin link-focus(
   $border-color: awsui.$color-border-item-focused,
@@ -329,7 +330,11 @@ $inline-label-border-radius: 2px;
 }
 
 @mixin inline-label {
-  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-default);
+  background: linear-gradient(
+    to bottom,
+    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
+    awsui.$color-background-input-default
+  );
   border-start-start-radius: $inline-label-border-radius;
   border-start-end-radius: $inline-label-border-radius;
   border-end-start-radius: $inline-label-border-radius;
@@ -351,5 +356,9 @@ $inline-label-border-radius: 2px;
 }
 
 @mixin inline-label-disabled {
-  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-disabled);
+  background: linear-gradient(
+    to bottom,
+    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
+    awsui.$color-background-input-disabled
+  );
 }

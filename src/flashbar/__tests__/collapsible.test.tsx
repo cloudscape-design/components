@@ -288,6 +288,16 @@ describe('Collapsible Flashbar', () => {
         expect(button).toHaveAttribute('aria-controls', listId);
       });
 
+      it('hovering the notification bar or focusing the toggle button plays the caret motion', () => {
+        const flashbar = renderFlashbar();
+        const button = flashbar.findToggleButton()!.getElement();
+        const bar = button.closest('[data-awsui-motion-trigger~="hover"]');
+
+        expect(bar).toBeTruthy();
+        expect(button).toHaveAttribute('data-awsui-motion-trigger', 'focus');
+        expect(button.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+      });
+
       it('applies aria-describedby attribute to the list, referencing the item counter', () => {
         const flashbar = renderFlashbar();
         const list = findList(flashbar)!;

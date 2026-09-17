@@ -413,6 +413,7 @@ const ItemIcon = React.forwardRef<HTMLSpanElement, ItemIconProps>(function ItemI
         collapsed && styles['item-icon--collapsed'],
         className
       )}
+      data-awsui-motion-target=""
       {...rest}
     >
       {icon}
@@ -527,6 +528,7 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
       rel={definition.external ? 'noopener noreferrer' : undefined}
       aria-current={definition.href === activeHref ? 'page' : undefined}
       aria-label={collapsed ? definition.text : undefined}
+      {...(definition.external || definition.icon ? { 'data-awsui-motion-trigger': 'hover' } : {})}
       onClick={onClick}
       {...(collapsed ? collapsedTooltip.triggerProps : {})}
       {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
@@ -540,7 +542,11 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, activeT
           <span className={analyticsSelectors['link-text']}>{definition.text}</span>
           {definition.external && (
             <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
-              <InternalIcon name="external" className={styles['external-icon']} />
+              <InternalIcon
+                name="external"
+                className={styles['external-icon']}
+                nativeAttributes={{ 'data-awsui-motion-target': '' }}
+              />
             </span>
           )}
         </span>

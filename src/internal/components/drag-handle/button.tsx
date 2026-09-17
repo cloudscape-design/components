@@ -80,6 +80,9 @@ const DragHandleButton = forwardRef(
         onPointerDown={onPointerDown}
         onClick={onClick}
         onKeyDown={onKeyDown}
+        {...(variant === 'drag-indicator'
+          ? { 'data-awsui-motion-trigger': 'hover', 'data-awsui-motion-target': '' }
+          : {})}
       >
         {/* ensure that events happen on the parent div, not the icon */}
         <div className={styles['prevent-pointer']}>

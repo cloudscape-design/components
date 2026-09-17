@@ -123,7 +123,14 @@ export const InternalButton = React.forwardRef(
     const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason =
-      (variant === 'normal' || variant === 'primary' || variant === 'icon') && !!disabledReason && disabled;
+      (variant === 'normal' ||
+        variant === 'primary' ||
+        variant === 'icon' ||
+        variant === 'inline-icon' ||
+        variant === 'inline-link' ||
+        variant === 'link') &&
+      !!disabledReason &&
+      disabled;
 
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
@@ -236,6 +243,8 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      'data-awsui-motion-trigger': 'hover',
+      'data-awsui-motion-target': '',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
       ...getAnalyticsLabelAttribute(shouldHaveContent ? `.${analyticsSelectors.label}` : ''),

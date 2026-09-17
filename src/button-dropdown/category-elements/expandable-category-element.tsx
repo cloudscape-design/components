@@ -110,6 +110,7 @@ const ExpandableCategoryElement = ({
       // tabindex=-1 so we can focus them when necessary.
       tabIndex={filteringEnabled ? -1 : highlighted ? 0 : -1}
       ref={triggerRef}
+      data-awsui-motion-trigger="hover"
       {...getMenuItemProps({ parent: true, expanded, disabled })}
       {...(isDisabledWithReason ? targetProps : {})}
       {...getAnalyticsMetadataAttribute(
@@ -139,6 +140,7 @@ const ExpandableCategoryElement = ({
             <InternalIcon
               name={isOneTheme ? 'angle-down' : 'caret-down-filled'}
               size={isOneTheme ? 'x-small' : 'normal'}
+              nativeAttributes={{ 'data-awsui-motion-target': '' }}
             />
           </span>
         </>

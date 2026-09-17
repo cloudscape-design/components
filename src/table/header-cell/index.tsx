@@ -9,6 +9,8 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
+import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
+import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
@@ -194,6 +196,7 @@ export function TableHeaderCell<ItemType>({
   };
 
   const headerId = useUniqueId('table-header-');
+  const icons = useInternalComponentIcons('table');
 
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
@@ -271,6 +274,7 @@ export function TableHeaderCell<ItemType>({
                 tabIndex: clickableHeaderTabIndex,
                 role: 'button',
                 onClick: event => handleClick(event.shiftKey),
+                'data-awsui-motion-trigger': 'hover',
                 // Prevent the browser from extending the text selection on Shift+click.
                 onMouseDown: (event: React.MouseEvent) => {
                   if (event.shiftKey) {
@@ -309,7 +313,13 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <InternalIcon name={getSortingIconName(sortingStatus)} />
+              <CustomizableIcon
+                customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
+                fallback={{
+                  name: getSortingIconName(sortingStatus),
+                  nativeAttributes: { 'data-awsui-motion-target': '' },
+                }}
+              />
             </span>
           )}
         </div>

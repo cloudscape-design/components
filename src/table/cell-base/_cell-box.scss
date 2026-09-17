@@ -1,0 +1,73 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../internal/styles/tokens' as awsui;
+
+$cell-vertical-padding: awsui.$space-scaled-xs;
+// Calculate padding to prevent a shift in content after selection due to the difference
+// between selected border widths and normal row divider widths (visual refresh).
+$cell-vertical-padding-w-border: calc(
+  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+$cell-horizontal-padding: awsui.$space-scaled-l;
+$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
+$border-placeholder: awsui.$border-item-width solid transparent;
+$cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
+// Ensuring enough space for absolute-positioned focus outlines of focus-able cell content elements.
+$cell-negative-space-vertical: 2px;
+
+@mixin cell-padding-inline-start($padding) {
+  $max-nesting-levels: 9;
+  $offset-padding: calc($padding - 1 * awsui.$border-divider-list-width);
+
+  > .body-cell-content {
+    padding-inline-start: $offset-padding;
+  }
+  > .expandable-toggle-wrapper {
+    margin-inline-start: $offset-padding;
+  }
+
+  @for $i from 0 through $max-nesting-levels {
+    &.expandable-level-#{$i} {
+      > .body-cell-content {
+        padding-inline-start: calc(#{$offset-padding} / 2);
+        margin-inline-start: calc(#{$offset-padding} / 2 + #{$i} * #{$cell-offset});
+      }
+      > .expandable-toggle-wrapper {
+        margin-inline-start: calc($offset-padding + ($i - 1) * $cell-offset);
+      }
+    }
+  }
+  &.expandable-level-next {
+    > .body-cell-content {
+      padding-inline-start: calc(#{$offset-padding} / 2);
+      margin-inline-start: calc(#{$offset-padding} / 2 + #{$max-nesting-levels} * #{$cell-offset});
+    }
+    > .expandable-toggle-wrapper {
+      margin-inline-start: calc(#{$offset-padding} + (#{$max-nesting-levels} - 1) * #{$cell-offset});
+    }
+  }
+}
+@mixin cell-padding-inline-end($padding) {
+  > .body-cell-content {
+    padding-inline-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
+  }
+}
+@mixin cell-padding-block($padding) {
+  > .body-cell-content {
+    padding-block: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block: calc(-1 * #{$cell-negative-space-vertical});
+  }
+}
+@mixin cell-padding-block-start($padding) {
+  > .body-cell-content {
+    padding-block-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block-start: calc(-1 * #{$cell-negative-space-vertical});
+  }
+}
+@mixin cell-padding-block-end($padding) {
+  > .body-cell-content {
+    padding-block-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block-end: calc(-1 * #{$cell-negative-space-vertical});
+  }
+}

@@ -6,8 +6,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
-
-$cell-horizontal-padding: awsui.$space-scaled-l;
+@use '../cell-base/cell-box' as cell-base;
 
 @mixin when-focus-visible-or-fake {
   @include focus-visible.when-visible {
@@ -305,6 +304,6 @@ settings icon in the pagination slot.
   }
 
   &.sticky-cell-pad-inline-start {
-    @include cell-offset($cell-horizontal-padding);
+    @include cell-offset(cell-base.$cell-horizontal-padding);
   }
 }

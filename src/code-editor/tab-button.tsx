@@ -69,6 +69,8 @@ export const TabButton = React.forwardRef(
         aria-controls={paneId}
         aria-hidden={ariaHidden}
         aria-label={ariaLabel}
+        data-awsui-motion-trigger="hover"
+        data-awsui-motion-target=""
       >
         <InternalIcon name={iconName} />
         <span className={styles.count}>{count}</span>

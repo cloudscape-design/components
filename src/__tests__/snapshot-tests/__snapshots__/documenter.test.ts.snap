@@ -5183,7 +5183,9 @@ The object accepts the following fields:
   \`full\` for fully rounded corners. When not set, the wrapper has no border radius. Set it to
   \`full\` together with \`aspectRatio: 'equal'\` to render a circle.
 
-Composes with existing Box props such as \`padding\` and \`margin\`.",
+Composes with existing Box props such as \`padding\` and \`margin\`.
+
+This is a One Theme only feature and must not be used in VR.",
       "inlineType": {
         "name": "BoxProps.VisualAccent",
         "properties": [
@@ -5251,6 +5253,9 @@ Composes with existing Box props such as \`padding\` and \`margin\`.",
       },
       "name": "visualAccent",
       "optional": true,
+      "systemTags": [
+        "one-theme",
+      ],
       "type": "BoxProps.VisualAccent",
     },
   ],
@@ -5578,8 +5583,7 @@ The text will also be added to the \`title\` attribute of the button.",
     },
     {
       "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
-If provided, the button becomes focusable.
-Applicable for all button variants, except link.",
+If provided, the button becomes focusable.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
@@ -7742,7 +7746,8 @@ as you would for other form elements.",
     {
       "defaultValue": "''",
       "description": "Specifies the locale to use to render month names and determine the starting day of the week.
-If you don't provide this, the locale is determined by the page and browser locales.
+If you don't provide this, the locale is determined by the locale of the surrounding I18nProvider,
+or the page and browser locales otherwise.
 Supported values and formats are listed in the
 [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
       "name": "locale",
@@ -10762,8 +10767,7 @@ and to distinguish between multiple buttons with identical visible text. The tex
     },
     {
       "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
-If provided, the copy to clipboard button becomes focusable.
-Applicable for all variants except inline.",
+If provided, the copy to clipboard button becomes focusable.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
@@ -11413,7 +11417,8 @@ as you would for other form elements.",
     },
     {
       "description": "Specifies the locale to use to render month names and determine the starting day of the week.
-If you don't provide this, the locale is determined by the page and browser locales.
+If you don't provide this, the locale is determined by the locale of the surrounding I18nProvider,
+or the page and browser locales otherwise.
 Supported values and formats are listed in the
 [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
       "name": "locale",
@@ -12146,7 +12151,8 @@ Ensure that your function checks for missing fields in the value.",
       "defaultValue": "''",
       "description": "The locale to be used for rendering month names and defining the
 starting date of the week. If not provided, it will be determined
-from the page and browser locales. Supported values and formats
+from the locale of the surrounding I18nProvider,
+or the page and browser locales otherwise. Supported values and formats
 are as-per the [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
       "name": "locale",
       "optional": true,
@@ -16004,6 +16010,126 @@ exports[`Components definition for icon-provider matches the snapshot: icon-prov
       "type": "string",
     },
     {
+      "description": "Custom icons for specific components, replacing built-in stateful icons such as expand toggles
+and sorting indicators. Unlike \`icons\`, these target a specific component and receive the icon's
+current state.
+
+Each entry is a render function: it receives the state and returns the icon to display. The
+custom icon replaces the default rendering entirely (including built-in animations), so it must
+represent every state. Return \`null\` to fall back to the default icon. Use \`size="inherit"\` on
+a custom \`<Icon>\` (or provide a plain SVG) so it matches the default icon size.
+
+Component icons apply to nested usage as well, for example, expandable sections rendered inside
+side navigation or wizard. They are inherited by nested providers (closest provider wins).
+Set to \`null\` to reset all component icons, or set a specific component to \`null\` to reset its icons.",
+      "inlineType": {
+        "name": "IconProviderProps.ComponentIcons",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "IconProviderProps.ExpandableSectionIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "expandable-section",
+            "optional": true,
+            "type": "IconProviderProps.ExpandableSectionIcons | null",
+          },
+          {
+            "inlineType": {
+              "name": "IconProviderProps.TableIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+                {
+                  "inlineType": {
+                    "name": "(state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ sortingState: "ascending" | "descending" | "sortable"; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "sortingIndicator",
+                  "optional": true,
+                  "type": "((state: { sortingState: "ascending" | "descending" | "sortable"; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "table",
+            "optional": true,
+            "type": "IconProviderProps.TableIcons | null",
+          },
+          {
+            "inlineType": {
+              "name": "IconProviderProps.TreeViewIcons",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "(state: { expanded: boolean; }) => React.ReactNode",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "type": "{ expanded: boolean; }",
+                      },
+                    ],
+                    "returnType": "React.ReactNode",
+                    "type": "function",
+                  },
+                  "name": "expandToggle",
+                  "optional": true,
+                  "type": "((state: { expanded: boolean; }) => React.ReactNode)",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "tree-view",
+            "optional": true,
+            "type": "IconProviderProps.TreeViewIcons | null",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "componentIcons",
+      "optional": true,
+      "type": "IconProviderProps.ComponentIcons | null",
+    },
+    {
       "description": "Specifies icon overrides using existing icon names, for example, \`{'add-plus': <svg>...</svg>}\`.
 
 These icon overrides will automatically be applied to any component that is a descendant of this provider, including nested providers.
@@ -16737,7 +16863,7 @@ The same applies to switching icons in the same configuration (for example, \`{'
         "type": "object",
       },
       "name": "icons",
-      "optional": false,
+      "optional": true,
       "type": "IconProviderProps.Icons | null",
     },
     {
@@ -17026,6 +17152,14 @@ use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/
 use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds a small label inline with the input for saving vertical space in the UI.
+
+Use this only when a visible label from a surrounding form field isn't present.",
+      "name": "inlineLabelText",
       "optional": true,
       "type": "string",
     },
@@ -33820,6 +33954,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "(item: T, index: number) => TreeViewProps.TreeItem",
     },
     {
+      "deprecatedTag": "Use the \`IconProvider\` \`componentIcons['tree-view'].expandToggle\` property instead.
+This property takes precedence when both are set.",
       "description": "Use this property to display a custom icon in the toggle button.",
       "inlineType": {
         "name": "(data: TreeViewProps.ItemToggleRenderIconData) => React.ReactNode",
@@ -35698,6 +35834,19 @@ Supported options:
           },
         },
         {
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -37367,6 +37516,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -43823,6 +43988,22 @@ and this method will have no effect.",
         },
         {
           "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
           "name": "findNativeInput",
@@ -48398,6 +48579,14 @@ Supported options:
           },
         },
         {
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -49544,6 +49733,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -54158,6 +54358,17 @@ In this case, use findContentEditableElement() instead.",
               "typeName": "{ expandToViewport: boolean; }",
             },
           ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "InputWrapper.findInlineLabel",
+          },
+          "name": "findInlineLabel",
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

@@ -9,7 +9,7 @@
   background: awsui.$color-background-toggle-button-normal-default;
   border-color: awsui.$color-border-toggle-button-normal-default;
 
-  &:hover {
+  &:not(:disabled):not([aria-disabled='true']):hover {
     background: awsui.$color-background-toggle-button-normal-hover;
     border-color: awsui.$color-border-toggle-button-normal-hover;
   }

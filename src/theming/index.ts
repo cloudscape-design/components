@@ -8,34 +8,40 @@ import {
 
 import { preset, TypedOverride } from '../internal/generated/theming';
 
+const VISUAL_REFRESH_THEME_ID = 'visual-refresh';
+
 export type Theme = TypedOverride;
 export interface ApplyThemeParams {
   theme: Theme;
   baseThemeId?: string;
+  selector?: string;
 }
 
 export interface ApplyThemeResult {
   reset: () => void;
 }
 
-export function applyTheme({ theme, baseThemeId }: ApplyThemeParams): ApplyThemeResult {
+export function applyTheme({ theme, baseThemeId, selector }: ApplyThemeParams): ApplyThemeResult {
   return coreApplyTheme({
     override: theme,
     preset,
-    baseThemeId,
+    selector,
+    baseThemeId: baseThemeId ?? (selector ? VISUAL_REFRESH_THEME_ID : undefined),
   });
 }
 
 export interface GenerateThemeStylesheetParams {
   theme: Theme;
   baseThemeId?: string;
+  selector?: string;
 }
 
-export function generateThemeStylesheet({ theme, baseThemeId }: GenerateThemeStylesheetParams): string {
+export function generateThemeStylesheet({ theme, baseThemeId, selector }: GenerateThemeStylesheetParams): string {
   return coreGenerateThemeStylesheet({
     override: theme,
     preset,
-    baseThemeId,
+    baseThemeId: baseThemeId ?? (selector ? VISUAL_REFRESH_THEME_ID : undefined),
+    selector,
   });
 }
 

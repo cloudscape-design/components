@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { useInternalI18n } from '../../i18n/context';
+import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import InternalStructuredItem from '../../internal/components/structured-item';
 import { joinStrings } from '../../internal/utils/strings';
@@ -49,6 +50,7 @@ const InternalTreeItem = <T,>({
   allVisibleItemsIndices,
 }: InternalTreeItemProps<T>) => {
   const i18n = useInternalI18n('tree-view');
+  const treeViewIcons = useInternalComponentIcons('tree-view');
 
   const { icon, content, secondaryContent, actions, announcementLabel } = renderItem(item, index);
   const id = getItemId(item, index);
@@ -93,6 +95,7 @@ const InternalTreeItem = <T,>({
               <ExpandToggleButton
                 isExpanded={isExpanded}
                 customIcon={customIcon}
+                expandToggleIcon={treeViewIcons?.expandToggle}
                 expandButtonLabel={joinStrings(
                   i18n('i18nStrings.expandButtonLabel', i18nStrings?.expandButtonLabel?.(item)),
                   itemLabelToAnnounce

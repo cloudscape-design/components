@@ -8,6 +8,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 @use '../internal/styles/typography/constants.scss' as constants;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
   font-size: awsui.$font-size-table;
@@ -203,6 +204,10 @@ filter search icon.
 
 .header-controls {
   padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
+
+  &:not(.variant-full-page) {
+    #{custom-props.$inlineLabelBackgroundColor}: awsui.$color-background-table-header;
+  }
 
   &.variant-full-page {
     padding-block: 0 calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});

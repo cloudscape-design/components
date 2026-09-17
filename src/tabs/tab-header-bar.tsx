@@ -619,11 +619,16 @@ const TabTrigger = forwardRef(
     };
 
     return tab.href ? (
-      <a {...commonProps} href={tab.href}>
+      <a {...commonProps} href={tab.href} data-awsui-motion-trigger="hover">
         {children}
       </a>
     ) : (
-      <button {...commonProps} type="button" disabled={tab.disabled && !isDisabledWithReason}>
+      <button
+        {...commonProps}
+        type="button"
+        disabled={tab.disabled && !isDisabledWithReason}
+        data-awsui-motion-trigger="hover"
+      >
         {children}
       </button>
     );
