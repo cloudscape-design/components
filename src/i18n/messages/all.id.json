@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {{amount} detik terakhir} one {{amount} detik terakhir} other {{amount} detik terakhir}}} minute {{amount, plural, zero {{amount} menit terakhir} one {{amount} menit terakhir} other {{amount} menit terakhir}}} hour {{amount, plural, zero {{amount} jam terakhir} one {{amount} jam terakhir} other {{amount} jam terakhir}}} day {{amount, plural, zero {{amount} hari terakhir} one {{amount} hari terakhir} other {{amount} hari terakhir}}} week {{amount, plural, zero {{amount} minggu terakhir} one {{amount} minggu terakhir} other {{amount} minggu terakhir}}} month {{amount, plural, zero {{amount} bulan terakhir} one {{amount} bulan terakhir} other {{amount} bulan terakhir}}} year {{amount, plural, zero {{amount} tahun terakhir} one {{amount} tahun terakhir} other {{amount} tahun terakhir}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {detik} one {detik} other {detik}}} minute {{amount, plural, zero {menit} one {menit} other {menit}}} hour {{amount, plural, zero {jam} one {jam} other {jam}}} day {{amount, plural, zero {hari} one {hari} other {hari}}} week {{amount, plural, zero {minggu} one {minggu} other {minggu}}} month {{amount, plural, zero {bulan} one {bulan} other {bulan}}} year {{amount, plural, zero {tahun} one {tahun} other {tahun}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "Tutup dialog"
+  },
   "drawer": {
     "i18nStrings.loadingText": "Memuat konten"
   },
