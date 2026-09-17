@@ -70,3 +70,12 @@
   inset-block-start: 0px;
   inset-inline-end: -3px;
 }
+
+// Wraps custom icons supplied through IconProvider or the internal override. Generates no box of
+// its own, and provides text metrics so a nested `size="inherit"` icon resolves to the wrapper's
+// size. It carries the same icon and size classes as the wrapper, so custom raw svg nodes receive
+// the regular sizing and stroke styles.
+.icon.custom-icon {
+  display: contents;
+  @include mixins.make-icon-size-text-metrics;
+}

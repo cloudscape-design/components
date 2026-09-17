@@ -531,6 +531,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundDialogDefault: {
+    description: 'The background color of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
   colorBackgroundStatusSuccess: {
     description: 'The background color of an item in success state. For example: success alerts.',
     public: true,
@@ -835,6 +840,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBorderDialog: {
     description: 'The border color of the feedback/input dialogue box.',
     public: true,
+    themeable: true,
+  },
+  colorBorderDialogDefault: {
+    description: 'The border color of the Dialog surface.',
+    public: false,
     themeable: true,
   },
   colorBorderLayout: {
