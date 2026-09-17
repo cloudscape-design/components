@@ -40890,7 +40890,7 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Finds the header actions slot of the dialog.",
+          "description": "Finds the content slot of the dialog.",
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -52217,7 +52217,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
-          "description": "Finds the header actions slot of the dialog.",
+          "description": "Finds the content slot of the dialog.",
           "name": "findContent",
           "parameters": [],
           "returnType": {

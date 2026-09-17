@@ -8,10 +8,10 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import { useFocusRestore } from '../internal/components/focus-lock/use-focus-restore';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { DialogProps } from './interfaces';
+import { useFocusRestore } from './use-focus-restore';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
@@ -36,7 +36,7 @@ export default function InternalDialog({
   // Move focus into the dialog when it mounts and restore it to the previously focused element when it unmounts.
   // Moving dialog between render branches (for example, swapping containers on a media breakpoint) remounts it and
   // re-triggers this focus. Consumers should keep the same mounted instance when repositioning to avoid the focus from changing.
-  const focusRestoreRef = useFocusRestore({ autoFocus: true, restoreFocus: true });
+  const focusRestoreRef = useFocusRestore();
   const mergedRootRef = useMergeRefs(focusRestoreRef, __internalRootRef);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
