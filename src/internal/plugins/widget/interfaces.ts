@@ -208,6 +208,22 @@ export interface BreadcrumbsConsumerRegistration {
   unregister: () => void;
 }
 
+export interface BreadcrumbsConsumerMessagePayload extends BreadcrumbsConsumerPayload {
+  registration: {
+    id: object;
+    active: boolean;
+  };
+}
+
+export type RegisterBreadcrumbsExternalConsumerMessage = Message<
+  'registerBreadcrumbsExternalConsumer',
+  BreadcrumbsConsumerMessagePayload
+>;
+export type UnregisterBreadcrumbsExternalConsumerMessage = Message<
+  'unregisterBreadcrumbsExternalConsumer',
+  Pick<BreadcrumbsConsumerMessagePayload, 'registration'>
+>;
+
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type RegisterFeatureNotificationsMessage<T> = Message<
   'registerFeatureNotifications',
@@ -241,8 +257,12 @@ export type AppLayoutUpdateMessage<T = unknown> =
   | ExitExpandedModeMessage
   | RegisterFeatureNotificationsMessage<T>
   | ShowFeaturePromptIfPossible
-  | ClearFeatureNotifications;
+  | ClearFeatureNotifications
+  | UnregisterBreadcrumbsExternalConsumerMessage;
 
-export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
+export type InitialMessage<T> =
+  | RegisterDrawerMessage
+  | RegisterFeatureNotificationsMessage<T>
+  | RegisterBreadcrumbsExternalConsumerMessage;
 
 export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;

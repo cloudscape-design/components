@@ -1,6 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  ForwardedRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useMergeRefs, useStableCallback, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -10,7 +18,9 @@ import { useControllable } from '../../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../../internal/hooks/use-intersection-observer';
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { metrics } from '../../../internal/metrics';
-import { WidgetMessage } from '../../../internal/plugins/widget/interfaces';
+import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
+import { isBreadcrumbsOwnedExternally } from '../../../internal/plugins/widget/core';
+import { BreadcrumbsConsumerMessagePayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
@@ -29,8 +39,8 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
-import { useBreadcrumbs } from './use-breadcrumbs';
 import { useFeatureNotifications } from './use-feature-notifications';
+import { useOwnBreadcrumbsProps } from './use-own-breadcrumbs-props';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -93,6 +103,9 @@ export const useAppLayout = (
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
   const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
+  const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
+  const { breadcrumbs: ownBreadcrumbs, registerBreadcrumbs } = useOwnBreadcrumbsProps();
+  const [breadcrumbsConsumer, setBreadcrumbsConsumer] = useState<BreadcrumbsConsumerMessagePayload | null>(null);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -255,6 +268,18 @@ export const useAppLayout = (
   };
 
   useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
+    if (message.type === 'registerBreadcrumbsExternalConsumer') {
+      setBreadcrumbsConsumer(message.payload);
+      return;
+    }
+
+    if (message.type === 'unregisterBreadcrumbsExternalConsumer') {
+      setBreadcrumbsConsumer(current =>
+        current?.registration.id === message.payload.registration.id ? null : current
+      );
+      return;
+    }
+
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;
@@ -436,11 +461,29 @@ export const useAppLayout = (
 
   const rootRef = useMergeRefs(rootRefInternal, intersectionObserverRef, onMountRootRef);
 
-  const { breadcrumbsExternallyOwned, discoveredBreadcrumbs, registerBreadcrumbs } = useBreadcrumbs({
-    hasToolbar,
-    hasOwnBreadcrumbs: !!breadcrumbs,
-    isVisible: isIntersecting,
-  });
+  const currentBreadcrumbs = breadcrumbs ? ownBreadcrumbs : discoveredBreadcrumbs;
+  const canRenderBreadcrumbsExternally = !breadcrumbs || !!ownBreadcrumbs;
+  const breadcrumbsExternallyOwned =
+    hasToolbar && (isBreadcrumbsOwnedExternally() || (!!breadcrumbsConsumer && canRenderBreadcrumbsExternally));
+
+  useLayoutEffect(() => {
+    if (breadcrumbsConsumer && hasToolbar) {
+      breadcrumbsConsumer.onBreadcrumbsChange(
+        isIntersecting && canRenderBreadcrumbsExternally ? currentBreadcrumbs : null
+      );
+    }
+  }, [breadcrumbsConsumer, canRenderBreadcrumbsExternally, currentBreadcrumbs, hasToolbar, isIntersecting]);
+
+  useEffect(() => {
+    if (!breadcrumbsConsumer || !hasToolbar) {
+      return;
+    }
+    return () => {
+      if (breadcrumbsConsumer.registration.active) {
+        breadcrumbsConsumer.onBreadcrumbsChange(null);
+      }
+    };
+  }, [breadcrumbsConsumer, hasToolbar]);
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 

@@ -3,14 +3,7 @@
 
 import { getExternalProps } from '../../utils/external-props';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
-import {
-  getAppLayoutInitialMessages,
-  getAppLayoutMessageHandler,
-  getBreadcrumbsConsumer,
-  pushInitialMessage,
-  setBreadcrumbsConsumer,
-  setInitialMessage,
-} from './core';
+import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
   BreadcrumbsConsumerPayload,
@@ -18,8 +11,10 @@ import {
   DrawerPayload,
   FeatureNotificationsPayload,
   FeatureNotificationsPayloadPublic,
+  RegisterBreadcrumbsExternalConsumerMessage,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
+  UnregisterBreadcrumbsExternalConsumerMessage,
   WidgetMessage,
 } from './interfaces';
 
@@ -71,7 +66,8 @@ export function clearFeatureNotifications() {
  * Registers the surface that renders breadcrumbs outside App Layout.
  */
 export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
-  if (getBreadcrumbsConsumer()) {
+  const initialMessages = getAppLayoutInitialMessages();
+  if (initialMessages.some(message => message.type === 'registerBreadcrumbsExternalConsumer')) {
     reportRuntimeApiWarning(
       'breadcrumbs',
       'A breadcrumbs consumer is already registered. This registration is ignored.'
@@ -79,16 +75,35 @@ export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload)
     return { registered: false, unregister: () => {} };
   }
 
-  const consumer = { ...payload, token: {} };
-  setBreadcrumbsConsumer(consumer);
+  const registration = { id: {}, active: true };
+  const message: RegisterBreadcrumbsExternalConsumerMessage = {
+    type: 'registerBreadcrumbsExternalConsumer',
+    payload: { ...payload, registration },
+  };
+  pushInitialMessage(message);
   payload.onBreadcrumbsChange(null);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 
   return {
     registered: true,
     unregister: () => {
-      if (getBreadcrumbsConsumer()?.token === consumer.token) {
-        setBreadcrumbsConsumer(undefined);
+      if (!registration.active) {
+        return;
       }
+      registration.active = false;
+      const initialMessages = getAppLayoutInitialMessages();
+      setInitialMessage(
+        initialMessages.filter(
+          initialMessage =>
+            initialMessage.type !== 'registerBreadcrumbsExternalConsumer' ||
+            initialMessage.payload.registration.id !== registration.id
+        )
+      );
+      const unregisterMessage: UnregisterBreadcrumbsExternalConsumerMessage = {
+        type: 'unregisterBreadcrumbsExternalConsumer',
+        payload: { registration },
+      };
+      getAppLayoutMessageHandler()?.(unregisterMessage as WidgetMessage<unknown>);
     },
   };
 }
@@ -101,7 +116,10 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
-      if (initialMessage.payload.id === message.payload.id) {
+      if (
+        (initialMessage.type === 'registerLeftDrawer' || initialMessage.type === 'registerBottomDrawer') &&
+        initialMessage.payload.id === message.payload.id
+      ) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });

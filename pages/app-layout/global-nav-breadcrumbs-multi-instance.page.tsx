@@ -7,16 +7,16 @@ import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-gr
 import Button from '~components/button';
 import Container from '~components/container';
 import Header from '~components/header';
-import { registerBreadcrumbsConsumer } from '~components/internal/plugins/widget';
+import { registerBreadcrumbsConsumer } from '~components/plugins';
 import SpaceBetween from '~components/space-between';
 
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import labels from './utils/labels';
 
 // Closest simulation of the real console topology: the Global Navigation header and each App Layout
-// live in SEPARATE React roots (separate `mount()` calls, separate documents). They still share one
-// breadcrumb channel because the widget registry and BreadcrumbsController both reuse state from
-// the highest accessible same-origin window.
+// live in SEPARATE React roots (separate `mount()` calls, separate documents). BreadcrumbGroup
+// instances in the same-origin frames are discovered by the primary App Layout, which publishes the
+// reconciled props to the consumer registered through the widget message API.
 
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<BreadcrumbGroupProps | null>(null);
@@ -129,10 +129,10 @@ export default function GlobalNavBreadcrumbsMultiInstancePage() {
                   bundles.
                 </p>
                 <p>
-                  The widget API resolves its registry from the highest accessible same-origin window, while the
-                  existing plugin API shares its breadcrumb controller the same way. A breadcrumb registered inside an
-                  iframe therefore reaches the header in the parent root. The first active producer remains selected
-                  until it unmounts, then the next producer takes over.
+                  The existing breadcrumb controller shares discovered BreadcrumbGroup instances across the same-origin
+                  frames. The primary App Layout reconciles those props and publishes the selected trail to the header
+                  through the widget consumer callback. The first active producer remains selected until it unmounts,
+                  then the next producer takes over.
                 </p>
                 <SpaceBetween size="xs" direction="horizontal">
                   <Button data-testid="toggle-nav-header" onClick={() => setNavHeaderMounted(mounted => !mounted)}>

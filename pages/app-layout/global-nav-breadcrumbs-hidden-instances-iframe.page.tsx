@@ -7,7 +7,7 @@ import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-gr
 import Button from '~components/button';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
-import { registerBreadcrumbsConsumer } from '~components/internal/plugins/widget';
+import { registerBreadcrumbsConsumer } from '~components/plugins';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
@@ -112,12 +112,6 @@ export default function GlobalNavBreadcrumbsHiddenInstancesPage() {
 
   return (
     <ScreenshotArea gutters={false}>
-      {/* Kept outside the header so the consumer can be unmounted and remounted. */}
-      <div style={{ padding: '8px 16px' }}>
-        <Button data-testid="toggle-nav-header" onClick={() => setNavHeaderMounted(mounted => !mounted)}>
-          {navHeaderMounted ? 'Unmount' : 'Mount'} global nav header
-        </Button>
-      </div>
       {navHeaderMounted && <GlobalNavigationHeader />}
       <AppLayout
         {...{ __disableRuntimeDrawers: true }}
@@ -144,6 +138,12 @@ export default function GlobalNavBreadcrumbsHiddenInstancesPage() {
             <ScreenreaderOnly>
               <h1>Global breadcrumbs with hidden app layout instances in iframes</h1>
             </ScreenreaderOnly>
+            {/* Kept outside the header so the consumer can be unmounted and remounted. */}
+            <div style={{ padding: '8px 16px' }}>
+              <Button data-testid="toggle-nav-header" onClick={() => setNavHeaderMounted(mounted => !mounted)}>
+                {navHeaderMounted ? 'Unmount' : 'Mount'} global nav header
+              </Button>
+            </div>
             {ROUTES.filter(
               item => item.navLink.href === activeHref || openPagesHistory.current.has(item.navLink.href)
             ).map(item => (

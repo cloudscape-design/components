@@ -7,7 +7,7 @@ import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-gr
 import Button from '~components/button';
 import Container from '~components/container';
 import Header from '~components/header';
-import { registerBreadcrumbsConsumer } from '~components/internal/plugins/widget';
+import { registerBreadcrumbsConsumer } from '~components/plugins';
 import SpaceBetween from '~components/space-between';
 
 import labels from './utils/labels';
@@ -52,7 +52,7 @@ function GlobalNavigationHeader() {
 }
 
 // A secondary App Layout standing in for one console page's layout. It passes its own trail to the
-// `breadcrumbs` slot, so the slotted BreadcrumbGroup self-registers on the shared channel.
+// `breadcrumbs` slot, so the existing BreadcrumbsController makes it available to the primary layout.
 function SecondaryLayout({
   name,
   testId,
@@ -129,8 +129,8 @@ export default function GlobalNavBreadcrumbsMultiLayoutPage() {
                 <p>
                   Open with <code>?visualRefresh=true&amp;appLayoutToolbar=true</code>. An outer App Layout hosts two
                   secondary App Layouts, each passing its own <code>&lt;BreadcrumbGroup&gt;</code> to its{' '}
-                  <code>breadcrumbs</code> slot. All of them register on the same shared channel, and the single
-                  simulated Global Navigation header receives the most recently registered trail.
+                  <code>breadcrumbs</code> slot. The primary App Layout reconciles these trails, and the single
+                  simulated Global Navigation header receives the selected breadcrumb props.
                 </p>
                 <p>
                   Unmount the newest producer to test fallback to the previous layout. Unmount the header and App
