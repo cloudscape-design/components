@@ -27,6 +27,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusDialog: {
+    description: 'The border radius of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
+  borderWidthDialog: {
+    description: 'The border width of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
   borderRadiusBadge: {
     description: 'The border radius of badges.',
     public: true,
