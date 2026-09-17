@@ -70,7 +70,7 @@ function createView(name: string) {
         ariaLabels={appLayoutLabels}
         // page2 deliberately passes no breadcrumbs, so the header must go empty when it is active.
         breadcrumbs={
-          name !== 'page2' && (
+          name === 'page1' && (
             <BreadcrumbGroup
               onFollow={event => event.preventDefault()}
               items={[
@@ -84,6 +84,15 @@ function createView(name: string) {
         toolsHide={true}
         content={
           <SpaceBetween size="s">
+            {name === 'page3' && (
+              <BreadcrumbGroup
+                onFollow={event => event.preventDefault()}
+                items={[
+                  { text: 'Home', href: '#' },
+                  { text: name, href: `#${name}` },
+                ]}
+              />
+            )}
             <Header variant="h1" description="Separate React root inside an iframe">
               {name}
             </Header>
