@@ -80,3 +80,8 @@ $sizes-vertical: (
 .align-end {
   align-items: end;
 }
+
+.child-aligned {
+  display: flex;
+  align-items: inherit;
+}
