@@ -586,6 +586,35 @@ describe('Date range picker', () => {
   });
 });
 
+describe('I18nProvider locale', () => {
+  const value: DateRangePickerProps.Value = {
+    type: 'absolute',
+    startDate: '2020-03-02T05:00:00+00:00',
+    endDate: '2020-03-12T13:05:21+00:00',
+  };
+
+  function renderWithProviderLocale(props?: Partial<DateRangePickerProps>) {
+    const { container } = render(
+      <TestI18nProvider messages={{}} locale="de-DE">
+        <DateRangePicker {...defaultProps} locale={undefined} value={value} {...props} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findDateRangePicker()!;
+    wrapper.openDropdown();
+    return wrapper;
+  }
+
+  test('uses I18nProvider locale when no locale property is provided', () => {
+    const wrapper = renderWithProviderLocale();
+    expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent('März 2020');
+  });
+
+  test('explicit locale property takes precedence over I18nProvider locale', () => {
+    const wrapper = renderWithProviderLocale({ locale: 'en-US' });
+    expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent('March 2020');
+  });
+});
+
 describe('renderTriggerContent', () => {
   test('renders custom trigger content when provided', () => {
     const { wrapper } = renderDateRangePicker({
