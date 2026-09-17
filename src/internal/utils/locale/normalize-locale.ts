@@ -24,14 +24,17 @@ function checkLocale(component: string, locale: string | null | undefined): stri
   }
 
   // Support underscore-delimited locales
-  locale = locale && locale.replace(/^([a-z]{2})_/, '$1-');
-  // Check that the value matches aa-BB pattern
+  locale = locale.replace(/^([a-zA-Z]{2})_/, '$1-');
+  // Check that the value matches aa-BB pattern, case-insensitively:
+  // locales are matched case-insensitively per BCP 47, and e.g. I18nProvider lowercases its locale.
   // TODO: support full BCP 47 spec?
-  if (locale && !locale.match(/^[a-z]{2}(-[A-Z]{2})?$/)) {
+  const match = locale.match(/^([a-zA-Z]{2})(?:-([a-zA-Z]{2}))?$/);
+  if (!match) {
     warnOnce(component, `Invalid locale provided: ${locale}. Falling back to default`);
-    locale = '';
+    return '';
   }
-  return locale;
+  // Normalize to the canonical aa-BB casing.
+  return match[2] ? `${match[1].toLowerCase()}-${match[2].toUpperCase()}` : match[1].toLowerCase();
 }
 
 function getHtmlElement() {
