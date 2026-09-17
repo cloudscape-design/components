@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
-import Container from '../../../lib/components/container';
+import Container, { ContainerProps } from '../../../lib/components/container';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/container/styles.css.js';
@@ -51,6 +51,72 @@ test('renders everything together', () => {
   expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Test header');
   expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Test footer');
   expect(wrapper.findContent().getElement()).toHaveTextContent('test content');
+});
+
+describe('focus', () => {
+  test('ref.focus() moves focus to the container root and shows the focus ring', () => {
+    const ref = React.createRef<ContainerProps.Ref>();
+    const { container } = render(
+      <Container ref={ref} header="Settings">
+        content
+      </Container>
+    );
+    const root = createWrapper(container).findContainer()!.getElement();
+
+    expect(root).not.toHaveFocus();
+    ref.current!.focus();
+
+    expect(root).toHaveFocus();
+    expect(root).toHaveAttribute('tabindex', '-1');
+    expect(root).toHaveAttribute('role', 'group');
+    expect(root).toHaveClass(styles['focus-ring']);
+
+    // The group is labelled by its header.
+    const labelledBy = root.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(root.ownerDocument.getElementById(labelledBy!)).toHaveTextContent('Settings');
+  });
+
+  test('a container without a header exposes no group label', () => {
+    const ref = React.createRef<ContainerProps.Ref>();
+    const { container } = render(<Container ref={ref}>content</Container>);
+    const root = createWrapper(container).findContainer()!.getElement();
+    expect(root).toHaveAttribute('role', 'group');
+    expect(root).not.toHaveAttribute('aria-labelledby');
+  });
+
+  test('leaving the container removes the transient tabindex and focus ring', () => {
+    const ref = React.createRef<ContainerProps.Ref>();
+    const { container } = render(<Container ref={ref}>content</Container>);
+    const root = createWrapper(container).findContainer()!.getElement();
+
+    ref.current!.focus();
+    fireEvent.blur(root);
+
+    expect(root).not.toHaveAttribute('tabindex');
+    expect(root).not.toHaveClass(styles['focus-ring']);
+  });
+
+  test('ref.focus() scrolls the container into view on every call', () => {
+    const original = HTMLElement.prototype.scrollIntoView;
+    HTMLElement.prototype.scrollIntoView = jest.fn();
+    try {
+      const ref = React.createRef<ContainerProps.Ref>();
+      const { container } = render(<Container ref={ref}>content</Container>);
+      const root = createWrapper(container).findContainer()!.getElement();
+
+      ref.current!.focus();
+      // A repeated call must still scroll, even though the container is already focused.
+      ref.current!.focus();
+
+      const scrollIntoView = HTMLElement.prototype.scrollIntoView as jest.Mock;
+      expect(scrollIntoView).toHaveBeenCalledTimes(2);
+      expect(scrollIntoView.mock.instances[0]).toBe(root);
+      expect(scrollIntoView.mock.instances[1]).toBe(root);
+    } finally {
+      HTMLElement.prototype.scrollIntoView = original;
+    }
+  });
 });
 
 describe('Style API', () => {
