@@ -11,16 +11,13 @@
 @use '../generated/custom-css-properties/index.scss' as custom-props;
 @use './style-api' as style-api;
 
-@function _link-color($tokens, $value) {
-  @if not $tokens {
-    @return $value;
-  }
-  @return style-api.value($tokens, color, $value);
-}
-
 // $tokens: optional Style API v2 token map from style-api.resolve.
 @mixin link-variant-style($variant, $tokens: null) {
-  color: _link-color($tokens, var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default')));
+  color: style-api.value(
+    $tokens,
+    color,
+    var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'))
+  );
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
   text-decoration-line: map.get($variant, 'decoration-line');
@@ -33,7 +30,11 @@
 
   &:hover {
     cursor: pointer;
-    color: _link-color($tokens, var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover')));
+    color: style-api.value(
+      $tokens,
+      color,
+      var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'))
+    );
   }
 
   &:focus {
@@ -41,7 +42,11 @@
   }
 
   &:active {
-    color: _link-color($tokens, var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active')));
+    color: style-api.value(
+      $tokens,
+      color,
+      var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'))
+    );
   }
 
   &:active,

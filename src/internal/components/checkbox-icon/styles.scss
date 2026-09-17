@@ -5,7 +5,10 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/style-api' as style-api;
 @use './motion' as motion;
+
+$_control-tokens: style-api.resolve((color, background-color, border-color), carrier);
 
 .root {
   position: absolute;
@@ -15,8 +18,8 @@
   inset-inline-start: 0;
 
   > .styled-box {
-    fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
+    fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-default);
+    stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-default);
     stroke-width: awsui.$border-width-field;
     @include styles.with-motion {
       transition:
@@ -25,25 +28,25 @@
     }
     &-checked,
     &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
+      fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-checked);
+      stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-checked);
     }
     &-disabled,
     &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
+      fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+      stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-disabled);
     }
   }
 
   > .styled-line {
-    stroke: awsui.$color-foreground-control-default;
+    stroke: style-api.value($_control-tokens, color, awsui.$color-foreground-control-default);
     stroke-width: 2;
     fill: none;
     &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+      stroke: style-api.value($_control-tokens, color, awsui.$color-foreground-control-disabled);
     }
     &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+      stroke: style-api.value($_control-tokens, color, awsui.$color-foreground-control-read-only);
     }
     @include motion.draw-in;
   }
