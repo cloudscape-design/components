@@ -76,17 +76,3 @@ export namespace SplitPanelProps {
     resizeHandleTooltipText?: string;
   }
 }
-
-export interface SplitPanelContentProps {
-  style: React.CSSProperties;
-  baseProps: BaseComponentProps;
-  isOpen?: boolean;
-  splitPanelRef?: React.Ref<any>;
-  cappedSize: number;
-  panelHeaderId?: string;
-  ariaLabel?: string;
-  resizeHandle: React.ReactNode;
-  header: React.ReactNode;
-  children: React.ReactNode;
-  onToggle: () => void;
-}

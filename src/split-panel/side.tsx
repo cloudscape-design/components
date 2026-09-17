@@ -8,7 +8,8 @@ import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
+import { SplitPanelContentProps } from './content-props';
+import { SplitPanelProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';
