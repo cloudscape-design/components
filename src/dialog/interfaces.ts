@@ -37,7 +37,7 @@ export interface DialogProps extends BaseComponentProps {
 
   /**
    * Called when the user dismisses the dialog using the close button or the Escape key.
-   * Handle it by removing the dialog from the page, for example with conditional rendering.
+   * Use the event handler to remove the dialog from the page.
    * When the dialog unmounts, it returns focus to the element that was focused before it mounted, as long as that element still exists.
    */
   onDismiss: NonCancelableEventHandler;
