@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import Box from '~components/box';
 import ColumnLayout from '~components/column-layout';
@@ -17,6 +17,7 @@ import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
 
+import { useAppContext } from '../app/app-context';
 import { Item, makeItems } from './common';
 
 // Column-sizing playground (grid layout). Adjust each column's sizing mode and widths to explore how
@@ -49,6 +50,27 @@ const INITIAL: ColConfig[] = [
 
 const ITEM_COUNT = 8;
 
+// The per-column mutable fields persisted to the URL; label/field are fixed and restored from INITIAL.
+type StoredCol = Pick<ColConfig, 'mode' | 'value' | 'minWidth' | 'maxWidth'>;
+
+function serializeConfigs(configs: ColConfig[]): string {
+  return JSON.stringify(configs.map(({ mode, value, minWidth, maxWidth }) => ({ mode, value, minWidth, maxWidth })));
+}
+
+function parseConfigs(raw: string | boolean | undefined): ColConfig[] {
+  if (typeof raw === 'string') {
+    try {
+      const stored = JSON.parse(raw) as Partial<StoredCol>[];
+      if (Array.isArray(stored) && stored.length === INITIAL.length) {
+        return INITIAL.map((base, index) => ({ ...base, ...stored[index] }));
+      }
+    } catch {
+      // Malformed URL value — fall back to defaults.
+    }
+  }
+  return INITIAL;
+}
+
 function toColumnDefinition(config: ColConfig): TableRootProps.ColumnDefinition {
   const min = parseInt(config.minWidth, 10);
   const max = parseInt(config.maxWidth, 10);
@@ -65,10 +87,13 @@ function toColumnDefinition(config: ColConfig): TableRootProps.ColumnDefinition 
 
 export default function TableColumnSizingPlaygroundPage() {
   const items = makeItems(ITEM_COUNT);
-  const [configs, setConfigs] = useState<ColConfig[]>(INITIAL);
+  const { urlParams, setUrlParams } = useAppContext<'columns'>();
+  const configs = useMemo(() => parseConfigs(urlParams.columns), [urlParams.columns]);
 
   const update = (index: number, patch: Partial<ColConfig>) =>
-    setConfigs(prev => prev.map((config, i) => (i === index ? { ...config, ...patch } : config)));
+    setUrlParams({
+      columns: serializeConfigs(configs.map((config, i) => (i === index ? { ...config, ...patch } : config))),
+    });
 
   const columns = useMemo(() => configs.map(toColumnDefinition), [configs]);
 

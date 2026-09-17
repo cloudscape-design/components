@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import Box from '~components/box';
 import Header from '~components/header';
@@ -11,6 +11,7 @@ import TableBody from '~components/table-body';
 import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
+import { useAppContext } from '../app/app-context';
 import { DataBody, DataHeader, makeItems } from './common';
 
 type State = 'loaded' | 'loading' | 'empty';
@@ -22,7 +23,9 @@ const COLUMN_COUNT = 4;
 // a `TableRow`. The consumer owns the data and the state; the status content is wrapped in a `Box`
 // so its centered padding comes from spacing design tokens, not a standard data `TableCell`.
 export default function TableLoadingEmptyPage() {
-  const [state, setState] = useState<State>('loaded');
+  const { urlParams, setUrlParams } = useAppContext<'dataState'>();
+  const state: State =
+    urlParams.dataState === 'loading' || urlParams.dataState === 'empty' ? urlParams.dataState : 'loaded';
   const items = state === 'loaded' ? makeItems(20) : [];
 
   return (
@@ -32,7 +35,7 @@ export default function TableLoadingEmptyPage() {
 
         <SegmentedControl
           selectedId={state}
-          onChange={event => setState(event.detail.selectedId as State)}
+          onChange={event => setUrlParams({ dataState: event.detail.selectedId as State })}
           label="Data state"
           options={[
             { id: 'loaded', text: 'Loaded' },

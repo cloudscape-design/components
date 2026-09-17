@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import TableRoot from '~components/table-root';
 
+import { SimplePage } from '../app/templates';
 import { DataBody, DataHeader, makeItems } from './common';
 
 // A minimal read-only table in auto layout. `columnLayout` is omitted, so it
@@ -14,18 +14,14 @@ import { DataBody, DataHeader, makeItems } from './common';
 export default function TableSimplePage() {
   const items = makeItems(8);
   return (
-    <Box padding="l">
-      <SpaceBetween size="l">
-        <Box variant="h1">Table atomics — simple (auto layout)</Box>
-
-        <SpaceBetween size="s">
-          <Header counter={`(${items.length})`}>Resources</Header>
-          <TableRoot ariaLabel="Resources">
-            <DataHeader />
-            <DataBody items={items} />
-          </TableRoot>
-        </SpaceBetween>
+    <SimplePage title="Table atomics — simple (auto layout)" screenshotArea={{}}>
+      <SpaceBetween size="s">
+        <Header counter={`(${items.length})`}>Resources</Header>
+        <TableRoot ariaLabel="Resources">
+          <DataHeader />
+          <DataBody items={items} />
+        </TableRoot>
       </SpaceBetween>
-    </Box>
+    </SimplePage>
   );
 }
