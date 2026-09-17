@@ -25,21 +25,27 @@ export interface UseFocusRestoreOptions {
  */
 export function useFocusRestore({ autoFocus = false, restoreFocus = false }: UseFocusRestoreOptions = {}) {
   const restoreFocusTargetRef = useRef<HTMLElement | SVGElement | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
 
   return useCallback(
     (container: HTMLElement | null) => {
       if (container) {
+        containerRef.current = container;
+        const activeElement = container.ownerDocument.activeElement;
+        if (restoreFocus && activeElement && !container.contains(activeElement)) {
+          restoreFocusTargetRef.current = activeElement as HTMLElement | SVGElement;
+        }
         if (autoFocus) {
-          // ownerDocument keeps this working when rendered inside an iframe.
-          const activeElement = container.ownerDocument.activeElement;
-          if (activeElement && !container.contains(activeElement)) {
-            restoreFocusTargetRef.current = activeElement as HTMLElement;
-          }
           getFirstFocusable(container)?.focus();
         }
-      } else if (restoreFocus) {
-        restoreFocusTargetRef.current?.focus();
+      } else {
+        const previousContainer = containerRef.current;
+        const activeElement = previousContainer?.ownerDocument.activeElement;
+        if (restoreFocus && activeElement && previousContainer?.contains(activeElement)) {
+          restoreFocusTargetRef.current?.focus();
+        }
         restoreFocusTargetRef.current = null;
+        containerRef.current = null;
       }
     },
     [autoFocus, restoreFocus]
