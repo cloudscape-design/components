@@ -136,9 +136,9 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
     }
   }
   // First/last-row transparent placeholder. `:not(.body-cell-selected)` keeps a selected row's own border.
-  // Ungrid-guarded on `.body-cell`, so it is the single source of the placeholder for every cell — the
-  // existing Table's rows and the atomic cells (grid and auto) alike; load-bearing for grid
-  // selection-control centering.
+  // Keyed on `.body-cell` with no grid-mode guard, so it is the single source of the placeholder for
+  // every cell — the existing Table's rows and the atomic cells (grid and auto) alike; load-bearing for
+  // grid selection-control centering.
   tr:first-child > &:not(.body-cell-selected) {
     border-block-start: cell-base.$border-placeholder;
   }

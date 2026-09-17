@@ -121,10 +121,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
     const isEditingActive = isEditing && !isEditingDisabled;
 
-    // The bare `.body-cell` substrate (element, base padding, `.body-cell-content`
-    // wrapper, ref) is provided by the extracted InternalTableCell. All feature
-    // layering stays here, keyed on the same `.body-cell` class so the compound
-    // `.body-cell.<feature>` CSS continues to match unchanged.
     return (
       <InternalTableCell
         ref={mergedRef}

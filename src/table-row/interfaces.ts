@@ -4,7 +4,6 @@ import React from 'react';
 
 import { BaseComponentProps } from '../types/base-component';
 
-/** Renders a single data row, inside `TableBody`. */
 export interface TableRowProps extends BaseComponentProps {
   /**
    * The row's visual state. Visual only — it does not set `aria-selected`; convey selection to
@@ -12,8 +11,6 @@ export interface TableRowProps extends BaseComponentProps {
    * * `default` - A standard row.
    * * `selected` - Applies selected-row styling.
    * * `shaded` - Applies a shaded background for alternating row colors.
-   *
-   * Defaults to `'default'`.
    */
   variant?: TableRowProps.Variant;
   /** Provides an accessible name for the row. Use this or `ariaLabelledby`. */
@@ -38,7 +35,6 @@ export interface TableRowProps extends BaseComponentProps {
 
 export namespace TableRowProps {
   export type Variant = 'default' | 'selected' | 'shaded';
-  /** Inline styles supported on a row element, for row positioning (for example, virtualization). */
   export interface PositionStyle {
     position?: React.CSSProperties['position'];
     transform?: React.CSSProperties['transform'];

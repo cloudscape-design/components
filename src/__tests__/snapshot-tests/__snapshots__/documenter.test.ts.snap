@@ -30079,9 +30079,7 @@ rows. Not intended for general styling.",
 assistive technologies via the selection control in a leading cell.
 * \`default\` - A standard row.
 * \`selected\` - Applies selected-row styling.
-* \`shaded\` - Applies a shaded background for alternating row colors.
-
-Defaults to \`'default'\`.",
+* \`shaded\` - Applies a shaded background for alternating row colors.",
       "inlineType": {
         "name": "TableRowProps.Variant",
         "type": "union",
