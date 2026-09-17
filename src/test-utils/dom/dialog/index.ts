@@ -25,7 +25,7 @@ export default class DialogWrapper extends ComponentWrapper<HTMLDivElement> {
   }
 
   /**
-   * Finds the header actions slot of the dialog.
+   * Finds the content slot of the dialog.
    */
   findContent(): ElementWrapper | null {
     return this.findByClassName(testStyles.content);
