@@ -10,7 +10,7 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: { comfortable: '30px', compact: '26px' },
   sizeSideNavigationItemHeight: { comfortable: '30px', compact: '26px' },
   sizeSideNavigationItemCollapsed: { comfortable: '28px', compact: '26px' },
-  fontSizeTable: { comfortable: '{fontSizeBodyM}', compact: '{fontSizeBodyS}' },
+  fontSizeTable: { comfortable: '14px', compact: '12px' },
   tableLineHeight: { comfortable: '{lineHeightBodyM}', compact: '{lineHeightBodyS}' },
   fontTableLetterSpacing: { comfortable: 'normal', compact: '{letterSpacingBodyS}' },
 };
