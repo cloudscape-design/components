@@ -23996,6 +23996,26 @@ exports[`Components definition for radio-button matches the snapshot: radio-butt
   "name": "RadioButton",
   "properties": [
     {
+      "description": "Adds \`aria-describedby\` to the native control.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the native control.
+
+Use this if you don't have a visible label for this control.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the native control.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies if the component is selected.",
       "name": "checked",
       "optional": false,
