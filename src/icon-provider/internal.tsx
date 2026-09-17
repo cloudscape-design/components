@@ -4,11 +4,12 @@
 import React, { useContext } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
-import { InternalIconContext } from './context';
+import { InternalComponentIconsContext, InternalIconContext } from './context';
 import { IconProviderProps } from './interfaces';
 
-function InternalIconProvider({ children, icons }: IconProviderProps) {
+function InternalIconProvider({ children, icons, componentIcons }: IconProviderProps) {
   const contextIcons = useContext(InternalIconContext);
+  const contextComponentIcons = useContext(InternalComponentIconsContext);
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
@@ -27,7 +28,25 @@ function InternalIconProvider({ children, icons }: IconProviderProps) {
     iconsToProvide = { ...contextIcons, ...clonedIcons };
   }
 
-  return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
+  // Merge with inherited component icons, per component and per icon (closest provider wins).
+  let componentIconsToProvide: IconProviderProps.ComponentIcons = contextComponentIcons;
+  if (componentIcons === null) {
+    componentIconsToProvide = {};
+  } else if (componentIcons) {
+    componentIconsToProvide = { ...contextComponentIcons };
+    for (const name of Object.keys(componentIcons) as (keyof IconProviderProps.ComponentIcons)[]) {
+      const value = componentIcons[name];
+      componentIconsToProvide[name] = value === null ? undefined : { ...contextComponentIcons[name], ...value };
+    }
+  }
+
+  return (
+    <InternalIconContext.Provider value={iconsToProvide}>
+      <InternalComponentIconsContext.Provider value={componentIconsToProvide}>
+        {children}
+      </InternalComponentIconsContext.Provider>
+    </InternalIconContext.Provider>
+  );
 }
 
 export default InternalIconProvider;

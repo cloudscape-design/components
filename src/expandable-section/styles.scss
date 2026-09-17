@@ -65,6 +65,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 }
 
+// Applied to both the default and custom toggle icons.
+.icon-position {
+  position: relative;
+  @include theming.one-theme-only {
+    inset-block-start: $icon-offset-block;
+  }
+}
+
 .icon-container {
   position: relative;
   margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
@@ -80,9 +88,6 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     display: inline-flex;
     align-items: flex-start;
     margin-inline: 0 $icon-margin-right-small;
-    > .icon {
-      inset-block-start: $icon-offset-block;
-    }
   }
 }
 
