@@ -23,7 +23,7 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: '28px',
-  fontSizeTable: '{fontSizeBodyS}',
+  fontSizeTable: '12px',
   tableLineHeight: '{lineHeightBodyS}',
   fontTableLetterSpacing: '{letterSpacingBodyS}',
 };
