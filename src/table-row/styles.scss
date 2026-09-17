@@ -27,10 +27,10 @@
 }
 
 // Selection outline drawn as a layout-neutral `::after` on the row. Scoped to the hashed `.row` (not the
-// bare `data-variant-selected` attribute) so it can't leak onto unrelated consumer elements. In grid mode
+// bare `data-awsui-variant-selected` attribute) so it can't leak onto unrelated consumer elements. In grid mode
 // the abs-pos `::after` is a grid item — its containing block is the column tracks, so `inset:0` hugs the
 // columns (stops at underfill, follows overflow); auto mode falls back to the row box.
-.row[data-variant-selected]::after {
+.row[data-awsui-variant-selected]::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -46,11 +46,11 @@
   border-end-end-radius: awsui.$border-radius-item;
   pointer-events: none;
 }
-.row[data-variant-selected]:has(+ .row[data-variant-selected])::after {
+.row[data-awsui-variant-selected]:has(+ .row[data-awsui-variant-selected])::after {
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }
-.row[data-variant-selected] + .row[data-variant-selected]::after {
+.row[data-awsui-variant-selected] + .row[data-awsui-variant-selected]::after {
   border-block-start-width: 0;
   border-start-start-radius: 0;
   border-start-end-radius: 0;

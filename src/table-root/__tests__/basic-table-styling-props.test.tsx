@@ -23,8 +23,8 @@ import headerCellStyles from '../../../lib/components/table-header-cell/styles.c
 // props (for virtualization) reach the body and row roots, and that `disablePaddings` reaches the
 // padding opt-out on the cell content and header-cell root.
 //
-// On this fork a selected row emits `data-variant-selected` on the <tr> (a shaded row emits
-// `data-variant-shaded`) — the one sanctioned styling hook — and the cell stylesheet reads it to paint the
+// On this fork a selected row emits `data-awsui-variant-selected` on the <tr> (a shaded row emits
+// `data-awsui-variant-shaded`) — the one sanctioned styling hook — and the cell stylesheet reads it to paint the
 // background and draw the selection outline (a layout-neutral `::after` ring) and to merge consecutive
 // selected rows via sibling adjacency. It is driven by `variant`, never a public prop. A shaded row still
 // reuses the existing Table's `.body-cell-shaded` background class. Selection and shading are mutually
@@ -59,15 +59,15 @@ function cellClassLists(wrapper: ReturnType<typeof createWrapper>) {
 }
 
 describe('TableRow variant is visual-only and paints through the cell', () => {
-  test("variant='selected' paints every cell selected, emits the data-variant-selected adjacency hook, and sets no aria-selected", () => {
+  test("variant='selected' paints every cell selected, emits the data-awsui-variant-selected adjacency hook, and sets no aria-selected", () => {
     const { wrapper } = renderHarness('selected');
     const row = wrapper.findAllTableRows()[0].getElement();
     // Visual state must NOT leak into ARIA; selection is conveyed by the selection control.
     expect(row).not.toHaveAttribute('aria-selected');
-    // The one sanctioned styling hook: data-variant-selected drives the consecutive-selected outline merge.
-    expect(row).toHaveAttribute('data-variant-selected', 'true');
-    expect(row).not.toHaveAttribute('data-variant-shaded');
-    // Selection paints via the row's data-variant-selected hook (background + ::after ring), not by reusing
+    // The one sanctioned styling hook: data-awsui-variant-selected drives the consecutive-selected outline merge.
+    expect(row).toHaveAttribute('data-awsui-variant-selected', 'true');
+    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
+    // Selection paints via the row's data-awsui-variant-selected hook (background + ::after ring), not by reusing
     // the existing Table's body-cell-selected — so no per-cell selection/has-selection class is emitted.
     for (const classList of cellClassLists(wrapper)) {
       expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
@@ -80,9 +80,9 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
     const { wrapper } = renderHarness('shaded');
     const row = wrapper.findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row).not.toHaveAttribute('data-variant-selected');
-    // data-variant-shaded drives the striped-row divider darkening (sibling adjacency), mirroring data-variant-selected.
-    expect(row).toHaveAttribute('data-variant-shaded', 'true');
+    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
+    // data-awsui-variant-shaded drives the striped-row divider darkening (sibling adjacency), mirroring data-awsui-variant-selected.
+    expect(row).toHaveAttribute('data-awsui-variant-shaded', 'true');
     for (const classList of cellClassLists(wrapper)) {
       expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(true);
       expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
@@ -90,22 +90,22 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
     }
   });
 
-  test('the default variant paints neither and sets no aria-selected or data-variant-selected', () => {
+  test('the default variant paints neither and sets no aria-selected or data-awsui-variant-selected', () => {
     const { wrapper } = renderHarness();
     const row = wrapper.findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row).not.toHaveAttribute('data-variant-selected');
+    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
     for (const classList of cellClassLists(wrapper)) {
       expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
       expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(false);
     }
   });
 
-  test('a consumer-passed data-variant-* cannot spoof the selection/shading hooks; variant is authoritative', () => {
+  test('a consumer-passed data-awsui-variant-* cannot spoof the selection/shading hooks; variant is authoritative', () => {
     const { container } = render(
       <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 200 }] }} ariaLabel="Resources">
         <TableBody>
-          <TableRow {...({ 'data-variant-selected': 'true', 'data-variant-shaded': 'true' } as object)}>
+          <TableRow {...({ 'data-awsui-variant-selected': 'true', 'data-awsui-variant-shaded': 'true' } as object)}>
             <TableCell>Spoof</TableCell>
           </TableRow>
         </TableBody>
@@ -113,8 +113,8 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
     );
     const row = createWrapper(container).findAllTableRows()[0].getElement();
     // variant defaults to 'default', so both reserved hooks must be absent despite the consumer values.
-    expect(row).not.toHaveAttribute('data-variant-selected');
-    expect(row).not.toHaveAttribute('data-variant-shaded');
+    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
+    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
   });
 
   test('a TableCell rendered outside any TableRow falls back to the default (unpainted) variant', () => {
@@ -205,6 +205,42 @@ describe('disablePaddings', () => {
     expect(rootOf(0).classList.contains(legacyHeaderCellStyles['with-paddings'])).toBe(false);
     expect(rootOf(1).classList.contains(headerCellStyles['disable-paddings'])).toBe(false);
     expect(rootOf(1).classList.contains(legacyHeaderCellStyles['with-paddings'])).toBe(true);
+  });
+});
+
+describe('isRowHeader', () => {
+  test('renders a row header as <th scope="row"> with role="rowheader" in grid mode', () => {
+    const { container } = render(
+      <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 120 }, {}] }} ariaLabel="Resources">
+        <TableBody>
+          <TableRow>
+            <TableCell isRowHeader={true}>Name</TableCell>
+            <TableCell>Value</TableCell>
+          </TableRow>
+        </TableBody>
+      </TableRoot>
+    );
+    const cell = createWrapper(container).findAllTableCells()[0].getElement();
+    expect(cell.tagName).toBe('TH');
+    expect(cell).toHaveAttribute('scope', 'row');
+    expect(cell).toHaveAttribute('role', 'rowheader');
+  });
+
+  test('renders a row header as a native <th scope="row"> without an explicit role in auto mode', () => {
+    const { container } = render(
+      <TableRoot ariaLabel="Resources">
+        <TableBody>
+          <TableRow>
+            <TableCell isRowHeader={true}>Name</TableCell>
+            <TableCell>Value</TableCell>
+          </TableRow>
+        </TableBody>
+      </TableRoot>
+    );
+    const cell = createWrapper(container).findAllTableCells()[0].getElement();
+    expect(cell.tagName).toBe('TH');
+    expect(cell).toHaveAttribute('scope', 'row');
+    expect(cell).not.toHaveAttribute('role');
   });
 });
 

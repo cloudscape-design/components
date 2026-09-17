@@ -11,7 +11,7 @@ import { TableRowProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-// Sanctioned data-* hooks: `data-variant-selected` / `data-variant-shaded` on the <tr> let sibling-adjacency
+// Sanctioned data-* hooks: `data-awsui-variant-selected` / `data-awsui-variant-shaded` on the <tr> let sibling-adjacency
 // CSS (consecutive-selected merge, striped divider) work, which a cell can't do from context. Inert for the Table.
 export interface InternalTableRowProps extends TableRowProps, InternalBaseComponentProps {}
 
@@ -30,10 +30,10 @@ export default function InternalTableRow({
   const isGrid = columnLayout.type === 'grid';
   const { className, ...restBaseProps } = getBaseProps(rest);
   // `variant` is the sole source of truth for these hooks: emit both unconditionally after the base-prop
-  // spread (true|undefined) so a consumer-passed data-variant-* can't spoof the selection/shading paint.
+  // spread (true|undefined) so a consumer-passed data-awsui-variant-* can't spoof the selection/shading paint.
   const reservedVariantAttributes = {
-    'data-variant-selected': variant === 'selected' ? 'true' : undefined,
-    'data-variant-shaded': variant === 'shaded' ? 'true' : undefined,
+    'data-awsui-variant-selected': variant === 'selected' ? 'true' : undefined,
+    'data-awsui-variant-shaded': variant === 'shaded' ? 'true' : undefined,
   };
   return (
     <tr

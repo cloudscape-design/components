@@ -16,6 +16,7 @@ export interface InternalTableCellProps {
   style?: React.CSSProperties;
   wrapLines?: boolean;
   disablePaddings?: boolean;
+  isRowHeader?: boolean;
   nativeAttributes?: Omit<
     React.TdHTMLAttributes<HTMLTableCellElement> | React.ThHTMLAttributes<HTMLTableCellElement>,
     'style' | 'className' | 'onClick'
@@ -36,6 +37,7 @@ export const InternalTableCell = React.forwardRef<HTMLTableCellElement, Internal
       style,
       wrapLines,
       disablePaddings,
+      isRowHeader,
       nativeAttributes,
       tabIndex,
       onClick,
@@ -50,12 +52,18 @@ export const InternalTableCell = React.forwardRef<HTMLTableCellElement, Internal
     const variant = useRowVariant();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
-    const Element = tag;
-    // Grid mode drops the table's implicit cell role, so default to 'cell' — but let a consumer that
-    // computes a more specific role (e.g. 'rowheader') via nativeAttributes keep it rather than overriding.
+    const Element = isRowHeader ? 'th' : tag;
+    // A row header renders as `<th scope="row">`. Grid mode drops the implicit cell role, so set it
+    // explicitly (rowheader for a row header, otherwise cell); a role supplied via nativeAttributes wins.
     const mergedNativeAttributes = isGrid
-      ? { ...nativeAttributes, role: nativeAttributes?.role ?? 'cell' }
-      : nativeAttributes;
+      ? {
+          ...nativeAttributes,
+          ...(isRowHeader ? { scope: 'row' as const } : {}),
+          role: nativeAttributes?.role ?? (isRowHeader ? 'rowheader' : 'cell'),
+        }
+      : isRowHeader
+        ? { ...nativeAttributes, scope: 'row' as const }
+        : nativeAttributes;
     return (
       <Element
         ref={ref}

@@ -12,9 +12,11 @@ import { InternalTableCell } from './internal';
 export { TableCellProps };
 
 function TableCell(props: TableCellProps) {
-  const baseComponentProps = useBaseComponent('TableCell', { props: { disablePaddings: props.disablePaddings } });
+  const baseComponentProps = useBaseComponent('TableCell', {
+    props: { disablePaddings: props.disablePaddings, isRowHeader: props.isRowHeader },
+  });
   const mergedProps = { ...props, ...baseComponentProps };
-  const { children, disablePaddings, __internalRootRef } = mergedProps;
+  const { children, disablePaddings, isRowHeader, __internalRootRef } = mergedProps;
   const { className, ...restBaseProps } = getBaseProps(mergedProps);
   return (
     <InternalTableCell
@@ -22,6 +24,7 @@ function TableCell(props: TableCellProps) {
       ref={__internalRootRef}
       className={className}
       disablePaddings={disablePaddings}
+      isRowHeader={isRowHeader}
       nativeAttributes={restBaseProps}
     >
       {children}

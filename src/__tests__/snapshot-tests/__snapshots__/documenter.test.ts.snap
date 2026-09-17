@@ -29712,6 +29712,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Renders the cell as a row header (\`<th scope="row">\`) instead of a data cell. Defaults to \`false\`.",
+      "name": "isRowHeader",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": [
     {
