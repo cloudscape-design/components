@@ -29625,7 +29625,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Applies inline styles to the body element. Use this to enable row positioning, for example for
 virtualization or draggable rows. It is not supported to use this for general styling purposes.",
       "inlineType": {
-        "name": "TableBodyProps.Style",
+        "name": "TableBodyProps.PositionStyle",
         "properties": [
           {
             "inlineType": {
@@ -29667,9 +29667,9 @@ virtualization or draggable rows. It is not supported to use this for general st
         ],
         "type": "object",
       },
-      "name": "style",
+      "name": "positionStyle",
       "optional": true,
-      "type": "TableBodyProps.Style",
+      "type": "TableBodyProps.PositionStyle",
     },
   ],
   "regions": [
@@ -30009,7 +30009,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Applies inline styles to the row element for positioning, such as virtualization or draggable
 rows. Not intended for general styling.",
       "inlineType": {
-        "name": "TableRowProps.Style",
+        "name": "TableRowProps.PositionStyle",
         "properties": [
           {
             "inlineType": {
@@ -30070,9 +30070,9 @@ rows. Not intended for general styling.",
         ],
         "type": "object",
       },
-      "name": "style",
+      "name": "positionStyle",
       "optional": true,
-      "type": "TableRowProps.Style",
+      "type": "TableRowProps.PositionStyle",
     },
     {
       "description": "The row's visual state. Visual only — it does not set \`aria-selected\`; convey selection to

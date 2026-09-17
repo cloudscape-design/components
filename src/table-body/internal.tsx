@@ -12,7 +12,12 @@ import styles from './styles.css.js';
 
 export interface InternalTableBodyProps extends TableBodyProps, InternalBaseComponentProps {}
 
-export default function InternalTableBody({ children, style, __internalRootRef, ...rest }: InternalTableBodyProps) {
+export default function InternalTableBody({
+  children,
+  positionStyle,
+  __internalRootRef,
+  ...rest
+}: InternalTableBodyProps) {
   const { columnLayout } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
   const { className, ...restBaseProps } = getBaseProps(rest);
@@ -22,7 +27,7 @@ export default function InternalTableBody({ children, style, __internalRootRef, 
       className={clsx(className, styles.body, isGrid && styles['body-grid'])}
       {...restBaseProps}
       role={isGrid ? 'rowgroup' : undefined}
-      style={style as React.CSSProperties}
+      style={positionStyle as React.CSSProperties}
     >
       {children}
     </tbody>

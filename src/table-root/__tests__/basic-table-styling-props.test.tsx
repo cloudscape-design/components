@@ -19,7 +19,7 @@ import cellStyles from '../../../lib/components/table-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
 // Proves the row `variant` is purely visual and reaches the cell paint through context, sets no
-// `aria-selected` (selection is conveyed by the selection control), that the narrowed inline `style`
+// `aria-selected` (selection is conveyed by the selection control), that the narrowed inline `positionStyle`
 // props (for virtualization) reach the body and row roots, and that `disablePaddings` reaches the
 // padding opt-out on the cell content and header-cell root.
 //
@@ -145,8 +145,8 @@ describe('inline style props (virtualization)', () => {
             <TableHeaderCell>Name</TableHeaderCell>
           </TableHeaderRow>
         </TableHead>
-        <TableBody style={{ position: 'relative', height: 400 }}>
-          <TableRow style={{ position: 'absolute', transform: 'translateY(40px)', height: 40 }}>
+        <TableBody positionStyle={{ position: 'relative', height: 400 }}>
+          <TableRow positionStyle={{ position: 'absolute', transform: 'translateY(40px)', height: 40 }}>
             <TableCell>Row</TableCell>
           </TableRow>
         </TableBody>

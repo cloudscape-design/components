@@ -22,7 +22,7 @@ export default function InternalTableRow({
   ariaDescribedby,
   ariaRowindex,
   children,
-  style,
+  positionStyle,
   __internalRootRef,
   ...rest
 }: InternalTableRowProps) {
@@ -46,7 +46,7 @@ export default function InternalTableRow({
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
       aria-rowindex={ariaRowindex}
-      style={(isGrid ? { gridTemplateColumns, ...style } : style) as React.CSSProperties}
+      style={(isGrid ? { gridTemplateColumns, ...positionStyle } : positionStyle) as React.CSSProperties}
     >
       <RowVariantContextProvider value={variant}>{children}</RowVariantContextProvider>
     </tr>

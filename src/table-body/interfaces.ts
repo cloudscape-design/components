@@ -10,14 +10,14 @@ export interface TableBodyProps extends BaseComponentProps {
    * Applies inline styles to the body element. Use this to enable row positioning, for example for
    * virtualization or draggable rows. It is not supported to use this for general styling purposes.
    */
-  style?: TableBodyProps.Style;
+  positionStyle?: TableBodyProps.PositionStyle;
   /** The body rows. */
   children?: React.ReactNode;
 }
 
 export namespace TableBodyProps {
   /** Inline styles supported on the body element, for row positioning (for example, virtualization). */
-  export interface Style {
+  export interface PositionStyle {
     position?: React.CSSProperties['position'];
     height?: React.CSSProperties['height'];
   }

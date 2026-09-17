@@ -31,7 +31,7 @@ export interface TableRowProps extends BaseComponentProps {
    * Applies inline styles to the row element for positioning, such as virtualization or draggable
    * rows. Not intended for general styling.
    */
-  style?: TableRowProps.Style;
+  positionStyle?: TableRowProps.PositionStyle;
   /** The row's cells, one per column, in order. */
   children?: React.ReactNode;
 }
@@ -39,7 +39,7 @@ export interface TableRowProps extends BaseComponentProps {
 export namespace TableRowProps {
   export type Variant = 'default' | 'selected' | 'shaded';
   /** Inline styles supported on a row element, for row positioning (for example, virtualization). */
-  export interface Style {
+  export interface PositionStyle {
     position?: React.CSSProperties['position'];
     transform?: React.CSSProperties['transform'];
     height?: React.CSSProperties['height'];
