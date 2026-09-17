@@ -30,7 +30,8 @@ export default function InternalTableRoot({
 
   // A wide table's horizontal scroller isn't keyboard-reachable on its own, so a read-only table with no
   // focusable cell content can't be scrolled by keyboard. When the content overflows, expose the scroller
-  // as a focusable labeled region (matching the existing Table's getTableWrapperRoleProps).
+  // as a focusable region so keyboard users can scroll it horizontally, matching the existing Table's
+  // getTableWrapperRoleProps.
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
   const measureScrollable = useCallback(() => {
@@ -58,9 +59,11 @@ export default function InternalTableRoot({
     measureScrollable();
   }, [table.gridTemplateColumns, children, measureScrollable]);
 
+  // Set role="region" whenever scrollable (label passes through even if undefined), matching the
+  // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
   const scrollRegionProps = isScrollable
     ? {
-        role: ariaLabel || ariaLabelledby ? ('region' as const) : undefined,
+        role: 'region' as const,
         tabIndex: 0,
         'aria-label': ariaLabel,
         'aria-labelledby': ariaLabelledby,
@@ -69,6 +72,9 @@ export default function InternalTableRoot({
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      {/* Reset the shared cell contexts at each table boundary: the cell substrate reads column layout
+          and row variant from context, so a table nested inside another table's cell must start from
+          this table's own layout and a `default` row variant rather than inheriting the outer table's. */}
       <TableContextProvider value={table}>
         <RowVariantContextProvider value="default">
           {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}

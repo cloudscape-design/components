@@ -914,6 +914,9 @@ const InternalTable = React.forwardRef(
     );
 
     return (
+      // Reset the shared cell contexts to known defaults: the extracted cell substrate reads column
+      // layout and row variant from context, so the existing Table pins them here (it drives its own
+      // selection/striping paint directly, not via the atomic row-variant context).
       <TableContextProvider value={defaultTableContext}>
         <RowVariantContextProvider value="default">{tableContent}</RowVariantContextProvider>
       </TableContextProvider>
