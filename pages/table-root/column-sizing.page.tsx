@@ -18,6 +18,7 @@ import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
 
 import { useAppContext } from '../app/app-context';
+import { SimplePage } from '../app/templates';
 import { Item, makeItems } from './common';
 
 // Column-sizing playground (grid layout). Adjust each column's sizing mode and widths to explore how
@@ -98,9 +99,8 @@ export default function TableColumnSizingPlaygroundPage() {
   const columns = useMemo(() => configs.map(toColumnDefinition), [configs]);
 
   return (
-    <Box padding="l">
+    <SimplePage title="Table atomics — column-sizing playground (grid layout)" screenshotArea={{}}>
       <SpaceBetween size="l">
-        <Box variant="h1">Table atomics — column-sizing playground (grid layout)</Box>
         <Box color="text-body-secondary">
           Adjust each column below and watch the table re-lay out. A CSS grid track can&apos;t be both weighted and
           hard-capped, so a column is either <em>flex</em> (shares free space by weight) or <em>capped</em> (grows only
@@ -173,6 +173,6 @@ export default function TableColumnSizingPlaygroundPage() {
           </TableRoot>
         </SpaceBetween>
       </SpaceBetween>
-    </Box>
+    </SimplePage>
   );
 }

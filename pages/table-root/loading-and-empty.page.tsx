@@ -12,6 +12,7 @@ import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
 import { useAppContext } from '../app/app-context';
+import { SimplePage } from '../app/templates';
 import { DataBody, DataHeader, makeItems } from './common';
 
 type State = 'loaded' | 'loading' | 'empty';
@@ -29,10 +30,9 @@ export default function TableLoadingEmptyPage() {
   const items = state === 'loaded' ? makeItems(20) : [];
 
   return (
-    <Box padding="l">
-      <SpaceBetween size="l">
-        <Box variant="h1">Table atomics — loading & empty states</Box>
-
+    <SimplePage
+      title="Table atomics — loading & empty states"
+      settings={
         <SegmentedControl
           selectedId={state}
           onChange={event => setUrlParams({ dataState: event.detail.selectedId as State })}
@@ -43,36 +43,37 @@ export default function TableLoadingEmptyPage() {
             { id: 'empty', text: 'Empty' },
           ]}
         />
-
-        <SpaceBetween size="s">
-          <Header counter={`(${items.length})`}>Resources</Header>
-          <TableRoot ariaLabel="Resources">
-            <DataHeader />
-            {state === 'loaded' ? (
-              <DataBody items={items} />
-            ) : (
-              <TableBody>
-                <TableRow>
-                  <td colSpan={COLUMN_COUNT}>
-                    <Box padding="m" textAlign="center" color="inherit">
-                      {state === 'loading' ? (
-                        <StatusIndicator type="loading">Loading resources</StatusIndicator>
-                      ) : (
-                        <SpaceBetween size="xxs">
-                          <b>No resources</b>
-                          <Box variant="p" color="inherit">
-                            No resources to display.
-                          </Box>
-                        </SpaceBetween>
-                      )}
-                    </Box>
-                  </td>
-                </TableRow>
-              </TableBody>
-            )}
-          </TableRoot>
-        </SpaceBetween>
+      }
+      screenshotArea={{}}
+    >
+      <SpaceBetween size="s">
+        <Header counter={`(${items.length})`}>Resources</Header>
+        <TableRoot ariaLabel="Resources">
+          <DataHeader />
+          {state === 'loaded' ? (
+            <DataBody items={items} />
+          ) : (
+            <TableBody>
+              <TableRow>
+                <td colSpan={COLUMN_COUNT}>
+                  <Box padding="m" textAlign="center" color="inherit">
+                    {state === 'loading' ? (
+                      <StatusIndicator type="loading">Loading resources</StatusIndicator>
+                    ) : (
+                      <SpaceBetween size="xxs">
+                        <b>No resources</b>
+                        <Box variant="p" color="inherit">
+                          No resources to display.
+                        </Box>
+                      </SpaceBetween>
+                    )}
+                  </Box>
+                </td>
+              </TableRow>
+            </TableBody>
+          )}
+        </TableRoot>
       </SpaceBetween>
-    </Box>
+    </SimplePage>
   );
 }
