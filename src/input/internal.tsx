@@ -158,6 +158,7 @@ function InternalInput(
     position: controlGroupPosition,
     hasInlineLabel: inControlGroupLabeled,
     precedesDetached: inControlGroupPrecedesLabeled,
+    stacked: inControlGroupStacked,
   } = useControlGroupContext();
 
   const hasPrefix = !!prefix;
@@ -194,6 +195,7 @@ function InternalInput(
       isInControlGroup && controlGroupPosition && styles[`input-in-control-group-${controlGroupPosition}`],
       isInControlGroup && inControlGroupLabeled && styles['input-in-control-group-labeled'],
       isInControlGroup && inControlGroupPrecedesLabeled && styles['input-in-control-group-precedes-labeled'],
+      isInControlGroup && inControlGroupStacked && styles['input-in-control-group-stacked'],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -333,7 +335,8 @@ function InternalInput(
             isInControlGroup && inControlGroupLabeled && styles['input-adorned-container-in-control-group-labeled'],
             isInControlGroup &&
               inControlGroupPrecedesLabeled &&
-              styles['input-adorned-container-in-control-group-precedes-labeled']
+              styles['input-adorned-container-in-control-group-precedes-labeled'],
+            isInControlGroup && inControlGroupStacked && styles['input-adorned-container-in-control-group-stacked']
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}

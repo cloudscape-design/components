@@ -412,13 +412,11 @@ $inline-label-border-radius: 2px;
 // squaring follows the group's layout direction. `$position` is one of
 // 'first' | 'middle' | 'last' | 'only'.
 @mixin control-group-grouped-responsive($position, $radius: constants.$control-border-radius) {
+  // Row (inline-axis) treatment only. The block-axis (stacked) treatment is applied
+  // separately by the caller under its own `...-in-control-group-stacked` selector via
+  // `control-group-grouped-stacked`, because the ControlGroup decides whether it fits
+  // in a row in JS (measured), not at a fixed CSS container-query breakpoint.
   @include control-group-grouped($position, $radius: $radius);
-
-  // Flip the squared corners to the block axis when the ControlGroup's own
-  // container (not the viewport) is too narrow to lay the controls out in a row.
-  @container control-group #{constants.$control-group-stack-query} {
-    @include control-group-grouped-stacked($position, $radius: $radius);
-  }
 }
 
 // Focus variant of the responsive grouped treatment. The seam border is always in
@@ -430,11 +428,10 @@ $inline-label-border-radius: 2px;
 // neighbor), so the full, colored focus border paints over the seam without doubling
 // it. `$position` is one of 'first' | 'middle' | 'last' | 'only'.
 @mixin control-group-grouped-responsive-focus($position, $radius: constants.$control-border-radius) {
+  // Row (inline-axis) corners only. The stacked corners are applied by the caller
+  // under its `...-in-control-group-stacked` selector via
+  // `control-group-grouped-stacked-corners`.
   @include control-group-grouped-corners($position, $radius: $radius);
-
-  @container control-group #{constants.$control-group-stack-query} {
-    @include control-group-grouped-stacked-corners($position, $radius: $radius);
-  }
 }
 
 // Corner radii for a control fused with block-axis (stacked) neighbors: keep the

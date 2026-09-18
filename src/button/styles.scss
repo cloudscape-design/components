@@ -193,9 +193,9 @@ $tokens: style-api.resolve($props, carrier);
     align-items: center;
     justify-content: center;
 
-    // When the group stacks (its container is narrow), the remove button fills
-    // the row like the other controls instead of staying a square.
-    @container control-group #{styles.$control-group-stack-query} {
+    // When the group is stacked, the remove button fills the row like the other
+    // controls instead of staying a square.
+    &.in-control-group-stacked {
       inline-size: 100%;
     }
 
@@ -223,14 +223,17 @@ $tokens: style-api.resolve($props, carrier);
   }
   &.in-control-group-first {
     @include styles.control-group-grouped-responsive('first');
-    // Ring rounds only the leading corners, matching the button (inline axis by
-    // default, block axis once the group stacks).
+    // Ring rounds only the leading corners (inline axis) in a row.
     @include focus-visible.when-visible {
       &::before {
         border-start-start-radius: awsui.$border-radius-input;
         border-end-start-radius: awsui.$border-radius-input;
       }
-      @container control-group #{styles.$control-group-stack-query} {
+    }
+    // When stacked, the ring rounds the top corners (block axis) instead.
+    &.in-control-group-stacked {
+      @include styles.control-group-grouped-stacked-corners('first');
+      @include focus-visible.when-visible {
         &::before {
           border-start-start-radius: awsui.$border-radius-input;
           border-start-end-radius: awsui.$border-radius-input;
@@ -242,17 +245,23 @@ $tokens: style-api.resolve($props, carrier);
   }
   &.in-control-group-middle {
     @include styles.control-group-grouped-responsive('middle');
+    &.in-control-group-stacked {
+      @include styles.control-group-grouped-stacked-corners('middle');
+    }
   }
   &.in-control-group-last {
     @include styles.control-group-grouped-responsive('last');
-    // Ring rounds only the trailing corners, matching the button (inline axis by
-    // default, block axis once the group stacks).
+    // Ring rounds only the trailing corners (inline axis) in a row.
     @include focus-visible.when-visible {
       &::before {
         border-start-end-radius: awsui.$border-radius-input;
         border-end-end-radius: awsui.$border-radius-input;
       }
-      @container control-group #{styles.$control-group-stack-query} {
+    }
+    // When stacked, the ring rounds the bottom corners (block axis) instead.
+    &.in-control-group-stacked {
+      @include styles.control-group-grouped-stacked-corners('last');
+      @include focus-visible.when-visible {
         &::before {
           border-start-start-radius: 0;
           border-start-end-radius: 0;
@@ -296,7 +305,7 @@ $tokens: style-api.resolve($props, carrier);
       color: awsui.$color-text-interactive-default;
     }
 
-    @container control-group #{styles.$control-group-stack-query} {
+    &.in-control-group-stacked {
       // Restore the full primary-variant appearance (all states), which the
       // `.in-control-group` field styling had overridden, and let the button size to
       // its label instead of the fixed square.
@@ -390,6 +399,7 @@ $tokens: style-api.resolve($props, carrier);
     }
   }
 
+  // stylelint-disable-next-line no-descending-specificity
   &.button-no-text > .icon {
     margin-inline-start: auto;
     margin-inline-end: auto;
