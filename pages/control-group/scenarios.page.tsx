@@ -270,7 +270,7 @@ function NestedInFormFieldControl() {
 // grouped clauses sit side by side.
 function MultipleGroupsInLine() {
   return (
-    <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+    <SpaceBetween size="xs" direction="horizontal" alignItems="end">
       <ControlGroup
         ariaLabel="Metric"
         dismissible={true}
