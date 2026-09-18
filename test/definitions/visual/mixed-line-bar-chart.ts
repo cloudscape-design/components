@@ -79,8 +79,7 @@ const suite: TestSuite = {
       description: 'shows popover on hover',
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
-      // skip tests with line hover effects on IE11 and Safari 12 because they do not support it
-      configuration: { width: 800, height: 800, skipBrowsers: ['IE11', 'IE11Win7', 'Safari'] },
+      configuration: { width: 800, height: 800 },
       setup: async ({ page }) => {
         await page.hoverElement('#chart svg[aria-label="Mixed chart 1"]', 200, 100);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
