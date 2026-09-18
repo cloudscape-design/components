@@ -42,12 +42,13 @@ const suite: TestSuite = {
       description: 'can navigate segments with keyboard',
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
         await page.keys(['Enter']);
-        await page.keys(['ArrowRight']);
+        await page.keys([horizontalKey]);
       },
     },
     {
