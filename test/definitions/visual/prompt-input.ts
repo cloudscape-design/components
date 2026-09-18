@@ -22,9 +22,10 @@ const suite: TestSuite = {
       path: 'prompt-input/simple',
       screenshotType: 'screenshotArea',
       queryParams: { hasSecondaryActions: 'true' },
-      setup: async ({ page, wrapper }) => {
+      setup: async ({ page, wrapper, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         await page.click(wrapper.findPromptInput('[data-testid="prompt-input"]').findNativeTextarea().toSelector());
-        await page.keys(['Tab', 'ArrowRight', 'ArrowRight']);
+        await page.keys(['Tab', horizontalKey, horizontalKey]);
       },
     },
   ],
