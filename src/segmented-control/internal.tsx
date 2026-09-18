@@ -30,7 +30,7 @@ export default function InternalSegmentedControl({
 
   // When inside a ControlGroup, the segment wrapper fuses with its neighbors
   // (squared interior corners + collapsed seam). Its position decides which sides.
-  const { isInControlGroup, position: controlGroupPosition } = useControlGroupContext();
+  const { isInControlGroup, position: controlGroupPosition, stacked: inControlGroupStacked } = useControlGroupContext();
 
   const selectOptions = (options || []).map(option => {
     const label = option.text || option.iconAlt;
@@ -52,7 +52,12 @@ export default function InternalSegmentedControl({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, isInControlGroup && styles['in-control-group'])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        isInControlGroup && styles['in-control-group'],
+        isInControlGroup && inControlGroupStacked && styles['in-control-group-stacked']
+      )}
       ref={__internalRootRef}
     >
       <InternalSegmentedControlComponent

@@ -150,6 +150,7 @@ export const InternalButton = React.forwardRef(
       isInControlGroup,
       position: controlGroupPosition,
       standaloneWhenStacked: inControlGroupStandalone,
+      stacked: inControlGroupStacked,
     } = useControlGroupContext();
     const i18n = useInternalI18n('button');
 
@@ -215,6 +216,7 @@ export const InternalButton = React.forwardRef(
       [styles['in-control-group']]: isInControlGroup,
       [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
       [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
+      [styles['in-control-group-stacked']]: isInControlGroup && inControlGroupStacked,
       [styles.link]: isAnchor,
     });
 

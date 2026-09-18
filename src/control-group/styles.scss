@@ -9,10 +9,18 @@
 .root {
   @include styles.styles-reset;
   display: block;
-  // Establish a query container so the group's responsiveness follows the width
-  // available in its parent, not the viewport. The child controls flip their
-  // fused corners to the block axis via `@container control-group (...)`.
-  container: control-group / inline-size;
+  // The group decides whether it fits in a row in JS (see internal.tsx) rather than
+  // at a fixed CSS breakpoint, and toggles the `.stacked` class.
+  //
+  // When the group is a flex item (for example several groups in a `SpaceBetween`),
+  // the default `flex-shrink: 1` lets the parent squeeze it narrower than its
+  // controls; the measured available width then drops below the required width and it
+  // stacks even though the row has room. `flex-shrink: 0` keeps the group at its
+  // natural width, so a flex parent wraps whole groups to the next line instead — and
+  // each group, at its full width, measures as fitting and does not stack. This is
+  // inert when the group is a normal block child, so genuine narrow-container stacking
+  // still works there.
+  flex-shrink: 0;
 }
 
 .group {
@@ -28,6 +36,17 @@
   // the group does not shrink or stretch to a shared border box.
   inline-size: fit-content;
   max-inline-size: 100%;
+
+  // When JS determines the controls do not fit, the group stacks vertically. Kept as
+  // a nowrap row while NOT stacked so its `scrollWidth` reports the width the controls
+  // need (used to decide when to stack). The seam then overlaps on the block axis
+  // instead of the inline axis (see the `.group.stacked > .control` rules below).
+  &.stacked {
+    flex-direction: column;
+    // Stacked controls fill the width; bottom-alignment no longer applies.
+    align-items: stretch;
+    inline-size: 100%;
+  }
 }
 
 .control {
@@ -64,34 +83,34 @@
   }
 }
 
-// When stacked, the seam is on the block axis: overlap each non-first slot onto the
-// one above it instead, and drop the inline overlap.
-@container control-group #{styles.$control-group-stack-query} {
-  .control {
-    &.control-middle,
-    &.control-last {
-      margin-inline-start: 0;
-      margin-block-start: calc(-1 * #{awsui.$border-width-field});
-    }
+// When the group is stacked, the seam overlaps on the block axis instead of the
+// inline axis, and each slot fills the width. Placed after the base `.control` rules
+// so its higher specificity resolves in the intended order.
+.group.stacked > .control {
+  inline-size: 100%;
 
-    // A control that detaches when the group wraps does not fuse into the control
-    // above it: instead of overlapping the seam, keep a gap so it reads as a separate
-    // control (its corners are restored by the control itself). Overrides the block
-    // overlap above (later + same specificity). This covers controls with a visible
-    // inline label and the built-in dismiss button, which becomes fully standalone.
-    &.control-labeled.control-middle,
-    &.control-labeled.control-last,
-    &.control-standalone.control-middle,
-    &.control-standalone.control-last {
-      margin-block-start: awsui.$space-scaled-xs;
-    }
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: 0;
+    margin-block-start: calc(-1 * #{awsui.$border-width-field});
+  }
 
-    // The standalone dismiss button is right-aligned within its full-width row when
-    // the group wraps, instead of stretching across it.
-    &.control-standalone {
-      display: flex;
-      justify-content: flex-end;
-    }
+  // A control that detaches when the group wraps does not fuse into the control above
+  // it: instead of overlapping the seam, keep a gap so it reads as a separate control
+  // (its corners are restored by the control itself). Overrides the block overlap
+  // above (later + same specificity). Covers controls with a visible inline label and
+  // the built-in dismiss button (fully standalone).
+  &.control-labeled.control-middle,
+  &.control-labeled.control-last,
+  &.control-standalone.control-middle,
+  &.control-standalone.control-last {
+    margin-block-start: awsui.$space-scaled-xs;
+  }
+
+  // The standalone dismiss button is right-aligned within its full-width row.
+  &.control-standalone {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -101,23 +120,4 @@
 
 .description {
   @include styles.form-control-description;
-}
-
-/*
- * Responsiveness: when the group's own container gets narrow, the controls go
- * full-width and stack vertically. Each control's own seam styling switches from
- * the inline axis to the block axis (handled per-control via container queries),
- * so the group just changes direction.
- */
-@container control-group #{styles.$control-group-stack-query} {
-  .group {
-    flex-direction: column;
-    // Stacked controls fill the width; bottom-alignment no longer applies.
-    align-items: stretch;
-    inline-size: 100%;
-  }
-
-  .control {
-    inline-size: 100%;
-  }
 }

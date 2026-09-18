@@ -204,31 +204,39 @@ $icon-offset: awsui.$space-xxxs;
       @include styles.control-group-grouped-responsive-focus('last');
     }
   }
-  // A labeled trigger (select/multiselect with an inline label) does not fuse into
-  // the control above it when the group wraps: restore its rounded top corners.
-  // Placed after the position rules so it wins.
-  &.in-control-group-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
-      @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: awsui.$border-radius-input);
+  // When the group is stacked (JS-measured), flip the fused corners to the block axis
+  // per position, and apply the labeled / precedes-detached corner treatments.
+  &.in-control-group-stacked {
+    $r: awsui.$border-radius-input;
+
+    &.in-control-group-first {
+      @include styles.control-group-grouped-stacked('first', $radius: $r);
       @include focus-visible.when-visible {
-        @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: awsui.$border-radius-input);
+        @include styles.control-group-grouped-stacked-corners('first', $radius: $r);
       }
     }
-  }
-  // A trigger directly above a control that detaches when wrapping (a labeled control
-  // or the standalone dismiss button) is no longer fused to it, so it keeps its
-  // rounded bottom corners.
-  &.in-control-group-precedes-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
-      @include styles.control-group-grouped-stacked-precedes-detached-corners(
-        'middle',
-        $radius: awsui.$border-radius-input
-      );
+    &.in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle', $radius: $r);
       @include focus-visible.when-visible {
-        @include styles.control-group-grouped-stacked-precedes-detached-corners(
-          'middle',
-          $radius: awsui.$border-radius-input
-        );
+        @include styles.control-group-grouped-stacked-corners('middle', $radius: $r);
+      }
+    }
+    &.in-control-group-last {
+      @include styles.control-group-grouped-stacked('last', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-corners('last', $radius: $r);
+      }
+    }
+    &.in-control-group-labeled {
+      @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: $r);
+      }
+    }
+    &.in-control-group-precedes-labeled {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle', $radius: $r);
       }
     }
   }

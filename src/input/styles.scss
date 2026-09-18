@@ -229,21 +229,37 @@
       @include styles.control-group-grouped-responsive-focus('last');
     }
   }
-  // A labeled control does not fuse into the control above it when the group wraps:
-  // restore its rounded top corners. Placed after the position rules so it wins.
-  &.input-in-control-group-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
+  // When the group is stacked (JS-measured, not a fixed breakpoint), flip the fused
+  // corners/seam to the block axis per position.
+  &.input-in-control-group-stacked {
+    &.input-in-control-group-first {
+      @include styles.control-group-grouped-stacked('first');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('first');
+      }
+    }
+    &.input-in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('middle');
+      }
+    }
+    &.input-in-control-group-last {
+      @include styles.control-group-grouped-stacked('last');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('last');
+      }
+    }
+    // A labeled control does not fuse into the control above it: restore its rounded
+    // top corners. A control that precedes a detached control keeps its rounded bottom
+    // corners. Placed after the position rules so they win.
+    &.input-in-control-group-labeled {
       @include styles.control-group-grouped-stacked-detached-corners('middle');
       &:focus {
         @include styles.control-group-grouped-stacked-detached-corners('middle');
       }
     }
-  }
-  // A control directly above a control that detaches when wrapping (a labeled control
-  // or the standalone dismiss button) is no longer fused to it, so it keeps its
-  // rounded bottom corners.
-  &.input-in-control-group-precedes-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
+    &.input-in-control-group-precedes-labeled {
       @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
       &:focus {
         @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
@@ -277,16 +293,32 @@
       @include styles.control-group-grouped-responsive-focus('last');
     }
   }
-  &.input-adorned-container-in-control-group-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
+  &.input-adorned-container-in-control-group-stacked {
+    &.input-adorned-container-in-control-group-first {
+      @include styles.control-group-grouped-stacked('first');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('first');
+      }
+    }
+    &.input-adorned-container-in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('middle');
+      }
+    }
+    &.input-adorned-container-in-control-group-last {
+      @include styles.control-group-grouped-stacked('last');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('last');
+      }
+    }
+    &.input-adorned-container-in-control-group-labeled {
       @include styles.control-group-grouped-stacked-detached-corners('middle');
       &:focus-within {
         @include styles.control-group-grouped-stacked-detached-corners('middle');
       }
     }
-  }
-  &.input-adorned-container-in-control-group-precedes-labeled {
-    @container control-group #{styles.$control-group-stack-query} {
+    &.input-adorned-container-in-control-group-precedes-labeled {
       @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
       &:focus-within {
         @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');

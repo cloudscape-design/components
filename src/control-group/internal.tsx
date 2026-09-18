@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
@@ -96,18 +97,58 @@ const InternalControlGroup = forwardRef(
     const getPosition = (index: number): ControlGroupPosition =>
       controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
 
+    // Responsive stacking: the controls collapse to a vertical layout only when they
+    // truly don't fit in the available width (not at a fixed pixel breakpoint). We
+    // observe the available width on the root, and compare it against the row's
+    // required width measured from the group's `scrollWidth` while it is laid out as a
+    // row. The required width is only re-read in row mode and kept in a ref, so once
+    // stacked the group only expands back to a row when the container grows past that
+    // remembered width — this hysteresis prevents oscillation.
+    const groupRef = useRef<HTMLDivElement>(null);
+    const requiredRowWidthRef = useRef<number | null>(null);
+    const [stacked, setStacked] = useState(false);
+    const [availableWidth, widthMeasureRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
+    const rootMeasureRef = useMergeRefs(mergedRef, widthMeasureRef);
+
+    useLayoutEffect(() => {
+      const group = groupRef.current;
+      if (!group || availableWidth === null) {
+        return;
+      }
+      // In row mode, `scrollWidth` is the full width the controls need (the group does
+      // not wrap). Remember it so the decision is stable once we stack.
+      if (!stacked) {
+        requiredRowWidthRef.current = group.scrollWidth;
+      }
+      const required = requiredRowWidthRef.current;
+      if (required === null) {
+        return;
+      }
+      // Small tolerance to avoid flipping on sub-pixel rounding.
+      const nextStacked = availableWidth < required - 1;
+      if (nextStacked !== stacked) {
+        setStacked(nextStacked);
+      }
+    }, [availableWidth, stacked]);
+
     return (
       <div
         {...baseProps}
-        ref={mergedRef}
-        className={clsx(baseProps.className, styles.root, testUtilStyles['control-group'])}
+        ref={rootMeasureRef}
+        className={clsx(baseProps.className, styles.root, stacked && styles.stacked, testUtilStyles['control-group'])}
       >
         <div
+          ref={groupRef}
           role="group"
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={groupAriaDescribedby}
-          className={clsx(styles.group, invalid && styles.invalid, warning && styles.warning)}
+          className={clsx(
+            styles.group,
+            stacked && styles.stacked,
+            invalid && styles.invalid,
+            warning && styles.warning
+          )}
         >
           <FormFieldContext.Provider
             value={{
@@ -145,7 +186,7 @@ const InternalControlGroup = forwardRef(
                   )}
                 >
                   <ControlGroupContext.Provider
-                    value={{ isInControlGroup: true, position, hasInlineLabel, precedesDetached }}
+                    value={{ isInControlGroup: true, position, hasInlineLabel, precedesDetached, stacked }}
                   >
                     {child}
                   </ControlGroupContext.Provider>
@@ -166,6 +207,7 @@ const InternalControlGroup = forwardRef(
                     isInControlGroup: true,
                     position: getPosition(controlCount - 1),
                     standaloneWhenStacked: true,
+                    stacked,
                   }}
                 >
                   {/*

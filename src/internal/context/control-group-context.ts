@@ -18,6 +18,14 @@ export interface ControlGroupContextProps {
    */
   position?: ControlGroupPosition;
   /**
+   * True when the group has collapsed to a vertical (stacked) layout because the
+   * controls do not fit in the available width. Controls flip their fused corners
+   * and seams from the inline axis to the block axis when this is set. The group
+   * measures fit in JS (not a fixed CSS breakpoint), so this is provided via context
+   * rather than a container query.
+   */
+  stacked?: boolean;
+  /**
    * True when this control renders a visible inline label. Such a control does not
    * fuse into the previous control when the group wraps (stacks); it keeps its
    * spacing and its rounded top corners instead of collapsing the shared seam.
