@@ -6,6 +6,9 @@ import { traverseItems } from './create-items-tree';
 export const isItemGroup = (item: ButtonDropdownProps.ItemOrGroup): item is ButtonDropdownProps.ItemGroup =>
   item && (item as ButtonDropdownProps.ItemGroup).items !== undefined;
 
+export const isGroupExpandable = (item: ButtonDropdownProps.ItemOrGroup, expandableGroupsDefault: boolean): boolean =>
+  isItemGroup(item) && (item.expandable ?? expandableGroupsDefault);
+
 export const isLinkItem = (item: LinkItem | ButtonDropdownProps.ItemOrGroup): item is LinkItem =>
   item && (item as LinkItem).href !== undefined;
 
