@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { HotspotProps } from '../../hotspot/interfaces';
+import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
 import { AnnotationContextProps } from '../interfaces';
 import { AnnotationPopover } from './annotation-popover';
 import AnnotationTrigger from './annotation-trigger';
@@ -61,6 +62,7 @@ export function OpenAnnotation({
   i18nStrings,
 }: AnnotationProps) {
   const trackRef = useRef<HTMLButtonElement>(null);
+  const portalClasses = usePortalModeClasses(trackRef, { resetVisualContext: true });
 
   return (
     <>
@@ -73,24 +75,26 @@ export function OpenAnnotation({
         taskLocalStepIndex={taskLocalStepIndex}
       />
       <Portal>
-        <AnnotationPopover
-          trackRef={trackRef}
-          previousButtonEnabled={previousButtonEnabled}
-          showPreviousButton={showPreviousButton}
-          showFinishButton={showFinishButton}
-          totalLocalSteps={totalLocalSteps}
-          i18nStrings={i18nStrings}
-          nextButtonEnabled={nextButtonEnabled}
-          onDismiss={onDismiss}
-          onFinish={onFinish}
-          onNextButtonClick={onNextButtonClick}
-          onPreviousButtonClick={onPreviousButtonClick}
-          taskLocalStepIndex={taskLocalStepIndex}
-          direction={direction}
-          title={title}
-          content={content}
-          alert={alert}
-        />
+        <span className={portalClasses}>
+          <AnnotationPopover
+            trackRef={trackRef}
+            previousButtonEnabled={previousButtonEnabled}
+            showPreviousButton={showPreviousButton}
+            showFinishButton={showFinishButton}
+            totalLocalSteps={totalLocalSteps}
+            i18nStrings={i18nStrings}
+            nextButtonEnabled={nextButtonEnabled}
+            onDismiss={onDismiss}
+            onFinish={onFinish}
+            onNextButtonClick={onNextButtonClick}
+            onPreviousButtonClick={onPreviousButtonClick}
+            taskLocalStepIndex={taskLocalStepIndex}
+            direction={direction}
+            title={title}
+            content={content}
+            alert={alert}
+          />
+        </span>
       </Portal>
     </>
   );

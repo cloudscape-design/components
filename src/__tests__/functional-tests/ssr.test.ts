@@ -26,11 +26,12 @@ const vrOnlyComponents = ['app-layout-toolbar'];
 
 // Components whose entire tree is rendered through a portal. The server renderer has no
 // container to portal into, so none of their content reaches the server markup. Portal
-// itself renders a hidden placeholder element in its place, so that the markup matches
+// itself may render a hidden placeholder element in its place, so that the markup matches
 // the first client render and hydration succeeds; the client replaces it on the first
-// commit. Older component-toolkit versions emit nothing at all, hence the optional match.
+// commit. Some components also render their own hidden source anchor to detect inherited
+// portal-mode classes, and older component-toolkit versions emit nothing at all.
 const portaledComponents = ['modal', 'tooltip'];
-const emptyOrHiddenPlaceholder = /^(<span style="display:none"><\/span>)?$/;
+const emptyOrHiddenPlaceholder = /^(<span hidden=""><\/span>)?(<span style="display:none"><\/span>)?$/;
 
 test('ensure is it not DOM', () => {
   expect(typeof window).toBe('undefined');
