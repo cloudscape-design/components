@@ -16535,6 +16535,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "gen-ai-token",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "globe",
             "optional": true,
             "type": "React.ReactNode",
