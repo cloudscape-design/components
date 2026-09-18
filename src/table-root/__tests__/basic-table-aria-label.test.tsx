@@ -4,10 +4,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import TableBody from '../../../lib/components/table-body';
-import TableCell from '../../../lib/components/table-cell';
+import TableBodyCell from '../../../lib/components/table-body-cell';
 import TableHead from '../../../lib/components/table-head';
 import TableHeaderCell from '../../../lib/components/table-header-cell';
-import TableHeaderRow from '../../../lib/components/table-header-row';
 import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow from '../../../lib/components/table-row';
 
@@ -30,16 +29,16 @@ function buildTree(labelProps: Pick<TableRootProps, 'ariaLabel' | 'ariaLabelledb
   return (
     <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} {...labelProps}>
       <TableHead>
-        <TableHeaderRow>
+        <TableRow variant="header">
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
-        </TableHeaderRow>
+        </TableRow>
       </TableHead>
       <TableBody>
         {items.map(item => (
           <TableRow key={item.id}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.status}</TableCell>
+            <TableBodyCell>{item.name}</TableBodyCell>
+            <TableBodyCell>{item.status}</TableBodyCell>
           </TableRow>
         ))}
       </TableBody>

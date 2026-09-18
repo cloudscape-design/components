@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
 
 import { TableRowProps } from './interfaces';
 
-// A row→cell channel so a `TableCell` learns its row's visual state and paints selection via its own
+// A row→cell channel so a `TableBodyCell` learns its row's visual state and paints selection via its own
 // module class, avoiding a `data-*` styling hook. A cell rendered outside a `TableRow` reads `'default'`.
 const RowVariantContext = createContext<TableRowProps.Variant>('default');
 

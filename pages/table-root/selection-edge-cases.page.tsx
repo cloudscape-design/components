@@ -4,10 +4,9 @@ import React from 'react';
 
 import Box from '~components/box';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
-import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow, { TableRowProps } from '~components/table-row';
 
@@ -61,18 +60,18 @@ function Grid({
       <div style={{ inlineSize: width, overflowX: width ? 'auto' : undefined }}>
         <TableRoot columnLayout={columnLayout} ariaLabel={label}>
           <TableHead>
-            <TableHeaderRow>
+            <TableRow variant="header">
               <TableHeaderCell>Name</TableHeaderCell>
               <TableHeaderCell>Type</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
-            </TableHeaderRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {ROWS.map((row, i) => (
               <TableRow key={row.name} variant={variantOf(i)}>
-                <TableCell>{longFirstCell && i === 1 ? LONG : row.name}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.status}</TableCell>
+                <TableBodyCell>{longFirstCell && i === 1 ? LONG : row.name}</TableBodyCell>
+                <TableBodyCell>{row.type}</TableBodyCell>
+                <TableBodyCell>{row.status}</TableBodyCell>
               </TableRow>
             ))}
           </TableBody>

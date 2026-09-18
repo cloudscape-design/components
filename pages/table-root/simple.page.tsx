@@ -5,7 +5,7 @@ import React from 'react';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 import Toggle from '~components/toggle';
@@ -39,10 +39,10 @@ export default function TableSimplePage() {
           <TableBody>
             {items.map((item, index) => (
               <TableRow key={item.id} variant={striped && index % 2 === 1 ? 'shaded' : 'default'}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.type}</TableCell>
-                <TableCell>{item.size}</TableCell>
-                <TableCell>{item.status}</TableCell>
+                <TableBodyCell isRowHeader={true}>{item.name}</TableBodyCell>
+                <TableBodyCell>{item.type}</TableBodyCell>
+                <TableBodyCell>{item.size}</TableBodyCell>
+                <TableBodyCell>{item.status}</TableBodyCell>
               </TableRow>
             ))}
           </TableBody>

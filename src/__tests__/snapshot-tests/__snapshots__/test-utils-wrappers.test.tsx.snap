@@ -88,10 +88,9 @@ import StatusIndicatorWrapper from './status-indicator';
 import StepsWrapper from './steps';
 import TableWrapper from './table';
 import TableBodyWrapper from './table-body';
-import TableCellWrapper from './table-cell';
+import TableBodyCellWrapper from './table-body-cell';
 import TableHeadWrapper from './table-head';
 import TableHeaderCellWrapper from './table-header-cell';
-import TableHeaderRowWrapper from './table-header-row';
 import TableRootWrapper from './table-root';
 import TableRowWrapper from './table-row';
 import TabsWrapper from './tabs';
@@ -192,10 +191,9 @@ export { StatusIndicatorWrapper };
 export { StepsWrapper };
 export { TableWrapper };
 export { TableBodyWrapper };
-export { TableCellWrapper };
+export { TableBodyCellWrapper };
 export { TableHeadWrapper };
 export { TableHeaderCellWrapper };
-export { TableHeaderRowWrapper };
 export { TableRootWrapper };
 export { TableRowWrapper };
 export { TabsWrapper };
@@ -2432,33 +2430,33 @@ findAllTableBodies(selector?: string): Array<TableBodyWrapper>;
  */
 findClosestTableBody(): TableBodyWrapper | null;
 /**
- * Returns the wrapper of the first TableCell that matches the specified CSS selector.
- * If no CSS selector is specified, returns the wrapper of the first TableCell.
- * If no matching TableCell is found, returns \`null\`.
+ * Returns the wrapper of the first TableBodyCell that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TableBodyCell.
+ * If no matching TableBodyCell is found, returns \`null\`.
  *
  * @param {string} [selector] CSS Selector
- * @returns {TableCellWrapper | null}
+ * @returns {TableBodyCellWrapper | null}
  */
-findTableCell(selector?: string): TableCellWrapper | null;
+findTableBodyCell(selector?: string): TableBodyCellWrapper | null;
 
 /**
- * Returns an array of TableCell wrapper that matches the specified CSS selector.
- * If no CSS selector is specified, returns all of the TableCells inside the current wrapper.
- * If no matching TableCell is found, returns an empty array.
+ * Returns an array of TableBodyCell wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TableBodyCells inside the current wrapper.
+ * If no matching TableBodyCell is found, returns an empty array.
  *
  * @param {string} [selector] CSS Selector
- * @returns {Array<TableCellWrapper>}
+ * @returns {Array<TableBodyCellWrapper>}
  */
-findAllTableCells(selector?: string): Array<TableCellWrapper>;
+findAllTableBodyCells(selector?: string): Array<TableBodyCellWrapper>;
 
 /**
- * Returns the wrapper of the closest parent TableCell for the current element,
- * or the element itself if it is an instance of TableCell.
- * If no TableCell is found, returns \`null\`.
+ * Returns the wrapper of the closest parent TableBodyCell for the current element,
+ * or the element itself if it is an instance of TableBodyCell.
+ * If no TableBodyCell is found, returns \`null\`.
  *
- * @returns {TableCellWrapper | null}
+ * @returns {TableBodyCellWrapper | null}
  */
-findClosestTableCell(): TableCellWrapper | null;
+findClosestTableBodyCell(): TableBodyCellWrapper | null;
 /**
  * Returns the wrapper of the first TableHead that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TableHead.
@@ -2515,34 +2513,6 @@ findAllTableHeaderCells(selector?: string): Array<TableHeaderCellWrapper>;
  * @returns {TableHeaderCellWrapper | null}
  */
 findClosestTableHeaderCell(): TableHeaderCellWrapper | null;
-/**
- * Returns the wrapper of the first TableHeaderRow that matches the specified CSS selector.
- * If no CSS selector is specified, returns the wrapper of the first TableHeaderRow.
- * If no matching TableHeaderRow is found, returns \`null\`.
- *
- * @param {string} [selector] CSS Selector
- * @returns {TableHeaderRowWrapper | null}
- */
-findTableHeaderRow(selector?: string): TableHeaderRowWrapper | null;
-
-/**
- * Returns an array of TableHeaderRow wrapper that matches the specified CSS selector.
- * If no CSS selector is specified, returns all of the TableHeaderRows inside the current wrapper.
- * If no matching TableHeaderRow is found, returns an empty array.
- *
- * @param {string} [selector] CSS Selector
- * @returns {Array<TableHeaderRowWrapper>}
- */
-findAllTableHeaderRows(selector?: string): Array<TableHeaderRowWrapper>;
-
-/**
- * Returns the wrapper of the closest parent TableHeaderRow for the current element,
- * or the element itself if it is an instance of TableHeaderRow.
- * If no TableHeaderRow is found, returns \`null\`.
- *
- * @returns {TableHeaderRowWrapper | null}
- */
-findClosestTableHeaderRow(): TableHeaderRowWrapper | null;
 /**
  * Returns the wrapper of the first TableRoot that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TableRoot.
@@ -4106,18 +4076,18 @@ ElementWrapper.prototype.findTableBody = function(selector) {
 ElementWrapper.prototype.findAllTableBodies = function(selector) {
   return this.findAllComponents(TableBodyWrapper, selector);
 };
-ElementWrapper.prototype.findTableCell = function(selector) {
-  let rootSelector = \`.\${TableCellWrapper.rootSelector}\`;
-  if("legacyRootSelector" in TableCellWrapper && TableCellWrapper.legacyRootSelector){
-    rootSelector = \`:is(.\${TableCellWrapper.rootSelector}, .\${TableCellWrapper.legacyRootSelector})\`;
+ElementWrapper.prototype.findTableBodyCell = function(selector) {
+  let rootSelector = \`.\${TableBodyCellWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TableBodyCellWrapper && TableBodyCellWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TableBodyCellWrapper.rootSelector}, .\${TableBodyCellWrapper.legacyRootSelector})\`;
   }
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableCellWrapper);
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableBodyCellWrapper);
 };
 
-ElementWrapper.prototype.findAllTableCells = function(selector) {
-  return this.findAllComponents(TableCellWrapper, selector);
+ElementWrapper.prototype.findAllTableBodyCells = function(selector) {
+  return this.findAllComponents(TableBodyCellWrapper, selector);
 };
 ElementWrapper.prototype.findTableHead = function(selector) {
   let rootSelector = \`.\${TableHeadWrapper.rootSelector}\`;
@@ -4144,19 +4114,6 @@ ElementWrapper.prototype.findTableHeaderCell = function(selector) {
 
 ElementWrapper.prototype.findAllTableHeaderCells = function(selector) {
   return this.findAllComponents(TableHeaderCellWrapper, selector);
-};
-ElementWrapper.prototype.findTableHeaderRow = function(selector) {
-  let rootSelector = \`.\${TableHeaderRowWrapper.rootSelector}\`;
-  if("legacyRootSelector" in TableHeaderRowWrapper && TableHeaderRowWrapper.legacyRootSelector){
-    rootSelector = \`:is(.\${TableHeaderRowWrapper.rootSelector}, .\${TableHeaderRowWrapper.legacyRootSelector})\`;
-  }
-  // casting to 'any' is needed to avoid this issue with generics
-  // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableHeaderRowWrapper);
-};
-
-ElementWrapper.prototype.findAllTableHeaderRows = function(selector) {
-  return this.findAllComponents(TableHeaderRowWrapper, selector);
 };
 ElementWrapper.prototype.findTableRoot = function(selector) {
   let rootSelector = \`.\${TableRootWrapper.rootSelector}\`;
@@ -4801,10 +4758,10 @@ ElementWrapper.prototype.findClosestTableBody = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(TableBodyWrapper);
 };
-ElementWrapper.prototype.findClosestTableCell = function() {
+ElementWrapper.prototype.findClosestTableBodyCell = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findClosestComponent(TableCellWrapper);
+  return (this as any).findClosestComponent(TableBodyCellWrapper);
 };
 ElementWrapper.prototype.findClosestTableHead = function() {
   // casting to 'any' is needed to avoid this issue with generics
@@ -4815,11 +4772,6 @@ ElementWrapper.prototype.findClosestTableHeaderCell = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(TableHeaderCellWrapper);
-};
-ElementWrapper.prototype.findClosestTableHeaderRow = function() {
-  // casting to 'any' is needed to avoid this issue with generics
-  // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findClosestComponent(TableHeaderRowWrapper);
 };
 ElementWrapper.prototype.findClosestTableRoot = function() {
   // casting to 'any' is needed to avoid this issue with generics
@@ -5014,10 +4966,9 @@ import StatusIndicatorWrapper from './status-indicator';
 import StepsWrapper from './steps';
 import TableWrapper from './table';
 import TableBodyWrapper from './table-body';
-import TableCellWrapper from './table-cell';
+import TableBodyCellWrapper from './table-body-cell';
 import TableHeadWrapper from './table-head';
 import TableHeaderCellWrapper from './table-header-cell';
-import TableHeaderRowWrapper from './table-header-row';
 import TableRootWrapper from './table-root';
 import TableRowWrapper from './table-row';
 import TabsWrapper from './tabs';
@@ -5118,10 +5069,9 @@ export { StatusIndicatorWrapper };
 export { StepsWrapper };
 export { TableWrapper };
 export { TableBodyWrapper };
-export { TableCellWrapper };
+export { TableBodyCellWrapper };
 export { TableHeadWrapper };
 export { TableHeaderCellWrapper };
-export { TableHeaderRowWrapper };
 export { TableRootWrapper };
 export { TableRowWrapper };
 export { TabsWrapper };
@@ -6489,22 +6439,22 @@ findTableBody(selector?: string): TableBodyWrapper;
  */
 findAllTableBodies(selector?: string): MultiElementWrapper<TableBodyWrapper>;
 /**
- * Returns a wrapper that matches the TableCells with the specified CSS selector.
- * If no CSS selector is specified, returns a wrapper that matches TableCells.
+ * Returns a wrapper that matches the TableBodyCells with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches TableBodyCells.
  *
  * @param {string} [selector] CSS Selector
- * @returns {TableCellWrapper}
+ * @returns {TableBodyCellWrapper}
  */
-findTableCell(selector?: string): TableCellWrapper;
+findTableBodyCell(selector?: string): TableBodyCellWrapper;
 
 /**
- * Returns a multi-element wrapper that matches TableCells with the specified CSS selector.
- * If no CSS selector is specified, returns a multi-element wrapper that matches TableCells.
+ * Returns a multi-element wrapper that matches TableBodyCells with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches TableBodyCells.
  *
  * @param {string} [selector] CSS Selector
- * @returns {MultiElementWrapper<TableCellWrapper>}
+ * @returns {MultiElementWrapper<TableBodyCellWrapper>}
  */
-findAllTableCells(selector?: string): MultiElementWrapper<TableCellWrapper>;
+findAllTableBodyCells(selector?: string): MultiElementWrapper<TableBodyCellWrapper>;
 /**
  * Returns a wrapper that matches the TableHeads with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TableHeads.
@@ -6539,23 +6489,6 @@ findTableHeaderCell(selector?: string): TableHeaderCellWrapper;
  * @returns {MultiElementWrapper<TableHeaderCellWrapper>}
  */
 findAllTableHeaderCells(selector?: string): MultiElementWrapper<TableHeaderCellWrapper>;
-/**
- * Returns a wrapper that matches the TableHeaderRows with the specified CSS selector.
- * If no CSS selector is specified, returns a wrapper that matches TableHeaderRows.
- *
- * @param {string} [selector] CSS Selector
- * @returns {TableHeaderRowWrapper}
- */
-findTableHeaderRow(selector?: string): TableHeaderRowWrapper;
-
-/**
- * Returns a multi-element wrapper that matches TableHeaderRows with the specified CSS selector.
- * If no CSS selector is specified, returns a multi-element wrapper that matches TableHeaderRows.
- *
- * @param {string} [selector] CSS Selector
- * @returns {MultiElementWrapper<TableHeaderRowWrapper>}
- */
-findAllTableHeaderRows(selector?: string): MultiElementWrapper<TableHeaderRowWrapper>;
 /**
  * Returns a wrapper that matches the TableRoots with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TableRoots.
@@ -7910,18 +7843,18 @@ ElementWrapper.prototype.findTableBody = function(selector) {
 ElementWrapper.prototype.findAllTableBodies = function(selector) {
   return this.findAllComponents(TableBodyWrapper, selector);
 };
-ElementWrapper.prototype.findTableCell = function(selector) {
-  let rootSelector = \`.\${TableCellWrapper.rootSelector}\`;
-  if("legacyRootSelector" in TableCellWrapper && TableCellWrapper.legacyRootSelector){
-    rootSelector = \`:is(.\${TableCellWrapper.rootSelector}, .\${TableCellWrapper.legacyRootSelector})\`;
+ElementWrapper.prototype.findTableBodyCell = function(selector) {
+  let rootSelector = \`.\${TableBodyCellWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TableBodyCellWrapper && TableBodyCellWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TableBodyCellWrapper.rootSelector}, .\${TableBodyCellWrapper.legacyRootSelector})\`;
   }
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableCellWrapper);
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableBodyCellWrapper);
 };
 
-ElementWrapper.prototype.findAllTableCells = function(selector) {
-  return this.findAllComponents(TableCellWrapper, selector);
+ElementWrapper.prototype.findAllTableBodyCells = function(selector) {
+  return this.findAllComponents(TableBodyCellWrapper, selector);
 };
 ElementWrapper.prototype.findTableHead = function(selector) {
   let rootSelector = \`.\${TableHeadWrapper.rootSelector}\`;
@@ -7948,19 +7881,6 @@ ElementWrapper.prototype.findTableHeaderCell = function(selector) {
 
 ElementWrapper.prototype.findAllTableHeaderCells = function(selector) {
   return this.findAllComponents(TableHeaderCellWrapper, selector);
-};
-ElementWrapper.prototype.findTableHeaderRow = function(selector) {
-  let rootSelector = \`.\${TableHeaderRowWrapper.rootSelector}\`;
-  if("legacyRootSelector" in TableHeaderRowWrapper && TableHeaderRowWrapper.legacyRootSelector){
-    rootSelector = \`:is(.\${TableHeaderRowWrapper.rootSelector}, .\${TableHeaderRowWrapper.legacyRootSelector})\`;
-  }
-  // casting to 'any' is needed to avoid this issue with generics
-  // https://github.com/microsoft/TypeScript/issues/29132
-  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableHeaderRowWrapper);
-};
-
-ElementWrapper.prototype.findAllTableHeaderRows = function(selector) {
-  return this.findAllComponents(TableHeaderRowWrapper, selector);
 };
 ElementWrapper.prototype.findTableRoot = function(selector) {
   let rootSelector = \`.\${TableRootWrapper.rootSelector}\`;

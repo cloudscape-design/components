@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../table-cell/styles.selectors.js';
+import styles from '../../../table-body-cell/styles.selectors.js';
 
-export default class TableCellWrapper extends ComponentWrapper {
+export default class TableBodyCellWrapper extends ComponentWrapper {
   static rootSelector: string = styles.cell;
 }

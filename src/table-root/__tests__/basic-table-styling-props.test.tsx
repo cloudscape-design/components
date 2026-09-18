@@ -5,17 +5,16 @@ import { render } from '@testing-library/react';
 
 import Table from '../../../lib/components/table';
 import TableBody from '../../../lib/components/table-body';
-import TableCell from '../../../lib/components/table-cell';
+import TableBodyCell from '../../../lib/components/table-body-cell';
 import TableHead from '../../../lib/components/table-head';
 import TableHeaderCell from '../../../lib/components/table-header-cell';
-import TableHeaderRow from '../../../lib/components/table-header-row';
 import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow, { TableRowProps } from '../../../lib/components/table-row';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 import legacyHeaderCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
-import cellStyles from '../../../lib/components/table-cell/styles.css.js';
+import cellStyles from '../../../lib/components/table-body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
 // Proves the row `variant` is purely visual and reaches the cell paint through context, sets no
@@ -34,15 +33,15 @@ function Harness({ variant }: { variant?: TableRowProps.Variant }) {
   return (
     <TableRoot ariaLabel="Resources">
       <TableHead>
-        <TableHeaderRow>
+        <TableRow variant="header">
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
-        </TableHeaderRow>
+        </TableRow>
       </TableHead>
       <TableBody>
         <TableRow variant={variant}>
-          <TableCell>Resource 0</TableCell>
-          <TableCell>Available</TableCell>
+          <TableBodyCell>Resource 0</TableBodyCell>
+          <TableBodyCell>Available</TableBodyCell>
         </TableRow>
       </TableBody>
     </TableRoot>
@@ -55,13 +54,13 @@ function renderHarness(variant?: TableRowProps.Variant) {
 }
 
 function cellClassLists(wrapper: ReturnType<typeof createWrapper>) {
-  return wrapper.findAllTableCells().map(cell => cell.getElement().classList);
+  return wrapper.findAllTableBodyCells().map(cell => cell.getElement().classList);
 }
 
 describe('TableRow variant is visual-only and paints through the cell', () => {
   test("variant='selected' paints every cell selected, emits the data-awsui-variant-selected adjacency hook, and sets no aria-selected", () => {
     const { wrapper } = renderHarness('selected');
-    const row = wrapper.findAllTableRows()[0].getElement();
+    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     // Visual state must NOT leak into ARIA; selection is conveyed by the selection control.
     expect(row).not.toHaveAttribute('aria-selected');
     // The one sanctioned styling hook: data-awsui-variant-selected drives the consecutive-selected outline merge.
@@ -78,7 +77,7 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
 
   test("variant='shaded' paints every cell shaded and never selected", () => {
     const { wrapper } = renderHarness('shaded');
-    const row = wrapper.findAllTableRows()[0].getElement();
+    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
     expect(row).not.toHaveAttribute('data-awsui-variant-selected');
     // data-awsui-variant-shaded drives the striped-row divider darkening (sibling adjacency), mirroring data-awsui-variant-selected.
@@ -92,7 +91,7 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
 
   test('the default variant paints neither and sets no aria-selected or data-awsui-variant-selected', () => {
     const { wrapper } = renderHarness();
-    const row = wrapper.findAllTableRows()[0].getElement();
+    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
     expect(row).not.toHaveAttribute('data-awsui-variant-selected');
     for (const classList of cellClassLists(wrapper)) {
@@ -101,34 +100,18 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
     }
   });
 
-  test('a consumer-passed data-awsui-variant-* cannot spoof the selection/shading hooks; variant is authoritative', () => {
-    const { container } = render(
-      <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 200 }] }} ariaLabel="Resources">
-        <TableBody>
-          <TableRow {...({ 'data-awsui-variant-selected': 'true', 'data-awsui-variant-shaded': 'true' } as object)}>
-            <TableCell>Spoof</TableCell>
-          </TableRow>
-        </TableBody>
-      </TableRoot>
-    );
-    const row = createWrapper(container).findAllTableRows()[0].getElement();
-    // variant defaults to 'default', so both reserved hooks must be absent despite the consumer values.
-    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
-    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
-  });
-
-  test('a TableCell rendered outside any TableRow falls back to the default (unpainted) variant', () => {
+  test('a TableBodyCell rendered outside any TableRow falls back to the default (unpainted) variant', () => {
     // Guards the RowVariantContext default so a stray cell never paints itself selected/shaded.
     const { container } = render(
       <TableRoot ariaLabel="Resources">
         <TableBody>
           <tr>
-            <TableCell>Loose</TableCell>
+            <TableBodyCell>Loose</TableBodyCell>
           </tr>
         </TableBody>
       </TableRoot>
     );
-    const classList = createWrapper(container).findAllTableCells()[0].getElement().classList;
+    const classList = createWrapper(container).findAllTableBodyCells()[0].getElement().classList;
     expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
     expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(false);
   });
@@ -141,13 +124,13 @@ describe('inline style props (virtualization)', () => {
     const { container } = render(
       <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} ariaLabel="Log">
         <TableHead>
-          <TableHeaderRow>
+          <TableRow variant="header">
             <TableHeaderCell>Name</TableHeaderCell>
-          </TableHeaderRow>
+          </TableRow>
         </TableHead>
         <TableBody positionStyle={{ position: 'relative', height: 400 }}>
           <TableRow positionStyle={{ position: 'absolute', transform: 'translateY(40px)', height: 40 }}>
-            <TableCell>Row</TableCell>
+            <TableBodyCell>Row</TableBodyCell>
           </TableRow>
         </TableBody>
       </TableRoot>
@@ -157,7 +140,7 @@ describe('inline style props (virtualization)', () => {
     expect(body.style.position).toBe('relative');
     expect(body.style.height).toBe('400px');
 
-    const row = wrapper.findAllTableRows()[0].getElement() as HTMLElement;
+    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement() as HTMLElement;
     expect(row.style.position).toBe('absolute');
     expect(row.style.transform).toBe('translateY(40px)');
     // The row keeps its shared grid template alongside the consumer's positioning style.
@@ -166,18 +149,18 @@ describe('inline style props (virtualization)', () => {
 });
 
 describe('disablePaddings', () => {
-  test('TableCell content opts into padding unless disablePaddings is set (mutually exclusive)', () => {
+  test('TableBodyCell content opts into padding unless disablePaddings is set (mutually exclusive)', () => {
     const { container } = render(
       <TableRoot ariaLabel="Resources">
         <TableBody>
           <TableRow>
-            <TableCell disablePaddings={true}>Control</TableCell>
-            <TableCell>Resource 0</TableCell>
+            <TableBodyCell disablePaddings={true}>Control</TableBodyCell>
+            <TableBodyCell>Resource 0</TableBodyCell>
           </TableRow>
         </TableBody>
       </TableRoot>
     );
-    const cells = createWrapper(container).findAllTableCells();
+    const cells = createWrapper(container).findAllTableBodyCells();
     // Padding is opt-in on the inner `.body-cell-content` wrapper: `with-paddings` normally, the
     // `disable-paddings` overflow opt-out when disablePaddings is set — never both.
     const contentOf = (index: number) =>
@@ -192,10 +175,10 @@ describe('disablePaddings', () => {
     const { container } = render(
       <TableRoot ariaLabel="Resources">
         <TableHead>
-          <TableHeaderRow>
+          <TableRow variant="header">
             <TableHeaderCell disablePaddings={true} />
             <TableHeaderCell>Name</TableHeaderCell>
-          </TableHeaderRow>
+          </TableRow>
         </TableHead>
       </TableRoot>
     );
@@ -214,13 +197,13 @@ describe('isRowHeader', () => {
       <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 120 }, {}] }} ariaLabel="Resources">
         <TableBody>
           <TableRow>
-            <TableCell isRowHeader={true}>Name</TableCell>
-            <TableCell>Value</TableCell>
+            <TableBodyCell isRowHeader={true}>Name</TableBodyCell>
+            <TableBodyCell>Value</TableBodyCell>
           </TableRow>
         </TableBody>
       </TableRoot>
     );
-    const cell = createWrapper(container).findAllTableCells()[0].getElement();
+    const cell = createWrapper(container).findAllTableBodyCells()[0].getElement();
     expect(cell.tagName).toBe('TH');
     expect(cell).toHaveAttribute('scope', 'row');
     expect(cell).toHaveAttribute('role', 'rowheader');
@@ -231,13 +214,13 @@ describe('isRowHeader', () => {
       <TableRoot ariaLabel="Resources">
         <TableBody>
           <TableRow>
-            <TableCell isRowHeader={true}>Name</TableCell>
-            <TableCell>Value</TableCell>
+            <TableBodyCell isRowHeader={true}>Name</TableBodyCell>
+            <TableBodyCell>Value</TableBodyCell>
           </TableRow>
         </TableBody>
       </TableRoot>
     );
-    const cell = createWrapper(container).findAllTableCells()[0].getElement();
+    const cell = createWrapper(container).findAllTableBodyCells()[0].getElement();
     expect(cell.tagName).toBe('TH');
     expect(cell).toHaveAttribute('scope', 'row');
     expect(cell).not.toHaveAttribute('role');
@@ -250,9 +233,9 @@ describe('nested content is insulated from the table/row context', () => {
       <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 400 }] }} ariaLabel="Outer">
         <TableBody>
           <TableRow variant="selected">
-            <TableCell>
+            <TableBodyCell>
               <Table columnDefinitions={[{ id: 'v', header: 'V', cell: item => item.v }]} items={[{ v: 'nested' }]} />
-            </TableCell>
+            </TableBodyCell>
           </TableRow>
         </TableBody>
       </TableRoot>

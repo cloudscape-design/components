@@ -10,10 +10,9 @@ import Input from '~components/input';
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
-import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
 
@@ -155,17 +154,17 @@ export default function TableColumnSizingPlaygroundPage() {
           <Header counter={`(${items.length})`}>Resources</Header>
           <TableRoot columnLayout={{ type: 'grid', columns }} ariaLabel="Resources">
             <TableHead>
-              <TableHeaderRow>
+              <TableRow variant="header">
                 {configs.map(config => (
                   <TableHeaderCell key={config.label}>{config.label}</TableHeaderCell>
                 ))}
-              </TableHeaderRow>
+              </TableRow>
             </TableHead>
             <TableBody>
               {items.map((item: Item) => (
                 <TableRow key={item.id}>
                   {configs.map(config => (
-                    <TableCell key={config.label}>{item[config.field]}</TableCell>
+                    <TableBodyCell key={config.label}>{item[config.field]}</TableBodyCell>
                   ))}
                 </TableRow>
               ))}

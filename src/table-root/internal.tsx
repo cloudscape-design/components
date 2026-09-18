@@ -25,7 +25,7 @@ export default function InternalTableRoot({
   ...rest
 }: InternalTableRootProps) {
   const isGrid = columnLayout.type === 'grid';
-  const table = useTableRoot(columnLayout, ariaRowcount);
+  const table = useTableRoot(columnLayout);
   const baseProps = getBaseProps(rest);
 
   // A wide table's horizontal scroller isn't keyboard-reachable on its own, so a read-only table with no

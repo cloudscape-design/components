@@ -29888,12 +29888,12 @@ virtualization or draggable rows. It is not supported to use this for general st
 }
 `;
 
-exports[`Components definition for table-cell matches the snapshot: table-cell 1`] = `
+exports[`Components definition for table-body-cell matches the snapshot: table-body-cell 1`] = `
 {
-  "dashCaseName": "table-cell",
+  "dashCaseName": "table-body-cell",
   "events": [],
   "functions": [],
-  "name": "TableCell",
+  "name": "TableBodyCell",
   "properties": [
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -29918,7 +29918,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Renders the cell as a row header (\`<th scope="row">\`) instead of a data cell. Defaults to \`false\`.",
+      "description": "Renders the cell as a row header (\`<th scope="row">\`) instead of a data cell (\`<td>\`). A row header
+keeps the data-cell styling; use it for the cell that names its row. Defaults to \`false\`.",
       "name": "isRowHeader",
       "optional": true,
       "type": "boolean",
@@ -30037,41 +30038,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   "regions": [
     {
       "description": "The header content, such as a column label or a sort control.",
-      "isDefault": true,
-      "name": "children",
-    },
-  ],
-  "releaseStatus": "stable",
-}
-`;
-
-exports[`Components definition for table-header-row matches the snapshot: table-header-row 1`] = `
-{
-  "dashCaseName": "table-header-row",
-  "events": [],
-  "functions": [],
-  "name": "TableHeaderRow",
-  "properties": [
-    {
-      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified classes to the root element of the component.",
-      "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
-use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
-use the \`id\` attribute, consider setting it on a parent element instead.",
-      "description": "Adds the specified ID to the root element of the component.",
-      "name": "id",
-      "optional": true,
-      "type": "string",
-    },
-  ],
-  "regions": [
-    {
-      "description": "The header cells, one per column, in order.",
       "isDefault": true,
       "name": "children",
     },
@@ -30286,16 +30252,18 @@ rows. Not intended for general styling.",
       "type": "TableRowProps.PositionStyle",
     },
     {
-      "description": "The row's visual state. Visual only — it does not set \`aria-selected\`; convey selection to
-assistive technologies via the selection control in a leading cell.
-* \`default\` - A standard row.
-* \`selected\` - Applies selected-row styling.
-* \`shaded\` - Applies a shaded background for alternating row colors.",
+      "description": "The row's variant.
+* \`default\` - A standard body row.
+* \`selected\` - Applies selected-row styling. Visual only — it does not set \`aria-selected\`;
+convey selection to assistive technologies via the selection control in a leading cell.
+* \`shaded\` - Applies a shaded background for alternating row colors.
+* \`header\` - Marks the column-header row. Use inside \`TableHead\`.",
       "inlineType": {
         "name": "TableRowProps.Variant",
         "type": "union",
         "values": [
           "default",
+          "header",
           "selected",
           "shaded",
         ],
@@ -46736,7 +46704,7 @@ Returns the current value of the input.",
     },
     {
       "methods": [],
-      "name": "TableCellWrapper",
+      "name": "TableBodyCellWrapper",
     },
     {
       "methods": [],
@@ -46745,10 +46713,6 @@ Returns the current value of the input.",
     {
       "methods": [],
       "name": "TableHeaderCellWrapper",
-    },
-    {
-      "methods": [],
-      "name": "TableHeaderRowWrapper",
     },
     {
       "methods": [],
@@ -56602,7 +56566,7 @@ Supported options:
     },
     {
       "methods": [],
-      "name": "TableCellWrapper",
+      "name": "TableBodyCellWrapper",
     },
     {
       "methods": [],
@@ -56611,10 +56575,6 @@ Supported options:
     {
       "methods": [],
       "name": "TableHeaderCellWrapper",
-    },
-    {
-      "methods": [],
-      "name": "TableHeaderRowWrapper",
     },
     {
       "methods": [],

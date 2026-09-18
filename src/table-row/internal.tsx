@@ -11,8 +11,9 @@ import { TableRowProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-// Sanctioned data-* hooks: `data-awsui-variant-selected` / `data-awsui-variant-shaded` on the <tr> let sibling-adjacency
-// CSS (consecutive-selected merge, striped divider) work, which a cell can't do from context. Inert for the Table.
+// Sanctioned data-* hooks: `data-awsui-variant-*` on the <tr> carry the row's variant so CSS can key off it —
+// sibling-adjacency (consecutive-selected merge, striped divider) and the selection ring, which a cell can't
+// express from context, plus the header-row background. Inert for the existing Table.
 export interface InternalTableRowProps extends TableRowProps, InternalBaseComponentProps {}
 
 export default function InternalTableRow({
@@ -29,18 +30,15 @@ export default function InternalTableRow({
   const { columnLayout, gridTemplateColumns } = useTableContext();
   const isGrid = columnLayout.type === 'grid';
   const { className, ...restBaseProps } = getBaseProps(rest);
-  // `variant` is the sole source of truth for these hooks: emit both unconditionally after the base-prop
-  // spread (true|undefined) so a consumer-passed data-awsui-variant-* can't spoof the selection/shading paint.
-  const reservedVariantAttributes = {
-    'data-awsui-variant-selected': variant === 'selected' ? 'true' : undefined,
-    'data-awsui-variant-shaded': variant === 'shaded' ? 'true' : undefined,
-  };
+
+  // The active variant is stamped as its data-awsui-variant-* hook (dynamic — a new variant needs no change
+  // here); the `default` variant carries none.
   return (
     <tr
       ref={__internalRootRef}
       className={clsx(className, styles.row, isGrid && styles['row-grid'])}
       {...restBaseProps}
-      {...reservedVariantAttributes}
+      {...(variant !== 'default' ? { [`data-awsui-variant-${variant}`]: true } : {})}
       role={isGrid ? 'row' : undefined}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}

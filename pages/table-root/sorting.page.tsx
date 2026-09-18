@@ -6,10 +6,9 @@ import Header from '~components/header';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
-import TableHeaderRow from '~components/table-header-row';
 import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
@@ -65,7 +64,7 @@ export default function TableSortingPage() {
         <Header counter={`(${rows.length})`}>Resources</Header>
         <TableRoot ariaLabel="Resources">
           <TableHead>
-            <TableHeaderRow>
+            <TableRow variant="header">
               {COLUMNS.map(({ key, label }) => {
                 const active = key === sortKey;
                 return (
@@ -87,15 +86,15 @@ export default function TableSortingPage() {
                   </TableHeaderCell>
                 );
               })}
-            </TableHeaderRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {rows.map(item => (
               <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.type}</TableCell>
-                <TableCell>{item.size}</TableCell>
-                <TableCell>{item.status}</TableCell>
+                <TableBodyCell>{item.name}</TableBodyCell>
+                <TableBodyCell>{item.type}</TableBodyCell>
+                <TableBodyCell>{item.size}</TableBodyCell>
+                <TableBodyCell>{item.status}</TableBodyCell>
               </TableRow>
             ))}
           </TableBody>

@@ -30,7 +30,7 @@ export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, In
     const { columnLayout } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
-    const mergedNativeAttributes = isGrid ? { ...nativeAttributes, role: 'columnheader' as const } : nativeAttributes;
+    const mergedNativeAttributes = { ...nativeAttributes, ...(isGrid ? { role: 'columnheader' as const } : undefined) };
     return (
       <th
         ref={ref}

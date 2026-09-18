@@ -2,15 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableHeaderRow,
-  TableRootProps,
-  TableRow,
-} from '~components';
+import { TableBody, TableBodyCell, TableHead, TableHeaderCell, TableRootProps, TableRow } from '~components';
 
 export interface Item {
   id: string;
@@ -41,12 +33,12 @@ export const DATA_COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
 export function DataHeader() {
   return (
     <TableHead>
-      <TableHeaderRow>
+      <TableRow variant="header">
         <TableHeaderCell>Name</TableHeaderCell>
         <TableHeaderCell>Type</TableHeaderCell>
         <TableHeaderCell>Size</TableHeaderCell>
         <TableHeaderCell>Status</TableHeaderCell>
-      </TableHeaderRow>
+      </TableRow>
     </TableHead>
   );
 }
@@ -56,10 +48,10 @@ export function DataBody({ items }: { items: Item[] }) {
     <TableBody>
       {items.map(item => (
         <TableRow key={item.id}>
-          <TableCell>{item.name}</TableCell>
-          <TableCell>{item.type}</TableCell>
-          <TableCell>{item.size}</TableCell>
-          <TableCell>{item.status}</TableCell>
+          <TableBodyCell>{item.name}</TableBodyCell>
+          <TableBodyCell>{item.type}</TableBodyCell>
+          <TableBodyCell>{item.size}</TableBodyCell>
+          <TableBodyCell>{item.status}</TableBodyCell>
         </TableRow>
       ))}
     </TableBody>

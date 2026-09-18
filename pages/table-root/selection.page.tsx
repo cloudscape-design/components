@@ -8,10 +8,9 @@ import RadioButton from '~components/radio-button';
 import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
-import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
 
@@ -84,7 +83,7 @@ export default function TableSelectionPage() {
         <Header counter={`(${selectedIds.size}/${items.length})`}>Resources</Header>
         <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} ariaLabel="Resources">
           <TableHead>
-            <TableHeaderRow>
+            <TableRow variant="header">
               <TableHeaderCell disablePaddings={true}>
                 {mode === 'multi' ? (
                   <div className={styles['selection-cell']}>
@@ -99,12 +98,12 @@ export default function TableSelectionPage() {
               </TableHeaderCell>
               <TableHeaderCell>Name</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
-            </TableHeaderRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {items.map((item: Item) => (
               <TableRow key={item.id} variant={selectedIds.has(item.id) ? 'selected' : 'default'}>
-                <TableCell disablePaddings={true}>
+                <TableBodyCell disablePaddings={true}>
                   <div className={styles['selection-cell']}>
                     {mode === 'multi' ? (
                       <Checkbox
@@ -122,9 +121,9 @@ export default function TableSelectionPage() {
                       />
                     )}
                   </div>
-                </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.status}</TableCell>
+                </TableBodyCell>
+                <TableBodyCell>{item.name}</TableBodyCell>
+                <TableBodyCell>{item.status}</TableBodyCell>
               </TableRow>
             ))}
           </TableBody>

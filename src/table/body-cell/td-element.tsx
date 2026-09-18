@@ -9,7 +9,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
-import { InternalTableCell } from '../../table-cell/internal';
+import { InternalTableBodyCell } from '../../table-body-cell/internal';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -124,7 +124,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const isEditingActive = isEditing && !isEditingDisabled;
 
     return (
-      <InternalTableCell
+      <InternalTableBodyCell
         ref={mergedRef}
         tag={tag}
         style={{ ...resizableStyle, ...stickyStyles.style }}
@@ -175,7 +175,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
             <span className={testUtilStyles['body-cell-counter']}>{counter}</span>
           </div>
         ) : null}
-      </InternalTableCell>
+      </InternalTableBodyCell>
     );
   }
 );

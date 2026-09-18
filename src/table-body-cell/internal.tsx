@@ -10,13 +10,12 @@ import { useRowVariant } from '../table-row/context';
 import bodyCellStyles from '../table/body-cell/styles.css.js';
 import styles from './styles.css.js';
 
-export interface InternalTableCellProps {
+export interface InternalTableBodyCellProps {
   tag: 'td' | 'th';
   className?: string;
   style?: React.CSSProperties;
   wrapLines?: boolean;
   disablePaddings?: boolean;
-  isRowHeader?: boolean;
   nativeAttributes?: Omit<
     React.TdHTMLAttributes<HTMLTableCellElement> | React.ThHTMLAttributes<HTMLTableCellElement>,
     'style' | 'className' | 'onClick'
@@ -29,7 +28,7 @@ export interface InternalTableCellProps {
   children?: React.ReactNode;
 }
 
-export const InternalTableCell = React.forwardRef<HTMLTableCellElement, InternalTableCellProps>(
+export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, InternalTableBodyCellProps>(
   (
     {
       tag,
@@ -37,7 +36,6 @@ export const InternalTableCell = React.forwardRef<HTMLTableCellElement, Internal
       style,
       wrapLines,
       disablePaddings,
-      isRowHeader,
       nativeAttributes,
       tabIndex,
       onClick,
@@ -52,18 +50,16 @@ export const InternalTableCell = React.forwardRef<HTMLTableCellElement, Internal
     const variant = useRowVariant();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
-    const Element = isRowHeader ? 'th' : tag;
-    // A row header renders as `<th scope="row">`. Grid mode drops the implicit cell role, so set it
-    // explicitly (rowheader for a row header, otherwise cell); a role supplied via nativeAttributes wins.
-    const mergedNativeAttributes = isGrid
-      ? {
-          ...nativeAttributes,
-          ...(isRowHeader ? { scope: 'row' as const } : {}),
-          role: nativeAttributes?.role ?? (isRowHeader ? 'rowheader' : 'cell'),
-        }
-      : isRowHeader
-        ? { ...nativeAttributes, scope: 'row' as const }
-        : nativeAttributes;
+    // Within a body cell a `<th>` is always a row header (column headers use InternalTableHeaderCell).
+    const isRowHeader = tag === 'th';
+    const mergedNativeAttributes = {
+      ...nativeAttributes,
+      // A row header is a `<th scope="row">` in either layout mode.
+      ...(isRowHeader ? { scope: 'row' as const } : undefined),
+      // Grid mode drops the implicit cell role, so set it explicitly; a role from nativeAttributes wins.
+      ...(isGrid ? { role: nativeAttributes?.role ?? (isRowHeader ? 'rowheader' : 'cell') } : undefined),
+    };
+    const Element = tag;
     return (
       <Element
         ref={ref}

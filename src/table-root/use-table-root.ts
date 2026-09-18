@@ -8,8 +8,6 @@ export interface UseTableRootResult {
   columnLayout: TableRootProps.ColumnLayout;
   /** The `grid-template-columns` value for `grid` layout, compiled from each column's `size` union; `undefined` in `auto` layout. */
   gridTemplateColumns?: string;
-  /** The consumer-supplied `aria-rowcount`, present only when the table is virtualized (a grid rendering a subset of rows). */
-  ariaRowcount?: number;
 }
 
 // Clamp negatives to 0 so one malformed dimension can't invalidate the whole
@@ -19,7 +17,7 @@ function clamp(value: number | undefined): number | undefined {
   return value === undefined || !Number.isFinite(value) ? undefined : Math.max(0, value);
 }
 
-export function useTableRoot(columnLayout: TableRootProps.ColumnLayout, ariaRowcount?: number): UseTableRootResult {
+export function useTableRoot(columnLayout: TableRootProps.ColumnLayout): UseTableRootResult {
   const gridTemplateColumns = useMemo(() => {
     if (columnLayout.type !== 'grid') {
       return undefined;
@@ -46,8 +44,5 @@ export function useTableRoot(columnLayout: TableRootProps.ColumnLayout, ariaRowc
       .join(' ');
   }, [columnLayout]);
 
-  return useMemo(
-    () => ({ columnLayout, gridTemplateColumns, ariaRowcount }),
-    [columnLayout, gridTemplateColumns, ariaRowcount]
-  );
+  return useMemo(() => ({ columnLayout, gridTemplateColumns }), [columnLayout, gridTemplateColumns]);
 }

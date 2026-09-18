@@ -691,17 +691,14 @@ exports[`test-utils selectors 1`] = `
   "table-body": [
     "awsui_body_1i6l7",
   ],
-  "table-cell": [
-    "awsui_cell_1reth",
+  "table-body-cell": [
+    "awsui_cell_2seex",
   ],
   "table-head": [
     "awsui_head_1otu2",
   ],
   "table-header-cell": [
     "awsui_header-cell_uzgsh",
-  ],
-  "table-header-row": [
-    "awsui_header-row_1wc8l",
   ],
   "table-root": [
     "awsui_root_1pkvc",

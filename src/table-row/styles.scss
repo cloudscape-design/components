@@ -15,8 +15,11 @@
   display: grid;
   inline-size: 100%;
   align-items: center;
-  // Min row track = the cell's box height, derived from the same cell-base tokens as the cell padding so
-  // the two can't drift.
+}
+
+// Body rows get a minimum row track derived from the same cell-base tokens as the cell padding, so the two
+// can't drift. Header rows size to their content instead.
+.row-grid:not([data-awsui-variant-header]) {
   grid-auto-rows: minmax(
     calc(
       #{awsui.$line-height-body-m} + 2 * #{cell-base.$cell-vertical-padding} + 2 *
@@ -54,4 +57,10 @@
   border-block-start-width: 0;
   border-start-start-radius: 0;
   border-start-end-radius: 0;
+}
+
+// Header rows (TableRow variant="header", rendered inside TableHead). Shares the base .row / .row-grid box;
+// the variant only adds the header background.
+.row[data-awsui-variant-header] {
+  background: awsui.$color-background-table-header;
 }

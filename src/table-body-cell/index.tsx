@@ -6,31 +6,30 @@ import React from 'react';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { TableCellProps } from './interfaces';
-import { InternalTableCell } from './internal';
+import { TableBodyCellProps } from './interfaces';
+import { InternalTableBodyCell } from './internal';
 
-export { TableCellProps };
+export { TableBodyCellProps };
 
-function TableCell(props: TableCellProps) {
-  const baseComponentProps = useBaseComponent('TableCell', {
+function TableBodyCell(props: TableBodyCellProps) {
+  const baseComponentProps = useBaseComponent('TableBodyCell', {
     props: { disablePaddings: props.disablePaddings, isRowHeader: props.isRowHeader },
   });
   const mergedProps = { ...props, ...baseComponentProps };
-  const { children, disablePaddings, isRowHeader, __internalRootRef } = mergedProps;
+  const { children, isRowHeader, disablePaddings, __internalRootRef } = mergedProps;
   const { className, ...restBaseProps } = getBaseProps(mergedProps);
   return (
-    <InternalTableCell
-      tag="td"
+    <InternalTableBodyCell
+      tag={isRowHeader ? 'th' : 'td'}
       ref={__internalRootRef}
       className={className}
       disablePaddings={disablePaddings}
-      isRowHeader={isRowHeader}
       nativeAttributes={restBaseProps}
     >
       {children}
-    </InternalTableCell>
+    </InternalTableBodyCell>
   );
 }
 
-applyDisplayName(TableCell, 'TableCell');
-export default TableCell;
+applyDisplayName(TableBodyCell, 'TableBodyCell');
+export default TableBodyCell;

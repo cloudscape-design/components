@@ -22,7 +22,7 @@ const COLUMN_COUNT = 4;
 // Loading and empty states are composed by the consumer. In auto layout the table is a native
 // `<table>`, so a single full-width status row is a plain `<td colSpan>` the consumer renders inside
 // a `TableRow`. The consumer owns the data and the state; the status content is wrapped in a `Box`
-// so its centered padding comes from spacing design tokens, not a standard data `TableCell`.
+// so its centered padding comes from spacing design tokens, not a standard data `TableBodyCell`.
 export default function TableLoadingEmptyPage() {
   const { urlParams, setUrlParams } = useAppContext<'dataState'>();
   const state: State =
