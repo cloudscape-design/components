@@ -10221,7 +10221,15 @@ exports[`Components definition for container matches the snapshot: container 1`]
 {
   "dashCaseName": "container",
   "events": [],
-  "functions": [],
+  "functions": [
+    {
+      "description": "Sets focus on the container and scrolls it into view. Use this to move the user's focus to a
+container programmatically, for example in "jump to item" or deep-linking patterns.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
   "name": "Container",
   "properties": [
     {

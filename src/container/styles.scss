@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/utils' as utils;
 @use './shared' as shared;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
@@ -65,6 +66,17 @@
   &.with-stuck-sticky-header-at-bottom {
     border-end-end-radius: 0;
     border-end-start-radius: 0;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  // The programmatic focus ring lives on ::after so it layers above a consumer-supplied
+  // style.root.boxShadow (an inline box-shadow on the root). In classic the ::after otherwise
+  // carries the container drop shadow, which the ring replaces for the duration of the focus.
+  &.focus-ring:focus::after {
+    @include utils.base-pseudo-element;
+    @include styles.container-focus();
   }
 }
 
