@@ -4,22 +4,48 @@ import React from 'react';
 
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
+import TableBody from '~components/table-body';
+import TableCell from '~components/table-cell';
 import TableRoot from '~components/table-root';
+import TableRow from '~components/table-row';
+import Toggle from '~components/toggle';
 
+import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
-import { DataBody, DataHeader, makeItems } from './common';
+import { DataHeader, makeItems } from './common';
 
-// A minimal read-only table in auto layout. `columnLayout` is omitted, so it
-// defaults to `{ type: 'auto' }` — columns size to their content and the count comes from the cells.
+// A minimal read-only table in auto layout (`columnLayout` omitted, so it defaults to `{ type: 'auto' }`).
+// Striping is composed by the consumer via the row `variant`: with the toggle on, alternating rows are
+// marked `shaded` — the atomic table owns no row-parity computation.
 export default function TableSimplePage() {
-  const items = makeItems(8);
+  const items = makeItems(10);
+  const { urlParams, setUrlParams } = useAppContext<'stripedRows'>();
+  const striped = urlParams.stripedRows === true || urlParams.stripedRows === 'true';
+
   return (
-    <SimplePage title="Table atomics — simple (auto layout)" screenshotArea={{}}>
+    <SimplePage
+      title="Table atomics — simple (auto layout)"
+      settings={
+        <Toggle checked={striped} onChange={({ detail }) => setUrlParams({ stripedRows: detail.checked })}>
+          Striped rows
+        </Toggle>
+      }
+      screenshotArea={{}}
+    >
       <SpaceBetween size="s">
         <Header counter={`(${items.length})`}>Resources</Header>
         <TableRoot ariaLabel="Resources">
           <DataHeader />
-          <DataBody items={items} />
+          <TableBody>
+            {items.map((item, index) => (
+              <TableRow key={item.id} variant={striped && index % 2 === 1 ? 'shaded' : 'default'}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.type}</TableCell>
+                <TableCell>{item.size}</TableCell>
+                <TableCell>{item.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </TableRoot>
       </SpaceBetween>
     </SimplePage>

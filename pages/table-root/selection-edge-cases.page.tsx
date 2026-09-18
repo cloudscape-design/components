@@ -11,7 +11,7 @@ import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow, { TableRowProps } from '~components/table-row';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 // Visual coverage for the grid-layout selection-outline edge cases: the selected-row outline is an
 // abspos `::after` placed into the row's grid area (`grid-column: 1 / -1`), so it hugs the column extent
@@ -97,10 +97,7 @@ const fixedWide: TableRootProps.ColumnLayout = {
 
 export default function TableSelectionEdgeCasesPage() {
   return (
-    <ScreenshotArea>
-      <Box variant="h1" padding="s">
-        Table atomics — grid selection edge cases
-      </Box>
+    <SimplePage title="Table atomics — grid selection edge cases" screenshotArea={{}}>
       <Grid label="Fill (flex, selected row)" columnLayout={flex3} selected={[1]} />
       <Grid label="Underfill (capped columns, selected row)" columnLayout={capped3} selected={[1]} />
       <Grid label="Underfill + long content row (flex)" columnLayout={flex3} selected={[1]} longFirstCell={true} />
@@ -113,6 +110,6 @@ export default function TableSelectionEdgeCasesPage() {
       <Grid label="Merge (two consecutive selected rows)" columnLayout={flex3} selected={[0, 1]} />
       <Grid label="Shaded (striped rows)" columnLayout={flex3} shaded={[0, 2]} />
       <Grid label="Auto layout (selected row, outline falls back to row box)" selected={[1]} />
-    </ScreenshotArea>
+    </SimplePage>
   );
 }
