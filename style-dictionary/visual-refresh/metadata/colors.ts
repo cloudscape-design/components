@@ -749,6 +749,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderDropdownItemDefault: {
+    description:
+      'The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.',
+    public: true,
+    themeable: true,
+  },
   colorBorderDropdownItemHover: {
     description:
       'The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.',
