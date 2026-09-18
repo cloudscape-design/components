@@ -16,6 +16,8 @@ import Link from '~components/link';
 import Modal from '~components/modal';
 import Pagination from '~components/pagination';
 import Popover from '~components/popover';
+import ProgressBar from '~components/progress-bar';
+import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import RadioGroup from '~components/radio-group';
 import Select from '~components/select';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
@@ -158,7 +160,7 @@ function TimeRangeSelector() {
   }
 
   return (
-    <SpaceBetween direction="horizontal" size="xxxs" alignItems="center">
+    <SpaceBetween direction="horizontal" size="xxxs">
       {RANGE_OPTIONS.map(({ id, label, value }) => (
         <ToggleButton
           key={id}
@@ -525,6 +527,14 @@ export default function App() {
   const [newTableDescription, setNewTableDescription] = useState('');
   const [newTableKmsKey, setNewTableKmsKey] = useState('');
   const [filterText, setFilterText] = useState('');
+  const [scopeQuery, setScopeQuery] = useState<PropertyFilterProps.Query>({
+    operation: 'and',
+    tokens: [
+      { propertyKey: 'logGroup', operator: '=', value: 'All' },
+      { propertyKey: 'logClass', operator: '=', value: 'Standard' },
+      { propertyKey: 'tag', operator: '=', value: 'All values' },
+    ],
+  });
 
   const filteredItems = LOG_ENTRIES.filter(
     item =>
@@ -628,15 +638,78 @@ export default function App() {
                             {/* ── Query scope + filters ── */}
                             <Container header={<Header variant="h3">Query scope</Header>}>
                               <SpaceBetween size="s">
-                                {/* Query scope search */}
-                                {/* <FormField label="Query scope"> */}
                                 <div style={{ display: 'flex', gap: '6px' }}>
                                   <div style={{ flex: 1 }}>
-                                    <Input
-                                      value=""
-                                      onChange={() => {}}
-                                      placeholder="Search to add a filter..."
-                                      type="search"
+                                    <PropertyFilter
+                                      query={scopeQuery}
+                                      onChange={({ detail }) => setScopeQuery(detail)}
+                                      filteringProperties={[
+                                        {
+                                          key: 'logGroup',
+                                          propertyLabel: 'Log group',
+                                          groupValuesLabel: 'Log group values',
+                                          operators: ['=', '!='],
+                                        },
+                                        {
+                                          key: 'logStream',
+                                          propertyLabel: 'Log stream',
+                                          groupValuesLabel: 'Log stream values',
+                                          operators: ['=', '!='],
+                                        },
+                                        {
+                                          key: 'logClass',
+                                          propertyLabel: 'Log class',
+                                          groupValuesLabel: 'Log class values',
+                                          operators: ['=', '!='],
+                                        },
+                                        {
+                                          key: 'tag',
+                                          propertyLabel: 'Tag',
+                                          groupValuesLabel: 'Tag values',
+                                          operators: ['=', '!='],
+                                        },
+                                      ]}
+                                      filteringOptions={[
+                                        { propertyKey: 'logGroup', value: 'All' },
+                                        { propertyKey: 'logClass', value: 'Standard' },
+                                        { propertyKey: 'logClass', value: 'Infrequent Access' },
+                                        { propertyKey: 'tag', value: 'aws:cloudformation:logical-id' },
+                                        { propertyKey: 'tag', value: 'aws:cloudformation:stack-name' },
+                                      ]}
+                                      filteringPlaceholder="Search to add a filter..."
+                                      disableFreeTextFiltering={true}
+                                      hideOperations={true}
+                                      i18nStrings={{
+                                        filteringAriaLabel: 'Filter log groups',
+                                        filteringPlaceholder: 'Search to add a filter...',
+                                        groupPropertiesText: 'Properties',
+                                        groupValuesText: 'Values',
+                                        operatorText: 'Operator',
+                                        operatorsText: 'Operators',
+                                        operatorLessText: 'Less than',
+                                        operatorLessOrEqualText: 'Less than or equal',
+                                        operatorGreaterText: 'Greater than',
+                                        operatorGreaterOrEqualText: 'Greater than or equal',
+                                        operatorContainsText: 'Contains',
+                                        operatorDoesNotContainText: 'Does not contain',
+                                        operatorEqualsText: 'Equals',
+                                        operatorDoesNotEqualText: 'Does not equal',
+                                        operatorStartsWithText: 'Starts with',
+                                        operatorDoesNotStartWithText: 'Does not start with',
+                                        operationAndText: 'and',
+                                        operationOrText: 'or',
+                                        propertyText: 'Property',
+                                        valueText: 'Value',
+                                        clearFiltersText: 'Clear filters',
+                                        applyActionText: 'Apply',
+                                        cancelActionText: 'Cancel',
+                                        allPropertiesLabel: 'All properties',
+                                        tokenLimitShowMore: 'Show more',
+                                        tokenLimitShowFewer: 'Show fewer',
+                                        removeTokenButtonAriaLabel: token =>
+                                          `Remove filter: ${token.propertyLabel} ${token.operator} ${token.value}`,
+                                        enteredTextLabel: text => `Use: "${text}"`,
+                                      }}
                                     />
                                   </div>
                                   <TimeRangeSelector />
@@ -651,32 +724,6 @@ export default function App() {
                                     ]}
                                   />
                                 </div>
-                                {/* </FormField> */}
-
-                                {/* Filter tokens row */}
-                                <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-                                  <ButtonDropdown
-                                    items={[
-                                      { id: 'log-group', text: 'Log group' },
-                                      { id: 'log-stream', text: 'Log stream' },
-                                    ]}
-                                  >
-                                    Log group
-                                  </ButtonDropdown>
-                                  <Box>= All</Box>
-                                  <ButtonDropdown items={[{ id: 'log-class', text: 'Log class' }]}>
-                                    Log class
-                                  </ButtonDropdown>
-                                  <Box>= Standard</Box>
-                                  <ButtonDropdown items={[{ id: 'tag', text: 'Tag' }]}>Tag</ButtonDropdown>
-                                  <Box>aws:cloudformation:logical-id</Box>
-                                  <ButtonDropdown items={[{ id: 'eq', text: '=' }]}>=</ButtonDropdown>
-                                  <ButtonDropdown items={[{ id: 'all-values', text: 'All values' }]}>
-                                    All values
-                                  </ButtonDropdown>
-                                  <Button iconName="close" variant="icon" ariaLabel="Remove tag filter" />
-                                  <Button iconName="add-plus">Add filter</Button>
-                                </SpaceBetween>
 
                                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                                   <Button variant="link" iconName="angle-up">
@@ -823,55 +870,202 @@ export default function App() {
                                         {/* Field token pills */}
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                                           {[
-                                            { name: '@aws.account', pct: '100%', color: '#d91515' },
-                                            { name: '@aws.region', pct: '100%', color: '#d91515' },
-                                            { name: '@data_format', pct: '100%', color: '#d91515' },
-                                            { name: '@data_source_name', pct: '100%', color: '#d91515' },
-                                            { name: '@data_source_type', pct: '100%', color: '#d91515' },
-                                            { name: '@ingestionTime', pct: '100%', color: '#d91515' },
-                                            { name: '@log', pct: '100%', color: '#d91515' },
-                                            { name: '@logStream', pct: '100%', color: '#d91515' },
-                                            { name: '@message', pct: '100%', color: '#d91515' },
-                                            { name: '@timestamp', pct: '100%', color: '#d91515' },
-                                            { name: 'CallerAccountId', pct: '100%', color: '#037f0c' },
-                                            { name: 'CallerCategory', pct: '100%', color: '#037f0c' },
-                                            { name: 'CallerSessionArn', pct: '100%', color: '#037f0c' },
-                                            { name: 'ClientCountry', pct: '100%', color: '#037f0c' },
-                                            { name: 'ClientIp', pct: '100%', color: '#037f0c' },
-                                            { name: 'Headers.Referer.0', pct: '100%', color: '#037f0c' },
-                                            { name: 'Headers.User-Agent.0', pct: '100%', color: '#037f0c' },
-                                            { name: 'IsDualstackDomain', pct: '100%', color: '#037f0c' },
-                                            { name: 'Location', pct: '100%', color: '#037f0c' },
-                                            { name: '+52 more', pct: null, color: '#037f0c' },
-                                          ].map(({ name, pct, color }) => (
-                                            <Button key={name} variant="inline-link">
-                                              <span
-                                                style={{
-                                                  display: 'inline-flex',
-                                                  alignItems: 'center',
-                                                  gap: 4,
-                                                  fontSize: 13,
-                                                }}
-                                              >
+                                            { name: '@aws.account', pct: '100%', color: '#d91515', indexed: true },
+                                            { name: '@aws.region', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: '@data_format', pct: '100%', color: '#d91515', indexed: false },
+                                            {
+                                              name: '@data_source_name',
+                                              pct: '100%',
+                                              color: '#d91515',
+                                              indexed: false,
+                                            },
+                                            {
+                                              name: '@data_source_type',
+                                              pct: '100%',
+                                              color: '#d91515',
+                                              indexed: false,
+                                            },
+                                            { name: '@ingestionTime', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: '@log', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: '@logStream', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: '@message', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: '@timestamp', pct: '100%', color: '#d91515', indexed: false },
+                                            { name: 'CallerAccountId', pct: '100%', color: '#037f0c', indexed: false },
+                                            { name: 'CallerCategory', pct: '100%', color: '#037f0c', indexed: false },
+                                            { name: 'CallerSessionArn', pct: '100%', color: '#037f0c', indexed: false },
+                                            { name: 'ClientCountry', pct: '100%', color: '#037f0c', indexed: false },
+                                            { name: 'ClientIp', pct: '100%', color: '#037f0c', indexed: false },
+                                            {
+                                              name: 'Headers.Referer.0',
+                                              pct: '100%',
+                                              color: '#037f0c',
+                                              indexed: false,
+                                            },
+                                            {
+                                              name: 'Headers.User-Agent.0',
+                                              pct: '100%',
+                                              color: '#037f0c',
+                                              indexed: false,
+                                            },
+                                            {
+                                              name: 'IsDualstackDomain',
+                                              pct: '100%',
+                                              color: '#037f0c',
+                                              indexed: false,
+                                            },
+                                            { name: 'Location', pct: '100%', color: '#037f0c', indexed: false },
+                                            { name: '+52 more', pct: null, color: '#037f0c', indexed: false },
+                                          ].map(({ name, pct, color, indexed }) => (
+                                            <Popover
+                                              key={name}
+                                              triggerType="custom"
+                                              position="bottom"
+                                              size="medium"
+                                              dismissButton={false}
+                                              renderWithPortal={true}
+                                              content={
+                                                <SpaceBetween size="s">
+                                                  {/* Header row */}
+                                                  <div
+                                                    style={{
+                                                      display: 'flex',
+                                                      alignItems: 'center',
+                                                      justifyContent: 'space-between',
+                                                      gap: 8,
+                                                    }}
+                                                  >
+                                                    <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
+                                                      <Box fontWeight="bold">{name}</Box>
+                                                      <Button
+                                                        iconName="copy"
+                                                        variant="icon"
+                                                        ariaLabel={`Copy ${name}`}
+                                                      />
+                                                    </SpaceBetween>
+                                                    {indexed && (
+                                                      <span
+                                                        style={{
+                                                          display: 'inline-flex',
+                                                          alignItems: 'center',
+                                                          gap: 4,
+                                                          padding: '2px 8px',
+                                                          border: '1px solid #0972d3',
+                                                          borderRadius: 12,
+                                                          fontSize: 12,
+                                                          color: '#0972d3',
+                                                        }}
+                                                      >
+                                                        <span
+                                                          style={{
+                                                            width: 8,
+                                                            height: 8,
+                                                            borderRadius: '50%',
+                                                            background: '#0972d3',
+                                                            display: 'inline-block',
+                                                          }}
+                                                        />
+                                                        Indexed field
+                                                      </span>
+                                                    )}
+                                                  </div>
+
+                                                  {/* Coverage */}
+                                                  <SpaceBetween size="xxs">
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                      <Box variant="small" color="text-body-secondary">
+                                                        Coverage
+                                                      </Box>
+                                                      <Box variant="small">{pct ?? '—'}</Box>
+                                                    </div>
+                                                    <ProgressBar
+                                                      value={pct ? parseInt(pct) : 0}
+                                                      variant="standalone"
+                                                      ariaLabel="Coverage"
+                                                    />
+                                                  </SpaceBetween>
+
+                                                  {/* Log Groups */}
+                                                  <SpaceBetween size="xxs">
+                                                    <div
+                                                      style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                      }}
+                                                    >
+                                                      <Button variant="inline-link" iconName="caret-right-filled">
+                                                        <Box variant="small" fontWeight="bold">
+                                                          LOG GROUPS
+                                                        </Box>
+                                                      </Button>
+                                                      <Box variant="small" color="text-body-secondary">
+                                                        2/2 ⚡ 2
+                                                      </Box>
+                                                    </div>
+                                                  </SpaceBetween>
+
+                                                  {/* Query Actions */}
+                                                  <SpaceBetween size="xxs">
+                                                    <Box variant="small" fontWeight="bold" color="text-body-secondary">
+                                                      QUERY ACTIONS
+                                                    </Box>
+                                                    {[
+                                                      { label: 'Filter', icon: 'filter' as const },
+                                                      { label: 'Aggregate & Sort', icon: 'menu' as const },
+                                                      { label: 'Transform', icon: 'multiscreen' as const },
+                                                    ].map(({ label, icon }) => (
+                                                      <div
+                                                        key={label}
+                                                        style={{
+                                                          display: 'flex',
+                                                          justifyContent: 'space-between',
+                                                          alignItems: 'center',
+                                                          padding: '2px 0',
+                                                        }}
+                                                      >
+                                                        <Button variant="inline-link" iconName={icon}>
+                                                          {label}
+                                                        </Button>
+                                                        <Button
+                                                          iconName="angle-right"
+                                                          variant="icon"
+                                                          ariaLabel={`Expand ${label}`}
+                                                        />
+                                                      </div>
+                                                    ))}
+                                                  </SpaceBetween>
+                                                </SpaceBetween>
+                                              }
+                                            >
+                                              <Button variant="inline-link">
                                                 <span
                                                   style={{
-                                                    width: 8,
-                                                    height: 8,
-                                                    borderRadius: '50%',
-                                                    background: color,
-                                                    flexShrink: 0,
-                                                    display: 'inline-block',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: 4,
+                                                    fontSize: 13,
                                                   }}
-                                                />
-                                                {name}
-                                                {pct && (
-                                                  <Box color="text-body-secondary" display="inline">
-                                                    {' '}
-                                                    {pct}
-                                                  </Box>
-                                                )}
-                                              </span>
-                                            </Button>
+                                                >
+                                                  <span
+                                                    style={{
+                                                      width: 8,
+                                                      height: 8,
+                                                      borderRadius: '50%',
+                                                      background: color,
+                                                      flexShrink: 0,
+                                                      display: 'inline-block',
+                                                    }}
+                                                  />
+                                                  {name}
+                                                  {pct && (
+                                                    <Box color="text-body-secondary" display="inline">
+                                                      {' '}
+                                                      {pct}
+                                                    </Box>
+                                                  )}
+                                                </span>
+                                              </Button>
+                                            </Popover>
                                           ))}
                                         </div>
                                       </SpaceBetween>
@@ -979,11 +1173,17 @@ export default function App() {
                                       if (isParsedField(item as unknown as LogEntry | ParsedField)) {
                                         return (
                                           <Box padding={{ left: 'xl' }}>
-                                            <Link href="#">{field.key}</Link>
+                                            <Link href="#" fontSize="body-s">
+                                              {field.key}
+                                            </Link>
                                           </Box>
                                         );
                                       }
-                                      return <Link href="#">{item.timestamp}</Link>;
+                                      return (
+                                        <Link href="#" fontSize="body-s">
+                                          {item.timestamp}
+                                        </Link>
+                                      );
                                     },
                                   },
                                   {
@@ -993,7 +1193,7 @@ export default function App() {
                                       const field = item as unknown as ParsedField;
                                       if (isParsedField(item as unknown as LogEntry | ParsedField)) {
                                         return field.isLink ? (
-                                          <Link href="#" external={true}>
+                                          <Link href="#" external={true} fontSize="body-s">
                                             {field.value}
                                           </Link>
                                         ) : (
