@@ -29,7 +29,7 @@ interface ToolbarBreadcrumbsSectionProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
   breadcrumbsExternallyOwned?: boolean;
-  registerBreadcrumbs?: BreadcrumbsSlotContextType['registerBreadcrumbs'];
+  extractOwnBreadcrumbs?: BreadcrumbsSlotContextType['extractOwnBreadcrumbs'];
   includeTestUtils?: boolean;
 }
 
@@ -37,7 +37,7 @@ export function ToolbarBreadcrumbsSection({
   ownBreadcrumbs,
   discoveredBreadcrumbs,
   breadcrumbsExternallyOwned,
-  registerBreadcrumbs,
+  extractOwnBreadcrumbs,
   includeTestUtils = false,
 }: ToolbarBreadcrumbsSectionProps) {
   return (
@@ -52,7 +52,7 @@ export function ToolbarBreadcrumbsSection({
       <BreadcrumbsSlot
         ownBreadcrumbs={ownBreadcrumbs}
         discoveredBreadcrumbs={discoveredBreadcrumbs}
-        registerBreadcrumbs={registerBreadcrumbs}
+        extractOwnBreadcrumbs={extractOwnBreadcrumbs}
       />
     </div>
   );

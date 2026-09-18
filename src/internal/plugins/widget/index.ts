@@ -75,10 +75,10 @@ export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload)
     return { registered: false, unregister: () => {} };
   }
 
-  const registration = { id: {}, active: true };
+  let active = true;
   const message: RegisterBreadcrumbsExternalConsumerMessage = {
     type: 'registerBreadcrumbsExternalConsumer',
-    payload: { ...payload, registration },
+    payload,
   };
   pushInitialMessage(message);
   payload.onBreadcrumbsChange(null);
@@ -87,21 +87,17 @@ export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload)
   return {
     registered: true,
     unregister: () => {
-      if (!registration.active) {
+      if (!active) {
         return;
       }
-      registration.active = false;
+      active = false;
       const initialMessages = getAppLayoutInitialMessages();
       setInitialMessage(
-        initialMessages.filter(
-          initialMessage =>
-            initialMessage.type !== 'registerBreadcrumbsExternalConsumer' ||
-            initialMessage.payload.registration.id !== registration.id
-        )
+        initialMessages.filter(initialMessage => initialMessage.type !== 'registerBreadcrumbsExternalConsumer')
       );
       const unregisterMessage: UnregisterBreadcrumbsExternalConsumerMessage = {
         type: 'unregisterBreadcrumbsExternalConsumer',
-        payload: { registration },
+        payload: undefined,
       };
       getAppLayoutMessageHandler()?.(unregisterMessage as WidgetMessage<unknown>);
     },

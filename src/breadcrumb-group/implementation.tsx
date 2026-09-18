@@ -123,7 +123,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   __injectAnalyticsComponentMetadata,
   ...props
 }: InternalBreadcrumbGroupProps<T>) {
-  const { registerBreadcrumbs } = useContext(BreadcrumbsSlotContext) ?? {};
+  const { extractOwnBreadcrumbs } = useContext(BreadcrumbsSlotContext) ?? {};
   const reportedProps = {
     ...props,
     items,
@@ -132,24 +132,24 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     onClick,
     onFollow,
   } as BreadcrumbGroupProps;
-  const breadcrumbsRegistrationRef = useRef<ReturnType<NonNullable<typeof registerBreadcrumbs>> | null>(null);
+  const breadcrumbsExtractionRef = useRef<ReturnType<NonNullable<typeof extractOwnBreadcrumbs>> | null>(null);
 
   useLayoutEffect(() => {
-    if (!registerBreadcrumbs) {
+    if (!extractOwnBreadcrumbs) {
       return;
     }
-    const registration = registerBreadcrumbs(reportedProps);
-    breadcrumbsRegistrationRef.current = registration;
+    const extraction = extractOwnBreadcrumbs(reportedProps);
+    breadcrumbsExtractionRef.current = extraction;
     return () => {
-      breadcrumbsRegistrationRef.current = null;
-      registration.cleanup();
+      breadcrumbsExtractionRef.current = null;
+      extraction.cleanup();
     };
     // Prop updates are handled by the following layout effect.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerBreadcrumbs]);
+  }, [extractOwnBreadcrumbs]);
 
   useLayoutEffect(() => {
-    breadcrumbsRegistrationRef.current?.update(reportedProps);
+    breadcrumbsExtractionRef.current?.update(reportedProps);
   });
 
   for (const item of items) {

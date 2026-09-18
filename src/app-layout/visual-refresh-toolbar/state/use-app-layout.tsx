@@ -19,7 +19,6 @@ import { useIntersectionObserver } from '../../../internal/hooks/use-intersectio
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { metrics } from '../../../internal/metrics';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
-import { isBreadcrumbsOwnedExternally } from '../../../internal/plugins/widget/core';
 import { BreadcrumbsConsumerMessagePayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
@@ -104,8 +103,9 @@ export const useAppLayout = (
   }, []);
   const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
   const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
-  const { breadcrumbs: ownBreadcrumbs, registerBreadcrumbs } = useOwnBreadcrumbsProps();
-  const [breadcrumbsConsumer, setBreadcrumbsConsumer] = useState<BreadcrumbsConsumerMessagePayload | null>(null);
+  const { breadcrumbs: ownBreadcrumbs, extractOwnBreadcrumbs } = useOwnBreadcrumbsProps();
+  const breadcrumbsConsumerRef = useRef<BreadcrumbsConsumerMessagePayload | null>(null);
+  const [hasBreadcrumbsConsumer, setHasBreadcrumbsConsumer] = useState(false);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -269,14 +269,14 @@ export const useAppLayout = (
 
   useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'registerBreadcrumbsExternalConsumer') {
-      setBreadcrumbsConsumer(message.payload);
+      breadcrumbsConsumerRef.current = message.payload;
+      setHasBreadcrumbsConsumer(true);
       return;
     }
 
     if (message.type === 'unregisterBreadcrumbsExternalConsumer') {
-      setBreadcrumbsConsumer(current =>
-        current?.registration.id === message.payload.registration.id ? null : current
-      );
+      breadcrumbsConsumerRef.current = null;
+      setHasBreadcrumbsConsumer(false);
       return;
     }
 
@@ -462,28 +462,11 @@ export const useAppLayout = (
   const rootRef = useMergeRefs(rootRefInternal, intersectionObserverRef, onMountRootRef);
 
   const currentBreadcrumbs = breadcrumbs ? ownBreadcrumbs : discoveredBreadcrumbs;
-  const canRenderBreadcrumbsExternally = !breadcrumbs || !!ownBreadcrumbs;
-  const breadcrumbsExternallyOwned =
-    hasToolbar && (isBreadcrumbsOwnedExternally() || (!!breadcrumbsConsumer && canRenderBreadcrumbsExternally));
+  const breadcrumbsExternallyOwned = hasBreadcrumbsConsumer;
 
   useLayoutEffect(() => {
-    if (breadcrumbsConsumer && hasToolbar) {
-      breadcrumbsConsumer.onBreadcrumbsChange(
-        isIntersecting && canRenderBreadcrumbsExternally ? currentBreadcrumbs : null
-      );
-    }
-  }, [breadcrumbsConsumer, canRenderBreadcrumbsExternally, currentBreadcrumbs, hasToolbar, isIntersecting]);
-
-  useEffect(() => {
-    if (!breadcrumbsConsumer || !hasToolbar) {
-      return;
-    }
-    return () => {
-      if (breadcrumbsConsumer.registration.active) {
-        breadcrumbsConsumer.onBreadcrumbsChange(null);
-      }
-    };
-  }, [breadcrumbsConsumer, hasToolbar]);
+    breadcrumbsConsumerRef.current?.onBreadcrumbsChange(isIntersecting ? currentBreadcrumbs || null : null);
+  }, [breadcrumbsExternallyOwned, currentBreadcrumbs, isIntersecting]);
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
@@ -507,8 +490,6 @@ export const useAppLayout = (
     isMobile,
     breadcrumbs,
     discoveredBreadcrumbs,
-    breadcrumbsExternallyOwned,
-    registerBreadcrumbs,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
     navigation: resolvedNavigation,
@@ -712,6 +693,8 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
+      breadcrumbsExternallyOwned,
+      extractOwnBreadcrumbs,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
       navigationAnimationDisabled,

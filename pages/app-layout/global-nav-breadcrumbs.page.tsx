@@ -60,7 +60,7 @@ function GlobalNavigationHeader() {
 }
 
 export default function GlobalNavBreadcrumbsPage() {
-  const [navHeaderMounted, setNavHeaderMounted] = useState(true);
+  const [navHeaderMounted, setNavHeaderMounted] = useState(false);
   const [items, setItems] = useState<BreadcrumbGroupProps['items']>([
     { text: 'Home', href: '#home' },
     { text: 'Service', href: '#service' },

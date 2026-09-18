@@ -107,8 +107,8 @@ function IframeInstance({ id, label, AppComponent }: { id: string; label: string
 }
 
 export default function GlobalNavBreadcrumbsMultiInstancePage() {
-  const [navHeaderMounted, setNavHeaderMounted] = useState(true);
-  const [alphaMounted, setAlphaMounted] = useState(true);
+  const [navHeaderMounted, setNavHeaderMounted] = useState(false);
+  const [alphaMounted, setAlphaMounted] = useState(false);
   const [betaMounted, setBetaMounted] = useState(false);
 
   return (

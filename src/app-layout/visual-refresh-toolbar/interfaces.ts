@@ -64,8 +64,6 @@ export interface AppLayoutInternals {
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
-  breadcrumbsExternallyOwned?: boolean;
-  registerBreadcrumbs?: BreadcrumbsSlotContextType['registerBreadcrumbs'];
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
   verticalOffsets: VerticalLayoutOutput;
@@ -93,6 +91,8 @@ export interface AppLayoutInternals {
 }
 
 export interface AppLayoutWidgetizedState extends AppLayoutInternals {
+  breadcrumbsExternallyOwned?: boolean;
+  extractOwnBreadcrumbs?: BreadcrumbsSlotContextType['extractOwnBreadcrumbs'];
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;
