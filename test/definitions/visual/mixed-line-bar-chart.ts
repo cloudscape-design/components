@@ -46,13 +46,14 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
-        await page.keys(['ArrowRight']);
-        await page.keys(['ArrowRight']);
-        await page.keys(['ArrowRight']);
+        await page.keys([horizontalKey]);
+        await page.keys([horizontalKey]);
+        await page.keys([horizontalKey]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
       },
     },
@@ -61,13 +62,14 @@ const suite: TestSuite = {
       path: 'mixed-line-bar-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
-      setup: async ({ page }) => {
+      setup: async ({ page, configuration }) => {
+        const horizontalKey = configuration?.direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
         await page.click('#focus-target');
         await page.focusNextElement();
         await page.focusNextElement();
-        await page.keys(['ArrowRight']);
-        await page.keys(['ArrowRight']);
-        await page.keys(['ArrowRight']);
+        await page.keys([horizontalKey]);
+        await page.keys([horizontalKey]);
+        await page.keys([horizontalKey]);
         await page.waitForVisible(TEST_CHART_TOOLTIP_HEADER);
         await page.keys(['Enter']);
         await page.waitForVisible('[aria-label="Dismiss"]');
