@@ -9,7 +9,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { InternalTableBodyCell } from '../../table-body-cell/internal';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -101,12 +101,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
-    const Element = isRowHeader ? 'th' : 'td';
-    const isVisualRefresh = useVisualRefresh();
+    const tag = isRowHeader ? 'th' : 'td';
 
     resizableStyle = resizableColumns ? {} : resizableStyle;
 
-    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
+    const cellNativeAttributes = {
+      ...nativeAttributes,
+      ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }),
+      ...copyAnalyticsMetadataAttribute(rest),
+    };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
@@ -121,16 +124,16 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const isEditingActive = isEditing && !isEditingDisabled;
 
     return (
-      <Element
+      <InternalTableBodyCell
+        ref={mergedRef}
+        tag={tag}
         style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
-          styles['body-cell'],
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
           isPrevSelected && styles['body-cell-prev-selected'],
           !isEvenRow && stripedRows && styles['body-cell-shaded'],
           stripedRows && styles['has-striped-rows'],
-          isVisualRefresh && styles['is-visual-refresh'],
           isSelection && tableStyles['selection-control'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
@@ -145,36 +148,34 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           tableVariant && styles[`table-variant-${tableVariant}`],
           stickyStyles.className
         )}
+        wrapLines={wrapLines}
+        nativeAttributes={cellNativeAttributes}
+        tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
         onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
-        ref={mergedRef}
-        {...nativeAttributes}
-        tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
-        {...copyAnalyticsMetadataAttribute(rest)}
-      >
-        {level !== undefined && isExpandable && !isEditingActive && (
-          <div className={styles['expandable-toggle-wrapper']}>
-            <ExpandToggleButton
-              isExpanded={isExpanded}
-              onExpandableItemToggle={onExpandableItemToggle}
-              expandButtonLabel={expandButtonLabel}
-              collapseButtonLabel={collapseButtonLabel}
-              expandToggleIcon={tableIcons?.expandToggle}
-            />
-          </div>
-        )}
-
-        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>
-          {children}
-          {counter ? (
-            <div className={styles['body-cell-counter']}>
-              <span> </span>
-              <span className={testUtilStyles['body-cell-counter']}>{counter}</span>
+        beforeContent={
+          level !== undefined && isExpandable && !isEditingActive ? (
+            <div className={styles['expandable-toggle-wrapper']}>
+              <ExpandToggleButton
+                isExpanded={isExpanded}
+                onExpandableItemToggle={onExpandableItemToggle}
+                expandButtonLabel={expandButtonLabel}
+                collapseButtonLabel={collapseButtonLabel}
+                expandToggleIcon={tableIcons?.expandToggle}
+              />
             </div>
-          ) : null}
-        </div>
-      </Element>
+          ) : null
+        }
+      >
+        {children}
+        {counter ? (
+          <div className={styles['body-cell-counter']}>
+            <span> </span>
+            <span className={testUtilStyles['body-cell-counter']}>{counter}</span>
+          </div>
+        ) : null}
+      </InternalTableBodyCell>
     );
   }
 );

@@ -135,8 +135,10 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
       border-inline-start: none;
     }
   }
-  // Guard selected out: a selected first row must keep its (thicker, coloured) selected
-  // top border, which the transparent placeholder would otherwise cover.
+  // First/last-row transparent placeholder. `:not(.body-cell-selected)` keeps a selected row's own border.
+  // Keyed on `.body-cell` with no grid-mode guard, so it is the single source of the placeholder for
+  // every cell — the existing Table's rows and the atomic cells (grid and auto) alike; load-bearing for
+  // grid selection-control centering.
   tr:first-child > &:not(.body-cell-selected) {
     border-block-start: cell-base.$border-placeholder;
   }
@@ -504,4 +506,11 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
   @include focus-visible.when-visible {
     @include cell-focus-outline;
   }
+}
+
+// A paddingless control cell has no reserved negative space, so the base truncation `overflow: hidden`
+// would crop the control's focus ring. (No padding/margin reset needed: a control cell omits the
+// `with-paddings` opt-in, so the padding mixins never apply.)
+.body-cell-content.disable-paddings {
+  overflow: visible;
 }

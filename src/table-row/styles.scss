@@ -1,0 +1,66 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../table/cell-base/cell-box' as cell-base;
+
+.row {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.row-grid {
+  display: grid;
+  inline-size: 100%;
+  align-items: center;
+}
+
+// Body rows get a minimum row track derived from the same cell-base tokens as the cell padding, so the two
+// can't drift. Header rows size to their content instead.
+.row-grid:not([data-awsui-variant-header]) {
+  grid-auto-rows: minmax(
+    calc(
+      #{awsui.$line-height-body-m} + 2 * #{cell-base.$cell-vertical-padding} + 2 *
+        #{cell-base.$cell-negative-space-vertical} - #{awsui.$border-divider-list-width}
+    ),
+    auto
+  );
+}
+
+// Selection outline drawn as a layout-neutral `::after` on the row. Scoped to the hashed `.row` (not the
+// bare `data-awsui-variant-selected` attribute) so it can't leak onto unrelated consumer elements. In grid mode
+// the abs-pos `::after` is a grid item — its containing block is the column tracks, so `inset:0` hugs the
+// columns (stops at underfill, follows overflow); auto mode falls back to the row box.
+.row[data-awsui-variant-selected]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  border-block-start: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-block-end: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-inline-start: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-inline-end: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+  pointer-events: none;
+}
+.row[data-awsui-variant-selected]:has(+ .row[data-awsui-variant-selected])::after {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+.row[data-awsui-variant-selected] + .row[data-awsui-variant-selected]::after {
+  border-block-start-width: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+// Header rows (TableRow variant="header", rendered inside TableHead). Shares the base .row / .row-grid box;
+// the variant only adds the header background.
+.row[data-awsui-variant-header] {
+  background: awsui.$color-background-table-header;
+}

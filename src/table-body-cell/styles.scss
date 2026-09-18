@@ -1,0 +1,38 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.cell {
+  box-sizing: border-box;
+}
+
+// Selection is a background fill plus a layout-neutral `::after` ring: the cell keeps the base
+// `.body-cell` borders/padding, so the row never grows and content never shifts on toggle.
+[data-awsui-variant-selected] > .cell {
+  background-color: awsui.$color-background-item-selected;
+}
+
+tr:has(+ [data-awsui-variant-shaded]) > .cell {
+  border-block-end-color: awsui.$color-border-cell-shaded;
+}
+[data-awsui-variant-shaded]:not(:last-child) > .cell {
+  border-block-end-color: awsui.$color-border-cell-shaded;
+}
+
+[data-awsui-variant-selected]:has(+ [data-awsui-variant-selected]) > .cell {
+  border-block-end-color: transparent;
+}
+
+tr:not([data-awsui-variant-selected]):has(+ [data-awsui-variant-selected]) > .cell {
+  border-block-end-color: transparent;
+}
+
+.cell-grid {
+  min-inline-size: 0;
+  align-self: stretch;
+  display: grid;
+  align-items: center;
+}

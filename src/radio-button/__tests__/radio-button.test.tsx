@@ -28,6 +28,21 @@ describe('Radio Button native attributes from props', () => {
     const radioButton = renderRadioButton(<RadioButton value="my-radio-button-value" name="group" checked={false} />);
     expect(radioButton.findNativeInput()!.getElement().getAttribute('value')).toBe('my-radio-button-value');
   });
+
+  test('applies the `ariaLabel` prop as `aria-label` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaLabel="Select resource" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-label', 'Select resource');
+  });
+
+  test('applies the `ariaLabelledby` prop as `aria-labelledby` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaLabelledby="label-id" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-labelledby', 'label-id');
+  });
+
+  test('applies the `ariaDescribedby` prop as `aria-describedby` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaDescribedby="desc-id" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-describedby', 'desc-id');
+  });
 });
 
 describe('Radio Button events', () => {
