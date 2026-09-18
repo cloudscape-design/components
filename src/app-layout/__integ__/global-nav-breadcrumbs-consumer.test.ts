@@ -73,6 +73,7 @@ describe('global breadcrumbs consumer', () => {
   test(
     'consumer draws the trail while registered, App Layout resumes when it unmounts',
     setupTest('global-nav-breadcrumbs', {}, async page => {
+      await page.clickTestId('toggle-nav-header');
       await page.waitForVisible(consumerBreadcrumbs.toSelector());
       await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Resource');
       // App Layout keeps an analytics copy in the DOM, but only the consumer is displayed.
@@ -94,6 +95,7 @@ describe('global breadcrumbs consumer', () => {
   test(
     'the consumer receives producer updates',
     setupTest('global-nav-breadcrumbs', {}, async page => {
+      await page.clickTestId('toggle-nav-header');
       await page.waitForVisible(consumerBreadcrumbs.toSelector());
       await expect(page.getConsumerBreadcrumbsText()).resolves.not.toContain('Level 3');
 
@@ -103,28 +105,9 @@ describe('global breadcrumbs consumer', () => {
   );
 
   test(
-    'reserves external ownership before the consumer loads',
-    setupTest('global-nav-breadcrumbs-reserved', {}, async page => {
-      await expect(page.hasConsumerBreadcrumbs()).resolves.toBe(false);
-      await expect(page.hasAppLayoutBreadcrumbs()).resolves.toBe(true);
-      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
-      await expect(page.getBreadcrumbGroupsCount()).resolves.toBe(1);
-
-      await page.clickTestId('toggle-nav-header');
-      await page.waitForVisible(consumerBreadcrumbs.toSelector());
-      await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Resource');
-      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
-      await expect(page.getBreadcrumbGroupsCount()).resolves.toBe(2);
-
-      await page.clickTestId('toggle-nav-header');
-      await page.waitForAssertion(() => expect(page.getBreadcrumbGroupsCount()).resolves.toBe(1));
-      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
-    })
-  );
-
-  test(
     'coordinates breadcrumbs from multiple App Layout instances',
     setupTest('global-nav-breadcrumbs-multi-layout', {}, async page => {
+      await page.clickTestId('toggle-nav-header');
       await page.waitForVisible(consumerBreadcrumbs.toSelector());
       await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Beta service');
       await expect(page.isConsumerBreadcrumbsDisplayed()).resolves.toBe(true);
@@ -140,6 +123,8 @@ describe('global breadcrumbs consumer', () => {
   test(
     'coordinates producers mounted in separate iframe roots',
     setupTest('global-nav-breadcrumbs-multi-instance', {}, async page => {
+      await page.clickTestId('toggle-nav-header');
+      await page.clickTestId('toggle-iframe-alpha');
       await page.waitForVisible(consumerBreadcrumbs.toSelector());
       await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Alpha service');
 

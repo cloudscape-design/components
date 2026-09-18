@@ -110,7 +110,7 @@ function SecondaryLayout({
 }
 
 export default function GlobalNavBreadcrumbsMultiLayoutPage() {
-  const [navHeaderMounted, setNavHeaderMounted] = useState(true);
+  const [navHeaderMounted, setNavHeaderMounted] = useState(false);
   const [alphaMounted, setAlphaMounted] = useState(true);
   const [betaMounted, setBetaMounted] = useState(true);
 

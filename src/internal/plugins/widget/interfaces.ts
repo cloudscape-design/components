@@ -208,21 +208,13 @@ export interface BreadcrumbsConsumerRegistration {
   unregister: () => void;
 }
 
-export interface BreadcrumbsConsumerMessagePayload extends BreadcrumbsConsumerPayload {
-  registration: {
-    id: object;
-    active: boolean;
-  };
-}
+export type BreadcrumbsConsumerMessagePayload = BreadcrumbsConsumerPayload;
 
 export type RegisterBreadcrumbsExternalConsumerMessage = Message<
   'registerBreadcrumbsExternalConsumer',
   BreadcrumbsConsumerMessagePayload
 >;
-export type UnregisterBreadcrumbsExternalConsumerMessage = Message<
-  'unregisterBreadcrumbsExternalConsumer',
-  Pick<BreadcrumbsConsumerMessagePayload, 'registration'>
->;
+export type UnregisterBreadcrumbsExternalConsumerMessage = Message<'unregisterBreadcrumbsExternalConsumer', undefined>;
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type RegisterFeatureNotificationsMessage<T> = Message<

@@ -13,7 +13,6 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
 
 const wrapper = createWrapper();
-const externalOwnedBreadcrumbsKey = Symbol.for('awsui-widget-api-external-owned-breadcrumbs');
 const defaultItems: BreadcrumbGroupProps['items'] = [
   { text: 'Home', href: '/home' },
   { text: 'Resource', href: '/resource' },
@@ -42,15 +41,6 @@ function registerExternalContainer(container: HTMLElement) {
   return { received, registration };
 }
 
-function setBreadcrumbsOwnedExternally(value: boolean | undefined) {
-  const flagHolder = window as unknown as Record<symbol, boolean | undefined>;
-  if (value === undefined) {
-    delete flagHolder[externalOwnedBreadcrumbsKey];
-  } else {
-    flagHolder[externalOwnedBreadcrumbsKey] = value;
-  }
-}
-
 function ExternalBreadcrumbGroup() {
   const [breadcrumbs, setBreadcrumbs] = React.useState<BreadcrumbGroupProps | null>(null);
 
@@ -68,14 +58,12 @@ function ExternalBreadcrumbGroup() {
 }
 
 beforeEach(() => {
-  setBreadcrumbsOwnedExternally(undefined);
   clearInitialMessages();
 });
 
 afterEach(() => {
   cleanup();
   clearInitialMessages();
-  setBreadcrumbsOwnedExternally(undefined);
   expect(awsuiPluginsInternal.breadcrumbs.getStateForTesting()).toEqual({
     appLayoutUpdateCallback: null,
     breadcrumbInstances: [],
@@ -84,29 +72,6 @@ afterEach(() => {
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
-  test('reserves external ownership before the consumer registers', async () => {
-    setBreadcrumbsOwnedExternally(true);
-    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
-
-    await waitFor(expectAppLayoutBreadcrumbsToBeExternallyOwned);
-    expect(getAppLayoutBreadcrumbGroup()).toBeTruthy();
-
-    const externalContainer = document.createElement('div');
-    document.body.appendChild(externalContainer);
-    let registration: ReturnType<typeof registerExternalContainer>['registration'];
-    act(() => {
-      registration = registerExternalContainer(externalContainer).registration;
-    });
-
-    await waitFor(() => expect(externalContainer).toHaveTextContent('Home / Resource'));
-    expectAppLayoutBreadcrumbsToBeExternallyOwned();
-
-    act(() => registration!.unregister());
-    await waitFor(expectAppLayoutBreadcrumbsToBeExternallyOwned);
-    expect(getAppLayoutBreadcrumbGroup()).toBeTruthy();
-    externalContainer.remove();
-  });
-
   test('renders slot breadcrumbs in an external container and restores App Layout on unregister', async () => {
     const externalContainer = document.createElement('div');
     document.body.appendChild(externalContainer);
@@ -302,13 +267,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(getAppLayoutBreadcrumbsSection()?.find(getFunnelNameSelector())).toBeTruthy();
   });
 
-  test('keeps unsupported custom breadcrumb content in App Layout', async () => {
+  test('uses consumer registration as the only source of external ownership', async () => {
     const onBreadcrumbsChange = jest.fn();
     widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange });
 
     render(<AppLayout breadcrumbs={<div data-testid="custom-breadcrumbs">Custom breadcrumbs</div>} />);
 
-    await waitFor(() => expect(wrapper.find('[data-testid="custom-breadcrumbs"]')).toBeTruthy());
+    await waitFor(expectAppLayoutBreadcrumbsToBeExternallyOwned);
     expect(onBreadcrumbsChange).toHaveBeenLastCalledWith(null);
   });
 
