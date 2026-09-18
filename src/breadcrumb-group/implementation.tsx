@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -12,6 +12,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { BreadcrumbsSlotContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { InternalButton } from '../button/internal';
 import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
 import InternalButtonDropdown from '../button-dropdown/internal';
@@ -122,6 +123,35 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   __injectAnalyticsComponentMetadata,
   ...props
 }: InternalBreadcrumbGroupProps<T>) {
+  const { extractOwnBreadcrumbs } = useContext(BreadcrumbsSlotContext) ?? {};
+  const reportedProps = {
+    ...props,
+    items,
+    ariaLabel,
+    expandAriaLabel,
+    onClick,
+    onFollow,
+  } as BreadcrumbGroupProps;
+  const breadcrumbsExtractionRef = useRef<ReturnType<NonNullable<typeof extractOwnBreadcrumbs>> | null>(null);
+
+  useLayoutEffect(() => {
+    if (!extractOwnBreadcrumbs) {
+      return;
+    }
+    const extraction = extractOwnBreadcrumbs(reportedProps);
+    breadcrumbsExtractionRef.current = extraction;
+    return () => {
+      breadcrumbsExtractionRef.current = null;
+      extraction.cleanup();
+    };
+    // Prop updates are handled by the following layout effect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [extractOwnBreadcrumbs]);
+
+  useLayoutEffect(() => {
+    breadcrumbsExtractionRef.current?.update(reportedProps);
+  });
+
   for (const item of items) {
     checkSafeUrl('BreadcrumbGroup', item.href);
   }

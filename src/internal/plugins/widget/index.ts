@@ -2,14 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getExternalProps } from '../../utils/external-props';
+import { reportRuntimeApiWarning } from '../helpers/metrics';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
+  BreadcrumbsConsumerPayload,
+  BreadcrumbsConsumerRegistration,
   DrawerPayload,
   FeatureNotificationsPayload,
   FeatureNotificationsPayloadPublic,
+  RegisterBreadcrumbsExternalConsumerMessage,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
+  UnregisterBreadcrumbsExternalConsumerMessage,
   WidgetMessage,
 } from './interfaces';
 
@@ -58,6 +63,48 @@ export function clearFeatureNotifications() {
 }
 
 /**
+ * Registers the surface that renders breadcrumbs outside App Layout.
+ */
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
+  const initialMessages = getAppLayoutInitialMessages();
+  if (initialMessages.some(message => message.type === 'registerBreadcrumbsExternalConsumer')) {
+    reportRuntimeApiWarning(
+      'breadcrumbs',
+      'A breadcrumbs consumer is already registered. This registration is ignored.'
+    );
+    return { registered: false, unregister: () => {} };
+  }
+
+  let active = true;
+  const message: RegisterBreadcrumbsExternalConsumerMessage = {
+    type: 'registerBreadcrumbsExternalConsumer',
+    payload,
+  };
+  pushInitialMessage(message);
+  payload.onBreadcrumbsChange(null);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+
+  return {
+    registered: true,
+    unregister: () => {
+      if (!active) {
+        return;
+      }
+      active = false;
+      const initialMessages = getAppLayoutInitialMessages();
+      setInitialMessage(
+        initialMessages.filter(initialMessage => initialMessage.type !== 'registerBreadcrumbsExternalConsumer')
+      );
+      const unregisterMessage: UnregisterBreadcrumbsExternalConsumerMessage = {
+        type: 'unregisterBreadcrumbsExternalConsumer',
+        payload: undefined,
+      };
+      getAppLayoutMessageHandler()?.(unregisterMessage as WidgetMessage<unknown>);
+    },
+  };
+}
+
+/**
  * Interact with already registered app layout drawers
  * @param message
  */
@@ -65,7 +112,10 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
-      if (initialMessage.payload.id === message.payload.id) {
+      if (
+        (initialMessage.type === 'registerLeftDrawer' || initialMessage.type === 'registerBottomDrawer') &&
+        initialMessage.payload.id === message.payload.id
+      ) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });
