@@ -36,6 +36,11 @@ export interface InternalStatusIndicatorProps
    * The CSS behavior of the status indicator container element.
    */
   __display?: 'inline' | 'inline-block';
+
+  /**
+   * Renders the status indicator without its container background, for embedding inside other components.
+   */
+  __embedded?: boolean;
 }
 
 const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => {
@@ -92,6 +97,7 @@ export default function StatusIndicator({
   __internalRootRef,
   __size = isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
   __display = 'inline-block',
+  __embedded = false,
   ...rest
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
@@ -104,6 +110,7 @@ export default function StatusIndicator({
       className={clsx(
         styles.root,
         styles[`status-${type}`],
+        __embedded && styles.embedded,
         {
           [styles[`color-override-${colorOverride}`]]: colorOverride,
         },

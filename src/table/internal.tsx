@@ -683,7 +683,7 @@ const InternalTable = React.forwardRef(
                           colIndexOffset={colIndexOffset}
                           renderCell={skeleton?.renderCell}
                         />
-                      ) : !skeleton && (loading || allItems.length === 0) ? (
+                      ) : allItems.length === 0 || (loading && !skeleton) ? (
                         <tr>
                           <NoDataCell
                             totalColumnsCount={totalColumnsCount}

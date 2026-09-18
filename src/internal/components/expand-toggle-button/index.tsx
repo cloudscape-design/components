@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { isThemeActive, Theme, useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../../../icon/internal';
+import { CustomizableIcon } from '../customizable-icon';
 
 import styles from './styles.css.js';
 
@@ -16,6 +16,7 @@ export function ExpandToggleButton({
   expandButtonLabel,
   collapseButtonLabel,
   customIcon,
+  expandToggleIcon,
   className,
   disableFocusHighlight,
 }: {
@@ -24,6 +25,7 @@ export function ExpandToggleButton({
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
   customIcon?: React.ReactNode;
+  expandToggleIcon?: (state: { expanded: boolean }) => React.ReactNode;
   className?: string;
   disableFocusHighlight?: boolean;
 }) {
@@ -43,10 +45,13 @@ export function ExpandToggleButton({
       data-awsui-motion-target=""
     >
       {customIcon ?? (
-        <InternalIcon
+        <CustomizableIcon
+          customIcon={expandToggleIcon?.({ expanded: !!isExpanded })}
           size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'small'}
-          name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
-          className={clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded'])}
+          fallback={{
+            name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
+            className: clsx(styles['expand-toggle-icon'], isExpanded && styles['expand-toggle-icon-expanded']),
+          }}
         />
       )}
     </button>

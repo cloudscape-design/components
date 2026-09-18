@@ -7,6 +7,7 @@ import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fn
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { useLocale } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
@@ -50,7 +51,8 @@ export default function Calendar({
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const baseProps = getBaseProps(rest);
-  const normalizedLocale = normalizeLocale('Calendar', locale);
+  const contextLocale = useLocale();
+  const normalizedLocale = normalizeLocale('Calendar', locale || contextLocale);
 
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);

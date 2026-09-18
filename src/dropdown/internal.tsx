@@ -53,6 +53,12 @@ export interface InternalDropdownProps
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
   triggerRef?: React.RefObject<HTMLElement>;
   triggerId?: string;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  dropdown?: string;
 }
 
 import styles from './styles.css.js';
@@ -117,6 +123,7 @@ interface TransitionContentProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   dropdownStyle?: React.CSSProperties;
+  styleClassNames?: StyleClassNames;
 }
 
 const TransitionContent = ({
@@ -146,6 +153,7 @@ const TransitionContent = ({
   ariaLabelledby,
   ariaDescribedby,
   dropdownStyle,
+  styleClassNames,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   const dropdownStyles: Record<string, string> = {};
@@ -182,6 +190,7 @@ const TransitionContent = ({
     >
       <div
         className={clsx(
+          styleClassNames?.dropdown,
           styles['dropdown-content-wrapper'],
           !header && !content && styles['is-empty'],
           isRefresh && styles.refresh
@@ -234,6 +243,7 @@ const InternalDropdown = ({
   ariaLabelledby,
   ariaDescribedby,
   style,
+  styleClassNames,
   __internalRootRef,
   ...restProps
 }: InternalDropdownProps) => {
@@ -620,6 +630,7 @@ const InternalDropdown = ({
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
                 dropdownStyle={getDropdownStyles(style)}
+                styleClassNames={styleClassNames}
               />
 
               <TabTrap

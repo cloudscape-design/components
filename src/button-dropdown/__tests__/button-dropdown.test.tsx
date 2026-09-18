@@ -107,7 +107,7 @@ const items: ButtonDropdownProps.Items = [
       });
     });
 
-    (['normal', 'primary', 'icon'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
+    (['normal', 'primary', 'icon', 'inline-icon'] as Array<ButtonDropdownProps['variant']>).forEach(variant => {
       describe(`"${variant}" variant 'disabled with reason`, () => {
         const props = { expandToViewport, variant };
 

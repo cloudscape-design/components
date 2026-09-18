@@ -6,12 +6,19 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { DropdownProps } from './interfaces';
-import InternalDropdown from './internal';
+import InternalDropdown, { StyleClassNames } from './internal';
 
 export { DropdownProps };
 
 export default function Dropdown({ style, ...props }: DropdownProps) {
   const baseComponentProps = useBaseComponent('Dropdown');
-  return <InternalDropdown {...props} style={style} {...baseComponentProps} />;
+  return (
+    <InternalDropdown
+      {...props}
+      style={style}
+      styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
+      {...baseComponentProps}
+    />
+  );
 }
 applyDisplayName(Dropdown, 'Dropdown');

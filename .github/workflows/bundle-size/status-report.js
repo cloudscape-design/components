@@ -65,3 +65,23 @@ export async function reportBundleSize({ github, context, sha, dataDir, conclusi
     ].join('\n'),
   });
 }
+
+// Posts the absolute bundle size of a main commit as a "Bundle size" commit
+// status, for operational tracking of size over time. Reads a single
+// output.json (no base comparison). Called only on a successful push build.
+export async function reportMainBundleSize({ github, context, sha, dataDir, targetUrl }) {
+  const metadata = getStatusMetadata(context, sha, targetUrl);
+
+  const main = readJson(`${dataDir}/output.json`);
+
+  console.log('Main commit:', main);
+
+  await github.rest.repos.createCommitStatus({
+    ...metadata,
+    state: 'success',
+    description: [
+      `CSS: ${formatKilobytes(main.cssCompressedSize)} KB`,
+      `JS: ${formatKilobytes(main.jsCompressedSize)} KB`,
+    ].join('\n'),
+  });
+}
