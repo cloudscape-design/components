@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper from '../../../lib/components/test-utils/selectors';
 import VisualTestPageObject from '../page-object';
 import { TestDefinition, TestSuite } from '../types';
 
@@ -86,12 +85,12 @@ const suite: TestSuite = {
           description: `scenario - with select - renderWithPortal=${renderWithPortal}`,
           path: 'popover/scenarios',
           screenshotType: 'viewport',
-          setup: async ({ page }) => {
+          setup: async ({ page, wrapper }) => {
             if (renderWithPortal) {
               await page.click('#renderWithPortal');
             }
             await scrollToSelector(page, '#scenario-with-select');
-            const popover = createWrapper('#scenario-with-select').findPopover();
+            const popover = wrapper.find('#scenario-with-select').findPopover();
             await page.click(popover.findTrigger().toSelector());
             await page.click(popover.findContent().findSelect().findTrigger().toSelector());
           },
