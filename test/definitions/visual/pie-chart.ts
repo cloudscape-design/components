@@ -55,10 +55,9 @@ const suite: TestSuite = {
       description: 'can pin segments with mouse',
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
-      configuration: { skipBrowsers: ['Safari'] },
       setup: async ({ page }) => {
         // Firefox won't click on the group, so we click on the main segment path
-        await page.click('svg [aria-label~="Apples"] > path');
+        await page.click('svg [aria-label~="Potatoes"] > path');
         await page.waitForVisible('[aria-label="Dismiss"]');
       },
     },
