@@ -107,7 +107,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Selection / focus ─────────────────────────────────────────────────────
   colorBorderItemFocused: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
-  colorBorderNotificationStackBarFocused: '{colorNeutral100}',
+  colorBorderNotificationStackBarFocused: '{colorBorderItemFocused}',
   colorBorderItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
   colorBackgroundItemSelected: { light: '{colorNeutral150}', dark: '{colorNeutral1000}' },
@@ -159,9 +159,13 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundFlashbarWarning: { light: '#fcfadb', dark: '#372603' },
   colorTextFlashbarIconInfo: { light: '{colorInfo600}', dark: '{colorInfo400}' },
   colorTextFlashbarIconSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess500}' },
-  colorBackgroundNotificationStackBar: { light: '{colorNeutral650}', dark: '{colorNeutral750}' },
-  colorBackgroundNotificationStackBarActive: { light: '{colorNeutral750}', dark: '{colorNeutral750}' },
-  colorBackgroundNotificationStackBarHover: { light: '{colorNeutral650}', dark: '{colorNeutral650}' },
+  colorBackgroundNotificationStackBar: { light: '{colorNeutral100}', dark: '{colorNeutral850}' },
+  colorBackgroundNotificationStackBarActive: { light: '{colorNeutral200}', dark: '{colorNeutral850}' },
+  colorBackgroundNotificationStackBarHover: { light: '{colorNeutral150}', dark: '{colorNeutral800}' },
+  colorBorderNotificationStackBar: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorBorderNotificationStackBarActive: { light: '{colorNeutral400}', dark: '{colorNeutral500}' },
+  colorBorderNotificationStackBarHover: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
+  colorTextNotificationStackBar: { light: '{colorNeutral700}', dark: '{colorNeutral350}' },
 
   // Alert
   colorBackgroundAlertError: { light: '#fceded', dark: '#460303' },

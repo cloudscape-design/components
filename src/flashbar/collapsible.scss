@@ -8,6 +8,7 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
+@use '../internal/styles/utils/theming' as theming;
 @use './collapsible.motion';
 
 $notification-bar-top-overlap: (
@@ -237,18 +238,22 @@ the grid layout will be:
 
   &:hover {
     background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover);
-    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover);
+    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-border-notification-stack-bar-hover);
     color: var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar);
   }
 
   &:active {
     background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active);
-    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar);
+    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-border-notification-stack-bar-active);
     color: var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar);
   }
 
   &.visual-refresh {
     padding-inline: awsui.$space-l;
+
+    @include theming.one-theme-only {
+      padding-inline: awsui.$space-s;
+    }
   }
 
   &:not(.visual-refresh) {
@@ -270,6 +275,9 @@ the grid layout will be:
     border-block: 0;
     border-inline: none;
     padding-block: 0;
+    @include theming.one-theme-only {
+      padding-inline: 0;
+    }
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-notification-stack-bar-focused);
