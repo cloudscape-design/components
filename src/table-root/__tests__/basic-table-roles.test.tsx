@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import TableBody from '../../../lib/components/table-body';
 import TableBodyCell from '../../../lib/components/table-body-cell';
@@ -103,46 +103,46 @@ describe('Table role semantics', () => {
 });
 
 describe('horizontal-overflow scroll region', () => {
-  let resizeCallback: ResizeObserverCallback;
-  const originalResizeObserver = global.ResizeObserver;
-
-  beforeEach(() => {
-    global.ResizeObserver = class {
-      constructor(cb: ResizeObserverCallback) {
-        resizeCallback = cb;
-      }
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    };
-  });
-  afterEach(() => {
-    global.ResizeObserver = originalResizeObserver;
-  });
-
   const setScrollerGeometry = (scroller: Element, scrollWidth: number, clientWidth: number) => {
     Object.defineProperty(scroller, 'scrollWidth', { configurable: true, value: scrollWidth });
     Object.defineProperty(scroller, 'clientWidth', { configurable: true, value: clientWidth });
   };
 
+  const gridTable = (columns: ReadonlyArray<TableRootProps.ColumnDefinition>) => (
+    <TableRoot columnLayout={{ type: 'grid', columns }} ariaLabel="Log events">
+      <TableHead>
+        <TableRow>
+          <TableHeaderCell>Name</TableHeaderCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableBodyCell>Resource 0</TableBodyCell>
+        </TableRow>
+      </TableBody>
+    </TableRoot>
+  );
+
   test('exposes a focusable labeled region only while the content overflows', () => {
-    const { table } = renderTable(makeItems(5), true);
-    const scroller = table().parentElement!; // root > scroll-container > body-scroller > table
+    const { container, rerender } = render(gridTable([{ size: 200 }]));
+    const scroller = createWrapper(container).find('table')!.getElement().parentElement!; // body-scroller
 
     // Not overflowing (jsdom default 0/0): no region, not a tab stop.
     expect(scroller.hasAttribute('role')).toBe(false);
     expect(scroller.hasAttribute('tabindex')).toBe(false);
 
-    // Overflows -> focusable labeled region for keyboard scrolling.
+    // The grid tracks now overflow the viewport. jsdom has no layout, so simulate the geometry; the
+    // column-template change re-measures — the overflow case a ResizeObserver misses (the table's box is
+    // unchanged, only the grid tracks overflow).
     setScrollerGeometry(scroller, 1200, 400);
-    act(() => resizeCallback([], {} as ResizeObserver));
+    rerender(gridTable([{ size: 1200 }]));
     expect(scroller.getAttribute('role')).toBe('region');
     expect(scroller.getAttribute('tabindex')).toBe('0');
     expect(scroller.getAttribute('aria-label')).toBe('Log events');
 
     // Back within bounds -> the region and tab stop are removed.
     setScrollerGeometry(scroller, 400, 400);
-    act(() => resizeCallback([], {} as ResizeObserver));
+    rerender(gridTable([{ size: 200 }]));
     expect(scroller.hasAttribute('role')).toBe(false);
     expect(scroller.hasAttribute('tabindex')).toBe(false);
   });

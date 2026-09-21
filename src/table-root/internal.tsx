@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { RowVariantContextProvider } from '../table-row/context';
@@ -40,24 +42,15 @@ export default function InternalTableRoot({
       setIsScrollable(node.scrollWidth - node.clientWidth > 1);
     }
   }, []);
-  // Observer stays tied to the stable scroller node (and its child) so it isn't reallocated on every render.
-  useEffect(() => {
-    const node = scrollerRef.current;
-    if (!node || typeof ResizeObserver === 'undefined') {
-      return;
-    }
-    const observer = new ResizeObserver(measureScrollable);
-    observer.observe(node);
-    if (node.firstElementChild) {
-      observer.observe(node.firstElementChild);
-    }
-    return () => observer.disconnect();
-  }, [measureScrollable]);
-  // Re-measure on layout template and content changes: overflow can start/stop without a box-size change
-  // (dynamic grid content), which the ResizeObserver alone would miss. Cheap read, no observer churn.
+  // Observe the scroller and the table it wraps: a viewport resize changes the scroller box, and
+  // auto-layout content growth changes the table box — either can start or stop the horizontal overflow.
+  useResizeObserver(scrollerRef, measureScrollable);
+  useResizeObserver(() => scrollerRef.current?.firstElementChild ?? null, measureScrollable);
+  // Grid column templates change the tracks' overflow without resizing either observed box, so no observer
+  // fires — re-measure when the template changes.
   useEffect(() => {
     measureScrollable();
-  }, [table.gridTemplateColumns, children, measureScrollable]);
+  }, [table.gridTemplateColumns, measureScrollable]);
 
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
