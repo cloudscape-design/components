@@ -40,18 +40,7 @@ function makeToken(label: string): AutosuggestProps.Token {
 function InteractiveDemo() {
   const [value, setValue] = useState('');
   const [tokenVariant, setTokenVariant] = useState<AutosuggestProps.TokenVariant>('inline');
-  const [tokens, setTokens] = useState<AutosuggestProps.Token[]>([
-    makeToken('us-east-1'),
-    makeToken('us-west-2'),
-    makeToken('eu-west-1'),
-    makeToken('ap-southeast-1'),
-    makeToken('ca-central-1'),
-    makeToken('sa-east-1'),
-    makeToken('eu-central-1'),
-    makeToken('ap-northeast-1'),
-    makeToken('us-west-1'),
-    makeToken('eu-north-1'),
-  ]);
+  const [tokens, setTokens] = useState<AutosuggestProps.Token[]>([]);
 
   const selected = new Set(tokens.map(t => t.label));
   const filteredOptions = ALL_OPTIONS.filter(o => !selected.has(o.value!) && (!value || o.value!.includes(value)));
@@ -153,37 +142,12 @@ export default function AutosuggestTokensModePage() {
         <SpaceBetween size="l">
           <Box variant="h2">Scenarios</Box>
           <Scenario label="No tokens" initTokens={[]} />
-          <Scenario
-            label="Email recipients (long token labels)"
-            options={EMAIL_OPTIONS}
-            initTokens={[
-              makeToken('alice@example.com'),
-              makeToken('bob.smith@company.org'),
-              makeToken('carol.jones@enterprise.io'),
-              makeToken('dave@test.net'),
-              makeToken('eve.long-surname@subdomain.example.com'),
-              makeToken('frank@mail.co'),
-            ]}
-          />
-          <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('us-west-2')]} />
-          <Scenario
-            label="Many tokens (overflow)"
-            initTokens={[
-              makeToken('us-east-1'),
-              makeToken('us-west-2'),
-              makeToken('eu-west-1'),
-              makeToken('ap-southeast-1'),
-              makeToken('ca-central-1'),
-              makeToken('sa-east-1'),
-              makeToken('eu-central-1'),
-              makeToken('ap-northeast-1'),
-              makeToken('us-west-1'),
-              makeToken('eu-north-1'),
-            ]}
-          />
-          <Scenario label="Disabled" initTokens={[makeToken('us-east-1'), makeToken('us-west-2')]} disabled={true} />
-          <Scenario label="Read-only" initTokens={[makeToken('us-east-1'), makeToken('us-west-2')]} readOnly={true} />
-          <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
+          <Scenario label="Email recipients (long token labels)" options={EMAIL_OPTIONS} initTokens={[]} />
+          <Scenario label="Few tokens (2)" initTokens={[]} />
+          <Scenario label="Many tokens (overflow)" initTokens={[]} />
+          <Scenario label="Disabled" initTokens={[]} disabled={true} />
+          <Scenario label="Read-only" initTokens={[]} readOnly={true} />
+          <Scenario label="Invalid (error state)" initTokens={[]} invalid={true} />
         </SpaceBetween>
       </SpaceBetween>
     </Box>

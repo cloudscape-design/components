@@ -288,15 +288,26 @@ const AutosuggestInput = React.forwardRef(
 
       const pillEl = measureRef.current.querySelector<HTMLElement>('[data-measure-pill]');
       const pillWidth = pillEl?.offsetWidth ?? 0;
-      const gap = 4; // $space-xxs
-      const iconWidth = 16; // search icon (~20px) + gap before first token
+
+      // Read layout values from the DOM so they stay correct across themes and density changes.
+      // triggerRowRef points to the .token-trigger div which owns the padding and flex gap.
+      const triggerEl = triggerRowRef.current;
+      const triggerStyle = triggerEl ? getComputedStyle(triggerEl) : null;
+      const paddingInline = triggerStyle
+        ? parseFloat(triggerStyle.paddingInlineStart) + parseFloat(triggerStyle.paddingInlineEnd)
+        : 24;
+      const gap = triggerStyle ? parseFloat(triggerStyle.gap) || parseFloat(triggerStyle.columnGap) || 4 : 4;
+
+      // Icon span width — read from the real DOM element via data-search-icon attribute.
+      const iconEl = triggerEl?.querySelector<HTMLElement>('[data-search-icon]');
+      const iconWidth = iconEl ? iconEl.offsetWidth : 16;
+
       const inputMinWidth = Math.floor(containerWidth * 0.2); // 20% hard floor, matches CSS min-inline-size: 20%
-      const padding = 24; // $control-padding-horizontal * 2 (left + right)
 
       const tokenWidths = tokenEls.map(el => el.offsetWidth);
       const totalAll = tokenWidths.reduce((s, w) => s + w, 0) + gap * Math.max(tokenWidths.length - 1, 0);
       // Available space for tokens when the input holds its 20% minimum
-      const budget = containerWidth - padding - iconWidth - inputMinWidth - pillWidth - gap - gap;
+      const budget = containerWidth - paddingInline - iconWidth - inputMinWidth - pillWidth - gap - gap;
 
       if (totalAll <= budget) {
         // All tokens fit without a pill
@@ -309,11 +320,10 @@ const AutosuggestInput = React.forwardRef(
       let used = 0;
       let count = 0;
       for (let i = tokenWidths.length - 1; i >= 0; i--) {
-        const g = gap;
-        if (used + g + tokenWidths[i] > budget) {
+        if (used + gap + tokenWidths[i] > budget) {
           break;
         }
-        used += g + tokenWidths[i];
+        used += gap + tokenWidths[i];
         count++;
       }
       setVisibleCount(count);
@@ -379,6 +389,10 @@ const AutosuggestInput = React.forwardRef(
     const visibleTokens = tokenList.slice(tokenList.length - effectiveVisible);
     const hiddenTokens = tokenList.slice(0, tokenList.length - effectiveVisible);
     const hiddenStartIndex = 0; // hidden tokens are always the older ones (index 0..N)
+
+    // Ref snapshot so the focus effect can read current values without listing them as deps
+    const tokenFocusSnapshotRef = useRef({ tokenListLength: tokenList.length, effectiveVisible });
+    tokenFocusSnapshotRef.current = { tokenListLength: tokenList.length, effectiveVisible };
 
     // ---------------------------------------------------------------------------
     // Keyboard
@@ -531,7 +545,8 @@ const AutosuggestInput = React.forwardRef(
       if (focusedTokenIndex < 0) {
         return;
       }
-      const visibleStart = tokenList.length - effectiveVisible;
+      const { tokenListLength, effectiveVisible: ev } = tokenFocusSnapshotRef.current;
+      const visibleStart = tokenListLength - ev;
       const positionInVisible = focusedTokenIndex - visibleStart;
       if (positionInVisible < 0) {
         // Token is hidden in overflow — can't focus directly, just focus input
@@ -543,7 +558,7 @@ const AutosuggestInput = React.forwardRef(
       if (dismissButtons && dismissButtons[positionInVisible]) {
         dismissButtons[positionInVisible].focus();
       }
-    }, [effectiveVisible, focusedTokenIndex, tokenList.length]); // intentionally excludes tokenList.length — see comment above
+    }, [focusedTokenIndex]); // only re-run when focusedTokenIndex changes (set only by removeToken); tokenList/effectiveVisible read via ref snapshot
 
     const expanded = open && dropdownExpanded;
     const nativeAttributes: BaseInputProps['nativeInputAttributes'] = {
@@ -675,6 +690,7 @@ const AutosuggestInput = React.forwardRef(
               >
                 {/* Search icon — rendered first, before tokens */}
                 <span
+                  data-search-icon="true"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
