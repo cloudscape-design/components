@@ -56,8 +56,8 @@ const suite: TestSuite = {
       path: 'pie-chart/test',
       screenshotType: 'screenshotArea',
       setup: async ({ page, configuration }) => {
-        // Choose a group for which the center is not covered by the popover on hover,
-        // which prevents the action of clicking to pin.
+        // Choose a group for which the geometrical center is not covered by the popover on hover.
+        // Otherwise, as the popover appears on hover and it is not possible to click to pin.
         const group = configuration?.direction === 'rtl' ? 'Potatoes' : 'Apples';
         // Firefox won't click on the group, so we click on the main segment path
         await page.click(`svg [aria-label~="${group}"] > path`);
