@@ -1,0 +1,18 @@
+name: Visual regression (merge queue)
+
+# Reports the required "Visual regression result" check on the merge-queue branch.
+# The real comparison runs on pull_request (deploy.yml); it is not run again in the merge queue.
+
+on:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-regression-result:
+    name: Visual regression result
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pass in merge queue
+        run: echo "Validated on the PR before queueing; reporting success."
