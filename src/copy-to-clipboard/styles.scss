@@ -4,6 +4,10 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+// The copy button forwards styling to the nested Button component's `root` slot.
+@include style-api.docs-forward('copyButton', 'button', 'root');
 
 .root {
   display: contents;
