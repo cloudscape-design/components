@@ -56,7 +56,10 @@ const InternalSpaceBetween = forwardRef(
           const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
           return (
-            <div key={key ? String(key) : undefined} className={styles.child}>
+            <div
+              key={key ? String(key) : undefined}
+              className={clsx(styles.child, alignItems && styles['child-aligned'])}
+            >
               {child}
             </div>
           );
