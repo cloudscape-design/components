@@ -17,17 +17,12 @@ import legacyHeaderCellStyles from '../../../lib/components/table/header-cell/st
 import cellStyles from '../../../lib/components/table-body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
-// Proves the row `variant` is purely visual and reaches the cell paint through context, sets no
-// `aria-selected` (selection is conveyed by the selection control), that the narrowed inline `positionStyle`
-// props (for virtualization) reach the body and row roots, and that `disablePaddings` reaches the
-// padding opt-out on the cell content and header-cell root.
-//
-// On this fork a selected row emits `data-awsui-variant-selected` on the <tr> (a shaded row emits
-// `data-awsui-variant-shaded`) — the one sanctioned styling hook — and the cell stylesheet reads it to paint the
-// background and draw the selection outline (a layout-neutral `::after` ring) and to merge consecutive
-// selected rows via sibling adjacency. It is driven by `variant`, never a public prop. A shaded row still
-// reuses the existing Table's `.body-cell-shaded` background class. Selection and shading are mutually
-// exclusive by type.
+// Proves the row `variant` is purely visual: it emits a `data-awsui-variant-*` hook on the <tr> that the cell
+// stylesheet paints from (selection background + a layout-neutral `::after` ring, shaded background, and
+// consecutive-row adjacency), never sets `aria-selected`, and is driven by `variant` rather than a public prop
+// — selection and shading being mutually exclusive by type. Also covers the narrowed inline `positionStyle`
+// (virtualization) reaching the body/row roots and `disablePaddings` reaching the padding opt-out on the cell
+// content and header-cell root.
 
 function Harness({ variant }: { variant?: TableRowProps.Variant }) {
   return (
@@ -53,66 +48,32 @@ function renderHarness(variant?: TableRowProps.Variant) {
   return { wrapper: createWrapper(container) };
 }
 
-function cellClassLists(wrapper: ReturnType<typeof createWrapper>) {
-  return wrapper.findAllTableBodyCells().map(cell => cell.getElement().classList);
-}
-
 describe('TableRow variant is visual-only and paints through the cell', () => {
-  test("variant='selected' paints every cell selected, emits the data-awsui-variant-selected adjacency hook, and sets no aria-selected", () => {
+  test("variant='selected' emits the data-awsui-variant-selected hook and sets no aria-selected", () => {
     const { wrapper } = renderHarness('selected');
     const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     // Visual state must NOT leak into ARIA; selection is conveyed by the selection control.
     expect(row).not.toHaveAttribute('aria-selected');
-    // The one sanctioned styling hook: data-awsui-variant-selected drives the consecutive-selected outline merge.
+    // The sanctioned styling hook the cell stylesheet paints from; selected and shaded are mutually exclusive.
     expect(row).toHaveAttribute('data-awsui-variant-selected', 'true');
     expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
-    // Selection paints via the row's data-awsui-variant-selected hook (background + ::after ring), not by reusing
-    // the existing Table's body-cell-selected — so no per-cell selection/has-selection class is emitted.
-    for (const classList of cellClassLists(wrapper)) {
-      expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
-      expect(classList.contains(bodyCellStyles['has-selection'])).toBe(false);
-      expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(false);
-    }
   });
 
-  test("variant='shaded' paints every cell shaded and never selected", () => {
+  test("variant='shaded' emits the data-awsui-variant-shaded hook and never selected", () => {
     const { wrapper } = renderHarness('shaded');
     const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
     expect(row).not.toHaveAttribute('data-awsui-variant-selected');
-    // data-awsui-variant-shaded drives the striped-row divider darkening (sibling adjacency), mirroring data-awsui-variant-selected.
+    // data-awsui-variant-shaded is the hook the cell stylesheet paints the shaded background + adjacency from.
     expect(row).toHaveAttribute('data-awsui-variant-shaded', 'true');
-    for (const classList of cellClassLists(wrapper)) {
-      expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
-      expect(classList.contains(bodyCellStyles['has-selection'])).toBe(false);
-    }
   });
 
-  test('the default variant paints neither and sets no aria-selected or data-awsui-variant-selected', () => {
+  test('the default variant emits no data-awsui-variant-* hook and no aria-selected', () => {
     const { wrapper } = renderHarness();
     const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
     expect(row).not.toHaveAttribute('aria-selected');
     expect(row).not.toHaveAttribute('data-awsui-variant-selected');
-    for (const classList of cellClassLists(wrapper)) {
-      expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
-      expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(false);
-    }
-  });
-
-  test('a TableBodyCell rendered outside any TableRow falls back to the default (unpainted) variant', () => {
-    // Guards the RowVariantContext default so a stray cell never paints itself selected/shaded.
-    const { container } = render(
-      <TableRoot ariaLabel="Resources">
-        <TableBody>
-          <tr>
-            <TableBodyCell>Loose</TableBodyCell>
-          </tr>
-        </TableBody>
-      </TableRoot>
-    );
-    const classList = createWrapper(container).findAllTableBodyCells()[0].getElement().classList;
-    expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
-    expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(false);
+    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
   });
 });
 

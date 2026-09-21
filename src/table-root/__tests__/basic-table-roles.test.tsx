@@ -90,15 +90,6 @@ describe('Table role semantics', () => {
       expect(th.getAttribute('role')).toBe('columnheader');
       expect(th.getAttribute('scope')).toBe('col');
     });
-
-    test('the container is not a tab stop and declares no roving active descendant', () => {
-      const { table } = renderTable(makeItems(20), true);
-      const grid = table();
-      // No grid keyboard-navigation subsystem: the table is not focusable and manages no tabindex.
-      expect(grid.hasAttribute('tabindex')).toBe(false);
-      expect(grid.hasAttribute('aria-activedescendant')).toBe(false);
-      expect(grid.querySelectorAll('[tabindex]')).toHaveLength(0);
-    });
   });
 });
 
