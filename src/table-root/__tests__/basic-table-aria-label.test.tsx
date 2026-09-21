@@ -29,7 +29,7 @@ function buildTree(labelProps: Pick<TableRootProps, 'ariaLabel' | 'ariaLabelledb
   return (
     <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} {...labelProps}>
       <TableHead>
-        <TableRow variant="header">
+        <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
         </TableRow>

@@ -60,7 +60,7 @@ function Grid({
       <div style={{ inlineSize: width, overflowX: width ? 'auto' : undefined }}>
         <TableRoot columnLayout={columnLayout} ariaLabel={label}>
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell>Name</TableHeaderCell>
               <TableHeaderCell>Type</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>

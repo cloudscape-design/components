@@ -13,7 +13,7 @@ import styles from './styles.css.js';
 
 // Sanctioned data-* hooks: `data-awsui-variant-*` on the <tr> carry the row's variant so CSS can key off it —
 // sibling-adjacency (consecutive-selected merge, striped divider) and the selection ring, which a cell can't
-// express from context, plus the header-row background. Inert for the existing Table.
+// express from context. Inert for the existing Table.
 export interface InternalTableRowProps extends TableRowProps, InternalBaseComponentProps {}
 
 export default function InternalTableRow({

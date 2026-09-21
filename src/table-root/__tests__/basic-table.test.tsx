@@ -49,7 +49,7 @@ function TableHarness({ options }: { options: RenderOptions }) {
   return (
     <TableRoot columnLayout={columnLayout} ariaLabel="Resources" ariaRowcount={options.ariaRowcount}>
       <TableHead>
-        <TableRow variant="header">
+        <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
         </TableRow>
@@ -166,7 +166,7 @@ describe('Table atomic parts', () => {
       const withIndex = render(
         <TableRoot ariaLabel="Resources" ariaRowcount={500} columnLayout={{ type: 'grid', columns: [{ size: 200 }] }}>
           <TableHead>
-            <TableRow variant="header" ariaRowindex={1}>
+            <TableRow ariaRowindex={1}>
               <TableHeaderCell>Name</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -188,7 +188,7 @@ describe('Table atomic parts', () => {
       const { container } = render(
         <TableRoot ariaLabel="Resources">
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell>Name</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -213,7 +213,7 @@ describe('Table atomic parts', () => {
       const { container } = render(
         <TableRoot ariaLabel="Resources">
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell ariaSort="ascending">Name</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
             </TableRow>
@@ -235,7 +235,7 @@ describe('Table atomic parts', () => {
       const { container } = render(
         <TableRoot ariaLabel="Resources" ariaRowcount={500}>
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell>Name</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -258,7 +258,7 @@ describe('Table atomic parts', () => {
       const { container } = render(
         <TableRoot ariaLabel="Resources">
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell>Name</TableHeaderCell>
             </TableRow>
           </TableHead>

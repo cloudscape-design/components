@@ -83,7 +83,7 @@ export default function TableSelectionPage() {
         <Header counter={`(${selectedIds.size}/${items.length})`}>Resources</Header>
         <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} ariaLabel="Resources">
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               <TableHeaderCell disablePaddings={true}>
                 {mode === 'multi' ? (
                   <div className={styles['selection-cell']}>

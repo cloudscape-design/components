@@ -64,7 +64,7 @@ export default function TableSortingPage() {
         <Header counter={`(${rows.length})`}>Resources</Header>
         <TableRoot ariaLabel="Resources">
           <TableHead>
-            <TableRow variant="header">
+            <TableRow>
               {COLUMNS.map(({ key, label }) => {
                 const active = key === sortKey;
                 return (

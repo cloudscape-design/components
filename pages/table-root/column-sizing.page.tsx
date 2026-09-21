@@ -154,7 +154,7 @@ export default function TableColumnSizingPlaygroundPage() {
           <Header counter={`(${items.length})`}>Resources</Header>
           <TableRoot columnLayout={{ type: 'grid', columns }} ariaLabel="Resources">
             <TableHead>
-              <TableRow variant="header">
+              <TableRow>
                 {configs.map(config => (
                   <TableHeaderCell key={config.label}>{config.label}</TableHeaderCell>
                 ))}

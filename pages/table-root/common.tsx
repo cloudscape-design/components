@@ -33,7 +33,7 @@ export const DATA_COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
 export function DataHeader() {
   return (
     <TableHead>
-      <TableRow variant="header">
+      <TableRow>
         <TableHeaderCell>Name</TableHeaderCell>
         <TableHeaderCell>Type</TableHeaderCell>
         <TableHeaderCell>Size</TableHeaderCell>

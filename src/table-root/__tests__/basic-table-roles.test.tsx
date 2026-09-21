@@ -34,7 +34,7 @@ function LogTable({ items, grid }: { items: Item[]; grid?: boolean }) {
   return (
     <TableRoot columnLayout={columnLayout} ariaLabel="Log events">
       <TableHead>
-        <TableRow variant="header">
+        <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
         </TableRow>

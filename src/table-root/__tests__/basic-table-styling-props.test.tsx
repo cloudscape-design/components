@@ -33,7 +33,7 @@ function Harness({ variant }: { variant?: TableRowProps.Variant }) {
   return (
     <TableRoot ariaLabel="Resources">
       <TableHead>
-        <TableRow variant="header">
+        <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
         </TableRow>
@@ -124,7 +124,7 @@ describe('inline style props (virtualization)', () => {
     const { container } = render(
       <TableRoot columnLayout={{ type: 'grid', columns: COLUMNS }} ariaLabel="Log">
         <TableHead>
-          <TableRow variant="header">
+          <TableRow>
             <TableHeaderCell>Name</TableHeaderCell>
           </TableRow>
         </TableHead>
@@ -175,7 +175,7 @@ describe('disablePaddings', () => {
     const { container } = render(
       <TableRoot ariaLabel="Resources">
         <TableHead>
-          <TableRow variant="header">
+          <TableRow>
             <TableHeaderCell disablePaddings={true} />
             <TableHeaderCell>Name</TableHeaderCell>
           </TableRow>
