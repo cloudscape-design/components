@@ -145,6 +145,30 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for progress-bar matches the snapshot: progress-bar 1`] = `
+{
+  "slots": [
+    {
+      "name": "progressBar",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-radius",
+        "block-size",
+      ],
+    },
+    {
+      "name": "progressPercentage",
+      "tokens": [
+        "color",
+        "font-size",
+        "font-weight",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -153,5 +177,6 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "progress-bar",
 ]
 `;
