@@ -15,4 +15,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pass in merge queue
-        run: echo "Validated on the PR before queueing; reporting success."
+        run: echo "Visual regression not re-run; already validated on the PR head. Marking as passed."
