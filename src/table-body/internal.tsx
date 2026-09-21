@@ -10,7 +10,7 @@ import { TableBodyProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalTableBodyProps extends TableBodyProps, InternalBaseComponentProps {}
+interface InternalTableBodyProps extends TableBodyProps, InternalBaseComponentProps {}
 
 export default function InternalTableBody({
   children,

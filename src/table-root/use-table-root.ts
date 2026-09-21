@@ -29,7 +29,7 @@ export function useTableRoot(columnLayout: TableRootProps.ColumnLayout): UseTabl
           return `${size}px`;
         }
         const min = `${clamp(column.minWidth) ?? 0}px`;
-        const flex = typeof column.size === 'object' ? clamp(column.size.flex) : undefined;
+        const flex = typeof column.size === 'object' && column.size.flex ? clamp(column.size.flex) : undefined;
         if (flex !== undefined) {
           // Weighted track — `{ flex: number }`. The type forbids a maxWidth here (can't cap an fr track).
           return `minmax(${min}, ${flex}fr)`;
