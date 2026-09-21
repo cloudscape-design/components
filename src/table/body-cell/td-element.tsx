@@ -108,7 +108,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const cellNativeAttributes = {
       ...nativeAttributes,
       ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }),
-      ...copyAnalyticsMetadataAttribute(rest),
     };
 
     const stickyStyles = useStickyCellStyles({
@@ -149,6 +148,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stickyStyles.className
         )}
         wrapLines={wrapLines}
+        {...copyAnalyticsMetadataAttribute(rest)}
         nativeAttributes={cellNativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
         onClick={onClick}

@@ -3,35 +3,33 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getBaseProps } from '../internal/base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
+import { NativeAttributes } from '../types/native-attributes';
+import { TableBodyCellProps } from './interfaces';
 
 import bodyCellStyles from '../table/body-cell/styles.css.js';
 import styles from './styles.css.js';
 
-export interface InternalTableBodyCellProps {
+export type InternalTableBodyCellProps = Omit<TableBodyCellProps, 'isRowHeader'> & {
   tag: 'td' | 'th';
-  className?: string;
   style?: React.CSSProperties;
   wrapLines?: boolean;
-  disablePaddings?: boolean;
-  nativeAttributes?: Omit<
-    React.TdHTMLAttributes<HTMLTableCellElement> | React.ThHTMLAttributes<HTMLTableCellElement>,
-    'style' | 'className' | 'onClick'
-  >;
+  // Non-base native attributes injected by internal callers (the existing Table's td-element): role and
+  // sizing. Base props (className/id/data-*) flow directly and are read via getBaseProps.
+  nativeAttributes?: NativeAttributes<React.ThHTMLAttributes<HTMLTableCellElement>>;
   tabIndex?: number;
   onClick?: React.MouseEventHandler<HTMLTableCellElement>;
   onFocus?: React.FocusEventHandler<HTMLTableCellElement>;
   onBlur?: React.FocusEventHandler<HTMLTableCellElement>;
   beforeContent?: React.ReactNode;
-  children?: React.ReactNode;
-}
+};
 
 export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, InternalTableBodyCellProps>(
-  (
-    {
+  (props, ref) => {
+    const {
       tag,
-      className,
       style,
       wrapLines,
       disablePaddings,
@@ -42,9 +40,8 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
       onBlur,
       beforeContent,
       children,
-    },
-    ref
-  ) => {
+    } = props;
+    const { className, ...restBaseProps } = getBaseProps(props);
     const { columnLayout } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
@@ -61,6 +58,7 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
     return (
       <Element
         ref={ref}
+        {...restBaseProps}
         style={style}
         className={clsx(
           bodyCellStyles['body-cell'],

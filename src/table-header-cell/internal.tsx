@@ -3,37 +3,59 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getBaseProps } from '../internal/base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
+import { NativeAttributes } from '../types/native-attributes';
+import { TableHeaderCellProps } from './interfaces';
 
 import headerCellStyles from '../table/header-cell/styles.css.js';
 import styles from './styles.css.js';
 
-export interface InternalTableHeaderCellProps {
-  className?: string;
+export type InternalTableHeaderCellProps = TableHeaderCellProps & {
   style?: React.CSSProperties;
-  nativeAttributes?: React.ThHTMLAttributes<HTMLTableCellElement> & {
-    [key: `data-${string}`]: string | number | boolean | undefined;
-  };
   tabIndex?: number;
-  disablePaddings?: boolean;
+  // Non-base native attributes injected by internal callers (the existing Table's th-element): colSpan,
+  // scope, role, aria-sort. Base props (className/id/data-*) flow directly and are read via getBaseProps.
+  nativeAttributes?: NativeAttributes<React.ThHTMLAttributes<HTMLTableCellElement>>;
   disableContentWrapper?: boolean;
   disableDivider?: boolean;
-  children?: React.ReactNode;
-}
+};
 
 export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, InternalTableHeaderCellProps>(
-  (
-    { className, style, nativeAttributes, tabIndex, disablePaddings, disableContentWrapper, disableDivider, children },
-    ref
-  ) => {
+  (props, ref) => {
+    const {
+      ariaLabel,
+      ariaLabelledby,
+      ariaDescribedby,
+      ariaSort,
+      disablePaddings,
+      style,
+      tabIndex,
+      nativeAttributes,
+      disableContentWrapper,
+      disableDivider,
+      children,
+    } = props;
+    const { className, ...restBaseProps } = getBaseProps(props);
     const { columnLayout } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
-    const mergedNativeAttributes = { ...nativeAttributes, ...(isGrid ? { role: 'columnheader' as const } : undefined) };
+    // `scope='col'` is the default for a public header cell; an internal caller's nativeAttributes (e.g. the
+    // existing Table's `scope='colgroup'` and computed role/aria-sort) override it. Grid mode adds the role.
+    const mergedNativeAttributes = {
+      scope: 'col' as const,
+      ...nativeAttributes,
+      ...(ariaLabel !== undefined ? { 'aria-label': ariaLabel } : undefined),
+      ...(ariaLabelledby !== undefined ? { 'aria-labelledby': ariaLabelledby } : undefined),
+      ...(ariaDescribedby !== undefined ? { 'aria-describedby': ariaDescribedby } : undefined),
+      ...(ariaSort !== undefined ? { 'aria-sort': ariaSort } : undefined),
+      ...(isGrid ? { role: 'columnheader' as const } : undefined),
+    };
     return (
       <th
         ref={ref}
+        {...restBaseProps}
         className={clsx(
           headerCellStyles['header-cell'],
           className,

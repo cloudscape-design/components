@@ -102,7 +102,6 @@ export function TableThElement({
   // `.header-cell` class so the compound `.header-cell.<feature>` CSS continues to match
   // unchanged, and every computed native attribute is threaded through verbatim.
   const nativeAttributes = {
-    'data-focus-id': `header-${String(columnId)}`,
     colSpan,
     rowSpan,
     ...getTableColHeaderRoleProps({
@@ -111,11 +110,7 @@ export function TableThElement({
       colIndex,
     }),
     scope: scope ?? 'col',
-    ...copyAnalyticsMetadataAttribute(props),
     ...(ariaLabel ? { 'aria-label': ariaLabel } : {}),
-    ...(isLast ? { 'data-rightmost': true } : {}),
-    ...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {}),
-    ...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {}),
   };
 
   return (
@@ -145,6 +140,11 @@ export function TableThElement({
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
+      data-focus-id={`header-${String(columnId)}`}
+      data-rightmost={isLast || undefined}
+      data-column-index={scope !== 'colgroup' ? colIndex + 1 : undefined}
+      data-column-group-id={columnGroupId || undefined}
+      {...copyAnalyticsMetadataAttribute(props)}
       nativeAttributes={nativeAttributes}
       disableContentWrapper={true}
       disableDivider={true}
