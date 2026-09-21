@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
-import { useRowVariant } from '../table-row/context';
 
 import bodyCellStyles from '../table/body-cell/styles.css.js';
 import styles from './styles.css.js';
@@ -47,7 +46,6 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
     ref
   ) => {
     const { columnLayout } = useTableContext();
-    const variant = useRowVariant();
     const isVisualRefresh = useVisualRefresh();
     const isGrid = columnLayout.type === 'grid';
     // Within a body cell a `<th>` is always a row header (column headers use InternalTableHeaderCell).
@@ -71,8 +69,7 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
           isGrid && styles['cell-grid'],
           // Gated on runtime VR mode: this substrate is shared with the existing Table, which still supports
           // runtime classic visual mode (non-VR). Atomic tables render VR-only, so useVisualRefresh() is true there.
-          isVisualRefresh && bodyCellStyles['is-visual-refresh'],
-          variant === 'shaded' && bodyCellStyles['body-cell-shaded']
+          isVisualRefresh && bodyCellStyles['is-visual-refresh']
         )}
         onClick={onClick}
         onFocus={onFocus}

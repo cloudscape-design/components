@@ -14,6 +14,9 @@
 [data-awsui-variant-selected] > .cell {
   background-color: awsui.$color-background-item-selected;
 }
+[data-awsui-variant-shaded] > .cell {
+  background-color: awsui.$color-background-cell-shaded;
+}
 
 tr:has(+ [data-awsui-variant-shaded]) > .cell {
   border-block-end-color: awsui.$color-border-cell-shaded;

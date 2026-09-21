@@ -7,7 +7,6 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { RowVariantContextProvider } from '../table-row/context';
 import { TableContextProvider } from './context';
 import { TableRootProps } from './interfaces';
 import { useTableRoot } from './use-table-root';
@@ -65,29 +64,27 @@ export default function InternalTableRoot({
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
-      {/* Reset the shared cell contexts at each table boundary: the cell substrate reads column layout
-          and row variant from context, so a table nested inside another table's cell must start from
-          this table's own layout and a `default` row variant rather than inheriting the outer table's. */}
+      {/* TableContext supplies this table's column layout to every part. It also resets the layout at the
+          table boundary, so a table nested inside another table's cell renders from its own layout rather
+          than inheriting the outer table's. */}
       <TableContextProvider value={table}>
-        <RowVariantContextProvider value="default">
-          {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
-          <div className={styles['scroll-container']} style={{ overflow: 'visible' }}>
-            <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
-              <table
-                // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
-                // native role (an explicit role="table" there is redundant and flagged by a11y validators).
-                role={isGrid ? 'table' : undefined}
-                aria-label={ariaLabel}
-                aria-labelledby={ariaLabelledby}
-                aria-describedby={ariaDescribedby}
-                aria-rowcount={ariaRowcount}
-                className={clsx(styles.table, isGrid ? styles['table-grid'] : styles['table-auto'])}
-              >
-                {children}
-              </table>
-            </div>
+        {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
+        <div className={styles['scroll-container']} style={{ overflow: 'visible' }}>
+          <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
+            <table
+              // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
+              // native role (an explicit role="table" there is redundant and flagged by a11y validators).
+              role={isGrid ? 'table' : undefined}
+              aria-label={ariaLabel}
+              aria-labelledby={ariaLabelledby}
+              aria-describedby={ariaDescribedby}
+              aria-rowcount={ariaRowcount}
+              className={clsx(styles.table, isGrid ? styles['table-grid'] : styles['table-auto'])}
+            >
+              {children}
+            </table>
           </div>
-        </RowVariantContextProvider>
+        </div>
       </TableContextProvider>
     </div>
   );

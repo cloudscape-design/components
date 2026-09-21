@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useTableContext } from '../table-root/context';
-import { RowVariantContextProvider } from './context';
 import { TableRowProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -46,7 +45,7 @@ export default function InternalTableRow({
       aria-rowindex={ariaRowindex}
       style={(isGrid ? { gridTemplateColumns, ...positionStyle } : positionStyle) as React.CSSProperties}
     >
-      <RowVariantContextProvider value={variant}>{children}</RowVariantContextProvider>
+      {children}
     </tr>
   );
 }

@@ -83,7 +83,6 @@ describe('TableRow variant is visual-only and paints through the cell', () => {
     // data-awsui-variant-shaded drives the striped-row divider darkening (sibling adjacency), mirroring data-awsui-variant-selected.
     expect(row).toHaveAttribute('data-awsui-variant-shaded', 'true');
     for (const classList of cellClassLists(wrapper)) {
-      expect(classList.contains(bodyCellStyles['body-cell-shaded'])).toBe(true);
       expect(classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
       expect(classList.contains(bodyCellStyles['has-selection'])).toBe(false);
     }

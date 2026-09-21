@@ -36,7 +36,6 @@ import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { defaultTableContext, TableContextProvider } from '../table-root/context';
-import { RowVariantContextProvider } from '../table-row/context';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { ClearSortButton } from './clear-sort';
@@ -917,9 +916,7 @@ const InternalTable = React.forwardRef(
       // Reset the shared cell contexts to known defaults: the extracted cell substrate reads column
       // layout and row variant from context, so the existing Table pins them here (it drives its own
       // selection/striping paint directly, not via the atomic row-variant context).
-      <TableContextProvider value={defaultTableContext}>
-        <RowVariantContextProvider value="default">{tableContent}</RowVariantContextProvider>
-      </TableContextProvider>
+      <TableContextProvider value={defaultTableContext}>{tableContent}</TableContextProvider>
     );
   }
 ) as TableForwardRefType;
