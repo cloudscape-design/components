@@ -121,6 +121,7 @@ function PortaledModal({
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const isRefresh = useVisualRefresh();
 
@@ -199,6 +200,13 @@ function PortaledModal({
 
   const onOverlayMouseDown = (event: React.MouseEvent) => {
     lastMouseDownElementRef.current = event.target as HTMLElement;
+    // The overlay can't hold focus, so pressing it would blur whatever is focused inside the
+    // dialog and leave focus on the document body. That takes focus out of the dialog, which
+    // breaks focus containment and stops ESC from reaching the handler on the dialog element.
+    // Preventing the default action keeps focus where it is.
+    if (event.target === refObject.current) {
+      event.preventDefault();
+    }
   };
   const onOverlayClick = (event: React.MouseEvent) => {
     const overlay = refObject.current;
@@ -221,6 +229,12 @@ function PortaledModal({
 
   const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
+
+  // Without a dismiss button there is no predictable first focusable element, so focus the
+  // heading to announce what the modal is about. When no header is given, fall back to the
+  // dialog itself. Both are only reachable programmatically (`tabIndex={-1}`).
+  const hasHeader = header !== undefined && header !== null && header !== false && header !== '';
+  const autoFocusTarget = hideDismissButton ? (hasHeader ? headerTextRef : dialogRef) : undefined;
 
   const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
     useModalDimensions({
@@ -246,6 +260,7 @@ function PortaledModal({
             className={clsx(
               styles.root,
               { [styles.hidden]: !visible },
+              hideDismissButton && styles['hide-dismiss-button'],
               baseProps.className,
               isRefresh && styles.refresh
             )}
@@ -261,6 +276,7 @@ function PortaledModal({
               disabled={!visible}
               autoFocus={true}
               restoreFocus={true}
+              autoFocusTarget={autoFocusTarget}
               className={clsx(styles['focus-lock'], styles[`position-${position}`])}
             >
               <div
@@ -272,8 +288,19 @@ function PortaledModal({
                   hasCustomWidth && styles['custom-width'],
                   hasCustomHeight && styles['custom-height']
                 )}
+                ref={dialogRef}
                 style={dialogCustomStyles}
                 onKeyDown={escKeyHandler}
+                // Keeps the dialog focusable so that clicking a non-focusable area inside it moves
+                // focus to the dialog rather than the document body. Without this, focus leaves the
+                // dialog and the ESC handler above stops receiving key presses.
+                //
+                // This was removed in 0180c66aa, because a tabindex on a generic element with no
+                // accessible name can be announced as a group, which makes some screen readers read
+                // out the whole modal when it opens. Restored deliberately: keep it unless that
+                // announcement is reintroduced, in which case give this element the dialog role and
+                // an accessible name rather than removing the tabindex again.
+                tabIndex={-1}
                 {...metadataAttribute}
               >
                 <div className={clsx(styles.container, hasCustomHeight && styles['custom-height-container'])}>
@@ -300,7 +327,12 @@ function PortaledModal({
                         )
                       }
                     >
-                      <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
+                      <span
+                        ref={headerTextRef}
+                        id={headerId}
+                        className={styles['header--text']}
+                        {...(autoFocusTarget === headerTextRef && { tabIndex: -1 })}
+                      >
                         {header}
                       </span>
                     </InternalHeader>

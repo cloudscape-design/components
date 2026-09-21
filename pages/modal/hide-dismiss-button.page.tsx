@@ -10,6 +10,7 @@ export default function () {
   const [visible, setVisible] = useState(false);
   const [hideDismissButton, setHideDismissButton] = useState(true);
   const [forceChoice, setForceChoice] = useState(false);
+  const [withHeader, setWithHeader] = useState(true);
   const [log, setLog] = useState<Array<string>>([]);
 
   return (
@@ -27,6 +28,9 @@ export default function () {
         </Checkbox>
         <Checkbox checked={forceChoice} onChange={({ detail }) => setForceChoice(detail.checked)}>
           Force a choice: ignore the `keyboard` and `overlay` reasons
+        </Checkbox>
+        <Checkbox checked={withHeader} onChange={({ detail }) => setWithHeader(detail.checked)}>
+          Provide a header (uncheck to see focus fall back to the dialog)
         </Checkbox>
 
         <SpaceBetween size="xs" direction="horizontal">
@@ -46,7 +50,7 @@ export default function () {
       <ScreenshotArea>
         <Modal
           hideDismissButton={hideDismissButton}
-          header="Assign a region"
+          header={withHeader ? 'Assign a region' : undefined}
           visible={visible}
           closeAriaLabel="Close modal"
           onDismiss={({ detail }) => {
