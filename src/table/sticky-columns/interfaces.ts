@@ -15,8 +15,14 @@ export interface StickyColumnsState {
 // Cell state is used to apply respective styles and offsets to sticky cells.
 export interface StickyColumnsCellState {
   padInlineStart: boolean;
+  // Cell is the last sticky column on the respective side and the table is scrolled away from it,
+  // so content is passing underneath. Used to render the separating shadow.
   lastInsetInlineStart: boolean;
   lastInsetInlineEnd: boolean;
+  // Cell is the last sticky column on the respective side, regardless of the scroll position.
+  // Used to render a persistent border so the sticky boundary is visible before scrolling.
+  boundaryInlineStart: boolean;
+  boundaryInlineEnd: boolean;
   offset: { insetInlineStart?: number; insetInlineEnd?: number };
 }
 

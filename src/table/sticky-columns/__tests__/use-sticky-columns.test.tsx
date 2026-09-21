@@ -114,6 +114,8 @@ test('generates non-empty sticky cell state', () => {
         {
           lastInsetInlineStart: false,
           lastInsetInlineEnd: false,
+          boundaryInlineStart: true,
+          boundaryInlineEnd: false,
           padInlineStart: false,
           offset: { insetInlineStart: 0 },
         },
@@ -171,6 +173,8 @@ test('generates non-empty styles for sticky cells', () => {
   expect(getClassName).toHaveBeenCalledWith({
     lastInsetInlineStart: false,
     lastInsetInlineEnd: false,
+    boundaryInlineStart: false,
+    boundaryInlineEnd: true,
     padInlineStart: false,
     offset: { insetInlineEnd: 0 },
   });
@@ -271,6 +275,8 @@ describe('getStickyClassNames helper', () => {
     'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
     'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
     'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
+    'sticky-cell-boundary-inline-start': 'sticky-cell-boundary-inline-start',
+    'sticky-cell-boundary-inline-end': 'sticky-cell-boundary-inline-end',
   };
 
   it('returns correct styles when props is null', () => {
@@ -280,6 +286,8 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': false,
       'sticky-cell-last-inline-start': false,
       'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': false,
+      'sticky-cell-boundary-inline-end': false,
     });
   });
 
@@ -288,6 +296,8 @@ describe('getStickyClassNames helper', () => {
       padInlineStart: true,
       lastInsetInlineStart: true,
       lastInsetInlineEnd: false,
+      boundaryInlineStart: true,
+      boundaryInlineEnd: false,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
@@ -296,6 +306,8 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': true,
       'sticky-cell-last-inline-start': true,
       'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': true,
+      'sticky-cell-boundary-inline-end': false,
     });
   });
 
@@ -304,6 +316,8 @@ describe('getStickyClassNames helper', () => {
       padInlineStart: false,
       lastInsetInlineStart: false,
       lastInsetInlineEnd: true,
+      boundaryInlineStart: false,
+      boundaryInlineEnd: true,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
@@ -312,6 +326,28 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': false,
       'sticky-cell-last-inline-start': false,
       'sticky-cell-last-inline-end': true,
+      'sticky-cell-boundary-inline-start': false,
+      'sticky-cell-boundary-inline-end': true,
+    });
+  });
+
+  it('marks the sticky boundary regardless of the scroll position', () => {
+    const props = {
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: false,
+      boundaryInlineStart: true,
+      boundaryInlineEnd: false,
+      offset: {},
+    };
+    const result = getStickyClassNames(styles, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': true,
+      'sticky-cell-boundary-inline-end': false,
     });
   });
 });

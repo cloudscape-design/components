@@ -7,6 +7,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../cell-base/cell-box' as cell-base;
+@use '../sticky-columns/sticky-boundary' as sticky-boundary;
 
 $cell-horizontal-padding-w-border: calc(#{cell-base.$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
 $selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
@@ -246,6 +247,12 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
         box-shadow: awsui.$shadow-sticky-column-first;
         clip-path: inset(0 -24px 0 0);
       }
+    }
+    &-boundary-inline-start {
+      @include sticky-boundary.sticky-boundary-border('end');
+    }
+    &-boundary-inline-end {
+      @include sticky-boundary.sticky-boundary-border('start');
     }
   }
 

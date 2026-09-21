@@ -1,0 +1,35 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming' as theming;
+
+$border-width: awsui.$border-divider-list-width;
+
+// Renders a persistent border on the edge of the last sticky column, so that the sticky boundary
+// is visible before the table has been scrolled. The scroll shadow still layers on top once the
+// table is stuck; this border is what makes the boundary discoverable at rest.
+//
+// Implemented as a pseudo-element instead of a `box-shadow` layer or a real `border-inline-*`:
+// sticky cells already spend their `box-shadow` on the scroll shadow and on the selected-row
+// background fill, and a real border would change the cell's width and therefore the sticky offsets.
+//
+// $side: the cell edge the border sits on -- `end` for inline-start sticky columns, `start` for
+// inline-end sticky columns. Logical properties keep this correct in RTL.
+//
+// Anything passed as @content is emitted alongside the border, under the same theme gate, so that
+// themes without the border keep their current appearance.
+@mixin sticky-boundary-border($side) {
+  @include theming.one-theme-only {
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-#{$side}: 0;
+      inline-size: $border-width;
+      background: awsui.$color-border-divider-default;
+      pointer-events: none;
+    }
+    @content;
+  }
+}

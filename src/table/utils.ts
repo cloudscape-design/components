@@ -100,6 +100,8 @@ export function getStickyClassNames(styles: Record<string, string>, props: Stick
     [styles['sticky-cell-pad-inline-start']]: !!props?.padInlineStart,
     [styles['sticky-cell-last-inline-start']]: !!props?.lastInsetInlineStart,
     [styles['sticky-cell-last-inline-end']]: !!props?.lastInsetInlineEnd,
+    [styles['sticky-cell-boundary-inline-start']]: !!props?.boundaryInlineStart,
+    [styles['sticky-cell-boundary-inline-end']]: !!props?.boundaryInlineEnd,
   };
 }
 
