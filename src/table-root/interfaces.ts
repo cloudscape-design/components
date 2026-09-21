@@ -18,9 +18,8 @@ export interface TableRootProps extends BaseComponentProps {
    * Determines how column widths are calculated.
    * * `{ type: 'auto' }` - Renders a standard HTML table whose columns size to their content. No
    *   column configuration is required.
-   * * `{ type: 'grid'; columns }` - Renders a CSS grid and applies each column's `size`, `minWidth`,
-   *   and `maxWidth`. Provide one `columns` entry per column, in display order; cells bind to columns
-   *   by position. Virtualization requires this layout.
+   * * `{ type: 'grid'; columns: ColumnDefinition[] }` - Renders a CSS grid. The columns are then provided as
+   * an array of objects with the following properties:
    *   * `size` (number | { flex: number }) - A number sets a fixed pixel width; `{ flex }` gives the
    *     column a weight that shares the remaining space in proportion. Omit it for a flexible column
    *     with the default weight of 1.
