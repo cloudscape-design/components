@@ -113,6 +113,26 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
 }
 `;
 
+exports[`Style API docs definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "copyButton",
+    },
+    {
+      "name": "textToDisplay",
+      "tokens": [
+        "color",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
 {
   "slots": [
@@ -151,6 +171,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "badge",
   "button",
   "checkbox",
+  "copy-to-clipboard",
   "dropdown",
   "link",
 ]
