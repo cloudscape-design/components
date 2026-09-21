@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Autosuggest, AutosuggestProps, Box, Button, FormField, SpaceBetween, Toggle } from '~components';
+import { Autosuggest, AutosuggestProps, Box, Button, FormField, SpaceBetween } from '~components';
 
 const ALL_OPTIONS: AutosuggestProps.Options = [
   { value: 'us-east-1' },
@@ -39,7 +39,6 @@ function makeToken(label: string): AutosuggestProps.Token {
 // ---------------------------------------------------------------------------
 function InteractiveDemo() {
   const [value, setValue] = useState('');
-  const [tokenVariant, setTokenVariant] = useState<AutosuggestProps.TokenVariant>('inline');
   const [tokens, setTokens] = useState<AutosuggestProps.Token[]>([]);
 
   const selected = new Set(tokens.map(t => t.label));
@@ -48,19 +47,12 @@ function InteractiveDemo() {
   return (
     <SpaceBetween size="s">
       <Box variant="h2">Interactive demo</Box>
-      <Toggle
-        checked={tokenVariant === 'normal'}
-        onChange={({ detail }) => setTokenVariant(detail.checked ? 'normal' : 'inline')}
-      >
-        Token variant: {tokenVariant}
-      </Toggle>
       <FormField
         label="Filter logs"
         description="Type to search, press Enter or select from dropdown to add a token. Backspace on empty input focuses last token."
       >
         <Autosuggest
           mode="tokens"
-          tokenVariant={tokenVariant}
           value={value}
           onChange={({ detail }) => setValue(detail.value)}
           onSelect={({ detail }) => {

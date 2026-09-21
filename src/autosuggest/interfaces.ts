@@ -189,14 +189,6 @@ export interface AutosuggestProps
    * Only used when `mode="tokens"`.
    */
   onTokensChange?: NonCancelableEventHandler<AutosuggestProps.TokensChangeDetail>;
-
-  /**
-   * Visual variant for inline tokens. Only used when `mode="tokens"`.
-   *
-   * - `'inline'` (default) — compact single-line pill matching Multiselect inline tokens.
-   * - `'normal'` — full-height bordered token.
-   */
-  tokenVariant?: AutosuggestProps.TokenVariant;
 }
 
 export namespace AutosuggestProps {
@@ -258,8 +250,6 @@ export namespace AutosuggestProps {
      */
     select(): void;
   }
-
-  export type TokenVariant = 'inline' | 'normal';
 
   export interface Token {
     /** Text label for the token pill. */

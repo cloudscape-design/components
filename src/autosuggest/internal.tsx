@@ -60,7 +60,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     mode,
     tokens,
     onTokensChange,
-    tokenVariant,
     __internalRootRef,
     ...restProps
   } = props;
@@ -239,7 +238,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       style={style}
       tokens={mode === 'tokens' ? tokens : undefined}
       onTokensChange={mode === 'tokens' ? onTokensChange : undefined}
-      tokenVariant={tokenVariant}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

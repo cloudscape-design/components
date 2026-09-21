@@ -64,7 +64,6 @@ interface AutosuggestInputProps
   // mode="tokens"
   tokens?: ReadonlyArray<AutosuggestProps.Token>;
   onTokensChange?: NonCancelableEventHandler<AutosuggestProps.TokensChangeDetail>;
-  tokenVariant?: AutosuggestProps.TokenVariant;
 }
 
 interface AutosuggestInputFocusOptions {
@@ -85,7 +84,6 @@ function OverflowDropdown({
   triggerRef,
   panelRef,
   label,
-  tokenVariant,
   onDismiss,
   onClose,
 }: {
@@ -93,7 +91,6 @@ function OverflowDropdown({
   triggerRef: React.RefObject<HTMLButtonElement>;
   panelRef: React.RefObject<HTMLDivElement>;
   label: string;
-  tokenVariant: AutosuggestProps.TokenVariant;
   onDismiss: (index: number) => void;
   onClose: () => void;
 }) {
@@ -166,7 +163,7 @@ function OverflowDropdown({
             <InternalToken
               label={token.label}
               dismissLabel={token.dismissLabel ?? token.label}
-              variant={tokenVariant}
+              variant="inline"
               onDismiss={() => onDismiss(i)}
             />
           </li>
@@ -217,7 +214,6 @@ const AutosuggestInput = React.forwardRef(
       style,
       tokens,
       onTokensChange,
-      tokenVariant = 'inline',
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -655,7 +651,7 @@ const AutosuggestInput = React.forwardRef(
           >
             {tokenList.map((token, i) => (
               <span key={`measure-${i}`} data-measure-token="true" style={{ display: 'inline-flex', flexShrink: 0 }}>
-                <InternalToken label={token.label} variant={tokenVariant} onDismiss={() => undefined} />
+                <InternalToken label={token.label} variant="inline" onDismiss={() => undefined} />
               </span>
             ))}
             {/* Pill measurement — render with a representative count so width is accurate */}
@@ -735,7 +731,7 @@ const AutosuggestInput = React.forwardRef(
                           <InternalToken
                             label={token.label}
                             dismissLabel={token.dismissLabel ?? token.label}
-                            variant={tokenVariant}
+                            variant="inline"
                             disabled={disabled}
                             readOnly={readOnly}
                             onDismiss={() => removeToken(realIndex)}
@@ -766,7 +762,6 @@ const AutosuggestInput = React.forwardRef(
                         triggerRef={overflowPillRef}
                         panelRef={overflowPanelRef}
                         label={`${hiddenTokens.length} more tokens`}
-                        tokenVariant={tokenVariant}
                         onDismiss={i => {
                           removeToken(hiddenStartIndex + i);
                         }}
