@@ -10,7 +10,7 @@ import { BreadcrumbsGlobalRegistration } from '../../../internal/plugins/control
 export function useOwnBreadcrumbsProps() {
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbGroupProps | null>(null);
 
-  const reportOwnBreadcrumbs = useStableCallback(
+  const reportOwnBreadcrumbsProps = useStableCallback(
     (props: BreadcrumbGroupProps): BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> => {
       setBreadcrumbs(props);
 
@@ -21,5 +21,5 @@ export function useOwnBreadcrumbsProps() {
     }
   );
 
-  return { breadcrumbs, reportOwnBreadcrumbs };
+  return { breadcrumbs, reportOwnBreadcrumbsProps };
 }

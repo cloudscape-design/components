@@ -47,16 +47,20 @@ export const NotificationsSlot = React.forwardRef<HTMLElement, NotificationsSlot
 interface BreadcrumbsSlotProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
-  reportOwnBreadcrumbs?: BreadcrumbsSlotContextType['reportOwnBreadcrumbs'];
+  reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
 }
 
 const breadcrumbsSlotContextValue = { isInToolbar: true };
 
-export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs, reportOwnBreadcrumbs }: BreadcrumbsSlotProps) {
+export function BreadcrumbsSlot({
+  ownBreadcrumbs,
+  discoveredBreadcrumbs,
+  reportOwnBreadcrumbsProps,
+}: BreadcrumbsSlotProps) {
   const isSSR = typeof window === 'undefined';
   const ownBreadcrumbsSlotContextValue = React.useMemo(
-    () => ({ isInToolbar: true, reportOwnBreadcrumbs }),
-    [reportOwnBreadcrumbs]
+    () => ({ isInToolbar: true, reportOwnBreadcrumbsProps }),
+    [reportOwnBreadcrumbsProps]
   );
 
   return (

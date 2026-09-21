@@ -73,7 +73,6 @@ export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload)
     payload: { ...payload, id: breadcrumbsConsumerId },
   };
   pushInitialMessage(message);
-  payload.onBreadcrumbsChange(null);
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 
   return {

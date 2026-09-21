@@ -103,7 +103,7 @@ export const useAppLayout = (
   }, []);
   const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
   const discoveredBreadcrumbsProps = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
-  const { breadcrumbs: ownBreadcrumbsProps, reportOwnBreadcrumbs } = useOwnBreadcrumbsProps();
+  const { breadcrumbs: ownBreadcrumbsProps, reportOwnBreadcrumbsProps } = useOwnBreadcrumbsProps();
   const breadcrumbsConsumerRef = useRef<BreadcrumbsConsumerPayload | null>(null);
   const [hasBreadcrumbsConsumer, setHasBreadcrumbsExternalConsumer] = useState(false);
 
@@ -696,7 +696,7 @@ export const useAppLayout = (
     widgetizedState: {
       ...appLayoutInternals,
       breadcrumbsExternallyOwned: hasBreadcrumbsConsumer,
-      reportOwnBreadcrumbs,
+      reportOwnBreadcrumbsProps,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
       navigationAnimationDisabled,

@@ -192,11 +192,7 @@ export type FeatureNotificationsPayloadPublic<T> = Omit<
 >;
 
 export interface BreadcrumbsConsumerPayload {
-  /**
-   * Receives the current breadcrumbs, or `null` when there are none, and is called again whenever they change.
-   * When rendering Cloudscape's BreadcrumbGroup from this value, set its internal `__disableGlobalization` prop
-   * to prevent the consumer's copy from publishing itself again.
-   */
+  /** Called when the current breadcrumbs change. */
   onBreadcrumbsChange: (breadcrumbs: BreadcrumbGroupProps | null) => void;
 }
 

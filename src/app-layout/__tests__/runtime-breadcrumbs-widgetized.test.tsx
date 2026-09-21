@@ -77,7 +77,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     document.body.appendChild(externalContainer);
     const { received, registration } = registerExternalContainer(externalContainer);
 
-    expect(received).toEqual([null]);
+    expect(received).toEqual([]);
 
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
 
@@ -309,15 +309,15 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     expect(first).toEqual({ unregister: expect.any(Function) });
     expect(second).toEqual({ unregister: expect.any(Function) });
-    expect(firstCallback).toHaveBeenCalledWith(null);
-    expect(secondCallback).toHaveBeenCalledWith(null);
+    expect(firstCallback).not.toHaveBeenCalled();
+    expect(secondCallback).not.toHaveBeenCalled();
 
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
 
     await waitFor(() =>
       expect(secondCallback).toHaveBeenLastCalledWith(expect.objectContaining({ items: defaultItems }))
     );
-    expect(firstCallback).toHaveBeenCalledTimes(1);
+    expect(firstCallback).not.toHaveBeenCalled();
 
     second.unregister();
   });

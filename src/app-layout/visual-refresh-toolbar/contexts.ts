@@ -8,7 +8,7 @@ import { BreadcrumbsGlobalRegistration } from '../../internal/plugins/controller
 
 export interface BreadcrumbsSlotContextType {
   isInToolbar: boolean;
-  reportOwnBreadcrumbs?: (props: BreadcrumbGroupProps) => BreadcrumbsGlobalRegistration<BreadcrumbGroupProps>;
+  reportOwnBreadcrumbsProps?: (props: BreadcrumbGroupProps) => BreadcrumbsGlobalRegistration<BreadcrumbGroupProps>;
 }
 
 export const BreadcrumbsSlotContext =

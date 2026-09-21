@@ -69,7 +69,7 @@ export interface ToolbarProps {
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   breadcrumbsExternallyOwned?: AppLayoutWidgetizedState['breadcrumbsExternallyOwned'];
-  reportOwnBreadcrumbs?: AppLayoutWidgetizedState['reportOwnBreadcrumbs'];
+  reportOwnBreadcrumbsProps?: AppLayoutWidgetizedState['reportOwnBreadcrumbsProps'];
   toolbarProps: ToolbarProps;
   featureNotificationsProps?: FeatureNotificationsProps;
 }
@@ -77,7 +77,7 @@ export interface AppLayoutToolbarImplementationProps {
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
   breadcrumbsExternallyOwned,
-  reportOwnBreadcrumbs,
+  reportOwnBreadcrumbsProps,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
   toolbarProps = {},
@@ -236,7 +236,7 @@ export function AppLayoutToolbarImplementation({
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
               breadcrumbsExternallyOwned={breadcrumbsExternallyOwned}
-              reportOwnBreadcrumbs={reportOwnBreadcrumbs}
+              reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
               includeTestUtils={true}
             />
           </AppLayoutBuiltInErrorBoundary>
