@@ -3,6 +3,7 @@
 import { act, renderHook } from '../../__tests__/render-hook';
 import { ButtonDropdownProps } from '../interfaces';
 import useHighlightedMenu from '../utils/use-highlighted-menu';
+import { isItemGroup } from '../utils/utils';
 
 const itemGroup1: ButtonDropdownProps.ItemGroup = {
   text: 'category1',
@@ -31,9 +32,21 @@ const testItems2: ButtonDropdownProps.Items = [
   { id: 'i4', text: 'item4' },
 ];
 
-function render({ items = testItems, hasExpandableGroups = false, isInRestrictedView = false }) {
+function render({
+  items = testItems,
+  hasExpandableGroups = false,
+  isInRestrictedView = false,
+  isExpandable,
+}: {
+  items?: ButtonDropdownProps.Items;
+  hasExpandableGroups?: boolean;
+  isInRestrictedView?: boolean;
+  isExpandable?: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+}) {
+  const resolveExpandable =
+    isExpandable ?? ((item: ButtonDropdownProps.ItemOrGroup) => hasExpandableGroups && isItemGroup(item));
   return renderHook(useHighlightedMenu, {
-    initialProps: { items, hasExpandableGroups, isInRestrictedView },
+    initialProps: { items, isExpandable: resolveExpandable, isInRestrictedView },
   });
 }
 
@@ -116,5 +129,56 @@ describe('use-highlighted-menu util', () => {
     act(() => result.current.highlightItem(itemGroup1.items[1]));
     act(() => result.current.reset());
     expect(result.current.targetItem).toBe(null);
+  });
+});
+
+const flatGroup: ButtonDropdownProps.ItemGroup = {
+  text: 'flat category',
+  items: [
+    { id: 'f1', text: 'flat item 1' },
+    { id: 'f2', text: 'flat item 2' },
+  ],
+};
+const expandableGroup: ButtonDropdownProps.ItemGroup = {
+  text: 'expandable category',
+  items: [
+    { id: 'e1', text: 'expandable item 1' },
+    { id: 'e2', text: 'expandable item 2' },
+  ],
+};
+const mixedItems: ButtonDropdownProps.Items = [
+  { id: 'top1', text: 'top item 1' },
+  flatGroup,
+  expandableGroup,
+  { id: 'top2', text: 'top item 2' },
+];
+const onlyExpandableGroupIsExpandable = (item: ButtonDropdownProps.ItemOrGroup) => item === expandableGroup;
+
+describe('use-highlighted-menu util with mixed expandable and flat groups', () => {
+  test('steps through a flat group inline and onto the next expandable header', () => {
+    const { result } = render({ items: mixedItems, isExpandable: onlyExpandableGroupIsExpandable });
+
+    act(() => result.current.highlightItem(mixedItems[0]));
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(flatGroup.items[0]);
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(flatGroup.items[1]);
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(expandableGroup);
+  });
+
+  test('skips the collapsed expandable group children and confines navigation once expanded', () => {
+    const { result } = render({ items: mixedItems, isExpandable: onlyExpandableGroupIsExpandable });
+
+    act(() => result.current.highlightItem(expandableGroup));
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(mixedItems[3]);
+
+    act(() => result.current.expandGroup(expandableGroup));
+    expect(result.current.targetItem).toBe(expandableGroup.items[0]);
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(expandableGroup.items[1]);
+    act(() => result.current.moveHighlight(1));
+    expect(result.current.targetItem).toBe(expandableGroup.items[1]);
   });
 });
