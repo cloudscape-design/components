@@ -30096,7 +30096,8 @@ subset of rows, such as with virtualization; otherwise it is derived from the DO
   * \`size\` (number | { flex: number }) - A number sets a fixed pixel width; \`{ flex }\` gives the
     column a weight that shares the remaining space in proportion. Omit it for a flexible column
     with the default weight of 1.
-  * \`minWidth\` (number) - The minimum width in pixels, for a flexible column.
+  * \`minWidth\` (number) - The minimum width in pixels for a flexible column. We recommend setting one;
+    without it the column can shrink until its content clips or overlaps at narrow widths.
   * \`maxWidth\` (number) - Caps a flexible column's width in pixels (it grows up to the cap). A capped
     column can't also carry a proportional \`flex\` weight, so weighting applies to the uncapped columns.
 
