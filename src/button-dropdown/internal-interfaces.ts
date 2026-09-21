@@ -36,7 +36,7 @@ export interface ItemListProps extends HighlightProps {
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
   categoryDisabled?: boolean;
-  hasExpandableGroups?: boolean;
+  isExpandable?: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
   hasCategoryHeader?: boolean;
   lastInDropdown: boolean;
   expandToViewport?: boolean;

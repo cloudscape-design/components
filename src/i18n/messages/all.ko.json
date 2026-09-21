@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {지난 {amount}초} one {지난 {amount}초} other {지난 {amount}초}}} minute {{amount, plural, zero {지난 {amount}분} one {지난 {amount}분} other {지난 {amount}분}}} hour {{amount, plural, zero {지난 {amount}시간} one {지난 {amount}시간} other {지난 {amount}시간}}} day {{amount, plural, zero {지난 {amount}일} one {지난 {amount}일} other {지난 {amount}일}}} week {{amount, plural, zero {지난 {amount}주} one {지난 {amount}주} other {지난 {amount}주}}} month {{amount, plural, zero {지난 {amount}개월} one {지난 {amount}개월} other {지난 {amount}개월}}} year {{amount, plural, zero {지난 {amount}년} one {지난 {amount}년} other {지난 {amount}년}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {초} one {초} other {초}}} minute {{amount, plural, zero {분} one {분} other {분}}} hour {{amount, plural, zero {시간} one {시간} other {시간}}} day {{amount, plural, zero {일} one {일} other {일}}} week {{amount, plural, zero {주} one {주} other {주}}} month {{amount, plural, zero {개월} one {개월} other {개월}}} year {{amount, plural, zero {년} one {년} other {년}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "대화 상자 닫기"
+  },
   "drawer": {
     "i18nStrings.loadingText": "콘텐츠 로드 중"
   },

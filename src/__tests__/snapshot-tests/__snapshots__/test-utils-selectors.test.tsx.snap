@@ -253,6 +253,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "dialog": [
+    "awsui_content_jocwy",
+    "awsui_dismiss-button_jocwy",
+    "awsui_footer_jocwy",
+    "awsui_header-actions_jocwy",
+    "awsui_header_jocwy",
+    "awsui_root_17w22",
+  ],
   "divider": [
     "awsui_divider-label_1noo2",
     "awsui_divider_1noo2",
