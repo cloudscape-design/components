@@ -411,6 +411,100 @@ describe('Modal component', () => {
     });
   });
 
+  describe('hideDismissButton property', () => {
+    it('does not render the dismiss button when set', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findDismissButton()).toBeNull();
+    });
+
+    it('renders the dismiss button when unset or false', () => {
+      expect(renderModal({ visible: true }).findDismissButton()).not.toBeNull();
+      expect(renderModal({ visible: true, hideDismissButton: false }).findDismissButton()).not.toBeNull();
+    });
+
+    it('still dismisses when pressing ESC', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when pressing ESC with focus on a child element', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      const onDismissSpy = jest.fn();
+      renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: onDismissSpy,
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+
+      act(() => {
+        textFieldRef!.focus();
+        createWrapper(textFieldRef!).keydown(KeyCode.escape);
+      });
+
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when clicking the overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('never reports the closeButton reason, because there is no button to activate', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      const reasons = onDismissSpy.mock.calls.map(([event]) => event.detail.reason);
+      expect(reasons).toEqual(['keyboard', 'overlay']);
+    });
+
+    it('lets consumers block dismissal by ignoring the keyboard and overlay reasons', () => {
+      // The documented way to force a choice: the component reports the intent,
+      // the consumer decides whether to act on it.
+      const setVisible = jest.fn();
+      const wrapper = renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: ({ detail }) => {
+          if (detail.reason === 'keyboard' || detail.reason === 'overlay') {
+            return;
+          }
+          setVisible(false);
+        },
+      });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      expect(setVisible).not.toHaveBeenCalled();
+    });
+
+    it('still traps focus', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findFocusLock()).not.toBeNull();
+    });
+
+    it('moves initial focus to the first focusable element in the content', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      renderModal({
+        visible: true,
+        hideDismissButton: true,
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+      expect(document.activeElement).toBe(textFieldRef);
+    });
+  });
+
   describe('Tab traps', () => {
     it('exists', () => {
       const wrapper = renderModal({ visible: true });

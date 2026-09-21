@@ -19468,7 +19468,8 @@ The event detail contains the \`reason\`, which can be any of the following:
       "type": "string",
     },
     {
-      "description": "Adds an \`aria-label\` to the close button, for accessibility.",
+      "description": "Adds an \`aria-label\` to the close button, for accessibility.
+Not used when \`hideDismissButton\` is \`true\`, because there is no close button to label.",
       "i18nTag": true,
       "name": "closeAriaLabel",
       "optional": true,
@@ -19506,6 +19507,19 @@ plus the header height and the footer height.",
       "name": "height",
       "optional": true,
       "type": "number",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines whether the close button is displayed in the header.
+When set to \`true\`, the close button isn't rendered, and the user resolves
+the modal by choosing one of the actions in the footer.
+
+Pressing ESC and clicking outside of the modal still call \`onDismiss\`.
+To prevent the user from closing the modal in those ways, ignore the
+\`keyboard\` and \`overlay\` reasons in your \`onDismiss\` handler.",
+      "name": "hideDismissButton",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,

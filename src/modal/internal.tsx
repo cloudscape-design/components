@@ -91,6 +91,7 @@ type PortaledModalProps = Omit<InternalModalProps, 'modalRoot' | 'getModalRoot' 
 // useContainerQuery needs its targeted element to exist on the first render in order to work properly.
 function PortaledModal({
   size,
+  hideDismissButton = false,
   visible,
   header,
   children,
@@ -281,20 +282,22 @@ function PortaledModal({
                       variant="h2"
                       __disableActionsWrapping={true}
                       actions={
-                        <div
-                          {...getAnalyticsMetadataAttribute({
-                            action: 'dismiss',
-                          } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
-                        >
-                          <InternalButton
-                            ariaLabel={closeAriaLabel}
-                            className={styles['dismiss-control']}
-                            variant="modal-dismiss"
-                            iconName="close"
-                            formAction="none"
-                            onClick={onCloseButtonClick}
-                          />
-                        </div>
+                        hideDismissButton ? undefined : (
+                          <div
+                            {...getAnalyticsMetadataAttribute({
+                              action: 'dismiss',
+                            } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
+                          >
+                            <InternalButton
+                              ariaLabel={closeAriaLabel}
+                              className={styles['dismiss-control']}
+                              variant="modal-dismiss"
+                              iconName="close"
+                              formAction="none"
+                              onClick={onCloseButtonClick}
+                            />
+                          </div>
+                        )
                       }
                     >
                       <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
