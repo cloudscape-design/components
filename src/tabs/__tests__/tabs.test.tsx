@@ -1412,3 +1412,58 @@ describe('Tabs', () => {
     expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
   });
 });
+
+describe('active-tab indicator', () => {
+  const indicatorSelector = `.${styles['tabs-active-indicator']}`;
+
+  function indicatorOpacity(wrapper: TabsWrapper) {
+    return wrapper
+      .find(indicatorSelector)!
+      .getElement()
+      .style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-opacity');
+  }
+
+  test('renders a single shared indicator', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(wrapper.findAll(indicatorSelector)).toHaveLength(1);
+  });
+
+  test('renders the indicator as decorative (hidden from assistive technology)', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(wrapper.find(indicatorSelector)!.getElement()).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  test('shows the indicator over an enabled active tab', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+  });
+
+  test('hides the indicator when the active tab is disabled', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+
+  test('hides the indicator when there is no active tab', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="missing" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+
+  test('toggles indicator visibility when switching between enabled and disabled tabs', () => {
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+
+    rerender(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+
+    rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+  });
+
+  test('hides the indicator when the active tab is removed', () => {
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+
+    rerender(<Tabs tabs={defaultTabs.slice(1)} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+});

@@ -1,0 +1,16 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+.tabs-active-indicator {
+  @include theming.expressive-motion-only {
+    @include styles.with-motion {
+      transition:
+        transform awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c,
+        opacity awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c;
+    }
+  }
+}
