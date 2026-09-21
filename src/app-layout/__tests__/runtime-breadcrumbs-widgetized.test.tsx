@@ -301,19 +301,24 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     externalContainer.remove();
   });
 
-  test('refuses a second external consumer', () => {
-    const first = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() });
+  test('uses the latest external consumer registration', async () => {
+    const firstCallback = jest.fn();
+    const first = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: firstCallback });
     const secondCallback = jest.fn();
     const second = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: secondCallback });
 
-    expect(first.registered).toBe(true);
-    expect(second.registered).toBe(false);
-    expect(secondCallback).not.toHaveBeenCalled();
+    expect(first).toEqual({ unregister: expect.any(Function) });
+    expect(second).toEqual({ unregister: expect.any(Function) });
+    expect(firstCallback).toHaveBeenCalledWith(null);
+    expect(secondCallback).toHaveBeenCalledWith(null);
+
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+
+    await waitFor(() =>
+      expect(secondCallback).toHaveBeenLastCalledWith(expect.objectContaining({ items: defaultItems }))
+    );
+    expect(firstCallback).toHaveBeenCalledTimes(1);
 
     second.unregister();
-    expect(widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() }).registered).toBe(false);
-
-    first.unregister();
-    expect(widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange: jest.fn() }).registered).toBe(true);
   });
 });

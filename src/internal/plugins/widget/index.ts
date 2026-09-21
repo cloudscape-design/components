@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getExternalProps } from '../../utils/external-props';
-import { reportRuntimeApiWarning } from '../helpers/metrics';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
@@ -62,35 +61,23 @@ export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
 }
 
+// There is only ever one breadcrumbs consumer, so its registration message carries a fixed id.
+const breadcrumbsConsumerId = 'awsui-breadcrumbs-external-consumer';
+
 /**
  * Registers the surface that renders breadcrumbs outside App Layout.
  */
 export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
-  const initialMessages = getAppLayoutInitialMessages();
-  if (initialMessages.some(message => message.type === 'registerBreadcrumbsExternalConsumer')) {
-    reportRuntimeApiWarning(
-      'breadcrumbs',
-      'A breadcrumbs consumer is already registered. This registration is ignored.'
-    );
-    return { registered: false, unregister: () => {} };
-  }
-
-  let active = true;
   const message: RegisterBreadcrumbsExternalConsumerMessage = {
     type: 'registerBreadcrumbsExternalConsumer',
-    payload,
+    payload: { ...payload, id: breadcrumbsConsumerId },
   };
   pushInitialMessage(message);
   payload.onBreadcrumbsChange(null);
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 
   return {
-    registered: true,
     unregister: () => {
-      if (!active) {
-        return;
-      }
-      active = false;
       const initialMessages = getAppLayoutInitialMessages();
       setInitialMessage(
         initialMessages.filter(initialMessage => initialMessage.type !== 'registerBreadcrumbsExternalConsumer')
@@ -112,10 +99,7 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
-      if (
-        (initialMessage.type === 'registerLeftDrawer' || initialMessage.type === 'registerBottomDrawer') &&
-        initialMessage.payload.id === message.payload.id
-      ) {
+      if (initialMessage.payload.id === message.payload.id) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });

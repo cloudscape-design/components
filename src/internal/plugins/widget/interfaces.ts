@@ -201,18 +201,12 @@ export interface BreadcrumbsConsumerPayload {
 }
 
 export interface BreadcrumbsConsumerRegistration {
-  /**
-   * False when another consumer already owns external breadcrumbs rendering.
-   */
-  registered: boolean;
   unregister: () => void;
 }
 
-export type BreadcrumbsConsumerMessagePayload = BreadcrumbsConsumerPayload;
-
 export type RegisterBreadcrumbsExternalConsumerMessage = Message<
   'registerBreadcrumbsExternalConsumer',
-  BreadcrumbsConsumerMessagePayload
+  BreadcrumbsConsumerPayload & { id: string }
 >;
 export type UnregisterBreadcrumbsExternalConsumerMessage = Message<'unregisterBreadcrumbsExternalConsumer', undefined>;
 

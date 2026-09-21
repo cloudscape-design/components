@@ -23,8 +23,7 @@ function ConsoleBreadcrumbs({ items }: { items: BreadcrumbGroupProps['items'] })
 function GlobalNavigationHeader() {
   const [crumbs, setCrumbs] = useState<BreadcrumbGroupProps | null>(null);
 
-  // Fires immediately with the current value, then on every change. `registered` is false if another
-  // consumer already owns rendering.
+  // Fires immediately with the current value, then on every change.
   useEffect(() => registerBreadcrumbsConsumer({ onBreadcrumbsChange: setCrumbs }).unregister, []);
 
   const sinkProps = { ...crumbs, __disableGlobalization: true } as unknown as React.ComponentProps<

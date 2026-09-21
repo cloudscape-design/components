@@ -92,7 +92,7 @@ export interface AppLayoutInternals {
 
 export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   breadcrumbsExternallyOwned?: boolean;
-  extractOwnBreadcrumbs?: BreadcrumbsSlotContextType['extractOwnBreadcrumbs'];
+  reportOwnBreadcrumbs?: BreadcrumbsSlotContextType['reportOwnBreadcrumbs'];
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;

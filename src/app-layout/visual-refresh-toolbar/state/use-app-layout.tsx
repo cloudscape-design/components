@@ -19,7 +19,7 @@ import { useIntersectionObserver } from '../../../internal/hooks/use-intersectio
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { metrics } from '../../../internal/metrics';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
-import { BreadcrumbsConsumerMessagePayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
+import { BreadcrumbsConsumerPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
@@ -102,10 +102,10 @@ export const useAppLayout = (
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
   const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
-  const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
-  const { breadcrumbs: ownBreadcrumbs, extractOwnBreadcrumbs } = useOwnBreadcrumbsProps();
-  const breadcrumbsConsumerRef = useRef<BreadcrumbsConsumerMessagePayload | null>(null);
-  const [hasBreadcrumbsConsumer, setHasBreadcrumbsConsumer] = useState(false);
+  const discoveredBreadcrumbsProps = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
+  const { breadcrumbs: ownBreadcrumbsProps, reportOwnBreadcrumbs } = useOwnBreadcrumbsProps();
+  const breadcrumbsConsumerRef = useRef<BreadcrumbsConsumerPayload | null>(null);
+  const [hasBreadcrumbsConsumer, setHasBreadcrumbsExternalConsumer] = useState(false);
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -270,13 +270,13 @@ export const useAppLayout = (
   useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'registerBreadcrumbsExternalConsumer') {
       breadcrumbsConsumerRef.current = message.payload;
-      setHasBreadcrumbsConsumer(true);
+      setHasBreadcrumbsExternalConsumer(true);
       return;
     }
 
     if (message.type === 'unregisterBreadcrumbsExternalConsumer') {
       breadcrumbsConsumerRef.current = null;
-      setHasBreadcrumbsConsumer(false);
+      setHasBreadcrumbsExternalConsumer(false);
       return;
     }
 
@@ -461,12 +461,14 @@ export const useAppLayout = (
 
   const rootRef = useMergeRefs(rootRefInternal, intersectionObserverRef, onMountRootRef);
 
-  const currentBreadcrumbs = breadcrumbs ? ownBreadcrumbs : discoveredBreadcrumbs;
-  const breadcrumbsExternallyOwned = hasBreadcrumbsConsumer;
+  const currentBreadcrumbs = breadcrumbs ? ownBreadcrumbsProps : discoveredBreadcrumbsProps;
 
   useLayoutEffect(() => {
-    breadcrumbsConsumerRef.current?.onBreadcrumbsChange(isIntersecting ? currentBreadcrumbs || null : null);
-  }, [breadcrumbsExternallyOwned, currentBreadcrumbs, isIntersecting]);
+    if (!isIntersecting) {
+      return;
+    }
+    breadcrumbsConsumerRef.current?.onBreadcrumbsChange(currentBreadcrumbs || null);
+  }, [hasBreadcrumbsConsumer, currentBreadcrumbs, isIntersecting]);
 
   useGlobalScrollPadding(verticalOffsets.header ?? 0);
 
@@ -489,7 +491,7 @@ export const useAppLayout = (
     headerVariant,
     isMobile,
     breadcrumbs,
-    discoveredBreadcrumbs,
+    discoveredBreadcrumbs: discoveredBreadcrumbsProps,
     stickyNotifications: resolvedStickyNotifications,
     navigationOpen: resolvedNavigationOpen,
     navigation: resolvedNavigation,
@@ -693,8 +695,8 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
-      breadcrumbsExternallyOwned,
-      extractOwnBreadcrumbs,
+      breadcrumbsExternallyOwned: hasBreadcrumbsConsumer,
+      reportOwnBreadcrumbs,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
       navigationAnimationDisabled,
