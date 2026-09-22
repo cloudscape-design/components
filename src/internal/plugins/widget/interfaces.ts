@@ -202,7 +202,7 @@ export interface BreadcrumbsConsumerRegistration {
 
 export type RegisterBreadcrumbsExternalConsumerMessage = Message<
   'registerBreadcrumbsExternalConsumer',
-  BreadcrumbsConsumerPayload & { id: string }
+  BreadcrumbsConsumerPayload
 >;
 export type UnregisterBreadcrumbsExternalConsumerMessage = Message<'unregisterBreadcrumbsExternalConsumer', undefined>;
 

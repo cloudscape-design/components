@@ -61,16 +61,13 @@ export function clearFeatureNotifications() {
   updateDrawer({ type: 'clearFeatureNotifications' });
 }
 
-// There is only ever one breadcrumbs consumer, so its registration message carries a fixed id.
-const breadcrumbsConsumerId = 'awsui-breadcrumbs-external-consumer';
-
 /**
  * Registers the surface that renders breadcrumbs outside App Layout.
  */
 export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
   const message: RegisterBreadcrumbsExternalConsumerMessage = {
     type: 'registerBreadcrumbsExternalConsumer',
-    payload: { ...payload, id: breadcrumbsConsumerId },
+    payload,
   };
   pushInitialMessage(message);
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
@@ -98,7 +95,10 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
-      if (initialMessage.payload.id === message.payload.id) {
+      if (
+        initialMessage.type !== 'registerBreadcrumbsExternalConsumer' &&
+        initialMessage.payload.id === message.payload.id
+      ) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });

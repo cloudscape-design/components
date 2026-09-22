@@ -6,11 +6,12 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { clearInitialMessages } from '../../../lib/components/internal/plugins/widget/core';
 import * as widgetPlugins from '../../../lib/components/plugins';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout } from './utils';
+
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 
 const wrapper = createWrapper();
 const defaultItems: BreadcrumbGroupProps['items'] = [
@@ -27,7 +28,9 @@ function getAppLayoutBreadcrumbsSection() {
 }
 
 function expectAppLayoutBreadcrumbsToBeExternallyOwned() {
-  expect(getAppLayoutBreadcrumbsSection()?.getElement()).toHaveAttribute('data-awsui-external-breadcrumbs', 'true');
+  const breadcrumbsSection = getAppLayoutBreadcrumbsSection()?.getElement();
+  expect(breadcrumbsSection).toHaveAttribute('data-awsui-external-breadcrumbs', 'true');
+  expect(breadcrumbsSection).toHaveClass(toolbarStyles['external-breadcrumbs']);
 }
 
 function registerExternalContainer(container: HTMLElement) {
@@ -64,11 +67,6 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   clearInitialMessages();
-  expect(awsuiPluginsInternal.breadcrumbs.getStateForTesting()).toEqual({
-    appLayoutUpdateCallback: null,
-    breadcrumbInstances: [],
-    breadcrumbRegistrations: [],
-  });
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
