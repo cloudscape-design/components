@@ -97,9 +97,6 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
 export function getStickyClassNames(styles: Record<string, string>, props: StickyColumnsCellState | null) {
   const classNames: Record<string, boolean> = {};
 
-  // Theme-gated rules are not emitted at all in themes that do not use them, so the corresponding
-  // class names are missing from the stylesheet and from this map. Skipping them keeps the literal
-  // string "undefined" from ending up in the cell's class attribute.
   const addClassName = (name: string, isActive: boolean) => {
     if (styles[name] !== undefined) {
       classNames[styles[name]] = isActive;
