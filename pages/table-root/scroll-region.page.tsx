@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import Box from '~components/box';
 import Button from '~components/button';
 import TableBody from '~components/table-body';
 import TableBodyCell from '~components/table-body-cell';
@@ -10,6 +9,8 @@ import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
+
+import { SimplePage } from '../app/templates';
 
 // Four fixed 400px tracks (1600px total): overflows a normal-width viewport and fits a very wide one, so a
 // viewport resize flips the horizontal-overflow scroll region on and off.
@@ -23,9 +24,7 @@ const WIDE_COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
 export default function TableScrollRegionPage() {
   const [grown, setGrown] = useState(false);
   return (
-    <Box padding="l">
-      <h1>Table atomics — scroll region</h1>
-
+    <SimplePage title="Table atomics — scroll region">
       <h2>Overflowing grid</h2>
       <TableRoot
         columnLayout={{ type: 'grid', columns: WIDE_COLUMNS }}
@@ -66,6 +65,6 @@ export default function TableScrollRegionPage() {
           </TableRow>
         </TableBody>
       </TableRoot>
-    </Box>
+    </SimplePage>
   );
 }
