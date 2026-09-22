@@ -47,7 +47,7 @@ export namespace StyleDictionary {
   export type ExpandedMotionScopeDictionary = Partial<TokenCategory<MotionScopeTokenName, ExpandedMotionModeEntry>>;
 
   export type ColorPaletteDictionary = Partial<TokenCategory<ColorPaletteTokenName, GlobalEntry>>;
-  export type TypographyDictionary = Partial<TokenCategory<TypographyTokenName, GlobalEntry>>;
+  export type TypographyDictionary = Partial<TokenCategory<TypographyTokenName, DensityModeEntry>>;
   export type BordersDictionary = Partial<TokenCategory<BordersTokenName, GlobalEntry>>;
   export type ReferenceDictionary = Partial<TokenCategory<ReferenceTokenName, ReferenceEntry>>;
 

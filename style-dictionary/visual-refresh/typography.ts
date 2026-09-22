@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
-export const tokens: StyleDictionary.TypographyDictionary = {
+const tokens: StyleDictionary.TypographyDictionary = {
   fontBoxValueLargeWeight: '700',
   fontButtonLetterSpacing: '0.005em',
   fontChartDetailSize: '{fontSizeBodyS}',
@@ -80,3 +81,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightKeyValuePairsLabel: '{lineHeightBodyM}',
   lineHeightTabs: '{lineHeightHeadingS}',
 };
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(tokens);
+
+export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';
