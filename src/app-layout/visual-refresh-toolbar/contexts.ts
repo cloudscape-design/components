@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { BreadcrumbsGlobalRegistration } from '../../internal/plugins/controllers/breadcrumbs';
 
-interface BreadcrumbsSlotContextType {
+export interface BreadcrumbsSlotContextType {
   isInToolbar: boolean;
+  reportOwnBreadcrumbsProps?: (props: BreadcrumbGroupProps) => BreadcrumbsGlobalRegistration<BreadcrumbGroupProps>;
 }
 
 export const BreadcrumbsSlotContext =
