@@ -23,9 +23,6 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: '28px',
-  fontSizeTable: '12px',
-  tableLineHeight: '{lineHeightBodyS}',
-  fontTableLetterSpacing: '{letterSpacingBodyS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(

@@ -1173,17 +1173,11 @@ export default function App() {
                                       if (isParsedField(item as unknown as LogEntry | ParsedField)) {
                                         return (
                                           <Box padding={{ left: 'xl' }}>
-                                            <Link href="#" fontSize="body-s">
-                                              {field.key}
-                                            </Link>
+                                            <Link href="#">{field.key}</Link>
                                           </Box>
                                         );
                                       }
-                                      return (
-                                        <Link href="#" fontSize="body-s">
-                                          {item.timestamp}
-                                        </Link>
-                                      );
+                                      return <Link href="#">{item.timestamp}</Link>;
                                     },
                                   },
                                   {
@@ -1193,12 +1187,11 @@ export default function App() {
                                       const field = item as unknown as ParsedField;
                                       if (isParsedField(item as unknown as LogEntry | ParsedField)) {
                                         return field.isLink ? (
-                                          <Link href="#" external={true} fontSize="body-s">
+                                          <Link href="#" external={true}>
                                             {field.value}
                                           </Link>
                                         ) : (
                                           field.value
-                                          // <Box>{field.value}</Box>
                                         );
                                       }
                                       return item.message;

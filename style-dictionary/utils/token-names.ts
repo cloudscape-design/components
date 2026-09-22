@@ -1160,10 +1160,7 @@ export type SizesTokenName =
   | 'sizeVerticalPanelIconOffset'
   | 'sizeSideNavigationItemHeight'
   | 'sizeSideNavigationItemCollapsed'
-  | 'sizeSideNavigationCollapsedWidth'
-  | 'fontSizeTable'
-  | 'tableLineHeight'
-  | 'fontTableLetterSpacing';
+  | 'sizeSideNavigationCollapsedWidth';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'
@@ -1309,7 +1306,7 @@ export type ShadowsTokenName =
   | 'shadowStickyColumnFirst'
   | 'shadowStickyColumnLast';
 
-export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
+export type GlobalScopeTokenName = ColorPaletteTokenName | BordersTokenName;
 export type ColorScopeTokenName =
   | ReferenceTokenName
   | ColorChartsTokenName
@@ -1318,6 +1315,6 @@ export type ColorScopeTokenName =
   | ColorSeverityTokenName
   | ColorPaletteTokenName;
 export type MotionScopeTokenName = MotionTokenName;
-export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
+export type DensityScopeTokenName = SizesTokenName | SpacingTokenName | TypographyTokenName;
 
 export type TokenName = GlobalScopeTokenName | ColorScopeTokenName | MotionScopeTokenName | DensityScopeTokenName;

@@ -11,17 +11,8 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
-  font-size: awsui.$font-size-table;
-  line-height: awsui.$table-line-height;
-  letter-spacing: awsui.$font-table-letter-spacing;
+  @include styles.default-text-style;
   inline-size: 100%;
-
-  // default styling from mixin default-text-style
-  color: awsui.$color-text-body-default;
-  font-weight: constants.$font-weight-normal;
-  font-family: awsui.$font-family-base;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
 }
 
 .tools {
