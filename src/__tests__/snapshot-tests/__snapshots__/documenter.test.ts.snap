@@ -30252,23 +30252,17 @@ rows. Not intended for general styling.",
       "type": "TableRowProps.PositionStyle",
     },
     {
-      "description": "The row's variant.
-* \`default\` - A standard body row.
-* \`selected\` - Applies selected-row styling. Visual only — it does not set \`aria-selected\`;
-convey selection to assistive technologies via the selection control in a leading cell.
-* \`shaded\` - Applies a shaded background for alternating row colors.",
-      "inlineType": {
-        "name": "TableRowProps.Variant",
-        "type": "union",
-        "values": [
-          "default",
-          "selected",
-          "shaded",
-        ],
-      },
-      "name": "variant",
+      "description": "Applies selected-row styling. Visual only — it does not set \`aria-selected\`; convey selection to
+assistive technologies via the selection control in a leading cell.",
+      "name": "selected",
       "optional": true,
-      "type": "string",
+      "type": "boolean",
+    },
+    {
+      "description": "Applies a shaded background, for alternating row colors.",
+      "name": "shaded",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": [

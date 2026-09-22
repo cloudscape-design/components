@@ -15,7 +15,7 @@ import { SimplePage } from '../app/templates';
 import { DataHeader, makeItems } from './common';
 
 // A minimal read-only table in auto layout (`columnLayout` omitted, so it defaults to `{ type: 'auto' }`).
-// Striping is composed by the consumer via the row `variant`: with the toggle on, alternating rows are
+// Striping is composed by the consumer via the row `shaded` prop: with the toggle on, alternating rows are
 // marked `shaded` — the atomic table owns no row-parity computation.
 export default function TableSimplePage() {
   const items = makeItems(10);
@@ -38,7 +38,7 @@ export default function TableSimplePage() {
           <DataHeader />
           <TableBody>
             {items.map((item, index) => (
-              <TableRow key={item.id} variant={striped && index % 2 === 1 ? 'shaded' : 'default'}>
+              <TableRow key={item.id} shaded={striped && index % 2 === 1}>
                 <TableBodyCell isRowHeader={true}>{item.name}</TableBodyCell>
                 <TableBodyCell>{item.type}</TableBodyCell>
                 <TableBodyCell>{item.size}</TableBodyCell>

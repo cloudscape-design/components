@@ -8,7 +8,7 @@ import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
 import TableRoot, { TableRootProps } from '~components/table-root';
-import TableRow, { TableRowProps } from '~components/table-row';
+import TableRow from '~components/table-row';
 
 import { SimplePage } from '../app/templates';
 
@@ -52,8 +52,6 @@ function Grid({
   longFirstCell?: boolean;
   width?: number;
 }) {
-  const variantOf = (i: number): TableRowProps.Variant =>
-    selected?.includes(i) ? 'selected' : shaded?.includes(i) ? 'shaded' : 'default';
   return (
     <Box padding="s">
       <Box variant="h2">{label}</Box>
@@ -68,7 +66,7 @@ function Grid({
           </TableHead>
           <TableBody>
             {ROWS.map((row, i) => (
-              <TableRow key={row.name} variant={variantOf(i)}>
+              <TableRow key={row.name} selected={selected?.includes(i)} shaded={shaded?.includes(i)}>
                 <TableBodyCell>{longFirstCell && i === 1 ? LONG : row.name}</TableBodyCell>
                 <TableBodyCell>{row.type}</TableBodyCell>
                 <TableBodyCell>{row.status}</TableBodyCell>

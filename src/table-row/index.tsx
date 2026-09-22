@@ -11,7 +11,9 @@ import InternalTableRow from './internal';
 export { TableRowProps };
 
 function TableRow(props: TableRowProps) {
-  const baseComponentProps = useBaseComponent('TableRow', { props: { variant: props.variant } });
+  const baseComponentProps = useBaseComponent('TableRow', {
+    props: { selected: props.selected, shaded: props.shaded },
+  });
   return <InternalTableRow {...props} {...baseComponentProps} />;
 }
 

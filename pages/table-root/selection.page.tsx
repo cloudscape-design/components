@@ -21,7 +21,7 @@ import { Item, makeItems } from './common';
 import styles from './styles.scss';
 
 // Selection (grid layout), multi and single, composed by the consumer — the atomic parts contribute
-// only `variant='selected'` (the visual row surface; the checkbox/radio conveys selection to
+// only `selected` (the visual row surface; the checkbox/radio conveys selection to
 // assistive technologies). The control column uses `disablePaddings` cells with a centred control to
 // match the existing Table's selection column.
 // Control column is fixed; Name and Status share the remaining width via flex weights (rather than
@@ -102,7 +102,7 @@ export default function TableSelectionPage() {
           </TableHead>
           <TableBody>
             {items.map((item: Item) => (
-              <TableRow key={item.id} variant={selectedIds.has(item.id) ? 'selected' : 'default'}>
+              <TableRow key={item.id} selected={selectedIds.has(item.id)}>
                 <TableBodyCell disablePaddings={true}>
                   <div className={styles['selection-cell']}>
                     {mode === 'multi' ? (

@@ -183,8 +183,8 @@ describe('Table atomic parts', () => {
     });
   });
 
-  describe('row variant is visual-only', () => {
-    test('variant="selected" applies no aria-selected (selection is conveyed by the control)', () => {
+  describe('row selection is visual-only', () => {
+    test('selected applies no aria-selected (selection is conveyed by the control)', () => {
       const { container } = render(
         <TableRoot ariaLabel="Resources">
           <TableHead>
@@ -193,7 +193,7 @@ describe('Table atomic parts', () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow variant="selected">
+            <TableRow selected={true}>
               <TableBodyCell>Selected visual only</TableBodyCell>
             </TableRow>
             <TableRow>

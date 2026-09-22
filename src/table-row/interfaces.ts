@@ -6,13 +6,14 @@ import { BaseComponentProps } from '../types/base-component';
 
 export interface TableRowProps extends BaseComponentProps {
   /**
-   * The row's variant.
-   * * `default` - A standard body row.
-   * * `selected` - Applies selected-row styling. Visual only — it does not set `aria-selected`;
-   * convey selection to assistive technologies via the selection control in a leading cell.
-   * * `shaded` - Applies a shaded background for alternating row colors.
+   * Applies selected-row styling. Visual only — it does not set `aria-selected`; convey selection to
+   * assistive technologies via the selection control in a leading cell.
    */
-  variant?: TableRowProps.Variant;
+  selected?: boolean;
+  /**
+   * Applies a shaded background, for alternating row colors.
+   */
+  shaded?: boolean;
   /** Provides an accessible name for the row. Use this or `ariaLabelledby`. */
   ariaLabel?: string;
   /** Sets `aria-labelledby`. Use the ID(s) of visible element(s) that label the row. */
@@ -34,7 +35,6 @@ export interface TableRowProps extends BaseComponentProps {
 }
 
 export namespace TableRowProps {
-  export type Variant = 'default' | 'selected' | 'shaded';
   export interface PositionStyle {
     position?: React.CSSProperties['position'];
     transform?: React.CSSProperties['transform'];

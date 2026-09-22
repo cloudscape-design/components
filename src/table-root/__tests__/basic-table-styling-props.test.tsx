@@ -9,7 +9,7 @@ import TableBodyCell from '../../../lib/components/table-body-cell';
 import TableHead from '../../../lib/components/table-head';
 import TableHeaderCell from '../../../lib/components/table-header-cell';
 import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
-import TableRow, { TableRowProps } from '../../../lib/components/table-row';
+import TableRow from '../../../lib/components/table-row';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
@@ -17,14 +17,14 @@ import legacyHeaderCellStyles from '../../../lib/components/table/header-cell/st
 import cellStyles from '../../../lib/components/table-body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
-// Proves the row `variant` is purely visual: it emits a `data-awsui-variant-*` hook on the <tr> that the cell
-// stylesheet paints from (selection background + a layout-neutral `::after` ring, shaded background, and
-// consecutive-row adjacency), never sets `aria-selected`, and is driven by `variant` rather than a public prop
-// — selection and shading being mutually exclusive by type. Also covers the narrowed inline `positionStyle`
+// Proves the row `selected`/`shaded` props are purely visual: each emits an independent `data-awsui-*` hook
+// on the <tr> that the cell stylesheet paints from (selection background + a layout-neutral `::after` ring,
+// shaded background, and consecutive-row adjacency), and never sets `aria-selected`. Selection wins over
+// shading — a selected row omits the shaded hook. Also covers the narrowed inline `positionStyle`
 // (virtualization) reaching the body/row roots and `disablePaddings` reaching the padding opt-out on the cell
 // content and header-cell root.
 
-function Harness({ variant }: { variant?: TableRowProps.Variant }) {
+function Harness({ selected, shaded }: { selected?: boolean; shaded?: boolean }) {
   return (
     <TableRoot ariaLabel="Resources">
       <TableHead>
@@ -34,7 +34,7 @@ function Harness({ variant }: { variant?: TableRowProps.Variant }) {
         </TableRow>
       </TableHead>
       <TableBody>
-        <TableRow variant={variant}>
+        <TableRow selected={selected} shaded={shaded}>
           <TableBodyCell>Resource 0</TableBodyCell>
           <TableBodyCell>Available</TableBodyCell>
         </TableRow>
@@ -43,37 +43,43 @@ function Harness({ variant }: { variant?: TableRowProps.Variant }) {
   );
 }
 
-function renderHarness(variant?: TableRowProps.Variant) {
-  const { container } = render(<Harness variant={variant} />);
+function renderHarness(props: { selected?: boolean; shaded?: boolean } = {}) {
+  const { container } = render(<Harness {...props} />);
   return { wrapper: createWrapper(container) };
 }
 
-describe('TableRow variant is visual-only and paints through the cell', () => {
-  test("variant='selected' emits the data-awsui-variant-selected hook and sets no aria-selected", () => {
-    const { wrapper } = renderHarness('selected');
-    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
+describe('TableRow selection/shading is visual-only and paints through the cell', () => {
+  const bodyRow = (wrapper: ReturnType<typeof createWrapper>) =>
+    createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
+
+  test('selected emits the data-awsui-selected hook and sets no aria-selected', () => {
+    const row = bodyRow(renderHarness({ selected: true }).wrapper);
     // Visual state must NOT leak into ARIA; selection is conveyed by the selection control.
     expect(row).not.toHaveAttribute('aria-selected');
-    // The sanctioned styling hook the cell stylesheet paints from; selected and shaded are mutually exclusive.
-    expect(row).toHaveAttribute('data-awsui-variant-selected', 'true');
-    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
+    // The sanctioned styling hook the cell stylesheet paints from.
+    expect(row).toHaveAttribute('data-awsui-selected', 'true');
+    expect(row).not.toHaveAttribute('data-awsui-shaded');
   });
 
-  test("variant='shaded' emits the data-awsui-variant-shaded hook and never selected", () => {
-    const { wrapper } = renderHarness('shaded');
-    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
+  test('shaded emits the data-awsui-shaded hook and never aria-selected', () => {
+    const row = bodyRow(renderHarness({ shaded: true }).wrapper);
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
-    // data-awsui-variant-shaded is the hook the cell stylesheet paints the shaded background + adjacency from.
-    expect(row).toHaveAttribute('data-awsui-variant-shaded', 'true');
+    expect(row).not.toHaveAttribute('data-awsui-selected');
+    // data-awsui-shaded is the hook the cell stylesheet paints the shaded background + adjacency from.
+    expect(row).toHaveAttribute('data-awsui-shaded', 'true');
   });
 
-  test('the default variant emits no data-awsui-variant-* hook and no aria-selected', () => {
-    const { wrapper } = renderHarness();
-    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
+  test('selection wins over shading — a selected+shaded row emits only the selected hook', () => {
+    const row = bodyRow(renderHarness({ selected: true, shaded: true }).wrapper);
+    expect(row).toHaveAttribute('data-awsui-selected', 'true');
+    expect(row).not.toHaveAttribute('data-awsui-shaded');
+  });
+
+  test('an unstyled row emits neither hook and no aria-selected', () => {
+    const row = bodyRow(renderHarness().wrapper);
     expect(row).not.toHaveAttribute('aria-selected');
-    expect(row).not.toHaveAttribute('data-awsui-variant-selected');
-    expect(row).not.toHaveAttribute('data-awsui-variant-shaded');
+    expect(row).not.toHaveAttribute('data-awsui-selected');
+    expect(row).not.toHaveAttribute('data-awsui-shaded');
   });
 });
 
@@ -188,11 +194,11 @@ describe('isRowHeader', () => {
 });
 
 describe('nested content is insulated from the table/row context', () => {
-  test('a classic Table nested in a selected grid cell inherits neither the outer grid layout nor the selected variant', () => {
+  test('a classic Table nested in a selected grid cell inherits neither the outer grid layout nor the selected styling', () => {
     const { container } = render(
       <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 400 }] }} ariaLabel="Outer">
         <TableBody>
-          <TableRow variant="selected">
+          <TableRow selected={true}>
             <TableBodyCell>
               <Table columnDefinitions={[{ id: 'v', header: 'V', cell: item => item.v }]} items={[{ v: 'nested' }]} />
             </TableBodyCell>
@@ -201,7 +207,7 @@ describe('nested content is insulated from the table/row context', () => {
       </TableRoot>
     );
     // The existing Table resets both atomic contexts at its root, so its own cells read auto layout and
-    // default variant — the outer grid class and selected paint do not leak into the nested table.
+    // no selection paint — the outer grid class and selected paint do not leak into the nested table.
     const nestedCell = createWrapper(container).findTable()!.findBodyCell(1, 1)!.getElement();
     expect(nestedCell.classList.contains(cellStyles['cell-grid'])).toBe(false);
     expect(nestedCell.classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
