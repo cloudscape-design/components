@@ -95,6 +95,8 @@ function OverflowDropdown({
   onClose: () => void;
 }) {
   const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({});
+  // Track which index was just dismissed so we can move focus after re-render
+  const pendingFocusAfterDismissRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!triggerRef.current) {
@@ -104,10 +106,33 @@ function OverflowDropdown({
     setPanelStyle({ position: 'fixed', top: rect.bottom + 4, left: rect.left, zIndex: 9000 });
   }, [triggerRef]);
 
+  // Focus first button on open
   useEffect(() => {
     const first = panelRef.current?.querySelector<HTMLElement>('button');
     first?.focus();
   }, [panelRef]);
+
+  // After a dismiss, move focus to the adjacent token in the panel.
+  // pendingFocusAfterDismissRef holds the dismissed index; we focus
+  // Math.min(dismissedIndex, tokens.length - 1) from the updated list.
+  useEffect(() => {
+    if (pendingFocusAfterDismissRef.current === null) {
+      return;
+    }
+    const dismissedIndex = pendingFocusAfterDismissRef.current;
+    pendingFocusAfterDismissRef.current = null;
+
+    if (tokens.length === 0) {
+      // All hidden tokens removed — panel will close, focus goes to trigger/input via onClose
+      return;
+    }
+    const nextPosition = Math.min(dismissedIndex, tokens.length - 1);
+    const buttons = panelRef.current?.querySelectorAll<HTMLButtonElement>('button');
+    // Each token renders one dismiss button; position maps directly.
+    if (buttons && buttons[nextPosition]) {
+      buttons[nextPosition].focus();
+    }
+  });
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -115,11 +140,26 @@ function OverflowDropdown({
         e.stopPropagation();
         onClose();
         triggerRef.current?.focus();
+      } else if (e.keyCode === KeyCode.up || e.keyCode === KeyCode.down) {
+        e.preventDefault();
+        e.stopPropagation();
+        const buttons = Array.from(panelRef.current?.querySelectorAll<HTMLButtonElement>('button') ?? []);
+        if (buttons.length === 0) {
+          return;
+        }
+        const focused = buttons.indexOf(document.activeElement as HTMLButtonElement);
+        if (e.keyCode === KeyCode.up) {
+          const prev = focused > 0 ? focused - 1 : buttons.length - 1;
+          buttons[prev].focus();
+        } else {
+          const next = focused < buttons.length - 1 ? focused + 1 : 0;
+          buttons[next].focus();
+        }
       }
     };
     document.addEventListener('keydown', handleKey, true);
     return () => document.removeEventListener('keydown', handleKey, true);
-  }, [onClose, triggerRef]);
+  }, [onClose, panelRef, triggerRef]);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -164,7 +204,10 @@ function OverflowDropdown({
               label={token.label}
               dismissLabel={token.dismissLabel ?? token.label}
               variant="inline"
-              onDismiss={() => onDismiss(i)}
+              onDismiss={() => {
+                pendingFocusAfterDismissRef.current = i;
+                onDismiss(i);
+              }}
             />
           </li>
         ))}
@@ -366,17 +409,26 @@ const AutosuggestInput = React.forwardRef(
       fireNonCancelableEvent(onChange, { value: '' });
     };
 
-    const removeToken = (index: number) => {
+    const removeToken = (index: number, suppressFocus = false) => {
       preventOpenOnFocusRef.current = true; // prevent autosuggest dropdown opening when focus returns to input
       const updated = tokenList.filter((_, i) => i !== index);
       fireNonCancelableEvent(onTokensChange, { tokens: updated });
+      if (suppressFocus) {
+        // Caller (e.g. OverflowDropdown) manages its own focus after dismiss
+        return;
+      }
       // Focus: move to previous token, or back to input if none left
       if (updated.length === 0) {
         setFocusedTokenIndex(-1);
         inputRef.current?.focus();
       } else {
         const nextFocus = Math.min(index, updated.length - 1);
-        setFocusedTokenIndex(nextFocus);
+        // Reset to -1 so the effect always fires on the next setFocusedTokenIndex call,
+        // even if nextFocus equals the current value (React bails on same-value setState).
+        setFocusedTokenIndex(-1);
+        // rAF ensures the consumer has re-rendered with the updated token list before we
+        // move focus, so the dismiss button at nextFocus actually exists in the DOM.
+        requestAnimationFrame(() => setFocusedTokenIndex(nextFocus));
       }
     };
 
@@ -390,6 +442,24 @@ const AutosuggestInput = React.forwardRef(
     const tokenFocusSnapshotRef = useRef({ tokenListLength: tokenList.length, effectiveVisible });
     tokenFocusSnapshotRef.current = { tokenListLength: tokenList.length, effectiveVisible };
 
+    // Direct focus helper — focuses the dismiss button of the token at the given absolute index.
+    // Used by ArrowLeft/Right so navigation is instant and works even when focusedTokenIndex
+    // doesn't change value (e.g. pressing ArrowLeft twice to the same position).
+    const focusTokenAtIndex = (absoluteIndex: number) => {
+      const { tokenListLength, effectiveVisible: ev } = tokenFocusSnapshotRef.current;
+      const visibleStart = tokenListLength - ev;
+      const positionInVisible = absoluteIndex - visibleStart;
+      if (positionInVisible < 0) {
+        inputRef.current?.focus();
+        return;
+      }
+      const dismissButtons = tokenListRef.current?.querySelectorAll<HTMLButtonElement>('button');
+      if (dismissButtons && dismissButtons[positionInVisible]) {
+        dismissButtons[positionInVisible].focus();
+        setFocusedTokenIndex(absoluteIndex);
+      }
+    };
+
     // ---------------------------------------------------------------------------
     // Keyboard
     // ---------------------------------------------------------------------------
@@ -401,7 +471,7 @@ const AutosuggestInput = React.forwardRef(
     };
 
     const handleFocus = () => {
-      if (!preventOpenOnFocusRef.current) {
+      if (!preventOpenOnFocusRef.current && !overflowOpen) {
         openDropdown();
         fireNonCancelableEvent(onFocus, null);
       }
@@ -424,12 +494,18 @@ const AutosuggestInput = React.forwardRef(
     const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
       switch (event.detail.keyCode) {
         case KeyCode.down: {
+          if (overflowOpen) {
+            break;
+          }
           onPressArrowDown?.();
           openDropdown();
           event.preventDefault();
           break;
         }
         case KeyCode.up: {
+          if (overflowOpen) {
+            break;
+          }
           onPressArrowUp?.();
           openDropdown();
           event.preventDefault();
@@ -697,52 +773,7 @@ const AutosuggestInput = React.forwardRef(
                   <InternalIcon name="search" variant={disabled ? 'disabled' : 'subtle'} />
                 </span>
 
-                {/* Visible token list — newest tokens at right, older collapsed to +N */}
-                {visibleTokens.length > 0 && (
-                  <div
-                    ref={tokenListRef}
-                    className={styles['token-list']}
-                    style={tokenListMaxWidth !== undefined ? { maxInlineSize: tokenListMaxWidth } : undefined}
-                  >
-                    {visibleTokens.map((token, i) => {
-                      const realIndex = tokenList.length - effectiveVisible + i;
-                      return (
-                        <span
-                          key={realIndex}
-                          onKeyDown={(e: React.KeyboardEvent) => {
-                            if (e.keyCode === KeyCode.backspace || e.keyCode === KeyCodeDelete) {
-                              e.preventDefault();
-                              removeToken(realIndex);
-                            } else if (e.keyCode === KeyCode.left) {
-                              e.preventDefault();
-                              if (realIndex > 0) {
-                                setFocusedTokenIndex(realIndex - 1);
-                              }
-                            } else if (e.keyCode === KeyCode.right) {
-                              e.preventDefault();
-                              if (realIndex < tokenList.length - 1) {
-                                setFocusedTokenIndex(realIndex + 1);
-                              } else {
-                                inputRef.current?.focus();
-                              }
-                            }
-                          }}
-                        >
-                          <InternalToken
-                            label={token.label}
-                            dismissLabel={token.dismissLabel ?? token.label}
-                            variant="inline"
-                            disabled={disabled}
-                            readOnly={readOnly}
-                            onDismiss={() => removeToken(realIndex)}
-                          />
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* +N overflow pill */}
+                {/* +N overflow pill — appears before the visible token list (oldest tokens collapsed) */}
                 {hiddenTokens.length > 0 && (
                   <>
                     <button
@@ -763,7 +794,22 @@ const AutosuggestInput = React.forwardRef(
                         panelRef={overflowPanelRef}
                         label={`${hiddenTokens.length} more tokens`}
                         onDismiss={i => {
-                          removeToken(hiddenStartIndex + i);
+                          // If this is the last hidden token, the pill and panel will unmount.
+                          // Close the panel and move focus to the first visible token (or input if none).
+                          if (hiddenTokens.length === 1) {
+                            setOverflowOpen(false);
+                            requestAnimationFrame(() => {
+                              // After re-render the promoted token is now the first visible token
+                              const firstButton = tokenListRef.current?.querySelector<HTMLButtonElement>('button');
+                              if (firstButton) {
+                                firstButton.focus();
+                              } else {
+                                inputRef.current?.focus();
+                              }
+                            });
+                          }
+                          // suppressFocus=true: OverflowDropdown manages its own post-dismiss focus
+                          removeToken(hiddenStartIndex + i, true);
                         }}
                         onClose={() => {
                           setOverflowOpen(false);
@@ -772,6 +818,59 @@ const AutosuggestInput = React.forwardRef(
                       />
                     )}
                   </>
+                )}
+
+                {/* Visible token list — newest tokens, oldest collapsed to +N pill above */}
+                {visibleTokens.length > 0 && (
+                  <div
+                    ref={tokenListRef}
+                    className={styles['token-list']}
+                    style={tokenListMaxWidth !== undefined ? { maxInlineSize: tokenListMaxWidth } : undefined}
+                  >
+                    {visibleTokens.map((token, i) => {
+                      const realIndex = tokenList.length - effectiveVisible + i;
+                      return (
+                        <span
+                          key={realIndex}
+                          onKeyDown={(e: React.KeyboardEvent) => {
+                            if (e.keyCode === KeyCode.backspace || e.keyCode === KeyCodeDelete) {
+                              e.preventDefault();
+                              removeToken(realIndex);
+                            } else if (e.keyCode === KeyCode.left) {
+                              e.preventDefault();
+                              if (i === 0) {
+                                // This is the first VISIBLE token. If there are hidden tokens,
+                                // the +N pill is immediately to the left — focus it.
+                                // If there are no hidden tokens, there is nothing to the left.
+                                if (hiddenTokens.length > 0) {
+                                  overflowPillRef.current?.focus();
+                                }
+                              } else {
+                                focusTokenAtIndex(realIndex - 1);
+                              }
+                            } else if (e.keyCode === KeyCode.right) {
+                              e.preventDefault();
+                              if (realIndex < tokenList.length - 1) {
+                                focusTokenAtIndex(realIndex + 1);
+                              } else {
+                                inputRef.current?.focus();
+                                setFocusedTokenIndex(-1);
+                              }
+                            }
+                          }}
+                        >
+                          <InternalToken
+                            label={token.label}
+                            dismissLabel={token.dismissLabel ?? token.label}
+                            variant="inline"
+                            disabled={disabled}
+                            readOnly={readOnly}
+                            onDismiss={() => removeToken(realIndex)}
+                          />
+                        </span>
+                      );
+                    })}
+                  </div>
                 )}
 
                 {/* Borderless input — flex:1 fills remaining space; min-inline-size:20% is a hard CSS floor */}
