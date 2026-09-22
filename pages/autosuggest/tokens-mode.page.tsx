@@ -134,12 +134,15 @@ export default function AutosuggestTokensModePage() {
         <SpaceBetween size="l">
           <Box variant="h2">Scenarios</Box>
           <Scenario label="No tokens" initTokens={[]} />
-          <Scenario label="Email recipients (long token labels)" options={EMAIL_OPTIONS} initTokens={[]} />
-          <Scenario label="Few tokens (2)" initTokens={[]} />
-          <Scenario label="Many tokens (overflow)" initTokens={[]} />
-          <Scenario label="Disabled" initTokens={[]} disabled={true} />
-          <Scenario label="Read-only" initTokens={[]} readOnly={true} />
-          <Scenario label="Invalid (error state)" initTokens={[]} invalid={true} />
+          <Scenario
+            label="Email recipients (long token labels)"
+            options={EMAIL_OPTIONS}
+            initTokens={[makeToken('alice@example.com')]}
+          />
+          <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]} />
+          <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
+          <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
+          <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
         </SpaceBetween>
       </SpaceBetween>
     </Box>
