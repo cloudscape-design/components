@@ -4,9 +4,12 @@
 export * from '../internal/plugins/widget/interfaces';
 import {
   clearFeatureNotifications,
+  registerBreadcrumbsConsumer,
   registerFeatureNotificationsPublic,
   showFeaturePromptIfPossible,
 } from '../internal/plugins/widget/index';
+
+export { registerBreadcrumbsConsumer };
 
 export const featureNotifications = {
   registerFeatureNotifications: registerFeatureNotificationsPublic,
