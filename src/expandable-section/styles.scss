@@ -261,8 +261,12 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
   &-container-button {
     margin-inline-start: calc(-1 * #{$icon-total-space-medium});
-    @include theming.one-theme-only {
-      margin-inline-start: calc(-1 * #{$icon-total-space-container-one-theme});
+    // Only when the caret is at the start. The end-icon layout resets this margin
+    // below (.header-button-icon-end) and a theme-scoped rule would outrank that reset.
+    &:not(.header-button-icon-end) {
+      @include theming.one-theme-only {
+        margin-inline-start: calc(-1 * #{$icon-total-space-container-one-theme});
+      }
     }
   }
 
