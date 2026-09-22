@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
+import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
 
@@ -53,6 +54,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontDisplayLabelWeight: '500',
 
   // ── Body text ─────────────────────────────────────────────────────────────
+  fontSizeBodyM: { comfortable: '14px', compact: '13px' },
   fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
@@ -64,6 +66,9 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightBreadcrumbCurrent: '400',
 };
 
-const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
+  merge({}, parentTokens, tokens)
+);
 
 export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';
