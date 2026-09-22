@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import clsx from 'clsx';
+
 import {
   StickyColumnsModel,
   useStickyCellStyles,
@@ -349,6 +351,32 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-boundary-inline-start': true,
       'sticky-cell-boundary-inline-end': false,
     });
+  });
+
+  it('omits class names that are missing from the stylesheet instead of emitting "undefined"', () => {
+    const stylesWithoutBoundary = {
+      'sticky-cell': 'sticky-cell',
+      'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
+      'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
+      'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
+    };
+    const props = {
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: true,
+      boundaryInlineStart: false,
+      boundaryInlineEnd: true,
+      offset: {},
+    };
+    const result = getStickyClassNames(stylesWithoutBoundary, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': true,
+    });
+    expect(Object.keys(result)).not.toContain('undefined');
+    expect(clsx(result)).not.toContain('undefined');
   });
 });
 
