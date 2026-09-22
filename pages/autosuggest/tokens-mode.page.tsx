@@ -51,22 +51,24 @@ function InteractiveDemo() {
         label="Filter logs"
         description="Type to search, press Enter or select from dropdown to add a token. Backspace on empty input focuses last token."
       >
-        <Autosuggest
-          mode="tokens"
-          value={value}
-          onChange={({ detail }) => setValue(detail.value)}
-          onSelect={({ detail }) => {
-            if (detail.value && !selected.has(detail.value)) {
-              setValue('');
-            }
-          }}
-          tokens={tokens}
-          onTokensChange={({ detail }) => setTokens([...detail.tokens])}
-          options={filteredOptions}
-          enteredTextLabel={v => `Use "${v}"`}
-          placeholder="Search or add a region"
-          empty="No options"
-        />
+        <div data-testid="interactive-demo">
+          <Autosuggest
+            mode="tokens"
+            value={value}
+            onChange={({ detail }) => setValue(detail.value)}
+            onSelect={({ detail }) => {
+              if (detail.value && !selected.has(detail.value)) {
+                setValue('');
+              }
+            }}
+            tokens={tokens}
+            onTokensChange={({ detail }) => setTokens([...detail.tokens])}
+            options={filteredOptions}
+            enteredTextLabel={v => `Use "${v}"`}
+            placeholder="Search or add a region"
+            empty="No options"
+          />
+        </div>
       </FormField>
       <SpaceBetween direction="horizontal" size="xs">
         <Button onClick={() => setTokens([])}>Clear all tokens</Button>

@@ -3503,6 +3503,27 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
       "detailType": "AutosuggestProps.SelectDetail",
       "name": "onSelect",
     },
+    {
+      "cancelable": false,
+      "description": "Called when the token list changes — either a new token was added (Enter key or
+dropdown selection) or an existing token was dismissed (× button or Backspace/Delete).
+The event \`detail.tokens\` contains the complete updated token array.
+
+Only used when \`mode="tokens"\`.",
+      "detailInlineType": {
+        "name": "AutosuggestProps.TokensChangeDetail",
+        "properties": [
+          {
+            "name": "tokens",
+            "optional": false,
+            "type": "ReadonlyArray<AutosuggestProps.Token>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AutosuggestProps.TokensChangeDetail",
+      "name": "onTokensChange",
+    },
   ],
   "functions": [
     {
@@ -3747,6 +3768,24 @@ single form field.",
     {
       "description": "Specifies the text to display when in the loading state.",
       "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Renders the component in tokens mode. In this mode, accepted values are displayed as
+inline dismissible token pills before the text input. Tokens overflow into a \`+N\` pill
+that opens a dropdown of hidden tokens.
+
+When \`mode="tokens"\` is set, provide \`tokens\` and \`onTokensChange\`.",
+      "inlineType": {
+        "name": ""default" | "tokens"",
+        "type": "union",
+        "values": [
+          "default",
+          "tokens",
+        ],
+      },
+      "name": "mode",
       "optional": true,
       "type": "string",
     },
@@ -4174,6 +4213,13 @@ Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
         "core",
       ],
       "type": "AutosuggestProps.Style",
+    },
+    {
+      "description": "The list of tokens to display inline. Only used when \`mode="tokens"\`.
+This is a controlled prop — update it in response to \`onTokensChange\`.",
+      "name": "tokens",
+      "optional": true,
+      "type": "ReadonlyArray<AutosuggestProps.Token>",
     },
     {
       "description": "Specifies the text entered into the form element.",
