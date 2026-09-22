@@ -14,6 +14,7 @@ import { describeEachAppLayout } from './utils';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 
 const wrapper = createWrapper();
+const originalIntersectionObserver = window.IntersectionObserver;
 const defaultItems: BreadcrumbGroupProps['items'] = [
   { text: 'Home', href: '/home' },
   { text: 'Resource', href: '/resource' },
@@ -67,6 +68,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   clearInitialMessages();
+  window.IntersectionObserver = originalIntersectionObserver;
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
@@ -253,6 +255,48 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     await waitFor(() => expect(externalContainer).toHaveTextContent('Home / Resource'));
     expectAppLayoutBreadcrumbsToBeExternallyOwned();
     externalContainer.remove();
+  });
+
+  test('does not publish breadcrumbs while App Layout is hidden', async () => {
+    let intersectionObserverCallback: IntersectionObserverCallback | undefined;
+    window.IntersectionObserver = class {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionObserverCallback = callback;
+      }
+
+      observe() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+
+    const onBreadcrumbsChange = jest.fn();
+    widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange });
+    const { rerender } = render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+
+    await waitFor(() =>
+      expect(onBreadcrumbsChange).toHaveBeenLastCalledWith(expect.objectContaining({ items: defaultItems }))
+    );
+
+    act(() => {
+      intersectionObserverCallback!(
+        [{ isIntersecting: false, time: 0 } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+    });
+    onBreadcrumbsChange.mockClear();
+
+    const updatedItems = [{ text: 'Updated', href: '/updated' }];
+    rerender(<AppLayout breadcrumbs={<BreadcrumbGroup items={updatedItems} />} />);
+    expect(onBreadcrumbsChange).not.toHaveBeenCalled();
+
+    act(() => {
+      intersectionObserverCallback!(
+        [{ isIntersecting: true, time: 1 } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+    });
+    await waitFor(() =>
+      expect(onBreadcrumbsChange).toHaveBeenLastCalledWith(expect.objectContaining({ items: updatedItems }))
+    );
   });
 
   test('keeps funnel analytics markers in the hidden App Layout copy', async () => {
