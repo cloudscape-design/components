@@ -148,7 +148,7 @@
       }
     }
     &-boundary-inline-end {
-      @include sticky-boundary.sticky-boundary-border('start');
+      @include sticky-boundary.sticky-boundary-border('start', calc(-1 * #{sticky-boundary.$border-width}));
     }
   }
 }
