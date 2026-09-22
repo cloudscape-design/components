@@ -49,6 +49,7 @@ export interface InternalInputProps
   __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
+  __noBorder?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -76,6 +77,7 @@ function InternalInput(
     disableBrowserAutocorrect,
     spellcheck,
     __noBorderRadius,
+    __noBorder,
 
     __startIcon,
     __startIconVariant = 'subtle',
@@ -178,6 +180,7 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      __noBorder && styles['input-has-no-border'],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,

@@ -57,6 +57,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    mode,
+    tokens,
+    onTokensChange,
     __internalRootRef,
     ...restProps
   } = props;
@@ -91,10 +94,18 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     enteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
     onSelectItem: (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
+      const selectedValue = option.value || '';
+      if (mode === 'tokens' && selectedValue) {
+        // In token mode: add selected value as a token and clear the input
+        const currentTokens = tokens ?? [];
+        const updated = [...currentTokens, { label: selectedValue, dismissLabel: selectedValue }];
+        fireNonCancelableEvent(onTokensChange, { tokens: updated });
+        fireNonCancelableEvent(onChange, { value: '' });
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
       fireNonCancelableEvent(onSelect, {
-        value,
+        value: selectedValue,
         selectedOption: option.type !== 'use-entered' ? option.option : undefined,
       });
       autosuggestInputRef.current?.close();
@@ -225,6 +236,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      tokens={mode === 'tokens' ? tokens : undefined}
+      onTokensChange={mode === 'tokens' ? onTokensChange : undefined}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

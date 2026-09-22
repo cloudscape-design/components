@@ -3,6 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
 .root {
   // Used in test-utils.
 }
@@ -14,4 +18,94 @@
 
 .dropdown-content {
   display: contents;
+}
+
+// ---------------------------------------------------------------------------
+// mode="tokens" — single bordered row containing tokens + editable input
+// ---------------------------------------------------------------------------
+
+// Outer wrapper that owns the single border, focus ring, and background.
+// Mirrors ButtonTrigger / .input-adorned-container layout.
+.token-trigger {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: awsui.$size-vertical-input;
+  padding-inline: styles.$control-padding-horizontal;
+  gap: awsui.$space-xxs;
+
+  background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+
+  &:focus-within {
+    @include styles.form-focus-element();
+  }
+
+  &.token-trigger-invalid {
+    @include styles.form-invalid-control();
+  }
+
+  &.token-trigger-warning {
+    @include styles.form-warning-control();
+  }
+
+  &.token-trigger-disabled {
+    @include styles.form-disabled-element();
+  }
+
+  &.token-trigger-readonly {
+    @include styles.form-readonly-element();
+  }
+}
+
+// The visible inline token list — flex, nowrap, overflow-hidden, fade mask on the right edge.
+.token-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: awsui.$space-xxs;
+  flex-shrink: 1;
+  min-inline-size: 0;
+  overflow: hidden; // clips tokens that don't fit; max-inline-size applied via JS keeps pill visible
+}
+
+// Individual token hidden by overflow measurement
+.token-hidden {
+  display: none;
+}
+
+// +N overflow pill button
+.token-overflow-pill {
+  @include styles.styles-reset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-block: 1px;
+  padding-inline: awsui.$space-xs;
+  border-block: awsui.$border-width-field solid awsui.$color-border-control-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-control-default;
+  border-start-start-radius: awsui.$border-radius-token-inline;
+  border-start-end-radius: awsui.$border-radius-token-inline;
+  border-end-start-radius: awsui.$border-radius-token-inline;
+  border-end-end-radius: awsui.$border-radius-token-inline;
+  background-color: awsui.$color-background-control-default;
+  color: awsui.$color-text-body-default;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  @include styles.font-body-s;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  }
 }
