@@ -81,12 +81,11 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     margin-inline-end: $icon-margin-right-medium;
     @include theming.one-theme-only {
       margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
-      inset-block-start: $icon-offset-container;
     }
   }
   @include theming.one-theme-only {
     display: inline-flex;
-    align-items: flex-start;
+    align-items: center;
     margin-inline: 0 $icon-margin-right-small;
   }
 }
@@ -136,13 +135,13 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   &-default {
     padding-block: awsui.$space-scaled-xxs;
     padding-inline-end: awsui.$space-xxs;
-    &.header-deprecated {
+    &.header {
       padding-inline-start: awsui.$space-xxs;
     }
   }
   &-default,
   &-inline {
-    &:not(.header-deprecated) {
+    &:not(.header) {
       padding-inline-start: $icon-total-space-normal;
     }
 
@@ -169,10 +168,10 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   &-footer,
   &-compact {
     padding-inline-end: 0;
-    &.header-deprecated {
+    &.header {
       padding-inline-start: 0;
     }
-    &:not(.header-deprecated) {
+    &:not(.header) {
       padding-inline-start: $icon-total-space-normal;
     }
   }
@@ -195,10 +194,10 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
       padding-block-end: calc(#{awsui.$space-container-header-top} + #{awsui.$space-scaled-xxs});
     }
 
-    &.header-deprecated {
+    &.header {
       padding-inline-start: container.$header-padding-horizontal;
     }
-    &:not(.header-deprecated) {
+    &:not(.header) {
       padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
     }
 
@@ -212,14 +211,11 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
 .header {
   /* used in test-utils */
-
-  &-wrapper,
-  &-deprecated {
+  display: flex;
+  font-weight: awsui.$font-weight-heading-s;
+  &-wrapper {
     display: flex;
     font-weight: awsui.$font-weight-heading-s;
-  }
-
-  &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
     margin-block: 0;
@@ -256,10 +252,6 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
   &-container {
     inline-size: 100%;
-    // The icon-container style is kept for variant='container' and header
-    > .icon-container {
-      margin-block-start: awsui.$space-expandable-section-icon-offset-top;
-    }
   }
 
   &-navigation {
@@ -468,7 +460,7 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 
   &.wrapper-container {
-    &:not(.header-deprecated) {
+    &:not(.header) {
       padding-inline-start: container.$header-padding-horizontal;
     }
   }

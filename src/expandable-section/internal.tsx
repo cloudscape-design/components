@@ -61,6 +61,7 @@ export default function InternalExpandableSection({
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
+  disableHeaderExpand,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   __expandIconPosition = 'start',
@@ -160,6 +161,7 @@ export default function InternalExpandableSection({
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
           hideExpandIcon={__hideExpandIcon}
+          disableHeaderExpand={disableHeaderExpand}
           {...triggerProps}
         />
       }

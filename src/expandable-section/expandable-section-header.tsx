@@ -102,6 +102,7 @@ interface ExpandableDefaultHeaderProps {
   icon: JSX.Element;
   variant: InternalVariant;
   expandIconPosition: 'start' | 'end';
+  disableHeaderExpand?: boolean;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -127,6 +128,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
   hideExpandIcon?: boolean;
+  disableHeaderExpand?: boolean;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -140,7 +142,7 @@ const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
   };
   return getAnalyticsMetadataAttribute(metadata);
 };
-const ExpandableDeprecatedHeader = ({
+const ExpandableHeader = ({
   id,
   className,
   onClick,
@@ -152,7 +154,37 @@ const ExpandableDeprecatedHeader = ({
   onKeyUp,
   onKeyDown,
   variant,
+  disableHeaderExpand,
 }: ExpandableDefaultHeaderProps) => {
+  if (disableHeaderExpand) {
+    return (
+      <div id={id} className={clsx(className, styles.header, analyticsSelectors['header-label'])}>
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyUp={onKeyUp}
+          onKeyDown={onKeyDown}
+          onClick={onClick}
+          aria-label={ariaLabel}
+          aria-controls={ariaControls}
+          aria-expanded={expanded}
+          data-awsui-motion-trigger="hover"
+          {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+          className={clsx(
+            styles['icon-container'],
+            styles[`icon-container-${variant}`],
+            styles.focusable,
+            styles['expand-button'],
+            styles['click-target']
+          )}
+        >
+          {icon}
+        </div>
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div
       id={id}
@@ -161,7 +193,7 @@ const ExpandableDeprecatedHeader = ({
         className,
         styles['expand-button'],
         styles['click-target'],
-        styles['header-deprecated'],
+        styles.header,
         analyticsSelectors['header-label']
       )}
       tabIndex={0}
@@ -419,6 +451,7 @@ export const ExpandableSectionHeader = ({
   onClick,
   expandIconPosition,
   hideExpandIcon,
+  disableHeaderExpand,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icons = useInternalComponentIcons('expandable-section');
@@ -478,10 +511,7 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (headerText || variant === 'inline') {
-    if (!headerText && header && variant === 'inline') {
-      warnOnce(componentName, 'Only `headerText` instead of `header` is supported for `inline` variant.');
-    }
+  if (headerText) {
     return (
       <ExpandableHeaderTextWrapper
         className={clsx(
@@ -505,18 +535,15 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (variant === 'container' && header && isDevelopment) {
-    warnOnce(componentName, 'Use `headerText` instead of `header` to provide the button within the heading for a11y.');
-  }
-
   return (
-    <ExpandableDeprecatedHeader
+    <ExpandableHeader
       className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
+      disableHeaderExpand={disableHeaderExpand}
       {...defaultHeaderProps}
     >
       {header}
-    </ExpandableDeprecatedHeader>
+    </ExpandableHeader>
   );
 };
