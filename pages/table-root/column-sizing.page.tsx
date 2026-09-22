@@ -20,11 +20,6 @@ import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { Item, makeItems } from './common';
 
-// Column-sizing playground (grid layout). Adjust each column's sizing mode and widths to explore how
-// `columnLayout: 'grid'` compiles `ColumnDefinition`s into a grid-template-columns track list. A CSS grid
-// track can't be both fr-weighted and px-capped, so `flex` and `maxWidth` are mutually exclusive in the
-// type: use `flex` (weighted, shares free space) or `capped` (grows only up to maxWidth), not both.
-
 type Mode = 'fixed' | 'flex' | 'capped';
 interface ColConfig {
   label: string;
@@ -126,22 +121,24 @@ export default function TableColumnSizingPlaygroundPage() {
                   />
                 </FormField>
               )}
-              <FormField label="minWidth (px)" description="Flex or capped">
-                <Input
-                  type="number"
-                  value={config.minWidth}
-                  disabled={config.mode === 'fixed'}
-                  onChange={({ detail }) => update(index, { minWidth: detail.value })}
-                />
-              </FormField>
-              <FormField label="maxWidth (px)" description="Capped mode only">
-                <Input
-                  type="number"
-                  value={config.maxWidth}
-                  disabled={config.mode !== 'capped'}
-                  onChange={({ detail }) => update(index, { maxWidth: detail.value })}
-                />
-              </FormField>
+              {config.mode !== 'fixed' && (
+                <FormField label="minWidth (px)">
+                  <Input
+                    type="number"
+                    value={config.minWidth}
+                    onChange={({ detail }) => update(index, { minWidth: detail.value })}
+                  />
+                </FormField>
+              )}
+              {config.mode === 'capped' && (
+                <FormField label="maxWidth (px)">
+                  <Input
+                    type="number"
+                    value={config.maxWidth}
+                    onChange={({ detail }) => update(index, { maxWidth: detail.value })}
+                  />
+                </FormField>
+              )}
             </SpaceBetween>
           ))}
         </ColumnLayout>

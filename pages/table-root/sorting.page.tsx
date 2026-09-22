@@ -17,11 +17,6 @@ import { Item, makeItems } from './common';
 
 import styles from './styles.scss';
 
-// Sorting (auto layout). Sorting is fully composed by the consumer — the atomic components contribute
-// only `ariaSort` on each header cell. Clicking a column sorts by it, toggling direction when it is
-// already the active column. Caret icons match the existing Table: `caret-down` (sortable, inactive),
-// `caret-up-filled` (ascending), `caret-down-filled` (descending).
-
 type SortKey = 'name' | 'type' | 'size' | 'status';
 type SortDirection = 'ascending' | 'descending';
 

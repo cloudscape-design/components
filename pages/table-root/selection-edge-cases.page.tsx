@@ -12,17 +12,6 @@ import TableRow from '~components/table-row';
 
 import { SimplePage } from '../app/templates';
 
-// Visual coverage for the grid-layout selection-outline edge cases: the selected-row outline is an
-// abspos `::after` placed into the row's grid area (`grid-column: 1 / -1`), so it hugs the column extent
-// regardless of how the tracks relate to the row box. These permutations pin the states that regressed
-// during development:
-//  - FILL: flex tracks fill the viewport — outline ends at the last column (== viewport).
-//  - UNDERFILL: capped tracks are narrower than the row — outline stops at the last column, not the row edge.
-//  - OVERFLOW: fixed tracks exceed the scroll viewport — outline follows the tracks past the fold.
-//  - MERGE: two consecutive selected rows render as one continuous rounded outline.
-//  - SHADED: striped-row divider darkening via adjacency.
-//  - AUTO: in auto layout the row is not a grid, so the outline falls back to the row box.
-
 interface Row {
   name: string;
   type: string;
@@ -95,9 +84,18 @@ const fixedWide: TableRootProps.ColumnLayout = {
 export default function TableSelectionEdgeCasesPage() {
   return (
     <SimplePage title="Table atomics — grid selection edge cases" screenshotArea={{}}>
-      <Grid label="Fill (flex, selected row)" columnLayout={flex3} selected={[1]} />
-      <Grid label="Underfill (capped columns, selected row)" columnLayout={capped3} selected={[1]} />
-      <Grid label="Underfill + long content row (flex)" columnLayout={flex3} selected={[1]} longFirstCell={true} />
+      <Grid label="Fill (flex columns fill the viewport, selected row)" columnLayout={flex3} selected={[1]} />
+      <Grid
+        label="Underfill (columns narrower than the table container, selected row)"
+        columnLayout={capped3}
+        selected={[1]}
+      />
+      <Grid
+        label="Long content row (flex columns, selected row)"
+        columnLayout={flex3}
+        selected={[1]}
+        longFirstCell={true}
+      />
       <Grid
         label="Overflow (fixed 260×3 in a 400px viewport, selected row)"
         columnLayout={fixedWide}
@@ -105,7 +103,12 @@ export default function TableSelectionEdgeCasesPage() {
         width={400}
       />
       <Grid label="Merge (two consecutive selected rows)" columnLayout={flex3} selected={[0, 1]} />
-      <Grid label="Shaded (striped rows)" columnLayout={flex3} shaded={[0, 2]} />
+      <Grid
+        label="Selected row among shaded (striped) rows — selection wins over shading"
+        columnLayout={flex3}
+        shaded={[0, 1, 2]}
+        selected={[1]}
+      />
       <Grid label="Auto layout (selected row, outline falls back to row box)" selected={[1]} />
     </SimplePage>
   );

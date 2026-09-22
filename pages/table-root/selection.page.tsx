@@ -20,12 +20,6 @@ import { Item, makeItems } from './common';
 
 import styles from './styles.scss';
 
-// Selection (grid layout), multi and single, composed by the consumer — the atomic parts contribute
-// only `selected` (the visual row surface; the checkbox/radio conveys selection to
-// assistive technologies). The control column uses `disablePaddings` cells with a centred control to
-// match the existing Table's selection column.
-// Control column is fixed; Name and Status share the remaining width via flex weights (rather than
-// flexing Name alone) so Status stays adjacent instead of being pushed to the far edge.
 const COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
   { size: 40 },
   { size: { flex: 53 } },

@@ -14,9 +14,6 @@ import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { DataHeader, makeItems } from './common';
 
-// A minimal read-only table in auto layout (`columnLayout` omitted, so it defaults to `{ type: 'auto' }`).
-// Striping is composed by the consumer via the row `shaded` prop: with the toggle on, alternating rows are
-// marked `shaded` — the atomic table owns no row-parity computation.
 export default function TableSimplePage() {
   const items = makeItems(10);
   const { urlParams, setUrlParams } = useAppContext<'stripedRows'>();
