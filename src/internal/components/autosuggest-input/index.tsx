@@ -792,31 +792,7 @@ const AutosuggestInput = React.forwardRef(
                     autoComplete={false}
                     nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
                     __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
-                    style={{
-                      root: {
-                        borderColor: {
-                          default: 'transparent',
-                          focus: 'transparent',
-                          hover: 'transparent',
-                          disabled: 'transparent',
-                          readonly: 'transparent',
-                        },
-                        boxShadow: {
-                          default: 'none',
-                          focus: 'none',
-                          hover: 'none',
-                          disabled: 'none',
-                          readonly: 'none',
-                        },
-                        backgroundColor: {
-                          default: 'transparent',
-                          focus: 'transparent',
-                          hover: 'transparent',
-                          disabled: 'transparent',
-                          readonly: 'transparent',
-                        },
-                      },
-                    }}
+                    __noBorder={true}
                     {...{ ...formFieldContext, invalid: false, warning: false }}
                   />
                 </div>
