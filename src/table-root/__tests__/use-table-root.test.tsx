@@ -39,6 +39,10 @@ describe('useTableRoot', () => {
       expect(gridTemplate([{ size: { flex: 2 } }])).toBe('minmax(0px, 2fr)');
     });
 
+    test('an explicit zero flex weight becomes a 0fr track (not the default 1fr)', () => {
+      expect(gridTemplate([{ size: { flex: 0 } }])).toBe('minmax(0px, 0fr)');
+    });
+
     test('minWidth floors a flexible track', () => {
       expect(gridTemplate([{ minWidth: 150 }])).toBe('minmax(150px, 1fr)');
     });

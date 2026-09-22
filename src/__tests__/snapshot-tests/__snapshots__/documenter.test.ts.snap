@@ -29962,7 +29962,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
   ],
   "regions": [
     {
-      "description": "The header row: a \`TableHeaderRow\` whose cells are \`TableHeaderCell\` components.",
+      "description": "The header row: a \`TableRow\` whose cells are \`TableHeaderCell\` components.",
       "isDefault": true,
       "name": "children",
     },
