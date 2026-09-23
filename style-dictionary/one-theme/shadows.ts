@@ -40,11 +40,11 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   },
   shadowStickyColumnFirst: {
     light: '4px 0px 8px 1px rgba(0, 0, 0, 0.1)',
-    dark: '0px 4px 8px 1px rgba(0, 0, 0, 0.5)',
+    dark: '2px 4px 8px 1px rgba(0, 0, 0, 0.5)',
   },
   shadowStickyColumnLast: {
     light: '-4px 0 8px 1px rgba(0, 0, 0, 0.1)',
-    dark: '0px 4px 8px 1px rgba(0, 0, 0, 0.5)',
+    dark: '-2px 4px 8px 1px rgba(0, 0, 0, 0.5)',
   },
 };
 
