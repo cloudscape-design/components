@@ -38,9 +38,8 @@ export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, In
       children,
     } = props;
     const { className, ...restBaseProps } = getBaseProps(props);
-    const { columnLayout } = useTableContext();
+    const { isGrid } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
-    const isGrid = columnLayout.type === 'grid';
     // `scope='col'` is the default for a public header cell; an internal caller's nativeAttributes (e.g. the
     // existing Table's `scope='colgroup'` and computed role/aria-sort) override it. Grid mode adds the role.
     const mergedNativeAttributes = {

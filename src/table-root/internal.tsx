@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -8,8 +8,8 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TableContextProvider } from './context';
+import { computeGridTemplateColumns } from './grid-template-columns';
 import { TableRootProps } from './interfaces';
-import { useTableRoot } from './use-table-root';
 
 import styles from './styles.css.js';
 
@@ -26,7 +26,10 @@ export default function InternalTableRoot({
   ...rest
 }: InternalTableRootProps) {
   const isGrid = columnLayout.type === 'grid';
-  const table = useTableRoot(columnLayout);
+  const gridTemplateColumns = computeGridTemplateColumns(columnLayout);
+  // Memoized because it is the TableContext value; a fresh object re-renders every cell. Both fields are
+  // primitives compared by value, so it stays stable even when the caller passes a fresh columnLayout.
+  const tableContext = useMemo(() => ({ isGrid, gridTemplateColumns }), [isGrid, gridTemplateColumns]);
   const baseProps = getBaseProps(rest);
 
   // A wide table's horizontal scroller isn't keyboard-reachable on its own, so a read-only table with no
@@ -49,7 +52,7 @@ export default function InternalTableRoot({
   // fires — re-measure when the template changes.
   useEffect(() => {
     measureScrollable();
-  }, [table.gridTemplateColumns, measureScrollable]);
+  }, [gridTemplateColumns, measureScrollable]);
 
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
@@ -64,10 +67,8 @@ export default function InternalTableRoot({
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
-      {/* TableContext supplies this table's column layout to every part. It also resets the layout at the
-          table boundary, so a table nested inside another table's cell renders from its own layout rather
-          than inheriting the outer table's. */}
-      <TableContextProvider value={table}>
+      {/* TableContext supplies this table's column layout to every part. */}
+      <TableContextProvider value={tableContext}>
         {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
         <div className={styles['scroll-container']} style={{ overflow: 'visible' }}>
           <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>

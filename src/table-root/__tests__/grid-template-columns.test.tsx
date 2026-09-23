@@ -1,28 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { renderHook } from '../../__tests__/render-hook';
+import { computeGridTemplateColumns } from '../grid-template-columns';
 import { TableRootProps } from '../interfaces';
-import { useTableRoot } from '../use-table-root';
 
 const COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [{ size: 200 }, {}, { size: 100 }];
 
 function gridTemplate(columns: ReadonlyArray<TableRootProps.ColumnDefinition>) {
-  return renderHook(() => useTableRoot({ type: 'grid', columns })).result.current.gridTemplateColumns;
+  return computeGridTemplateColumns({ type: 'grid', columns });
 }
 
-describe('useTableRoot', () => {
-  test('auto layout exposes the layout and no grid template', () => {
-    const { result } = renderHook(() => useTableRoot({ type: 'auto' }));
-    expect(result.current.columnLayout.type).toBe('auto');
-    expect(result.current.gridTemplateColumns).toBeUndefined();
+describe('computeGridTemplateColumns', () => {
+  test('auto layout has no grid template', () => {
+    expect(computeGridTemplateColumns({ type: 'auto' })).toBeUndefined();
   });
 
-  test('grid layout exposes the layout', () => {
-    const { result } = renderHook(() => useTableRoot({ type: 'grid', columns: COLUMNS }));
-    expect(result.current.columnLayout.type).toBe('grid');
-  });
-
-  describe('gridTemplateColumns compiled from the size union', () => {
+  describe('grid template compiled from the size union', () => {
     test('multiple columns join into one template', () => {
       expect(gridTemplate(COLUMNS)).toBe('200px minmax(0px, 1fr) 100px');
     });

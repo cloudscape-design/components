@@ -18,8 +18,7 @@ export default function InternalTableBody({
   __internalRootRef,
   ...rest
 }: InternalTableBodyProps) {
-  const { columnLayout } = useTableContext();
-  const isGrid = columnLayout.type === 'grid';
+  const { isGrid } = useTableContext();
   const { className, ...restBaseProps } = getBaseProps(rest);
   return (
     <tbody

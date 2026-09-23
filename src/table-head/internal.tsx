@@ -13,8 +13,7 @@ import styles from './styles.css.js';
 export interface InternalTableHeadProps extends TableHeadProps, InternalBaseComponentProps {}
 
 export default function InternalTableHead({ children, __internalRootRef, ...rest }: InternalTableHeadProps) {
-  const { columnLayout } = useTableContext();
-  const isGrid = columnLayout.type === 'grid';
+  const { isGrid } = useTableContext();
   const { className, ...restBaseProps } = getBaseProps(rest);
   return (
     <thead

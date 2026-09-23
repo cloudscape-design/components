@@ -28,8 +28,7 @@ export default function InternalTableRow({
   __internalRootRef,
   ...rest
 }: InternalTableRowProps) {
-  const { columnLayout, gridTemplateColumns } = useTableContext();
-  const isGrid = columnLayout.type === 'grid';
+  const { isGrid, gridTemplateColumns } = useTableContext();
   const { className, ...restBaseProps } = getBaseProps(rest);
 
   return (

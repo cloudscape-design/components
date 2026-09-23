@@ -42,9 +42,8 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
       children,
     } = props;
     const { className, ...restBaseProps } = getBaseProps(props);
-    const { columnLayout } = useTableContext();
+    const { isGrid } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
-    const isGrid = columnLayout.type === 'grid';
     // Within a body cell a `<th>` is always a row header (column headers use InternalTableHeaderCell).
     const isRowHeader = tag === 'th';
     const mergedNativeAttributes = {
