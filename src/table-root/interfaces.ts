@@ -49,11 +49,8 @@ export interface TableRootProps extends BaseComponentProps {
 export namespace TableRootProps {
   export type ColumnLayout = { type: 'auto' } | { type: 'grid'; columns: ReadonlyArray<ColumnDefinition> };
 
-  // A grid column is sized in one of two mutually exclusive ways. `flex` (weighted) and `maxWidth`
-  // (hard cap) are intentionally exclusive: a CSS grid track cannot be both fr-weighted and px-capped. The
-  // `maxWidth?: never` on the flex variant enforces this — without it, a union's excess-property check would
-  // still permit `maxWidth` (since it is valid on the other variant) and silently drop the weight.
   export type ColumnDefinition =
-    | { size?: number; minWidth?: number; maxWidth?: number }
-    | { size: { flex: number }; minWidth?: number; maxWidth?: never };
+    | { size: number; minWidth: never; maxWidth: never }
+    | { size: { flex: number }; minWidth?: number; maxWidth: never }
+    | { size: never; minWidth?: number; maxWidth?: number };
 }

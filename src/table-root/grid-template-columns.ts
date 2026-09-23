@@ -14,24 +14,25 @@ export function computeGridTemplateColumns(columnLayout: TableRootProps.ColumnLa
   if (columnLayout.type !== 'grid') {
     return undefined;
   }
-  return columnLayout.columns
-    .map(column => {
-      const size = typeof column.size === 'number' ? clamp(column.size) : undefined;
-      if (size !== undefined) {
-        return `${size}px`;
-      }
-      const min = `${clamp(column.minWidth) ?? 0}px`;
-      const flex = typeof column.size === 'object' ? clamp(column.size.flex) : undefined;
-      if (flex !== undefined) {
-        // Weighted track — `{ flex: number }`. The type forbids a maxWidth here (can't cap an fr track).
-        return `minmax(${min}, ${flex}fr)`;
-      }
-      // No explicit size: a hard-capped track (maxWidth) or the default growable track.
-      const max = clamp(column.maxWidth);
-      if (max !== undefined) {
-        return `minmax(${min}, ${max}px)`;
-      }
-      return `minmax(${min}, 1fr)`;
-    })
-    .join(' ');
+  return columnLayout.columns.map(compileColumnTrack).join(' ');
+}
+
+function compileColumnTrack(column: TableRootProps.ColumnDefinition): string {
+  const { size, minWidth, maxWidth }: { size?: number | { flex: number }; minWidth?: number; maxWidth?: number } =
+    column;
+  const min = `${clamp(minWidth) ?? 0}px`;
+  if (typeof size === 'number') {
+    const px = clamp(size);
+    if (px !== undefined) {
+      return `${px}px`; // fixed track — minWidth/maxWidth don't apply.
+    }
+  } else if (size) {
+    const flex = clamp(size.flex);
+    if (flex !== undefined) {
+      return `minmax(${min}, ${flex}fr)`; // weighted track — the type forbids a maxWidth (can't cap an fr track).
+    }
+  }
+  // No (or non-finite) size: a hard-capped track (maxWidth) or the default growable track.
+  const max = clamp(maxWidth);
+  return max !== undefined ? `minmax(${min}, ${max}px)` : `minmax(${min}, 1fr)`;
 }
