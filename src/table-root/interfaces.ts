@@ -50,7 +50,7 @@ export namespace TableRootProps {
   export type ColumnLayout = { type: 'auto' } | { type: 'grid'; columns: ReadonlyArray<ColumnDefinition> };
 
   export type ColumnDefinition =
-    | { size: number; minWidth: never; maxWidth: never }
-    | { size: { flex: number }; minWidth?: number; maxWidth: never }
-    | { size: never; minWidth?: number; maxWidth?: number };
+    | { size: number; minWidth?: never; maxWidth?: never }
+    | { size: { flex: number }; minWidth?: number; maxWidth?: never }
+    | { size?: never; minWidth?: number; maxWidth?: number };
 }
