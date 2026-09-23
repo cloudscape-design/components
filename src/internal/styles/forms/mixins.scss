@@ -117,7 +117,6 @@
 // Use for form input elements, excluding buttons
 // or for elements that have a light border and light background
 @mixin form-focus-element(
-  $border-radius: constants.$control-border-radius,
   $border-color: awsui.$color-border-input-focused,
   $box-shadow: foundation.$box-shadow-focused-light
 ) {
@@ -127,10 +126,6 @@
 
   border-block: awsui.$border-width-field solid $border-color;
   border-inline: awsui.$border-width-field solid $border-color;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
 
   box-shadow: $box-shadow;
 }
@@ -361,4 +356,32 @@ $inline-label-border-radius: 2px;
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
     awsui.$color-background-input-disabled
   );
+}
+
+@mixin grouped-control {
+  $radius: constants.$control-border-radius;
+  &.grouped-first {
+    border-start-start-radius: $radius;
+    border-end-start-radius: $radius;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+  &.grouped-middle {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+  &.grouped-last {
+    border-start-end-radius: $radius;
+    border-end-end-radius: $radius;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  &.grouped-only {
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+  }
 }

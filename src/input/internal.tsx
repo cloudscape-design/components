@@ -14,6 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -147,10 +148,14 @@ function InternalInput(
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
   const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+  const { position: controlGroupPosition } = useControlGroupContext();
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
+
+  const controlGroupClasses = controlGroupPosition ? [styles.grouped, styles[`grouped-${controlGroupPosition}`]] : [];
+
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
     hasPrefixOrSuffix && inputStyles
@@ -178,6 +183,7 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      !hasPrefixOrSuffix && controlGroupClasses,
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -309,7 +315,8 @@ function InternalInput(
             invalid && styles['input-adorned-container-invalid'],
             warning && !invalid && styles['input-adorned-container-warning'],
             disabled && styles['input-adorned-container-disabled'],
-            readOnly && !disabled && styles['input-adorned-container-readonly']
+            readOnly && !disabled && styles['input-adorned-container-readonly'],
+            controlGroupClasses
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}

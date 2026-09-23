@@ -198,6 +198,10 @@
   }
 }
 
+.grouped {
+  @include styles.grouped-control;
+}
+
 .input-container {
   display: flex;
   position: relative;

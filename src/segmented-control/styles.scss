@@ -48,6 +48,10 @@
   }
 }
 
+.segment-part.grouped {
+  @include styles.grouped-control;
+}
+
 .select {
   display: none;
 

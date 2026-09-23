@@ -10,6 +10,7 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
+import { useControlGroupContext } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
@@ -71,6 +72,7 @@ const ButtonTrigger = (
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
+  const { position: controlGroupPosition } = useControlGroupContext();
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -87,6 +89,8 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
+      controlGroupPosition && styles.grouped,
+      controlGroupPosition && styles[`grouped-${controlGroupPosition}`],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,

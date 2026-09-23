@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalFormField from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalSelect, { InternalSelectProps } from '../select/internal';
@@ -26,6 +27,8 @@ export default function InternalSegmentedControl({
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
+
+  const { position: controlGroupPosition } = useControlGroupContext();
 
   const selectOptions = (options || []).map(option => {
     const label = option.text || option.iconAlt;
@@ -53,6 +56,7 @@ export default function InternalSegmentedControl({
         ariaLabelledby={ariaLabelledby}
         onChange={onChange}
         style={style}
+        controlGroupPosition={controlGroupPosition}
       />
       <div className={styles.select}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
