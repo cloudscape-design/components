@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -11,10 +11,8 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useControlGroupContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings';
@@ -77,14 +75,6 @@ const InternalMultiselect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
     const i18n = useInternalI18n('multiselect');
-
-    const { position: controlGroupPosition } = useControlGroupContext();
-    if (isDevelopment && controlGroupPosition && !inlineTokens) {
-      warnOnce(
-        'Multiselect',
-        'You should set `inlineTokens` to `true` when using the component inside a control group.'
-      );
-    }
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
