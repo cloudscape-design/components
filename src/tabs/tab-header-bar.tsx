@@ -6,6 +6,8 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
+  getIsRtl,
+  getOffsetInlineStart,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
@@ -39,7 +41,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabIndicatorStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -214,7 +216,9 @@ export function TabHeaderBar({
       return;
     }
 
-    const offset = headerContainer.offsetLeft;
+    const isRtl = getIsRtl(indicator);
+    const inlineOffset = getOffsetInlineStart(headerContainer);
+    const offset = (isRtl ? -1 : 1) * inlineOffset;
     const width = headerContainer.offsetWidth - 1;
 
     const apply = () => {
@@ -234,7 +238,7 @@ export function TabHeaderBar({
     } else {
       apply();
     }
-  }, [activeTabId, widthChange, tabs]);
+  }, [activeTabId, widthChange, tabs, style]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -399,6 +403,7 @@ export function TabHeaderBar({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
+            style={getTabIndicatorStyles(style)}
             onScroll={onScroll}
             onKeyDown={onKeyDown}
             onFocus={onFocus}

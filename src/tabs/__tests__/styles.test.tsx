@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getTabContainerStyles, getTabStyles } from '../styles';
+import { getTabContainerStyles, getTabIndicatorStyles, getTabStyles } from '../styles';
 
 // Mock the environment module
 jest.mock('../../internal/environment', () => ({
@@ -63,6 +63,7 @@ describe('getTabStyles', () => {
   test('transforms tab styles to CSS properties', () => {
     expect(getTabStyles(testStyles)).toMatchSnapshot();
     expect(getTabContainerStyles(testStyles)).toMatchSnapshot();
+    expect(getTabIndicatorStyles(testStyles)).toMatchSnapshot();
   });
 
   test('returns undefined when SYSTEM is not core', async () => {
@@ -71,11 +72,14 @@ describe('getTabStyles', () => {
       SYSTEM: 'visual-refresh',
     }));
 
-    const { getTabStyles: getTabStylesNonCore, getTabContainerStyles: getTabContainerStylesNonCore } = await import(
-      '../styles'
-    );
+    const {
+      getTabStyles: getTabStylesNonCore,
+      getTabContainerStyles: getTabContainerStylesNonCore,
+      getTabIndicatorStyles: getTabIndicatorStylesNonCore,
+    } = await import('../styles');
 
     expect(getTabStylesNonCore(testStyles)).toBeUndefined();
     expect(getTabContainerStylesNonCore(testStyles)).toBeUndefined();
+    expect(getTabIndicatorStylesNonCore(testStyles)).toBeUndefined();
   });
 });

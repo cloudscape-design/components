@@ -80,7 +80,7 @@ const style2 = {
     color: {
       default: 'light-dark(#92400e, #fef3c7)',
       hover: 'light-dark(#78350f, #fef9e7)',
-      active: 'light-dark(#451a03, #ffffff)',
+      active: 'light-dark(#451a03, #451a03)',
       disabled: 'light-dark(#cbd5e1, #b5b1a3ff)',
     },
     fontSize: '14px',

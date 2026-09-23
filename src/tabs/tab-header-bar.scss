@@ -150,6 +150,9 @@ $label-horizontal-spacing: awsui.$space-xs;
   );
   background: var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline);
   transform-origin: left center;
+  @include styles.with-direction('rtl') {
+    transform-origin: right center;
+  }
   transform: translateX(var(--awsui-internal-style-tabs-active-indicator-offset, 0))
     scaleX(var(--awsui-internal-style-tabs-active-indicator-scale, 0));
   opacity: var(--awsui-internal-style-tabs-active-indicator-opacity, 0);
