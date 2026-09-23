@@ -9,20 +9,20 @@ import SegmentedControl, { SegmentedControlProps } from '~components/segmented-c
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 
-const OPERATORS: SelectProps.Option[] = [
+const operators: SelectProps.Option[] = [
   { value: '=', label: '=' },
   { value: '!=', label: '!=' },
   { value: '=~', label: '=~' },
   { value: '!~', label: '!~' },
 ];
 
-const AGGREGATIONS: SelectProps.Option[] = [
+const aggregations: SelectProps.Option[] = [
   { value: 'count_values', label: 'count_values' },
   { value: 'sum', label: 'sum' },
   { value: 'avg', label: 'avg' },
 ];
 
-const MULTI_OPTIONS: MultiselectProps.Option[] = Array.from({ length: 8 }, (_, i) => ({
+const multiOptions: MultiselectProps.Option[] = Array.from({ length: 8 }, (_, i) => ({
   value: `option-${i + 1}`,
   label: `Option ${i + 1}`,
 }));
@@ -34,14 +34,14 @@ const SEGMENTS: SegmentedControlProps.Option[] = [
 
 function InputAndSelect() {
   const [value, setValue] = useState('service');
-  const [operator, setOperator] = useState<SelectProps.Option>(OPERATORS[0]);
+  const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
       <Input ariaLabel="Name" value={value} onChange={event => setValue(event.detail.value)} placeholder="Name" />
       <Select
         ariaLabel="Operator"
         selectedOption={operator}
-        options={OPERATORS}
+        options={operators}
         onChange={event => setOperator(event.detail.selectedOption)}
       />
       <Input ariaLabel="Value" value="" onChange={() => {}} placeholder="Value" />
@@ -51,7 +51,7 @@ function InputAndSelect() {
 
 function InputAndSelectWithInlineLabels() {
   const [value, setValue] = useState('service');
-  const [operator, setOperator] = useState<SelectProps.Option>(OPERATORS[0]);
+  const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
       <Input
@@ -65,7 +65,7 @@ function InputAndSelectWithInlineLabels() {
         inlineLabelText="Operator"
         ariaLabel="Operator"
         selectedOption={operator}
-        options={OPERATORS}
+        options={operators}
         onChange={event => setOperator(event.detail.selectedOption)}
       />
       <Input inlineLabelText="Value" ariaLabel="Value" value="" onChange={() => {}} placeholder="Value" />
@@ -74,7 +74,7 @@ function InputAndSelectWithInlineLabels() {
 }
 
 function SelectAndMultiselect() {
-  const [aggregation, setAggregation] = useState<SelectProps.Option>(AGGREGATIONS[0]);
+  const [aggregation, setAggregation] = useState<SelectProps.Option>(aggregations[0]);
   const [selected, setSelected] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   return (
     <ControlGroup>
@@ -82,7 +82,7 @@ function SelectAndMultiselect() {
         inlineLabelText="Aggregation"
         ariaLabel="Aggregation"
         selectedOption={aggregation}
-        options={AGGREGATIONS}
+        options={aggregations}
         onChange={event => setAggregation(event.detail.selectedOption)}
       />
       <Multiselect
@@ -90,7 +90,7 @@ function SelectAndMultiselect() {
         ariaLabel="Labels"
         inlineTokens={true}
         selectedOptions={selected}
-        options={MULTI_OPTIONS}
+        options={multiOptions}
         placeholder="Choose labels"
         onChange={event => setSelected(event.detail.selectedOptions)}
       />
@@ -121,7 +121,7 @@ function InputAndSegmentedControl() {
 
 function InputWithIconAndSelect() {
   const [value, setValue] = useState('');
-  const [operator, setOperator] = useState<SelectProps.Option>(OPERATORS[0]);
+  const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
       <Input
@@ -134,7 +134,7 @@ function InputWithIconAndSelect() {
       <Select
         ariaLabel="Operator"
         selectedOption={operator}
-        options={OPERATORS}
+        options={operators}
         onChange={event => setOperator(event.detail.selectedOption)}
       />
     </ControlGroup>
@@ -143,7 +143,7 @@ function InputWithIconAndSelect() {
 
 function InputWithPrefixSuffixAndSelect() {
   const [value, setValue] = useState('100');
-  const [operator, setOperator] = useState<SelectProps.Option>(OPERATORS[0]);
+  const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
       <Input
@@ -157,7 +157,7 @@ function InputWithPrefixSuffixAndSelect() {
       <Select
         ariaLabel="Operator"
         selectedOption={operator}
-        options={OPERATORS}
+        options={operators}
         onChange={event => setOperator(event.detail.selectedOption)}
       />
     </ControlGroup>
