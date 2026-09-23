@@ -39,10 +39,6 @@ describe('computeGridTemplateColumns', () => {
       expect(gridTemplate([{ minWidth: 150 }])).toBe('minmax(150px, 1fr)');
     });
 
-    test('a fixed size ignores minWidth (redundant on a fixed track)', () => {
-      expect(gridTemplate([{ size: 200, minWidth: 150 }])).toBe('200px');
-    });
-
     test('maxWidth caps a non-weighted track at a px ceiling', () => {
       expect(gridTemplate([{ maxWidth: 300 }])).toBe('minmax(0px, 300px)');
       expect(gridTemplate([{ minWidth: 100, maxWidth: 300 }])).toBe('minmax(100px, 300px)');

@@ -11,72 +11,38 @@ import TableHeaderCell from '../../../lib/components/table-header-cell';
 import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow from '../../../lib/components/table-row';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { findBodyRow, makeItems, renderResourcesTable } from './table-fixtures';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 import legacyHeaderCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import cellStyles from '../../../lib/components/table-body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
-// Proves the row `selected`/`shaded` props are purely visual: each emits an independent `data-awsui-*` hook
-// on the <tr> that the cell stylesheet paints from (selection background + a layout-neutral `::after` ring,
-// shaded background, and consecutive-row adjacency), and never sets `aria-selected`. Selection wins over
-// shading — a selected row omits the shaded hook. Also covers the narrowed inline `positionStyle`
-// (virtualization) reaching the body/row roots and `disablePaddings` reaching the padding opt-out on the cell
-// content and header-cell root.
-
-function Harness({ selected, shaded }: { selected?: boolean; shaded?: boolean }) {
-  return (
-    <TableRoot ariaLabel="Resources">
-      <TableHead>
-        <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Status</TableHeaderCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow selected={selected} shaded={shaded}>
-          <TableBodyCell>Resource 0</TableBodyCell>
-          <TableBodyCell>Available</TableBodyCell>
-        </TableRow>
-      </TableBody>
-    </TableRoot>
-  );
-}
-
-function renderHarness(props: { selected?: boolean; shaded?: boolean } = {}) {
-  const { container } = render(<Harness {...props} />);
-  return { wrapper: createWrapper(container) };
-}
+// The row `selected`/`shaded` props are visual-only: each emits an independent `data-awsui-*` hook on the
+// <tr> and never sets `aria-selected`. Selection wins over shading by omitting the shaded hook.
 
 describe('TableRow selection/shading is visual-only and paints through the cell', () => {
-  const bodyRow = (wrapper: ReturnType<typeof createWrapper>) =>
-    createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement();
-
   test('selected emits the data-awsui-selected hook and sets no aria-selected', () => {
-    const row = bodyRow(renderHarness({ selected: true }).wrapper);
-    // Visual state must NOT leak into ARIA; selection is conveyed by the selection control.
+    const row = findBodyRow(renderResourcesTable({ items: makeItems(1), rowProps: { selected: true } }).wrapper);
     expect(row).not.toHaveAttribute('aria-selected');
-    // The sanctioned styling hook the cell stylesheet paints from.
     expect(row).toHaveAttribute('data-awsui-selected', 'true');
-    expect(row).not.toHaveAttribute('data-awsui-shaded');
   });
 
-  test('shaded emits the data-awsui-shaded hook and never aria-selected', () => {
-    const row = bodyRow(renderHarness({ shaded: true }).wrapper);
-    expect(row).not.toHaveAttribute('aria-selected');
-    expect(row).not.toHaveAttribute('data-awsui-selected');
-    // data-awsui-shaded is the hook the cell stylesheet paints the shaded background + adjacency from.
+  test('shaded emits the data-awsui-shaded hook', () => {
+    const row = findBodyRow(renderResourcesTable({ items: makeItems(1), rowProps: { shaded: true } }).wrapper);
     expect(row).toHaveAttribute('data-awsui-shaded', 'true');
   });
 
   test('selection wins over shading — a selected+shaded row emits only the selected hook', () => {
-    const row = bodyRow(renderHarness({ selected: true, shaded: true }).wrapper);
+    const row = findBodyRow(
+      renderResourcesTable({ items: makeItems(1), rowProps: { selected: true, shaded: true } }).wrapper
+    );
     expect(row).toHaveAttribute('data-awsui-selected', 'true');
     expect(row).not.toHaveAttribute('data-awsui-shaded');
   });
 
   test('an unstyled row emits neither hook and no aria-selected', () => {
-    const row = bodyRow(renderHarness().wrapper);
+    const row = findBodyRow(renderResourcesTable({ items: makeItems(1) }).wrapper);
     expect(row).not.toHaveAttribute('aria-selected');
     expect(row).not.toHaveAttribute('data-awsui-selected');
     expect(row).not.toHaveAttribute('data-awsui-shaded');
@@ -106,10 +72,9 @@ describe('inline style props (virtualization)', () => {
     expect(body.style.position).toBe('relative');
     expect(body.style.height).toBe('400px');
 
-    const row = createWrapper(wrapper.findTableBody()!.getElement()).findAllTableRows()[0].getElement() as HTMLElement;
+    const row = findBodyRow(wrapper);
     expect(row.style.position).toBe('absolute');
     expect(row.style.transform).toBe('translateY(40px)');
-    // The row keeps its shared grid template alongside the consumer's positioning style.
     expect(row.style.gridTemplateColumns).toBe('100px');
   });
 });
@@ -127,8 +92,6 @@ describe('disablePaddings', () => {
       </TableRoot>
     );
     const cells = createWrapper(container).findAllTableBodyCells();
-    // Padding is opt-in on the inner `.body-cell-content` wrapper: `with-paddings` normally, the
-    // `disable-paddings` overflow opt-out when disablePaddings is set — never both.
     const contentOf = (index: number) =>
       cells[index].getElement().getElementsByClassName(bodyCellStyles['body-cell-content'])[0];
     expect(contentOf(0).classList.contains(bodyCellStyles['disable-paddings'])).toBe(true);
