@@ -6,7 +6,7 @@ import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
 
-const tokens: StyleDictionary.TypographyDictionary = {
+const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
   fontFamilyMonospace:
     "'Ember Modern Mono', Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
