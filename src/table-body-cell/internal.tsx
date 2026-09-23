@@ -33,6 +33,7 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
       style,
       wrapLines,
       disablePaddings,
+      colSpan,
       nativeAttributes,
       tabIndex,
       onClick,
@@ -46,19 +47,23 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
     const isVisualRefresh = useVisualRefresh();
     // Within a body cell a `<th>` is always a row header (column headers use InternalTableHeaderCell).
     const isRowHeader = tag === 'th';
+    // In grid mode the native colspan is inert, so span the tracks with grid-column and mark the span with aria-colspan.
+    const gridColumnStyle = isGrid && colSpan ? { gridColumn: `span ${colSpan}` } : undefined;
     const mergedNativeAttributes = {
       ...nativeAttributes,
       // A row header is a `<th scope="row">` in either layout mode.
       ...(isRowHeader ? { scope: 'row' as const } : undefined),
       // Grid mode drops the implicit cell role, so set it explicitly; a role from nativeAttributes wins.
       ...(isGrid ? { role: nativeAttributes?.role ?? (isRowHeader ? 'rowheader' : 'cell') } : undefined),
+      ...(isGrid && colSpan ? { 'aria-colspan': colSpan } : undefined),
     };
     const Element = tag;
     return (
       <Element
         ref={ref}
         {...restBaseProps}
-        style={style}
+        style={gridColumnStyle ? { ...style, ...gridColumnStyle } : style}
+        colSpan={isGrid ? undefined : colSpan}
         className={clsx(
           bodyCellStyles['body-cell'],
           className,

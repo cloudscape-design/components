@@ -12,7 +12,7 @@ export { TableBodyCellProps };
 
 function TableBodyCell(props: TableBodyCellProps) {
   const { __internalRootRef } = useBaseComponent('TableBodyCell', {
-    props: { disablePaddings: props.disablePaddings, isRowHeader: props.isRowHeader },
+    props: { disablePaddings: props.disablePaddings, isRowHeader: props.isRowHeader, colSpan: props.colSpan },
   });
   const { isRowHeader, ...rest } = props;
   return <InternalTableBodyCell {...rest} tag={isRowHeader ? 'th' : 'td'} ref={__internalRootRef} />;

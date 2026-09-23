@@ -15,6 +15,10 @@ export interface TableBodyCellProps extends BaseComponentProps {
    * Removes the cell's built-in padding so you can compose your own spacing. Defaults to `false`.
    */
   disablePaddings?: boolean;
+  /**
+   * Makes the cell span the given number of columns.
+   */
+  colSpan?: number;
   /** The cell content. */
   children?: React.ReactNode;
 }

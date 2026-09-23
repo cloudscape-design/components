@@ -156,6 +156,41 @@ describe('isRowHeader', () => {
   });
 });
 
+describe('colSpan', () => {
+  test('auto layout sets the native colspan attribute only', () => {
+    const { container } = render(
+      <TableRoot ariaLabel="Resources">
+        <TableBody>
+          <TableRow>
+            <TableBodyCell colSpan={3}>Full width</TableBodyCell>
+          </TableRow>
+        </TableBody>
+      </TableRoot>
+    );
+    const cell = createWrapper(container).findAllTableBodyCells()[0].getElement() as HTMLElement;
+    expect(cell.getAttribute('colspan')).toBe('3');
+    expect(cell.style.gridColumn).toBe('');
+    expect(cell).not.toHaveAttribute('aria-colspan');
+  });
+
+  test('grid layout spans tracks via grid-column and marks the span with aria-colspan', () => {
+    const { container } = render(
+      <TableRoot columnLayout={{ type: 'grid', columns: [{}, {}, {}] }} ariaLabel="Resources">
+        <TableBody>
+          <TableRow>
+            <TableBodyCell colSpan={3}>Full width</TableBodyCell>
+          </TableRow>
+        </TableBody>
+      </TableRoot>
+    );
+    const cell = createWrapper(container).findAllTableBodyCells()[0].getElement() as HTMLElement;
+    expect(cell.style.gridColumn).toBe('span 3');
+    expect(cell).toHaveAttribute('aria-colspan', '3');
+    expect(cell).toHaveAttribute('role', 'cell');
+    expect(cell).not.toHaveAttribute('colspan');
+  });
+});
+
 describe('nested content is insulated from the table/row context', () => {
   test('a classic Table nested in a selected grid cell inherits neither the outer grid layout nor the selected styling', () => {
     const { container } = render(

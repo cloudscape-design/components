@@ -29903,6 +29903,12 @@ exports[`Components definition for table-body-cell matches the snapshot: table-b
       "type": "string",
     },
     {
+      "description": "Makes the cell span the given number of columns.",
+      "name": "colSpan",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "description": "Removes the cell's built-in padding so you can compose your own spacing. Defaults to \`false\`.",
       "name": "disablePaddings",
       "optional": true,
