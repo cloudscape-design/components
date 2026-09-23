@@ -53,8 +53,8 @@ export default function TableSelectionPage() {
 
   const changeMode = (next: SelectionMode) => {
     setUrlParams({ selectionMode: next });
-    // Single selection permits at most one row, so collapse the current selection when switching to it.
-    setSelectedIds(prev => (next === 'single' ? new Set([...prev].slice(0, 1)) : prev));
+    // Single mode permits one row; an unconditional cap is safe since leaving single the selection is already ≤1.
+    setSelectedIds(prev => new Set([...prev].slice(0, 1)));
   };
 
   return (
