@@ -81,6 +81,7 @@ function SelectAndMultiselect() {
       <Select
         inlineLabelText="Aggregation"
         ariaLabel="Aggregation"
+        filteringType="auto"
         selectedOption={aggregation}
         options={aggregations}
         onChange={event => setAggregation(event.detail.selectedOption)}
@@ -89,6 +90,7 @@ function SelectAndMultiselect() {
         inlineLabelText="Labels"
         ariaLabel="Labels"
         inlineTokens={true}
+        filteringType="auto"
         selectedOptions={selected}
         options={multiOptions}
         placeholder="Choose labels"
