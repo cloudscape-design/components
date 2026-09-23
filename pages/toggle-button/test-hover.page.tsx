@@ -17,13 +17,45 @@ const permutations = createPermutations<ToggleButtonProps>([
     pressed: [false, true],
   },
   {
+    variant: ['normal'],
+    children: ['Favorite'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    pressed: [false, true],
+    disabled: [true],
+  },
+  {
+    variant: ['normal'],
+    children: ['Favorite'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    pressed: [false, true],
+    disabled: [true],
+    disabledReason: ['No permission'],
+  },
+  {
     variant: ['icon'],
     iconName: ['star'],
     ariaLabel: ['Favorite'],
     pressedIconName: ['star-filled'],
     pressed: [false, true],
   },
+  {
+    variant: ['icon'],
+    iconName: ['star'],
+    ariaLabel: ['Favorite'],
+    pressedIconName: ['star-filled'],
+    pressed: [false, true],
+    disabled: [true],
+  },
 ]);
+
+function getTestId(permutation: ToggleButtonProps) {
+  const variant = permutation.variant ?? 'normal';
+  const state = permutation.disabled ? (permutation.disabledReason ? 'disabled-reason' : 'disabled') : 'enabled';
+  const pressedState = permutation.pressed ? 'pressed' : 'not-pressed';
+  return `variant-${variant}-${state}-${pressedState}`;
+}
 
 export default function ToggleButtonTestHover() {
   return (
@@ -32,10 +64,7 @@ export default function ToggleButtonTestHover() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => {
-            const testId = `variant-${permutation.variant ?? 'normal'}-${permutation.pressed ? 'pressed' : 'not-pressed'}`;
-            return <ToggleButton {...permutation} data-testid={testId} />;
-          }}
+          render={permutation => <ToggleButton {...permutation} data-testid={getTestId(permutation)} />}
         />
       </ScreenshotArea>
     </>

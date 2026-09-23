@@ -142,6 +142,7 @@ const ButtonTrigger = (
     <button
       ref={ref}
       {...attributes}
+      data-awsui-motion-trigger="hover"
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
       {children}
@@ -151,6 +152,7 @@ const ButtonTrigger = (
             name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
             size={isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal'}
             variant={disabled || readOnly ? 'disabled' : 'normal'}
+            nativeAttributes={{ 'data-awsui-motion-target': '' }}
           />
         </span>
       )}

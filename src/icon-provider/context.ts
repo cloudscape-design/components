@@ -11,3 +11,6 @@ import { IconProviderProps } from './interfaces';
  * This allows the Icon component to have these icons available in the context even when no IconProvider is used.
  */
 export const InternalIconContext = createContext<IconProviderProps.Icons>(generatedIcons);
+
+/** Holds per-component custom icons. Empty by default: components render their built-in icons. */
+export const InternalComponentIconsContext = createContext<IconProviderProps.ComponentIcons>({});

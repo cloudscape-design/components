@@ -12,7 +12,7 @@ const setupTest = (itemId: string, testFn: (page: ButtonDropdownPage, itemId: st
     await browser.url('#/light/button-dropdown/events');
     await page.waitForVisible(page.getTrigger());
     await expect(page.getDropdownCheckMessage()).resolves.toEqual('');
-    await page.openDropdown();
+    await page.clickTrigger();
     if (itemId) {
       await page.click(page.findButtonDropdown().findItemById(itemId).toSelector());
     }

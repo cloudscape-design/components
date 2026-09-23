@@ -20,6 +20,7 @@ $_variant-colors: (
 $_icon-sizes: (
   (
     name: 'x-small',
+    supportedFontSize: awsui.$font-size-body-s,
     size: 12px,
     supportedLineHeight: awsui.$line-height-body-s,
     stroke: awsui.$border-width-icon-x-small,
@@ -27,6 +28,7 @@ $_icon-sizes: (
   ),
   (
     name: 'small',
+    supportedFontSize: awsui.$font-size-body-m,
     size: awsui.$size-icon-normal,
     supportedLineHeight: awsui.$line-height-body-s,
     stroke: awsui.$border-width-icon-small,
@@ -34,6 +36,7 @@ $_icon-sizes: (
   ),
   (
     name: 'normal',
+    supportedFontSize: awsui.$font-size-body-m,
     size: awsui.$size-icon-normal,
     supportedLineHeight: awsui.$line-height-body-m,
     stroke: awsui.$border-width-icon-normal,
@@ -41,6 +44,7 @@ $_icon-sizes: (
   ),
   (
     name: 'medium',
+    supportedFontSize: awsui.$font-size-heading-l,
     size: awsui.$size-icon-medium,
     supportedLineHeight: awsui.$line-height-heading-l,
     stroke: awsui.$border-width-icon-medium,
@@ -48,6 +52,7 @@ $_icon-sizes: (
   ),
   (
     name: 'big',
+    supportedFontSize: awsui.$font-size-heading-xl,
     size: awsui.$size-icon-big,
     supportedLineHeight: awsui.$line-height-heading-xl,
     stroke: awsui.$border-width-icon-big,
@@ -55,12 +60,25 @@ $_icon-sizes: (
   ),
   (
     name: 'large',
+    supportedFontSize: awsui.$font-size-display-l,
     size: awsui.$size-icon-large,
     supportedLineHeight: awsui.$line-height-display-l,
     stroke: awsui.$border-width-icon-large,
     scaleFactor: 3,
   )
 );
+
+// Emits per-size text metrics so a nested `size="inherit"` icon resolves to the wrapper's size.
+// The line height equals the icon size (not the supported line height), so that the nested icon's
+// measured box exactly fits the wrapper's content area.
+@mixin make-icon-size-text-metrics {
+  @each $type in $_icon-sizes {
+    &.size-#{map.get($type, 'name')} {
+      font-size: map.get($type, 'supportedFontSize');
+      line-height: map.get($type, 'size');
+    }
+  }
+}
 
 @mixin make-icon-sizes {
   @each $type in $_icon-sizes {

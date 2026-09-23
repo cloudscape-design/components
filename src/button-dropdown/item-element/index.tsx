@@ -229,6 +229,7 @@ function MenuItem({
       download={!disabled && item.download ? item.download : undefined}
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
+      data-awsui-motion-trigger="hover"
     >
       {renderResult ? (
         renderResult
@@ -336,7 +337,13 @@ const MenuItemCheckmark = ({ disabled, checked }: { disabled: boolean; checked: 
 };
 
 const ExternalIcon = ({ disabled, ariaLabel }: { disabled: boolean; ariaLabel?: string }) => {
-  const icon = <InternalIcon variant={disabled ? 'disabled' : 'normal'} name="external" />;
+  const icon = (
+    <InternalIcon
+      variant={disabled ? 'disabled' : 'normal'}
+      name="external"
+      nativeAttributes={{ 'data-awsui-motion-target': '' }}
+    />
+  );
   return (
     <span className={styles['external-icon']} role={ariaLabel ? 'img' : undefined} aria-label={ariaLabel}>
       {icon}

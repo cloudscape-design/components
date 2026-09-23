@@ -6,8 +6,8 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
-
-$cell-horizontal-padding: awsui.$space-scaled-l;
+@use '../cell-base/cell-box' as cell-base;
+@use '../sticky-columns/sticky-boundary' as sticky-boundary;
 
 @mixin when-focus-visible-or-fake {
   @include focus-visible.when-visible {
@@ -138,6 +138,17 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
         box-shadow: awsui.$shadow-sticky-column-first;
         clip-path: inset(0 -24px 0 0);
       }
+    }
+    &-boundary-inline-start {
+      @include sticky-boundary.sticky-boundary-border('end') {
+        // The boundary border replaces the short column divider, same as when the cell is stuck.
+        & > .resize-divider {
+          display: none;
+        }
+      }
+    }
+    &-boundary-inline-end {
+      @include sticky-boundary.sticky-boundary-border('start', calc(-1 * #{sticky-boundary.$border-width}));
     }
   }
 }
@@ -305,6 +316,6 @@ settings icon in the pagination slot.
   }
 
   &.sticky-cell-pad-inline-start {
-    @include cell-offset($cell-horizontal-padding);
+    @include cell-offset(cell-base.$cell-horizontal-padding);
   }
 }

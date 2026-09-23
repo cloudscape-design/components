@@ -200,5 +200,7 @@ const customCssPropertiesList = [
   'styleItemCardBorderRadius',
   'styleItemCardBorderWidthDefault',
   'styleItemCardBoxShadowDefault',
+  // Inline label
+  'inlineLabelBackgroundColor',
 ];
 module.exports = customCssPropertiesList;

@@ -63,6 +63,8 @@ export const ToggleButton = React.forwardRef(
         aria-haspopup={ariaExpanded ? undefined : true}
         aria-controls={ariaControls}
         data-testid={testId}
+        data-awsui-motion-trigger="hover"
+        data-awsui-motion-target=""
       >
         <InternalIcon svg={iconSvg} name={iconName} badge={badge} />
       </button>

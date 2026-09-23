@@ -95,12 +95,22 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
 }
 
 export function getStickyClassNames(styles: Record<string, string>, props: StickyColumnsCellState | null) {
-  return {
-    [styles['sticky-cell']]: !!props,
-    [styles['sticky-cell-pad-inline-start']]: !!props?.padInlineStart,
-    [styles['sticky-cell-last-inline-start']]: !!props?.lastInsetInlineStart,
-    [styles['sticky-cell-last-inline-end']]: !!props?.lastInsetInlineEnd,
+  const classNames: Record<string, boolean> = {};
+
+  const addClassName = (name: string, isActive: boolean) => {
+    if (styles[name] !== undefined) {
+      classNames[styles[name]] = isActive;
+    }
   };
+
+  addClassName('sticky-cell', !!props);
+  addClassName('sticky-cell-pad-inline-start', !!props?.padInlineStart);
+  addClassName('sticky-cell-last-inline-start', !!props?.lastInsetInlineStart);
+  addClassName('sticky-cell-last-inline-end', !!props?.lastInsetInlineEnd);
+  addClassName('sticky-cell-boundary-inline-start', !!props?.boundaryInlineStart);
+  addClassName('sticky-cell-boundary-inline-end', !!props?.boundaryInlineEnd);
+
+  return classNames;
 }
 
 function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): string[] {

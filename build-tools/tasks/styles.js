@@ -4,7 +4,9 @@
 /* eslint-disable no-unsanitized/method */
 
 const { parallel, series } = require('gulp');
-const { join } = require('path');
+const { promises: fs } = require('fs');
+const { dirname, join } = require('path');
+const { generateThemeStylesheet } = require('@cloudscape-design/theming-build');
 const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build/internal');
 
 const themes = require('../utils/themes');
@@ -70,4 +72,55 @@ function stylesTask(theme) {
   });
 }
 
-module.exports = series(compileStyleDictionary(), parallel(themes.map(theme => stylesTask(theme))));
+/**
+ * Pregenerates a stylesheet for the core-update theme, consumed by the dev pages (see pages/app/index.tsx).
+ *
+ * The stylesheet is generated at build time (instead of calling the runtime theming API in the
+ * browser) because the dev pages' CSP (style-src 'self') blocks runtime-injected style nodes.
+ * It is scoped under the .awsui-core-update selector, so the dev pages can always bundle it and
+ * activate it by toggling the class on the body element.
+ */
+function coreNewPagesThemeTask() {
+  const outputPath = join(__dirname, '../../pages/app/generated/core-update-theme.css');
+  return task('styles:core-update-pages-theme', async () => {
+    const { default: theme } = await import(join(styleDictionaryRoot, 'core-update/index.js'));
+
+    // Only themeable tokens can be part of a theme override. The rest would be
+    // dropped by generateThemeStylesheet with a console warning for each token.
+    const { default: metadata } = await import(join(styleDictionaryRoot, 'core-update/metadata.js'));
+    const filterThemeable = tokens =>
+      Object.fromEntries(Object.entries(tokens).filter(([token]) => metadata[token]?.themeable));
+
+    const override = {
+      tokens: filterThemeable(theme.tokens),
+      contexts: Object.fromEntries(
+        Object.entries(theme.contexts).map(([contextId, context]) => [
+          contextId,
+          { tokens: filterThemeable(context.tokens) },
+        ])
+      ),
+      ...(theme.referenceTokens ? { referenceTokens: theme.referenceTokens } : {}),
+    };
+
+    const { preset } = require(
+      join(__dirname, '../../', workspace.targetPath, 'components/internal/generated/theming/index.cjs')
+    );
+
+    const stylesheet = generateThemeStylesheet({
+      override,
+      preset,
+      baseThemeId: 'visual-refresh',
+      // Not a special value, this selector is only used for the dev pages.
+      selector: '.awsui-core-update',
+    });
+
+    await fs.mkdir(dirname(outputPath), { recursive: true });
+    await fs.writeFile(outputPath, stylesheet + '\n');
+  });
+}
+
+module.exports = series(
+  compileStyleDictionary(),
+  parallel(themes.map(theme => stylesTask(theme))),
+  coreNewPagesThemeTask()
+);
