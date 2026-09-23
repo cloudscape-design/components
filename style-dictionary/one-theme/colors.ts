@@ -67,7 +67,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonPrimaryActive: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
 
   // ── Toggle button ─────────────────────────────────────────────────────────
-  colorBackgroundToggleButtonNormalPressed: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
+  colorBackgroundToggleButtonNormalPressed: { light: '{colorPrimary50}', dark: '{colorNeutral1000}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorPrimary600}', dark: '{colorPrimary500}' },
   colorTextToggleButtonNormalPressed: { light: '{colorNeutral900}', dark: '{colorWhite}' },
 

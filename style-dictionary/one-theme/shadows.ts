@@ -16,17 +16,14 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   },
   shadowDropdown: { light: '0px 4px 20px 1px rgba(0, 0, 0, 0.10)', dark: '0px 4px 20px 1px rgba(0, 0, 0, 1)' },
   shadowDropup: '{shadowDropdown}',
-  shadowFlashCollapsed: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-  shadowFlashSticky: {
-    light: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-    dark: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-  },
+  shadowFlashCollapsed: '0px 2px 4px rgba(0, 0, 0, 0.15)',
+  shadowFlashSticky: '0px 2px 4px rgba(0, 0, 0, 0.15)',
   shadowModal: '{shadowDropdown}',
   shadowPanel: {
     light: '0px 0px 0px 1px #bebebe',
     dark: '0px 0px 0px 1px #4b4b4b',
   },
-  shadowPanelToggle: { light: '0px 6px 12px 1px rgba(0, 0, 0, 0.12)', dark: '0px 6px 12px 1px rgba(0, 0, 0, 1)' },
+  shadowPanelToggle: { light: '0px 6px 12px 1px rgba(0, 0, 0, 0.1)', dark: '0px 6px 12px 1px rgba(0, 0, 0, 1)' },
   shadowPopover: '{shadowDropdown}',
   shadowSplitBottom: {
     light: '0px -36px 36px -36px rgba(0, 0, 0, 0.10)',
