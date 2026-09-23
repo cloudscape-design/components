@@ -232,7 +232,7 @@ function PortaledModal({
 
   // Without a dismiss button there is no predictable first focusable element, so focus the
   // heading to announce what the modal is about. When no header is given, fall back to the
-  // dialog itself. Both are only reachable programmatically (`tabIndex={-1}`).
+  // dialog.
   const hasHeader = header !== undefined && header !== null && header !== false && header !== '';
   const autoFocusTarget = hideDismissButton ? (hasHeader ? headerTextRef : dialogRef) : undefined;
 
@@ -292,14 +292,7 @@ function PortaledModal({
                 style={dialogCustomStyles}
                 onKeyDown={escKeyHandler}
                 // Keeps the dialog focusable so that clicking a non-focusable area inside it moves
-                // focus to the dialog rather than the document body. Without this, focus leaves the
-                // dialog and the ESC handler above stops receiving key presses.
-                //
-                // This was removed in 0180c66aa, because a tabindex on a generic element with no
-                // accessible name can be announced as a group, which makes some screen readers read
-                // out the whole modal when it opens. Restored deliberately: keep it unless that
-                // announcement is reintroduced, in which case give this element the dialog role and
-                // an accessible name rather than removing the tabindex again.
+                // focus to the dialog rather than the document body.
                 tabIndex={-1}
                 {...metadataAttribute}
               >
