@@ -13,7 +13,7 @@ export function variantSupportsActions(variant: InternalVariant) {
 }
 
 export function variantSupportsInfoLink(variant: InternalVariant) {
-  return variantIsOneOf(variant, ['container', 'compact']);
+  return variantIsOneOf(variant, ['container', 'compact', 'footer']);
 }
 
 export function variantRequiresActionsDivider(variant: InternalVariant) {
