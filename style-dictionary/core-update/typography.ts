@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
-import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
 
 // core-update typography overrides; the full visual-refresh set (parentTokens) is the base.
-const tokens: StyleDictionary.TypographyDictionary = {
+const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontFamilyBase: "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
 
   fontSizeHeadingXl: '24px',
@@ -35,9 +34,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontSizeTabs: '16px',
 };
 
-const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
-  merge({}, parentTokens, tokens)
-);
+const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
 
 export { expandedTokens as tokens };
 export const mode: StyleDictionary.ModeIdentifier = 'density';

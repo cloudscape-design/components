@@ -1306,7 +1306,7 @@ export type ShadowsTokenName =
   | 'shadowStickyColumnFirst'
   | 'shadowStickyColumnLast';
 
-export type GlobalScopeTokenName = ColorPaletteTokenName | BordersTokenName;
+export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName =
   | ReferenceTokenName
   | ColorChartsTokenName
