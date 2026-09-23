@@ -28,10 +28,15 @@ exports[`getTabStyles transforms tab styles to CSS properties 1`] = `
 
 exports[`getTabStyles transforms tab styles to CSS properties 2`] = `
 {
+  "--awsui-style-tabs-separator-color-66120l": "#cbd5e1",
+  "--awsui-style-tabs-separator-width-66120l": "2px",
+}
+`;
+
+exports[`getTabStyles transforms tab styles to CSS properties 3`] = `
+{
   "--awsui-style-tabs-active-indicator-border-radius-66120l": "2px",
   "--awsui-style-tabs-active-indicator-color-66120l": "#1d4ed8",
   "--awsui-style-tabs-active-indicator-width-66120l": "3px",
-  "--awsui-style-tabs-separator-color-66120l": "#cbd5e1",
-  "--awsui-style-tabs-separator-width-66120l": "2px",
 }
 `;

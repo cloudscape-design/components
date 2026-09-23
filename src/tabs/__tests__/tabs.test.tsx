@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import { getIsRtl, getOffsetInlineStart } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -10,6 +11,12 @@ import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/tabs/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getIsRtl: jest.fn().mockReturnValue(false),
+  getOffsetInlineStart: jest.fn().mockReturnValue(0),
+}));
 
 let mockHorizontalOverflow = false;
 jest.mock('../../../lib/components/tabs/scroll-utils', () => {
@@ -1410,5 +1417,118 @@ describe('Tabs', () => {
   test('renders actions', () => {
     const wrapper = renderTabs(<Tabs tabs={defaultTabs} actions={<div>Actions content</div>} />).wrapper;
     expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
+  });
+});
+
+describe('active-tab indicator', () => {
+  const indicatorSelector = `.${styles['tabs-active-indicator']}`;
+
+  function indicatorOpacity(wrapper: TabsWrapper) {
+    return wrapper
+      .find(indicatorSelector)!
+      .getElement()
+      .style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-opacity');
+  }
+
+  function indicatorOffset(wrapper: TabsWrapper) {
+    return wrapper
+      .find(indicatorSelector)!
+      .getElement()
+      .style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-offset');
+  }
+
+  function indicatorScale(wrapper: TabsWrapper) {
+    return wrapper
+      .find(indicatorSelector)!
+      .getElement()
+      .style.getPropertyValue('--awsui-internal-style-tabs-active-indicator-scale');
+  }
+
+  let offsetWidthSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    jest.mocked(getIsRtl).mockReset().mockReturnValue(false);
+    jest.mocked(getOffsetInlineStart).mockReset().mockReturnValue(0);
+    offsetWidthSpy = jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(100);
+  });
+
+  afterEach(() => {
+    offsetWidthSpy.mockRestore();
+  });
+
+  test('renders a single shared indicator', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(wrapper.findAll(indicatorSelector)).toHaveLength(1);
+  });
+
+  test('renders the indicator as decorative (hidden from assistive technology)', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(wrapper.find(indicatorSelector)!.getElement()).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  test('shows the indicator over an enabled active tab', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+  });
+
+  test('hides the indicator when the active tab is disabled', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+
+  test('hides the indicator when there is no active tab', () => {
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="missing" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+
+  test('toggles indicator visibility when switching between enabled and disabled tabs', () => {
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+
+    rerender(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+
+    rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+  });
+
+  test('hides the indicator when the active tab is removed', () => {
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('1');
+
+    rerender(<Tabs tabs={defaultTabs.slice(1)} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOpacity(wrapper)).toBe('0');
+  });
+
+  test('positions the indicator with offset and scale in LTR', () => {
+    jest.mocked(getIsRtl).mockReturnValue(false);
+    jest.mocked(getOffsetInlineStart).mockReturnValue(120);
+
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
+    expect(indicatorOffset(wrapper)).toBe('120px');
+    expect(indicatorScale(wrapper)).toBe('99');
+  });
+
+  test('negates the indicator offset in RTL', () => {
+    jest.mocked(getIsRtl).mockReturnValue(true);
+    jest.mocked(getOffsetInlineStart).mockReturnValue(120);
+
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
+    expect(indicatorOffset(wrapper)).toBe('-120px');
+    expect(indicatorScale(wrapper)).toBe('99');
+  });
+
+  test('recomputes offset and scale when the active tab changes', () => {
+    jest.mocked(getOffsetInlineStart).mockReturnValue(40);
+    offsetWidthSpy.mockReturnValue(80);
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorOffset(wrapper)).toBe('40px');
+    expect(indicatorScale(wrapper)).toBe('79');
+
+    jest.mocked(getOffsetInlineStart).mockReturnValue(200);
+    offsetWidthSpy.mockReturnValue(150);
+    rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
+    expect(indicatorOffset(wrapper)).toBe('200px');
+    expect(indicatorScale(wrapper)).toBe('149');
   });
 });

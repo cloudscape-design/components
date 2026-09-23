@@ -6,6 +6,8 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
+  getIsRtl,
+  getOffsetInlineStart,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
@@ -39,7 +41,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabIndicatorStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -107,6 +109,10 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
+
+  const activeIndicatorRef = useRef<HTMLSpanElement>(null);
+  const indicatorMeasuredRef = useRef(false);
+  const headerContainerRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
@@ -195,6 +201,44 @@ export function TabHeaderBar({
       }
     }
   }, [activeTabId]);
+
+  useEffect(() => {
+    const indicator = activeIndicatorRef.current;
+    const list = headerBarRef.current;
+    /* istanbul ignore if: refs are always attached when the effect runs */
+    if (!indicator || !list) {
+      return;
+    }
+    const activeTab = activeTabId ? tabs.find(tab => tab.id === activeTabId) : undefined;
+    const headerContainer = activeTabId ? headerContainerRefs.current.get(activeTabId) : undefined;
+    if (!headerContainer || !activeTab || activeTab.disabled) {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '0');
+      return;
+    }
+
+    const isRtl = getIsRtl(indicator);
+    const inlineOffset = getOffsetInlineStart(headerContainer);
+    const offset = (isRtl ? -1 : 1) * inlineOffset;
+    const width = headerContainer.offsetWidth - 1;
+
+    const apply = () => {
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-offset', `${offset}px`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-scale', `${width}`);
+      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '1');
+    };
+
+    if (!indicatorMeasuredRef.current) {
+      const previousTransition = indicator.style.transition;
+      indicator.style.transition = 'none';
+      apply();
+
+      void indicator.offsetWidth;
+      indicator.style.transition = previousTransition;
+      indicatorMeasuredRef.current = true;
+    } else {
+      apply();
+    }
+  }, [activeTabId, widthChange, tabs, style]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -359,12 +403,14 @@ export function TabHeaderBar({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
+            style={getTabIndicatorStyles(style)}
             onScroll={onScroll}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
+            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (
@@ -528,6 +574,13 @@ export function TabHeaderBar({
         key={tab.id}
       >
         <div
+          ref={element => {
+            if (element) {
+              headerContainerRefs.current.set(tab.id, element);
+            } else {
+              headerContainerRefs.current.delete(tab.id);
+            }
+          }}
           className={tabHeaderContainerClasses}
           {...tabHeaderContainerAriaProps}
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
