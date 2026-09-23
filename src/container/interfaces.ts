@@ -90,6 +90,14 @@ export interface ContainerProps extends BaseComponentProps {
 }
 
 export namespace ContainerProps {
+  export interface Ref {
+    /**
+     * Sets focus on the container and scrolls it into view. Use this to move the user's focus to a
+     * container programmatically, for example in "jump to item" or deep-linking patterns.
+     */
+    focus(): void;
+  }
+
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
   }

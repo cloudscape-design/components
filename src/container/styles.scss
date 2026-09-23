@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/utils' as utils;
 @use './shared' as shared;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
@@ -65,6 +66,15 @@
   &.with-stuck-sticky-header-at-bottom {
     border-end-end-radius: 0;
     border-end-start-radius: 0;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  // On ::after (not the root's own box-shadow) so it survives a consumer style.root.boxShadow.
+  &.focus-ring:focus::after {
+    @include utils.base-pseudo-element;
+    @include styles.container-focus();
   }
 }
 
