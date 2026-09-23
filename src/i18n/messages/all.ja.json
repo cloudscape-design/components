@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {直近 {amount} 秒間} one {直近 {amount} 秒間} other {直近 {amount} 秒間}}} minute {{amount, plural, zero {直近 {amount} 分間} one {直近 {amount} 分間} other {直近 {amount} 分間}}} hour {{amount, plural, zero {直近 {amount} 時間} one {直近 {amount} 時間} other {直近 {amount} 時間}}} day {{amount, plural, zero {直近 {amount} 日間} one {直近 {amount} 日間} other {直近 {amount} 日間}}} week {{amount, plural, zero {直近 {amount} 週間} one {直近 {amount} 週間} other {直近 {amount} 週間}}} month {{amount, plural, zero {直近 {amount} か月間} one {直近 {amount} か月間} other {直近 {amount} か月間}}} year {{amount, plural, zero {直近 {amount} 年間} one {直近 {amount} 年間} other {直近 {amount} 年間}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒間} one {秒間} other {秒間}}} minute {{amount, plural, zero {分間} one {分間} other {分間}}} hour {{amount, plural, zero {時間} one {時間} other {時間}}} day {{amount, plural, zero {日間} one {日間} other {日間}}} week {{amount, plural, zero {週間} one {週間} other {週間}}} month {{amount, plural, zero {か月間} one {か月間} other {か月間}}} year {{amount, plural, zero {年間} one {年間} other {年間}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "ダイアログを閉じる"
+  },
   "drawer": {
     "i18nStrings.loadingText": "コンテンツのロード中"
   },

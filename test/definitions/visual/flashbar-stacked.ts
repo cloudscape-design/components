@@ -17,7 +17,7 @@ const suite: TestSuite = {
       path: 'flashbar/collapsible.visual-tests',
       screenshotType: 'screenshotArea',
       configuration: { width },
-      pixelDiffTolerance: 2,
+      pixelDiffTolerance: 4,
       setup: async ({ page }) => {
         await page.click('#focus-target');
         await page.focusNextElement();

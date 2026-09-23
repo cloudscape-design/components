@@ -1,0 +1,38 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.dropdown-row {
+  min-block-size: 240px;
+}
+
+.dropdown-actions {
+  padding-block: 8px;
+  padding-inline: 12px;
+}
+
+.dropdown-brand {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-border-color: #{palette.$border-accent};
+  --awsui-style-border-width: 2px;
+  --awsui-style-border-radius: 0px;
+}
+
+.dropdown-borderless {
+  --awsui-style-background-color: #{palette.$subtle};
+  --awsui-style-border-width: 0px;
+  --awsui-style-border-radius: 12px;
+}
+
+.dropdown-focus-within {
+  --awsui-style-background-color: #{palette.$surface};
+  --awsui-style-border-color: #{palette.$border};
+  --awsui-style-border-width: 2px;
+
+  &:focus-within {
+    --awsui-style-border-color: #{palette.$accent};
+  }
+}

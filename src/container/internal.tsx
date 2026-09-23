@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -16,6 +16,7 @@ import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { ContainerProps } from './interfaces';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
@@ -52,49 +53,82 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __contentKey?: string;
 }
 
-export function InternalContainerAsSubstep(props: InternalContainerProps) {
-  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
-  const modalContext = useModalContext();
+export const InternalContainerAsSubstep = React.forwardRef(
+  (props: InternalContainerProps, ref: React.Ref<ContainerProps.Ref>) => {
+    const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+    const modalContext = useModalContext();
 
-  return (
-    <InternalContainer
-      {...props}
-      __subStepRef={modalContext?.isInModal ? { current: null } : subStepRef}
-      __funnelSubStepProps={modalContext?.isInModal ? {} : funnelSubStepProps}
-    />
-  );
-}
+    return (
+      <InternalContainer
+        {...props}
+        ref={ref}
+        __subStepRef={modalContext?.isInModal ? { current: null } : subStepRef}
+        __funnelSubStepProps={modalContext?.isInModal ? {} : funnelSubStepProps}
+      />
+    );
+  }
+);
 
-export default function InternalContainer({
-  header,
-  footer,
-  children,
-  variant = 'default',
-  disableHeaderPaddings = false,
-  disableContentPaddings = false,
-  disableFooterPaddings = false,
-  fitHeight,
-  media,
-  style,
-  __stickyOffset,
-  __mobileStickyOffset,
-  __stickyHeader = false,
-  __internalRootRef,
-  __disableFooterDivider = false,
-  __hiddenContent = false,
-  __headerRef,
-  __fullPage = false,
-  __disableStickyMobile = true,
-  __funnelSubStepProps,
-  __subStepRef,
-  __contentKey,
-  ...restProps
-}: InternalContainerProps) {
+const InternalContainer = React.forwardRef(function InternalContainer(
+  {
+    header,
+    footer,
+    children,
+    variant = 'default',
+    disableHeaderPaddings = false,
+    disableContentPaddings = false,
+    disableFooterPaddings = false,
+    fitHeight,
+    media,
+    style,
+    __stickyOffset,
+    __mobileStickyOffset,
+    __stickyHeader = false,
+    __internalRootRef,
+    __disableFooterDivider = false,
+    __hiddenContent = false,
+    __headerRef,
+    __fullPage = false,
+    __disableStickyMobile = true,
+    __funnelSubStepProps,
+    __subStepRef,
+    __contentKey,
+    ...restProps
+  }: InternalContainerProps,
+  ref: React.Ref<ContainerProps.Ref>
+) {
   const isMobile = useMobile();
   const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+
+  const [showFocusRing, setShowFocusRing] = useState(false);
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (rootRef.current) {
+        rootRef.current.tabIndex = -1;
+        rootRef.current.setAttribute('role', 'group');
+        if (header) {
+          rootRef.current.setAttribute('aria-labelledby', headerId);
+        }
+        setShowFocusRing(true);
+        // focus()'s implicit scroll is a no-op when the container is already focused (repeated jump).
+        rootRef.current.focus({ preventScroll: true });
+        scrollElementIntoView(rootRef.current);
+      }
+    },
+  }));
+  const onRootBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+    const funnelOnBlur = __funnelSubStepProps?.onBlur as React.FocusEventHandler<HTMLDivElement> | undefined;
+    funnelOnBlur?.(event);
+    if (event.target === rootRef.current) {
+      rootRef.current.removeAttribute('tabindex');
+      rootRef.current.removeAttribute('role');
+      rootRef.current.removeAttribute('aria-labelledby');
+      setShowFocusRing(false);
+    }
+  };
   const { isSticky, isStuck, isStuckAtBottom, stickyStyles } = useStickyHeader(
     rootRef,
     headerRef,
@@ -105,6 +139,7 @@ export default function InternalContainer({
     __fullPage && isRefresh && !isMobile
   );
   const contentId = useUniqueId();
+  const headerId = useUniqueId('container-header-');
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
 
@@ -130,9 +165,11 @@ export default function InternalContainer({
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']],
         shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
+        showFocusRing && styles['focus-ring'],
         isRefresh && styles.refresh
       )}
       ref={mergedRef}
+      onBlur={onRootBlur}
       {...getAnalyticsLabelAttribute(
         `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
       )}
@@ -162,6 +199,7 @@ export default function InternalContainer({
             <ContainerHeaderContextProvider>
               <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
                 <div
+                  id={headerId}
                   className={clsx(
                     isRefresh && styles.refresh,
                     styles.header,
@@ -225,4 +263,6 @@ export default function InternalContainer({
       </div>
     </div>
   );
-}
+});
+
+export default InternalContainer;

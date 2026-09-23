@@ -11,6 +11,8 @@ export function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | 
       s1.padInlineStart === s2.padInlineStart &&
       s1.lastInsetInlineStart === s2.lastInsetInlineStart &&
       s1.lastInsetInlineEnd === s2.lastInsetInlineEnd &&
+      s1.boundaryInlineStart === s2.boundaryInlineStart &&
+      s1.boundaryInlineEnd === s2.boundaryInlineEnd &&
       s1.offset.insetInlineStart === s2.offset.insetInlineStart &&
       s1.offset.insetInlineEnd === s2.offset.insetInlineEnd
     );

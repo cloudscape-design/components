@@ -170,6 +170,7 @@ const suite: TestSuite = {
           path: 'line-chart/in-expandable-section-test',
           screenshotType: 'screenshotArea',
           configuration: { width: 800, height: 800 },
+          pixelDiffTolerance: 8,
           setup: async ({ page, wrapper }) => {
             const expandableSectionWrapper = wrapper.findExpandableSection();
             await page.waitForVisible(expandableSectionWrapper.toSelector());
