@@ -31,31 +31,6 @@ function hasInlineLabelProp(child: React.ReactNode): boolean {
   );
 }
 
-// When the group stacks, every control shows an inline label. If a control already has
-// `inlineLabelText`, it is used as-is; otherwise its `ariaLabel` is used as the inline
-// label (each control is expected to define one or the other). Returns the child with an
-// injected `inlineLabelText` when needed, or the child unchanged.
-function withStackedInlineLabel(child: React.ReactNode): React.ReactNode {
-  if (!React.isValidElement<{ inlineLabelText?: string; ariaLabel?: string }>(child)) {
-    return child;
-  }
-  const { inlineLabelText, ariaLabel } = child.props;
-  if ((inlineLabelText && inlineLabelText.length > 0) || !ariaLabel) {
-    return child;
-  }
-  return React.cloneElement(child, { inlineLabelText: ariaLabel });
-}
-
-// A control can provide an inline label from either `inlineLabelText` or `ariaLabel`.
-// When stacked, the group needs one of them to label every control.
-function hasInlineLabelSource(child: React.ReactNode): boolean {
-  if (!React.isValidElement<{ inlineLabelText?: string; ariaLabel?: string }>(child)) {
-    return true;
-  }
-  const { inlineLabelText, ariaLabel } = child.props;
-  return Boolean((inlineLabelText && inlineLabelText.length > 0) || (ariaLabel && ariaLabel.length > 0));
-}
-
 const InternalControlGroup = forwardRef(
   (
     {
@@ -116,15 +91,6 @@ const InternalControlGroup = forwardRef(
 
     // See-through fragments and nested arrays so each real control gets its own slot.
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
-    // When the group stacks, every control is shown detached with an inline label taken
-    // from `inlineLabelText` or, failing that, `ariaLabel`. Warn if a control has
-    // neither, since it would be unlabeled in the stacked layout.
-    if (isDevelopment && !flattenedChildren.every(hasInlineLabelSource)) {
-      warnOnce(
-        'ControlGroup',
-        'Each control should have either `inlineLabelText` or `ariaLabel` defined so it can be labeled when the group wraps.'
-      );
-    }
     // The internal remove button (when `dismissible`) counts as an extra trailing
     // control so positions (first/middle/last/only) stay correct.
     const controlCount = flattenedChildren.length + (dismissible ? 1 : 0);
@@ -219,26 +185,24 @@ const InternalControlGroup = forwardRef(
         {flattenedChildren.map((child, index) => {
           const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
           const position = getPosition(index);
-          // When stacked, every control is rendered detached (rounded on all sides, with
-          // spacing between controls) and with an inline label. In a row they keep their
-          // original fusing. `control-labeled` restores the top corners + top gap;
-          // `precedesDetached` restores the bottom corners; together (only in the stacked
-          // layout) they make the control fully rounded and standalone.
-          const labeled = isStacked || hasInlineLabelProp(child);
+          // When the group wraps (stacks) the controls fuse vertically: the block-axis
+          // seam overlaps just like the inline seam does in a row. A control only
+          // detaches (keeps a gap and its own rounded corners) if it genuinely renders a
+          // visible inline label; the built-in dismiss button also stands alone. So a
+          // control is labeled when it has an inline label, and it precedes a detached
+          // control when the next control is labeled or it is the last real control
+          // before the dismiss button.
+          const hasInlineLabel = hasInlineLabelProp(child);
+          const isLastRealChild = index === flattenedChildren.length - 1;
           const precedesDetached =
-            isStacked ||
-            hasInlineLabelProp(flattenedChildren[index + 1]) ||
-            (index === flattenedChildren.length - 1 && !!dismissible);
-          // In the stacked layout, ensure the control shows an inline label, using its
-          // `ariaLabel` as a fallback when `inlineLabelText` is not set.
-          const renderedChild = isStacked ? withStackedInlineLabel(child) : child;
+            hasInlineLabelProp(flattenedChildren[index + 1]) || (isLastRealChild && !!dismissible);
           return (
             <div
               key={key ? String(key) : undefined}
               className={clsx(
                 styles.control,
                 styles[`control-${position}`],
-                labeled && styles['control-labeled'],
+                hasInlineLabel && styles['control-labeled'],
                 testUtilStyles['control-group-item']
               )}
             >
@@ -246,12 +210,12 @@ const InternalControlGroup = forwardRef(
                 value={{
                   isInControlGroup: true,
                   position,
-                  hasInlineLabel: labeled,
+                  hasInlineLabel,
                   precedesDetached,
                   stacked: isStacked,
                 }}
               >
-                {renderedChild}
+                {child}
               </ControlGroupContext.Provider>
             </div>
           );
