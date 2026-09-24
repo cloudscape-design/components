@@ -15,7 +15,9 @@ export default class ControlGroupWrapper extends ComponentWrapper<HTMLDivElement
    * Finds all control slots (one per child control) in DOM order.
    */
   findControls(): Array<ElementWrapper> {
-    return this.findAllByClassName(testUtilStyles['control-group-item']);
+    // Scope to the visible group (role="group"); the hidden measurement ghost renders a
+    // duplicate set of slots that must not be reported.
+    return this.findAll(`[role="group"] .${testUtilStyles['control-group-item']}`);
   }
 
   /**
@@ -43,6 +45,7 @@ export default class ControlGroupWrapper extends ComponentWrapper<HTMLDivElement
    * Finds the remove button rendered when the `dismissible` prop is set, if present.
    */
   findDismissButton(): ButtonWrapper | null {
-    return this.findComponent(`.${testUtilStyles['dismiss-button']}`, ButtonWrapper);
+    // Scope to the visible group; the hidden measurement ghost renders a duplicate.
+    return this.findComponent(`[role="group"] .${testUtilStyles['dismiss-button']}`, ButtonWrapper);
   }
 }

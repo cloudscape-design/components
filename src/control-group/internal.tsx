@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useLayoutEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -29,6 +29,31 @@ function hasInlineLabelProp(child: React.ReactNode): boolean {
     typeof child.props.inlineLabelText === 'string' &&
     child.props.inlineLabelText.length > 0
   );
+}
+
+// When the group stacks, every control shows an inline label. If a control already has
+// `inlineLabelText`, it is used as-is; otherwise its `ariaLabel` is used as the inline
+// label (each control is expected to define one or the other). Returns the child with an
+// injected `inlineLabelText` when needed, or the child unchanged.
+function withStackedInlineLabel(child: React.ReactNode): React.ReactNode {
+  if (!React.isValidElement<{ inlineLabelText?: string; ariaLabel?: string }>(child)) {
+    return child;
+  }
+  const { inlineLabelText, ariaLabel } = child.props;
+  if ((inlineLabelText && inlineLabelText.length > 0) || !ariaLabel) {
+    return child;
+  }
+  return React.cloneElement(child, { inlineLabelText: ariaLabel });
+}
+
+// A control can provide an inline label from either `inlineLabelText` or `ariaLabel`.
+// When stacked, the group needs one of them to label every control.
+function hasInlineLabelSource(child: React.ReactNode): boolean {
+  if (!React.isValidElement<{ inlineLabelText?: string; ariaLabel?: string }>(child)) {
+    return true;
+  }
+  const { inlineLabelText, ariaLabel } = child.props;
+  return Boolean((inlineLabelText && inlineLabelText.length > 0) || (ariaLabel && ariaLabel.length > 0));
 }
 
 const InternalControlGroup = forwardRef(
@@ -91,45 +116,184 @@ const InternalControlGroup = forwardRef(
 
     // See-through fragments and nested arrays so each real control gets its own slot.
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
+    // When the group stacks, every control is shown detached with an inline label taken
+    // from `inlineLabelText` or, failing that, `ariaLabel`. Warn if a control has
+    // neither, since it would be unlabeled in the stacked layout.
+    if (isDevelopment && !flattenedChildren.every(hasInlineLabelSource)) {
+      warnOnce(
+        'ControlGroup',
+        'Each control should have either `inlineLabelText` or `ariaLabel` defined so it can be labeled when the group wraps.'
+      );
+    }
     // The internal remove button (when `dismissible`) counts as an extra trailing
     // control so positions (first/middle/last/only) stay correct.
     const controlCount = flattenedChildren.length + (dismissible ? 1 : 0);
     const getPosition = (index: number): ControlGroupPosition =>
       controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
 
-    // Responsive stacking: the controls collapse to a vertical layout only when they
-    // truly don't fit in the available width (not at a fixed pixel breakpoint). We
-    // observe the available width on the root, and compare it against the row's
-    // required width measured from the group's `scrollWidth` while it is laid out as a
-    // row. The required width is only re-read in row mode and kept in a ref, so once
-    // stacked the group only expands back to a row when the container grows past that
-    // remembered width — this hysteresis prevents oscillation.
-    const groupRef = useRef<HTMLDivElement>(null);
-    const requiredRowWidthRef = useRef<number | null>(null);
-    const [stacked, setStacked] = useState(false);
-    const [availableWidth, widthMeasureRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
-    const rootMeasureRef = useMergeRefs(mergedRef, widthMeasureRef);
+    // Stack the controls only when they don't fit the available width. The decision
+    // compares two independent widths so the group's own collapse can't feed back into
+    // it (which would leave it stuck stacked):
+    //   - `availableWidth`: the width of the line the group sits on (see below).
+    //   - `requiredRowWidth`: the width the controls need as a single row, measured from
+    //     a hidden ghost row that is always a row and out of flow, so it never shrinks.
+    const [availableWidth, setAvailableWidth] = useState<number | null>(null);
+    const [requiredRowWidth, ghostWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
 
-    useLayoutEffect(() => {
-      const group = groupRef.current;
-      if (!group || availableWidth === null) {
+    // The root is `flex-shrink: 0` (see styles.scss), so it and any shrink-wrapping
+    // ancestor take the group's width — including the narrow width after it stacks. So
+    // to measure the real available width we walk up and skip those ancestors, stopping
+    // at the first one that actually constrains the group. Its width does not follow the
+    // collapse, so the group re-expands when the space returns.
+    const rootElRef = useRef<HTMLDivElement | null>(null);
+    const observerRef = useRef<ResizeObserver | null>(null);
+
+    const measureAvailableWidth = useCallback(() => {
+      const root = rootElRef.current;
+      if (!root) {
         return;
       }
-      // In row mode, `scrollWidth` is the full width the controls need (the group does
-      // not wrap). Remember it so the decision is stable once we stack.
-      if (!stacked) {
-        requiredRowWidthRef.current = group.scrollWidth;
+      const rootWidth = root.getBoundingClientRect().width;
+      let container: HTMLElement | null = root.parentElement;
+      let available: number | null = null;
+      // Walk up (bounded) to the first ancestor that constrains the group, skipping ones
+      // that just shrink-wrap to it.
+      for (let i = 0; container && i < 20; i++) {
+        const style = getComputedStyle(container);
+        // clientWidth excludes borders/scrollbar; subtract padding for the content box.
+        const paddingInline = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        const contentWidth = container.clientWidth - paddingInline;
+        available = contentWidth;
+        // Wider than the group: this ancestor defines the available width.
+        if (contentWidth > rootWidth + 1) {
+          break;
+        }
+        // Not wider, but it clips/scrolls or the group overflows it: it constrains the
+        // group, so its (narrower) width is the available width.
+        const clipsOrScrolls =
+          style.overflowX !== 'visible' ||
+          style.overflow !== 'visible' ||
+          container.scrollWidth > container.clientWidth;
+        if (clipsOrScrolls) {
+          break;
+        }
+        // Otherwise it just shrink-wraps to the group: skip it and keep looking.
+        container = container.parentElement;
       }
-      const required = requiredRowWidthRef.current;
-      if (required === null) {
-        return;
-      }
-      // Small tolerance to avoid flipping on sub-pixel rounding.
-      const nextStacked = availableWidth < required - 1;
-      if (nextStacked !== stacked) {
-        setStacked(nextStacked);
-      }
-    }, [availableWidth, stacked]);
+      setAvailableWidth(available);
+    }, []);
+
+    const measureRootRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        observerRef.current?.disconnect();
+        observerRef.current = null;
+        rootElRef.current = node;
+        if (!node || typeof ResizeObserver === 'undefined') {
+          return;
+        }
+        // Re-run the walk whenever the root or any ancestor resizes.
+        const observer = new ResizeObserver(() => measureAvailableWidth());
+        observer.observe(node);
+        for (let el: HTMLElement | null = node.parentElement, i = 0; el && i < 20; i++, el = el.parentElement) {
+          observer.observe(el);
+        }
+        observerRef.current = observer;
+        measureAvailableWidth();
+      },
+      [measureAvailableWidth]
+    );
+    const rootMeasureRef = useMergeRefs(mergedRef, measureRootRef);
+
+    useLayoutEffect(() => () => observerRef.current?.disconnect(), []);
+
+    // Stack when the row doesn't fit; the tolerance avoids flipping on sub-pixel
+    // rounding. Stay a row until both widths are measured.
+    const stacked =
+      availableWidth !== null && requiredRowWidth !== null ? availableWidth < requiredRowWidth - 1 : false;
+
+    // Renders the control slots (and the dismiss button) for both the visible group and
+    // the ghost. The ghost always renders as a row (`isStacked === false`) so its
+    // measured width doesn't depend on the current collapse state.
+    const renderControlSlots = (isStacked: boolean) => (
+      <>
+        {flattenedChildren.map((child, index) => {
+          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+          const position = getPosition(index);
+          // When stacked, every control is rendered detached (rounded on all sides, with
+          // spacing between controls) and with an inline label. In a row they keep their
+          // original fusing. `control-labeled` restores the top corners + top gap;
+          // `precedesDetached` restores the bottom corners; together (only in the stacked
+          // layout) they make the control fully rounded and standalone.
+          const labeled = isStacked || hasInlineLabelProp(child);
+          const precedesDetached =
+            isStacked ||
+            hasInlineLabelProp(flattenedChildren[index + 1]) ||
+            (index === flattenedChildren.length - 1 && !!dismissible);
+          // In the stacked layout, ensure the control shows an inline label, using its
+          // `ariaLabel` as a fallback when `inlineLabelText` is not set.
+          const renderedChild = isStacked ? withStackedInlineLabel(child) : child;
+          return (
+            <div
+              key={key ? String(key) : undefined}
+              className={clsx(
+                styles.control,
+                styles[`control-${position}`],
+                labeled && styles['control-labeled'],
+                testUtilStyles['control-group-item']
+              )}
+            >
+              <ControlGroupContext.Provider
+                value={{
+                  isInControlGroup: true,
+                  position,
+                  hasInlineLabel: labeled,
+                  precedesDetached,
+                  stacked: isStacked,
+                }}
+              >
+                {renderedChild}
+              </ControlGroupContext.Provider>
+            </div>
+          );
+        })}
+        {dismissible && (
+          <div
+            className={clsx(
+              styles.control,
+              styles[`control-${getPosition(controlCount - 1)}`],
+              styles['control-standalone'],
+              testUtilStyles['control-group-item']
+            )}
+          >
+            <ControlGroupContext.Provider
+              value={{
+                isInControlGroup: true,
+                position: getPosition(controlCount - 1),
+                standaloneWhenStacked: true,
+                stacked: isStacked,
+              }}
+            >
+              {/*
+                One button renders both the close icon and the "Remove" text.
+                CSS shows only the icon (square icon-button look) while the group
+                is laid out in a row, and swaps to the text (primary button) when
+                the group wraps. See `in-control-group-standalone` in button styles.
+              */}
+              <InternalButton
+                variant="primary"
+                iconName="close"
+                formAction="none"
+                ariaLabel={i18nStrings?.dismissAriaLabel ?? i18nStrings?.dismissText}
+                className={testUtilStyles['dismiss-button']}
+                onClick={() => fireNonCancelableEvent(onDismiss)}
+              >
+                {i18nStrings?.dismissText}
+              </InternalButton>
+            </ControlGroupContext.Provider>
+          </div>
+        )}
+      </>
+    );
 
     return (
       <div
@@ -138,7 +302,6 @@ const InternalControlGroup = forwardRef(
         className={clsx(baseProps.className, styles.root, stacked && styles.stacked, testUtilStyles['control-group'])}
       >
         <div
-          ref={groupRef}
           role="group"
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
@@ -160,76 +323,19 @@ const InternalControlGroup = forwardRef(
               ariaDescribedby: childAriaDescribedby,
             }}
           >
-            {flattenedChildren.map((child, index) => {
-              const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-              const position = getPosition(index);
-              // A control with a visible inline label should not fuse into the
-              // previous control when the group wraps (stacks): it keeps its spacing
-              // and its rounded top corners instead of collapsing the shared seam.
-              const hasInlineLabel = hasInlineLabelProp(child);
-              // The control directly above a control that detaches when the group
-              // wraps must keep its bottom corners squared, so it does not round off
-              // against the gap. A control detaches if it has a visible inline label,
-              // or if it is the last real child followed by the standalone dismiss
-              // button.
-              const isLastRealChild = index === flattenedChildren.length - 1;
-              const precedesDetached =
-                hasInlineLabelProp(flattenedChildren[index + 1]) || (isLastRealChild && !!dismissible);
-              return (
-                <div
-                  key={key ? String(key) : undefined}
-                  className={clsx(
-                    styles.control,
-                    styles[`control-${position}`],
-                    hasInlineLabel && styles['control-labeled'],
-                    testUtilStyles['control-group-item']
-                  )}
-                >
-                  <ControlGroupContext.Provider
-                    value={{ isInControlGroup: true, position, hasInlineLabel, precedesDetached, stacked }}
-                  >
-                    {child}
-                  </ControlGroupContext.Provider>
-                </div>
-              );
-            })}
-            {dismissible && (
-              <div
-                className={clsx(
-                  styles.control,
-                  styles[`control-${getPosition(controlCount - 1)}`],
-                  styles['control-standalone'],
-                  testUtilStyles['control-group-item']
-                )}
-              >
-                <ControlGroupContext.Provider
-                  value={{
-                    isInControlGroup: true,
-                    position: getPosition(controlCount - 1),
-                    standaloneWhenStacked: true,
-                    stacked,
-                  }}
-                >
-                  {/*
-                    One button renders both the close icon and the "Remove" text.
-                    CSS shows only the icon (square icon-button look) while the group
-                    is laid out in a row, and swaps to the text (primary button) when
-                    the group wraps. See `in-control-group-standalone` in button styles.
-                  */}
-                  <InternalButton
-                    variant="primary"
-                    iconName="close"
-                    formAction="none"
-                    ariaLabel={i18nStrings?.dismissAriaLabel ?? i18nStrings?.dismissText}
-                    className={testUtilStyles['dismiss-button']}
-                    onClick={() => fireNonCancelableEvent(onDismiss)}
-                  >
-                    {i18nStrings?.dismissText}
-                  </InternalButton>
-                </ControlGroupContext.Provider>
-              </div>
-            )}
+            {renderControlSlots(stacked)}
           </FormFieldContext.Provider>
+        </div>
+
+        {/*
+          Hidden ghost row, used only to measure the width the controls need as a single
+          row. It is always a row, `aria-hidden`, and out of flow, so its width is
+          stable regardless of whether the visible group has stacked.
+        */}
+        <div ref={ghostWidthRef} className={styles.ghost} aria-hidden="true">
+          <div className={clsx(styles.group, invalid && styles.invalid, warning && styles.warning)}>
+            {renderControlSlots(false)}
+          </div>
         </div>
 
         {(errorText || showWarning || description) && (
