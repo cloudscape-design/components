@@ -129,6 +129,60 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
 }
 `;
 
+exports[`Style API docs definition for input matches the snapshot: input 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-block-width",
+        "border-inline-width",
+        "border-radius",
+        "box-shadow",
+      ],
+    },
+    {
+      "name": "input",
+      "tokens": [
+        "color",
+        "font-size",
+        "font-weight",
+        "padding-block",
+        "padding-inline-start",
+        "padding-inline-end",
+        "placeholder-color",
+        "placeholder-font-size",
+        "placeholder-font-style",
+        "placeholder-font-weight",
+      ],
+    },
+    {
+      "name": "inlineLabel",
+      "tokens": [
+        "color",
+        "background",
+      ],
+    },
+    {
+      "name": "searchIcon",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "clearButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 {
   "slots": [
@@ -205,6 +259,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "button",
   "checkbox",
   "dropdown",
+  "input",
   "link",
   "radio-button",
   "toggle",
