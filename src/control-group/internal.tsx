@@ -177,90 +177,120 @@ const InternalControlGroup = forwardRef(
     const stacked =
       availableWidth !== null && requiredRowWidth !== null ? availableWidth < requiredRowWidth - 1 : false;
 
-    // Renders the control slots (and the dismiss button) for both the visible group and
-    // the ghost. The ghost always renders as a row (`isStacked === false`) so its
-    // measured width doesn't depend on the current collapse state.
-    const renderControlSlots = (isStacked: boolean) => (
-      <>
-        {flattenedChildren.map((child, index) => {
-          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-          const position = getPosition(index);
-          // When the group wraps (stacks) the controls fuse vertically: the block-axis
-          // seam overlaps just like the inline seam does in a row. A control only
-          // detaches (keeps a gap and its own rounded corners) if it genuinely renders a
-          // visible inline label; the built-in dismiss button also stands alone. So a
-          // control is labeled when it has an inline label, and it precedes a detached
-          // control when the next control is labeled or it is the last real control
-          // before the dismiss button.
-          const hasInlineLabel = hasInlineLabelProp(child);
-          const isLastRealChild = index === flattenedChildren.length - 1;
-          const precedesDetached =
-            hasInlineLabelProp(flattenedChildren[index + 1]) || (isLastRealChild && !!dismissible);
-          return (
-            <div
-              key={key ? String(key) : undefined}
-              className={clsx(
-                styles.control,
-                styles[`control-${position}`],
-                hasInlineLabel && styles['control-labeled'],
-                testUtilStyles['control-group-item']
-              )}
-            >
-              <ControlGroupContext.Provider
-                value={{
-                  isInControlGroup: true,
-                  position,
-                  hasInlineLabel,
-                  precedesDetached,
-                  stacked: isStacked,
-                }}
-              >
-                {child}
-              </ControlGroupContext.Provider>
-            </div>
-          );
-        })}
-        {dismissible && (
+    // The group-level error / warning messages. When the group wraps (stacks), these are
+    // rendered inside the group between the controls and the dismiss button; otherwise
+    // they render in the hints block below the group (the description always stays
+    // below). Kept as a single element so it can be placed in either location.
+    const validationMessages =
+      errorText || showWarning ? (
+        <>
+          {errorText && (
+            <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              {errorText}
+            </FormFieldError>
+          )}
+          {showWarning && (
+            <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+              {warningText}
+            </FormFieldWarning>
+          )}
+        </>
+      ) : null;
+
+    // Renders the control slots for both the visible group and the ghost. The ghost
+    // always renders as a row (`isStacked === false`) so its measured width doesn't
+    // depend on the current collapse state.
+    const renderControlSlots = (isStacked: boolean) =>
+      flattenedChildren.map((child, index) => {
+        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+        const position = getPosition(index);
+        // When the group wraps (stacks) the controls fuse vertically: the block-axis
+        // seam overlaps just like the inline seam does in a row. A control only detaches
+        // (keeps a gap and its own rounded corners) if it genuinely renders a visible
+        // inline label; the built-in dismiss button also stands alone. So a control is
+        // labeled when it has an inline label, and it precedes a detached control when
+        // the next control is labeled or it is the last real control before the dismiss
+        // button.
+        const hasInlineLabel = hasInlineLabelProp(child);
+        const isLastRealChild = index === flattenedChildren.length - 1;
+        const precedesDetached = hasInlineLabelProp(flattenedChildren[index + 1]) || (isLastRealChild && !!dismissible);
+        return (
           <div
+            key={key ? String(key) : undefined}
             className={clsx(
               styles.control,
-              styles[`control-${getPosition(controlCount - 1)}`],
-              styles['control-standalone'],
+              styles[`control-${position}`],
+              hasInlineLabel && styles['control-labeled'],
               testUtilStyles['control-group-item']
             )}
           >
             <ControlGroupContext.Provider
               value={{
                 isInControlGroup: true,
-                position: getPosition(controlCount - 1),
-                standaloneWhenStacked: true,
+                position,
+                hasInlineLabel,
+                precedesDetached,
                 stacked: isStacked,
-                // The dismiss button has no validation state of its own; pass the
-                // group's state so it paints its border (incl. the seam with the last
-                // control) to continue the unit error/warning styling.
-                invalid,
-                warning,
               }}
             >
-              {/*
-                One button renders both the close icon and the "Remove" text.
-                CSS shows only the icon (square icon-button look) while the group
-                is laid out in a row, and swaps to the text (primary button) when
-                the group wraps. See `in-control-group-standalone` in button styles.
-              */}
-              <InternalButton
-                variant="primary"
-                iconName="close"
-                formAction="none"
-                ariaLabel={i18nStrings?.dismissAriaLabel ?? i18nStrings?.dismissText}
-                className={testUtilStyles['dismiss-button']}
-                onClick={() => fireNonCancelableEvent(onDismiss)}
-              >
-                {i18nStrings?.dismissText}
-              </InternalButton>
+              {child}
             </ControlGroupContext.Provider>
           </div>
-        )}
+        );
+      });
+
+    // The built-in dismiss button slot.
+    const renderDismissSlot = (isStacked: boolean) =>
+      dismissible ? (
+        <div
+          className={clsx(
+            styles.control,
+            styles[`control-${getPosition(controlCount - 1)}`],
+            styles['control-standalone'],
+            testUtilStyles['control-group-item']
+          )}
+        >
+          <ControlGroupContext.Provider
+            value={{
+              isInControlGroup: true,
+              position: getPosition(controlCount - 1),
+              standaloneWhenStacked: true,
+              stacked: isStacked,
+              // The dismiss button has no validation state of its own; pass the
+              // group's state so it paints its border (incl. the seam with the last
+              // control) to continue the unit error/warning styling.
+              invalid,
+              warning,
+            }}
+          >
+            {/*
+              One button renders both the close icon and the "Remove" text.
+              CSS shows only the icon (square icon-button look) while the group
+              is laid out in a row, and swaps to the text (primary button) when
+              the group wraps. See `in-control-group-standalone` in button styles.
+            */}
+            <InternalButton
+              variant="primary"
+              iconName="close"
+              formAction="none"
+              ariaLabel={i18nStrings?.dismissAriaLabel ?? i18nStrings?.dismissText}
+              className={testUtilStyles['dismiss-button']}
+              onClick={() => fireNonCancelableEvent(onDismiss)}
+            >
+              {i18nStrings?.dismissText}
+            </InternalButton>
+          </ControlGroupContext.Provider>
+        </div>
+      ) : null;
+
+    // Composes the controls, the (stacked-only) inline validation messages, and the
+    // dismiss button. When stacked, the error/warning text sits between the controls and
+    // the dismiss button; otherwise it renders below the group (see the hints block).
+    const renderGroupContent = (isStacked: boolean) => (
+      <>
+        {renderControlSlots(isStacked)}
+        {isStacked && validationMessages && <div className={styles['inline-hints']}>{validationMessages}</div>}
+        {renderDismissSlot(isStacked)}
       </>
     );
 
@@ -292,7 +322,7 @@ const InternalControlGroup = forwardRef(
               ariaDescribedby: childAriaDescribedby,
             }}
           >
-            {renderControlSlots(stacked)}
+            {renderGroupContent(stacked)}
           </FormFieldContext.Provider>
         </div>
 
@@ -303,22 +333,19 @@ const InternalControlGroup = forwardRef(
         */}
         <div ref={ghostWidthRef} className={styles.ghost} aria-hidden="true">
           <div className={clsx(styles.group, invalid && styles.invalid, warning && styles.warning)}>
-            {renderControlSlots(false)}
+            {renderGroupContent(false)}
           </div>
         </div>
 
-        {(errorText || showWarning || description) && (
+        {/*
+          Below-group hints. The error / warning text renders here only while the group is
+          a row; when it wraps (stacks) that text moves inside the group, between the
+          controls and the dismiss button (see renderGroupContent). The description always
+          stays below the group.
+        */}
+        {((!stacked && validationMessages) || description) && (
           <div className={styles.hints}>
-            {errorText && (
-              <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
-                {errorText}
-              </FormFieldError>
-            )}
-            {showWarning && (
-              <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
-                {warningText}
-              </FormFieldWarning>
-            )}
+            {!stacked && validationMessages}
             {description && (
               <div id={descriptionId} className={clsx(styles.description, testUtilStyles.description)}>
                 {description}

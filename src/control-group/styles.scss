@@ -136,6 +136,14 @@
   margin-block-start: awsui.$space-scaled-xxs;
 }
 
+// When the group wraps (stacks), the error / warning text is rendered inside the group,
+// between the stacked controls and the dismiss button. It is a full-width flex item in
+// the stacked column; the gap below it (before the dismiss button) is provided by the
+// dismiss slot's own top margin, so it only needs a small gap above.
+.inline-hints {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
 .description {
   @include styles.form-control-description;
 }
