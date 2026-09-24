@@ -3,7 +3,7 @@
 
 @use '../../internal/styles/tokens' as awsui;
 
-$cell-vertical-padding: awsui.$space-scaled-xs;
+$cell-vertical-padding: awsui.$space-table-cell-vertical;
 // Calculate padding to prevent a shift in content after selection due to the difference
 // between selected border widths and normal row divider widths (visual refresh).
 $cell-vertical-padding-w-border: calc(
