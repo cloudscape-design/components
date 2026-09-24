@@ -171,6 +171,24 @@
     }
   }
 
+  // In a ControlGroup row (not stacked) only the fused unit's EXTERIOR edges are painted
+  // with the status color; interior seams between controls stay neutral. A middle
+  // control resets both inline seams; a last control resets only its leading seam and
+  // keeps its trailing edge painted (it is the unit's exterior, or the seam touching the
+  // dismiss button). The first control keeps its full invalid border incl. the thick
+  // leading indicator. When the group stacks each control is standalone and keeps its
+  // own full invalid border, so this is scoped to the non-stacked case. Placed after the
+  // invalid/warning blocks so it overrides them.
+  &.input-invalid,
+  &.input-warning {
+    &.input-in-control-group-middle:not(.input-in-control-group-stacked) {
+      @include styles.control-group-invalid-reset-both-seams;
+    }
+    &.input-in-control-group-last:not(.input-in-control-group-stacked) {
+      @include styles.control-group-invalid-reset-leading-seam;
+    }
+  }
+
   &.input-type-search {
     box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
     -webkit-appearance: none;
@@ -451,6 +469,23 @@
 
     &:focus-within {
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  // Row (not stacked): only the fused unit's exterior edges are painted (see the input
+  // rule above). A middle control resets both inline seams; a last control resets only
+  // its leading seam. The prefix owns the padding here, so the reset covers border
+  // width + color only.
+  &.input-adorned-container-invalid,
+  &.input-adorned-container-warning {
+    &.input-adorned-container-in-control-group-middle:not(.input-adorned-container-in-control-group-stacked) {
+      border-inline-start-width: awsui.$border-width-field;
+      border-inline-start-color: awsui.$color-border-input-default;
+      border-inline-end-color: awsui.$color-border-input-default;
+    }
+    &.input-adorned-container-in-control-group-last:not(.input-adorned-container-in-control-group-stacked) {
+      border-inline-start-width: awsui.$border-width-field;
+      border-inline-start-color: awsui.$color-border-input-default;
     }
   }
 }

@@ -271,6 +271,11 @@ const InternalControlGroup = forwardRef(
                 position: getPosition(controlCount - 1),
                 standaloneWhenStacked: true,
                 stacked: isStacked,
+                // The dismiss button has no validation state of its own; pass the
+                // group's state so it paints its border (incl. the seam with the last
+                // control) to continue the unit error/warning styling.
+                invalid,
+                warning,
               }}
             >
               {/*

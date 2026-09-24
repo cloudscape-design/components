@@ -44,6 +44,17 @@ export interface ControlGroupContextProps {
    * instead of fusing to the control above it.
    */
   standaloneWhenStacked?: boolean;
+  /**
+   * True when the group is in an error state. Consumed by the built-in dismiss button
+   * (which has no validation state of its own) so it paints its border — including the
+   * seam it shares with the last control — in the error color, continuing the group's
+   * unit error styling onto the button.
+   */
+  invalid?: boolean;
+  /**
+   * True when the group is in a warning state. See `invalid`.
+   */
+  warning?: boolean;
 }
 
 export const ControlGroupContext = createContext<ControlGroupContextProps>({
