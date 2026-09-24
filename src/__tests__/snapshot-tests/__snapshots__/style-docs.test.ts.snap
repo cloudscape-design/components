@@ -147,6 +147,37 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "tokens": [
+        "color",
+        "background-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "label",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "name": "description",
+      "tokens": [
+        "color",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -155,5 +186,6 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "toggle",
 ]
 `;

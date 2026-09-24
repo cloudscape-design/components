@@ -22,7 +22,15 @@ import { getAbstractSwitchStyles, getStyledControlStyle } from './style';
 import styles from './styles.css.js';
 
 interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
+}
+
+// Style API v2
+interface StyleClassNames {
+  control?: string;
+  label?: string;
+  description?: string;
 }
 
 const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
@@ -43,6 +51,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       nativeInputAttributes,
       __internalRootRef,
       style,
+      styleClassNames,
       __injectAnalyticsComponentMetadata,
       ...rest
     },
@@ -74,7 +83,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       <AbstractSwitch
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
-        controlClassName={clsx(styles['toggle-control'], {
+        controlClassName={clsx(styleClassNames?.control, styles['toggle-control'], {
           [styles['toggle-control-checked']]: checked,
           [styles['toggle-control-disabled']]: disabled,
           [styles['toggle-control-readonly']]: readOnly,
@@ -84,7 +93,13 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         disabled={disabled}
         readOnly={readOnly}
         label={children}
+        labelClassName={clsx(styleClassNames?.label, styles.label, disabled && styles['label-disabled'])}
         description={description}
+        descriptionClassName={clsx(
+          styleClassNames?.description,
+          styles.description,
+          disabled && styles['description-disabled']
+        )}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}

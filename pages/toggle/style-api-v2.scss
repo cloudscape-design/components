@@ -1,0 +1,55 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.toggle-control {
+  --awsui-style-background-color: #{palette.$control-border};
+  --awsui-style-color: #{palette.$control-fg};
+  --awsui-style-focus-ring-color: #{palette.$accent};
+  --awsui-style-focus-ring-width: 3px;
+  --awsui-style-focus-ring-radius: 12px;
+  --awsui-style-focus-ring-gutter-block: 4px;
+  --awsui-style-focus-ring-gutter-inline: 4px;
+
+  &:has(:checked) {
+    --awsui-style-background-color: #{palette.$control-bg-checked};
+  }
+}
+
+// double selectors bump specificity above the `:has()` rule above
+.toggle-control.toggle-control-disabled {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+  --awsui-style-color: #{palette.$control-fg-disabled};
+}
+
+.toggle-control.toggle-control-readonly {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-color: #{palette.$text-muted};
+}
+
+.toggle-label {
+  --awsui-style-color: #{palette.$text};
+}
+
+.toggle-label-disabled {
+  --awsui-style-color: #{palette.$text-disabled};
+}
+
+.toggle-label-checked {
+  --awsui-style-color: #{palette.$accent};
+}
+
+.toggle-description {
+  --awsui-style-color: #{palette.$text-muted};
+}
+
+.toggle-description-disabled {
+  --awsui-style-color: #{palette.$text-disabled};
+}
+
+.toggle-description-checked {
+  --awsui-style-color: #{palette.$accent-hover};
+}
