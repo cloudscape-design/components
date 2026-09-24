@@ -51,8 +51,10 @@ export default function InternalTableRoot({
   // Grid column templates change the tracks' overflow without resizing either observed box, so no observer
   // fires — re-measure when the template changes.
   useEffect(() => {
-    measureScrollable();
-  }, [gridTemplateColumns, measureScrollable]);
+    if (isGrid) {
+      measureScrollable();
+    }
+  }, [isGrid, gridTemplateColumns, measureScrollable]);
 
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
@@ -70,21 +72,19 @@ export default function InternalTableRoot({
       {/* TableContext supplies this table's column layout to every part. */}
       <TableContextProvider value={tableContext}>
         {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
-        <div className={styles['scroll-container']} style={{ overflow: 'visible' }}>
-          <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
-            <table
-              // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
-              // native role (an explicit role="table" there is redundant and flagged by a11y validators).
-              role={isGrid ? 'table' : undefined}
-              aria-label={ariaLabel}
-              aria-labelledby={ariaLabelledby}
-              aria-describedby={ariaDescribedby}
-              aria-rowcount={ariaRowcount}
-              className={clsx(styles.table, isGrid ? styles['table-grid'] : styles['table-auto'])}
-            >
-              {children}
-            </table>
-          </div>
+        <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
+          <table
+            // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
+            // native role (an explicit role="table" there is redundant and flagged by a11y validators).
+            role={isGrid ? 'table' : undefined}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            aria-rowcount={ariaRowcount}
+            className={clsx(styles.table, isGrid ? styles['table-grid'] : styles['table-auto'])}
+          >
+            {children}
+          </table>
         </div>
       </TableContextProvider>
     </div>

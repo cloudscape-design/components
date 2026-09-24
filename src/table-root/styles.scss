@@ -16,14 +16,6 @@
   background: awsui.$color-background-container-content;
 }
 
-.scroll-container {
-  position: relative;
-  flex: 1 1 auto;
-  min-block-size: 0;
-  overflow: auto;
-  inline-size: 100%;
-}
-
 .body-scroller {
   overflow-x: auto;
   @include focus-visible.when-visible {
