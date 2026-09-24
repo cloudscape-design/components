@@ -53,8 +53,8 @@ export default function InternalItemCard({
       onClick,
       style: getRootStyles(style),
     },
-    nativeAttributes,
-    'Card'
+    'Card',
+    nativeAttributes
   );
 
   return (

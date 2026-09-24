@@ -39,7 +39,7 @@ export interface ToggleProps extends BaseCheckboxProps {
    *
    * @awsuiSystem core
    */
-  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+  nativeInputAttributes?: NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export namespace ToggleProps {

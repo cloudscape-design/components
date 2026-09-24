@@ -326,7 +326,7 @@ const AutosuggestInput = React.forwardRef(
               clearAriaLabel={clearAriaLabel}
               ref={inputRef}
               autoComplete={false}
-              nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
+              nativeInputAttributes={processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes)}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
               style={style}
               {...formFieldContext}

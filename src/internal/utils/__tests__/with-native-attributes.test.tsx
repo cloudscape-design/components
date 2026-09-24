@@ -8,6 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import WithNativeAttributes from '../with-native-attributes';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -182,5 +183,52 @@ describe('WithNativeAttributes', () => {
     );
 
     expect(container).toHaveTextContent('Test content');
+  });
+
+  test('forwards ref from nativeAttributes to the rendered element', () => {
+    const ref = React.createRef<HTMLDivElement>();
+
+    const { container } = render(
+      <WithNativeAttributes tag="div" componentName="" nativeAttributes={{ ref }}>
+        Test content
+      </WithNativeAttributes>
+    );
+
+    expect(ref.current).toBe(container.firstChild);
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  test('forwards callback ref from nativeAttributes', () => {
+    let element: HTMLElement | null = null;
+
+    const { container } = render(
+      <WithNativeAttributes
+        tag="button"
+        componentName=""
+        nativeAttributes={{
+          ref: (el: HTMLElement | null) => {
+            element = el;
+          },
+        }}
+      >
+        Test content
+      </WithNativeAttributes>
+    );
+
+    expect(element).toBe(container.firstChild);
+    expect(element).toBeInstanceOf(HTMLButtonElement);
+  });
+
+  test('merges internal ref with nativeAttributes ref', () => {
+    const internalRef = React.createRef<HTMLDivElement>();
+    const nativeRef = React.createRef<HTMLDivElement>();
+    const { container } = render(
+      <WithNativeAttributes tag="div" componentName="" nativeAttributes={{ ref: nativeRef }} ref={internalRef}>
+        Test content
+      </WithNativeAttributes>
+    );
+
+    expect(internalRef.current).toBe(container.firstChild);
+    expect(nativeRef.current).toBe(container.firstChild);
   });
 });

@@ -39,7 +39,7 @@ export interface StatusIndicatorProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+  nativeAttributes?: NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace StatusIndicatorProps {

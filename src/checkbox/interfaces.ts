@@ -50,7 +50,7 @@ export interface CheckboxProps extends BaseCheckboxProps {
    *
    * @awsuiSystem core
    */
-  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+  nativeInputAttributes?: NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export namespace CheckboxProps {

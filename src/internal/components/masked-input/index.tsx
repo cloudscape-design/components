@@ -71,8 +71,8 @@ const MaskedInput = React.forwardRef(
           {
             onPaste,
           },
-          nativeInputAttributes,
-          'MaskedInput'
+          'MaskedInput',
+          nativeInputAttributes
         )}
       />
     );

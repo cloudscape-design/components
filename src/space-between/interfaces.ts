@@ -37,7 +37,7 @@ export interface SpaceBetweenProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
+  nativeAttributes?: NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
 }
 
 export namespace SpaceBetweenProps {

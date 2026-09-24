@@ -61,7 +61,7 @@ export interface TextareaProps
    *
    * @awsuiSystem core
    */
-  nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
+  nativeTextareaAttributes?: NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
    * An object containing CSS properties to customize the textarea's visual appearance.
