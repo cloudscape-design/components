@@ -7,21 +7,27 @@
 
 .link-brand {
   --awsui-style-color: #{palette.$accent};
+  --awsui-style-text-decoration-line: underline;
+  --awsui-style-text-decoration-color: #{palette.$genai};
   --awsui-style-focus-ring-color: #{palette.$accent};
   --awsui-style-focus-ring-width: 3px;
   --awsui-style-focus-ring-radius: 4px;
 
   &:hover {
     --awsui-style-color: #{palette.$accent-hover};
+    --awsui-style-text-decoration-color: #{palette.$genai-hover};
   }
 
   &:active {
     --awsui-style-color: #{palette.$accent-active};
+    --awsui-style-text-decoration-color: #{palette.$genai-active};
   }
 }
 
 .link-inverted {
   --awsui-style-color: hsl(330, 75%, 78%);
+  --awsui-style-text-decoration-line: underline;
+  --awsui-style-text-decoration-color: hsl(265, 85%, 76%);
   --awsui-style-focus-ring-color: hsl(330, 75%, 78%);
   --awsui-style-focus-ring-width: 3px;
   --awsui-style-focus-ring-radius: 4px;
@@ -29,6 +35,7 @@
   &:hover,
   &:active {
     --awsui-style-color: hsl(330, 75%, 90%);
+    --awsui-style-text-decoration-color: hsl(265, 85%, 84%);
   }
 }
 
