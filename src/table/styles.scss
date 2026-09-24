@@ -62,6 +62,8 @@
   border-spacing: 0;
   position: relative;
   box-sizing: border-box;
+  // Needed to apply compact table context font-size
+  font-size: awsui.$font-size-body-m;
   &-layout-fixed {
     table-layout: fixed;
   }
