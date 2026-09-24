@@ -3373,6 +3373,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "forward-10-seconds",
                       "full-screen",
                       "gen-ai",
+                      "gen-ai-token",
                       "globe",
                       "grid-view",
                       "group-active",
@@ -5773,6 +5774,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -6529,6 +6531,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -6825,6 +6828,7 @@ The main action also supports the following properties of the [button](/componen
                 "forward-10-seconds",
                 "full-screen",
                 "gen-ai",
+                "gen-ai-token",
                 "globe",
                 "grid-view",
                 "group-active",
@@ -10221,7 +10225,15 @@ exports[`Components definition for container matches the snapshot: container 1`]
 {
   "dashCaseName": "container",
   "events": [],
-  "functions": [],
+  "functions": [
+    {
+      "description": "Sets focus on the container and scrolls it into view. Use this to move the user's focus to a
+container programmatically, for example in "jump to item" or deep-linking patterns.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
   "name": "Container",
   "properties": [
     {
@@ -12323,6 +12335,85 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for dialog matches the snapshot: dialog 1`] = `
+{
+  "dashCaseName": "dialog",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user dismisses the dialog using the close button or the Escape key.
+Use the event handler to remove the dialog from the page.
+When the dialog unmounts, it returns focus to the element that was focused before it mounted, as long as that element still exists.",
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [],
+  "name": "Dialog",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.
+
+- \`dismissAriaLabel\` (string) - Adds an \`aria-label\` to the close button.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "DialogProps.I18nStrings",
+        "properties": [
+          {
+            "name": "dismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "DialogProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content of the dialog.",
+      "displayName": "content",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Specifies a footer for the dialog, typically action buttons. If empty, the footer isn't displayed.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Specifies the heading of the dialog.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Actions displayed in the header row, before the close button.",
+      "isDefault": false,
+      "name": "headerActions",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for divider matches the snapshot: divider 1`] = `
 {
   "dashCaseName": "divider",
@@ -12602,6 +12693,7 @@ Do not use this property when using drawers inside app layout.",
                 "forward-10-seconds",
                 "full-screen",
                 "gen-ai",
+                "gen-ai-token",
                 "globe",
                 "grid-view",
                 "group-active",
@@ -15815,6 +15907,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -16446,6 +16539,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "gen-ai",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "gen-ai-token",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -22132,6 +22230,7 @@ Requires React 18.",
                       "forward-10-seconds",
                       "full-screen",
                       "gen-ai",
+                      "gen-ai-token",
                       "globe",
                       "grid-view",
                       "group-active",
@@ -22502,6 +22601,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -26088,6 +26188,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "forward-10-seconds",
                       "full-screen",
                       "gen-ai",
+                      "gen-ai-token",
                       "globe",
                       "grid-view",
                       "group-active",
@@ -26771,6 +26872,7 @@ If you want to clear the selection, use \`null\`.",
                 "forward-10-seconds",
                 "full-screen",
                 "gen-ai",
+                "gen-ai-token",
                 "globe",
                 "grid-view",
                 "group-active",
@@ -32661,6 +32763,7 @@ If an href is provided, it opens the link in a new tab.",
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -32876,6 +32979,7 @@ We do not support using this attribute to apply custom styling.",
           "forward-10-seconds",
           "full-screen",
           "gen-ai",
+          "gen-ai-token",
           "globe",
           "grid-view",
           "group-active",
@@ -40932,6 +41036,76 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the content slot of the dialog.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the dismiss button of the dialog.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the dialog.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the header slot of the dialog.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the header actions slot of the dialog.",
+          "name": "findHeaderActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DialogWrapper",
     },
     {
       "methods": [
@@ -52189,6 +52363,56 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the content slot of the dialog.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the dismiss button of the dialog.",
+          "name": "findDismissButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the dialog.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header slot of the dialog.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header actions slot of the dialog.",
+          "name": "findHeaderActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DialogWrapper",
     },
     {
       "methods": [

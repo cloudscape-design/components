@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Dernières {amount} secondes} one {Dernière {amount} seconde} other {Dernières {amount} secondes}}} minute {{amount, plural, zero {Dernières {amount} minutes} one {Dernière {amount} minute} other {Dernières {amount} minutes}}} hour {{amount, plural, zero {Dernières {amount} heures} one {Dernière {amount} heure} other {Dernières {amount} heures}}} day {{amount, plural, zero {Derniers {amount} jours} one {Dernier {amount} jour} other {Derniers {amount} jours}}} week {{amount, plural, zero {Dernières {amount} semaines} one {Dernière {amount} semaine} other {Dernières {amount} semaines}}} month {{amount, plural, zero {Derniers {amount} mois} one {Dernier {amount} mois} other {Derniers {amount} mois}}} year {{amount, plural, zero {Dernières {amount} années} one {Dernière {amount} année} other {Dernières {amount} années}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {secondes} one {seconde} other {secondes}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {heures} one {heure} other {heures}}} day {{amount, plural, zero {jours} one {jour} other {jours}}} week {{amount, plural, zero {semaines} one {semaine} other {semaines}}} month {{amount, plural, zero {mois} one {mois} other {mois}}} year {{amount, plural, zero {années} one {année} other {années}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "Fermer le dialogue"
+  },
   "drawer": {
     "i18nStrings.loadingText": "Chargement du contenu en cours"
   },

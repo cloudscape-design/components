@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {最後{amount}秒} one {最後{amount}秒} other {最後{amount}秒}}} minute {{amount, plural, zero {最後{amount}分鐘} one {最後{amount}分鐘} other {最後{amount}分鐘}}} hour {{amount, plural, zero {最後{amount}小時} one {最後{amount}小時} other {最後{amount}小時}}} day {{amount, plural, zero {最後{amount}天} one {最後{amount}天} other {最後{amount}天}}} week {{amount, plural, zero {最後{amount}週} one {最後{amount}週} other {最後{amount}週}}} month {{amount, plural, zero {最後{amount}個月} one {最後{amount}個月} other {最後{amount}個月}}} year {{amount, plural, zero {最後{amount}年} one {最後{amount}年} other {最後{amount}年}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒} one {秒} other {秒}}} minute {{amount, plural, zero {分鐘} one {分鐘} other {分鐘}}} hour {{amount, plural, zero {小時} one {小時} other {小時}}} day {{amount, plural, zero {天} one {天} other {天}}} week {{amount, plural, zero {週} one {週} other {週}}} month {{amount, plural, zero {個月} one {個月} other {個月}}} year {{amount, plural, zero {年} one {年} other {年}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "關閉對話方塊"
+  },
   "drawer": {
     "i18nStrings.loadingText": "載入內容"
   },
