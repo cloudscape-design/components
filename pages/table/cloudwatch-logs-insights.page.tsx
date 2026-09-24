@@ -329,7 +329,7 @@ interface HistoryItem {
 }
 
 const QUERY_PREVIEW = (
-  <div style={{ fontFamily: 'monospace', fontSize: 12, lineHeight: '18px', whiteSpace: 'pre-wrap' }}>
+  <div style={{ fontFamily: 'monospace', fontSize: 13, lineHeight: '18px', whiteSpace: 'pre-wrap' }}>
     <span style={{ color: '#0972d3' }}>SOURCE </span>
     <span>logGroups(namePrefix: [], class: </span>
     <span style={{ color: '#037f0c' }}>&quot;STANDARD&quot;</span>
@@ -744,7 +744,7 @@ export default function App() {
                                 <div
                                   style={{
                                     fontFamily: 'monospace',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     lineHeight: '22px',
                                     padding: '8px 12px',
                                     background: 'var(--color-background-layout-main)',
@@ -850,7 +850,7 @@ export default function App() {
                                                 padding: '2px 8px',
                                                 border: '1px solid var(--color-border-divider-default)',
                                                 borderRadius: 12,
-                                                fontSize: 12,
+                                                fontSize: 13,
                                               }}
                                             >
                                               <span
@@ -951,7 +951,7 @@ export default function App() {
                                                           padding: '2px 8px',
                                                           border: '1px solid #0972d3',
                                                           borderRadius: 12,
-                                                          fontSize: 12,
+                                                          fontSize: 13,
                                                           color: '#0972d3',
                                                         }}
                                                       >
@@ -1090,7 +1090,6 @@ export default function App() {
                                           ]}
                                           items={[]}
                                           variant="embedded"
-                                          // contentDensity="compact"
                                           ariaLabels={{ tableLabel: 'Lookup tables' }}
                                           empty={null}
                                         />
@@ -1148,7 +1147,6 @@ export default function App() {
                               }
                             >
                               <Table<LogEntry>
-                                // contentDensity="compact"
                                 items={filteredItems}
                                 variant="embedded"
                                 wrapLines={false}
@@ -1267,7 +1265,7 @@ export default function App() {
                   <div
                     style={{
                       fontFamily: 'monospace',
-                      fontSize: 12,
+                      fontSize: 13,
                       lineHeight: '18px',
                       padding: '8px',
                       background: 'var(--color-background-layout-main)',
@@ -1444,7 +1442,6 @@ export default function App() {
                       onSelectionChange={({ detail }) => setSelectedHistoryItem(detail.selectedItems.map(i => i.id))}
                       columnDefinitions={HISTORY_COLUMNS}
                       items={HISTORY_ITEMS}
-                      // contentDensity="compact"
                       variant="embedded"
                       wrapLines={true}
                       ariaLabels={{
@@ -1479,7 +1476,6 @@ export default function App() {
                       { id: 'enabled', header: 'Enabled', cell: () => '' },
                     ]}
                     items={[]}
-                    // contentDensity="compact"
                     variant="embedded"
                     ariaLabels={{ tableLabel: 'Scheduled queries' }}
                     empty={
