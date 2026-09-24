@@ -183,6 +183,29 @@ $icon-offset: awsui.$space-xxxs;
         border-inline-start: styles.$invalid-control-left-border solid awsui.$color-text-status-warning;
       }
     }
+
+    // Row (not stacked): only the fused unit's exterior edges are painted; interior
+    // seams between controls stay neutral. A middle control resets both inline seams; a
+    // last control resets only its leading seam (its trailing edge is the exterior / the
+    // seam touching the dismiss button). The first control keeps its full invalid border
+    // incl. the thick leading indicator. When stacked each control is standalone and
+    // keeps its own full border. Reset applies at rest AND on focus (the focus rules
+    // above would otherwise re-add the painted/thick leading border).
+    &.invalid,
+    &.warning {
+      &.in-control-group-middle:not(.in-control-group-stacked) {
+        @include styles.control-group-invalid-reset-both-seams;
+        @include focus-visible.when-visible {
+          @include styles.control-group-invalid-reset-both-seams;
+        }
+      }
+      &.in-control-group-last:not(.in-control-group-stacked) {
+        @include styles.control-group-invalid-reset-leading-seam;
+        @include focus-visible.when-visible {
+          @include styles.control-group-invalid-reset-leading-seam;
+        }
+      }
+    }
   }
   // Re-apply the fused corners at rest AND when the focus ring is shown, since
   // the trigger's own focus styles otherwise restore all four corners.

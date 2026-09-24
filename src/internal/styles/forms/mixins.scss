@@ -487,3 +487,27 @@ $inline-label-border-radius: 2px;
   border-end-start-radius: $radius;
   border-end-end-radius: $radius;
 }
+
+// In an invalid/warning ControlGroup row (not stacked) only the EXTERIOR edges of the
+// fused unit are painted with the status color; interior seams between controls keep
+// the neutral field border. `form-invalid-control` / `form-warning-control` paint all
+// four sides, so these mixins reset the interior side(s) back to the default border
+// color and normal width (also dropping the thick leading indicator), while the block
+// (top/bottom) borders stay status-colored as part of the exterior. When the group
+// stacks, each control is standalone and keeps its own full invalid border, so these
+// are NOT applied there.
+
+// Interior LEADING seam only (a `last` control before the dismiss button, or before an
+// exterior trailing edge): reset the inline-start side; keep the inline-end painted.
+@mixin control-group-invalid-reset-leading-seam {
+  border-inline-start-width: awsui.$border-width-field;
+  border-inline-start-color: awsui.$color-border-input-default;
+  padding-inline-start: constants.$control-padding-horizontal;
+}
+
+// Interior control (`middle`): both inline seams are interior — reset the inline-start
+// (leading) and the inline-end (trailing) sides.
+@mixin control-group-invalid-reset-both-seams {
+  @include control-group-invalid-reset-leading-seam;
+  border-inline-end-color: awsui.$color-border-input-default;
+}

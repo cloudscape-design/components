@@ -205,6 +205,27 @@ $tokens: style-api.resolve($props, carrier);
       border-color: awsui.$color-border-input-default;
     }
 
+    // When the group is in an error / warning state AND laid out as a row, paint ONLY the
+    // dismiss button's inline-start border — the seam it shares with the last control —
+    // in the status color, so the group's unit border continues up to and stops at the
+    // button edge. The button's other borders stay neutral. Overrides the neutral border
+    // above (incl. hover/active). Not applied when stacked, where the button is a
+    // separate standalone primary button.
+    &.in-control-group-invalid:not(.in-control-group-stacked) {
+      &,
+      &:hover,
+      &:active {
+        border-inline-start-color: awsui.$color-text-status-error;
+      }
+    }
+    &.in-control-group-warning:not(.in-control-group-stacked) {
+      &,
+      &:hover,
+      &:active {
+        border-inline-start-color: awsui.$color-text-status-warning;
+      }
+    }
+
     // The focus ring hugs the square edges (no gutter). Its corner radius matches
     // the button's own grouped corners, set per position below.
     @include focus-visible.when-visible {
