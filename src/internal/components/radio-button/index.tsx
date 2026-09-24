@@ -19,7 +19,15 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalRadioButtonProps extends RadioButtonProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   __skipNativeAttributesWarnings?: SkipWarnings;
+}
+
+// Style API v2
+interface StyleClassNames {
+  control?: string;
+  label?: string;
+  description?: string;
 }
 
 export default React.forwardRef(function RadioButton(
@@ -34,6 +42,7 @@ export default React.forwardRef(function RadioButton(
     readOnly,
     className,
     style,
+    styleClassNames,
     nativeInputAttributes,
     onSelect,
     __skipNativeAttributesWarnings,
@@ -51,10 +60,16 @@ export default React.forwardRef(function RadioButton(
     <AbstractSwitch
       {...baseProps}
       className={clsx(testUtilStyles.root, className)}
-      controlClassName={styles['radio-control']}
+      controlClassName={clsx(styleClassNames?.control, styles['radio-control'])}
       outlineClassName={styles.outline}
       label={children}
+      labelClassName={clsx(styleClassNames?.label, styles.label, disabled && styles['label-disabled'])}
       description={description}
+      descriptionClassName={clsx(
+        styleClassNames?.description,
+        styles.description,
+        disabled && styles['description-disabled']
+      )}
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}

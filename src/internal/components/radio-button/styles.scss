@@ -7,38 +7,43 @@
 @use '../../styles/tokens' as awsui;
 @use '../../styles/foundation' as foundation;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
+@use '../../styles/style-api' as style-api;
 
 $radio-size: awsui.$size-control;
 
+$_control-props: style-api.combine((color, background-color, border-color), style-api.$focus-ring);
+$_control-tokens: style-api.resolve($_control-props, carrier);
+$_label-tokens: style-api.resolve((color), public);
+$_description-tokens: style-api.resolve((color), public);
+
 .radio-control {
+  @include style-api.carriers($_control-tokens);
   @include styles.make-control-size($radio-size);
 }
 
 .outline {
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-
-  @include styles.focus-highlight(
-    $gutter: 2px,
-    $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring),
-    $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+  @include style-api.focus-highlight(
+    $gutter-block: 2px,
+    $gutter-inline: 2px,
+    $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring),
+    $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
   );
 }
 
 .styled-circle-border {
-  stroke: awsui.$color-border-control-default;
-  fill: awsui.$color-background-control-default;
+  stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-default);
+  fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-default);
   &.styled-circle-disabled,
   &.styled-circle-readonly {
-    fill: awsui.$color-background-control-disabled;
-    stroke: awsui.$color-background-control-disabled;
+    fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+    stroke: style-api.value($_control-tokens, border-color, awsui.$color-background-control-disabled);
   }
 }
 
 .styled-circle-fill {
-  stroke: awsui.$color-background-control-checked;
-  fill: awsui.$color-foreground-control-default;
+  stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-checked);
+  fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-default);
   opacity: 0;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
@@ -47,11 +52,28 @@ $radio-size: awsui.$size-control;
     opacity: 1;
   }
   &.styled-circle-disabled {
-    fill: awsui.$color-foreground-control-disabled;
-    stroke: awsui.$color-background-control-disabled;
+    fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-disabled);
+    stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
   }
   &.styled-circle-readonly {
-    fill: awsui.$color-foreground-control-read-only;
-    stroke: awsui.$color-background-control-disabled;
+    fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-read-only);
+    stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+  }
+}
+
+// double selectors bump specificity above the abstract switch rules applied to the same elements
+@if style-api.enabled() {
+  .label.label {
+    color: style-api.value($_label-tokens, color, awsui.$color-text-form-default);
+    &.label-disabled {
+      color: style-api.value($_label-tokens, color, awsui.$color-text-control-disabled);
+    }
+  }
+
+  .description.description {
+    color: style-api.value($_description-tokens, color, awsui.$color-text-form-secondary);
+    &.description-disabled {
+      color: style-api.value($_description-tokens, color, awsui.$color-text-control-disabled);
+    }
   }
 }

@@ -1,0 +1,58 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.radio-control {
+  --awsui-style-background-color: #{palette.$control-bg};
+  --awsui-style-border-color: #{palette.$border-accent};
+  --awsui-style-focus-ring-color: #{palette.$accent};
+  --awsui-style-focus-ring-width: 3px;
+  --awsui-style-focus-ring-radius: 50%;
+  --awsui-style-focus-ring-gutter-block: 4px;
+  --awsui-style-focus-ring-gutter-inline: 4px;
+
+  &:has(:checked) {
+    --awsui-style-background-color: #{palette.$control-bg-checked};
+    --awsui-style-color: #{palette.$control-fg};
+  }
+}
+
+// double selectors bump specificity above the `:has()` rule above
+.radio-control.radio-control-disabled {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+  --awsui-style-border-color: #{palette.$border-disabled};
+  --awsui-style-color: #{palette.$control-fg-disabled};
+}
+
+.radio-control.radio-control-readonly {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-border-color: #{palette.$border};
+  --awsui-style-color: #{palette.$text-muted};
+}
+
+.radio-label {
+  --awsui-style-color: #{palette.$text};
+}
+
+.radio-label-disabled {
+  --awsui-style-color: #{palette.$text-disabled};
+}
+
+.radio-label-checked {
+  --awsui-style-color: #{palette.$accent};
+}
+
+.radio-description {
+  --awsui-style-color: #{palette.$text-muted};
+}
+
+.radio-description-disabled {
+  --awsui-style-color: #{palette.$text-disabled};
+}
+
+.radio-description-checked {
+  --awsui-style-color: #{palette.$accent-hover};
+}

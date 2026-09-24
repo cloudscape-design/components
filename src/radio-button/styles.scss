@@ -4,6 +4,17 @@
 */
 
 @use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
+
+// The slots are painted by the shared internal radio button, which reads the same token maps.
+$control-props: style-api.combine((color, background-color, border-color), style-api.$focus-ring);
+$control-tokens: style-api.resolve($control-props, carrier);
+$label-tokens: style-api.resolve((color), public);
+$description-tokens: style-api.resolve((color), public);
+@include style-api.register($control-tokens, $label-tokens, $description-tokens);
+@include style-api.docs('control', $control-tokens);
+@include style-api.docs('label', $label-tokens);
+@include style-api.docs('description', $description-tokens);
 
 .radio-button {
   @include styles.styles-reset;
