@@ -9,18 +9,14 @@
 .root {
   @include styles.styles-reset;
   display: block;
-  // The group decides whether it fits in a row in JS (see internal.tsx) rather than
-  // at a fixed CSS breakpoint, and toggles the `.stacked` class.
+  // The group decides in JS whether it fits in a row (see internal.tsx) and toggles the
+  // `.stacked` class, rather than using a fixed CSS breakpoint.
   //
-  // When the group is a flex item (for example several groups in a `SpaceBetween`),
-  // the default `flex-shrink: 1` lets the parent squeeze it narrower than its
-  // controls; the measured available width then drops below the required width and it
-  // stacks even though the row has room. `flex-shrink: 0` keeps the group at its
-  // natural width, so a flex parent wraps whole groups to the next line instead — and
-  // each group, at its full width, measures as fitting and does not stack. This is
-  // inert when the group is a normal block child, so genuine narrow-container stacking
-  // still works there.
+  // `flex-shrink: 0` keeps the group at its natural width in a flex parent (for example
+  // a `SpaceBetween`), so the parent wraps whole groups to the next line instead of
+  // squeezing one narrower than its controls. It is inert for a normal block child.
   flex-shrink: 0;
+  position: relative;
 }
 
 .group {
@@ -46,6 +42,28 @@
     // Stacked controls fill the width; bottom-alignment no longer applies.
     align-items: stretch;
     inline-size: 100%;
+  }
+}
+
+// Hidden ghost row, used only to measure the width the controls need as a single row
+// (see internal.tsx). It is out of flow so it never affects the root's width, and sized
+// to its content (`max-content`) so it reports the true natural row width rather than
+// being capped by the available space. It must not be `display: none` (that reports
+// zero width) and must not be focusable or announced.
+.ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: max-content;
+  visibility: hidden;
+  pointer-events: none;
+  block-size: 0;
+  overflow: hidden;
+
+  // Let the row take its full natural width so the measurement isn't capped.
+  > .group {
+    max-inline-size: none;
+    inline-size: max-content;
   }
 }
 
