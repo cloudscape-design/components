@@ -202,5 +202,8 @@ const customCssPropertiesList = [
   'styleItemCardBoxShadowDefault',
   // Inline label
   'inlineLabelBackgroundColor',
+  // Input Style API v2: the sides of the padding-inline token
+  'inputPaddingInlineStart',
+  'inputPaddingInlineEnd',
 ];
 module.exports = customCssPropertiesList;

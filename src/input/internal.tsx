@@ -57,6 +57,16 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  input?: string;
+  label?: string;
+  searchIcon?: string;
+  clearButton?: string;
 }
 
 function InternalInput(
@@ -103,6 +113,7 @@ function InternalInput(
     prefix,
     suffix,
     inlineLabelText,
+    styleClassNames,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -173,6 +184,7 @@ function InternalInput(
     autoFocus,
     id: controlId,
     className: clsx(
+      styleClassNames?.input,
       styles.input,
       type && styles[`input-type-${type}`],
       __endIcon && styles['input-has-icon-end'],
@@ -272,6 +284,7 @@ function InternalInput(
         onClick={__onEndIconClick}
         ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
         disabled={disabled}
+        styleClassNames={{ root: styleClassNames?.clearButton }}
       />
     </span>
   ) : null;
@@ -281,7 +294,7 @@ function InternalInput(
   // contains the whole component, including the inline label when present.
   const rootProps = {
     ...baseProps,
-    className: baseProps.className,
+    className: clsx(styleClassNames?.root, styles['input-root'], baseProps.className),
     ref: __internalRootRef,
     ...(__injectAnalyticsComponentMetadata
       ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
@@ -297,8 +310,12 @@ function InternalInput(
       dir={type === 'email' ? 'ltr' : undefined}
     >
       {__startIcon && (
-        <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
-          <InternalIcon name={__startIcon} variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant} />
+        <span onClick={__onStartIconClick} className={clsx(styleClassNames?.searchIcon, styles['input-icon-start'])}>
+          <InternalIcon
+            name={__startIcon}
+            variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant}
+            className={clsx(styles['search-icon'], disabled && styles['search-icon-disabled'])}
+          />
         </span>
       )}
       {hasPrefixOrSuffix ? (
@@ -349,7 +366,10 @@ function InternalInput(
         __fullWidth && styles['inline-label-wrapper-full-width']
       )}
     >
-      <label htmlFor={renderedId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
+      <label
+        htmlFor={renderedId}
+        className={clsx(styleClassNames?.label, styles['inline-label'], disabled && styles['inline-label-disabled'])}
+      >
         {inlineLabelText}
       </label>
       <div

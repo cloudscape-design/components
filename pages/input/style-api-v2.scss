@@ -1,0 +1,87 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.field {
+  --awsui-style-background-color: #{palette.$surface};
+  --awsui-style-border-color: #{palette.$border-accent};
+  --awsui-style-border-width: 2px;
+  --awsui-style-border-radius: 8px;
+  --awsui-style-color: #{palette.$genai-text};
+
+  &:hover,
+  &:focus-within {
+    --awsui-style-border-color: #{palette.$accent-hover};
+    --awsui-style-box-shadow: 0 0 0 3px #{palette.$subtle};
+  }
+}
+
+// double selectors bump specificity above the :hover / :focus-within rules above
+.field.field-invalid {
+  --awsui-style-border-color: #{palette.$error};
+  // four values keep the thick start edge of the invalid state; the shorthand is physical, so RTL mirrors it
+  --awsui-style-border-width: 2px 2px 2px 8px;
+
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  &:dir(rtl) {
+    --awsui-style-border-width: 2px 8px 2px 2px;
+  }
+}
+
+.field.field-disabled {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+  --awsui-style-border-color: #{palette.$border-disabled};
+  --awsui-style-color: #{palette.$text-disabled};
+  --awsui-style-box-shadow: none;
+}
+
+.field.field-readonly {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-border-color: #{palette.$border};
+}
+
+.field-input {
+  --awsui-style-color: #{palette.$text};
+  --awsui-style-font-weight: 600;
+  --awsui-style-placeholder-color: #{palette.$text-muted};
+  --awsui-style-placeholder-font-size: 13px;
+  --awsui-style-placeholder-font-style: normal;
+  --awsui-style-placeholder-font-weight: 400;
+}
+
+.field-input-disabled {
+  --awsui-style-color: #{palette.$text-disabled};
+  --awsui-style-placeholder-color: #{palette.$text-disabled};
+}
+
+.field-input-search {
+  --awsui-style-padding-inline: 36px;
+}
+
+.field-input-large {
+  --awsui-style-font-size: 16px;
+  --awsui-style-padding-block: 8px;
+  --awsui-style-background-color: #{palette.$control-bg};
+}
+
+.field-label {
+  --awsui-style-color: #{palette.$genai-text};
+  --awsui-style-background: #{palette.$genai-surface};
+}
+
+.field-search-icon {
+  --awsui-style-color: #{palette.$accent};
+}
+
+.field-clear {
+  --awsui-style-color: #{palette.$accent};
+  --awsui-style-focus-ring-color: #{palette.$accent};
+
+  &:hover,
+  &:focus {
+    --awsui-style-color: #{palette.$accent-hover};
+  }
+}

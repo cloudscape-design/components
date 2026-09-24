@@ -329,19 +329,27 @@ $inline-label-border-radius: 2px;
   margin-block-start: calc(awsui.$space-scaled-xs * -1);
 }
 
-@mixin inline-label {
-  background: linear-gradient(
+// The label's backdrop: the surrounding surface at the top, the field's background at the bottom.
+@function inline-label-background($field-background) {
+  @return linear-gradient(
     to bottom,
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
-    awsui.$color-background-input-default
+    $field-background
   );
+}
+
+@mixin inline-label(
+  $color: awsui.$color-text-form-label,
+  $background: inline-label-background(awsui.$color-background-input-default)
+) {
+  background: $background;
   border-start-start-radius: $inline-label-border-radius;
   border-start-end-radius: $inline-label-border-radius;
   border-end-start-radius: $inline-label-border-radius;
   border-end-end-radius: $inline-label-border-radius;
   box-sizing: border-box;
   display: inline-block;
-  color: awsui.$color-text-form-label;
+  color: $color;
   font-weight: awsui.$font-display-label-weight;
   font-size: awsui.$font-size-body-s;
   line-height: 14px;
@@ -355,10 +363,6 @@ $inline-label-border-radius: 2px;
   z-index: 1;
 }
 
-@mixin inline-label-disabled {
-  background: linear-gradient(
-    to bottom,
-    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
-    awsui.$color-background-input-disabled
-  );
+@mixin inline-label-disabled($background: inline-label-background(awsui.$color-background-input-disabled)) {
+  background: $background;
 }

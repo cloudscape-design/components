@@ -8,6 +8,39 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles/forms/mixins' as forms;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+$root-tokens: style-api.resolve(
+  (color, background-color, border-color, border-width, border-radius, box-shadow),
+  carrier
+);
+$input-tokens: style-api.resolve(
+  (
+    color,
+    background-color,
+    font-size,
+    font-weight,
+    padding-block,
+    padding-inline,
+    placeholder-color,
+    placeholder-font-size,
+    placeholder-font-style,
+    placeholder-font-weight
+  ),
+  public
+);
+$placeholder-tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+$label-tokens: style-api.resolve((color, background), public);
+$search-icon-tokens: style-api.resolve((color), carrier);
+@include style-api.register($root-tokens, $input-tokens, $label-tokens, $search-icon-tokens);
+@include style-api.docs('root', $root-tokens);
+@include style-api.docs('input', $input-tokens);
+@include style-api.docs('label', $label-tokens);
+@include style-api.docs('searchIcon', $search-icon-tokens);
+@include style-api.docs-forward('clearButton', 'button', 'root');
 
 @mixin placeholder {
   &::-webkit-input-placeholder {
@@ -28,145 +61,340 @@
   }
 }
 
+@mixin field-border-width {
+  @if style-api.enabled() {
+    border-width: style-api.value($root-tokens, border-width, awsui.$border-width-field);
+  }
+}
+
+@mixin field-border-width-invalid {
+  @if style-api.enabled() {
+    border-width: style-api.value(
+      $root-tokens,
+      border-width,
+      awsui.$border-width-field awsui.$border-width-field awsui.$border-width-field styles.$invalid-control-left-border
+    );
+    @include styles.with-direction('rtl') {
+      border-width: style-api.value(
+        $root-tokens,
+        border-width,
+        awsui.$border-width-field styles.$invalid-control-left-border awsui.$border-width-field
+          awsui.$border-width-field
+      );
+    }
+  }
+}
+
+@mixin input-padding-inline {
+  padding-inline: style-api.value(
+    $input-tokens,
+    padding-inline,
+    var(#{custom-props.$inputPaddingInlineStart}, styles.$control-padding-horizontal)
+      var(#{custom-props.$inputPaddingInlineEnd}, styles.$control-padding-horizontal)
+  );
+}
+
+@mixin input-padding-inline-start($value) {
+  @if style-api.enabled() {
+    #{custom-props.$inputPaddingInlineStart}: $value;
+    @include input-padding-inline;
+  } @else {
+    padding-inline-start: $value;
+  }
+}
+
+@mixin input-padding-inline-end($value) {
+  @if style-api.enabled() {
+    #{custom-props.$inputPaddingInlineEnd}: $value;
+    @include input-padding-inline;
+  } @else {
+    padding-inline-end: $value;
+  }
+}
+
+@function input-background-color($fallback) {
+  @return style-api.value($input-tokens, background-color, style-api.value($root-tokens, background-color, $fallback));
+}
+
+@function input-color($fallback) {
+  @return style-api.value($input-tokens, color, style-api.value($root-tokens, color, $fallback));
+}
+
 %input-default-styles {
-  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  background-color: style-api.value(
+    $root-tokens,
+    background-color,
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
   border-block: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
   border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+  @include field-border-width;
+  box-shadow: style-api.value($root-tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
 }
 
 %input-hover-styles {
-  border-color: var(
-    #{custom-props.$styleBorderColorHover},
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  border-color: style-api.value(
+    $root-tokens,
+    border-color,
+    var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    )
   );
-  background-color: var(
-    #{custom-props.$styleBackgroundHover},
-    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  background-color: style-api.value(
+    $root-tokens,
+    background-color,
+    var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    )
   );
-  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+  box-shadow: style-api.value(
+    $root-tokens,
+    box-shadow,
+    var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault})
+  );
 }
 
 %input-readonly-styles {
   @include styles.form-readonly-element(
-    $background-color: var(
-        #{custom-props.$styleBackgroundReadonly},
-        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    $background-color: style-api.value(
+        $root-tokens,
+        background-color,
+        var(
+          #{custom-props.$styleBackgroundReadonly},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        )
       ),
-    $border-color: var(
-        #{custom-props.$styleBorderColorReadonly},
-        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+    $border-color: style-api.value(
+        $root-tokens,
+        border-color,
+        var(
+          #{custom-props.$styleBorderColorReadonly},
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+        )
       )
   );
+  @include field-border-width;
 }
 
 %input-focus-styles {
   @include styles.form-focus-element(
-    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    $border-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius),
+    $border-color: style-api.value(
+        $root-tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused)
+      ),
+    $box-shadow: style-api.value(
+        $root-tokens,
+        box-shadow,
+        var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      )
   );
+  @include field-border-width;
 }
 
 .root {
   /* used in test-utils for component to distinguish input from other input-like components, for example autosuggest */
 }
 
+.input-root {
+  @include style-api.carriers($root-tokens);
+}
+
 .input {
   @include styles.styles-reset;
-  padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
+  @include style-api.carriers($placeholder-tokens);
+  padding-block: style-api.value($input-tokens, padding-block, styles.$control-padding-vertical);
+  @if style-api.enabled() {
+    @include input-padding-inline;
+  } @else {
+    padding-inline: styles.$control-padding-horizontal;
+  }
+  color: input-color(var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default));
   inline-size: 100%;
   cursor: text;
   box-sizing: border-box;
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
+  border-start-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-start-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
 
-  @include styles.font-body-m;
+  font-size: style-api.value($input-tokens, font-size, awsui.$font-size-body-m);
+  line-height: awsui.$line-height-body-m;
+  @if style-api.enabled() {
+    font-weight: style-api.value($input-tokens, font-weight, styles.$font-weight-normal);
+  }
   min-block-size: awsui.$size-vertical-input;
 
   @extend %input-default-styles;
+  @if style-api.enabled() {
+    background-color: input-background-color(
+      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    );
+  }
 
   &:hover {
-    color: var(
-      #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+    color: input-color(
+      var(
+        #{custom-props.$styleColorHover},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+      )
     );
     @extend %input-hover-styles;
+    @if style-api.enabled() {
+      background-color: input-background-color(
+        var(
+          #{custom-props.$styleBackgroundHover},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        )
+      );
+    }
   }
 
   &.input-readonly {
-    color: var(
-      #{custom-props.$styleColorReadonly},
-      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    color: input-color(
+      var(#{custom-props.$styleColorReadonly}, var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default))
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+    box-shadow: style-api.value($root-tokens, box-shadow, var(#{custom-props.$styleBoxShadowReadonly}));
     @extend %input-readonly-styles;
+    @if style-api.enabled() {
+      background-color: input-background-color(
+        var(
+          #{custom-props.$styleBackgroundReadonly},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        )
+      );
+    }
   }
 
   @include placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$stylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$stylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$stylePlaceholderFontWeight})
+      $color: style-api.value(
+          $placeholder-tokens,
+          placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder)
+        ),
+      $font-size: style-api.value(
+          $placeholder-tokens,
+          placeholder-font-size,
+          var(#{custom-props.$stylePlaceholderFontSize})
+        ),
+      $font-style: style-api.value(
+          $placeholder-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $placeholder-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$stylePlaceholderFontWeight})
+        )
     );
   }
 
   &:focus {
-    color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
-    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    color: input-color(var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default));
+    background-color: input-background-color(
+      var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default)
+    );
     @extend %input-focus-styles;
   }
 
   &:disabled {
     @include styles.form-disabled-element(
-      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
-      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $background-color: input-background-color(
+          var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled)
+        ),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled)
+        ),
+      $color: input-color(var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled)),
       $cursor: default
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+    @include field-border-width;
+    box-shadow: style-api.value($root-tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
     @include placeholder {
       @include styles.form-placeholder-disabled(
-        $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder-disabled)
+        $color: style-api.value(
+            $placeholder-tokens,
+            placeholder-color,
+            var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder-disabled)
+          )
       );
     }
   }
 
   &:invalid {
     // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
-    box-shadow: none;
+    box-shadow: style-api.value($root-tokens, box-shadow, none);
   }
 
   &.input-invalid {
     @include styles.form-invalid-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      $color: input-color(var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error)),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error)
+        ),
+      $focus-box-shadow: style-api.value(
+          $root-tokens,
+          box-shadow,
+          var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+        )
     );
+    @include field-border-width-invalid;
+    @if style-api.enabled() {
+      @include input-padding-inline-start(styles.$invalid-control-left-padding);
+    }
     &.input-has-icon-start {
-      padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} -
-          (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+      @include input-padding-inline-start(
+        calc(
+          #{styles.$control-icon-horizontal-padding} -
+            (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        )
       );
     }
   }
 
   &.input-warning {
     @include styles.form-warning-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      $color: input-color(var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning)),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning)
+        ),
+      $focus-box-shadow: style-api.value(
+          $root-tokens,
+          box-shadow,
+          var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+        )
     );
+    @include field-border-width-invalid;
+    @if style-api.enabled() {
+      @include input-padding-inline-start(styles.$invalid-control-left-padding);
+    }
     &.input-has-icon-start {
-      padding-inline-start: calc(
-        #{styles.$control-icon-horizontal-padding} -
-          (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+      @include input-padding-inline-start(
+        calc(
+          #{styles.$control-icon-horizontal-padding} -
+            (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        )
       );
     }
   }
@@ -185,16 +413,16 @@
     }
   }
   &.input-has-icon-start {
-    padding-inline-start: styles.$control-icon-horizontal-padding;
+    @include input-padding-inline-start(styles.$control-icon-horizontal-padding);
   }
   &.input-has-icon-end {
-    padding-inline-end: styles.$control-icon-horizontal-padding;
+    @include input-padding-inline-end(styles.$control-icon-horizontal-padding);
   }
   &.input-has-no-border-radius {
-    border-start-start-radius: awsui.$border-radius-dropdown;
-    border-start-end-radius: awsui.$border-radius-dropdown;
-    border-end-start-radius: awsui.$border-radius-dropdown;
-    border-end-end-radius: awsui.$border-radius-dropdown;
+    border-start-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-dropdown);
+    border-start-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-dropdown);
+    border-end-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-dropdown);
+    border-end-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-dropdown);
   }
 }
 
@@ -204,10 +432,21 @@
 }
 
 .input-icon-start {
+  @include style-api.carriers($search-icon-tokens);
   position: absolute;
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
+
+  @if style-api.enabled() {
+    // double selector bumps specificity above the icon variant rules applied to the same element
+    > .search-icon.search-icon {
+      color: style-api.value($search-icon-tokens, color, awsui.$color-text-icon-subtle);
+      &.search-icon-disabled {
+        color: style-api.value($search-icon-tokens, color, awsui.$color-text-interactive-disabled);
+      }
+    }
+  }
 }
 
 .input-icon-end {
@@ -237,10 +476,23 @@
 }
 
 .inline-label {
-  @include forms.inline-label;
+  @include forms.inline-label(
+    $color: style-api.value($label-tokens, color, awsui.$color-text-form-label),
+    $background: style-api.value(
+        $label-tokens,
+        background,
+        forms.inline-label-background(awsui.$color-background-input-default)
+      )
+  );
 
   &-disabled {
-    @include forms.inline-label-disabled;
+    @include forms.inline-label-disabled(
+      $background: style-api.value(
+          $label-tokens,
+          background,
+          forms.inline-label-background(awsui.$color-background-input-disabled)
+        )
+    );
   }
 }
 
@@ -249,75 +501,132 @@
   align-items: stretch;
   inline-size: 100%;
   box-sizing: border-box;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary);
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
+  color: style-api.value(
+    $root-tokens,
+    color,
+    var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+  );
+  border-start-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-start-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
   min-block-size: awsui.$size-vertical-input;
 
   @extend %input-default-styles;
 
   &:hover {
     @extend %input-hover-styles;
-    color: var(
-      #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    color: style-api.value(
+      $root-tokens,
+      color,
+      var(#{custom-props.$styleColorHover}, var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary))
     );
   }
 
   &.input-adorned-container-readonly {
     @extend %input-readonly-styles;
-    color: var(
-      #{custom-props.$styleColorReadonly},
-      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    color: style-api.value(
+      $root-tokens,
+      color,
+      var(
+        #{custom-props.$styleColorReadonly},
+        var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+      )
     );
   }
 
   &:focus-within {
     @extend %input-focus-styles;
-    color: var(
-      #{custom-props.$styleColorFocus},
-      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    color: style-api.value(
+      $root-tokens,
+      color,
+      var(#{custom-props.$styleColorFocus}, var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary))
     );
   }
 
   // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
   &.input-adorned-container-disabled {
     @include styles.form-disabled-element(
-      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
-      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $background-color: style-api.value(
+          $root-tokens,
+          background-color,
+          var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled)
+        ),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled)
+        ),
+      $color: style-api.value(
+          $root-tokens,
+          color,
+          var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled)
+        ),
       $cursor: default
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+    @include field-border-width;
+    box-shadow: style-api.value($root-tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
   }
 
   &.input-adorned-container-invalid {
     @include styles.form-invalid-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      $color: style-api.value(
+          $root-tokens,
+          color,
+          var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error)
+        ),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error)
+        ),
+      $focus-box-shadow: style-api.value(
+          $root-tokens,
+          box-shadow,
+          var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+        )
     ) {
       padding-inline-start: 0;
     }
+    @include field-border-width-invalid;
 
     &:focus-within {
-      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+      box-shadow: style-api.value(
+        $root-tokens,
+        box-shadow,
+        var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      );
     }
   }
 
   &.input-adorned-container-warning {
     @include styles.form-warning-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      $color: style-api.value(
+          $root-tokens,
+          color,
+          var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning)
+        ),
+      $border-color: style-api.value(
+          $root-tokens,
+          border-color,
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning)
+        ),
+      $focus-box-shadow: style-api.value(
+          $root-tokens,
+          box-shadow,
+          var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+        )
     ) {
       padding-inline-start: 0;
     }
+    @include field-border-width-invalid;
 
     &:focus-within {
-      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+      box-shadow: style-api.value(
+        $root-tokens,
+        box-shadow,
+        var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+      );
     }
   }
 }
@@ -352,16 +661,36 @@
   align-self: stretch;
 }
 
+// Rounds only the bar corners the input touches; a divider sits between it and a prefix or suffix.
+@mixin adorned-corner-radius {
+  border-start-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-start-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-start-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  border-end-end-radius: style-api.value($root-tokens, border-radius, styles.$control-border-radius);
+  .input-adornment-divider + & {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  &:has(~ .input-adornment-divider) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
 .input-adorned {
   flex: 1;
   min-inline-size: 0;
   border-block: none;
   border-inline: none;
-  border-start-start-radius: 0;
-  border-start-end-radius: 0;
-  border-end-start-radius: 0;
-  border-end-end-radius: 0;
-  background-color: transparent;
+  @if style-api.enabled() {
+    @include adorned-corner-radius;
+  } @else {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+  background-color: style-api.value($input-tokens, background-color, transparent);
   box-shadow: none;
   min-block-size: unset;
 
@@ -370,30 +699,48 @@
     border-inline: 0;
     box-shadow: none;
     outline: none;
+    @if style-api.enabled() {
+      @include adorned-corner-radius;
+    }
   }
 
   &:hover {
     border-color: transparent;
-    background-color: transparent;
+    background-color: style-api.value($input-tokens, background-color, transparent);
+    @if style-api.enabled() {
+      box-shadow: none;
+    }
   }
 
   &:disabled {
-    background-color: transparent;
+    background-color: style-api.value($input-tokens, background-color, transparent);
     border-color: transparent;
     border-block: 0;
     border-inline: 0;
+    @if style-api.enabled() {
+      box-shadow: none;
+    }
   }
 
   &.input-readonly {
-    background-color: transparent;
+    background-color: style-api.value($input-tokens, background-color, transparent);
     border-color: transparent;
     border-block: 0;
     border-inline: 0;
+    @if style-api.enabled() {
+      box-shadow: none;
+    }
+  }
+
+  @if style-api.enabled() {
+    &:invalid {
+      box-shadow: none;
+    }
   }
 
   &.input-invalid,
   &.input-warning {
-    padding-inline-start: styles.$control-padding-horizontal;
+    @include input-padding-inline-start(styles.$control-padding-horizontal);
     border-block: 0;
     border-inline: 0;
     border-inline-start-width: 0;
@@ -413,6 +760,12 @@
   > .input-prefix,
   > .input-adorned:first-child {
     padding-inline-start: styles.$invalid-control-left-padding;
+  }
+
+  > .input-adorned:first-child {
+    @if style-api.enabled() {
+      @include input-padding-inline-start(styles.$invalid-control-left-padding);
+    }
   }
 
   > .input-prefix,
