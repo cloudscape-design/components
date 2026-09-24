@@ -114,7 +114,7 @@ export interface BaseButtonProps {
    *
    * @awsuiSystem core
    */
-  nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+  nativeButtonAttributes?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
   /**
    * Attributes to add to the native `a` element (when `href` is provided).
@@ -126,7 +126,7 @@ export interface BaseButtonProps {
    *
    * @awsuiSystem core
    */
-  nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+  nativeAnchorAttributes?: NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {

@@ -55,7 +55,7 @@ export interface RadioButtonProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+  nativeInputAttributes?: NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>;
 
   /**
    * Called when the user clicks on the radio button and it is not disabled or read-only.

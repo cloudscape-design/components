@@ -39,7 +39,7 @@ export interface DividerProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+  nativeAttributes?: NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace DividerProps {
