@@ -28,8 +28,15 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  dismissButton?: string;
+}
+
 type InternalTokenProps = Omit<TokenProps, 'label'> &
   InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
     /** Token label. Required unless `__customContent` replaces the option layout entirely. */
     label?: React.ReactNode;
     /**
@@ -69,6 +76,7 @@ function InternalToken({
   disableInnerPadding,
   __tokenBoxClassName,
   __customContent,
+  styleClassNames,
 
   // Base
   __internalRootRef,
@@ -187,7 +195,8 @@ function InternalToken({
             readOnly && styles['token-box-readonly'],
             !isInline && !onDismiss && !__customContent && styles['token-box-without-dismiss'],
             disableInnerPadding && styles['disable-padding'],
-            __tokenBoxClassName
+            __tokenBoxClassName,
+            styleClassNames?.root
           )}
           style={tokenRootStyleProps}
         >
@@ -203,6 +212,7 @@ function InternalToken({
           />
           {onDismiss && (
             <DismissButton
+              className={styleClassNames?.dismissButton}
               disabled={disabled}
               dismissLabel={dismissLabel}
               onDismiss={onDismiss}
