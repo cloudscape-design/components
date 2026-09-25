@@ -27,7 +27,7 @@ const multiOptions: MultiselectProps.Option[] = Array.from({ length: 8 }, (_, i)
   label: `Option ${i + 1}`,
 }));
 
-const SEGMENTS: SegmentedControlProps.Option[] = [
+const segments: SegmentedControlProps.Option[] = [
   { id: 'and', text: 'AND' },
   { id: 'or', text: 'OR' },
 ];
@@ -113,7 +113,7 @@ function InputAndSegmentedControl() {
       />
       <SegmentedControl
         selectedId={selectedId}
-        options={SEGMENTS}
+        options={segments}
         label="Join"
         onChange={event => setSelectedId(event.detail.selectedId)}
       />
