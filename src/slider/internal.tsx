@@ -27,7 +27,15 @@ import {
 
 import styles from './styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  track?: string;
+  range?: string;
+  handle?: string;
+}
+
 interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   style?: SliderProps['style'];
 }
 
@@ -47,6 +55,7 @@ export default function InternalSlider({
   valueFormatter,
   i18nStrings,
   style,
+  styleClassNames,
   __internalRootRef,
   ...rest
 }: InternalSliderProps) {
@@ -161,7 +170,7 @@ export default function InternalSlider({
         />
         <div className={styles.slider}>
           <div
-            className={clsx(styles['slider-track'], {
+            className={clsx(styles['slider-track'], styleClassNames?.track, {
               [styles.disabled]: disabled,
               [styles.readonly]: readOnly,
             })}
@@ -169,7 +178,7 @@ export default function InternalSlider({
 
           {!hideFillLine && (
             <div
-              className={clsx(styles['slider-range'], {
+              className={clsx(styles['slider-range'], styleClassNames?.range, {
                 [styles.error]: invalid,
                 [styles.warning]: showWarning,
                 [styles.active]: isActive,
@@ -184,6 +193,7 @@ export default function InternalSlider({
         </div>
         {!!step && tickMarks && (
           <SliderTickMarks
+            styleClassNames={styleClassNames}
             hideFillLine={hideFillLine}
             disabled={disabled}
             readOnly={readOnly}
@@ -241,7 +251,7 @@ export default function InternalSlider({
             }
             fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
           }}
-          className={clsx(styles.thumb, {
+          className={clsx(styles.thumb, styleClassNames?.handle, {
             [styles.error]: invalid,
             [styles.warning]: showWarning,
             [styles.disabled]: disabled,
