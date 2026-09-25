@@ -70,10 +70,11 @@ Existing docblocks vary, so treat these as gentle nudges toward the house voice,
 - **Single-impl:** a component with no `internal.tsx` folds its implementation into `index.tsx` (plus
   helper files). `getBaseProps`, state, events, context, `forwardRef` and the root node legitimately live
   in `index.tsx` here (e.g. tabs, tag-editor, badge, textarea).
-- **Widgetized / loadable:** `internal.ts(x)` re-exports `createWidgetizedX(createLoadableComponent(…))`;
-  the real impl is in `implementation.tsx`, internal props in `internal-interfaces.ts` (e.g. flashbar,
-  app-layout, table, breadcrumb-group, drawer). Don't expect `InternalX`/`getBaseProps`/root in
-  `internal.tsx`; `forwardRef` may be impossible through the widgetized seam.
+- **Widgetized / loadable:** `internal.ts(x)` creates or re-exports a widgetized component, optionally
+  wrapping its implementation in `createLoadableComponent`; the real implementation may live in
+  `implementation.tsx`, and internal props may live there or in `internal-interfaces.ts` (e.g. flashbar,
+  breadcrumb-group, drawer, split-panel, side-navigation, help-panel). Don't expect the implementation
+  body, `getBaseProps`, or root element in `internal.tsx`; `forwardRef` may be impossible through the seam.
 - **Wrapper-side hooks:** `index.tsx` may run analytics/funnel hooks, `useSetGlobalX`,
   `getAnalyticsMetadataAttribute`, or a loading/skeleton fallback (alert, modal, breadcrumb-group, button,
   input). "Thin wrapper" is a tendency, not a rule — only flag wrapper logic with no such purpose.
