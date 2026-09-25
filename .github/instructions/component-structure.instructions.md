@@ -27,8 +27,6 @@ invent a divergence.
   public `${Name}Props` is internal-only → it must start with `__`. Flag any that doesn't.
 - **Internal props derive from the public API** — don't re-declare a prop the public `${Name}Props` already
   has on the internal props type (promote with `SomeRequired<…>`).
-- **A public prop's default is set once**, in the wrapper destructure, promoted to required on the internal
-  type — flag a default applied *only* ad-hoc in the impl (not the single-impl case, where wrapper == impl).
 
 ## Interface typing
 - A union representing a **visual variant / size / type** must be a named alias in the namespace
@@ -61,10 +59,12 @@ Existing docblocks vary, so treat these as gentle nudges toward the house voice,
   `isDevelopment` check.
 - `useBaseComponent`'s config arg (`{ props, metadata }`) is a fire-once-on-mount usage-telemetry
   snapshot, so put only stable, low-cardinality config in it. `props` carries actual public config prop
-  values (enumerated `variant`/`size`/`type`/density unions and booleans); `metadata` carries derived
-  facts — booleans (`hasX: Boolean(...)`) or numbers (counts) — especially reductions of high-cardinality
-  inputs. Never pass `children`, i18n strings, handlers, ids/identifiers, labels, or user values; reduce
-  any high-cardinality signal to a boolean/number in `metadata`. Omit the arg when nothing is trackable.
+  values passed through directly — enumerated `variant`/`size`/`type`/density unions, booleans, and
+  low-cardinality numbers (a numeric prop value like `limit` in `props` is fine). `metadata` carries
+  derived facts — booleans (`hasX: Boolean(...)`) or numbers (counts) — especially reductions of
+  high-cardinality inputs. Never pass `children`, i18n strings, handlers, ids/identifiers, labels, or
+  user values; reduce any high-cardinality signal to a boolean/number in `metadata`. Omit the arg when
+  nothing is trackable.
 
 ## Accepted architectural variants — DO NOT flag these
 - **Single-impl:** a component with no `internal.tsx` folds its implementation into `index.tsx` (plus

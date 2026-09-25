@@ -1,5 +1,5 @@
 ---
-applyTo: "**/__tests__/**"
+applyTo: "**/{__tests__,__integ__,__a11y__,__motion__}/**"
 ---
 # Testing conventions
 - Assert the observable EFFECT (focus lands on the specific element, value/count/position is
