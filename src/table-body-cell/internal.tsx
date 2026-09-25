@@ -84,7 +84,7 @@ export const InternalTableBodyCell = React.forwardRef<HTMLTableCellElement, Inte
           className={clsx(
             bodyCellStyles['body-cell-content'],
             wrapLines && bodyCellStyles['body-cell-wrap'],
-            disablePaddings ? bodyCellStyles['disable-paddings'] : bodyCellStyles['with-paddings']
+            !disablePaddings && bodyCellStyles['with-paddings']
           )}
         >
           {children}

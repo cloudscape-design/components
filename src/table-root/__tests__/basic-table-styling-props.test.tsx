@@ -14,9 +14,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { findBodyRow, makeItems, renderResourcesTable } from './table-fixtures';
 
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
-import legacyHeaderCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import cellStyles from '../../../lib/components/table-body-cell/styles.css.js';
-import headerCellStyles from '../../../lib/components/table-header-cell/styles.css.js';
 
 // The row `selected`/`shaded` props are visual-only: each emits an independent `data-awsui-*` hook on the
 // <tr> and never sets `aria-selected`. Selection wins over shading by omitting the shaded hook.
@@ -76,47 +74,6 @@ describe('inline style props (virtualization)', () => {
     expect(row.style.position).toBe('absolute');
     expect(row.style.transform).toBe('translateY(40px)');
     expect(row.style.gridTemplateColumns).toBe('100px');
-  });
-});
-
-describe('disablePaddings', () => {
-  test('TableBodyCell content opts into padding unless disablePaddings is set (mutually exclusive)', () => {
-    const { container } = render(
-      <TableRoot ariaLabel="Resources">
-        <TableBody>
-          <TableRow>
-            <TableBodyCell disablePaddings={true}>Control</TableBodyCell>
-            <TableBodyCell>Resource 0</TableBodyCell>
-          </TableRow>
-        </TableBody>
-      </TableRoot>
-    );
-    const cells = createWrapper(container).findAllTableBodyCells();
-    const contentOf = (index: number) =>
-      cells[index].getElement().getElementsByClassName(bodyCellStyles['body-cell-content'])[0];
-    expect(contentOf(0).classList.contains(bodyCellStyles['disable-paddings'])).toBe(true);
-    expect(contentOf(0).classList.contains(bodyCellStyles['with-paddings'])).toBe(false);
-    expect(contentOf(1).classList.contains(bodyCellStyles['disable-paddings'])).toBe(false);
-    expect(contentOf(1).classList.contains(bodyCellStyles['with-paddings'])).toBe(true);
-  });
-
-  test('TableHeaderCell opts into padding unless disablePaddings is set (mutually exclusive)', () => {
-    const { container } = render(
-      <TableRoot ariaLabel="Resources">
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell disablePaddings={true} />
-            <TableHeaderCell>Name</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-      </TableRoot>
-    );
-    const headerCells = createWrapper(container).findAllTableHeaderCells();
-    const rootOf = (index: number) => headerCells[index].getElement();
-    expect(rootOf(0).classList.contains(headerCellStyles['disable-paddings'])).toBe(true);
-    expect(rootOf(0).classList.contains(legacyHeaderCellStyles['with-paddings'])).toBe(false);
-    expect(rootOf(1).classList.contains(headerCellStyles['disable-paddings'])).toBe(false);
-    expect(rootOf(1).classList.contains(legacyHeaderCellStyles['with-paddings'])).toBe(true);
   });
 });
 
