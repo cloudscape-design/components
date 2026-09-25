@@ -153,7 +153,7 @@ function SingleControl() {
 
 export default function ControlGroupScenariosPage() {
   return (
-    <SimplePage title="Control group (internal, basic)" screenshotArea={{}} i18n={{}}>
+    <SimplePage title="Control group" screenshotArea={{}} i18n={{}}>
       <SpaceBetween size="l">
         <div>
           <h2>Input + Select + Input</h2>
