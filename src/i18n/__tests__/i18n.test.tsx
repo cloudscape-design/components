@@ -232,7 +232,7 @@ describe('resilience against malformed messages', () => {
     expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
   });
 
-  it('uses the value from component props when the provider message is malformed', () => {
+  it('renders the component tree when a message is malformed and the value is provided via props', () => {
     const brokenMessages: I18nProviderProps.Messages = {
       [namespace]: {
         en: {
