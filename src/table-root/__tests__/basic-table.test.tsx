@@ -68,7 +68,7 @@ describe('Table atomic parts', () => {
       expect(findBodyRow(wrapper).style.gridTemplateColumns).toBe(template);
     });
 
-    test('the header row emits aria-rowindex only when set explicitly (consumer-managed numbering)', () => {
+    test('aria-rowindex is emitted on any row only when set explicitly (consumer-managed numbering)', () => {
       const withIndex = render(
         <TableRoot ariaLabel="Resources" ariaRowcount={500} columnLayout={{ type: 'grid', columns: [{ size: 200 }] }}>
           <TableHead>
@@ -76,10 +76,18 @@ describe('Table atomic parts', () => {
               <TableHeaderCell>Name</TableHeaderCell>
             </TableRow>
           </TableHead>
+          <TableBody>
+            <TableRow ariaRowindex={202}>
+              <TableBodyCell>Resource 201</TableBodyCell>
+            </TableRow>
+          </TableBody>
         </TableRoot>
       );
-      const withIndexHeaderRow = createWrapper(withIndex.container).findTableHead()!.find('[role="row"]')!.getElement();
-      expect(withIndexHeaderRow.getAttribute('aria-rowindex')).toBe('1');
+      const withIndexWrapper = createWrapper(withIndex.container);
+      expect(withIndexWrapper.findTableHead()!.find('[role="row"]')!.getElement().getAttribute('aria-rowindex')).toBe(
+        '1'
+      );
+      expect(findBodyRow(withIndexWrapper).getAttribute('aria-rowindex')).toBe('202');
 
       const { wrapper } = renderResourcesTable({ items: makeItems(5), grid: true });
       const plainHeaderRow = wrapper.findTableHead()!.find('[role="row"]')!.getElement();
@@ -108,27 +116,6 @@ describe('Table atomic parts', () => {
       const headerCells = createWrapper(container).findAllTableHeaderCells();
       expect(headerCells[0].getElement().getAttribute('aria-sort')).toBe('ascending');
       expect(headerCells[1].getElement().hasAttribute('aria-sort')).toBe(false);
-    });
-
-    test('Row ariaRowindex sets aria-rowindex for virtualization', () => {
-      const { container } = render(
-        <TableRoot ariaLabel="Resources" ariaRowcount={500}>
-          <TableHead>
-            <TableRow>
-              <TableHeaderCell>Name</TableHeaderCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow ariaRowindex={202}>
-              <TableBodyCell>Resource 200</TableBodyCell>
-            </TableRow>
-          </TableBody>
-        </TableRoot>
-      );
-      const row = createWrapper(createWrapper(container).findTableBody()!.getElement())
-        .findAllTableRows()[0]
-        .getElement();
-      expect(row.getAttribute('aria-rowindex')).toBe('202');
     });
   });
 

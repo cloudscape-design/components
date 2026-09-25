@@ -210,4 +210,32 @@ describe('nested content is insulated from the table/row context', () => {
     expect(nestedCell.classList.contains(cellStyles['cell-grid'])).toBe(false);
     expect(nestedCell.classList.contains(bodyCellStyles['body-cell-selected'])).toBe(false);
   });
+
+  test('a nested atomic TableRoot in a selected grid cell resets to its own auto layout and no selection', () => {
+    const { container } = render(
+      <TableRoot columnLayout={{ type: 'grid', columns: [{ size: 400 }] }} ariaLabel="Outer">
+        <TableBody>
+          <TableRow selected={true}>
+            <TableBodyCell>
+              <TableRoot ariaLabel="Inner">
+                <TableBody>
+                  <TableRow>
+                    <TableBodyCell>Nested</TableBodyCell>
+                  </TableRow>
+                </TableBody>
+              </TableRoot>
+            </TableBodyCell>
+          </TableRow>
+        </TableBody>
+      </TableRoot>
+    );
+    const innerRoot = createWrapper(createWrapper(container).findAllTableRoots()[1].getElement());
+    const innerRow = findBodyRow(innerRoot);
+    // The inner TableRoot supplies its own auto-layout context, so the outer grid layout and the
+    // outer row's selection do not leak into the nested table.
+    expect(innerRow).not.toHaveAttribute('data-awsui-selected');
+    expect(createWrapper(innerRow).findTableBodyCell()!.getElement().classList.contains(cellStyles['cell-grid'])).toBe(
+      false
+    );
+  });
 });
