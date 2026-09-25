@@ -59,6 +59,12 @@ Existing docblocks vary, so treat these as gentle nudges toward the house voice,
   (`fireNonCancelableEvent`), i18n (`useInternalI18n`, no hardcoded English fallback) live in the impl.
 - Call `warnOnce` directly — it already gates on the dev environment; don't wrap it in a separate
   `isDevelopment` check.
+- `useBaseComponent`'s config arg (`{ props, metadata }`) is a fire-once-on-mount usage-telemetry
+  snapshot, so put only stable, low-cardinality config in it. `props` carries actual public config prop
+  values (enumerated `variant`/`size`/`type`/density unions and booleans); `metadata` carries derived
+  facts — booleans (`hasX: Boolean(...)`) or numbers (counts) — especially reductions of high-cardinality
+  inputs. Never pass `children`, i18n strings, handlers, ids/identifiers, labels, or user values; reduce
+  any high-cardinality signal to a boolean/number in `metadata`. Omit the arg when nothing is trackable.
 
 ## Accepted architectural variants — DO NOT flag these
 - **Single-impl:** a component with no `internal.tsx` folds its implementation into `index.tsx` (plus
