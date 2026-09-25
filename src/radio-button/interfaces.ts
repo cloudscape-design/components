@@ -16,6 +16,23 @@ export interface RadioButtonProps extends BaseComponentProps {
   checked: boolean;
 
   /**
+   * Adds an `aria-label` to the native control.
+   *
+   * Use this if you don't have a visible label for this control.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds `aria-labelledby` to the native control.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Adds `aria-describedby` to the native control.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Specifies the ID of the native form element. You can use it to relate
    * a label element's `for` attribute to this control.
    */
