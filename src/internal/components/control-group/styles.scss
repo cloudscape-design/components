@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../styles/forms/mixins' as forms;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // Align controls along their bottom edge so their field boxes line up
+  // even when one control is taller than another.
+  align-items: flex-end;
+}
+
+.control {
+  // Let slots shrink below their content so a narrow group compresses, not overflows.
+  min-inline-size: 0;
+  // Establish a stacking context per slot so a control's internal z-indexes stay
+  // contained within its own slot and cannot paint over adjacent controls.
+  isolation: isolate;
+  // Raise the focused control's slot above its neighbors so its focus ring is
+  // painted over the adjacent control's seam border.
+  &:focus-within {
+    z-index: 1;
+  }
+  // Overlap each non-first slot onto its predecessor by one border width,
+  // so the two adjacent borders coincide into a single seam.
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+  }
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+}
+
+.inline-label {
+  @include forms.inline-label;
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
+}
