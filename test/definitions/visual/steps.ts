@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TestDefinition, TestSuite } from '../types';
+import { TestSuite } from '../types';
 
 const suite: TestSuite = {
   description: 'Steps',
@@ -24,7 +24,7 @@ const suite: TestSuite = {
           path: 'steps/permutations-annotation',
           screenshotType: 'permutations',
           configuration: { width },
-        } as TestDefinition,
+        },
       ],
     })),
   ],
