@@ -15,7 +15,15 @@ import { CopyToClipboardProps } from './interfaces';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
+interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  copyButton?: string;
+  textToDisplay?: string;
+}
 
 export default function InternalCopyToClipboard({
   variant = 'button',
@@ -31,6 +39,7 @@ export default function InternalCopyToClipboard({
   disabledReason,
   onCopySuccess,
   onCopyFailure,
+  styleClassNames,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -97,6 +106,7 @@ export default function InternalCopyToClipboard({
       formAction="none"
       disabled={disabled}
       disabledReason={disabledReason}
+      styleClassNames={{ root: styleClassNames?.copyButton }}
     >
       {copyButtonText}
     </InternalButton>
@@ -128,7 +138,14 @@ export default function InternalCopyToClipboard({
       {isInline ? (
         <span className={clsx(styles['inline-container'], !wrapText && styles['inline-container-no-wrap'])}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'], styles['text-to-display'])}>
+          <span
+            className={clsx(
+              styleClassNames?.textToDisplay,
+              testStyles['text-to-display'],
+              testStyles['text-to-copy'],
+              styles['text-to-display']
+            )}
+          >
             {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
         </span>

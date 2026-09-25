@@ -4,9 +4,22 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+// The copy button forwards styling to the nested Button component's `root` slot.
+@include style-api.docs-forward('copyButton', 'button', 'root');
+
+// The text displayed next to the copy button (variant="inline").
+$text-to-display-tokens: style-api.resolve((color), public);
+@include style-api.register($text-to-display-tokens);
+@include style-api.docs('textToDisplay', $text-to-display-tokens);
 
 .root {
   display: contents;
+}
+
+.text-to-display {
+  color: style-api.value($text-to-display-tokens, color, currentColor);
 }
 
 .inline-container {
