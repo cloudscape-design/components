@@ -1,5 +1,5 @@
 ---
-applyTo: "src/*/{index,internal,interfaces}.{ts,tsx}"
+applyTo: "src/*/{index,internal,interfaces,implementation,internal-interfaces}.{ts,tsx}"
 ---
 # Component structure & doc voice
 
