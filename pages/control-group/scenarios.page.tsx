@@ -9,6 +9,8 @@ import SegmentedControl, { SegmentedControlProps } from '~components/segmented-c
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 
+import { SimplePage } from '../app/templates';
+
 const operators: SelectProps.Option[] = [
   { value: '=', label: '=' },
   { value: '!=', label: '!=' },
@@ -177,8 +179,7 @@ function SingleControl() {
 
 export default function ControlGroupScenariosPage() {
   return (
-    <article style={{ padding: 20 }}>
-      <h1>Control group (internal, basic)</h1>
+    <SimplePage title="Control group (internal, basic)" screenshotArea={{}} i18n={{}}>
       <SpaceBetween size="l">
         <div>
           <h2>Input + Select + Input</h2>
@@ -209,6 +210,6 @@ export default function ControlGroupScenariosPage() {
           <SingleControl />
         </div>
       </SpaceBetween>
-    </article>
+    </SimplePage>
   );
 }
