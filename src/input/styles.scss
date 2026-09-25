@@ -181,11 +181,30 @@
   // invalid/warning blocks so it overrides them.
   &.input-invalid,
   &.input-warning {
+    // Row (not stacked): the group's inline seams are interior — reset them so only the
+    // unit's exterior is painted (the first control keeps the thick leading indicator).
     &.input-in-control-group-middle:not(.input-in-control-group-stacked) {
       @include styles.control-group-invalid-reset-both-seams;
     }
     &.input-in-control-group-last:not(.input-in-control-group-stacked) {
       @include styles.control-group-invalid-reset-leading-seam;
+    }
+
+    // Stacked (wrapped): the controls fuse into a vertical unit. The inline-start (thick
+    // indicator) and inline-end borders run down the whole column and stay painted; only
+    // the block-axis seams BETWEEN fused controls are interior and get reset. A control's
+    // block-start is a seam unless it is the first or detaches from the control above
+    // (`labeled`); its block-end is a seam unless it is the last or precedes a detached
+    // control (`precedes-labeled`).
+    &.input-in-control-group-stacked {
+      &.input-in-control-group-middle:not(.input-in-control-group-labeled),
+      &.input-in-control-group-last:not(.input-in-control-group-labeled) {
+        @include styles.control-group-invalid-reset-block-start-seam;
+      }
+      &.input-in-control-group-first:not(.input-in-control-group-precedes-labeled),
+      &.input-in-control-group-middle:not(.input-in-control-group-precedes-labeled) {
+        @include styles.control-group-invalid-reset-block-end-seam;
+      }
     }
   }
 
@@ -486,6 +505,21 @@
     &.input-adorned-container-in-control-group-last:not(.input-adorned-container-in-control-group-stacked) {
       border-inline-start-width: awsui.$border-width-field;
       border-inline-start-color: awsui.$color-border-input-default;
+    }
+
+    // Stacked (wrapped): reset the interior block-axis seams between fused controls;
+    // the inline exterior borders stay painted.
+    &.input-adorned-container-in-control-group-stacked {
+      &.input-adorned-container-in-control-group-middle:not(.input-adorned-container-in-control-group-labeled),
+      &.input-adorned-container-in-control-group-last:not(.input-adorned-container-in-control-group-labeled) {
+        border-block-start-color: awsui.$color-border-input-default;
+      }
+      &.input-adorned-container-in-control-group-first:not(.input-adorned-container-in-control-group-precedes-labeled),
+      &.input-adorned-container-in-control-group-middle:not(
+          .input-adorned-container-in-control-group-precedes-labeled
+        ) {
+        border-block-end-color: awsui.$color-border-input-default;
+      }
     }
   }
 }

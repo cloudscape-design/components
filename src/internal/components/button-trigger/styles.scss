@@ -193,6 +193,7 @@ $icon-offset: awsui.$space-xxxs;
     // above would otherwise re-add the painted/thick leading border).
     &.invalid,
     &.warning {
+      // Row (not stacked): reset the interior inline seams; keep the exterior painted.
       &.in-control-group-middle:not(.in-control-group-stacked) {
         @include styles.control-group-invalid-reset-both-seams;
         @include focus-visible.when-visible {
@@ -203,6 +204,28 @@ $icon-offset: awsui.$space-xxxs;
         @include styles.control-group-invalid-reset-leading-seam;
         @include focus-visible.when-visible {
           @include styles.control-group-invalid-reset-leading-seam;
+        }
+      }
+
+      // Stacked (wrapped): the controls fuse into a vertical unit; reset the interior
+      // block-axis seams between them (the inline exterior borders stay painted). A
+      // control's block-start is a seam unless it is first or detaches from above
+      // (`labeled`); its block-end is a seam unless it is last or precedes a detached
+      // control (`precedes-labeled`).
+      &.in-control-group-stacked {
+        &.in-control-group-middle:not(.in-control-group-labeled),
+        &.in-control-group-last:not(.in-control-group-labeled) {
+          @include styles.control-group-invalid-reset-block-start-seam;
+          @include focus-visible.when-visible {
+            @include styles.control-group-invalid-reset-block-start-seam;
+          }
+        }
+        &.in-control-group-first:not(.in-control-group-precedes-labeled),
+        &.in-control-group-middle:not(.in-control-group-precedes-labeled) {
+          @include styles.control-group-invalid-reset-block-end-seam;
+          @include focus-visible.when-visible {
+            @include styles.control-group-invalid-reset-block-end-seam;
+          }
         }
       }
     }
