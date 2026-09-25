@@ -20,6 +20,12 @@ import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './ut
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
 const MINIMUM_SCROLLABLE_SPACE = 148;
+// The first sticky cell gets extra padding when the table is scrolled (see padInlineStart), which is then included in
+// the measured sticky width. A lower minimum applies in that case, so that applying the padding cannot disable the
+// feature. The difference must not be smaller than the padding in any theme or density mode. Removing the padding can
+// disable the feature within a range of wrapper widths up to that difference (largest for tables with selection, where
+// the padding is set but does not change the cell width).
+const MINIMUM_SCROLLABLE_SPACE_WHILE_STUCK = MINIMUM_SCROLLABLE_SPACE - 24;
 
 export interface StickyColumnsModel {
   store: ReadonlyAsyncStore<StickyColumnsState>;
@@ -367,10 +373,12 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     }
 
     const totalStickySpace = this.cellOffsets.stickyWidthInlineStart + this.cellOffsets.stickyWidthInlineEnd;
-    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
-    const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
-    const hasEnoughScrollableSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tablePaddingLeft + tablePaddingRight < wrapperWidth;
+    const tablePaddingInlineStart = parseFloat(getComputedStyle(props.table).paddingInlineStart) || 0;
+    const tablePaddingInlineEnd = parseFloat(getComputedStyle(props.table).paddingInlineEnd) || 0;
+    const tablePaddings = tablePaddingInlineStart + tablePaddingInlineEnd;
+    const isFirstCellPadded = this.get().cellState.get(props.visibleColumns[0])?.padInlineStart ?? false;
+    const minimumScrollableSpace = isFirstCellPadded ? MINIMUM_SCROLLABLE_SPACE_WHILE_STUCK : MINIMUM_SCROLLABLE_SPACE;
+    const hasEnoughScrollableSpace = minimumScrollableSpace < wrapperWidth - totalStickySpace - tablePaddings;
     if (!hasEnoughScrollableSpace) {
       return false;
     }
