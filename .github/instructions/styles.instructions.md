@@ -6,6 +6,7 @@ applyTo: "src/**/*.scss"
   tokens). WHY: keeps theming consistent.
 - Put classes that exist only for test selection in `src/<component>/test-classes/styles.scss`.
   WHY: segregated test classes keep integ selectors stable.
-- Don't disable the repo's own lint rules or write selectors that depend on raw DOM structure /
-  `nth-child` — add classnames to the inner elements and target those. WHY: structure-dependent
-  selectors and rule overrides are brittle and re-break as markup changes.
+- Don't disable lint rules or depend on raw DOM structure / `nth-child` merely as a shortcut — add
+  class names to inner elements and target those when possible. When a structural selector or suppression
+  is necessary for component behavior, scope it narrowly and document why. WHY: unqualified
+  structure-dependent selectors and rule overrides are brittle and re-break as markup changes.
