@@ -10,6 +10,7 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
+import { useControlGroupContext } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
@@ -71,6 +72,16 @@ const ButtonTrigger = (
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
+  // When inside a ControlGroup, the trigger keeps its own border but fuses with
+  // neighbors (squared interior corners + collapsed seam). Its position decides
+  // which sides.
+  const {
+    isInControlGroup,
+    position: controlGroupPosition,
+    hasInlineLabel: inControlGroupLabeled,
+    precedesDetached: inControlGroupPrecedesLabeled,
+    stacked: inControlGroupStacked,
+  } = useControlGroupContext();
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -87,6 +98,11 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
+      isInControlGroup && styles['in-control-group'],
+      isInControlGroup && controlGroupPosition && styles[`in-control-group-${controlGroupPosition}`],
+      isInControlGroup && inControlGroupLabeled && styles['in-control-group-labeled'],
+      isInControlGroup && inControlGroupPrecedesLabeled && styles['in-control-group-precedes-labeled'],
+      isInControlGroup && inControlGroupStacked && styles['in-control-group-stacked'],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,

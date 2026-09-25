@@ -1,0 +1,149 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: block;
+  // The group decides in JS whether it fits in a row (see internal.tsx) and toggles the
+  // `.stacked` class, rather than using a fixed CSS breakpoint.
+  //
+  // `flex-shrink: 0` keeps the group at its natural width in a flex parent (for example
+  // a `SpaceBetween`), so the parent wraps whole groups to the next line instead of
+  // squeezing one narrower than its controls. It is inert for a normal block child.
+  flex-shrink: 0;
+  position: relative;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // Align controls along their bottom edge so their field boxes line up even when
+  // one control is taller (for example, a control with an inline label that sits
+  // above its field). The label floats above; the fields stay on one line.
+  align-items: flex-end;
+  // The group only lays the controls out; each control owns its own border and
+  // radius (and collapses the shared seams itself via ControlGroupContext), so
+  // the group does not shrink or stretch to a shared border box.
+  inline-size: fit-content;
+  max-inline-size: 100%;
+
+  // When JS determines the controls do not fit, the group stacks vertically. Kept as
+  // a nowrap row while NOT stacked so its `scrollWidth` reports the width the controls
+  // need (used to decide when to stack). The seam then overlaps on the block axis
+  // instead of the inline axis (see the `.group.stacked > .control` rules below).
+  &.stacked {
+    flex-direction: column;
+    // Stacked controls fill the width; bottom-alignment no longer applies.
+    align-items: stretch;
+    inline-size: 100%;
+  }
+}
+
+// Hidden ghost row, used only to measure the width the controls need as a single row
+// (see internal.tsx). It is out of flow so it never affects the root's width, and sized
+// to its content (`max-content`) so it reports the true natural row width rather than
+// being capped by the available space. It must not be `display: none` (that reports
+// zero width) and must not be focusable or announced.
+.ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: max-content;
+  visibility: hidden;
+  pointer-events: none;
+  block-size: 0;
+  overflow: hidden;
+
+  // Let the row take its full natural width so the measurement isn't capped.
+  > .group {
+    max-inline-size: none;
+    inline-size: max-content;
+  }
+}
+
+.control {
+  min-inline-size: 0;
+  // Raise the focused control's slot above its neighbors so its focus ring is
+  // painted over the adjacent control's seam border (stacking must happen at the
+  // slot level — raising the control's inner element only affects its own slot).
+  position: relative;
+  // Establish a stacking context per slot so a control's internal z-indexes (for
+  // example an inline label's `z-index`) stay contained within its own slot and
+  // cannot paint over adjacent controls.
+  isolation: isolate;
+
+  &:focus-within {
+    z-index: 1;
+  }
+
+  &:empty {
+    display: none;
+  }
+
+  // Collapse the shared seam at the SLOT level: overlap each non-first slot onto
+  // its predecessor by one border width, so the two adjacent 1px borders coincide
+  // into a single 1px seam. Doing this on the slot (a plain flex item) rather than
+  // on the control's inner element keeps it identical for every control type —
+  // input, select trigger, segmented control, button — regardless of whether the
+  // inner element is auto-width or width:100%. The overlap is constant at rest and
+  // on focus, so showing the focus ring never shifts a control; the focused slot is
+  // raised (z-index above) so its full, colored border paints over the neighbor's
+  // seam without doubling.
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+  }
+}
+
+// When the group is stacked, the seam overlaps on the block axis instead of the
+// inline axis, and each slot fills the width. Placed after the base `.control` rules
+// so its higher specificity resolves in the intended order.
+.group.stacked > .control {
+  inline-size: 100%;
+
+  &.control-middle,
+  &.control-last {
+    margin-inline-start: 0;
+    margin-block-start: calc(-1 * #{awsui.$border-width-field});
+  }
+
+  // A control that detaches when the group wraps does not fuse into the control above
+  // it: instead of overlapping the seam, keep a gap so it reads as a separate control
+  // (its corners are restored by the control itself). Overrides the block overlap
+  // above (later + same specificity). Covers controls with a visible inline label and
+  // the built-in dismiss button (fully standalone).
+  &.control-labeled.control-middle,
+  &.control-labeled.control-last,
+  &.control-standalone.control-middle,
+  &.control-standalone.control-last {
+    margin-block-start: awsui.$space-scaled-xs;
+  }
+
+  // The standalone dismiss button is right-aligned within its full-width row.
+  &.control-standalone {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.hints {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
+// When the group wraps (stacks), the error / warning text is rendered inside the group,
+// between the stacked controls and the dismiss button. It is a full-width flex item in
+// the stacked column; the gap below it (before the dismiss button) is provided by the
+// dismiss slot's own top margin, so it only needs a small gap above.
+.inline-hints {
+  margin-block-start: awsui.$space-scaled-xxs;
+}
+
+.description {
+  @include styles.form-control-description;
+}

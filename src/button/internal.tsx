@@ -22,6 +22,7 @@ import {
   getTextFromSelector,
 } from '../internal/analytics/selectors';
 import { useButtonContext } from '../internal/context/button-context';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -145,6 +146,14 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
+    const {
+      isInControlGroup,
+      position: controlGroupPosition,
+      standaloneWhenStacked: inControlGroupStandalone,
+      stacked: inControlGroupStacked,
+      invalid: inControlGroupInvalid,
+      warning: inControlGroupWarning,
+    } = useControlGroupContext();
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
@@ -206,6 +215,12 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
       [styles['button-compact']]: __compact,
+      [styles['in-control-group']]: isInControlGroup,
+      [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
+      [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
+      [styles['in-control-group-stacked']]: isInControlGroup && inControlGroupStacked,
+      [styles['in-control-group-invalid']]: isInControlGroup && inControlGroupInvalid,
+      [styles['in-control-group-warning']]: isInControlGroup && inControlGroupWarning,
       [styles.link]: isAnchor,
     });
 

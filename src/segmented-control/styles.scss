@@ -48,6 +48,38 @@
   }
 }
 
+// Inside a ControlGroup the segment wrapper keeps its own border but fuses with
+// its neighbors: interior corners are squared and the shared seam is collapsed.
+.segment-part.in-control-group {
+  &.in-control-group-first {
+    @include styles.control-group-grouped-responsive('first', $radius: awsui.$border-radius-button);
+  }
+  &.in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle', $radius: awsui.$border-radius-button);
+  }
+  &.in-control-group-last {
+    @include styles.control-group-grouped-responsive('last', $radius: awsui.$border-radius-button);
+  }
+  &.in-control-group-only {
+    @include styles.control-group-grouped-responsive('only', $radius: awsui.$border-radius-button);
+  }
+}
+
+// When the group is stacked (JS-measured), the segment wrapper flips its fused
+// corners/seam to the block axis per position. The `stacked` class is on `.root`, so
+// scope from there. `only` needs no stacked treatment (no neighbors to fuse with).
+.root.in-control-group-stacked > .segment-part {
+  &.in-control-group-first {
+    @include styles.control-group-grouped-stacked('first', $radius: awsui.$border-radius-button);
+  }
+  &.in-control-group-middle {
+    @include styles.control-group-grouped-stacked('middle', $radius: awsui.$border-radius-button);
+  }
+  &.in-control-group-last {
+    @include styles.control-group-grouped-stacked('last', $radius: awsui.$border-radius-button);
+  }
+}
+
 .select {
   display: none;
 
@@ -56,10 +88,39 @@
   }
 }
 
+// Inside a ControlGroup the segmented control must stay as segments regardless of
+// viewport width; it must not collapse into the Select fallback (which would break
+// the fused row). Keep the segments shown and the Select hidden at all widths.
+.root.in-control-group {
+  > .segment-part {
+    display: inline-grid;
+  }
+
+  > .select {
+    display: none;
+  }
+
+  // When the ControlGroup is stacked (JS-measured), the segmented control fills the
+  // whole row like the other stacked controls: switch from inline-grid to a full-width
+  // grid so the wrapper stretches. box-sizing:border-box keeps the wrapper's own
+  // padding and border inside the 100% so it does not overflow the slot.
+  &.in-control-group-stacked > .segment-part {
+    display: grid;
+    inline-size: 100%;
+    box-sizing: border-box;
+  }
+}
+
 @for $i from 2 through 6 {
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
     grid-template-columns: repeat(#{$i}, auto);
+  }
+
+  // Inside a stacked ControlGroup the segments share the full row width equally
+  // instead of sizing to their content.
+  .root.in-control-group-stacked .segment-count-#{$i} {
+    grid-template-columns: repeat(#{$i}, 1fr);
   }
 }
 
