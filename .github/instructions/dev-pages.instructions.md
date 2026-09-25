@@ -4,8 +4,10 @@ applyTo: "pages/**"
 # Dev / demo page conventions
 - Build pages with the `SimplePage` helper (h1, content paddings, i18n, screenshot area), not
   hand-rolled bespoke scaffolding. WHY: consistent, low-boilerplate, avoids a11y violations.
-  EXCEPTION: an AppLayout demo page can't nest inside `SimplePage` (which is itself a content wrapper),
-  so bespoke AppLayout scaffolding is expected and correct there — don't flag it.
+  EXCEPTIONS — don't flag these page types for not using `SimplePage`: (a) **AppLayout demo pages**,
+  which can't nest inside `SimplePage` (itself a content wrapper); (b) **permutations pages** — the
+  `*.permutations.page.tsx` shape built from `createPermutations` + `PermutationsView` + `ScreenshotArea`
+  with a bare `<h1>` heading is the established structure for screenshot-matrix pages.
 - Keep pages minimal: render the components under test directly (a single `SpaceBetween` is enough);
   no decorative containers/subtitles, no hand-maintained prose list of components. WHY: test pages
   should isolate behavior; decorative structure and lists drift.
