@@ -11,12 +11,21 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
+
+// Carrier layer: the dismiss button's focus ring is drawn in a ::before pseudo-element, which can't
+// see a non-inheriting public property set on the button.
+$dismiss-tokens: style-api.resolve(style-api.combine((color), style-api.$focus-ring), carrier);
+@include style-api.register(mixins.$root-tokens, $dismiss-tokens);
+@include style-api.docs('root', mixins.$root-tokens);
+@include style-api.docs('dismissButton', $dismiss-tokens);
 
 .root {
   @include styles.styles-reset;
 }
 
 .dismiss-button {
+  @include style-api.carriers($dismiss-tokens);
   align-self: flex-start;
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
@@ -24,19 +33,21 @@
   border-inline: awsui.$border-width-field solid transparent;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
-  color: var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default);
+  color: style-api.value(
+    $dismiss-tokens,
+    color,
+    var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default)
+  );
   background-color: transparent;
   cursor: pointer;
 
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: 0px,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    @include style-api.focus-highlight(
+      $gutter-block: 0px,
+      $gutter-inline: 0px,
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
   }
 
@@ -46,7 +57,11 @@
   }
 
   &:hover {
-    color: var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover);
+    color: style-api.value(
+      $dismiss-tokens,
+      color,
+      var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover)
+    );
   }
 
   &-inline {
@@ -99,7 +114,7 @@
   @include mixins.token-box-styles();
 
   &-without-dismiss {
-    padding-inline-end: styles.$control-padding-horizontal;
+    padding-inline: style-api.value(mixins.$root-tokens, padding-inline, styles.$control-padding-horizontal);
   }
 }
 
@@ -123,22 +138,46 @@
 }
 
 .token-box-readonly {
-  border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
+  border-color: style-api.value(
+    mixins.$root-tokens,
+    border-color,
+    var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled)
+  );
+  background: style-api.value(
+    mixins.$root-tokens,
+    background-color,
+    var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content)
+  );
 
   > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
+    color: style-api.value(
+      $dismiss-tokens,
+      color,
+      var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled)
+    );
   }
 }
 
 .token-box-disabled {
   pointer-events: none;
-  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
+  border-color: style-api.value(
+    mixins.$root-tokens,
+    border-color,
+    var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled)
+  );
+  background: style-api.value(
+    mixins.$root-tokens,
+    background-color,
+    var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content)
+  );
   color: awsui.$color-text-disabled;
 
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
+    color: style-api.value(
+      $dismiss-tokens,
+      color,
+      var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled)
+    );
   }
 }
