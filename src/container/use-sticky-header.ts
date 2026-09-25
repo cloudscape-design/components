@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createContext, RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { createContext, RefObject, useLayoutEffect, useState } from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
+import { useHeaderStuck } from '../internal/components/sticky-header/use-header-stuck';
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
@@ -58,8 +59,6 @@ export const useStickyHeader = (
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
-  const [isStuck, setIsStuck] = useState(false);
-  const [isStuckAtBottom, setIsStuckAtBottom] = useState(false);
 
   useLayoutEffect(() => {
     if (rootRef.current) {
@@ -90,48 +89,8 @@ export const useStickyHeader = (
       }
     : {};
 
-  // "stuck" state, when the header has moved from its original posititon has a
-  // box-shadow, applied here by a "header-stuck" className
-  const checkIfStuck = useCallback(
-    ({ isTrusted, target, type }) => {
-      if (type === 'resize' && target === window && !isTrusted) {
-        // The window size didn't actually change, it was a synthetic event
-        return;
-      }
-      if (rootRef.current && headerRef.current) {
-        const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
+  const { isStuck, isStuckAtBottom } = useHeaderStuck(rootRef, headerRef, isSticky);
 
-        // Using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
-        const rootTop = Math.round(rootRef.current.getBoundingClientRect().top + rootTopBorderWidth);
-        const headerTop = Math.round(headerRef.current.getBoundingClientRect().top);
-        if (rootTop < headerTop) {
-          setIsStuck(true);
-        } else {
-          setIsStuck(false);
-        }
-
-        const rootBottom = Math.round(rootRef.current.getBoundingClientRect().bottom - rootTopBorderWidth);
-        const headerBottom = Math.round(headerRef.current.getBoundingClientRect().bottom);
-        if (rootBottom <= headerBottom) {
-          setIsStuckAtBottom(true);
-        } else {
-          setIsStuckAtBottom(false);
-        }
-      }
-    },
-    [rootRef, headerRef]
-  );
-
-  useEffect(() => {
-    if (isSticky) {
-      const controller = new AbortController();
-      window.addEventListener('scroll', checkIfStuck, { capture: true, signal: controller.signal });
-      window.addEventListener('resize', checkIfStuck, { signal: controller.signal });
-      return () => {
-        controller.abort();
-      };
-    }
-  }, [isSticky, checkIfStuck]);
   return {
     isSticky,
     isStuck,
