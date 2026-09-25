@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { useControlGroupContext } from '../internal/context/control-group-context';
+import { ControlGroupPosition } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -58,6 +58,7 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
+  __controlGroupPosition?: ControlGroupPosition | null;
 }
 
 function InternalInput(
@@ -100,6 +101,7 @@ function InternalInput(
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
     __fullWidth,
+    __controlGroupPosition: controlGroupPosition = null,
     style,
     prefix,
     suffix,
@@ -148,7 +150,6 @@ function InternalInput(
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
   const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
-  const { position: controlGroupPosition } = useControlGroupContext();
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;

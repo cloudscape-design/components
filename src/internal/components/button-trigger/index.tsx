@@ -10,7 +10,7 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { useControlGroupContext } from '../../context/control-group-context';
+import { ControlGroupPosition } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
@@ -42,6 +42,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
+  controlGroupPosition?: ControlGroupPosition | null;
 }
 
 const ButtonTrigger = (
@@ -67,12 +68,12 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
+    controlGroupPosition = null,
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const { position: controlGroupPosition } = useControlGroupContext();
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',

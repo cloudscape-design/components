@@ -12,7 +12,6 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
 import TabTrap from '../internal/components/tab-trap/index.js';
 import { Transition, TransitionStatus } from '../internal/components/transition';
-import { ControlGroupContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -199,18 +198,11 @@ const TransitionContent = ({
         style={dropdownStyle}
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
-          {/*
-            Reset the control-group position so controls rendered inside the dropdown
-            (e.g. a select filter input, or a segmented control in a date range picker
-            popover) do not inherit the grouped control styling.
-          */}
-          <ControlGroupContext.Provider value={{ position: null }}>
-            <DropdownContextProvider position={position}>
-              {header && <div className={testUtilStyles.header}>{header}</div>}
-              {content}
-              {footer && <div className={testUtilStyles.footer}>{footer}</div>}
-            </DropdownContextProvider>
-          </ControlGroupContext.Provider>
+          <DropdownContextProvider position={position}>
+            {header && <div className={testUtilStyles.header}>{header}</div>}
+            {content}
+            {footer && <div className={testUtilStyles.footer}>{footer}</div>}
+          </DropdownContextProvider>
         </div>
       </div>
     </div>
