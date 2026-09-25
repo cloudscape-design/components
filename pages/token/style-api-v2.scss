@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/styling' as styling;
+@use '../style-api/palette' as palette;
+
+.root {
+  @include styling.override {
+    background-color: palette.$genai-surface;
+    border-color: palette.$genai;
+    border-width: 2px;
+    border-start-start-radius: 4px;
+    border-start-end-radius: 4px;
+    border-end-start-radius: 4px;
+    border-end-end-radius: 4px;
+    padding-block: 4px;
+    padding-inline: 4px 0px;
+  }
+}
+
+.dismiss {
+  --awsui-style-focus-ring-color: #{palette.$genai};
+  --awsui-style-focus-ring-width: 2px;
+  --awsui-style-focus-ring-radius: 4px;
+
+  @include styling.override {
+    color: palette.$genai;
+
+    &:hover {
+      color: palette.$genai-hover;
+    }
+  }
+}
+
+// Disabled and read-only are applied as extra classes, because they are not element states the
+// consumer can target (double selectors bump specificity above the rules above).
+.root.root-muted {
+  @include styling.override {
+    background-color: palette.$surface-alt;
+    border-color: palette.$border-disabled;
+  }
+}
+
+.dismiss.dismiss-muted {
+  @include styling.override {
+    color: palette.$text-disabled;
+  }
+}
