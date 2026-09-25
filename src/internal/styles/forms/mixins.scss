@@ -191,8 +191,8 @@
   color: $color;
 }
 
-@mixin form-control-description {
-  color: awsui.$color-text-form-secondary;
+@mixin form-control-description($color: awsui.$color-text-form-secondary) {
+  color: $color;
   @include typography.font-body-s;
 }
 
