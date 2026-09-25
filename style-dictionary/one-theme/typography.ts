@@ -58,7 +58,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontSizeKeyValuePairsLabel: '14px',
   lineHeightKeyValuePairsLabel: '20px',
-  fontWeightKeyValuePairsLabel: '500',
+  fontWeightKeyValuePairsLabel: '400',
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   fontWeightBreadcrumbCurrent: '400',
