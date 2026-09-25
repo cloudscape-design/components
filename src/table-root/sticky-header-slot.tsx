@@ -3,6 +3,8 @@
 import React, { RefObject, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { useHeaderStuck } from '../internal/components/sticky-header/use-header-stuck';
 import { useStickyHeaderSync } from '../internal/components/sticky-header/use-sticky-header-sync';
 
@@ -19,6 +21,8 @@ interface StickyHeaderSlotProps {
   copyScrollerRef: RefObject<HTMLDivElement>;
   onScroll: (event: React.UIEvent) => void;
   offset: number;
+  // Grid layout aligns the copy by reusing the grid template; auto layout mirrors measured column widths.
+  isGrid: boolean;
   headChild: React.ReactNode;
 }
 
@@ -32,6 +36,7 @@ export default function StickyHeaderSlot({
   copyScrollerRef,
   onScroll,
   offset,
+  isGrid,
   headChild,
 }: StickyHeaderSlotProps) {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -48,6 +53,26 @@ export default function StickyHeaderSlot({
   // Tucks the real header up under the opaque copy by the header's height (shared shadow-copy core).
   useStickyHeaderSync({ realTableRef, realHeaderRef, copyHeaderRef, copyTableRef, tuckTargetRef });
   const { isStuck } = useHeaderStuck(rootRef, slotRef, true);
+
+  // Auto layout: grid mode aligns for free by reusing the grid template, but a native table-layout header
+  // has content-derived column widths the copy can't know. Measure each real header cell and pin the copy
+  // cell to that width under table-layout:fixed, so the pinned copy tracks the live column widths.
+  const syncAutoColumnWidths = useCallback(() => {
+    if (isGrid || !realHeaderRef.current || !copyHeaderRef.current) {
+      return;
+    }
+    const realCells = realHeaderRef.current.querySelectorAll<HTMLTableCellElement>('tr > *');
+    const copyCells = copyHeaderRef.current.querySelectorAll<HTMLTableCellElement>('tr > *');
+    for (let i = 0; i < copyCells.length && i < realCells.length; i++) {
+      copyCells[i].style.inlineSize = `${realCells[i].getBoundingClientRect().width}px`;
+    }
+  }, [isGrid, realHeaderRef]);
+  useLayoutEffect(() => {
+    syncAutoColumnWidths();
+  });
+  // Auto column widths shift when the real header resizes (viewport, content) — re-sync on those.
+  useResizeObserver(realHeaderRef, syncAutoColumnWidths);
+  useResizeObserver(realTableRef, syncAutoColumnWidths);
 
   // The copy is decorative: aria-hidden alone leaves its duplicated controls tabbable, so mark the slot
   // inert (imperatively — React 16 doesn't forward the inert attribute) to keep a single tab stop.
@@ -76,7 +101,13 @@ export default function StickyHeaderSlot({
       style={{ insetBlockStart: `${offset}px` }}
     >
       <div className={styles['sticky-copy-scroller']} ref={copyScrollerRef} onScroll={onScroll}>
-        <table ref={setCopyTable} role="table" className={clsx(styles.table, styles['table-grid'])}>
+        <table
+          ref={setCopyTable}
+          // Mirror the real table's role gating: grid mode needs role="table" (display:grid drops the
+          // native role); auto mode keeps the native role. The copy is aria-hidden + inert regardless.
+          role={isGrid ? 'table' : undefined}
+          className={clsx(styles.table, isGrid ? styles['table-grid'] : styles['table-copy-fixed'])}
+        >
           {headChild}
         </table>
       </div>

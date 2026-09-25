@@ -4,24 +4,24 @@ import React, { useMemo, useState } from 'react';
 
 import Box from '~components/box';
 import Header from '~components/header';
+import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
-import TableCell from '~components/table-cell';
+import TableBodyCell from '~components/table-body-cell';
 import TableHead from '~components/table-head';
 import TableHeaderCell from '~components/table-header-cell';
-import TableHeaderRow from '~components/table-header-row';
 import TableRoot, { TableRootProps } from '~components/table-root';
 import TableRow from '~components/table-row';
 
-// Sticky header (grid layout). The header pins to the top of the page as the body scrolls and stays
-// column-aligned under horizontal scroll (a shadow copy outside the horizontal scroller, kept aligned by
-// reusing the grid template). Wide fixed columns force horizontal scroll; many rows make the page taller
-// than the viewport so page scroll exercises the pin. The Name header carries a real, focusable sort
-// button — its aria-hidden copy in the pinned band is inert, so there is a single tab stop for it.
-// Page-scroll keyboard clearance is consumer guidance: pad your scroll root (here the document) by the
-// offset plus the header height so focus doesn't land under the pinned header.
+// Sticky header in both layout modes. The header pins to the top of the page as the body scrolls and
+// stays column-aligned under horizontal scroll (a shadow copy outside the horizontal scroller). Grid mode
+// keeps the copy aligned by reusing the grid template; auto mode mirrors the measured header-cell widths
+// under a fixed layout. The Name header carries a real, focusable sort button — its aria-hidden copy in
+// the pinned band is inert, so there is a single tab stop for it. Page-scroll keyboard clearance is
+// consumer guidance: pad your scroll root (here the document) by the offset plus the header height so
+// focus doesn't land under the pinned header.
 
-const COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
+const GRID_COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
   { size: 260 },
   { size: 260 },
   { size: 260 },
@@ -51,29 +51,42 @@ const makeRows = (n: number): Row[] =>
   }));
 
 export default function TableStickyHeaderPage() {
+  const [layout, setLayout] = useState<'grid' | 'auto'>('grid');
   const [ascending, setAscending] = useState(true);
   const rows = useMemo(() => {
     const direction = ascending ? 1 : -1;
     return makeRows(ROW_COUNT).sort((a, b) => direction * a.name.localeCompare(b.name));
   }, [ascending]);
 
+  const columnLayout: TableRootProps.ColumnLayout =
+    layout === 'grid' ? { type: 'grid', columns: GRID_COLUMNS } : { type: 'auto' };
+
   return (
     <Box padding="l">
       <SpaceBetween size="l">
-        <Box variant="h1">Table atomics — sticky header (grid layout)</Box>
+        <Box variant="h1">Table atomics — sticky header</Box>
         <Box color="text-body-secondary">
           Scroll the page down — the header pins to the top. Scroll the table sideways — the pinned header tracks the
-          columns.
+          columns. Switch between grid and auto layout to exercise both alignment paths.
         </Box>
+        <SegmentedControl
+          selectedId={layout}
+          onChange={({ detail }) => setLayout(detail.selectedId as 'grid' | 'auto')}
+          label="Column layout"
+          options={[
+            { id: 'grid', text: 'Grid layout' },
+            { id: 'auto', text: 'Auto layout' },
+          ]}
+        />
         <Header counter={`(${rows.length})`}>Resources</Header>
         <TableRoot
-          columnLayout={{ type: 'grid', columns: COLUMNS }}
+          columnLayout={columnLayout}
           ariaLabel="Resources"
           stickyHeader={true}
           stickyHeaderOffset={STICKY_OFFSET}
         >
           <TableHead>
-            <TableHeaderRow>
+            <TableRow>
               <TableHeaderCell ariaSort={ascending ? 'ascending' : 'descending'}>
                 <button
                   type="button"
@@ -87,16 +100,16 @@ export default function TableStickyHeaderPage() {
               <TableHeaderCell>Size</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
               <TableHeaderCell>Region</TableHeaderCell>
-            </TableHeaderRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {rows.map(row => (
               <TableRow key={row.id}>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.size}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.region}</TableCell>
+                <TableBodyCell>{row.name}</TableBodyCell>
+                <TableBodyCell>{row.type}</TableBodyCell>
+                <TableBodyCell>{row.size}</TableBodyCell>
+                <TableBodyCell>{row.status}</TableBodyCell>
+                <TableBodyCell>{row.region}</TableBodyCell>
               </TableRow>
             ))}
           </TableBody>

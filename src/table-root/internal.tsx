@@ -36,9 +36,10 @@ export default function InternalTableRoot({
   const tableContext = useMemo(() => ({ isGrid, gridTemplateColumns }), [isGrid, gridTemplateColumns]);
   const baseProps = getBaseProps(rest);
 
-  // The shadow-copy sticky header pins outside the horizontal scroller, so it can only align columns by
-  // reusing the grid template (MODE B). Auto layout would need content-derived width sync; not wired here.
-  const isSticky = !!stickyHeader && isGrid;
+  // The shadow-copy sticky header pins outside the horizontal scroller. In grid mode the copy aligns
+  // columns by reusing the same grid template; in auto (native table-layout) mode column widths are
+  // content-derived, so the copy mirrors the measured header-cell widths under a fixed layout.
+  const isSticky = !!stickyHeader;
 
   // A wide table's horizontal scroller isn't keyboard-reachable on its own, so a read-only table with no
   // focusable cell content can't be scrolled by keyboard. When the content overflows, expose the scroller
@@ -104,6 +105,7 @@ export default function InternalTableRoot({
             copyScrollerRef={copyScrollerRef}
             onScroll={handleScroll}
             offset={stickyHeaderOffset}
+            isGrid={isGrid}
             headChild={React.Children.toArray(children)[0]}
           />
         )}
