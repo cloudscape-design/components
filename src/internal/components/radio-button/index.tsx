@@ -28,6 +28,9 @@ export default React.forwardRef(function RadioButton(
     children,
     value,
     checked,
+    ariaLabel,
+    ariaLabelledby,
+    ariaDescribedby,
     description,
     disabled,
     controlId,
@@ -54,6 +57,9 @@ export default React.forwardRef(function RadioButton(
       controlClassName={styles['radio-control']}
       outlineClassName={styles.outline}
       label={children}
+      ariaLabel={ariaLabel}
+      ariaLabelledby={ariaLabelledby}
+      ariaDescribedby={ariaDescribedby}
       description={description}
       disabled={disabled}
       readOnly={readOnly}
