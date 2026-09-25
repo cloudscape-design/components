@@ -50,6 +50,11 @@
 
 .grouped {
   @include styles.grouped-control;
+
+  &.grouped-middle,
+  &.grouped-last {
+    border-inline-start: none;
+  }
 }
 
 .select {
