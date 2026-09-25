@@ -53,7 +53,13 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
 
 @mixin docs($name, $map) {
   @if enabled() {
-    @include toolkit.docs($name, $map);
+    // A slot without tokens is a class hook, e.g. for :has() state selectors. The toolkit mixin can't
+    // interpolate an empty token list, so the marker is emitted directly in the format it parses.
+    @if $map == () {
+      /* awsui:style-api-slot name=#{$name} tokens= */
+    } @else {
+      @include toolkit.docs($name, $map);
+    }
   }
 }
 
