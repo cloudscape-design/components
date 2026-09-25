@@ -511,3 +511,22 @@ $inline-label-border-radius: 2px;
   @include control-group-invalid-reset-leading-seam;
   border-inline-end-color: awsui.$color-border-input-default;
 }
+
+// When the group is STACKED (wrapped) and in an invalid/warning state, the controls fuse
+// into one vertical unit and only the unit's exterior is painted. The inline-start
+// (thick indicator) and inline-end borders run down the whole column, so they stay
+// painted on every control; the block-axis seams BETWEEN controls are interior and must
+// not be painted. These reset the interior block edge(s) back to the neutral field
+// border, per position.
+
+// A stacked control that has a control fused ABOVE it (not the first): its block-start
+// edge is an interior seam — reset it.
+@mixin control-group-invalid-reset-block-start-seam {
+  border-block-start-color: awsui.$color-border-input-default;
+}
+
+// A stacked control that has a control fused BELOW it (not the last): its block-end edge
+// is an interior seam — reset it.
+@mixin control-group-invalid-reset-block-end-seam {
+  border-block-end-color: awsui.$color-border-input-default;
+}
