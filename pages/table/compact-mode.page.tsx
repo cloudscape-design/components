@@ -36,9 +36,28 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
     `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
 };
 
+const columnsWithActions: TableProps.ColumnDefinition<Instance>[] = [
+  ...columnsConfig,
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: item => (
+      <Button variant="inline-link" ariaLabel={`Download ${item.id}`}>
+        Download
+      </Button>
+    ),
+  },
+];
+
+const contentDisplayPreferenceWithActions = {
+  ...contentDisplayPreference,
+  options: [...contentDisplayPreference.options, { id: 'actions', label: 'Actions' }],
+};
+
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     ...defaultPreferences,
+    contentDisplay: [...defaultPreferences.contentDisplay, { id: 'actions', visible: true }],
     // set to "compact" for default "compact density setting".
     contentDensity: 'compact',
   });
@@ -112,7 +131,7 @@ export default function App() {
           stripedRows={preferences.stripedRows}
           contentDensity={preferences.contentDensity}
           wrapLines={preferences.wrapLines}
-          columnDefinitions={columnsConfig}
+          columnDefinitions={columnsWithActions}
           items={items}
           pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
           filter={
@@ -135,7 +154,7 @@ export default function App() {
                 options: pageSizeOptions,
               }}
               contentDisplayPreference={{
-                ...contentDisplayPreference,
+                ...contentDisplayPreferenceWithActions,
                 ...contentDisplayPreferenceI18nStrings,
               }}
               wrapLinesPreference={{

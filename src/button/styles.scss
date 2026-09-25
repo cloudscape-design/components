@@ -155,6 +155,15 @@ $tokens: style-api.resolve($props, carrier);
         $color: $color
       );
     }
+
+    &.variant-inline-link {
+      @include style-api.focus-highlight(
+        $gutter-block: awsui.$space-button-inline-link-focus-outline-gutter,
+        $radius: $radius,
+        $width: $width,
+        $color: $color
+      );
+    }
   }
 
   &.button-no-text {
