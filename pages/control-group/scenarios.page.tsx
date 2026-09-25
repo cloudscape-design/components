@@ -19,9 +19,9 @@ const operators: SelectProps.Option[] = [
 ];
 
 const aggregations: SelectProps.Option[] = [
-  { value: 'count_values', label: 'count_values' },
   { value: 'sum', label: 'sum' },
   { value: 'avg', label: 'avg' },
+  { value: 'count_values', label: 'count_values' },
 ];
 
 const multiOptions: MultiselectProps.Option[] = Array.from({ length: 8 }, (_, i) => ({
@@ -39,23 +39,6 @@ function InputAndSelect() {
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
-      <Input ariaLabel="Name" value={value} onChange={event => setValue(event.detail.value)} placeholder="Name" />
-      <Select
-        ariaLabel="Operator"
-        selectedOption={operator}
-        options={operators}
-        onChange={event => setOperator(event.detail.selectedOption)}
-      />
-      <Input ariaLabel="Value" value="" onChange={() => {}} placeholder="Value" />
-    </ControlGroup>
-  );
-}
-
-function InputAndSelectWithInlineLabels() {
-  const [value, setValue] = useState('service');
-  const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
-  return (
-    <ControlGroup>
       <Input
         inlineLabelText="Name"
         ariaLabel="Name"
@@ -64,13 +47,12 @@ function InputAndSelectWithInlineLabels() {
         placeholder="Name"
       />
       <Select
-        inlineLabelText="Operator"
         ariaLabel="Operator"
         selectedOption={operator}
         options={operators}
         onChange={event => setOperator(event.detail.selectedOption)}
       />
-      <Input inlineLabelText="Value" ariaLabel="Value" value="" onChange={() => {}} placeholder="Value" />
+      <Input ariaLabel="Value" value="" onChange={() => {}} placeholder="Value" />
     </ControlGroup>
   );
 }
@@ -89,7 +71,6 @@ function SelectAndMultiselect() {
         onChange={event => setAggregation(event.detail.selectedOption)}
       />
       <Multiselect
-        inlineLabelText="Labels"
         ariaLabel="Labels"
         inlineTokens={true}
         filteringType="auto"
@@ -184,10 +165,6 @@ export default function ControlGroupScenariosPage() {
         <div>
           <h2>Input + Select + Input</h2>
           <InputAndSelect />
-        </div>
-        <div>
-          <h2>Input + Select + Input with inline labels</h2>
-          <InputAndSelectWithInlineLabels />
         </div>
         <div>
           <h2>Select + Multiselect</h2>
