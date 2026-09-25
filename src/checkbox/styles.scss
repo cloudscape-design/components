@@ -40,20 +40,3 @@ $description-tokens: style-api.resolve((color), public);
     $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
   );
 }
-
-// double selectors bump specificity above the abstract switch rules applied to the same elements
-@if style-api.enabled() {
-  .label.label {
-    color: style-api.value($label-tokens, color, awsui.$color-text-form-default);
-    &.label-disabled {
-      color: style-api.value($label-tokens, color, awsui.$color-text-control-disabled);
-    }
-  }
-
-  .description.description {
-    color: style-api.value($description-tokens, color, awsui.$color-text-form-secondary);
-    &.description-disabled {
-      color: style-api.value($description-tokens, color, awsui.$color-text-control-disabled);
-    }
-  }
-}
