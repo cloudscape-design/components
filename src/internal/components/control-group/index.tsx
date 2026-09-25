@@ -27,7 +27,7 @@ export default function InternalControlGroup({ children, ...props }: InternalCon
         const position: ControlGroupPosition =
           controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
         return (
-          <div key={key ? String(key) : undefined} className={clsx(styles.control, styles[`control-${position}`])}>
+          <div key={key ? String(key) : index} className={clsx(styles.control, styles[`control-${position}`])}>
             <ControlGroupContext.Provider value={{ position }}>{child}</ControlGroupContext.Provider>
           </div>
         );
