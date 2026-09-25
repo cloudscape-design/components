@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { AppLayoutProps } from '../../../app-layout/interfaces';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { BreadcrumbsSlotContextType } from '../contexts';
 import TriggerButton from '../toolbar/trigger-button';
 import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 
@@ -27,19 +28,32 @@ export function ToolbarContainer({ children, hasAiDrawer }: ToolbarContainerProp
 interface ToolbarBreadcrumbsSectionProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
+  breadcrumbsExternallyOwned?: boolean;
+  reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
   includeTestUtils?: boolean;
 }
 
 export function ToolbarBreadcrumbsSection({
   ownBreadcrumbs,
   discoveredBreadcrumbs,
+  breadcrumbsExternallyOwned,
+  reportOwnBreadcrumbsProps,
   includeTestUtils = false,
 }: ToolbarBreadcrumbsSectionProps) {
   return (
     <div
-      className={clsx(toolbarStyles['universal-toolbar-breadcrumbs'], includeTestUtils && testutilStyles.breadcrumbs)}
+      className={clsx(
+        toolbarStyles['universal-toolbar-breadcrumbs'],
+        breadcrumbsExternallyOwned && toolbarStyles['external-breadcrumbs'],
+        includeTestUtils && testutilStyles.breadcrumbs
+      )}
+      data-awsui-external-breadcrumbs={breadcrumbsExternallyOwned || undefined}
     >
-      <BreadcrumbsSlot ownBreadcrumbs={ownBreadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
+      <BreadcrumbsSlot
+        ownBreadcrumbs={ownBreadcrumbs}
+        discoveredBreadcrumbs={discoveredBreadcrumbs}
+        reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
+      />
     </div>
   );
 }

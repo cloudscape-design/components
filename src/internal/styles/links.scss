@@ -20,8 +20,8 @@
   );
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
-  text-decoration-line: map.get($variant, 'decoration-line');
-  text-decoration-color: map.get($variant, 'decoration-color');
+  text-decoration-line: style-api.value($tokens, text-decoration-line, map.get($variant, 'decoration-line'));
+  text-decoration-color: style-api.value($tokens, text-decoration-color, map.get($variant, 'decoration-color'));
 
   @include styles.with-motion {
     transition-property: color, text-decoration;
@@ -52,8 +52,8 @@
   &:active,
   &:focus,
   &:hover {
-    text-decoration-line: underline;
-    text-decoration-color: map.get($variant, 'decoration-color-hover');
+    text-decoration-line: style-api.value($tokens, text-decoration-line, underline);
+    text-decoration-color: style-api.value($tokens, text-decoration-color, map.get($variant, 'decoration-color-hover'));
   }
 }
 
