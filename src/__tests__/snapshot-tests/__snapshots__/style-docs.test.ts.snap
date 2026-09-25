@@ -147,6 +147,35 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for token matches the snapshot: token 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+      ],
+    },
+    {
+      "name": "dismissButton",
+      "tokens": [
+        "color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -155,5 +184,6 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "token",
 ]
 `;

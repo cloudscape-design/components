@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface DismissButtonProps {
+  className?: string;
   disabled?: boolean;
   readOnly?: boolean;
   onDismiss?: NonCancelableEventHandler;
@@ -26,7 +27,7 @@ interface DismissButtonProps {
 export default forwardRef(DismissButton);
 
 function DismissButton(
-  { disabled, dismissLabel, onDismiss, readOnly, inline }: DismissButtonProps,
+  { className, disabled, dismissLabel, onDismiss, readOnly, inline }: DismissButtonProps,
   ref: Ref<HTMLButtonElement>
 ) {
   const isOneTheme = isThemeActive(Theme.OneTheme);
@@ -44,7 +45,8 @@ function DismissButton(
         styles['dismiss-button'],
         legacyTestingStyles['dismiss-button'],
         testUtilStyles['dismiss-button'],
-        inline && styles['dismiss-button-inline']
+        inline && styles['dismiss-button-inline'],
+        className
       )}
       aria-disabled={disabled || readOnly ? true : undefined}
       onClick={() => {
