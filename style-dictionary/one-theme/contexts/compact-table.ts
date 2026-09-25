@@ -17,8 +17,9 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxl: '{spaceXl}',
   spaceScaledXxxl: '{spaceXxl}',
 
-  spaceExpandToggleFocusOutlineGutter: '1px',
   spaceTableCellVertical: '2px',
+  spaceExpandToggleFocusOutlineGutter: '1px',
+  spaceButtonInlineLinkFocusOutlineGutter: '1px',
 };
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
