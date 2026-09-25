@@ -8329,6 +8329,16 @@ in the native control.",
       "type": "boolean",
     },
     {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies the name of the control used in HTML forms.",
       "name": "name",
       "optional": true,

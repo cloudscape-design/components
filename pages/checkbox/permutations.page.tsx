@@ -58,6 +58,22 @@ const permutations = createPermutations<CheckboxProps>([
     children: ['Some label'],
     description: ['Short description'],
   },
+  {
+    invalid: [true],
+    disabled: [false, true],
+    checked: [false, true],
+    indeterminate: [false, true],
+    children: ['Some label'],
+    description: ['', 'Short description'],
+  },
+  {
+    invalid: [true],
+    readOnly: [true],
+    checked: [false, true],
+    indeterminate: [false, true],
+    children: ['Some label'],
+    description: ['Short description'],
+  },
 ]);
 
 export default function CheckboxPermutations() {
