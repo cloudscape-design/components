@@ -128,7 +128,7 @@ export interface LinkProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+  nativeAttributes?: NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export namespace LinkProps {
