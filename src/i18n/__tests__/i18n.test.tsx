@@ -6,9 +6,16 @@ import { render } from '@testing-library/react';
 import * as IntlMessageFormat from 'intl-messageformat';
 import range from 'lodash/range';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
 import { namespace } from '../../../lib/components/i18n/context';
 import { MESSAGES, TestComponent } from './test-component';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
 
 afterEach(() => {
   jest.restoreAllMocks();
@@ -175,4 +182,73 @@ it('initializes an IntlMessageFormat instance once per message per render', () =
     </I18nProvider>
   );
   expect(constructorSpy).toHaveBeenCalledTimes(8);
+});
+
+describe('resilience against malformed messages', () => {
+  // AWSUI-62316: a message with a stale variable contract used to crash the whole page.
+
+  it('renders the component tree when a message references variables the component does not provide', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelFunction: '{operator, select, equals {equals} other {other}} label',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[brokenMessages]} locale="en">
+        <TestComponent />
+      </I18nProvider>
+    );
+
+    // Broken message degrades to empty string; the rest of the tree still renders.
+    expect(container.querySelector('#top-level-function')).toHaveTextContent('');
+    expect(container.querySelector('#top-level-string')).toBeInTheDocument();
+    expect(warnOnce).toHaveBeenCalledWith('I18nProvider', expect.stringContaining('Failed to format message'));
+  });
+
+  it('renders the component tree when a message has invalid ICU syntax', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelString: 'Unclosed {argument',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[MESSAGES, brokenMessages]} locale="en">
+        <TestComponent />
+      </I18nProvider>
+    );
+
+    // Unparseable message falls back; sibling messages are unaffected.
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('');
+    expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+  });
+
+  it('renders the component tree when a message is malformed and the value is provided via props', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelString: 'Unclosed {argument',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[brokenMessages]} locale="en">
+        <TestComponent topLevelString="Provided string" />
+      </I18nProvider>
+    );
+
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('Provided string');
+  });
 });

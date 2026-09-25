@@ -4,6 +4,8 @@
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import IntlMessageFormat from 'intl-messageformat';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { CustomHandler } from '../context';
 import { getMatchableLocales } from './locales';
 import { normalizeMessages } from './messages';
@@ -83,14 +85,36 @@ export class I18nFormatter {
       }
 
       // Lazily create an IntlMessageFormat object for this key.
-      intlMessageFormat = new IntlMessageFormat(message, this._locale);
+      // Invalid ICU syntax falls back to the provided value instead of crashing the render.
+      try {
+        intlMessageFormat = new IntlMessageFormat(message, this._locale);
+      } catch (error) {
+        warnOnce('I18nProvider', `Malformed message "${cacheKey}" for locale "${this._locale}": ${error}`);
+        return provided;
+      }
       this._localeFormatterCache.set(cacheKey, intlMessageFormat);
     }
 
+    // Formatting can throw at runtime (e.g. a message/component contract mismatch),
+    // so degrade gracefully instead of crashing the consumer's page.
     if (customHandler) {
-      return customHandler(args => intlMessageFormat.format(args) as string);
+      // The returned formatFn may be invoked later during render, so guard it. It must return a string.
+      return customHandler(args => {
+        try {
+          return intlMessageFormat.format(args) as string;
+        } catch (error) {
+          warnOnce('I18nProvider', `Failed to format message "${cacheKey}" for locale "${this._locale}": ${error}`);
+          return '';
+        }
+      });
     }
-    // Assuming `ReturnValue extends string` since a customHandler wasn't provided.
-    return intlMessageFormat.format() as ReturnValue;
+    try {
+      // Assuming `ReturnValue extends string` since a customHandler wasn't provided.
+      return intlMessageFormat.format() as ReturnValue;
+    } catch (error) {
+      warnOnce('I18nProvider', `Failed to format message "${cacheKey}" for locale "${this._locale}": ${error}`);
+      // Fall back so the component's own default string logic takes over.
+      return provided;
+    }
   }
 }
