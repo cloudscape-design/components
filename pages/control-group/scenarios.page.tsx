@@ -38,14 +38,8 @@ function InputAndSelect() {
   const [value, setValue] = useState('service');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
-    <ControlGroup>
-      <Input
-        inlineLabelText="Name"
-        ariaLabel="Name"
-        value={value}
-        onChange={event => setValue(event.detail.value)}
-        placeholder="Name"
-      />
+    <ControlGroup inlineLabelText="Label matcher">
+      <Input ariaLabel="Name" value={value} onChange={event => setValue(event.detail.value)} placeholder="Name" />
       <Select
         ariaLabel="Operator"
         selectedOption={operator}
@@ -61,9 +55,8 @@ function SelectAndMultiselect() {
   const [aggregation, setAggregation] = useState<SelectProps.Option>(aggregations[0]);
   const [selected, setSelected] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   return (
-    <ControlGroup>
+    <ControlGroup inlineLabelText="Aggregation">
       <Select
-        inlineLabelText="Aggregation"
         ariaLabel="Aggregation"
         filteringType="auto"
         selectedOption={aggregation}
@@ -87,7 +80,7 @@ function InputAndSegmentedControl() {
   const [value, setValue] = useState('');
   const [selectedId, setSelectedId] = useState('and');
   return (
-    <ControlGroup>
+    <ControlGroup inlineLabelText="Expression">
       <Input
         ariaLabel="Expression"
         value={value}
@@ -108,7 +101,7 @@ function InputWithIconAndSelect() {
   const [value, setValue] = useState('');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
-    <ControlGroup>
+    <ControlGroup inlineLabelText="Search">
       <Input
         type="search"
         ariaLabel="Search"
@@ -130,7 +123,7 @@ function InputWithPrefixSuffixAndSelect() {
   const [value, setValue] = useState('100');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
-    <ControlGroup>
+    <ControlGroup inlineLabelText="Amount">
       <Input
         ariaLabel="Amount"
         prefix="$"
@@ -152,7 +145,7 @@ function InputWithPrefixSuffixAndSelect() {
 function SingleControl() {
   const [value, setValue] = useState('');
   return (
-    <ControlGroup>
+    <ControlGroup inlineLabelText="Only">
       <Input ariaLabel="Only" value={value} onChange={event => setValue(event.detail.value)} placeholder="Only" />
     </ControlGroup>
   );

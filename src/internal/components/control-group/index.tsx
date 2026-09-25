@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { BaseComponentProps } from '../../../types/base-component';
 import { getBaseProps } from '../../base-component';
 import { ControlGroupContext, ControlGroupPosition } from '../../context/control-group-context';
@@ -12,16 +14,26 @@ import styles from './styles.css.js';
 
 export interface InternalControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
+  /**
+   * Displays a single inline label above the whole group.
+   */
+  inlineLabelText?: string;
 }
 
-export default function InternalControlGroup({ children, ...props }: InternalControlGroupProps) {
+export default function InternalControlGroup({ children, inlineLabelText, ...props }: InternalControlGroupProps) {
   const baseProps = getBaseProps(props);
+  const labelId = useUniqueId('control-group-label');
 
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  return (
-    <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root)}>
+  const group = (
+    <div
+      {...baseProps}
+      role="group"
+      aria-labelledby={inlineLabelText ? labelId : undefined}
+      className={clsx(baseProps.className, styles.root)}
+    >
       {flattenedChildren.map((child, index) => {
         const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
         const position: ControlGroupPosition =
@@ -33,5 +45,16 @@ export default function InternalControlGroup({ children, ...props }: InternalCon
         );
       })}
     </div>
+  );
+
+  return inlineLabelText ? (
+    <div className={styles['inline-label-wrapper']}>
+      <label id={labelId} className={styles['inline-label']}>
+        {inlineLabelText}
+      </label>
+      <div className={styles['inline-label-trigger-wrapper']}>{group}</div>
+    </div>
+  ) : (
+    group
   );
 }

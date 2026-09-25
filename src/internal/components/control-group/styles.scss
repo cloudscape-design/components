@@ -5,6 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/forms/mixins' as forms;
 
 .root {
   @include styles.styles-reset;
@@ -33,4 +34,16 @@
   &.control-last {
     margin-inline-start: calc(-1 * #{awsui.$border-width-field});
   }
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+}
+
+.inline-label {
+  @include forms.inline-label;
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
 }
