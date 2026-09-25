@@ -15,9 +15,9 @@ const suite: TestSuite = {
       description: 'Responsive permutations',
       path: 'tabs/responsive-permutations',
       screenshotType: 'screenshotArea',
-      setup: async () => {
+      setup: async ({ page }) => {
         // Wait for effect to set scroll offset.
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await page.waitForJsTimers(500);
       },
     },
     {
