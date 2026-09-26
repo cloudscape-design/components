@@ -411,6 +411,187 @@ describe('Modal component', () => {
     });
   });
 
+  describe('hideDismissButton property', () => {
+    it('does not render the dismiss button when set', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findDismissButton()).toBeNull();
+    });
+
+    it('renders the dismiss button when unset or false', () => {
+      expect(renderModal({ visible: true }).findDismissButton()).not.toBeNull();
+      expect(renderModal({ visible: true, hideDismissButton: false }).findDismissButton()).not.toBeNull();
+    });
+
+    it('still dismisses when pressing ESC', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when pressing ESC with focus on a child element', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      const onDismissSpy = jest.fn();
+      renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: onDismissSpy,
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+
+      act(() => {
+        textFieldRef!.focus();
+        createWrapper(textFieldRef!).keydown(KeyCode.escape);
+      });
+
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when clicking the overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('never reports the closeButton reason, because there is no button to activate', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      const reasons = onDismissSpy.mock.calls.map(([event]) => event.detail.reason);
+      expect(reasons).toEqual(['keyboard', 'overlay']);
+    });
+
+    it('lets consumers block dismissal by ignoring the keyboard and overlay reasons', () => {
+      // The documented way to force a choice: the component reports the intent,
+      // the consumer decides whether to act on it.
+      const setVisible = jest.fn();
+      const wrapper = renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: ({ detail }) => {
+          if (detail.reason === 'keyboard' || detail.reason === 'overlay') {
+            return;
+          }
+          setVisible(false);
+        },
+      });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      expect(setVisible).not.toHaveBeenCalled();
+    });
+
+    it('still traps focus', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findFocusLock()).not.toBeNull();
+    });
+  });
+
+  describe('overlay cursor', () => {
+    it('does not present the overlay as clickable when hideDismissButton is set', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.getElement()).toHaveClass(styles['hide-dismiss-button']);
+    });
+
+    it('presents the overlay as clickable by default', () => {
+      const wrapper = renderModal({ visible: true });
+      expect(wrapper.getElement()).not.toHaveClass(styles['hide-dismiss-button']);
+    });
+  });
+
+  describe('focus retention on overlay press', () => {
+    it('prevents the default action when pressing the overlay, so focus is not lost to the body', () => {
+      const wrapper = renderModal({ visible: true });
+      const prevented = !fireEvent.mouseDown(wrapper.getElement());
+      expect(prevented).toBe(true);
+    });
+
+    it('does not prevent the default action when pressing inside the dialog', () => {
+      const wrapper = renderModal({ visible: true });
+      const prevented = !fireEvent.mouseDown(wrapper.findDialog().getElement());
+      expect(prevented).toBe(false);
+    });
+
+    it('still dismisses on an overlay click', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('still stays open when the press starts in the dialog and is released on the overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.findDialog().getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('initial focus when hideDismissButton is set', () => {
+    it('focuses the header text', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: 'Assign a region' });
+      const headerText = wrapper.findHeader().findByClassName(styles['header--text'])!.getElement();
+      expect(document.activeElement).toBe(headerText);
+      expect(headerText).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('focuses the header text in preference to focusable content', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      const wrapper = renderModal({
+        visible: true,
+        hideDismissButton: true,
+        header: 'Assign a region',
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+      expect(document.activeElement).toBe(wrapper.findHeader().findByClassName(styles['header--text'])!.getElement());
+      expect(document.activeElement).not.toBe(textFieldRef);
+    });
+
+    it('falls back to the dialog when no header is provided', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: undefined });
+      expect(document.activeElement).toBe(wrapper.findDialog().getElement());
+      expect(wrapper.findDialog().getElement()).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('falls back to the dialog when the header is an empty string', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: '' });
+      expect(document.activeElement).toBe(wrapper.findDialog().getElement());
+    });
+
+    it('leaves focus on the dismiss button when the dismiss button is rendered', () => {
+      const wrapper = renderModal({ visible: true, header: 'Assign a region' });
+      expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
+    });
+
+    it('does not make the header text focusable when the dismiss button is rendered', () => {
+      const wrapper = renderModal({ visible: true, header: 'Assign a region' });
+      expect(wrapper.findHeader().findByClassName(styles['header--text'])!.getElement()).not.toHaveAttribute(
+        'tabindex'
+      );
+    });
+
+    it('keeps the dialog focusable so focus stays inside it when a non-focusable area is clicked', () => {
+      // Regression guard for 0180c66aa, which removed this and silently broke ESC after clicking
+      // non-focusable modal content: focus fell through to the document body, outside the element
+      // that carries the ESC handler.
+      expect(renderModal({ visible: true }).findDialog().getElement()).toHaveAttribute('tabindex', '-1');
+      expect(renderModal({ visible: true, hideDismissButton: true }).findDialog().getElement()).toHaveAttribute(
+        'tabindex',
+        '-1'
+      );
+    });
+  });
+
   describe('Tab traps', () => {
     it('exists', () => {
       const wrapper = renderModal({ visible: true });

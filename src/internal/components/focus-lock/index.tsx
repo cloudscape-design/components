@@ -13,6 +13,12 @@ export interface FocusLockProps {
   disabled?: boolean;
   autoFocus?: boolean;
   restoreFocus?: boolean;
+  /**
+   * Element to focus when `autoFocus` captures focus. Defaults to the first
+   * focusable element in the container. Use this to focus an element that isn't
+   * keyboard-reachable, such as a heading with `tabIndex={-1}`.
+   */
+  autoFocusTarget?: React.RefObject<HTMLElement>;
   children: React.ReactNode;
 }
 
@@ -24,7 +30,7 @@ export interface FocusLockRef {
 }
 
 function FocusLock(
-  { className, disabled, autoFocus, restoreFocus, children }: FocusLockProps,
+  { className, disabled, autoFocus, restoreFocus, autoFocusTarget, children }: FocusLockProps,
   ref: React.Ref<FocusLockRef>
 ) {
   const restoreFocusTargetRef = useRef<HTMLOrSVGElement | null>(null);
@@ -52,9 +58,13 @@ function FocusLock(
     };
     if (autoFocus && !disabled) {
       assignRestoreFocusTarget();
-      focusFirst();
+      if (autoFocusTarget?.current) {
+        autoFocusTarget.current.focus();
+      } else {
+        focusFirst();
+      }
     }
-  }, [autoFocus, disabled]);
+  }, [autoFocus, disabled, autoFocusTarget]);
 
   // Restore focus if `restoreFocus` is set, and `disabled` changes from false to true.
   const [previouslyDisabled, setPreviouslyDisabled] = useState(!!disabled);

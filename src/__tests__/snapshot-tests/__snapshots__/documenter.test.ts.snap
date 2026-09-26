@@ -19732,6 +19732,16 @@ plus the header height and the footer height.",
       "type": "number",
     },
     {
+      "defaultValue": "false",
+      "description": "Determines whether the close button is displayed in the header.
+When set to \`true\`, the close button isn't rendered, and the user resolves
+the modal by choosing one of the actions in the footer.
+ESC and clicks outside the modal still call \`onDismiss\`.",
+      "name": "hideDismissButton",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",

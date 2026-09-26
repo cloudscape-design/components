@@ -26,6 +26,7 @@ function ModalWithAnalyticsFunnel({
   analyticsMetadata,
   baseComponentProps,
   size = 'medium',
+  hideDismissButton = false,
   ...props
 }: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
   const modalId = useUniqueId();
@@ -59,6 +60,7 @@ function ModalWithAnalyticsFunnel({
         >
           <InternalModalAsFunnel
             size={size}
+            hideDismissButton={hideDismissButton}
             {...props}
             {...baseComponentProps}
             {...dataAttributes}
@@ -70,7 +72,14 @@ function ModalWithAnalyticsFunnel({
   );
 }
 
-export default function Modal({ size = 'medium', position = 'center', width, height, ...props }: ModalProps) {
+export default function Modal({
+  size = 'medium',
+  position = 'center',
+  hideDismissButton = false,
+  width,
+  height,
+  ...props
+}: ModalProps) {
   const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
@@ -79,6 +88,7 @@ export default function Modal({ size = 'medium', position = 'center', width, hei
       props: {
         size,
         position,
+        hideDismissButton,
         disableContentPaddings: props.disableContentPaddings,
         flowType: analyticsMetadata.flowType,
         width,
@@ -99,6 +109,7 @@ export default function Modal({ size = 'medium', position = 'center', width, hei
         baseComponentProps={baseComponentProps}
         size={size}
         position={position}
+        hideDismissButton={hideDismissButton}
         width={width}
         height={height}
         {...props}
@@ -110,6 +121,7 @@ export default function Modal({ size = 'medium', position = 'center', width, hei
     <InternalModal
       size={size}
       position={position}
+      hideDismissButton={hideDismissButton}
       width={width}
       height={height}
       {...props}

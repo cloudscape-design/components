@@ -91,6 +91,7 @@ type PortaledModalProps = Omit<InternalModalProps, 'modalRoot' | 'getModalRoot' 
 // useContainerQuery needs its targeted element to exist on the first render in order to work properly.
 function PortaledModal({
   size,
+  hideDismissButton = false,
   visible,
   header,
   children,
@@ -120,6 +121,7 @@ function PortaledModal({
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const isRefresh = useVisualRefresh();
 
@@ -198,6 +200,13 @@ function PortaledModal({
 
   const onOverlayMouseDown = (event: React.MouseEvent) => {
     lastMouseDownElementRef.current = event.target as HTMLElement;
+    // The overlay can't hold focus, so pressing it would blur whatever is focused inside the
+    // dialog and leave focus on the document body. That takes focus out of the dialog, which
+    // breaks focus containment and stops ESC from reaching the handler on the dialog element.
+    // Preventing the default action keeps focus where it is.
+    if (event.target === refObject.current) {
+      event.preventDefault();
+    }
   };
   const onOverlayClick = (event: React.MouseEvent) => {
     const overlay = refObject.current;
@@ -220,6 +229,12 @@ function PortaledModal({
 
   const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
+
+  // Without a dismiss button there is no predictable first focusable element, so focus the
+  // heading to announce what the modal is about. When no header is given, fall back to the
+  // dialog.
+  const hasHeader = header !== undefined && header !== null && header !== false && header !== '';
+  const autoFocusTarget = hideDismissButton ? (hasHeader ? headerTextRef : dialogRef) : undefined;
 
   const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
     useModalDimensions({
@@ -245,6 +260,7 @@ function PortaledModal({
             className={clsx(
               styles.root,
               { [styles.hidden]: !visible },
+              hideDismissButton && styles['hide-dismiss-button'],
               baseProps.className,
               isRefresh && styles.refresh
             )}
@@ -260,6 +276,7 @@ function PortaledModal({
               disabled={!visible}
               autoFocus={true}
               restoreFocus={true}
+              autoFocusTarget={autoFocusTarget}
               className={clsx(styles['focus-lock'], styles[`position-${position}`])}
             >
               <div
@@ -271,8 +288,12 @@ function PortaledModal({
                   hasCustomWidth && styles['custom-width'],
                   hasCustomHeight && styles['custom-height']
                 )}
+                ref={dialogRef}
                 style={dialogCustomStyles}
                 onKeyDown={escKeyHandler}
+                // Keeps the dialog focusable so that clicking a non-focusable area inside it moves
+                // focus to the dialog rather than the document body.
+                tabIndex={-1}
                 {...metadataAttribute}
               >
                 <div className={clsx(styles.container, hasCustomHeight && styles['custom-height-container'])}>
@@ -281,23 +302,30 @@ function PortaledModal({
                       variant="h2"
                       __disableActionsWrapping={true}
                       actions={
-                        <div
-                          {...getAnalyticsMetadataAttribute({
-                            action: 'dismiss',
-                          } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
-                        >
-                          <InternalButton
-                            ariaLabel={closeAriaLabel}
-                            className={styles['dismiss-control']}
-                            variant="modal-dismiss"
-                            iconName="close"
-                            formAction="none"
-                            onClick={onCloseButtonClick}
-                          />
-                        </div>
+                        hideDismissButton ? undefined : (
+                          <div
+                            {...getAnalyticsMetadataAttribute({
+                              action: 'dismiss',
+                            } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
+                          >
+                            <InternalButton
+                              ariaLabel={closeAriaLabel}
+                              className={styles['dismiss-control']}
+                              variant="modal-dismiss"
+                              iconName="close"
+                              formAction="none"
+                              onClick={onCloseButtonClick}
+                            />
+                          </div>
+                        )
                       }
                     >
-                      <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
+                      <span
+                        ref={headerTextRef}
+                        id={headerId}
+                        className={styles['header--text']}
+                        {...(autoFocusTarget === headerTextRef && { tabIndex: -1 })}
+                      >
                         {header}
                       </span>
                     </InternalHeader>
