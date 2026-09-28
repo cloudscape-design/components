@@ -76,15 +76,6 @@ const permutations: Array<{ inlineLabelText?: string; children: React.ReactNode 
       </>
     ),
   },
-  // Input + Select, with group label
-  {
-    children: (
-      <>
-        <Input ariaLabel="Name" value="service" onChange={noop} />
-        <Select ariaLabel="Operator" selectedOption={operators[0]} options={operators} onChange={noop} />
-      </>
-    ),
-  },
 ];
 
 export default function ControlGroupPermutations() {
