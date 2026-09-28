@@ -413,8 +413,8 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     overflow-y: visible;
-    // A transform, even the identity, makes this box a containing block for fixed
-    // descendants and a stacking context. Drop it once the reveal has finished.
+    // Keeping translateY(0) here would leave this box as a stacking context, so a dropdown
+    // opened from the content would paint underneath whatever follows the section.
     transform: none;
   }
 }
