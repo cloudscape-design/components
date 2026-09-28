@@ -8,7 +8,7 @@ import { StyleDictionary } from '../../utils/interfaces.js';
  * Buttons, Tables, etc.
  */
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorTextBodyDefault: '{colorTextNotificationDefault}',
+  colorTextBodyDefault: { light: '{colorNeutral800}', dark: '{colorNeutral250}' },
   colorTextLinkDefault: '{colorTextNotificationLinkDefault}',
   colorTextLinkHover: '{colorTextNotificationLinkHover}',
   colorTextLinkInvertedDefault: '{colorTextNotificationDefault}',
