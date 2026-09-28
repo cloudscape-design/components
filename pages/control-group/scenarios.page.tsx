@@ -39,13 +39,7 @@ function InputAndSelect() {
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   return (
     <ControlGroup>
-      <Input
-        inlineLabelText="Name"
-        ariaLabel="Name"
-        value={value}
-        onChange={event => setValue(event.detail.value)}
-        placeholder="Name"
-      />
+      <Input ariaLabel="Name" value={value} onChange={event => setValue(event.detail.value)} placeholder="Name" />
       <Select
         ariaLabel="Operator"
         selectedOption={operator}
@@ -63,7 +57,6 @@ function SelectAndMultiselect() {
   return (
     <ControlGroup>
       <Select
-        inlineLabelText="Aggregation"
         ariaLabel="Aggregation"
         filteringType="auto"
         selectedOption={aggregation}

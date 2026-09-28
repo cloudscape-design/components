@@ -78,7 +78,6 @@ const permutations: Array<{ inlineLabelText?: string; children: React.ReactNode 
   },
   // Input + Select, with group label
   {
-    inlineLabelText: 'Group label',
     children: (
       <>
         <Input ariaLabel="Name" value="service" onChange={noop} />
@@ -93,9 +92,7 @@ export default function ControlGroupPermutations() {
     <PermutationsPage title="Control group permutations" i18n={{}}>
       <PermutationsView
         permutations={permutations}
-        render={permutation => (
-          <ControlGroup inlineLabelText={permutation.inlineLabelText}>{permutation.children}</ControlGroup>
-        )}
+        render={permutation => <ControlGroup>{permutation.children}</ControlGroup>}
       />
     </PermutationsPage>
   );
