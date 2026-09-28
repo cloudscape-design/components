@@ -61,7 +61,8 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * @deprecated Use `headerText` instead.
+   * Heading content. Accepts any ReactNode.
+   * When both `header` and `headerText` are provided, `headerText` takes precedence.
    */
   header?: React.ReactNode;
 
@@ -110,4 +111,12 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * Actions for the header. Use with the default or container variant.
    */
   headerActions?: React.ReactNode;
+
+  /**
+   * When set to `true`, clicking the header area does not expand or collapse the section.
+   * Only the caret icon button triggers the expand/collapse toggle.
+   *
+   * Use this when the `header` slot contains interactive controls (inputs, selects, dropdowns)
+   */
+  disableHeaderExpand?: boolean;
 }
