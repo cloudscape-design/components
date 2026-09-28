@@ -29,7 +29,7 @@ import TextContent from '~components/text-content';
 import Toggle from '~components/toggle';
 import ToggleButton from '~components/toggle-button';
 
-import styles from './cloudwatch-logs-insights.scss';
+import styles from './styles.scss';
 
 // ─── Mock log data ────────────────────────────────────────────────────────────
 
@@ -512,6 +512,7 @@ function isParsedField(item: LogEntry | ParsedField): item is ParsedField {
 }
 
 export default function App() {
+  const [navigationOpen, setNavigationOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<LogEntry[]>([LOG_ENTRIES[0]]);
   const [activeTab, setActiveTab] = useState('discovered-fields');
   const [savedQueriesOpen, setSavedQueriesOpen] = useState(false);
@@ -558,6 +559,8 @@ export default function App() {
           toolsClose: 'Close help',
         }}
         disableContentPaddings={true}
+        navigationOpen={navigationOpen}
+        onNavigationChange={({ detail }) => setNavigationOpen(detail.open)}
         navigation={
           <SideNavigation header={{ text: 'CloudWatch', href: '#' }} activeHref="#logs-insights" items={NAV_ITEMS} />
         }
