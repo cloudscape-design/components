@@ -6,17 +6,48 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
 @use './motion';
 
-$progress-height: var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size);
-$progress-border-radius: var(#{custom-props.$progressBarBorderRadius}, 10px);
-$progress-background-color: var(
-  #{custom-props.$progressBarBackgroundColor},
-  awsui.$color-background-progress-bar-default
+// `progressBar` is the <progress> element. Its value fill is a pseudo-element of the same node, so it
+// is themed through the `color` token of this slot (foreground), while `background-color` is the track.
+// Carrier layer: the tokens are re-anchored on the element so the ::-webkit-progress-* and
+// ::-moz-progress-bar pseudo-elements can read them.
+$progress-bar-tokens: style-api.resolve((color, background-color, border-radius, block-size), carrier);
+$progress-percentage-tokens: style-api.resolve((color, font-size, font-weight), public);
+@include style-api.register($progress-bar-tokens, $progress-percentage-tokens);
+@include style-api.docs('progressBar', $progress-bar-tokens);
+@include style-api.docs('progressPercentage', $progress-percentage-tokens);
+
+$progress-height: style-api.value(
+  $progress-bar-tokens,
+  block-size,
+  var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
 );
-$progress-value-background-color: var(
-  #{custom-props.$progressValueBackgroundColor},
-  awsui.$color-background-progress-bar-value-default
+$progress-border-radius: style-api.value(
+  $progress-bar-tokens,
+  border-radius,
+  var(#{custom-props.$progressBarBorderRadius}, 10px)
+);
+$progress-background-color: style-api.value(
+  $progress-bar-tokens,
+  background-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
+);
+$progress-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
+);
+$progress-flash-background-color: style-api.value(
+  $progress-bar-tokens,
+  background-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash)
+);
+$progress-flash-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-flash)
 );
 
 .root {
@@ -79,7 +110,19 @@ $progress-value-background-color: var(
 }
 
 .percentage {
-  /* used in test-utils */
+  display: inline-block;
+  font-family: awsui.$font-family-base;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  line-height: awsui.$line-height-body-s;
+  letter-spacing: awsui.$letter-spacing-body-s;
+  color: style-api.value($progress-percentage-tokens, color, awsui.$color-text-small);
+  font-size: style-api.value($progress-percentage-tokens, font-size, awsui.$font-size-body-s);
+  font-weight: style-api.value($progress-percentage-tokens, font-weight, styles.$font-weight-normal);
+
+  &.percentage-flash {
+    color: style-api.value($progress-percentage-tokens, color, currentColor);
+  }
 }
 
 @mixin general-progress-background-style {
@@ -101,6 +144,7 @@ $progress-value-background-color: var(
 }
 
 .progress {
+  @include style-api.carriers($progress-bar-tokens);
   inline-size: 100%;
   margin-inline-end: awsui.$space-s;
   min-inline-size: 0;
@@ -131,22 +175,16 @@ $progress-value-background-color: var(
   }
 
   &.progress-flash {
-    background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+    background-color: $progress-flash-background-color;
 
     &::-webkit-progress-bar {
-      background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+      background-color: $progress-flash-background-color;
     }
     &::-webkit-progress-value {
-      background-color: var(
-        #{custom-props.$progressValueBackgroundColor},
-        awsui.$color-background-progress-bar-value-flash
-      );
+      background-color: $progress-flash-value-background-color;
     }
     &::-moz-progress-bar {
-      background-color: var(
-        #{custom-props.$progressValueBackgroundColor},
-        awsui.$color-background-progress-bar-value-flash
-      );
+      background-color: $progress-flash-value-background-color;
     }
   }
 }
