@@ -42,6 +42,14 @@ export default class ControlGroupWrapper extends ComponentWrapper<HTMLDivElement
   }
 
   /**
+   * Finds the group-level visible inline label rendered when the `inlineLabelText`
+   * prop is set, if present.
+   */
+  findInlineLabel(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['inline-label']);
+  }
+
+  /**
    * Finds the remove button rendered when the `dismissible` prop is set, if present.
    */
   findDismissButton(): ButtonWrapper | null {

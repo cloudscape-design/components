@@ -147,13 +147,18 @@ export const InternalButton = React.forwardRef(
 
     const buttonContext = useButtonContext();
     const {
-      isInControlGroup,
+      isInControlGroup: isInControlGroupContext,
       position: controlGroupPosition,
       standaloneWhenStacked: inControlGroupStandalone,
       stacked: inControlGroupStacked,
       invalid: inControlGroupInvalid,
       warning: inControlGroupWarning,
+      customStandalone: inControlGroupCustomStandalone,
     } = useControlGroupContext();
+    // A custom `actions` button fuses with the group in a row, but when the group wraps
+    // (stacks) it must render as an ordinary, detached button — so drop the group's
+    // fusing/field styling entirely in that state (the slot handles right-alignment).
+    const isInControlGroup = isInControlGroupContext && !(inControlGroupCustomStandalone && inControlGroupStacked);
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');

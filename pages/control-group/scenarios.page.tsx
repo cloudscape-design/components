@@ -93,7 +93,8 @@ function InteractiveLabelMatcher<Prefix extends string>({ prefix, labeled }: { p
     </Button>
   ) : (
     <ControlGroup
-      ariaLabel="Label matcher"
+      ariaLabel={labeled ? undefined : 'Label matcher'}
+      inlineLabelText={labeled ? 'Label matcher' : undefined}
       dismissible={true}
       onDismiss={() => set(removedKey, true)}
       i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label matcher' }}
@@ -101,21 +102,19 @@ function InteractiveLabelMatcher<Prefix extends string>({ prefix, labeled }: { p
       warningText={warningText}
     >
       <Input
-        inlineLabelText="Label"
+        ariaLabel="Label name"
         value={name}
         placeholder="Label name"
         onChange={e => set(nameKey, e.detail.value)}
       />
       <Select
-        ariaLabel={labeled ? undefined : 'Operator'}
-        inlineLabelText={labeled ? 'Operator' : undefined}
+        ariaLabel="Operator"
         selectedOption={operator}
         options={OPERATORS}
         onChange={e => set(operatorKey, e.detail.selectedOption.value ?? '=')}
       />
       <Input
-        ariaLabel={labeled ? undefined : 'Label value'}
-        inlineLabelText={labeled ? 'Value' : undefined}
+        ariaLabel="Label value"
         value={value}
         placeholder="Label value"
         onChange={e => set(valueKey, e.detail.value)}
@@ -175,10 +174,9 @@ function InteractiveDisabledControl() {
       : undefined;
 
   return (
-    <ControlGroup ariaLabel="Aggregation" errorText={errorText}>
+    <ControlGroup inlineLabelText="Aggregation" errorText={errorText}>
       <Select
         ariaLabel="Aggregation"
-        inlineLabelText="Aggregation"
         selectedOption={aggregation}
         options={AGGREGATIONS}
         onChange={e => setUrlParams({ aggregation: e.detail.selectedOption.value ?? 'sum' })}
@@ -272,26 +270,20 @@ function MultipleGroupsInLine() {
   return (
     <SpaceBetween size="xs" direction="horizontal" alignItems="end">
       <ControlGroup
-        ariaLabel="Metric"
+        inlineLabelText="Metric"
         dismissible={true}
         onDismiss={() => {}}
         i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove metric' }}
       >
-        <Input
-          ariaLabel="Metric"
-          inlineLabelText="Metric"
-          value=""
-          placeholder="Select metric name"
-          onChange={() => {}}
-        />
+        <Input ariaLabel="Metric" value="" placeholder="Select metric name" onChange={() => {}} />
       </ControlGroup>
       <ControlGroup
-        ariaLabel="Label"
+        inlineLabelText="Label"
         dismissible={true}
         onDismiss={() => {}}
         i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label' }}
       >
-        <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
+        <Input ariaLabel="Label name" value="" placeholder="Label name" onChange={() => {}} />
         <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
         <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
       </ControlGroup>
@@ -305,29 +297,17 @@ function MultipleGroupsInLine() {
 function LongControlGroup() {
   return (
     <ControlGroup
-      ariaLabel="Long label matcher"
+      inlineLabelText="Long label matcher"
       dismissible={true}
       onDismiss={() => {}}
       i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove clause' }}
     >
-      <Input
-        ariaLabel="Label name"
-        inlineLabelText="Label"
-        value="service"
-        placeholder="Label name"
-        onChange={() => {}}
-      />
+      <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={() => {}} />
       <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
       <Input ariaLabel="Label value" value="production" placeholder="Label value" onChange={() => {}} />
-      <Select
-        ariaLabel="Aggregation"
-        inlineLabelText="Aggregation"
-        selectedOption={AGGREGATIONS[1]}
-        options={AGGREGATIONS}
-        onChange={() => {}}
-      />
+      <Select ariaLabel="Aggregation" selectedOption={AGGREGATIONS[1]} options={AGGREGATIONS} onChange={() => {}} />
       <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
-      <Input ariaLabel="Limit" inlineLabelText="Limit" value="100" placeholder="Limit" onChange={() => {}} />
+      <Input ariaLabel="Limit" value="100" placeholder="Limit" onChange={() => {}} />
     </ControlGroup>
   );
 }
@@ -407,6 +387,16 @@ const scenarios: Scenario[] = [
     description:
       'A group with many controls, so its natural row width exceeds the 465px stack threshold. Narrow the browser to observe at which container width it collapses / stacks.',
     content: <LongControlGroup />,
+  },
+  {
+    key: 'search',
+    title: '',
+    description: '',
+    content: (
+      <ControlGroup onDismiss={() => {}} actions={<Button>Search</Button>}>
+        <Input ariaLabel="Label name" value="" placeholder="Label name" onChange={() => {}} />
+      </ControlGroup>
+    ),
   },
 ];
 

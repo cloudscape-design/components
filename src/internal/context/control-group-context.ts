@@ -45,6 +45,15 @@ export interface ControlGroupContextProps {
    */
   standaloneWhenStacked?: boolean;
   /**
+   * True for a consumer-provided button in the custom `actions` slot. In a row it
+   * fuses with the group like other controls, but when the group wraps (stacks) it
+   * renders as an ordinary, detached button (the slot right-aligns it) instead of the
+   * full-width, field-styled control the group's fusing would otherwise impose. Unlike
+   * the built-in dismiss button, its content is authored by the consumer, so the group
+   * does not swap its icon/text.
+   */
+  customStandalone?: boolean;
+  /**
    * True when the group is in an error state. Consumed by the built-in dismiss button
    * (which has no validation state of its own) so it paints its border — including the
    * seam it shares with the last control — in the error color, continuing the group's

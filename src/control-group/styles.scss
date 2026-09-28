@@ -6,6 +6,35 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+// Group-level visible label, styled like an individual control's inline label. It
+// names the whole group and sits ON the fused row's top border (a notch that partially
+// overlays it), matching an individual control's inline label rather than floating in
+// its own line above the row.
+//
+// This reuses the exact mechanism a field uses (see forms `inline-label` /
+// `inline-label-trigger-wrapper`): the label is a normal in-flow block that takes its
+// own line, then the element BELOW it is pulled up by 7px so the label's lower edge
+// tucks onto the control's top border (the label's background gradient masks the border
+// it overlays). Here the label is a block above `.group`, and `.group` is that element
+// pulled up.
+.inline-label {
+  @include styles.inline-label;
+  // The mixin sets `display: inline-block` (so the background hugs the text, not the
+  // full group width) and `position: relative; z-index: 2` (so the label paints above
+  // the fields below, including a focus-raised field). Keep it inline-block: as the
+  // only content on its line in the block `.root`, it still sits on its own line with
+  // `.group` dropping below it, but its box is only as wide as the label text.
+}
+
+// Pull the row up under the in-flow label by the same 7px overlap a field's trigger
+// wrapper uses, so the label notches onto the row's top border instead of sitting in a
+// separate line above it. The hidden ghost (width measurement only) is unaffected on
+// the block axis, and stacking is unaffected (the first control is still full-width
+// below the label).
+.root:has(> .inline-label) > .group {
+  margin-block-start: -7px;
+}
+
 .root {
   @include styles.styles-reset;
   display: block;

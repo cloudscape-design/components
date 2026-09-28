@@ -45,16 +45,10 @@ const MULTI_OPTIONS: MultiselectProps.Option[] = Array.from({ length: 100 }, (_,
 const permutations = createPermutations<ControlGroupProps>([
   {
     // Function: a single Select + a Button child (Button remains a supported control).
-    ariaLabel: ['Function'],
+    inlineLabelText: ['Function'],
     children: [
       <>
-        <Select
-          ariaLabel="Function"
-          inlineLabelText="Function"
-          selectedOption={FUNCTIONS[0]}
-          options={FUNCTIONS}
-          onChange={() => {}}
-        />
+        <Select ariaLabel="Function" selectedOption={FUNCTIONS[0]} options={FUNCTIONS} onChange={() => {}} />
         <Button iconName="close" variant="icon" ariaLabel="Remove function" />
       </>,
     ],
@@ -62,25 +56,18 @@ const permutations = createPermutations<ControlGroupProps>([
   },
   {
     // Aggregation: two Selects + built-in remove button via `dismissible`.
-    ariaLabel: ['Aggregation'],
+    inlineLabelText: ['Aggregation'],
     dismissible: [true],
     onDismiss: [() => {}],
     i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove aggregation' }],
     children: [
       <>
-        <Select
-          ariaLabel="Aggregation"
-          inlineLabelText="Aggregation"
-          selectedOption={AGGREGATIONS[0]}
-          options={AGGREGATIONS}
-          onChange={() => {}}
-        />
+        <Select ariaLabel="Aggregation" selectedOption={AGGREGATIONS[0]} options={AGGREGATIONS} onChange={() => {}} />
         <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
       </>,
       <>
         <Select
           ariaLabel="Aggregation"
-          inlineLabelText="Aggregation"
           selectedOption={null}
           placeholder="Select function..."
           options={AGGREGATIONS}
@@ -99,31 +86,22 @@ const permutations = createPermutations<ControlGroupProps>([
   },
   {
     // Metric: a single Input + built-in remove button.
-    ariaLabel: ['Metric'],
+    inlineLabelText: ['Metric'],
     dismissible: [true],
     onDismiss: [() => {}],
     i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove metric' }],
-    children: [
-      <Input
-        key="metric"
-        ariaLabel="Metric"
-        inlineLabelText="Metric"
-        value=""
-        placeholder="Select metric name"
-        onChange={() => {}}
-      />,
-    ],
+    children: [<Input key="metric" ariaLabel="Metric" value="" placeholder="Select metric name" onChange={() => {}} />],
     errorText: [undefined, 'Metric "unknown_metric_xyz" not found. Check the metric name or select from suggestions.'],
   },
   {
     // Label: Input + operator Select + Input + built-in remove button.
-    ariaLabel: ['Label'],
+    inlineLabelText: ['Label'],
     dismissible: [true],
     onDismiss: [() => {}],
     i18nStrings: [{ dismissText: 'Remove', dismissAriaLabel: 'Remove label' }],
     children: [
       <>
-        <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
+        <Input ariaLabel="Label name" value="" placeholder="Label name" onChange={() => {}} />
         <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
         <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
       </>,
@@ -176,7 +154,8 @@ export default function () {
         permutations={permutations}
         render={permutation => (
           <ControlGroup
-            ariaLabel={permutation.ariaLabel}
+            ariaLabel={permutation.inlineLabelText ? undefined : permutation.ariaLabel}
+            inlineLabelText={permutation.inlineLabelText}
             dismissible={permutation.dismissible}
             onDismiss={permutation.onDismiss}
             description={permutation.description}

@@ -210,6 +210,32 @@ describe('ControlGroup', () => {
       expect(group).not.toHaveAttribute('aria-label');
     });
 
+    test('renders a visible inline label and uses it as the group accessible name', () => {
+      const { container } = render(
+        <ControlGroup inlineLabelText="Label matcher">
+          <Input value="a" onChange={() => {}} />
+        </ControlGroup>
+      );
+      const wrapper = createWrapper(container).findControlGroup()!;
+      const label = wrapper.findInlineLabel();
+      expect(label).not.toBeNull();
+      expect(label!.getElement()).toHaveTextContent('Label matcher');
+
+      // The group is named by the visible label via aria-labelledby, not aria-label.
+      const group = wrapper.find('[role="group"]')!.getElement();
+      expect(group).toHaveAttribute('aria-labelledby', label!.getElement().id);
+      expect(group).not.toHaveAttribute('aria-label');
+    });
+
+    test('does not warn about naming when only inlineLabelText is provided', () => {
+      render(
+        <ControlGroup inlineLabelText="Label matcher">
+          <Input value="a" onChange={() => {}} />
+        </ControlGroup>
+      );
+      expect(warnOnce).not.toHaveBeenCalledWith('ControlGroup', expect.stringContaining('name the group'));
+    });
+
     test('merges the group aria-describedby with a describedby inherited from an enclosing FormField', () => {
       const { container } = render(
         <FormField label="Field" description="Field description" errorText="Field error">
