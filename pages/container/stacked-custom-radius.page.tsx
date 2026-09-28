@@ -16,7 +16,7 @@ export default function StackedCustomRadiusContainer() {
           data-testid="bg-first"
           header="First stacked container"
           variant="stacked"
-          style={{ root: { borderRadius: '24px', background: '#f0f8ff' } }}
+          style={{ root: { borderRadius: '24px', background: 'light-dark(#f0f8ff, #000)' } }}
         >
           Container content
         </Container>
@@ -24,7 +24,7 @@ export default function StackedCustomRadiusContainer() {
           data-testid="bg-middle"
           header="Middle stacked container"
           variant="stacked"
-          style={{ root: { borderRadius: '24px', background: '#fff8f0' } }}
+          style={{ root: { borderRadius: '24px', background: 'light-dark(#fff8f0, #000)' } }}
         >
           Container content
         </Container>
@@ -32,7 +32,7 @@ export default function StackedCustomRadiusContainer() {
           data-testid="bg-last"
           header="Last stacked container"
           variant="stacked"
-          style={{ root: { borderRadius: '24px', background: '#f0fff8' } }}
+          style={{ root: { borderRadius: '24px', background: 'light-dark(#f0fff8, #000)' } }}
         >
           Container content
         </Container>
