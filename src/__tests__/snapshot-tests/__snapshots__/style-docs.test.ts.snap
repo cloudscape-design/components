@@ -147,6 +147,32 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for slider matches the snapshot: slider 1`] = `
+{
+  "slots": [
+    {
+      "name": "track",
+      "tokens": [
+        "background-color",
+      ],
+    },
+    {
+      "name": "range",
+      "tokens": [
+        "background-color",
+      ],
+    },
+    {
+      "name": "handle",
+      "tokens": [
+        "background-color",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -155,5 +181,6 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "slider",
 ]
 `;

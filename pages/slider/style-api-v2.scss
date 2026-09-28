@@ -1,0 +1,43 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.track {
+  --awsui-style-background-color: #{palette.$surface-alt};
+}
+
+.range {
+  --awsui-style-background-color: #{palette.$accent};
+}
+
+.handle {
+  --awsui-style-background-color: #{palette.$accent};
+  --awsui-style-border-radius: 4px;
+
+  // Consumers use element states instead of dedicated state tokens.
+  &:hover {
+    --awsui-style-background-color: #{palette.$accent-hover};
+  }
+
+  &:focus,
+  &:active {
+    --awsui-style-background-color: #{palette.$accent-active};
+  }
+}
+
+// Disabled and read-only are applied as extra classes, because they are not element states the
+// consumer can target (double selectors bump specificity above the rules above).
+.range.range-muted {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+}
+
+.handle.handle-muted {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+}
+
+.handle.handle-readonly {
+  --awsui-style-background-color: #{palette.$text-muted};
+}
