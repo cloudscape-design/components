@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.root {
+  --awsui-style-background-color: #{palette.$genai-surface};
+  --awsui-style-border-color: #{palette.$genai};
+  --awsui-style-border-width: 2px;
+  --awsui-style-border-radius: 4px;
+  --awsui-style-padding-block: 4px;
+  --awsui-style-padding-inline: 4px 0px;
+}
+
+.dismiss {
+  --awsui-style-color: #{palette.$genai};
+  --awsui-style-focus-ring-color: #{palette.$genai};
+  --awsui-style-focus-ring-width: 2px;
+  --awsui-style-focus-ring-radius: 4px;
+
+  &:hover {
+    --awsui-style-color: #{palette.$genai-hover};
+  }
+}
+
+// Disabled and read-only are applied as extra classes, because they are not element states the
+// consumer can target (double selectors bump specificity above the rules above).
+.root.root-muted {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-border-color: #{palette.$border-disabled};
+}
+
+.dismiss.dismiss-muted {
+  --awsui-style-color: #{palette.$text-disabled};
+}

@@ -5,25 +5,47 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './constants' as constants;
+@use '../internal/styles/style-api' as style-api;
+
+// Public layer: every read below happens on the token box itself, the element that carries the
+// consumer's `root` class.
+$root-tokens: style-api.resolve(
+  (background-color, border-color, border-width, border-radius, padding-block, padding-inline),
+  public
+);
 
 @mixin token-box-styles {
   position: relative;
   block-size: 100%;
-  border-block: awsui.$border-width-token solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
-  border-inline: awsui.$border-width-token solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
-  padding-block-start: awsui.$space-token-vertical;
-  padding-block-end: awsui.$space-token-vertical;
-  padding-inline-start: styles.$control-padding-horizontal;
-  padding-inline-end: awsui.$space-xxs;
+  border-block: style-api.value($root-tokens, border-width, awsui.$border-width-token) solid
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
+    );
+  border-inline: style-api.value($root-tokens, border-width, awsui.$border-width-token) solid
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
+    );
+  padding-block: style-api.value($root-tokens, padding-block, awsui.$space-token-vertical);
+  padding-inline: style-api.value(
+    $root-tokens,
+    padding-inline,
+    #{styles.$control-padding-horizontal} #{awsui.$space-xxs}
+  );
   display: flex;
   align-items: flex-start;
-  background: var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background);
-  border-start-start-radius: awsui.$border-radius-token;
-  border-start-end-radius: awsui.$border-radius-token;
-  border-end-start-radius: awsui.$border-radius-token;
-  border-end-end-radius: awsui.$border-radius-token;
+  background: style-api.value(
+    $root-tokens,
+    background-color,
+    var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background)
+  );
+  border-start-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token);
+  border-start-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token);
+  border-end-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token);
+  border-end-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token);
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 }
@@ -32,19 +54,30 @@
   position: relative;
   block-size: constants.$token-max-height-inline;
   max-block-size: constants.$token-max-height-inline;
-  border-block: awsui.$border-width-field solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
-  border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
-  padding-inline-start: awsui.$space-scaled-xxs;
-  padding-inline-end: awsui.$space-scaled-xxs;
+  border-block: style-api.value($root-tokens, border-width, awsui.$border-width-field) solid
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
+    );
+  border-inline: style-api.value($root-tokens, border-width, awsui.$border-width-field) solid
+    style-api.value(
+      $root-tokens,
+      border-color,
+      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
+    );
+  padding-inline: style-api.value($root-tokens, padding-inline, awsui.$space-scaled-xxs);
   display: flex;
   align-items: center;
-  background: var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background);
-  border-start-start-radius: awsui.$border-radius-token-inline;
-  border-start-end-radius: awsui.$border-radius-token-inline;
-  border-end-start-radius: awsui.$border-radius-token-inline;
-  border-end-end-radius: awsui.$border-radius-token-inline;
+  background: style-api.value(
+    $root-tokens,
+    background-color,
+    var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background)
+  );
+  border-start-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token-inline);
+  border-start-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token-inline);
+  border-end-start-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token-inline);
+  border-end-end-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-token-inline);
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
   max-inline-size: 100%;
