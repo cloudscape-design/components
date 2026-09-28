@@ -33919,7 +33919,7 @@ Defaults to \`normal\` if not specified.",
 
 When \`variant="normal"\`, if a description or tags are set, icon size should be \`normal\`.
 
-When \`variant="inline"\`, icon size should be \`small\`.",
+When \`variant="inline"\`, icon size should be \`x-small\`.",
       "isDefault": false,
       "name": "icon",
     },
