@@ -7,9 +7,13 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import Button from '~components/button';
 import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import Divider from '~components/divider';
+import Form from '~components/form';
+import FormField from '~components/form-field';
 import Input from '~components/input';
+import Popover from '~components/popover';
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
+import Token from '~components/token';
 
 import { SimplePage } from '../app/templates';
 
@@ -247,9 +251,12 @@ const resizableContainerStyle: React.CSSProperties = {
   borderRadius: 8,
 };
 
-// Below this container width the builder switches to its wrapped presentation. The exact
-// value is arbitrary for the demo — it just needs to flip as the container is resized.
+// Below this container width the builder switches to its wrapped presentation, and below
+// COMPACT_THRESHOLD it collapses further to compact tokens (each clause becomes a token
+// whose popover holds the full editing form). Both values are arbitrary for the demo —
+// they just need to flip as the container is resized.
 const WRAP_THRESHOLD = 640;
+const COMPACT_THRESHOLD = 320;
 
 // A query builder that wraps based on whether it fits: the builder measures its own
 // width and, once it drops below a threshold, switches every clause to the wrapped
@@ -301,10 +308,15 @@ function ControlledQueryBuilder() {
   const [clauses, setClauses] = useState<ControlledClause[]>(INITIAL_CONTROLLED_CLAUSES);
   const [nextId, setNextId] = useState(INITIAL_CONTROLLED_CLAUSES.length + 1);
 
-  // Measure the builder's own width and wrap once it no longer "fits" (below an
-  // arbitrary threshold). Start not wrapped until measured.
+  // Measure the builder's own width. It has three responsive states:
+  //   - wide (>= WRAP_THRESHOLD): clauses in a row.
+  //   - wrapped (< WRAP_THRESHOLD): clauses stacked vertically with dividers.
+  //   - compact (< COMPACT_THRESHOLD): each clause collapses to a dismissible token whose
+  //     popover holds the full editing form.
+  // Start wide until measured.
   const [width, measureRef] = useContainerQuery(entry => entry.contentBoxWidth);
-  const wrapped = width !== null && width < WRAP_THRESHOLD;
+  const compact = width !== null && width < COMPACT_THRESHOLD;
+  const wrapped = width !== null && width < WRAP_THRESHOLD && !compact;
   // The wrap decision is pushed down to every clause so they all stack together.
   const wrapBehavior: ControlGroupProps.WrapBehavior = wrapped ? 'wrap' : 'nowrap';
 
@@ -315,6 +327,71 @@ function ControlledQueryBuilder() {
   const removeClause = (id: number) => setClauses(prev => prev.filter(clause => clause.id !== id));
   const updateClause = (id: number, patch: Partial<ControlledClause>) =>
     setClauses(prev => prev.map(clause => (clause.id === id ? { ...clause, ...patch } : clause)));
+
+  // The editing controls for a clause, shared by the inline layout and the popover.
+  const renderClauseControls = (clause: ControlledClause) => (
+    <>
+      <Input
+        ariaLabel="Label name"
+        inlineLabelText={compact ? 'Label' : undefined}
+        value={clause.name}
+        placeholder="Label name"
+        onChange={e => updateClause(clause.id, { name: e.detail.value })}
+      />
+      <Select
+        ariaLabel="Operator"
+        selectedOption={clause.operator}
+        options={OPERATORS}
+        onChange={e => updateClause(clause.id, { operator: e.detail.selectedOption })}
+      />
+      <Input
+        ariaLabel="Label value"
+        value={clause.value}
+        placeholder="Label value"
+        onChange={e => updateClause(clause.id, { value: e.detail.value })}
+      />
+    </>
+  );
+
+  // Compact: each clause is a dismissible token. Its label is a popover whose content is
+  // the full editing form; the token text is a short summary of the chosen values.
+  if (compact) {
+    return (
+      <div ref={measureRef}>
+        <SpaceBetween size="xs" direction="horizontal">
+          {clauses.map(clause => {
+            const summary = [clause.name || 'label', clause.operator.label, clause.value || 'value']
+              .filter(Boolean)
+              .join(' ');
+            return (
+              <Token
+                key={clause.id}
+                onDismiss={() => removeClause(clause.id)}
+                dismissLabel="Remove label"
+                ariaLabel={`Label matcher: ${summary}`}
+                label={
+                  <Popover
+                    header="Edit label matcher"
+                    triggerType="text"
+                    content={
+                      <Form actions={<Button variant="primary">Apply</Button>}>
+                        <FormField>
+                          <ControlGroup ariaLabel="Label matcher">{renderClauseControls(clause)}</ControlGroup>
+                        </FormField>
+                      </Form>
+                    }
+                  >
+                    {summary}
+                  </Popover>
+                }
+              />
+            );
+          })}
+          <Button iconName="add-plus" ariaLabel="Add label" onClick={addClause} />
+        </SpaceBetween>
+      </div>
+    );
+  }
 
   return (
     <div ref={measureRef}>
@@ -341,24 +418,7 @@ function ControlledQueryBuilder() {
                 )
               }
             >
-              <Input
-                ariaLabel="Label name"
-                value={clause.name}
-                placeholder="Label name"
-                onChange={e => updateClause(clause.id, { name: e.detail.value })}
-              />
-              <Select
-                ariaLabel="Operator"
-                selectedOption={clause.operator}
-                options={OPERATORS}
-                onChange={e => updateClause(clause.id, { operator: e.detail.selectedOption })}
-              />
-              <Input
-                ariaLabel="Label value"
-                value={clause.value}
-                placeholder="Label value"
-                onChange={e => updateClause(clause.id, { value: e.detail.value })}
-              />
+              {renderClauseControls(clause)}
             </ControlGroup>
           );
         });
@@ -370,9 +430,7 @@ function ControlledQueryBuilder() {
             Add label
           </Button>
         ) : (
-          // <Box margin={{ top: 'm' }}>
           <Button iconName="add-plus" ariaLabel="Add label" onClick={addClause} />
-          // </Box>
         );
 
         // Wrapped: render the groups vertically with a horizontal divider between each
@@ -426,8 +484,10 @@ export default function () {
           <div>
             Fit-based wrapping driven top-down: the builder measures its own width and, once it no longer fits, pushes{' '}
             <code>wrapBehavior="wrap"</code> down to every clause so they stack together and lay out vertically with
-            dividers. Resize the container to cross the threshold; add and remove clauses, and enter an incomplete label
-            (name or value only, or a value with whitespace) to see the error and warning states.
+            dividers. Narrower still (~320px), each clause collapses to a dismissible token whose popover holds the full
+            editing form, with the token text summarizing the chosen values. Resize the container to cross the
+            thresholds; add and remove clauses, and enter an incomplete label (name or value only, or a value with
+            whitespace) to see the error and warning states.
           </div>
           <div style={resizableContainerStyle}>
             <ControlledQueryBuilder />
