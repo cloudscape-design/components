@@ -13,7 +13,10 @@
 @use '../internal/styles/utils/theming' as theming;
 @use '../internal/styles/style-api' as style-api;
 
-$tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-ring-radius), public);
+$tokens: style-api.resolve(
+  (color, focus-ring-color, focus-ring-width, focus-ring-radius, text-decoration-line, text-decoration-color),
+  public
+);
 @include style-api.register($tokens);
 @include style-api.docs('root', $tokens);
 
@@ -63,7 +66,7 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
       }
       &.color-inverted {
         color: style-api.value($tokens, color, awsui.$color-text-link-inverted-default);
-        text-decoration-color: currentColor;
+        text-decoration-color: style-api.value($tokens, text-decoration-color, currentColor);
         &:hover {
           color: style-api.value($tokens, color, awsui.$color-text-link-inverted-hover);
         }
@@ -77,8 +80,8 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
       @include focus-ring-box-shadow(currentColor);
     }
     &:not(.button) {
-      text-decoration-line: underline;
-      text-decoration-color: currentColor;
+      text-decoration-line: style-api.value($tokens, text-decoration-line, underline);
+      text-decoration-color: style-api.value($tokens, text-decoration-color, currentColor);
     }
     &:hover {
       color: style-api.value($tokens, color, awsui.$color-text-link-inverted-hover);

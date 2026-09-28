@@ -6,9 +6,9 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorBackgroundLayoutMain: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
-  colorBackgroundLayoutPanelContent: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
-  colorBackgroundLayoutToolbar: { light: '{colorNeutral50}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutMain: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutPanelContent: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
+  colorBackgroundLayoutToolbar: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
   colorGapGlobalDrawer: { light: '{colorNeutral250}', dark: '{colorNeutral1000}' },
 };
 

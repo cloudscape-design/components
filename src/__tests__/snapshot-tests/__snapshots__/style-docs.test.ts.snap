@@ -139,6 +139,8 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
+        "text-decoration-line",
+        "text-decoration-color",
       ],
     },
   ],
