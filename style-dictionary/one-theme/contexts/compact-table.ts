@@ -5,7 +5,6 @@ import merge from 'lodash/merge.js';
 import { expandDensityDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../spacing.js';
-import { tokens as parentTokensTypography } from '../typography.js';
 
 const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxxs: '{spaceNone}',
@@ -32,7 +31,7 @@ const typographyTokens: StyleDictionary.DensityTypographyDictionary = {
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
-  merge({}, { ...parentTokens, ...parentTokensTypography }, { ...spacingTokens, ...sizeTokens, ...typographyTokens })
+  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens, ...typographyTokens })
 );
 
 export { expandedTokens as tokens };
