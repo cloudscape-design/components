@@ -24222,6 +24222,26 @@ exports[`Components definition for radio-button matches the snapshot: radio-butt
   "name": "RadioButton",
   "properties": [
     {
+      "description": "Adds \`aria-describedby\` to the native control.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the native control.
+
+Use this if you don't have a visible label for this control.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the native control.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies if the component is selected.",
       "name": "checked",
       "optional": false,
@@ -29800,6 +29820,485 @@ multiple lines instead of being truncated with an ellipsis.",
       "description": "Use this slot to add [collection preferences](/components/collection-preferences/) to the table.",
       "isDefault": false,
       "name": "preferences",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-body matches the snapshot: table-body 1`] = `
+{
+  "dashCaseName": "table-body",
+  "events": [],
+  "functions": [],
+  "name": "TableBody",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Applies inline styles to the body element. Use this to enable row positioning, for example for
+virtualization or draggable rows. It is not supported to use this for general styling purposes.",
+      "inlineType": {
+        "name": "TableBodyProps.PositionStyle",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "Property.Height<string | number>",
+              "type": "union",
+              "values": [
+                "string",
+                "number",
+                "string & {}",
+              ],
+            },
+            "name": "height",
+            "optional": true,
+            "type": "Property.Height<string | number>",
+          },
+          {
+            "inlineType": {
+              "name": "Property.Position",
+              "type": "union",
+              "values": [
+                "fixed",
+                "absolute",
+                "inherit",
+                "-moz-initial",
+                "initial",
+                "revert",
+                "revert-layer",
+                "unset",
+                "-webkit-sticky",
+                "relative",
+                "static",
+                "sticky",
+              ],
+            },
+            "name": "position",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "positionStyle",
+      "optional": true,
+      "type": "TableBodyProps.PositionStyle",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The body rows.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-body-cell matches the snapshot: table-body-cell 1`] = `
+{
+  "dashCaseName": "table-body-cell",
+  "events": [],
+  "functions": [],
+  "name": "TableBodyCell",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Makes the cell span the given number of columns.",
+      "name": "colSpan",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Removes the cell's built-in padding so you can compose your own spacing. Defaults to \`false\`.",
+      "name": "disablePaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Renders the cell as a row header (\`<th scope="row">\`) instead of a data cell (\`<td>\`). A row header
+keeps the data-cell styling; use it for the cell that names its row. Defaults to \`false\`.",
+      "name": "isRowHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The cell content.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-head matches the snapshot: table-head 1`] = `
+{
+  "dashCaseName": "table-head",
+  "events": [],
+  "functions": [],
+  "name": "TableHead",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The header row: a \`TableRow\` whose cells are \`TableHeaderCell\` components.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-header-cell matches the snapshot: table-header-cell 1`] = `
+{
+  "dashCaseName": "table-header-cell",
+  "events": [],
+  "functions": [],
+  "name": "TableHeaderCell",
+  "properties": [
+    {
+      "description": "Sets \`aria-describedby\`. Use the ID(s) of visible element(s) that describe the header cell.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides an accessible name for the header cell. Use this or \`ariaLabelledby\`.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets \`aria-labelledby\`. Use the ID(s) of visible element(s) that label the header cell.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the column's sort direction on the cell's \`aria-sort\` attribute.",
+      "inlineType": {
+        "name": ""none" | "other" | "ascending" | "descending"",
+        "type": "union",
+        "values": [
+          "none",
+          "other",
+          "ascending",
+          "descending",
+        ],
+      },
+      "name": "ariaSort",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Removes the cell's built-in padding so you can compose your own spacing. Defaults to \`false\`.",
+      "name": "disablePaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The header content, such as a column label or a sort control.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-root matches the snapshot: table-root 1`] = `
+{
+  "dashCaseName": "table-root",
+  "events": [],
+  "functions": [],
+  "name": "TableRoot",
+  "properties": [
+    {
+      "description": "Sets the \`aria-describedby\` attribute. Use the ID of a visible element that describes the table.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides an accessible name for the table. Use this or \`ariaLabelledby\` to label the table.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` attribute. Use the ID of a visible element that labels the table.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the table's \`aria-rowcount\`, counting the header row. Provide it only when you render a
+subset of rows, such as with virtualization; otherwise it is derived from the DOM.",
+      "name": "ariaRowcount",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "{ type: 'auto' }",
+      "description": "Determines how column widths are calculated.
+* \`{ type: 'auto' }\` - Renders a standard HTML table whose columns size to their content. No
+  column configuration is required.
+* \`{ type: 'grid'; columns: ColumnDefinition[] }\` - Renders a CSS grid. The columns are then provided as
+an array of objects with the following properties:
+  * \`size\` (number | { flex: number }) - A number sets a fixed pixel width; \`{ flex }\` gives the
+    column a weight that shares the remaining space in proportion. Omit it for a flexible column
+    with the default weight of 1.
+  * \`minWidth\` (number) - The minimum width in pixels for a flexible column. We recommend setting one;
+    without it the column can shrink until its content clips or overlaps at narrow widths.
+  * \`maxWidth\` (number) - Caps a flexible column's width in pixels (it grows up to the cap). A capped
+    column can't also carry a proportional \`flex\` weight, so weighting applies to the uncapped columns.
+
+Defaults to \`{ type: 'auto' }\`.",
+      "inlineType": {
+        "name": "TableRootProps.ColumnLayout",
+        "type": "union",
+        "values": [
+          "{ type: "auto"; }",
+          "{ type: "grid"; columns: ReadonlyArray<TableRootProps.ColumnDefinition>; }",
+        ],
+      },
+      "name": "columnLayout",
+      "optional": true,
+      "type": "TableRootProps.ColumnLayout",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The table's content. Provide a \`TableHead\` followed by a \`TableBody\` that contains the rows.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for table-row matches the snapshot: table-row 1`] = `
+{
+  "dashCaseName": "table-row",
+  "events": [],
+  "functions": [],
+  "name": "TableRow",
+  "properties": [
+    {
+      "description": "Sets \`aria-describedby\`. Use the ID(s) of visible element(s) that describe the row.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides an accessible name for the row. Use this or \`ariaLabelledby\`.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets \`aria-labelledby\`. Use the ID(s) of visible element(s) that label the row.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the row's \`aria-rowindex\`, its position in the full dataset counting the header row. Set
+this only when virtualizing; otherwise it is derived from DOM order.",
+      "name": "ariaRowindex",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Applies inline styles to the row element for positioning, such as virtualization or draggable
+rows. Not intended for general styling.",
+      "inlineType": {
+        "name": "TableRowProps.PositionStyle",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "Property.Height<string | number>",
+              "type": "union",
+              "values": [
+                "string",
+                "number",
+                "string & {}",
+              ],
+            },
+            "name": "height",
+            "optional": true,
+            "type": "Property.Height<string | number>",
+          },
+          {
+            "inlineType": {
+              "name": "Property.Position",
+              "type": "union",
+              "values": [
+                "fixed",
+                "absolute",
+                "inherit",
+                "-moz-initial",
+                "initial",
+                "revert",
+                "revert-layer",
+                "unset",
+                "-webkit-sticky",
+                "relative",
+                "static",
+                "sticky",
+              ],
+            },
+            "name": "position",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "Property.Transform",
+              "type": "union",
+              "values": [
+                ""none"",
+                ""inherit"",
+                "string & {}",
+                ""-moz-initial"",
+                ""initial"",
+                ""revert"",
+                ""revert-layer"",
+                ""unset"",
+              ],
+            },
+            "name": "transform",
+            "optional": true,
+            "type": "Property.Transform",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "positionStyle",
+      "optional": true,
+      "type": "TableRowProps.PositionStyle",
+    },
+    {
+      "description": "Applies selected-row styling. Visual only — it does not set \`aria-selected\`; convey selection to
+assistive technologies via the selection control in a leading cell.",
+      "name": "selected",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Applies a shaded background, for alternating row colors.",
+      "name": "shaded",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The row's cells, one per column, in order.",
+      "isDefault": true,
+      "name": "children",
     },
   ],
   "releaseStatus": "stable",
@@ -46223,6 +46722,30 @@ Returns the current value of the input.",
       "name": "StepWrapper",
     },
     {
+      "methods": [],
+      "name": "TableBodyWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableBodyCellWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableHeadWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableHeaderCellWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableRootWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableRowWrapper",
+    },
+    {
       "methods": [
         {
           "description": "Finds the tab action by using the tab id",
@@ -56059,6 +56582,30 @@ Supported options:
         },
       ],
       "name": "StepWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableBodyWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableBodyCellWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableHeadWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableHeaderCellWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableRootWrapper",
+    },
+    {
+      "methods": [],
+      "name": "TableRowWrapper",
     },
     {
       "methods": [
