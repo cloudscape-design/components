@@ -82,7 +82,7 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
   &-content {
     box-sizing: border-box;
 
-    &:not(.body-cell-wrap) {
+    &.with-paddings:not(.body-cell-wrap) {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -136,8 +136,10 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
       border-inline-start: none;
     }
   }
-  // Guard selected out: a selected first row must keep its (thicker, coloured) selected
-  // top border, which the transparent placeholder would otherwise cover.
+  // First/last-row transparent placeholder. `:not(.body-cell-selected)` keeps a selected row's own border.
+  // Keyed on `.body-cell` with no grid-mode guard, so it is the single source of the placeholder for
+  // every cell — the existing Table's rows and the atomic cells (grid and auto) alike; load-bearing for
+  // grid selection-control centering.
   tr:first-child > &:not(.body-cell-selected) {
     border-block-start: cell-base.$border-placeholder;
   }

@@ -102,13 +102,9 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         disabled={disabled}
         readOnly={readOnly}
         label={children}
-        labelClassName={clsx(styleClassNames?.label, styles.label, disabled && styles['label-disabled'])}
+        labelClassName={styleClassNames?.label}
         description={description}
-        descriptionClassName={clsx(
-          styleClassNames?.description,
-          styles.description,
-          disabled && styles['description-disabled']
-        )}
+        descriptionClassName={styleClassNames?.description}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
