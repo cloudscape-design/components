@@ -19,7 +19,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceContainerContentVertical: { comfortable: '20px', compact: '12px' },
 
   spaceExpandToggleFocusOutlineGutter: { comfortable: '4px', compact: '1px' },
-  spaceTableCellVertical: { comfortable: '4px', compact: '2px' },
+  spaceTableCellVertical: { comfortable: '8px', compact: '2px' },
   spaceTableHeaderFocusOutlineGutter: '0px',
   spaceButtonInlineLinkFocusOutlineGutter: { comfortable: '{spaceButtonFocusOutlineGutter}', compact: '1px' },
 };
