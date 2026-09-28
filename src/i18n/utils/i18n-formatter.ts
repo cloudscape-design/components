@@ -39,7 +39,7 @@ export class I18nFormatter {
   // Not memoizing it allows us to reset the cache when the component rerenders
   // with potentially different locale or messages. We expect this component to
   // be placed above AppLayout and therefore rerender very infrequently.
-  private _localeFormatterCache = new Map<string, IntlMessageFormat>();
+  private _localeFormatterCache = new Map<string, IntlMessageFormat | null>();
 
   constructor(locale: string, messages: I18nMessages) {
     this._locale = locale.toLowerCase();
@@ -64,6 +64,10 @@ export class I18nFormatter {
     let intlMessageFormat: IntlMessageFormat;
 
     const cachedFormatter = this._localeFormatterCache.get(cacheKey);
+    // A null entry means this message already failed to parse; don't retry.
+    if (cachedFormatter === null) {
+      return provided;
+    }
     if (cachedFormatter) {
       // If an IntlMessageFormat instance was cached for this locale, just use that.
       intlMessageFormat = cachedFormatter;
@@ -88,11 +92,12 @@ export class I18nFormatter {
       // Invalid ICU syntax falls back to the provided value instead of crashing the render.
       try {
         intlMessageFormat = new IntlMessageFormat(message, this._locale);
+        this._localeFormatterCache.set(cacheKey, intlMessageFormat);
       } catch (error) {
         warnOnce('I18nProvider', `Malformed message "${cacheKey}" for locale "${this._locale}": ${error}`);
+        this._localeFormatterCache.set(cacheKey, null);
         return provided;
       }
-      this._localeFormatterCache.set(cacheKey, intlMessageFormat);
     }
 
     // Formatting can throw at runtime (e.g. a message/component contract mismatch),

@@ -149,6 +149,18 @@ describe('I18nFormatter', () => {
       expect(formatter.format(NAMESPACE, COMPONENT, 'greeting', undefined)).toBeUndefined();
     });
 
+    test('caches a parse failure so a malformed message is not re-parsed on later calls', () => {
+      const formatter = new I18nFormatter('en', makeMessages('en', { greeting: 'Hello, {name' }));
+      const cacheKey = `${NAMESPACE}.${COMPONENT}.greeting`;
+      const cache = (formatter as unknown as { _localeFormatterCache: Map<string, unknown> })._localeFormatterCache;
+
+      expect(formatter.format(NAMESPACE, COMPONENT, 'greeting', undefined)).toBeUndefined();
+      // The failed parse is recorded as a null sentinel in the shared cache, so a later
+      // call short-circuits to the provided value instead of re-running the throwing parse.
+      expect(cache.get(cacheKey)).toBeNull();
+      expect(formatter.format(NAMESPACE, COMPONENT, 'greeting', undefined)).toBeUndefined();
+    });
+
     test('an explicitly provided value always wins over a malformed message', () => {
       const formatter = new I18nFormatter('en', makeMessages('en', { greeting: 'Hello, {name' }));
       expect(formatter.format(NAMESPACE, COMPONENT, 'greeting', 'Provided value')).toBe('Provided value');
