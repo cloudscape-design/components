@@ -382,10 +382,13 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     // manages its own inline overflow (e.g. a table) would stretch the box out of the container.
     min-inline-size: 0;
     opacity: 0;
+    transform: translateY(-4px);
 
-    // HIDE (collapsed state): quick opacity collapse, no delay.
+    // HIDE (collapsed state): quick opacity collapse and slide back up, no delay.
     @include styles.with-motion {
-      transition: opacity $reveal-exit-motion;
+      transition:
+        opacity $reveal-exit-motion,
+        transform $reveal-exit-motion;
     }
   }
 }
@@ -394,11 +397,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     opacity: 1;
+    transform: translateY(0);
 
-    // SHOW (expanded state): opacity fades in AFTER height has partially
-    // opened, creating a perceptible fade in the revealed space.
+    // SHOW (expanded state): opacity fades in and content slides down into place AFTER
+    // height has partially opened, creating a perceptible reveal in the opened space.
     @include styles.with-motion {
-      transition: opacity $reveal-enter-delayed-motion;
+      transition:
+        opacity $reveal-enter-delayed-motion,
+        transform $reveal-enter-delayed-motion;
     }
   }
 }
@@ -407,6 +413,9 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
     overflow-y: visible;
+    // A transform, even the identity, makes this box a containing block for fixed
+    // descendants and a stacking context. Drop it once the reveal has finished.
+    transform: none;
   }
 }
 
