@@ -24,6 +24,7 @@ export interface UseAutosuggestItemsProps {
   filteringType: AutosuggestProps.FilteringType;
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   hideEnteredTextLabel?: boolean;
+  mode?: 'default' | 'tokens';
   onSelectItem: (option: AutosuggestItem) => void;
 }
 
@@ -53,6 +54,7 @@ export const useAutosuggestItems = ({
   filteringType,
   enteredTextLabel,
   hideEnteredTextLabel,
+  mode,
   onSelectItem,
 }: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
   const i18n = useInternalI18n('autosuggest');
@@ -60,9 +62,14 @@ export const useAutosuggestItems = ({
 
   const { items, getItemGroup, getItemParent } = useMemo(() => createItems(options), [options]);
 
-  const enteredItemLabel = i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format =>
-    format({ value: filterValue })
-  );
+  const i18nKey = mode === 'tokens' ? 'enteredTextLabelTokens' : 'enteredTextLabel';
+  // For tokens mode without an explicit enteredTextLabel prop, `enteredTextLabel` is undefined
+  // so the i18n provider key `enteredTextLabelTokens` wins when present.
+  // The customHandler's format function is only invoked when a provider message exists.
+  // When neither provider nor explicit prop is available, fall back to the synthesized default.
+  const enteredItemLabel =
+    i18n(i18nKey, enteredTextLabel?.(filterValue), format => format({ value: filterValue })) ??
+    (mode === 'tokens' ? `Add "${filterValue}"` : undefined);
 
   if (!enteredItemLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');

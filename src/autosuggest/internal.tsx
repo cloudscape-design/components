@@ -57,6 +57,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    mode,
+    tokens,
+    onTokensChange,
     __internalRootRef,
     ...restProps
   } = props;
@@ -83,18 +86,36 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
 
+  // In tokens mode, default the entered-text label to "Add" rather than "Use"
+  // so the dropdown item reads naturally ("Add "value"" vs "Use "value"").
+  // An explicit enteredTextLabel prop always wins; the i18n provider also wins
+  // when present (the key 'enteredTextLabelTokens' supplies translated strings).
+  // We must NOT pass the synthesized default as enteredTextLabel because the i18n
+  // formatter treats any non-undefined `provided` value as authoritative and skips
+  // the provider. Instead pass it only when the user supplied an explicit prop.
+  const effectiveEnteredTextLabel = mode === 'tokens' && !enteredTextLabel ? undefined : enteredTextLabel;
+
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
-    enteredTextLabel,
+    enteredTextLabel: effectiveEnteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
+    mode,
     onSelectItem: (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
+      const selectedValue = option.value || '';
+      if (mode === 'tokens' && selectedValue) {
+        // In token mode: add selected value as a token and clear the input
+        const currentTokens = tokens ?? [];
+        const updated = [...currentTokens, { label: selectedValue, dismissLabel: selectedValue }];
+        fireNonCancelableEvent(onTokensChange, { tokens: updated });
+        fireNonCancelableEvent(onChange, { value: '' });
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
       fireNonCancelableEvent(onSelect, {
-        value,
+        value: selectedValue,
         selectedOption: option.type !== 'use-entered' ? option.option : undefined,
       });
       autosuggestInputRef.current?.close();
@@ -225,6 +246,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      tokens={mode === 'tokens' ? tokens : undefined}
+      onTokensChange={mode === 'tokens' ? onTokensChange : undefined}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

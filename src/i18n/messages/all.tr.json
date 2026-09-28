@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "Hata",
     "selectedAriaLabel": "Seçili",
     "enteredTextLabel": "Şunu kullan: \"{value}\"",
+    "enteredTextLabelTokens": "Ekle: \"{value}\"",
     "recoveryText": "Yeniden dene"
   },
   "breadcrumb-group": {

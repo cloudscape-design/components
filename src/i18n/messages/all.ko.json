@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "오류",
     "selectedAriaLabel": "선택됨",
     "enteredTextLabel": "사용: ‘{value}’",
+    "enteredTextLabelTokens": "추가: ‘{value}’",
     "recoveryText": "재시도"
   },
   "breadcrumb-group": {

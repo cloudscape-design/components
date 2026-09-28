@@ -165,6 +165,30 @@ export interface AutosuggestProps
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
+
+  /**
+   * Renders the component in tokens mode. In this mode, accepted values are displayed as
+   * inline dismissible token pills before the text input. Tokens overflow into a `+N` pill
+   * that opens a dropdown of hidden tokens.
+   *
+   * When `mode="tokens"` is set, provide `tokens` and `onTokensChange`.
+   */
+  mode?: 'default' | 'tokens';
+
+  /**
+   * The list of tokens to display inline. Only used when `mode="tokens"`.
+   * This is a controlled prop — update it in response to `onTokensChange`.
+   */
+  tokens?: ReadonlyArray<AutosuggestProps.Token>;
+
+  /**
+   * Called when the token list changes — either a new token was added (Enter key or
+   * dropdown selection) or an existing token was dismissed (× button or Backspace/Delete).
+   * The event `detail.tokens` contains the complete updated token array.
+   *
+   * Only used when `mode="tokens"`.
+   */
+  onTokensChange?: NonCancelableEventHandler<AutosuggestProps.TokensChangeDetail>;
 }
 
 export namespace AutosuggestProps {
@@ -225,6 +249,18 @@ export namespace AutosuggestProps {
      * Selects all text in the input control.
      */
     select(): void;
+  }
+
+  export interface Token {
+    /** Text label for the token pill. */
+    label: string;
+    /** Accessible label for the dismiss button. Defaults to `label` if not provided. */
+    dismissLabel?: string;
+  }
+
+  export interface TokensChangeDetail {
+    /** The complete updated token array after the add or dismiss action. */
+    tokens: ReadonlyArray<Token>;
   }
 
   export interface Style {

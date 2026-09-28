@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "Kesalahan",
     "selectedAriaLabel": "Dipilih",
     "enteredTextLabel": "Gunakan: \"{value}\"",
+    "enteredTextLabelTokens": "Tambahkan: \"{value}\"",
     "recoveryText": "Coba lagi"
   },
   "breadcrumb-group": {

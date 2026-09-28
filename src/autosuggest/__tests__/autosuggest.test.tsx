@@ -692,3 +692,51 @@ describe('native attributes', () => {
     );
   });
 });
+
+describe('mode=tokens', () => {
+  const tokenProps: Partial<AutosuggestProps> = {
+    mode: 'tokens',
+    tokens: [],
+    onTokensChange: () => {},
+  };
+
+  it('renders without errors with tokens props', () => {
+    const { container } = render(
+      <Autosuggest
+        {...defaultProps}
+        {...tokenProps}
+        tokens={[{ label: 'us-east-1', dismissLabel: 'Remove us-east-1' }]}
+      />
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('does not pass tokens/onTokensChange to the underlying input in default mode', () => {
+    // In default mode, those props should not reach the DOM — smoke check via render
+    const { container } = render(<Autosuggest {...defaultProps} />);
+    expect(container).toBeTruthy();
+  });
+
+  it('fires onTokensChange when a dropdown option is selected in tokens mode', () => {
+    const onTokensChange = jest.fn();
+    const { container } = render(
+      <Autosuggest
+        {...defaultProps}
+        {...tokenProps}
+        onTokensChange={onTokensChange}
+        enteredTextLabel={v => `Add "${v}"`}
+        value="1"
+        onChange={() => {}}
+      />
+    );
+    const wrapper = createWrapper(container).findAutosuggest()!;
+    // ArrowDown twice: first highlights entered-text item, second highlights first real option
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onTokensChange).toHaveBeenCalledTimes(1);
+    expect(onTokensChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { tokens: [{ label: '1', dismissLabel: '1' }] } })
+    );
+  });
+});

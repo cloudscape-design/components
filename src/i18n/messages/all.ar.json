@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "خطأ",
     "selectedAriaLabel": "مُحدَّد",
     "enteredTextLabel": "استخدم: \"{value}\"",
+    "enteredTextLabelTokens": "إضافة: \"{value}\"",
     "recoveryText": "إعادة المحاولة"
   },
   "breadcrumb-group": {

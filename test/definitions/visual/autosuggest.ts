@@ -60,6 +60,21 @@ const suite: TestSuite = {
           },
         }) as TestDefinition
     ),
+    {
+      description: 'mode=tokens — static scenarios (empty, disabled, read-only, invalid, overflow)',
+      path: 'autosuggest/tokens-mode',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'mode=tokens — dropdown open with token pills visible',
+      path: 'autosuggest/tokens-mode',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        // Focus the autosuggest inside the interactive demo and open the dropdown
+        await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
+        await page.keys(['ArrowDown']);
+      },
+    },
   ],
 };
 

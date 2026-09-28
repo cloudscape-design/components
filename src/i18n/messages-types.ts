@@ -66,6 +66,9 @@ export interface I18nFormatArgTypes {
     enteredTextLabel: {
       value: string | number;
     };
+    enteredTextLabelTokens: {
+      value: string | number;
+    };
     recoveryText: never;
   };
   'breadcrumb-group': {

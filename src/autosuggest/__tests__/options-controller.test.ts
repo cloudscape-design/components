@@ -222,4 +222,60 @@ describe('useAutosuggestItems', () => {
       expect(selectOption).not.toHaveBeenCalled();
     });
   });
+
+  describe('mode=tokens', () => {
+    test('uses enteredTextLabelTokens i18n key (label reflects the provided function)', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          enteredTextLabel: (v: string) => `Add "${v}"`,
+          mode: 'tokens' as const,
+        },
+      });
+      // The first item must be the use-entered item with the "Add" label
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      expect(enteredItem.label).toBe('Add "us-east"');
+    });
+
+    test('uses enteredTextLabel i18n key in default mode', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          enteredTextLabel: (v: string) => `Use: ${v}`,
+          mode: 'default' as const,
+        },
+      });
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      expect(enteredItem.label).toBe('Use: us-east');
+    });
+
+    test('mode=tokens does not change filtering behaviour — options are still filtered', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'Option 1',
+          filterText: 'Option 1',
+          enteredTextLabel: (v: string) => `Add "${v}"`,
+          mode: 'tokens' as const,
+        },
+      });
+      // use-entered item + only the matched child options remain
+      const types = result.current[0].items.map(i => i.type);
+      expect(types[0]).toBe('use-entered');
+      // Remaining items should only include those matching "Option 1"
+      const nonEntered = result.current[0].items.slice(1);
+      expect(nonEntered.length).toBeGreaterThan(0);
+      nonEntered.forEach(item => {
+        if (item.value) {
+          expect(item.value).toContain('Option 1');
+        }
+      });
+    });
+  });
 });

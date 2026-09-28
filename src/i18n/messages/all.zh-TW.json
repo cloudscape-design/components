@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "錯誤",
     "selectedAriaLabel": "已選取",
     "enteredTextLabel": "使用：“{value}”",
+    "enteredTextLabelTokens": "新增：“{value}”",
     "recoveryText": "重試"
   },
   "breadcrumb-group": {

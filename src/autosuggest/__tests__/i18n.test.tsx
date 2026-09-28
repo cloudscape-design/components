@@ -134,4 +134,23 @@ describe('i18n provider', () => {
     );
     expect(warnOnce).not.toHaveBeenCalled();
   });
+
+  test('supports providing enteredTextLabelTokens via i18n provider in tokens mode', () => {
+    const { wrapper } = renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabelTokens: 'Custom add value' } }}>
+        <Autosuggest {...defaultProps} value="1" mode="tokens" tokens={[]} onTokensChange={() => {}} />
+      </TestI18nProvider>
+    );
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom add value');
+  });
+
+  test('should not warn when mode=tokens and enteredTextLabelTokens is provided via i18n provider', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabelTokens: 'Add' } }}>
+        <Autosuggest {...defaultProps} value="1" mode="tokens" tokens={[]} onTokensChange={() => {}} />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
 });

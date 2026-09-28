@@ -50,6 +50,7 @@
     "errorIconAriaLabel": "Error",
     "selectedAriaLabel": "Selected",
     "enteredTextLabel": "Use: ‘{value}’",
+    "enteredTextLabelTokens": "Add: ‘{value}’",
     "recoveryText": "Retry"
   },
   "breadcrumb-group": {
