@@ -63,6 +63,10 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "Opens in a new tab"
   },
+  "button-dropdown": {
+    "errorIconAriaLabel": "Error",
+    "recoveryText": "Retry"
+  },
   "calendar": {
     "nextMonthAriaLabel": "Next month",
     "previousMonthAriaLabel": "Previous month",

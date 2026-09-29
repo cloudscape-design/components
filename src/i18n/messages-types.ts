@@ -75,6 +75,8 @@ export interface I18nFormatArgTypes {
     'i18nStrings.externalIconAriaLabel': never;
   };
   'button-dropdown': {
+    errorIconAriaLabel: never;
+    recoveryText: never;
     filteringResultsText: {
       matchesCount: string | number;
       totalCount: string | number;
