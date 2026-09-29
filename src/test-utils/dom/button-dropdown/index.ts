@@ -9,11 +9,14 @@ import InputWrapper from '../input/index.js';
 import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
+import mobileGroupStyles from '../../../button-dropdown/mobile-expandable-group/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
-import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+
+// An expanded group renders as a fly-out dropdown on desktop and as an inline section on mobile.
+const expandedGroupSelector = `.${dropdownStyles.dropdown}[data-open=true], .${mobileGroupStyles.dropdown}[data-open=true]`;
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -141,7 +144,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   findErrorRecoveryButton(options = { expandedGroupDropdown: false }): ElementWrapper | null {
     let dropdown = this.findOpenDropdown();
     if (options.expandedGroupDropdown && dropdown) {
-      dropdown = dropdown.find(`.${dropdownStyles.dropdown}[data-open=true]`);
+      dropdown = dropdown.find(expandedGroupSelector);
     }
     return dropdown?.findByClassName(footerStyles.recovery) ?? null;
   }
@@ -154,9 +157,9 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   findStatusIndicator(options = { expandedGroupDropdown: false }): ElementWrapper | null {
     let dropdown = this.findOpenDropdown();
     if (options.expandedGroupDropdown && dropdown) {
-      dropdown = dropdown.find(`.${dropdownStyles.dropdown}[data-open=true]`);
+      dropdown = dropdown.find(expandedGroupSelector);
     }
-    return dropdown?.findByClassName(dropdownStatusStyles.root) ?? null;
+    return dropdown?.findByClassName(footerStyles.root) ?? null;
   }
 
   /**

@@ -31,7 +31,11 @@ export interface CategoryProps extends HighlightProps {
   filteringDescriptionId?: string;
   asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
   getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
-  onLoadItems?: ButtonDropdownProps['onLoadItems'];
+  /**
+   * Fires the recovery request for an expandable group in error state. Defined only when the
+   * consumer listens to `onLoadItems`, which is what makes the recovery action available.
+   */
+  onGroupRecoveryClick?: (groupId: string) => void;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -55,7 +59,11 @@ export interface ItemListProps extends HighlightProps {
   filteringDescriptionId?: string;
   asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
   getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
-  onLoadItems?: ButtonDropdownProps['onLoadItems'];
+  /**
+   * Fires the recovery request for an expandable group in error state. Defined only when the
+   * consumer listens to `onLoadItems`, which is what makes the recovery action available.
+   */
+  onGroupRecoveryClick?: (groupId: string) => void;
 }
 
 export interface ItemProps {

@@ -96,11 +96,18 @@ describe('useLoadItems', () => {
     expect(onLoadItems).toHaveBeenCalledWith({ filteringText: 'search', firstPage: false, samePage: true });
   });
 
-  test('handleRecoveryClick passes expandedGroupId when provided', () => {
+  test('handleRecoveryClick for a group carries the group id and not the root filtering text', () => {
     const onLoadItems = jest.fn();
     const fns = renderHook(onLoadItems, items, 'error');
+    fns.fireLoadItems('search');
+    onLoadItems.mockClear();
     fns.handleRecoveryClick('group-1');
-    expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ expandedGroupId: 'group-1', samePage: true }));
+    expect(onLoadItems).toHaveBeenCalledWith({
+      filteringText: '',
+      firstPage: false,
+      samePage: true,
+      expandedGroupId: 'group-1',
+    });
   });
 
   test('fireGroupLoadItems fires a first-page request for the group without the main filtering text', () => {

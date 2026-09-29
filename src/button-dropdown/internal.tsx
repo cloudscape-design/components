@@ -469,6 +469,17 @@ const InternalButtonDropdown = React.forwardRef(
       },
     });
 
+    // Recovery inside an expanded group. In filtering mode the recovery button is reached with Tab
+    // from the filter input, so focus returns there; in menu mode the group keeps focus on its header.
+    const onGroupRecoveryClick = onLoadItems
+      ? (groupId: string) => {
+          handleRecoveryClick(groupId);
+          if (hasFiltering) {
+            filterRef.current?.focus();
+          }
+        }
+      : undefined;
+
     // A recovery button inside an expanded group is rendered by the category element with the
     // same conditions as the main status (error state, recovery text, onLoadItems callback).
     const expandedGroupHasRecoveryButton =
@@ -477,6 +488,7 @@ const InternalButtonDropdown = React.forwardRef(
       items.some(
         item =>
           isItemGroup(item) &&
+          !!item.id &&
           isExpandable(item) &&
           isExpanded(item) &&
           getExpandableItemsAsyncLoadingState?.({ item }) === 'error'
@@ -592,7 +604,7 @@ const InternalButtonDropdown = React.forwardRef(
                 ariaLabel={ariaLabel}
                 ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
                 ariaDescribedby={dropdownStatus.content ? footerId : undefined}
-                statusType="finished"
+                statusType={statusType}
                 onLoadMore={handleLoadMore}
               >
                 <ItemsList
@@ -618,7 +630,7 @@ const InternalButtonDropdown = React.forwardRef(
                   filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
                   asyncLoadingProps={asyncLoadingProps}
                   getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
-                  onLoadItems={onLoadItems}
+                  onGroupRecoveryClick={onGroupRecoveryClick}
                 />
                 {dropdownStatus.content && !dropdownStatus.isSticky ? (
                   // Non-sticky status (finished text) scrolls together with the items, like the

@@ -33,11 +33,13 @@ export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsPro
     }
   };
 
+  // Events about an expandable group never carry the root filtering text: the filter applies to
+  // the root list, while a group is always loaded as a whole.
   const handleRecoveryClick = (expandedGroupId?: string) =>
     fireNonCancelableEvent(onLoadItems, {
       firstPage: false,
       samePage: true,
-      filteringText: prevFilteringText.current || '',
+      filteringText: expandedGroupId ? '' : prevFilteringText.current || '',
       expandedGroupId,
     });
 

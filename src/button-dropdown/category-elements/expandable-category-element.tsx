@@ -3,15 +3,11 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import Dropdown from '../../dropdown/internal';
-import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
-import DropdownFooter from '../../internal/components/dropdown-footer';
-import { useDropdownStatus } from '../../internal/components/dropdown-status';
-import { fireNonCancelableEvent } from '../../internal/events';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import {
@@ -24,6 +20,7 @@ import ItemsList from '../items-list';
 import StatusFooter from '../status-footer';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
+import { useExpandableGroupStatus } from './use-expandable-group-status';
 
 import styles from './styles.css.js';
 
@@ -49,47 +46,25 @@ const ExpandableCategoryElement = ({
   filteringDescriptionId,
   asyncLoadingProps,
   getExpandableItemsAsyncLoadingState,
-  onLoadItems,
+  onGroupRecoveryClick,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
   const isKeyboardHighlighted = isKeyboardHighlight(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
   const ref = useRef<HTMLLIElement>(null);
-  const footerId = useUniqueId('awsui-button-dropdown__group-footer');
 
-  // Per-group async loading status derived from the callback prop.
-  const groupId = item.id;
-  const groupStatusType = groupId ? (getExpandableItemsAsyncLoadingState?.({ item }) ?? undefined) : undefined;
-
-  const i18n = useInternalI18n('button-dropdown');
-  const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
-  const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
-
-  const groupDropdownStatus = useDropdownStatus({
-    statusType: groupStatusType,
-    empty: asyncLoadingProps?.empty?.(groupId),
-    loadingText: asyncLoadingProps?.loadingText?.(groupId),
-    finishedText: asyncLoadingProps?.finishedText?.(groupId),
-    errorText: asyncLoadingProps?.errorText?.(groupId),
-    recoveryText,
-    errorIconAriaLabel,
-    isEmpty: !item.items || item.items.length === 0,
-    isNoMatch: false,
-    hasRecoveryCallback: !!onLoadItems,
-    onRecoveryClick: () => {
-      fireNonCancelableEvent(onLoadItems, {
-        filteringText: '',
-        firstPage: false,
-        samePage: true,
-        expandedGroupId: groupId,
-      });
-      // The recovery button disappears once loading starts. Keep focus inside the group so the
-      // dropdown stays open; in filtering mode focus never left the filter input.
-      if (!filteringEnabled) {
-        triggerRef.current?.focus();
-      }
-    },
+  const {
+    status: groupDropdownStatus,
+    footerId,
+    hasGroupItems,
+  } = useExpandableGroupStatus({
+    item,
+    asyncLoadingProps,
+    getExpandableItemsAsyncLoadingState,
+    onGroupRecoveryClick,
+    filteringEnabled,
+    triggerRef,
   });
 
   useEffect(() => {
@@ -204,7 +179,6 @@ const ExpandableCategoryElement = ({
   } else if (disabled) {
     content = trigger;
   } else {
-    const hasGroupItems = !!item.items && item.items.length > 0;
     content = (
       <Dropdown
         open={expanded}
@@ -222,6 +196,7 @@ const ExpandableCategoryElement = ({
             <ul
               role="menu"
               aria-label={item.text}
+              aria-describedby={groupDropdownStatus.content ? footerId : undefined}
               className={clsx(styles['items-list-container'], styles['in-dropdown'])}
             >
               {hasGroupItems ? (
@@ -248,7 +223,7 @@ const ExpandableCategoryElement = ({
               {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
                 // Non-sticky status (finished text) follows the items, like in the main dropdown.
                 <li role="presentation">
-                  <DropdownFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
+                  <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
                 </li>
               ) : null}
             </ul>
