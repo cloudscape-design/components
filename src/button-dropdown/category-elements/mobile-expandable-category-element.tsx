@@ -199,7 +199,12 @@ const MobileExpandableCategoryElement = ({
               // The group is inline in the main list, so every status (loading, error, empty,
               // finished) follows the items instead of being a sticky footer.
               <li role="presentation">
-                <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
+                <StatusFooter
+                  content={groupDropdownStatus.content}
+                  id={footerId}
+                  hasItems={hasGroupItems}
+                  scope="group"
+                />
               </li>
             ) : null}
           </ul>
