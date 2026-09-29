@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import Box from '~components/box';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
 import SpaceBetween from '~components/space-between';
@@ -164,7 +163,6 @@ export default function Page() {
   return (
     <SimplePage
       title="Button dropdown: asynchronously fetched actions"
-      subtitle="Opens and loads the first page, paginates on scroll, filters on the server as you type. Each expandable group loads on expand with its own behavior, described in its label."
       settings={
         <SpaceBetween size="s" direction="horizontal">
           <Checkbox checked={fakeResponses} onChange={e => setUrlParams({ fakeResponses: e.detail.checked })}>
@@ -221,11 +219,6 @@ export default function Page() {
         >
           Instance actions
         </ButtonDropdown>
-
-        <Box variant="p" color="text-body-secondary">
-          Groups sit between the 4th and 5th action so they are on the first page. Type a word with no match (for
-          example zzz) for the no-match state. Clear the filter to reload all actions.
-        </Box>
       </SpaceBetween>
     </SimplePage>
   );
