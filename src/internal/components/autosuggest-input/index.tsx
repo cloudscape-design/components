@@ -23,6 +23,7 @@ import { BaseKeyDetail, NonCancelableEventHandler } from '../../../types/events'
 import { FormFieldValidationControlProps } from '../../../types/form-field';
 import { getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
+import { ControlGroupPosition } from '../../context/control-group-context';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -58,6 +59,7 @@ interface AutosuggestInputProps
   onPressArrowUp?: () => void;
   onPressEnter?: () => boolean;
   style?: InputProps['style'];
+  __controlGroupPosition?: ControlGroupPosition | null;
 }
 
 interface AutosuggestInputFocusOptions {
@@ -105,6 +107,7 @@ const AutosuggestInput = React.forwardRef(
       onPressArrowUp,
       onPressEnter,
       style,
+      __controlGroupPosition,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -329,6 +332,7 @@ const AutosuggestInput = React.forwardRef(
               nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
               style={style}
+              __controlGroupPosition={__controlGroupPosition}
               {...formFieldContext}
             />
           }
