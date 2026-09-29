@@ -60,7 +60,7 @@ export default function InternalSegmentedControl({
         style={style}
         controlGroupPosition={controlGroupPosition}
       />
-      <div className={styles.select}>
+      <div className={clsx(styles.select, !!controlGroupPosition && styles.grouped)}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
         {!ariaLabelledby && label && (
           <InternalFormField label={label} stretch={true}>
