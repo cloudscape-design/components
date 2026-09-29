@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.alert-genai {
+  --awsui-style-background-color: #{palette.$genai-surface};
+  --awsui-style-color: #{palette.$genai-text};
+  --awsui-style-border-color: #{palette.$genai};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-padding-block: 12px;
+  --awsui-style-padding-inline: 24px;
+  --awsui-style-focus-ring-color: #{palette.$genai};
+}
+
+.alert-genai-icon {
+  --awsui-style-color: #{palette.$genai};
+}
+
+.alert-genai-action {
+  --awsui-style-background-color: #{palette.$genai};
+  --awsui-style-color: #{palette.$text-on-accent};
+  --awsui-style-border-color: #{palette.$genai};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-focus-ring-color: #{palette.$genai};
+
+  &:hover,
+  &:focus {
+    --awsui-style-background-color: #{palette.$genai-hover};
+    --awsui-style-border-color: #{palette.$genai-hover};
+  }
+
+  &:active {
+    --awsui-style-background-color: #{palette.$genai-active};
+    --awsui-style-border-color: #{palette.$genai-active};
+  }
+}
+
+.alert-genai-dismiss {
+  --awsui-style-color: #{palette.$genai-text};
+  --awsui-style-focus-ring-color: #{palette.$genai};
+
+  &:hover,
+  &:focus {
+    --awsui-style-color: #{palette.$genai};
+  }
+}

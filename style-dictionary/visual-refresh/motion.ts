@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { tokenStylesSuffix } from '../utils/environment.js';
 import { expandMotionDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
+import { getStableKeyframe } from '../utils/token-versions.js';
 
 const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExtraFast: { default: '45ms', disabled: '0ms' },
@@ -58,10 +58,10 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationSideNavigationContentExitFade: { default: '0ms', disabled: '0ms' },
   motionEasingSideNavigationContentExit: '{motionEasingShowQuick}',
 
-  motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
-  motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
-  motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
-  motionKeyframesScalePopup: 'awsui-scale-popup-' + tokenStylesSuffix,
+  motionKeyframesFadeIn: getStableKeyframe('awsui-fade-in'),
+  motionKeyframesFadeOut: getStableKeyframe('awsui-fade-out'),
+  motionKeyframesStatusIconError: getStableKeyframe('awsui-status-icon-error'),
+  motionKeyframesScalePopup: getStableKeyframe('awsui-scale-popup'),
 };
 
 const expandedTokens: StyleDictionary.ExpandedMotionScopeDictionary = expandMotionDictionary(tokens);

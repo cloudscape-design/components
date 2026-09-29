@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Ultimi {amount} secondi} one {Ultimo secondo} other {Ultimi {amount} secondi}}} minute {{amount, plural, zero {Ultimi {amount} minuti} one {Ultimo minuto} other {Ultimi {amount} minuti}}} hour {{amount, plural, zero {Ultime {amount} ore} one {Ultima ora} other {Ultime {amount} ore}}} day {{amount, plural, zero {Ultimi {amount} giorni} one {Ultimo giorno} other {Ultimi {amount} giorni}}} week {{amount, plural, zero {Ultime {amount} settimane} one {Ultima settimana} other {Ultime {amount} settimane}}} month {{amount, plural, zero {Ultimi {amount} mesi} one {Ultimo mese} other {Ultimi {amount} mesi}}} year {{amount, plural, zero {Ultimi {amount} anni} one {Ultimo anno} other {Ultimi {amount} anni}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {secondi} one {secondo} other {secondi}}} minute {{amount, plural, zero {minuti} one {minuto} other {minuti}}} hour {{amount, plural, zero {ore} one {ora} other {ore}}} day {{amount, plural, zero {giorni} one {giorno} other {giorni}}} week {{amount, plural, zero {settimane} one {settimana} other {settimane}}} month {{amount, plural, zero {mesi} one {mese} other {mesi}}} year {{amount, plural, zero {anni} one {anno} other {anni}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "Chiudi finestra di dialogo"
+  },
   "drawer": {
     "i18nStrings.loadingText": "Caricamento dei contenuti"
   },

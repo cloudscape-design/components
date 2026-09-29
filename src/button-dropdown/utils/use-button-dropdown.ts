@@ -1,21 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
-import { CancelableEventHandler } from '../../types/events';
+import { isElement } from '../../internal/utils/dom';
+import { isKeyboardInteraction } from '../../internal/utils/focus-visible';
+import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
 import { filterItems } from './filter-items';
 import useHighlightedMenu from './use-highlighted-menu';
-import { getItemTarget, isCheckboxItem, isItemGroup, isLinkItem } from './utils';
+import { getItemTarget, isCheckboxItem, isGroupExpandable, isItemGroup, isLinkItem } from './utils';
+
+type DropdownFocusLeaveEvent = NonCancelableCustomEvent<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
+  // Returns whether the given element is (or is inside) the dropdown trigger.
+  isTriggerElement: (element: Element) => boolean;
   expandToViewport?: boolean;
   filteringType?: ButtonDropdownProps.FilteringType;
   fireLoadItems?: (filteringText: string) => void;
@@ -37,7 +43,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  onDropdownFocusLeave: () => void;
+  onDropdownFocusLeave: (event: DropdownFocusLeaveEvent) => void;
   onDropdownBlur: () => void;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   closeDropdown: () => void;
@@ -45,7 +51,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   filteringValue: string;
   setFilteringValue: (value: string) => void;
   filteredItems: ButtonDropdownProps.Items;
-  showExpandableGroups: boolean;
+  isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
 }
 
 export function useButtonDropdown({
@@ -53,6 +59,7 @@ export function useButtonDropdown({
   onItemClick,
   onItemFollow,
   onReturnFocus,
+  isTriggerElement,
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
@@ -69,7 +76,12 @@ export function useButtonDropdown({
     [filteringType, filteringValue, items]
   );
 
-  const showExpandableGroups = hasExpandableGroups && !filteringValue;
+  // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
+  // back to the dropdown-level `expandableGroups` default
+  const isExpandable = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => !filteringValue && isGroupExpandable(item, hasExpandableGroups),
+    [filteringValue, hasExpandableGroups]
+  );
 
   const {
     targetItem,
@@ -84,7 +96,7 @@ export function useButtonDropdown({
     setIsUsingMouse,
   } = useHighlightedMenu({
     items: filteredItems,
-    hasExpandableGroups: showExpandableGroups,
+    isExpandable,
     isInRestrictedView,
   });
 
@@ -123,8 +135,19 @@ export function useButtonDropdown({
     openStateProps.toggleDropdown();
   };
 
-  const onDropdownFocusLeave = () => {
+  const onDropdownFocusLeave = (event: DropdownFocusLeaveEvent) => {
     if (hasFiltering && isOpen) {
+      const { relatedTarget } = event.detail;
+      // When focus moves from the filter input to the trigger via a mouse click, the trigger's
+      // own click handler already closes the dropdown.
+      const clickedTrigger =
+        !!relatedTarget &&
+        isElement(relatedTarget) &&
+        isTriggerElement(relatedTarget) &&
+        !isKeyboardInteraction(relatedTarget);
+      if (clickedTrigger) {
+        return;
+      }
       if (expandToViewport) {
         // When expanded to viewport the focus can't move naturally to the next element.
         // Returning the focus to the trigger instead.
@@ -262,7 +285,7 @@ export function useButtonDropdown({
         }
         if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
           expandGroupAndNotify(targetItem);
-        } else if (hasExpandableGroups) {
+        } else {
           collapseGroup();
         }
 
@@ -330,6 +353,6 @@ export function useButtonDropdown({
     filteringValue,
     setFilteringValue,
     filteredItems,
-    showExpandableGroups,
+    isExpandable,
   };
 }

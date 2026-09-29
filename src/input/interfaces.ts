@@ -192,6 +192,13 @@ export interface InputProps
   style?: InputProps.Style;
 
   /**
+   * Adds a small label inline with the input for saving vertical space in the UI.
+   *
+   * Use this only when a visible label from a surrounding form field isn't present.
+   */
+  inlineLabelText?: string;
+
+  /**
    * Use for content rendered before the editable value.
    */
   prefix?: ReactNode;

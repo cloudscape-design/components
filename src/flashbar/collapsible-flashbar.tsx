@@ -356,6 +356,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
           style={getNotificationBarStyles(style)}
+          data-awsui-motion-trigger="hover"
           {...getAnalyticsMetadataAttribute({
             action: !isFlashbarStackExpanded ? 'expand' : 'collapse',
             detail: {
@@ -389,8 +390,14 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             aria-expanded={isFlashbarStackExpanded}
             aria-label={notificationBarAriaLabel}
             className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+            data-awsui-motion-trigger="focus"
           >
-            <InternalIcon className={styles.icon} size="normal" name="angle-down" />
+            <InternalIcon
+              className={styles.icon}
+              size="normal"
+              name="angle-down"
+              nativeAttributes={{ 'data-awsui-motion-target': '' }}
+            />
           </button>
         </div>
       )}

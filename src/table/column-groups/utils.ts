@@ -7,6 +7,7 @@ import { getVisibleColumnDefinitions } from '../utils';
 
 export interface HeaderRowColumn<T> {
   id: string;
+  cellKey: string;
   header?: React.ReactNode;
   colSpan: number;
   rowSpan: number;
@@ -89,17 +90,18 @@ export class TableHeaderNode<T> {
  */
 function buildTreeFromColumnDisplay<T>(
   displayItems: ReadonlyArray<TableProps.ColumnDisplayProperties>,
-  nodeMap: Map<string, TableHeaderNode<T>>,
+  columnNodeMap: Map<string, TableHeaderNode<T>>,
+  groupNodeMap: Map<string, TableHeaderNode<T>>,
   parent: TableHeaderNode<T>
 ): void {
   for (const item of displayItems) {
     if (item.type === 'group') {
-      const groupNode = nodeMap.get(item.id);
+      const groupNode = groupNodeMap.get(item.id);
       if (!groupNode) {
         warnOnce('[Table]', `Group "${item.id}" referenced in columnDisplay not found in groupDefinitions. Skipping.`);
         continue;
       }
-      buildTreeFromColumnDisplay(item.children, nodeMap, groupNode);
+      buildTreeFromColumnDisplay(item.children, columnNodeMap, groupNodeMap, groupNode);
       // Only attach group if it has visible descendants. The recursive call above
       // only adds children that are either visible columns or nested groups with
       // their own visible descendants, so this check handles all nesting levels.
@@ -110,7 +112,7 @@ function buildTreeFromColumnDisplay<T>(
       if (!item.visible) {
         continue;
       }
-      const colNode = nodeMap.get(item.id);
+      const colNode = columnNodeMap.get(item.id);
       if (colNode) {
         parent.addChild(colNode);
       }
@@ -123,7 +125,7 @@ function buildTreeFromColumnDisplay<T>(
  */
 function buildTreeFromVisibleColumns<T>(
   visibleColumns: Readonly<TableProps.ColumnDefinition<T>[]>,
-  nodeMap: Map<string, TableHeaderNode<T>>,
+  columnNodeMap: Map<string, TableHeaderNode<T>>,
   root: TableHeaderNode<T>
 ): void {
   for (const col of visibleColumns) {
@@ -132,7 +134,7 @@ function buildTreeFromVisibleColumns<T>(
     if (!col.id) {
       continue;
     }
-    const node = nodeMap.get(col.id);
+    const node = columnNodeMap.get(col.id);
     if (node) {
       root.addChild(node);
     }
@@ -191,24 +193,25 @@ export function calculateHierarchyTree<T>(
     columnDefinitions,
   });
 
-  const nodeMap = new Map<string, TableHeaderNode<T>>();
+  const columnNodeMap = new Map<string, TableHeaderNode<T>>();
+  const groupNodeMap = new Map<string, TableHeaderNode<T>>();
 
   for (const col of visibleColumns) {
     if (col.id) {
-      nodeMap.set(col.id, new TableHeaderNode<T>(col.id, { columnDefinition: col }));
+      columnNodeMap.set(col.id, new TableHeaderNode<T>(col.id, { columnDefinition: col }));
     }
   }
 
   for (const group of groupDefinitions) {
-    nodeMap.set(group.id, new TableHeaderNode<T>(group.id, { groupDefinition: group }));
+    groupNodeMap.set(group.id, new TableHeaderNode<T>(group.id, { groupDefinition: group }));
   }
 
   const root = new TableHeaderNode<T>('*', { isRoot: true });
 
   if (columnDisplay && columnDisplay.length > 0) {
-    buildTreeFromColumnDisplay(columnDisplay, nodeMap, root);
+    buildTreeFromColumnDisplay(columnDisplay, columnNodeMap, groupNodeMap, root);
   } else {
-    buildTreeFromVisibleColumns(visibleColumns, nodeMap, root);
+    buildTreeFromVisibleColumns(visibleColumns, columnNodeMap, root);
   }
 
   computeSubTreeHeights(root);
@@ -249,6 +252,7 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): ColumnGroup
 
     const entry: HeaderRowColumn<T> = {
       id: node.id,
+      cellKey: node.isGroup ? `group:${node.id}` : `column:${node.id}`,
       header: node.groupDefinition?.header ?? node.columnDefinition?.header,
       colSpan: node.colSpan,
       rowSpan: node.rowSpan,

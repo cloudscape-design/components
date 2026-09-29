@@ -15,6 +15,16 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
+// Eight 200px columns give the table a min-content width far wider than the section that holds it.
+const wideColumnDefinitions = Array.from({ length: 8 }, (_, index) => ({
+  id: `column-${index + 1}`,
+  header: `Configuration column ${index + 1}`,
+  cell: (item: { id: number }) => `Item ${item.id} value ${index + 1}`,
+  minWidth: 200,
+}));
+
+const wideItems = Array.from({ length: 3 }, (_, index) => ({ id: index + 1 }));
+
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<ExpandableSectionProps>([
   {
@@ -180,6 +190,14 @@ const endIconPermutations = createPermutations<ExpandableSectionProps>([
   },
 ]);
 
+const overflowPermutations = createPermutations<ExpandableSectionProps>([
+  {
+    defaultExpanded: [true],
+    variant: ['default', 'container'],
+    headerText: ['Content wider than the section'],
+  },
+]);
+
 export default function ExpandableSectionPermutations() {
   return (
     <>
@@ -192,6 +210,24 @@ export default function ExpandableSectionPermutations() {
             <InternalExpandableSection {...permutation} defaultExpanded={true} __expandIconPosition="end">
               Variant {permutation.variant} section content
             </InternalExpandableSection>
+          )}
+        />
+        {/* The narrow wrapper is outside the section on purpose: content that manages its own inline
+            overflow must scroll within the section rather than stretch it past the red boundary. */}
+        <PermutationsView
+          permutations={overflowPermutations}
+          render={permutation => (
+            <div style={{ inlineSize: 400, borderInline: '1px solid red', borderBlock: '1px solid red' }}>
+              <ExpandableSection {...permutation}>
+                <Table
+                  variant="embedded"
+                  columnDefinitions={wideColumnDefinitions}
+                  items={wideItems}
+                  // The scrollable table wrapper becomes a region landmark, which needs a unique name per permutation.
+                  ariaLabels={{ tableLabel: `Wide table in ${permutation.variant} section` }}
+                />
+              </ExpandableSection>
+            </div>
           )}
         />
       </ScreenshotArea>

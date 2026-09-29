@@ -35,6 +35,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import { defaultTableContext, TableContextProvider } from '../table-root/context';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { ClearSortButton } from './clear-sort';
@@ -510,7 +511,7 @@ const InternalTable = React.forwardRef(
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
     const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
-    return (
+    const tableContent = (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <TableComponentsContextProvider value={{ paginationRef, filterRef, preferencesRef, headerRef }}>
           <ColumnWidthsProvider
@@ -666,7 +667,6 @@ const InternalTable = React.forwardRef(
                       {skeleton && allItems.length === 0 && loading ? (
                         <SkeletonRows
                           count={skeletonRowsCount}
-                          hasDataRows={false}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
                           hasSelection={hasSelection}
@@ -682,7 +682,7 @@ const InternalTable = React.forwardRef(
                           colIndexOffset={colIndexOffset}
                           renderCell={skeleton?.renderCell}
                         />
-                      ) : !skeleton && (loading || allItems.length === 0) ? (
+                      ) : allItems.length === 0 || (loading && !skeleton) ? (
                         <tr>
                           <NoDataCell
                             totalColumnsCount={totalColumnsCount}
@@ -696,11 +696,6 @@ const InternalTable = React.forwardRef(
                         </tr>
                       ) : (
                         allRows.map((row, rowIndex) => {
-                          const isFirstRow = rowIndex === 0;
-                          const hasSkeletonBelow =
-                            loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0;
-                          const isLastDataRow = rowIndex === allRows.length - 1;
-                          const isLastRow = isLastDataRow && !hasSkeletonBelow;
                           const rowExpandableProps =
                             row.type === 'data' ? expandableRows.getExpandableItemProps(row.item) : undefined;
                           const rowRoleProps = getTableRowRoleProps({
@@ -713,11 +708,10 @@ const InternalTable = React.forwardRef(
                           });
                           const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                           const sharedCellProps = {
-                            isFirstRow,
-                            isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
-                            isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
-                            isNextSelected: hasSelection && !isLastDataRow && isRowSelected(allRows[rowIndex + 1]),
+                            isPrevSelected: hasSelection && rowIndex > 0 && isRowSelected(allRows[rowIndex - 1]),
+                            isNextSelected:
+                              hasSelection && rowIndex < allRows.length - 1 && isRowSelected(allRows[rowIndex + 1]),
                             isEvenRow: rowIndex % 2 === 0,
                             stripedRows,
                             hasSelection,
@@ -731,6 +725,8 @@ const InternalTable = React.forwardRef(
                               <tr
                                 key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                {...focusMarkers.item}
+                                {...rowRoleProps}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
                                   // However, that behavior is unwanted when the focus is received as result of a click
@@ -739,12 +735,10 @@ const InternalTable = React.forwardRef(
                                     stickyHeaderRef.current?.scrollToRow(currentTarget);
                                   }
                                 }}
-                                {...focusMarkers.item}
                                 onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
                                 onContextMenu={
                                   onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
                                 }
-                                {...rowRoleProps}
                               >
                                 {selection.getItemSelectionProps && (
                                   <TableBodySelectionCell
@@ -882,7 +876,6 @@ const InternalTable = React.forwardRef(
                       {loading && skeleton && allItems.length > 0 && skeletonRowsCount - allItems.length > 0 && (
                         <SkeletonRows
                           count={skeletonRowsCount - allItems.length}
-                          hasDataRows={true}
                           totalColumnsCount={totalColumnsCount}
                           loadingText={loadingText}
                           hasSelection={hasSelection}
@@ -917,6 +910,13 @@ const InternalTable = React.forwardRef(
           </ColumnWidthsProvider>
         </TableComponentsContextProvider>
       </LinkDefaultVariantContext.Provider>
+    );
+
+    return (
+      // Reset the shared cell contexts to known defaults: the extracted cell substrate reads column
+      // layout and row variant from context, so the existing Table pins them here (it drives its own
+      // selection/striping paint directly, not via the atomic row-variant context).
+      <TableContextProvider value={defaultTableContext}>{tableContent}</TableContextProvider>
     );
   }
 ) as TableForwardRefType;

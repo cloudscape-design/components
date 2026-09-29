@@ -235,6 +235,9 @@ export interface I18nFormatArgTypes {
       amount: number;
     };
   };
+  dialog: {
+    'i18nStrings.dismissAriaLabel': never;
+  };
   drawer: {
     'i18nStrings.loadingText': never;
   };

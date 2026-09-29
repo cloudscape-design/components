@@ -24,12 +24,37 @@ const safeAttributes = [
   'y2',
   'width',
   'height',
+  'overflow',
+  'pathLength',
+  'stroke-dasharray',
+  'stroke-dashoffset',
+  'clip-path',
 ];
 
 function getIcon(iconName, content) {
+  // Dash-animated icons (see hover-motion.scss) carry pathLength/stroke-dash*
+  // attributes that define their resting shape and can't be stripped away.
+  const usesDashMotion = content.includes('pathLength');
+  // Shape elements carrying a part class are motion targets whose element type
+  // matters (e.g. the calendar corner animates the rect-only `rx` property), so
+  // they must not be rewritten into paths.
+  const hasAnimatedShape = /<(rect|circle|ellipse|line)[^>]*class="[^"]*awsui-icon-/.test(content);
+  const overrides = {};
+  if (usesDashMotion) {
+    overrides.removeUselessStrokeAndFill = false;
+    overrides.mergePaths = false;
+  }
+  if (hasAnimatedShape) {
+    overrides.convertShapeToPath = false;
+  }
   const { data } = Svgo.optimize(content, {
     plugins: [
-      'preset-default',
+      Object.keys(overrides).length > 0
+        ? {
+            name: 'preset-default',
+            params: { overrides },
+          }
+        : 'preset-default',
       {
         name: 'awsuiValidateAttributes',
         type: 'visitor',
@@ -52,15 +77,23 @@ function getIcon(iconName, content) {
         },
       },
       {
-        name: 'awsuiClassToClassName',
-        description: 'Replace SVG class attribute with className for JSX',
+        name: 'awsuiRenameAttributesForJsx',
+        description: 'Rename SVG attributes to their JSX property names',
         type: 'visitor',
         fn: () => ({
           element: {
             enter: node => {
-              if (node.attributes.class) {
-                node.attributes.className = node.attributes.class;
-                delete node.attributes.class;
+              const jsxNames = {
+                class: 'className',
+                'stroke-dasharray': 'strokeDasharray',
+                'stroke-dashoffset': 'strokeDashoffset',
+                'clip-path': 'clipPath',
+              };
+              for (const [attribute, jsxName] of Object.entries(jsxNames)) {
+                if (node.attributes[attribute] !== undefined) {
+                  node.attributes[jsxName] = node.attributes[attribute];
+                  delete node.attributes[attribute];
+                }
               }
             },
           },

@@ -44,6 +44,7 @@ const Input = React.forwardRef(
       clearAriaLabel,
       nativeInputAttributes,
       style,
+      inlineLabelText,
       prefix,
       suffix,
       ...rest
@@ -105,6 +106,7 @@ const Input = React.forwardRef(
           style,
           prefix,
           suffix,
+          inlineLabelText,
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}

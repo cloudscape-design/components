@@ -15,13 +15,6 @@ $border-offset-double: calc(2 * #{$border-offset});
 $divider-w: awsui.$border-divider-list-width;
 $neg-divider-w: calc(-1 * #{$divider-w});
 
-@mixin logical-radius($radius) {
-  border-start-start-radius: $radius;
-  border-start-end-radius: $radius;
-  border-end-start-radius: $radius;
-  border-end-end-radius: $radius;
-}
-
 @function add-offset($value, $offset: $border-offset) {
   @return calc(#{$value} + #{$offset});
 }
@@ -133,13 +126,14 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   &.highlighted,
   &.selected {
     color: var(#{custom-props.$optionColorHighlighted}, #{awsui.$color-text-dropdown-item-highlighted});
-    @include logical-radius(awsui.$border-radius-item);
+    @include styles.logical-radius(awsui.$border-radius-item);
   }
 
   &.highlighted {
     z-index: 3;
     background-color: var(#{custom-props.$optionBackgroundHighlighted}, #{awsui.$color-background-dropdown-item-hover});
     @include highlighted-shadow;
+    @include styles.logical-radius(awsui.$border-radius-dropdown);
     &.disabled {
       box-shadow: inset 0 0 0 $border-offset awsui.$color-border-dropdown-item-dimmed-hover;
       background-color: awsui.$color-background-dropdown-item-dimmed;

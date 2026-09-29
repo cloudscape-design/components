@@ -176,6 +176,15 @@ export default function DescriptionPage() {
           />
         </div>
         <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
+          <ButtonDropdown
+            items={actionsItems}
+            ariaLabel="Instance actions"
+            variant="inline-icon"
+            disabled={true}
+            disabledReason="disabled reason"
+          />
+        </div>
+        <div style={{ float: isRightAligned ? 'right' : undefined, marginBottom: '100px' }}>
           <ButtonDropdown items={selectableGroupItems} data-testid="buttonDropdownSelectableItems">
             Selectable example
           </ButtonDropdown>

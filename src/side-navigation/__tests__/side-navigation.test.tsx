@@ -273,6 +273,46 @@ describe('SideNavigation', () => {
       expect(createWrapper(wrapper.getElement()).find('[role="img"][aria-label="External link"]')).toBeTruthy();
     });
 
+    it('external link is a hover-motion trigger and its icon carries the motion target', () => {
+      const wrapper = renderSideNavigation({
+        items: [{ type: 'link', text: 'Page 1', href: '#something', external: true }],
+      });
+      const externalLink = wrapper.findItemByIndex(1)!.findLink()!.getElement();
+
+      expect(externalLink).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      expect(externalLink.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+    });
+
+    it('link with an icon slot is a hover-motion trigger and the icon wrapper is the target', () => {
+      const wrapper = renderSideNavigation({
+        items: [{ type: 'link', text: 'Page 1', href: '#something', icon: <svg data-testid="custom-icon" /> }],
+      });
+      const link = wrapper.findItemByIndex(1)!.findLink()!.getElement();
+
+      expect(link).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      // Target sits on the wrapper (not the icon itself) so that slot-provided icons animate too.
+      const target = link.querySelector('[data-awsui-motion-target]')!;
+      expect(target.querySelector('[data-testid="custom-icon"]')).toBeTruthy();
+    });
+
+    it('expandable link group header with an icon slot is a hover-motion trigger containing the target', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          {
+            type: 'expandable-link-group',
+            text: 'Group',
+            href: '#group',
+            icon: <svg data-testid="group-icon" />,
+            items: [{ type: 'link', text: 'Child', href: '#child' }],
+          },
+        ],
+      });
+      const header = wrapper.getElement().querySelector('a[href="#group"]')!;
+
+      expect(header).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      expect(header.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+    });
+
     it('has an additional info when "info" property is specified', () => {
       const wrapper = renderSideNavigation({
         items: [{ type: 'link', text: 'Page 1', href: '#something', info: <Badge>Additional info</Badge> }],

@@ -1,0 +1,81 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.button-danger {
+  --awsui-style-background-color: #{palette.$error};
+  --awsui-style-color: #{palette.$text-on-accent};
+  --awsui-style-border-color: #{palette.$error};
+  --awsui-style-border-radius: 4px;
+  --awsui-style-padding-inline: 24px;
+  --awsui-style-padding-block: 10px;
+
+  &:hover,
+  &:focus {
+    --awsui-style-background-color: #{palette.$error-hover};
+    --awsui-style-color: #{palette.$text-on-accent};
+    --awsui-style-border-color: #{palette.$error-hover};
+    --awsui-style-focus-ring-color: #{palette.$error-hover};
+  }
+
+  &:active {
+    --awsui-style-background-color: #{palette.$error-active};
+    --awsui-style-color: #{palette.$text-on-accent};
+    --awsui-style-border-color: #{palette.$error-active};
+  }
+}
+
+.button-circle {
+  --awsui-style-background-color: #{palette.$subtle};
+  --awsui-style-color: #{palette.$text};
+  --awsui-style-border-color: #{palette.$subtle};
+  --awsui-style-border-radius: 50%;
+  --awsui-style-padding-inline: 10px;
+  --awsui-style-padding-block: 8px;
+  --awsui-style-focus-ring-color: #{palette.$accent};
+  --awsui-style-focus-ring-radius: 50%;
+  --awsui-style-focus-ring-gutter-block: 5px;
+  --awsui-style-focus-ring-gutter-inline: 5px;
+
+  &:hover,
+  &:focus {
+    --awsui-style-background-color: #{palette.$subtle-hover};
+    --awsui-style-color: #{palette.$text};
+    --awsui-style-border-color: #{palette.$subtle-hover};
+  }
+
+  &:active {
+    --awsui-style-background-color: #{palette.$subtle-active};
+    --awsui-style-color: #{palette.$text};
+    --awsui-style-border-color: #{palette.$subtle-active};
+  }
+}
+
+.button-ghost {
+  --awsui-style-padding-inline: 12px;
+  --awsui-style-padding-block: 4px;
+  --awsui-style-border-radius: 4px;
+  --awsui-style-color: #{palette.$accent};
+  --awsui-style-border-color: transparent;
+  --awsui-style-focus-ring-color: #{palette.$accent};
+
+  &:hover,
+  &:focus {
+    --awsui-style-background-color: #{palette.$surface};
+    --awsui-style-border-color: #{palette.$surface};
+  }
+
+  &:active {
+    --awsui-style-background-color: #{palette.$surface-alt};
+    --awsui-style-border-color: #{palette.$surface-alt};
+  }
+}
+
+.disabled.disabled {
+  --awsui-style-background-color: #{palette.$control-bg-disabled};
+  --awsui-style-color: #{palette.$control-fg-disabled};
+  --awsui-style-border-color: #{palette.$control-bg-disabled};
+}

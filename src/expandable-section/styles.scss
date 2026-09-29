@@ -30,6 +30,12 @@ $icon-offset-container: awsui.$space-xxs;
 // Useful to keep elements correctly aligned.
 $icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
 $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+// In One Theme the container caret is an x-small (12px) icon with no start margin and
+// $icon-margin-right-small as end margin (see .icon-container below), so it occupies less
+// space than the medium caret. Keep in sync with that rule and with the icon size chosen
+// in expandable-section-header.tsx.
+$icon-width-x-small: 12px;
+$icon-total-space-container-one-theme: calc(#{$icon-width-x-small} + #{$icon-margin-right-small});
 
 // Extra inline padding that widens the navigation caret pointer target to 24px (WCAG 2.5.8).
 $nav-caret-pad-normal: calc(24px - #{$icon-width-normal});
@@ -65,6 +71,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 }
 
+// Applied to both the default and custom toggle icons.
+.icon-position {
+  position: relative;
+  @include theming.one-theme-only {
+    inset-block-start: $icon-offset-block;
+  }
+}
+
 .icon-container {
   position: relative;
   margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
@@ -80,9 +94,6 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     display: inline-flex;
     align-items: flex-start;
     margin-inline: 0 $icon-margin-right-small;
-    > .icon {
-      inset-block-start: $icon-offset-block;
-    }
   }
 }
 
@@ -195,6 +206,9 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     }
     &:not(.header-deprecated) {
       padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+      @include theming.one-theme-only {
+        padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-container-one-theme});
+      }
     }
 
     @include focus-visible.when-visible {
@@ -247,6 +261,13 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
   &-container-button {
     margin-inline-start: calc(-1 * #{$icon-total-space-medium});
+    // Only when the caret is at the start. The end-icon layout resets this margin
+    // below (.header-button-icon-end) and a theme-scoped rule would outrank that reset.
+    &:not(.header-button-icon-end) {
+      @include theming.one-theme-only {
+        margin-inline-start: calc(-1 * #{$icon-total-space-container-one-theme});
+      }
+    }
   }
 
   &-container {
@@ -352,12 +373,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 .content-inner {
   /* this comment keeps the class in the style sheet */
   @include theming.one-theme-only {
-    // overflow: visible lets negative-margin backgrounds (e.g. side-navigation
-    // active/hover/focus states) bleed past the inline edges.
-    overflow-x: visible;
-    // overflow: clip (not hidden, which would coerce x-axis to auto) still lets the grid-row track collapse.
+    // Grid item of .content above. `clip` rather than `hidden`: `hidden` coerces the inline axis
+    // to `auto`, making this a scroll container on both axes, where `clip` leaves the inline axis
+    // `visible` so content that paints outside the box (focus rings, inline popovers) survives.
     overflow-y: clip;
     min-block-size: 0;
+    // A grid item's automatic minimum size is content-based on this axis too, so content that
+    // manages its own inline overflow (e.g. a table) would stretch the box out of the container.
+    min-inline-size: 0;
     opacity: 0;
 
     // HIDE (collapsed state): quick opacity collapse, no delay.
@@ -541,12 +564,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 }
 
-// min-block-size: 0 lets this grid item collapse to zero height when an ancestor
-// uses grid-template-rows: 0fr (side-navigation section header collapse).
-// Must remain global (not scoped to .header-icon-end) because the side-nav
-// collapse targets the header wrapper regardless of icon position.
+// Side-navigation makes this box a grid item (its section wrapper sets display: grid with
+// grid-template-rows: 0fr to collapse), and a grid item's automatic minimum size is content-based on
+// both axes: zero the block axis so the header collapses to zero, zero the inline axis so wide content
+// cannot stretch it past the track. It belongs here rather than on side-navigation's grid container,
+// because a container's min-size does not participate in track sizing.
 .header-content {
   min-block-size: 0;
+  min-inline-size: 0;
 }
 
 // In the end-icon layout, header content elements must shrink without overflowing.

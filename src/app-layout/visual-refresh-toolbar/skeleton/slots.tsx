@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
-import { BreadcrumbsSlotContext } from '../contexts';
+import { BreadcrumbsSlotContext, BreadcrumbsSlotContextType } from '../contexts';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import toolbarStyles from '../toolbar/styles.css.js';
@@ -47,25 +47,38 @@ export const NotificationsSlot = React.forwardRef<HTMLElement, NotificationsSlot
 interface BreadcrumbsSlotProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
+  reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
 }
 
 const breadcrumbsSlotContextValue = { isInToolbar: true };
 
-export function BreadcrumbsSlot({ ownBreadcrumbs, discoveredBreadcrumbs }: BreadcrumbsSlotProps) {
+export function BreadcrumbsSlot({
+  ownBreadcrumbs,
+  discoveredBreadcrumbs,
+  reportOwnBreadcrumbsProps,
+}: BreadcrumbsSlotProps) {
   const isSSR = typeof window === 'undefined';
+  const ownBreadcrumbsSlotContextValue = React.useMemo(
+    () => ({ isInToolbar: true, reportOwnBreadcrumbsProps }),
+    [reportOwnBreadcrumbsProps]
+  );
 
   return (
-    <BreadcrumbsSlotContext.Provider value={breadcrumbsSlotContextValue}>
-      <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
+    <>
+      <BreadcrumbsSlotContext.Provider value={ownBreadcrumbsSlotContextValue}>
+        <div className={styles['breadcrumbs-own']}>{ownBreadcrumbs}</div>
+      </BreadcrumbsSlotContext.Provider>
       {discoveredBreadcrumbs && !isSSR && (
-        <div className={styles['breadcrumbs-discovered']}>
-          <BreadcrumbGroupImplementation
-            {...discoveredBreadcrumbs}
-            data-awsui-discovered-breadcrumbs={true}
-            __injectAnalyticsComponentMetadata={true}
-          />
-        </div>
+        <BreadcrumbsSlotContext.Provider value={breadcrumbsSlotContextValue}>
+          <div className={styles['breadcrumbs-discovered']}>
+            <BreadcrumbGroupImplementation
+              {...discoveredBreadcrumbs}
+              data-awsui-discovered-breadcrumbs={true}
+              __injectAnalyticsComponentMetadata={true}
+            />
+          </div>
+        </BreadcrumbsSlotContext.Provider>
       )}
-    </BreadcrumbsSlotContext.Provider>
+    </>
   );
 }

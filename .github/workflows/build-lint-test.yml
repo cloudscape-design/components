@@ -17,6 +17,13 @@ permissions:
   contents: read
   security-events: write
 
+# Cancel superseded runs for the same ref to free shared runner capacity.
+# Only cancel PR runs; other events get a unique group so their runs never
+# cancel or drop each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   build:
     name: build${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
@@ -29,3 +36,4 @@ jobs:
       react-version: ${{ matrix.react }}
       artifact-path: pages/lib/static-default
       artifact-name: dev-pages-react${{ matrix.react }}
+      coverage-artifact-name: coverage-report-react${{ matrix.react }}

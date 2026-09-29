@@ -222,26 +222,33 @@ describe('CopyToClipboard', () => {
         expect(copyButton.isDisabled()).toBe(true);
       });
 
-      test('sets the disabled reason when button is focused', async () => {
-        const { container } = render(
-          <CopyToClipboard
-            {...defaultProps}
-            popoverRenderWithPortal={popoverRenderWithPortal}
-            textToCopy="Text to copy with error"
-            disabled={true}
-            disabledReason="Disabled reason"
-          />
-        );
-
-        const copyToClipboardButton = createWrapper(container).findCopyToClipboard()!;
-        copyToClipboardButton.findCopyButton()!.focus();
-
-        await waitFor(() => {
-          expect(copyToClipboardButton.findCopyButton()!.findDisabledReason()!.getElement()).toHaveTextContent(
-            'Disabled reason'
+      // The `inline` variant renders the trigger as an `inline-icon` button, which only gained
+      // `disabledReason` support alongside `link` and `inline-link`. Cover every variant so the
+      // trigger mapping in `copy-to-clipboard/internal.tsx` stays wired up.
+      test.each(['button', 'icon', 'inline'] as const)(
+        'sets the disabled reason when the %s variant button is focused',
+        async variant => {
+          const { container } = render(
+            <CopyToClipboard
+              {...defaultProps}
+              popoverRenderWithPortal={popoverRenderWithPortal}
+              variant={variant}
+              textToCopy="Text to copy with error"
+              disabled={true}
+              disabledReason="Disabled reason"
+            />
           );
-        });
-      });
+
+          const copyToClipboardButton = createWrapper(container).findCopyToClipboard()!;
+          copyToClipboardButton.findCopyButton()!.focus();
+
+          await waitFor(() => {
+            expect(copyToClipboardButton.findCopyButton()!.findDisabledReason()!.getElement()).toHaveTextContent(
+              'Disabled reason'
+            );
+          });
+        }
+      );
 
       test('does not show the popover when clicked', () => {
         const { container } = render(

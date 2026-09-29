@@ -34,6 +34,12 @@ const defaultProps: any = {
 };
 
 describe('Trigger component', () => {
+  test('is a hover-motion trigger and its caret icon carries the motion target', () => {
+    const wrapper = renderComponent(defaultProps);
+    expect(wrapper.getElement()).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+    expect(wrapper.getElement().querySelector('[data-awsui-motion-target]')).toBeTruthy();
+  });
+
   describe('Empty state', () => {
     const wrapper = renderComponent(defaultProps);
     const buttonTriggerEl = wrapper.getElement();

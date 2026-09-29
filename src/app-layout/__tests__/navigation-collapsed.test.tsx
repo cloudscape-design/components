@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+
 import AppLayout from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import { getIconHTML } from '../../icon/__tests__/utils';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 import navStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/navigation/styles.css.js';
@@ -14,6 +17,15 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
+}));
+
+afterEach(() => {
+  (isThemeActive as jest.Mock).mockReturnValue(false);
+});
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   describe('collapsed rail visibility', () => {
@@ -52,6 +64,28 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       const closeButton = wrapper.findNavigationClose().getElement();
       expect(closeButton.querySelector(`.${iconStyles['name-angle-left']}`)).not.toBeNull();
     });
+
+    test.each([true, false])(
+      'close button shows side-bar icon in One Theme when navigationCloseBehavior=collapse, navigationOpen=%s',
+      navigationOpen => {
+        (isThemeActive as jest.Mock).mockReturnValue(true);
+        const { wrapper } = renderComponent(
+          <AppLayout navigationCloseBehavior="collapse" navigationOpen={navigationOpen} navigation={<>Nav content</>} />
+        );
+        expect(wrapper.findNavigationClose().findIcon()!.getElement()).toContainHTML(getIconHTML('side-bar'));
+      }
+    );
+
+    test.each([true, false])(
+      'close button shows angle-left icon in One Theme when navigationCloseBehavior!=collapse, navigationOpen=%s',
+      navigationOpen => {
+        (isThemeActive as jest.Mock).mockReturnValue(true);
+        const { wrapper } = renderComponent(
+          <AppLayout navigationOpen={navigationOpen} navigation={<>Nav content</>} />
+        );
+        expect(wrapper.findNavigationClose().findIcon()!.getElement()).toContainHTML(getIconHTML('angle-left'));
+      }
+    );
 
     test('close button toggles navigation open and closed when collapsible', () => {
       const { wrapper } = renderComponent(

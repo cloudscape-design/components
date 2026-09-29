@@ -51,6 +51,8 @@ export const ButtonTrigger = React.forwardRef(
           event.preventDefault();
           onClick?.();
         }}
+        data-awsui-motion-trigger="hover"
+        data-awsui-motion-target=""
       >
         {hasIcon && (
           <InternalIcon

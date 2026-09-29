@@ -7,6 +7,7 @@ import InternalButton from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useOneTheme } from '../internal/hooks/use-visual-mode';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { CopyToClipboardProps } from './interfaces';
@@ -35,6 +36,7 @@ export default function InternalCopyToClipboard({
 }: InternalCopyToClipboardProps) {
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('success');
   const [statusText, setStatusText] = useState(copySuccessText);
+  const isOneTheme = useOneTheme();
 
   useEffect(() => {
     if (navigator.permissions) {
@@ -110,7 +112,11 @@ export default function InternalCopyToClipboard({
       triggerType="custom"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
-      content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
+      content={
+        <InternalStatusIndicator type={status} __embedded={isOneTheme}>
+          {statusText}
+        </InternalStatusIndicator>
+      }
       __onOpen={onClick}
     >
       {button}

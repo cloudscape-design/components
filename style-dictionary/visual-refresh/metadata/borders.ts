@@ -27,6 +27,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusDialog: {
+    description: 'The border radius of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
+  borderWidthDialog: {
+    description: 'The border width of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
   borderRadiusBadge: {
     description: 'The border radius of badges.',
     public: true,
@@ -133,7 +143,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusChatBubble: {
     description: 'The border radius of chat bubbles.',
     public: true,
-    themeable: false,
+    themeable: true,
+  },
+  borderRadiusSupportPrompt: {
+    description: 'The border radius of support prompts.',
+    public: true,
+    themeable: true,
   },
   borderRadiusTutorialPanelItem: {
     description: 'The border radius of tutorials inside a tutorial panel.',

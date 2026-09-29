@@ -59,7 +59,13 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
+  styleClassNames?: StyleClassNames;
 } & InternalBaseComponentProps;
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+}
 
 export const InternalButton = React.forwardRef(
   (
@@ -105,6 +111,7 @@ export const InternalButton = React.forwardRef(
       __skipNativeAttributesWarnings,
       __compact = false,
       analyticsAction = 'click',
+      styleClassNames,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -116,7 +123,14 @@ export const InternalButton = React.forwardRef(
     const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason =
-      (variant === 'normal' || variant === 'primary' || variant === 'icon') && !!disabledReason && disabled;
+      (variant === 'normal' ||
+        variant === 'primary' ||
+        variant === 'icon' ||
+        variant === 'inline-icon' ||
+        variant === 'inline-link' ||
+        variant === 'link') &&
+      !!disabledReason &&
+      disabled;
 
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
@@ -184,7 +198,8 @@ export const InternalButton = React.forwardRef(
       buttonContext.onClick({ variant });
     };
 
-    const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
+    const stylingClassName = styleClassNames?.root;
+    const buttonClass = clsx(props.className, stylingClassName, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
       [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,
@@ -228,6 +243,8 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      'data-awsui-motion-trigger': 'hover',
+      'data-awsui-motion-target': '',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
       ...getAnalyticsLabelAttribute(shouldHaveContent ? `.${analyticsSelectors.label}` : ''),

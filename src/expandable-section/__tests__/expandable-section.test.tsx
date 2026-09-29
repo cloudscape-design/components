@@ -880,4 +880,68 @@ describe('__expandIconPosition', () => {
       expect(tags).toEqual(['A', 'BUTTON']);
     });
   });
+
+  describe('hover-motion trigger/target attributes on the caret', () => {
+    // The same `icon` element is used across every header shape, so the target attribute must
+    // land on it regardless of variant/position — this is the "target closest to the icon" rule.
+    test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked', 'inline'])(
+      'the caret icon always carries data-awsui-motion-target for the "%s" variant',
+      variant => {
+        const wrapper = renderExpandableSection({ variant, headerText: 'Test Header' });
+        const targets = wrapper.getElement().querySelectorAll('[data-awsui-motion-target]');
+        expect(targets.length).toBeGreaterThan(0);
+      }
+    );
+
+    test('a real caret button (navigation variant) is itself the hover trigger, containing the target', () => {
+      const wrapper = renderExpandableSection({ variant: 'navigation', headerText: 'Test Header' });
+      const button = wrapper.getElement().querySelector('button')!;
+      expect(button).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      expect(button.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+    });
+
+    test('default variant with headerText: the whole clickable row is the hover trigger and contains the target', () => {
+      const wrapper = renderExpandableSection({ variant: 'default', headerText: 'Test Header' });
+      const triggers = wrapper.getElement().querySelectorAll('[data-awsui-motion-trigger="hover"]');
+      expect(triggers.length).toBeGreaterThan(0);
+      const withTarget = Array.from(triggers).some(trigger => trigger.querySelector('[data-awsui-motion-target]'));
+      expect(withTarget).toBe(true);
+    });
+
+    test('restricted clickable area (headerActions present): the trigger narrows to the header button, still containing the target', () => {
+      const wrapper = renderExpandableSection({
+        variant: 'default',
+        headerText: 'Test Header',
+        headerActions: <Button>Action</Button>,
+      });
+      const headerButton = wrapper.getElement().querySelector('[role="button"]')!;
+      expect(headerButton).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+      expect(headerButton.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+
+      // The outer row must NOT also claim the trigger — the click handler moved to the header button only.
+      const outerRow = wrapper.getElement();
+      expect(outerRow).not.toHaveAttribute('data-awsui-motion-trigger');
+    });
+
+    test('outside-icon case (container variant, end position): the standalone caret button is its own independent trigger', () => {
+      const { container } = render(
+        <InternalExpandableSection variant="container" headerText="Test Header" __expandIconPosition="end">
+          Content
+        </InternalExpandableSection>
+      );
+      const wrapper = createWrapper(container).findExpandableSection()!;
+      const captions = wrapper.getElement().querySelectorAll('button[data-awsui-motion-trigger="hover"]');
+      expect(captions.length).toBeGreaterThan(0);
+      for (const button of Array.from(captions)) {
+        expect(button.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+      }
+    });
+
+    test('navigation variant: the whole header row is also a hover trigger, so hovering the adjacent link plays the caret motion', () => {
+      const wrapper = renderExpandableSection({ variant: 'navigation', headerText: 'Test Header' });
+      const headerRow = wrapper.getElement().querySelector('[data-awsui-motion-trigger="hover"]:not(button)')!;
+      expect(headerRow).toBeTruthy();
+      expect(headerRow.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+    });
+  });
 });

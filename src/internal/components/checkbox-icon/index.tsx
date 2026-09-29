@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps } from '../../../types/base-component';
@@ -74,6 +74,13 @@ const CheckboxIcon = ({
   const theme = useVisualRefresh() ? (oneTheme ? 'one' : 'refresh') : 'default';
   const dimensions = dimensionsByTheme[theme];
 
+  // The draw-in animation only plays once the state has changed since mount.
+  const [initialState] = useState({ checked: !!checked, indeterminate: !!indeterminate });
+  const [hasChanged, setHasChanged] = useState(false);
+  if (!hasChanged && (!!checked !== initialState.checked || !!indeterminate !== initialState.indeterminate)) {
+    setHasChanged(true);
+  }
+
   return (
     <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
       <rect
@@ -97,6 +104,7 @@ const CheckboxIcon = ({
             [styles['styled-line-disabled']]: disabled,
             [styles['styled-line-readonly']]: readOnly,
           })}
+          data-awsui-motion-ready={hasChanged ? '' : undefined}
           points={indeterminate ? dimensions.indeterminate : dimensions.checked}
           style={{ stroke: style?.line?.stroke }}
         />

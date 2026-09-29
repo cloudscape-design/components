@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "icon",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for button matches the snapshot: button 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "box-shadow",
+        "padding-block",
+        "padding-inline",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "label",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "name": "description",
+      "tokens": [
+        "color",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "slots": [
+    {
+      "name": "dropdown",
+      "tokens": [
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for link matches the snapshot: link 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "tokens": [
+        "color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "text-decoration-line",
+        "text-decoration-color",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "tokens": [
+        "color",
+        "background-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+    {
+      "name": "label",
+      "tokens": [
+        "color",
+      ],
+    },
+    {
+      "name": "description",
+      "tokens": [
+        "color",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
+[
+  "alert",
+  "badge",
+  "button",
+  "checkbox",
+  "dropdown",
+  "link",
+  "toggle",
+]
+`;

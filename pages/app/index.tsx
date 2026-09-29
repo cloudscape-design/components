@@ -17,6 +17,9 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
+// core-update theme stylesheet, pregenerated at build time and scoped under .awsui-core-update
+// (the dev pages' CSP blocks runtime-injected style nodes, see build-tools/tasks/styles.js)
+import './generated/core-update-theme.css';
 // screenshot test overrides
 import styles from './styles.scss';
 
@@ -100,9 +103,12 @@ const { direction, visualRefresh, theme, appLayoutWidget, appLayoutToolbar, appL
   history.location.search
 );
 const oneTheme = theme === Theme.OneTheme;
+// core-update is an override on top of visual refresh, so it always requires the visual refresh base.
+const coreNew = theme === Theme.CoreUpdate;
+const effectiveVisualRefresh = (visualRefresh || coreNew) && !oneTheme;
 
 // The VR class needs to be set before any React rendering occurs.
-window[awsuiVisualRefreshFlag] = () => visualRefresh && !oneTheme;
+window[awsuiVisualRefreshFlag] = () => effectiveVisualRefresh;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
@@ -117,7 +123,7 @@ window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
 // Apply the active theme's body class (extensible via the Theme enum).
 applyThemeClass(theme);
 // useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh && !oneTheme);
+document.body.classList.toggle('awsui-visual-refresh', effectiveVisualRefresh);
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);

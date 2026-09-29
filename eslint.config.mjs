@@ -217,7 +217,7 @@ export default tsEslint.config(
         'error',
         [
           {
-            pattern: './src/test-utils/dom/index.ts',
+            pattern: './src/test-utils/dom/index.*s',
             message:
               "Do not import from the augmented ElementWrapper barrel '{{ path }}'. Use @cloudscape-design/test-utils-core/dom instead.",
           },

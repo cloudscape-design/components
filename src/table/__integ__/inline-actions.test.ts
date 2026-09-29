@@ -30,6 +30,7 @@ const setupTest = (
       stickyActions: String(stickyActions),
     });
     await browser.url(`#/light/table/inline-actions?${query.toString()}`);
+    await page.waitForVisible(tableWithDropdownActions.toSelector());
     await testFn(page);
   });
 };

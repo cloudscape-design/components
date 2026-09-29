@@ -111,7 +111,7 @@ const InternalStep = ({
         {orientation === 'vertical' ? (
           <>
             <div className={styles.header}>
-              <InternalStatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+              <InternalStatusIndicator __embedded={true} type={status} iconAriaLabel={statusIconAriaLabel}>
                 {header}
               </InternalStatusIndicator>
             </div>

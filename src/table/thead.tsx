@@ -310,7 +310,7 @@ const Thead = React.forwardRef(
                   const rightChildIds = childIds.slice(leftColspan);
 
                   return (
-                    <React.Fragment key={col.id}>
+                    <React.Fragment key={col.cellKey}>
                       {/* Left half */}
                       <TableGroupHeaderCell
                         {...sharedGroupCellProps}
@@ -324,7 +324,7 @@ const Thead = React.forwardRef(
                         childColumnIds={leftChildIds}
                         firstChildColumnId={leftChildIds[0]}
                         lastChildColumnId={leftChildIds[leftChildIds.length - 1]}
-                        cellRef={isSplitFirst ? node => setCell(sticky, col.id, node) : () => {}}
+                        cellRef={isSplitFirst ? node => setCell(sticky, col.cellKey, node) : () => {}}
                         isLast={false}
                         stickyColumnId={isSplitFirst ? childIds[0] : undefined}
                         stickyBoundaryColumnId={isSplitFirst ? leftChildIds[leftChildIds.length - 1] : undefined}
@@ -336,14 +336,14 @@ const Thead = React.forwardRef(
                         colspan={rightColspan}
                         colIndex={selectionType ? rightColIndex + 1 : rightColIndex}
                         groupId={rightGroupId}
-                        resizableStyle={getColumnStyles(sticky, col.id)}
+                        resizableStyle={getColumnStyles(sticky, col.cellKey)}
                         updateGroupWidth={(_, newWidth) => {
                           handleSplitGroupResize(rightChildIds, newWidth);
                         }}
                         childColumnIds={rightChildIds}
                         firstChildColumnId={rightChildIds[0]}
                         lastChildColumnId={rightChildIds[rightChildIds.length - 1]}
-                        cellRef={!isSplitFirst ? node => setCell(sticky, col.id, node) : () => {}}
+                        cellRef={!isSplitFirst ? node => setCell(sticky, col.cellKey, node) : () => {}}
                         resizerRoleDescription={resizerRoleDescription}
                         resizerTooltipText={resizerTooltipText}
                         isLast={rightColIndex + rightColspan === totalColumns}
@@ -380,18 +380,18 @@ const Thead = React.forwardRef(
                 return (
                   <TableGroupHeaderCell
                     {...sharedGroupCellProps}
-                    key={col.id}
+                    key={col.cellKey}
                     colspan={col.colSpan}
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
-                    resizableStyle={getColumnStyles(sticky, col.id)}
+                    resizableStyle={getColumnStyles(sticky, col.cellKey)}
                     updateGroupWidth={(groupId, newWidth) => {
                       updateGroup(groupId, newWidth);
                     }}
                     childColumnIds={childIds}
                     firstChildColumnId={childIds[0]}
                     lastChildColumnId={childIds[childIds.length - 1]}
-                    cellRef={node => setCell(sticky, col.id, node)}
+                    cellRef={node => setCell(sticky, col.cellKey, node)}
                     resizerRoleDescription={resizerRoleDescription}
                     resizerTooltipText={resizerTooltipText}
                     isLast={col.colIndex + col.colSpan === totalColumns}

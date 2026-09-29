@@ -165,10 +165,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorBackgroundActionCardDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
   colorTextActionCardDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral500}' },
-  colorIconActionCardDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
-  colorIconActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
-  colorIconActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
-  colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
+  colorTextActionCardIconDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorTextActionCardIconHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorTextActionCardIconActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorTextActionCardIconDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
