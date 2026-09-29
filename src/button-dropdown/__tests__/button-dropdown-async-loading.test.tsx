@@ -6,7 +6,10 @@ import { render, waitFor } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
+import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import dropdownFooterStyles from '../../../lib/components/internal/components/dropdown-footer/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -124,6 +127,63 @@ describe('ButtonDropdown async loading', () => {
       '`onLoadItems` must be provided for `recoveryText` to be displayed.'
     );
   });
+
+  describe('recovery button keyboard access', () => {
+    const errorProps: Partial<ButtonDropdownProps> = {
+      asyncLoadingProps: { statusType: 'error', errorText: () => 'Error fetching items', recoveryText: 'Retry' },
+    };
+
+    test('Tab does not close the dropdown while the recovery button is shown', () => {
+      const { wrapper } = renderDropdown({ ...errorProps, onLoadItems: () => {} });
+      wrapper.openDropdown();
+      wrapper.findHighlightedItem()!.keydown(KeyCode.tab);
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+      expect(wrapper.findErrorRecoveryButton()).not.toBeNull();
+    });
+
+    test('Tab closes the dropdown in error state when there is no recovery button', () => {
+      const { wrapper } = renderDropdown({
+        asyncLoadingProps: { statusType: 'error', errorText: () => 'Error fetching items' },
+        onLoadItems: () => {},
+      });
+      wrapper.openDropdown();
+      wrapper.findHighlightedItem()!.keydown(KeyCode.tab);
+      expect(wrapper.findOpenDropdown()).toBeNull();
+    });
+
+    test('Enter on the recovery button retries without activating the highlighted item or closing the dropdown', () => {
+      const onLoadItems = jest.fn();
+      const onItemClick = jest.fn();
+      const { wrapper } = renderDropdown({
+        ...errorProps,
+        onLoadItems: event => onLoadItems(event.detail),
+        onItemClick,
+      });
+      wrapper.openDropdown();
+      onLoadItems.mockClear();
+      wrapper.findErrorRecoveryButton()!.keydown(KeyCode.enter);
+      expect(onLoadItems).toHaveBeenCalledTimes(1);
+      expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: false, samePage: true });
+      expect(onItemClick).not.toHaveBeenCalled();
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+    });
+
+    test('moves focus to the trigger after the recovery button is activated', () => {
+      const { wrapper } = renderDropdown({ ...errorProps, onLoadItems: () => {} });
+      wrapper.openDropdown();
+      wrapper.findErrorRecoveryButton()!.click();
+      expect(document.activeElement).toBe(wrapper.findNativeButton().getElement());
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+    });
+
+    test('moves focus to the filter input after the recovery button is activated in filtering mode', () => {
+      const { wrapper } = renderDropdown({ ...errorProps, filteringType: 'manual', onLoadItems: () => {} });
+      wrapper.openDropdown();
+      wrapper.findErrorRecoveryButton()!.click();
+      expect(document.activeElement).toBe(wrapper.findFilteringInput()!.findNativeInput().getElement());
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+    });
+  });
 });
 
 describe('ButtonDropdown status display', () => {
@@ -170,6 +230,47 @@ describe('ButtonDropdown status display', () => {
     expect(status!.getElement()).toHaveTextContent('End of results');
   });
 
+  test('renders finished text inside the menu list after the last item, with a divider', () => {
+    const { wrapper } = renderDropdown({
+      asyncLoadingProps: { statusType: 'finished', finishedText: () => 'End of results' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    const menu = wrapper.findOpenDropdown()!.find('ul[role="menu"]')!.getElement();
+    const status = wrapper.findStatusIndicator()!.getElement();
+    // Scrolls together with the items instead of covering the last one.
+    expect(menu.lastElementChild!.contains(status)).toBe(true);
+    expect(menu.lastElementChild!.previousElementSibling).toBe(wrapper.findItemById('i3')!.getElement());
+    // Divider between the last item and the text.
+    expect(wrapper.findOpenDropdown()!.findByClassName(dropdownFooterStyles.root)!.getElement()).not.toHaveClass(
+      dropdownFooterStyles['no-items']
+    );
+  });
+
+  test('renders sticky status without the divider when there are no items', () => {
+    const { wrapper } = renderDropdown({
+      items: [],
+      asyncLoadingProps: { statusType: 'loading', loadingText: () => 'Loading actions' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    expect(wrapper.findOpenDropdown()!.findByClassName(dropdownFooterStyles.root)!.getElement()).toHaveClass(
+      dropdownFooterStyles['no-items']
+    );
+  });
+
+  test('announces the status through a live region, also when there are no items', () => {
+    const { wrapper } = renderDropdown({
+      items: [],
+      asyncLoadingProps: { statusType: 'loading', loadingText: () => 'Loading actions' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    const liveRegion = wrapper.findOpenDropdown()!.findLiveRegion();
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion!.getElement()).toHaveTextContent('Loading actions');
+  });
+
   test('shows empty text when items are empty and statusType is "finished"', () => {
     const { wrapper } = renderDropdown({
       items: [],
@@ -194,6 +295,21 @@ describe('ButtonDropdown status display', () => {
     });
     wrapper.openDropdown();
     expect(wrapper.findStatusIndicator()).toBeNull();
+  });
+
+  test('shows noMatch when filteringType="manual" and items are empty due to filtering', () => {
+    const { wrapper } = renderDropdown({
+      items: [],
+      filteringType: 'manual',
+      noMatch: <span>No actions match</span>,
+      asyncLoadingProps: { statusType: 'finished', empty: () => 'No actions found' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findFilteringInput()!.setInputValue('xyz');
+    const status = wrapper.findStatusIndicator();
+    expect(status).not.toBeNull();
+    expect(status!.getElement()).toHaveTextContent('No actions match');
   });
 });
 
@@ -260,7 +376,7 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ samePage: true, expandedGroupId: 'g1' }));
   });
 
-  test('shows loading status inside expanded group without a border when items are empty', () => {
+  test('shows loading status inside expanded group without a divider when items are empty', () => {
     const { wrapper } = renderDropdown({
       items: groupItems,
       expandableGroups: true,
@@ -272,9 +388,112 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     });
     wrapper.openDropdown();
     wrapper.findExpandableCategoryById('g1')!.click();
-    // g1 has no items yet - status renders via DropdownStatus (no DropdownFooter border)
     const groupStatus = wrapper.findStatusIndicator({ expandedGroupDropdown: true });
     expect(groupStatus).not.toBeNull();
     expect(groupStatus!.getElement()).toHaveTextContent('Loading group items');
+    const groupDropdown = wrapper.findOpenDropdown()!.find('[data-open=true]')!;
+    expect(groupDropdown.findByClassName(dropdownFooterStyles.root)!.getElement()).toHaveClass(
+      dropdownFooterStyles['no-items']
+    );
+  });
+
+  test('announces the group status through a live region', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'loading' : null),
+      asyncLoadingProps: { loadingText: () => 'Loading group items' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    const liveRegion = wrapper.findOpenDropdown()!.find('[data-open=true]')!.findLiveRegion();
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion!.getElement()).toHaveTextContent('Loading group items');
+  });
+
+  test('renders group finished text inside the group menu after its items', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g2' ? 'finished' : null),
+      asyncLoadingProps: { finishedText: (groupId?: string) => `End of ${groupId}` },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g2')!.click();
+    const groupMenu = wrapper.findOpenDropdown()!.find('[data-open=true]')!.find('ul[role="menu"]')!.getElement();
+    const status = wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement();
+    expect(status).toHaveTextContent('End of g2');
+    expect(groupMenu.lastElementChild!.contains(status)).toBe(true);
+    expect(groupMenu.lastElementChild!.previousElementSibling).toBe(wrapper.findItemById('g2i1')!.getElement());
+  });
+
+  test('clicking the recovery button inside a group keeps the group expanded', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Error', recoveryText: 'Retry' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.click();
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+    expect(wrapper.findExpandableCategoryById('g1')!.find('[aria-expanded="true"]')).not.toBeNull();
+  });
+
+  test('Tab does not close the dropdown while a group recovery button is shown', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Error', recoveryText: 'Retry' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findOpenDropdown()!.keydown(KeyCode.tab);
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+    expect(wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })).not.toBeNull();
+  });
+
+  test.each([
+    ['right arrow', KeyCode.right],
+    ['Enter', KeyCode.enter],
+  ])('fires onLoadItems with expandedGroupId when a group is expanded with %s', (_, keyCode) => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'pending' : null),
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    // Opening with the keyboard highlights the first group.
+    wrapper.findNativeButton().keydown(KeyCode.down);
+    onLoadItems.mockClear();
+    wrapper.findOpenDropdown()!.keydown(keyCode);
+    expect(onLoadItems).toHaveBeenCalledTimes(1);
+    expect(onLoadItems).toHaveBeenCalledWith({
+      filteringText: '',
+      firstPage: true,
+      samePage: false,
+      expandedGroupId: 'g1',
+    });
+  });
+
+  test('does not fire onLoadItems when a group is collapsed', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g2')!.click();
+    onLoadItems.mockClear();
+    wrapper.findExpandableCategoryById('g2')!.click();
+    expect(onLoadItems).not.toHaveBeenCalled();
   });
 });

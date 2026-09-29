@@ -102,4 +102,18 @@ describe('useLoadItems', () => {
     fns.handleRecoveryClick('group-1');
     expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ expandedGroupId: 'group-1', samePage: true }));
   });
+
+  test('fireGroupLoadItems fires a first-page request for the group without the main filtering text', () => {
+    const onLoadItems = jest.fn();
+    const fns = renderHook(onLoadItems, items, 'finished');
+    fns.fireLoadItems('search');
+    onLoadItems.mockClear();
+    fns.fireGroupLoadItems('group-1');
+    expect(onLoadItems).toHaveBeenCalledWith({
+      filteringText: '',
+      firstPage: true,
+      samePage: false,
+      expandedGroupId: 'group-1',
+    });
+  });
 });

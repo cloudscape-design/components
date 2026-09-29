@@ -61,10 +61,10 @@ const groupSourceItems: Record<string, ButtonDropdownProps.Item[]> = {
 
 function fetchGroupItems(groupId: string): Promise<ButtonDropdownProps.Item[]> {
   if (groupId === 'group-files') {
-    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), 600));
+    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), 5000));
   }
   if (groupId === 'group-edit') {
-    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), 800));
+    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), 5000));
   }
   return new Promise(() => {});
 }
@@ -89,7 +89,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
     status: paginatedStatus,
     filteringText: paginatedFilteringText,
     fetchItems,
-  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10 });
+  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10, timeout: 5000 });
 
   // Preconfigured - groups
   const [groupItems, setGroupItems] = useState<Record<string, ButtonDropdownProps.Item[]>>({});
@@ -315,7 +315,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
                 setTimeout(() => {
                   setErrorItems(flatSourceItems.slice(0, 8));
                   setErrorStatus('finished');
-                }, 1000);
+                }, 5000);
               } else {
                 setErrorItems([]);
                 setErrorStatus('error');
