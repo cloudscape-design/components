@@ -11,15 +11,19 @@ const preset = {
 
 jest.mock('@cloudscape-design/theming-build', () => ({
   buildThemedComponents: jest.fn().mockResolvedValue(undefined),
+  generateThemeStylesheet: jest.fn().mockReturnValue('.mock-stylesheet {}'),
 }));
 
 jest.mock('../internal/template/internal/generated/theming/index.cjs', () => ({
   preset,
 }));
 
-import { buildThemedComponents as themingCoreBuild } from '@cloudscape-design/theming-build';
+import {
+  buildThemedComponents as themingCoreBuild,
+  generateThemeStylesheet as themingCoreGenerateThemeStylesheet,
+} from '@cloudscape-design/theming-build';
 
-import { buildThemedComponents } from '../theming';
+import { buildThemedComponents, generateThemeStylesheet } from '../theming';
 
 describe('buildThemedComponents', () => {
   test('does not pass website token versions by default', async () => {
@@ -52,5 +56,21 @@ describe('buildThemedComponents', () => {
         },
       })
     );
+  });
+});
+
+describe('generateThemeStylesheet', () => {
+  test('passes the arguments through', () => {
+    const theme = { tokens: { borderRadiusButton: '8px' } } as any;
+
+    const stylesheet = generateThemeStylesheet({ theme, selector: '.my-theme' });
+
+    expect(stylesheet).toBe('.mock-stylesheet {}');
+    expect(themingCoreGenerateThemeStylesheet).toHaveBeenCalledWith({
+      override: theme,
+      preset,
+      selector: '.my-theme',
+      baseThemeId: 'visual-refresh',
+    });
   });
 });

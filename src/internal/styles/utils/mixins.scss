@@ -42,6 +42,13 @@
   text-overflow: ellipsis;
 }
 
+@mixin logical-radius($radius) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}
+
 @mixin base-pseudo-element {
   content: '';
   position: absolute;

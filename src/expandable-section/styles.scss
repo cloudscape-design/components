@@ -30,6 +30,12 @@ $icon-offset-container: awsui.$space-xxs;
 // Useful to keep elements correctly aligned.
 $icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
 $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+// In One Theme the container caret is an x-small (12px) icon with no start margin and
+// $icon-margin-right-small as end margin (see .icon-container below), so it occupies less
+// space than the medium caret. Keep in sync with that rule and with the icon size chosen
+// in expandable-section-header.tsx.
+$icon-width-x-small: 12px;
+$icon-total-space-container-one-theme: calc(#{$icon-width-x-small} + #{$icon-margin-right-small});
 
 // Extra inline padding that widens the navigation caret pointer target to 24px (WCAG 2.5.8).
 $nav-caret-pad-normal: calc(24px - #{$icon-width-normal});
@@ -65,6 +71,14 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   }
 }
 
+// Applied to both the default and custom toggle icons.
+.icon-position {
+  position: relative;
+  @include theming.one-theme-only {
+    inset-block-start: $icon-offset-block;
+  }
+}
+
 .icon-container {
   position: relative;
   margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
@@ -80,9 +94,6 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     display: inline-flex;
     align-items: flex-start;
     margin-inline: 0 $icon-margin-right-small;
-    > .icon {
-      inset-block-start: $icon-offset-block;
-    }
   }
 }
 
@@ -195,6 +206,9 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     }
     &:not(.header-deprecated) {
       padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+      @include theming.one-theme-only {
+        padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-container-one-theme});
+      }
     }
 
     @include focus-visible.when-visible {
@@ -247,6 +261,13 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
   &-container-button {
     margin-inline-start: calc(-1 * #{$icon-total-space-medium});
+    // Only when the caret is at the start. The end-icon layout resets this margin
+    // below (.header-button-icon-end) and a theme-scoped rule would outrank that reset.
+    &:not(.header-button-icon-end) {
+      @include theming.one-theme-only {
+        margin-inline-start: calc(-1 * #{$icon-total-space-container-one-theme});
+      }
+    }
   }
 
   &-container {

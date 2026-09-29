@@ -40,6 +40,12 @@ describe('normalizeLocale', () => {
     expect(normalizeLocale('DatePickerTest', 'zh_CN')).toBe('zh-CN');
   });
 
+  test('should normalize casing to aa-BB', () => {
+    expect(normalizeLocale('DatePickerTest', 'de-de')).toBe('de-DE');
+    expect(normalizeLocale('DatePickerTest', 'DE-DE')).toBe('de-DE');
+    expect(normalizeLocale('DatePickerTest', 'EN')).toBe('en-US');
+  });
+
   test('should warn if the provided value is in invalid format', () => {
     expect(normalizeLocale('DatePickerTest', 'not-locale')).toBe('en-US');
     expect(consoleSpy).toHaveBeenCalledWith(

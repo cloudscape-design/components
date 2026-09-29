@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import type { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
 import { NonCancelableEventHandler } from '../../../types/events';
 
@@ -190,6 +191,21 @@ export type FeatureNotificationsPayloadPublic<T> = Omit<
   '__persistFeatureNotifications' | '__retrieveFeatureNotifications'
 >;
 
+export interface BreadcrumbsConsumerPayload {
+  /** Called when the current breadcrumbs change. */
+  onBreadcrumbsChange: (breadcrumbs: BreadcrumbGroupProps | null) => void;
+}
+
+export interface BreadcrumbsConsumerRegistration {
+  unregister: () => void;
+}
+
+export type RegisterBreadcrumbsExternalConsumerMessage = Message<
+  'registerBreadcrumbsExternalConsumer',
+  BreadcrumbsConsumerPayload
+>;
+export type UnregisterBreadcrumbsExternalConsumerMessage = Message<'unregisterBreadcrumbsExternalConsumer', undefined>;
+
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
 export type RegisterFeatureNotificationsMessage<T> = Message<
   'registerFeatureNotifications',
@@ -223,8 +239,12 @@ export type AppLayoutUpdateMessage<T = unknown> =
   | ExitExpandedModeMessage
   | RegisterFeatureNotificationsMessage<T>
   | ShowFeaturePromptIfPossible
-  | ClearFeatureNotifications;
+  | ClearFeatureNotifications
+  | UnregisterBreadcrumbsExternalConsumerMessage;
 
-export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
+export type InitialMessage<T> =
+  | RegisterDrawerMessage
+  | RegisterFeatureNotificationsMessage<T>
+  | RegisterBreadcrumbsExternalConsumerMessage;
 
 export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;

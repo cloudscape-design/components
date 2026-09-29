@@ -8,6 +8,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  shadowDialog: {
+    description: 'The shadow of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
   shadowContainer: { description: 'Shadow for containers and cards.' },
   shadowContainerActive: { description: 'Shadow for containers and cards in active state.', public: true },
   shadowDropup: {

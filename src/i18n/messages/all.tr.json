@@ -182,6 +182,9 @@
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Son {amount} saniye} one {Son {amount} saniye} other {Son {amount} saniye}}} minute {{amount, plural, zero {Son {amount} dakika} one {Son {amount} dakika} other {Son {amount} dakika}}} hour {{amount, plural, zero {Son {amount} saat} one {Son {amount} saat} other {Son {amount} saat}}} day {{amount, plural, zero {Son {amount} gün} one {Son {amount} gün} other {Son {amount} gün}}} week {{amount, plural, zero {Son {amount} hafta} one {Son {amount} hafta} other {Son {amount} hafta}}} month {{amount, plural, zero {Son {amount} ay} one {Son {amount} ay} other {Son {amount} ay}}} year {{amount, plural, zero {Son {amount} yıl} one {Son {amount} yıl} other {Son {amount} yıl}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {saniye} one {saniye} other {saniye}}} minute {{amount, plural, zero {dakika} one {dakika} other {dakika}}} hour {{amount, plural, zero {saat} one {saat} other {saat}}} day {{amount, plural, zero {gün} one {gün} other {gün}}} week {{amount, plural, zero {hafta} one {hafta} other {hafta}}} month {{amount, plural, zero {ay} one {ay} other {ay}}} year {{amount, plural, zero {yıl} one {yıl} other {yıl}}} other {}}"
   },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "İletişim kutusunu kapat"
+  },
   "drawer": {
     "i18nStrings.loadingText": "İçerik yükleniyor"
   },

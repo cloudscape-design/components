@@ -7,6 +7,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../cell-base/cell-box' as cell-base;
+@use '../sticky-columns/sticky-boundary' as sticky-boundary;
 
 $cell-horizontal-padding-w-border: calc(#{cell-base.$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
 $selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
@@ -81,7 +82,7 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
   &-content {
     box-sizing: border-box;
 
-    &:not(.body-cell-wrap) {
+    &.with-paddings:not(.body-cell-wrap) {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -135,8 +136,10 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
       border-inline-start: none;
     }
   }
-  // Guard selected out: a selected first row must keep its (thicker, coloured) selected
-  // top border, which the transparent placeholder would otherwise cover.
+  // First/last-row transparent placeholder. `:not(.body-cell-selected)` keeps a selected row's own border.
+  // Keyed on `.body-cell` with no grid-mode guard, so it is the single source of the placeholder for
+  // every cell — the existing Table's rows and the atomic cells (grid and auto) alike; load-bearing for
+  // grid selection-control centering.
   tr:first-child > &:not(.body-cell-selected) {
     border-block-start: cell-base.$border-placeholder;
   }
@@ -246,6 +249,12 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
         box-shadow: awsui.$shadow-sticky-column-first;
         clip-path: inset(0 -24px 0 0);
       }
+    }
+    &-boundary-inline-start {
+      @include sticky-boundary.sticky-boundary-border('end');
+    }
+    &-boundary-inline-end {
+      @include sticky-boundary.sticky-boundary-border('start', calc(-1 * #{sticky-boundary.$border-width}));
     }
   }
 

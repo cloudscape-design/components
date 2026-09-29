@@ -35,7 +35,13 @@ import styles from './styles.css.js';
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
     variant?: LinkProps['variant'] | 'top-navigation' | 'link' | 'recovery';
+    styleClassNames?: StyleClassNames;
   };
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+}
 
 const InternalLink = React.forwardRef(
   (
@@ -55,6 +61,7 @@ const InternalLink = React.forwardRef(
       nativeAttributes,
       __internalRootRef,
       style,
+      styleClassNames,
       ...props
     }: InternalLinkProps,
     ref: React.Ref<LinkProps.Ref>
@@ -172,6 +179,7 @@ const InternalLink = React.forwardRef(
       className: clsx(
         styles.link,
         baseProps.className,
+        styleClassNames?.root,
         applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],

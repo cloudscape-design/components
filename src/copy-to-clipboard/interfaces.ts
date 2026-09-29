@@ -69,7 +69,6 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   /**
    * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
    * If provided, the copy to clipboard button becomes focusable.
-   * Applicable for all variants except inline.
    */
   disabledReason?: string;
 

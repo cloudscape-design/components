@@ -29,7 +29,8 @@ export interface CalendarProps extends BaseComponentProps {
 
   /**
    * Specifies the locale to use to render month names and determine the starting day of the week.
-   * If you don't provide this, the locale is determined by the page and browser locales.
+   * If you don't provide this, the locale is determined by the locale of the surrounding I18nProvider,
+   * or the page and browser locales otherwise.
    * Supported values and formats are listed in the
    * [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
    */

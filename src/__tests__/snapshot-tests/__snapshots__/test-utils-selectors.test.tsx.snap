@@ -253,6 +253,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "dialog": [
+    "awsui_content_jocwy",
+    "awsui_dismiss-button_jocwy",
+    "awsui_footer_jocwy",
+    "awsui_header-actions_jocwy",
+    "awsui_header_jocwy",
+    "awsui_root_17w22",
+  ],
   "divider": [
     "awsui_divider-label_1noo2",
     "awsui_divider_1noo2",
@@ -679,6 +687,24 @@ exports[`test-utils selectors 1`] = `
     "awsui_tools-pagination_wih1l",
     "awsui_tools-preferences_wih1l",
     "awsui_wrapper_wih1l",
+  ],
+  "table-body": [
+    "awsui_body_1i6l7",
+  ],
+  "table-body-cell": [
+    "awsui_cell_2seex",
+  ],
+  "table-head": [
+    "awsui_head_1otu2",
+  ],
+  "table-header-cell": [
+    "awsui_header-cell_uzgsh",
+  ],
+  "table-root": [
+    "awsui_root_1pkvc",
+  ],
+  "table-row": [
+    "awsui_row_3yyds",
   ],
   "tabs": [
     "awsui_actions-container_14rmt",

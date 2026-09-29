@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import generatedIcons from '../icon/generated/icons';
 import { InternalIconContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -17,6 +18,7 @@ import styles from './styles.css.js';
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
+    override?: React.ReactNode;
   };
 
 function iconSizeMap(height: number | null, fontSize?: number | null) {
@@ -42,6 +44,7 @@ function iconSizeMap(height: number | null, fontSize?: number | null) {
 
 const InternalIcon = ({
   name,
+  override,
   size = 'normal',
   variant = 'normal',
   url,
@@ -164,6 +167,14 @@ const InternalIcon = ({
     }
   }
 
+  let content = override ?? (validIcon ? iconMap(name) : undefined);
+  const isOverridden = override ?? (validIcon ? icons[name] !== generatedIcons[name] : false);
+  if (content !== undefined && isOverridden) {
+    // The boxless span provides text metrics so a nested `<Icon size="inherit" />` resolves to the
+    // wrapper's size, without affecting the wrapper's own placement.
+    content = <span className={clsx(styles.icon, styles['custom-icon'], styles[`size-${iconSize}`])}>{content}</span>;
+  }
+
   return (
     <WithNativeAttributes
       {...baseProps}
@@ -174,7 +185,7 @@ const InternalIcon = ({
       ref={mergedRef}
       style={inlineStyles}
     >
-      {validIcon ? iconMap(name) : undefined}
+      {content}
     </WithNativeAttributes>
   );
 };
