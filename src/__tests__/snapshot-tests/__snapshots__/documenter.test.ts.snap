@@ -142,7 +142,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
@@ -165,7 +169,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
@@ -3765,7 +3773,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -4276,7 +4288,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -5046,7 +5060,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -5889,7 +5905,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
@@ -5912,7 +5932,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
@@ -6991,7 +7015,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "object",
         "properties": [
@@ -7039,7 +7067,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
@@ -8350,7 +8382,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -11076,7 +11112,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -12455,7 +12495,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -15999,7 +16041,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -17319,7 +17363,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -17720,7 +17768,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
@@ -18683,7 +18733,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
@@ -23002,7 +23056,11 @@ Some attributes will be automatically combined with internal attribute values:
 - Event handlers will be chained, unless the default is prevented.
 
 We do not support using this attribute to apply custom styling.
-When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
+When \`tokens\` is defined, nativeTextareaAttributes will be ignored.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
@@ -24309,7 +24367,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -27894,7 +27956,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
@@ -27972,7 +28036,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -28252,7 +28318,9 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
         "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
@@ -32018,7 +32086,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
@@ -32689,7 +32761,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -32885,7 +32961,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
@@ -33397,7 +33477,11 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",

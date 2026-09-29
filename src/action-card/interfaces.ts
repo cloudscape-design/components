@@ -110,6 +110,10 @@ export interface ActionCardProps extends BaseComponentProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
+   *
    * @awsuiSystem core
    */
   nativeButtonAttributes?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>;
@@ -121,6 +125,10 @@ export interface ActionCardProps extends BaseComponentProps {
    * - Event handlers will be chained, unless the default is prevented.
    *
    * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
    *
    * @awsuiSystem core
    */
