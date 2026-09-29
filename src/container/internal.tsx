@@ -51,6 +51,12 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
    */
   __contentKey?: string;
+
+  /**
+   * Native attributes spread onto the container root, used to attach ARIA that base props do not forward
+   * (getBaseProps only forwards id/className/data-*).
+   */
+  __nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export const InternalContainerAsSubstep = React.forwardRef(
@@ -93,6 +99,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     __funnelSubStepProps,
     __subStepRef,
     __contentKey,
+    __nativeAttributes,
     ...restProps
   }: InternalContainerProps,
   ref: React.Ref<ContainerProps.Ref>
@@ -157,6 +164,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     <div
       {...baseProps}
       {...__funnelSubStepProps}
+      {...__nativeAttributes}
       className={clsx(
         baseProps.className,
         styles.root,
