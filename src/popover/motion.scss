@@ -3,6 +3,34 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as tokens;
+@use '../internal/styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin popover-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+$settle-travel: 8px;
+
+@mixin settle-keyframes($name, $from) {
+  @keyframes #{$name} {
+    from {
+      opacity: 0;
+      transform: $from;
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
 
 .container {
   @include styles.with-motion {
@@ -16,4 +44,48 @@
       @include styles.animation-fade-in;
     }
   }
+
+  // The popover travels out from its trigger as it appears.
+  @include popover-expressive-with-motion {
+    // Duration and easing are hard-coded on purpose: no token matches, and the shipped
+    // easings are so front-loaded that an 8px travel on them is over within a frame.
+    animation: awsui-popover-settle-down 200ms cubic-bezier(0.3, 0, 0.2, 1);
+  }
+
+  &:has(.container-arrow-position-top-left, .container-arrow-position-top-center, .container-arrow-position-top-right) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-up;
+    }
+  }
+
+  // Right and left are logical (inline-end and inline-start), so the travel flips in RTL.
+  &:has(.container-arrow-position-right-top, .container-arrow-position-right-bottom) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-right;
+    }
+    @include styles.with-direction('rtl') {
+      @include popover-expressive-with-motion {
+        animation-name: awsui-popover-settle-left;
+      }
+    }
+  }
+
+  &:has(.container-arrow-position-left-top, .container-arrow-position-left-bottom) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-left;
+    }
+    @include styles.with-direction('rtl') {
+      @include popover-expressive-with-motion {
+        animation-name: awsui-popover-settle-right;
+      }
+    }
+  }
+}
+
+// @keyframes cannot nest under a selector, so they are gated on the artefact instead.
+@if theming.has-expressive-motion() {
+  @include settle-keyframes(awsui-popover-settle-down, translateY(-$settle-travel));
+  @include settle-keyframes(awsui-popover-settle-up, translateY($settle-travel));
+  @include settle-keyframes(awsui-popover-settle-right, translateX(-$settle-travel));
+  @include settle-keyframes(awsui-popover-settle-left, translateX($settle-travel));
 }
