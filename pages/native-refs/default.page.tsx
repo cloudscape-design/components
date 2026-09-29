@@ -1,225 +1,225 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { Box } from '~components';
+import Box from '~components/box';
 import Button from '~components/button';
-import Icon from '~components/icon';
-import Input from '~components/input';
+import ColumnLayout from '~components/column-layout';
+import Container from '~components/container';
+import Header from '~components/header';
 import KeyValuePairs from '~components/key-value-pairs';
 import SpaceBetween from '~components/space-between';
-import Textarea from '~components/textarea';
+import StatusIndicator, { StatusIndicatorProps } from '~components/status-indicator';
+import Textarea, { TextareaProps } from '~components/textarea';
+
+import { SimplePage } from '../app/templates';
+
+const INSERTED = `[inserted]`;
+
+function getVisibility(ratio: number | null): { type: StatusIndicatorProps.Type; label: string } {
+  return ratio === null
+    ? { type: `pending`, label: `Not measured` }
+    : ratio === 0
+      ? { type: `error`, label: `Not visible` }
+      : ratio < 1
+        ? { type: `warning`, label: `Partially visible` }
+        : { type: `success`, label: `Fully visible` };
+}
 
 export default function NativeRefsPage() {
-  return (
-    <Box tagOverride="article" padding={`m`}>
-      <h1>Native Element Refs</h1>
-      <SpaceBetween size={`xl`}>
-        <TextSelectionDemo />
-        <ScrollIntoViewDemo />
-        <MeasurementDemo />
-        <PasteAtCursorDemo />
-      </SpaceBetween>
-    </Box>
-  );
-}
+  const componentRef = useRef<TextareaProps.Ref>(null);
+  const nativeRef = useRef<HTMLTextAreaElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-/** Use case: Text selection APIs (selectionStart, setSelectionRange) */
-function TextSelectionDemo() {
-  const [value, setValue] = useState(`Select some of this text`);
-  const [selection, setSelection] = useState(``);
-  const ref = useRef<any>(null);
-  const nativeAttributesRef = useRef<HTMLInputElement | null>(null);
-
-  const getSelection = () => {
-    const el = nativeAttributesRef.current;
-    if (el) {
-      const selected = value.slice(el.selectionStart ?? 0, el.selectionEnd ?? 0);
-      setSelection(selected || `(nothing selected)`);
-    }
-  };
-
-  const selectFirstWord = () => {
-    const el = nativeAttributesRef.current;
-    if (el) {
-      const firstSpace = value.indexOf(` `);
-      el.setSelectionRange(0, firstSpace > 0 ? firstSpace : value.length);
-      el.focus();
-    }
-  };
-
-  const focusViaRef = () => {
-    ref.current?.focus();
-  };
-
-  const selectViaRef = () => {
-    ref.current?.select();
-  };
-
-  return (
-    <section>
-      <h2>Text selection (with mixed internal and external refs)</h2>
-      <p>
-        The component <code>ref</code> exposes <code>focus()</code> and <code>select()</code>. The{' '}
-        <code>nativeAttributes.ref</code> gives direct access to the <code>&lt;input&gt;</code> element for APIs like{' '}
-        <code>selectionStart</code> and <code>setSelectionRange()</code>.
-      </p>
-      <SpaceBetween size={`s`}>
-        <Input
-          ref={ref}
-          ariaLabel={`Text selection demo`}
-          value={value}
-          onChange={e => setValue(e.detail.value)}
-          nativeInputAttributes={{ ref: nativeAttributesRef }}
-        />
-        <h3 style={{ margin: `8px 0 4px` }}>ref</h3>
-        <SpaceBetween size={`xs`} direction={`horizontal`}>
-          <Button onClick={focusViaRef}>{`Focus`}</Button>
-          <Button onClick={selectViaRef}>{`Select`}</Button>
-        </SpaceBetween>
-        <h3 style={{ margin: `8px 0 4px` }}>nativeAttributes.ref</h3>
-        <SpaceBetween size={`xs`} direction={`horizontal`}>
-          <Button onClick={getSelection}>{`Get selection`}</Button>
-          <Button onClick={selectFirstWord}>{`Select first word`}</Button>
-        </SpaceBetween>
-        {selection && (
-          <div>
-            Selected: <code>{selection}</code>
-          </div>
-        )}
-      </SpaceBetween>
-    </section>
-  );
-}
-
-/** Use case: scrollIntoView */
-function ScrollIntoViewDemo() {
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-  const scrollToButton = () => {
-    buttonRef.current?.scrollIntoView({ behavior: `smooth`, block: `center` });
-  };
-
-  return (
-    <section>
-      <h2>Imperative Scrolling</h2>
-      <p>
-        Call <code>scrollIntoView()</code> on a Button element via <code>nativeAttributes.ref</code>.
-      </p>
-      <Button onClick={scrollToButton}>{`Scroll to target button`}</Button>
-      <div style={{ height: 200, overflow: `auto`, border: `1px solid #ccc`, borderRadius: 4, marginTop: 8 }}>
-        <div
-          style={{
-            height: 800,
-            display: `flex`,
-            alignItems: `center`,
-            justifyContent: `center`,
-          }}
-        >
-          <Button nativeButtonAttributes={{ ref: buttonRef }} variant={`primary`}>{`Target button`}</Button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/** Use case: getBoundingClientRect for measurement */
-function MeasurementDemo() {
-  const iconRef = useRef<HTMLSpanElement | null>(null);
-  const [rect, setRect] = useState<DOMRect | null>(null);
-
-  const measure = () => {
-    const el = iconRef.current;
-    if (el) {
-      setRect(el.getBoundingClientRect());
-    }
-  };
-
-  return (
-    <section>
-      <h2>Element Measurement</h2>
-      <p>
-        Call <code>getBoundingClientRect()</code> on an Icon via <code>nativeAttributes.ref</code> for tooltip/popover
-        positioning.
-      </p>
-      <SpaceBetween size={`s`}>
-        <div>
-          <Icon name={`status-info`} nativeAttributes={{ ref: iconRef }} /> ← measure this icon
-        </div>
-        <Button onClick={measure}>{`Measure icon`}</Button>
-        {rect && (
-          <KeyValuePairs
-            columns={2}
-            items={[
-              {
-                type: `group`,
-                title: `Position`,
-                items: [
-                  { label: `x`, value: `${Math.round(rect.x)}` },
-                  { label: `y`, value: `${Math.round(rect.y)}` },
-                ],
-              },
-              {
-                type: `group`,
-                title: `Size`,
-                items: [
-                  { label: `width`, value: `${Math.round(rect.width)}` },
-                  { label: `height`, value: `${Math.round(rect.height)}` },
-                ],
-              },
-            ]}
-          />
-        )}
-      </SpaceBetween>
-    </section>
-  );
-}
-
-/** Use case: paste at cursor in Textarea */
-function PasteAtCursorDemo() {
-  const [value, setValue] = useState(`Place your cursor anywhere in this text and click insert.`);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [cursorPosition, setCursorPosition] = useState<number | null>(null);
+  const [value, setValue] = useState(`Select or place the cursor in this text. Drag the corner to resize.`);
+  const [nativeEdit, setNativeEdit] = useState<{
+    readonly caret: number;
+    readonly inputType: string;
+    readonly data: string | null;
+  } | null>(null);
+  const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+  const [visibleRatio, setVisibleRatio] = useState<number | null>(null);
+  const [pendingCursor, setPendingCursor] = useState<number | null>(null);
 
   useLayoutEffect(() => {
-    if (cursorPosition !== null) {
-      const el = textareaRef.current;
-      if (el) {
-        el.setSelectionRange(cursorPosition, cursorPosition);
-        el.focus();
-      }
-      setCursorPosition(null);
-    }
-  }, [cursorPosition]);
+    nativeRef.current?.scrollIntoView({ behavior: `smooth`, block: `center` });
+  }, []);
 
-  const insertAtCursor = () => {
-    const el = textareaRef.current;
-    if (el) {
-      const start = el.selectionStart ?? 0;
-      const end = el.selectionEnd ?? 0;
-      const inserted = `[INSERTED]`;
-      const next = value.slice(0, start) + inserted + value.slice(end);
-      setValue(next);
-      setCursorPosition(start + inserted.length);
+  useEffect(() => {
+    const container = containerRef.current;
+    const element = nativeRef.current;
+
+    if (container && element) {
+      const observer = new IntersectionObserver(
+        entries => {
+          setVisibleRatio(entries[0].intersectionRatio);
+        },
+        { root: container, threshold: [0, 0.25, 0.5, 0.75, 1] }
+      );
+      observer.observe(element);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    const element = nativeRef.current;
+
+    if (element) {
+      const observer = new ResizeObserver(entries => {
+        const { width, height } = entries[0].contentRect;
+
+        setSize({ width: Math.round(width), height: Math.round(height) });
+      });
+
+      observer.observe(element);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    if (pendingCursor !== null) {
+      nativeRef.current?.setSelectionRange(pendingCursor, pendingCursor);
+      nativeRef.current?.focus();
+
+      setPendingCursor(null);
+    }
+  }, [pendingCursor]);
+
+  const handleChange: TextareaProps['onChange'] = event => {
+    setValue(event.detail.value);
+  };
+
+  const handleNativeChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    const inputEvent = event.nativeEvent as InputEvent;
+    setNativeEdit({
+      caret: event.currentTarget.selectionStart,
+      inputType: inputEvent.inputType ?? `unknown`,
+      data: inputEvent.data,
+    });
+  };
+
+  const focusViaComponentRef = (): void => {
+    componentRef.current?.focus();
+  };
+
+  const focusViaNativeRef = (): void => {
+    nativeRef.current?.focus();
+  };
+
+  const insertViaNativeRef = (): void => {
+    const element = nativeRef.current;
+    if (element) {
+      const start = element.selectionStart ?? 0;
+      const end = element.selectionEnd ?? 0;
+
+      setValue(value.slice(0, start) + INSERTED + value.slice(end));
+      setPendingCursor(start + INSERTED.length);
     }
   };
 
+  const scrollViaNativeRef = (): void => {
+    nativeRef.current?.scrollIntoView({ behavior: `smooth`, block: `center` });
+  };
+
+  const visibility = getVisibility(visibleRatio);
+  const ratioLabel = visibleRatio === null ? `-` : `${Math.round(visibleRatio * 100)}%`;
+
   return (
-    <section>
-      <h2>Paste at Cursor</h2>
-      <p>
-        Insert text at the cursor position in a <code>Textarea</code> via <code>nativeAttributes.ref</code> and retain
-        cursor position.
-      </p>
-      <SpaceBetween size={`s`}>
-        <Textarea
-          ariaLabel={`Paste at cursor demo`}
-          value={value}
-          onChange={e => setValue(e.detail.value)}
-          nativeTextareaAttributes={{ ref: textareaRef }}
-        />
-        <Button onClick={insertAtCursor}>{`Insert at cursor`}</Button>
+    <SimplePage title="Native element refs">
+      <SpaceBetween size={`l`}>
+        <div>
+          <Container variant="stacked" disableContentPaddings={true}>
+            <div ref={containerRef} style={{ blockSize: 220, overflowY: `auto`, overflowX: `clip`, padding: 16 }}>
+              <div style={{ blockSize: 240 }} />
+              <Textarea
+                ref={componentRef}
+                ariaLabel={`Native refs test textarea`}
+                nativeTextareaAttributes={{ ref: nativeRef, onChange: handleNativeChange }}
+                value={value}
+                onChange={handleChange}
+              />
+              <div style={{ blockSize: 240 }} />
+            </div>
+          </Container>
+
+          <Container variant="stacked">
+            <ColumnLayout columns={2} variant="text-grid">
+              <SpaceBetween size={`xxs`}>
+                <Box variant="awsui-key-label">Component ref</Box>
+                <SpaceBetween size={`xs`} direction={`horizontal`}>
+                  <Button onClick={focusViaComponentRef}>{`Focus`}</Button>
+                </SpaceBetween>
+              </SpaceBetween>
+
+              <SpaceBetween size={`xxs`}>
+                <Box variant="awsui-key-label">Native ref</Box>
+                <SpaceBetween size={`xs`} direction={`horizontal`}>
+                  <Button onClick={focusViaNativeRef}>{`Focus`}</Button>
+                  <Button onClick={insertViaNativeRef}>{`Insert at selection`}</Button>
+                  <Button onClick={scrollViaNativeRef}>{`Scroll into view`}</Button>
+                </SpaceBetween>
+              </SpaceBetween>
+            </ColumnLayout>
+          </Container>
+        </div>
+
+        <Container>
+          <ColumnLayout columns={2} variant="text-grid">
+            <SpaceBetween size={`m`}>
+              <Header
+                variant="h2"
+                description="Both handlers are chained: the component's onChange manages the controlled value, while the chained native handler reports fields the event detail does not carry."
+              >
+                {`Native event`}
+              </Header>
+              <KeyValuePairs
+                columns={3}
+                items={[
+                  { label: `inputType`, value: nativeEdit ? nativeEdit.inputType : `-` },
+                  { label: `data`, value: nativeEdit ? JSON.stringify(nativeEdit.data) : `-` },
+                  { label: `selectionStart`, value: nativeEdit ? nativeEdit.caret : `-` },
+                ]}
+              />
+            </SpaceBetween>
+
+            <SpaceBetween size={`m`}>
+              <Header variant="h2" description="Observers attached directly to the native element.">
+                {`Observers`}
+              </Header>
+              <KeyValuePairs
+                columns={2}
+                items={[
+                  {
+                    type: `group`,
+                    title: `ResizeObserver`,
+                    items: [
+                      { label: `Width`, value: size ? size.width : `-` },
+                      { label: `Height`, value: size ? size.height : `-` },
+                    ],
+                  },
+                  {
+                    type: `group`,
+                    title: `IntersectionObserver`,
+                    items: [
+                      {
+                        label: `Visible in container`,
+                        value: <StatusIndicator type={visibility.type}>{visibility.label}</StatusIndicator>,
+                      },
+                      { label: `Visible ratio`, value: ratioLabel },
+                    ],
+                  },
+                ]}
+              />
+            </SpaceBetween>
+          </ColumnLayout>
+        </Container>
       </SpaceBetween>
-    </section>
+    </SimplePage>
   );
 }
