@@ -339,7 +339,19 @@ export type ColorPaletteTokenName =
   | 'colorYellow800'
   | 'colorYellow900'
   | 'colorYellow950'
-  | 'colorYellow1000';
+  | 'colorYellow1000'
+  | 'colorOneThemeYellow50'
+  | 'colorOneThemeYellow100'
+  | 'colorOneThemeYellow200'
+  | 'colorOneThemeYellow300'
+  | 'colorOneThemeYellow400'
+  | 'colorOneThemeYellow500'
+  | 'colorOneThemeYellow600'
+  | 'colorOneThemeYellow700'
+  | 'colorOneThemeYellow800'
+  | 'colorOneThemeYellow900'
+  | 'colorOneThemeYellow950'
+  | 'colorOneThemeYellow1000';
 export type ColorChartsTokenName =
   | 'colorChartsRed300'
   | 'colorChartsRed400'

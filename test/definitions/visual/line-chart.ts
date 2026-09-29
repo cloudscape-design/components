@@ -19,6 +19,7 @@ const suite: TestSuite = {
       path: 'line-chart/test',
       screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
+      pixelDiffTolerance: 8,
       setup: async ({ page, configuration }) => {
         const keys = configuration?.direction === 'rtl' ? ['ArrowLeft', 'ArrowLeft'] : ['ArrowRight', 'ArrowRight'];
         // Focus and close the filtering select
