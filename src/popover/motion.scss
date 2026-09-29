@@ -47,9 +47,7 @@ $settle-travel: 8px;
 
   // The popover travels out from its trigger as it appears.
   @include popover-expressive-with-motion {
-    // Duration and easing are hard-coded on purpose: no token matches, and the shipped
-    // easings are so front-loaded that an 8px travel on them is over within a frame.
-    animation: awsui-popover-settle-down 200ms cubic-bezier(0.3, 0, 0.2, 1);
+    animation: awsui-popover-settle-down 250ms cubic-bezier(0.3, 0, 0.2, 1);
   }
 
   &:has(.container-arrow-position-top-left, .container-arrow-position-top-center, .container-arrow-position-top-right) {
@@ -82,7 +80,6 @@ $settle-travel: 8px;
   }
 }
 
-// @keyframes cannot nest under a selector, so they are gated on the artefact instead.
 @if theming.has-expressive-motion() {
   @include settle-keyframes(awsui-popover-settle-down, translateY(-$settle-travel));
   @include settle-keyframes(awsui-popover-settle-up, translateY($settle-travel));

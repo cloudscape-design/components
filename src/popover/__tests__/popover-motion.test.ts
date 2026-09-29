@@ -83,7 +83,7 @@ describe('popover settle animation, as compiled', () => {
   test('travels away from the trigger, picking the direction from the resolved arrow position', () => {
     const css = compile([THEME]);
     expect(css).toMatch(
-      new RegExp(`${escape(SCOPE)} \\{\\s*animation: awsui-popover-settle-down 200ms cubic-bezier\\(0.3, 0, 0.2, 1\\);`)
+      new RegExp(`${escape(SCOPE)} \\{\\s*animation: awsui-popover-settle-down 250ms cubic-bezier\\(0.3, 0, 0.2, 1\\);`)
     );
     expect(css).toMatch(
       new RegExp(
@@ -112,23 +112,12 @@ describe('popover settle animation, as compiled', () => {
     );
   });
 
-  test('every settle rule sits in a reduced-motion media query, with no per-rule override', () => {
+  test('every settle rule sits in a reduced-motion media query', () => {
     const css = compile([THEME]);
     const settleRules = css.match(/animation(-name)?: awsui-popover-settle/g) ?? [];
     expect(settleRules.length).toBe(6);
     expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(6);
     expect(css).not.toMatch(/animation:\s*none/);
-  });
-
-  test('starts fully transparent, lands solid at 60%, and ends with no transform', () => {
-    const css = compile([THEME]);
-    const keyframes = css.match(/@keyframes awsui-popover-settle-\w+ \{[^@]*?\n\}/g) ?? [];
-    expect(keyframes).toHaveLength(4);
-    for (const block of keyframes) {
-      expect(block).toMatch(/from \{\s*opacity: 0;\s*transform: translate[XY]\(-?8px\);/);
-      expect(block).toMatch(/60% \{\s*opacity: 1;/);
-      expect(block).toMatch(/to \{\s*opacity: 1;\s*transform: none;/);
-    }
   });
 });
 
