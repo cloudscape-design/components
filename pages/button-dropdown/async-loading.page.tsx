@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
@@ -8,8 +8,23 @@ import FormField from '~components/form-field';
 import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { useOptionsLoader } from '../common/options-loader';
+
+type StatusType = ButtonDropdownProps.AsyncLoadingStatusType;
+
+type PageContext = React.Context<
+  AppContextType<{
+    expandToViewport: boolean;
+    flatStatus: StatusType;
+    flatItems: string;
+    groupAStatus: StatusType;
+    groupAItems: string;
+    groupBStatus: StatusType;
+    groupBItems: string;
+  }>
+>;
 
 // ---- Source data ----
 
@@ -37,8 +52,6 @@ const ITEMS_OPTIONS = [
   { value: 'all', label: '12 items' },
 ];
 
-type StatusType = ButtonDropdownProps.AsyncLoadingStatusType;
-
 function itemsFromPreset(preset: string, source: ButtonDropdownProps.Item[]): ButtonDropdownProps.Items {
   if (preset === 'none') {
     return [];
@@ -59,29 +72,35 @@ const groupSourceItems: Record<string, ButtonDropdownProps.Item[]> = {
   'group-files': Array.from({ length: 8 }, (_, i) => ({ id: `file-${i + 1}`, text: `File action ${i + 1}` })),
 };
 
+// Long enough to inspect the loading state and for integration tests to assert on it.
+const FETCH_DELAY_MS = 5000;
+
 function fetchGroupItems(groupId: string): Promise<ButtonDropdownProps.Item[]> {
   if (groupId === 'group-files') {
-    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), 5000));
+    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), FETCH_DELAY_MS));
   }
   if (groupId === 'group-edit') {
-    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), 5000));
+    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), FETCH_DELAY_MS));
   }
   return new Promise(() => {});
 }
 
 export default function ButtonDropdownAsyncLoadingPage() {
-  const [expandToViewport, setExpandToViewport] = useState(false);
+  // Page configuration lives in the URL so that every status/items combination is directly linkable
+  // and targetable by integration tests. Fetched results below stay in local state.
+  const {
+    urlParams: {
+      expandToViewport = false,
+      flatStatus = 'loading',
+      flatItems: flatItemsPreset = 'none',
+      groupAStatus = 'loading',
+      groupAItems: groupAPreset = 'none',
+      groupBStatus = 'error',
+      groupBItems: groupBPreset = 'none',
+    },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
   const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
-
-  // Interactive controls - flat
-  const [flatStatus, setFlatStatus] = useState<StatusType>('loading');
-  const [flatItemsPreset, setFlatItemsPreset] = useState('none');
-
-  // Interactive controls - groups
-  const [groupAStatus, setGroupAStatus] = useState<StatusType>('loading');
-  const [groupAPreset, setGroupAPreset] = useState('none');
-  const [groupBStatus, setGroupBStatus] = useState<StatusType>('error');
-  const [groupBPreset, setGroupBPreset] = useState('none');
 
   // Preconfigured - paginated async
   const {
@@ -89,7 +108,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
     status: paginatedStatus,
     filteringText: paginatedFilteringText,
     fetchItems,
-  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10, timeout: 5000 });
+  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10, timeout: FETCH_DELAY_MS });
 
   // Preconfigured - groups
   const [groupItems, setGroupItems] = useState<Record<string, ButtonDropdownProps.Item[]>>({});
@@ -103,7 +122,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
     <SimplePage
       title="ButtonDropdown async loading"
       settings={
-        <Checkbox checked={expandToViewport} onChange={e => setExpandToViewport(e.detail.checked)}>
+        <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
           Expand to viewport
         </Checkbox>
       }
@@ -117,14 +136,14 @@ export default function ButtonDropdownAsyncLoadingPage() {
             <FormField label="statusType">
               <Select
                 selectedOption={STATUS_OPTIONS.find(o => o.value === flatStatus) ?? null}
-                onChange={e => setFlatStatus(e.detail.selectedOption.value as StatusType)}
+                onChange={e => setUrlParams({ flatStatus: e.detail.selectedOption.value as StatusType })}
                 options={STATUS_OPTIONS}
               />
             </FormField>
             <FormField label="items">
               <Select
                 selectedOption={ITEMS_OPTIONS.find(o => o.value === flatItemsPreset) ?? null}
-                onChange={e => setFlatItemsPreset(e.detail.selectedOption.value!)}
+                onChange={e => setUrlParams({ flatItems: e.detail.selectedOption.value! })}
                 options={ITEMS_OPTIONS}
               />
             </FormField>
@@ -157,28 +176,28 @@ export default function ButtonDropdownAsyncLoadingPage() {
             <FormField label="Group A - statusType">
               <Select
                 selectedOption={STATUS_OPTIONS.find(o => o.value === groupAStatus) ?? null}
-                onChange={e => setGroupAStatus(e.detail.selectedOption.value as StatusType)}
+                onChange={e => setUrlParams({ groupAStatus: e.detail.selectedOption.value as StatusType })}
                 options={STATUS_OPTIONS}
               />
             </FormField>
             <FormField label="Group A - items">
               <Select
                 selectedOption={ITEMS_OPTIONS.find(o => o.value === groupAPreset) ?? null}
-                onChange={e => setGroupAPreset(e.detail.selectedOption.value!)}
+                onChange={e => setUrlParams({ groupAItems: e.detail.selectedOption.value! })}
                 options={ITEMS_OPTIONS}
               />
             </FormField>
             <FormField label="Group B - statusType">
               <Select
                 selectedOption={STATUS_OPTIONS.find(o => o.value === groupBStatus) ?? null}
-                onChange={e => setGroupBStatus(e.detail.selectedOption.value as StatusType)}
+                onChange={e => setUrlParams({ groupBStatus: e.detail.selectedOption.value as StatusType })}
                 options={STATUS_OPTIONS}
               />
             </FormField>
             <FormField label="Group B - items">
               <Select
                 selectedOption={ITEMS_OPTIONS.find(o => o.value === groupBPreset) ?? null}
-                onChange={e => setGroupBPreset(e.detail.selectedOption.value!)}
+                onChange={e => setUrlParams({ groupBItems: e.detail.selectedOption.value! })}
                 options={ITEMS_OPTIONS}
               />
             </FormField>
@@ -252,7 +271,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Preconfigured: per-group async */}
         <div>
           <h2>Preconfigured - per-group async</h2>
-          <p>File loads in 600 ms. Edit always errors. View loads forever.</p>
+          <p>File loads after 5 s. Edit always errors after 5 s. View loads forever.</p>
           <ButtonDropdown
             items={
               [
@@ -296,7 +315,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Preconfigured: error + recovery */}
         <div>
           <h2>Preconfigured - error with recovery</h2>
-          <p>Opens in error state. Retry recovers after 1 s.</p>
+          <p>Opens in error state. Retry recovers after 5 s.</p>
           <ButtonDropdown
             items={errorItems}
             asyncLoadingProps={{
@@ -315,7 +334,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
                 setTimeout(() => {
                   setErrorItems(flatSourceItems.slice(0, 8));
                   setErrorStatus('finished');
-                }, 5000);
+                }, FETCH_DELAY_MS);
               } else {
                 setErrorItems([]);
                 setErrorStatus('error');
