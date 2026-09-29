@@ -9,6 +9,7 @@ $header-row-margin-block-end: awsui.$space-xs;
 .body {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
+  color: awsui.$color-text-body-default;
 
   padding-block: awsui.$space-s;
   padding-inline: awsui.$space-m;
