@@ -28,6 +28,8 @@
 .term {
   color: awsui.$color-text-label;
   margin-block-end: awsui.$space-key-value-gap;
+  // Prevent inline elements in the label from adding extra space below the term.
+  // The internal label and info elements reset the line height to the desired value.
   line-height: 0;
 }
 
