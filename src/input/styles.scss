@@ -171,6 +171,43 @@
     }
   }
 
+  // In a ControlGroup row (not stacked) only the fused unit's EXTERIOR edges are painted
+  // with the status color; interior seams between controls stay neutral. A middle
+  // control resets both inline seams; a last control resets only its leading seam and
+  // keeps its trailing edge painted (it is the unit's exterior, or the seam touching the
+  // dismiss button). The first control keeps its full invalid border incl. the thick
+  // leading indicator. When the group stacks each control is standalone and keeps its
+  // own full invalid border, so this is scoped to the non-stacked case. Placed after the
+  // invalid/warning blocks so it overrides them.
+  &.input-invalid,
+  &.input-warning {
+    // Row (not stacked): the group's inline seams are interior — reset them so only the
+    // unit's exterior is painted (the first control keeps the thick leading indicator).
+    &.input-in-control-group-middle:not(.input-in-control-group-stacked) {
+      @include styles.control-group-invalid-reset-both-seams;
+    }
+    &.input-in-control-group-last:not(.input-in-control-group-stacked) {
+      @include styles.control-group-invalid-reset-leading-seam;
+    }
+
+    // Stacked (wrapped): the controls fuse into a vertical unit. The inline-start (thick
+    // indicator) and inline-end borders run down the whole column and stay painted; only
+    // the block-axis seams BETWEEN fused controls are interior and get reset. A control's
+    // block-start is a seam unless it is the first or detaches from the control above
+    // (`labeled`); its block-end is a seam unless it is the last or precedes a detached
+    // control (`precedes-labeled`).
+    &.input-in-control-group-stacked {
+      &.input-in-control-group-middle:not(.input-in-control-group-labeled),
+      &.input-in-control-group-last:not(.input-in-control-group-labeled) {
+        @include styles.control-group-invalid-reset-block-start-seam;
+      }
+      &.input-in-control-group-first:not(.input-in-control-group-precedes-labeled),
+      &.input-in-control-group-middle:not(.input-in-control-group-precedes-labeled) {
+        @include styles.control-group-invalid-reset-block-end-seam;
+      }
+    }
+  }
+
   &.input-type-search {
     box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
     -webkit-appearance: none;
@@ -196,6 +233,135 @@
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
+
+  // Inside a ControlGroup the input keeps its own border but fuses with its
+  // neighbors: interior corners are squared and the shared seam border is
+  // collapsed. A focused control raises above its neighbors so its focus ring
+  // is not clipped by the adjacent control.
+  &.input-in-control-group {
+    &:focus {
+      position: relative;
+      z-index: 1;
+    }
+  }
+  // Re-apply the fused corners at rest AND on focus, since the control's own focus
+  // styles otherwise restore all four corners at the full radius. The seam border
+  // stays in the layout (transparent at rest), so geometry is identical at rest and
+  // on focus and the raised focus ring does not shift the control.
+  &.input-in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('first');
+    }
+  }
+  &.input-in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('middle');
+    }
+  }
+  &.input-in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    &:focus {
+      @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  // When the group is stacked (JS-measured, not a fixed breakpoint), flip the fused
+  // corners/seam to the block axis per position.
+  &.input-in-control-group-stacked {
+    &.input-in-control-group-first {
+      @include styles.control-group-grouped-stacked('first');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('first');
+      }
+    }
+    &.input-in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('middle');
+      }
+    }
+    &.input-in-control-group-last {
+      @include styles.control-group-grouped-stacked('last');
+      &:focus {
+        @include styles.control-group-grouped-stacked-corners('last');
+      }
+    }
+    // A labeled control does not fuse into the control above it: restore its rounded
+    // top corners. A control that precedes a detached control keeps its rounded bottom
+    // corners. Placed after the position rules so they win.
+    &.input-in-control-group-labeled {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+    &.input-in-control-group-precedes-labeled {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+  }
+}
+
+// Same grouped treatment for the adorned (prefix/suffix) container, which owns
+// the border when prefix/suffix are present.
+.input-adorned-container.input-adorned-container-in-control-group {
+  &:focus-within {
+    position: relative;
+    z-index: 1;
+  }
+  &.input-adorned-container-in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('first');
+    }
+  }
+  &.input-adorned-container-in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('middle');
+    }
+  }
+  &.input-adorned-container-in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    &:focus-within {
+      @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  &.input-adorned-container-in-control-group-stacked {
+    &.input-adorned-container-in-control-group-first {
+      @include styles.control-group-grouped-stacked('first');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('first');
+      }
+    }
+    &.input-adorned-container-in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('middle');
+      }
+    }
+    &.input-adorned-container-in-control-group-last {
+      @include styles.control-group-grouped-stacked('last');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-corners('last');
+      }
+    }
+    &.input-adorned-container-in-control-group-labeled {
+      @include styles.control-group-grouped-stacked-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-detached-corners('middle');
+      }
+    }
+    &.input-adorned-container-in-control-group-precedes-labeled {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      &:focus-within {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+  }
 }
 
 .input-container {
@@ -208,12 +374,16 @@
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
+  // Stay above the input, including when the input is raised (z-index: 1) inside a
+  // focused ControlGroup — otherwise the focused field would paint over the icon.
+  z-index: 2;
 }
 
 .input-icon-end {
   position: absolute;
   inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+  z-index: 2;
 }
 
 .input-button-right {
@@ -318,6 +488,38 @@
 
     &:focus-within {
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  // Row (not stacked): only the fused unit's exterior edges are painted (see the input
+  // rule above). A middle control resets both inline seams; a last control resets only
+  // its leading seam. The prefix owns the padding here, so the reset covers border
+  // width + color only.
+  &.input-adorned-container-invalid,
+  &.input-adorned-container-warning {
+    &.input-adorned-container-in-control-group-middle:not(.input-adorned-container-in-control-group-stacked) {
+      border-inline-start-width: awsui.$border-width-field;
+      border-inline-start-color: awsui.$color-border-input-default;
+      border-inline-end-color: awsui.$color-border-input-default;
+    }
+    &.input-adorned-container-in-control-group-last:not(.input-adorned-container-in-control-group-stacked) {
+      border-inline-start-width: awsui.$border-width-field;
+      border-inline-start-color: awsui.$color-border-input-default;
+    }
+
+    // Stacked (wrapped): reset the interior block-axis seams between fused controls;
+    // the inline exterior borders stay painted.
+    &.input-adorned-container-in-control-group-stacked {
+      &.input-adorned-container-in-control-group-middle:not(.input-adorned-container-in-control-group-labeled),
+      &.input-adorned-container-in-control-group-last:not(.input-adorned-container-in-control-group-labeled) {
+        border-block-start-color: awsui.$color-border-input-default;
+      }
+      &.input-adorned-container-in-control-group-first:not(.input-adorned-container-in-control-group-precedes-labeled),
+      &.input-adorned-container-in-control-group-middle:not(
+          .input-adorned-container-in-control-group-precedes-labeled
+        ) {
+        border-block-end-color: awsui.$color-border-input-default;
+      }
     }
   }
 }

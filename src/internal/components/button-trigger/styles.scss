@@ -159,4 +159,131 @@ $icon-offset: awsui.$space-xxxs;
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
   }
+
+  // Inside a ControlGroup the trigger keeps its own border but fuses with its
+  // neighbors: interior corners are squared and the shared seam border is
+  // collapsed. A focused trigger raises above its neighbors so its focus ring is
+  // not clipped by the adjacent control.
+  &.in-control-group {
+    @include focus-visible.when-visible {
+      position: relative;
+      z-index: 1;
+    }
+
+    // The keyboard focus ring (form-focus-element) resets border-inline back to
+    // the normal width/color, which erases the invalid/warning left indicator.
+    // Re-assert it so the indicator survives focus, matching the resting state.
+    &.invalid {
+      @include focus-visible.when-visible {
+        border-inline-start: styles.$invalid-control-left-border solid awsui.$color-text-status-error;
+      }
+    }
+    &.warning {
+      @include focus-visible.when-visible {
+        border-inline-start: styles.$invalid-control-left-border solid awsui.$color-text-status-warning;
+      }
+    }
+
+    // Row (not stacked): only the fused unit's exterior edges are painted; interior
+    // seams between controls stay neutral. A middle control resets both inline seams; a
+    // last control resets only its leading seam (its trailing edge is the exterior / the
+    // seam touching the dismiss button). The first control keeps its full invalid border
+    // incl. the thick leading indicator. When stacked each control is standalone and
+    // keeps its own full border. Reset applies at rest AND on focus (the focus rules
+    // above would otherwise re-add the painted/thick leading border).
+    &.invalid,
+    &.warning {
+      // Row (not stacked): reset the interior inline seams; keep the exterior painted.
+      &.in-control-group-middle:not(.in-control-group-stacked) {
+        @include styles.control-group-invalid-reset-both-seams;
+        @include focus-visible.when-visible {
+          @include styles.control-group-invalid-reset-both-seams;
+        }
+      }
+      &.in-control-group-last:not(.in-control-group-stacked) {
+        @include styles.control-group-invalid-reset-leading-seam;
+        @include focus-visible.when-visible {
+          @include styles.control-group-invalid-reset-leading-seam;
+        }
+      }
+
+      // Stacked (wrapped): the controls fuse into a vertical unit; reset the interior
+      // block-axis seams between them (the inline exterior borders stay painted). A
+      // control's block-start is a seam unless it is first or detaches from above
+      // (`labeled`); its block-end is a seam unless it is last or precedes a detached
+      // control (`precedes-labeled`).
+      &.in-control-group-stacked {
+        &.in-control-group-middle:not(.in-control-group-labeled),
+        &.in-control-group-last:not(.in-control-group-labeled) {
+          @include styles.control-group-invalid-reset-block-start-seam;
+          @include focus-visible.when-visible {
+            @include styles.control-group-invalid-reset-block-start-seam;
+          }
+        }
+        &.in-control-group-first:not(.in-control-group-precedes-labeled),
+        &.in-control-group-middle:not(.in-control-group-precedes-labeled) {
+          @include styles.control-group-invalid-reset-block-end-seam;
+          @include focus-visible.when-visible {
+            @include styles.control-group-invalid-reset-block-end-seam;
+          }
+        }
+      }
+    }
+  }
+  // Re-apply the fused corners at rest AND when the focus ring is shown, since
+  // the trigger's own focus styles otherwise restore all four corners.
+  &.in-control-group-first {
+    @include styles.control-group-grouped-responsive('first');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped-responsive-focus('first');
+    }
+  }
+  &.in-control-group-middle {
+    @include styles.control-group-grouped-responsive('middle');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped-responsive-focus('middle');
+    }
+  }
+  &.in-control-group-last {
+    @include styles.control-group-grouped-responsive('last');
+    @include focus-visible.when-visible {
+      @include styles.control-group-grouped-responsive-focus('last');
+    }
+  }
+  // When the group is stacked (JS-measured), flip the fused corners to the block axis
+  // per position, and apply the labeled / precedes-detached corner treatments.
+  &.in-control-group-stacked {
+    $r: awsui.$border-radius-input;
+
+    &.in-control-group-first {
+      @include styles.control-group-grouped-stacked('first', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-corners('first', $radius: $r);
+      }
+    }
+    &.in-control-group-middle {
+      @include styles.control-group-grouped-stacked('middle', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-corners('middle', $radius: $r);
+      }
+    }
+    &.in-control-group-last {
+      @include styles.control-group-grouped-stacked('last', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-corners('last', $radius: $r);
+      }
+    }
+    &.in-control-group-labeled {
+      @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-detached-corners('middle', $radius: $r);
+      }
+    }
+    &.in-control-group-precedes-labeled {
+      @include styles.control-group-grouped-stacked-precedes-detached-corners('middle', $radius: $r);
+      @include focus-visible.when-visible {
+        @include styles.control-group-grouped-stacked-precedes-detached-corners('middle', $radius: $r);
+      }
+    }
+  }
 }

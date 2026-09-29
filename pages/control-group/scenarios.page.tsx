@@ -1,0 +1,425 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import Button from '~components/button';
+import Container from '~components/container';
+import ControlGroup from '~components/control-group';
+import FormField from '~components/form-field';
+import Header from '~components/header';
+import Input from '~components/input';
+import Multiselect, { MultiselectProps } from '~components/multiselect';
+import SegmentedControl from '~components/segmented-control';
+import Select, { SelectProps } from '~components/select';
+import SpaceBetween from '~components/space-between';
+
+import { useAppContext } from '../app/app-context';
+import { SimplePage } from '../app/templates';
+
+const OPERATORS: SelectProps.Option[] = [
+  { value: '=', label: '=' },
+  { value: '!=', label: '!=' },
+  { value: '=~', label: '=~' },
+  { value: '!~', label: '!~' },
+];
+
+const AGGREGATIONS: SelectProps.Option[] = [
+  { value: 'count_values', label: 'count_values' },
+  { value: 'sum', label: 'sum' },
+  { value: 'avg', label: 'avg' },
+];
+
+const BY_OPTIONS: SelectProps.Option[] = [
+  { value: 'labels', label: 'By labels' },
+  { value: 'none', label: 'Without labels' },
+];
+
+const MULTI_OPTIONS: MultiselectProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
+  value: `option-${i + 1}`,
+  label: `Option ${i + 1}`,
+}));
+
+function isValidRegex(value: string) {
+  try {
+    RegExp(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+type MatcherParam = 'Name' | 'Operator' | 'Value' | 'Removed';
+
+// A single interactive label-matcher ControlGroup whose state lives in URL params.
+// When `labeled` is true, every control shows a visible inline label; otherwise the
+// controls are named only via `ariaLabel`. The two variants use different URL-param
+// prefixes so they can be driven independently.
+function InteractiveLabelMatcher<Prefix extends string>({ prefix, labeled }: { prefix: Prefix; labeled: boolean }) {
+  const { urlParams, setUrlParams } = useAppContext<`${Prefix}${MatcherParam}`>();
+
+  const nameKey = `${prefix}Name` as const;
+  const operatorKey = `${prefix}Operator` as const;
+  const valueKey = `${prefix}Value` as const;
+  const removedKey = `${prefix}Removed` as const;
+
+  // Typed setter: a computed-key object literal would widen its key to `string`,
+  // which does not match the template-literal-keyed params, so build it explicitly.
+  const set = (key: `${Prefix}${MatcherParam}`, value: string | boolean) =>
+    setUrlParams({ [key]: value } as Parameters<typeof setUrlParams>[0]);
+
+  // When removed, unmount the ControlGroup entirely and offer a way to restore it.
+  const removed = urlParams[removedKey] === true;
+
+  const name = typeof urlParams[nameKey] === 'string' ? (urlParams[nameKey] as string) : 'service';
+  const value = typeof urlParams[valueKey] === 'string' ? (urlParams[valueKey] as string) : '';
+  const operator = OPERATORS.find(option => option.value === urlParams[operatorKey]) ?? OPERATORS[0];
+
+  const isRegexOperator = operator.value === '=~' || operator.value === '!~';
+  const isNegativeOperator = operator.value === '!=' || operator.value === '!~';
+
+  const errorText =
+    isRegexOperator && value.length > 0 && !isValidRegex(value)
+      ? `Invalid regex pattern for the "${operator.value}" operator.`
+      : undefined;
+
+  const warningText =
+    !errorText && isNegativeOperator
+      ? 'Negative matchers can match a large number of series and may be slow.'
+      : undefined;
+
+  return removed ? (
+    <Button iconName="add-plus" onClick={() => set(removedKey, false)}>
+      Restore label matcher
+    </Button>
+  ) : (
+    <ControlGroup
+      ariaLabel="Label matcher"
+      dismissible={true}
+      onDismiss={() => set(removedKey, true)}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label matcher' }}
+      errorText={errorText}
+      warningText={warningText}
+    >
+      <Input
+        inlineLabelText="Label"
+        value={name}
+        placeholder="Label name"
+        onChange={e => set(nameKey, e.detail.value)}
+      />
+      <Select
+        ariaLabel={labeled ? undefined : 'Operator'}
+        inlineLabelText={labeled ? 'Operator' : undefined}
+        selectedOption={operator}
+        options={OPERATORS}
+        onChange={e => set(operatorKey, e.detail.selectedOption.value ?? '=')}
+      />
+      <Input
+        ariaLabel={labeled ? undefined : 'Label value'}
+        inlineLabelText={labeled ? 'Value' : undefined}
+        value={value}
+        placeholder="Label value"
+        onChange={e => set(valueKey, e.detail.value)}
+      />
+    </ControlGroup>
+  );
+}
+
+// A search Input fused with a Filter/Highlight SegmentedControl, like the case on
+// the permutations page but interactive: both the query and the selected mode live
+// in URL params, and choosing "Highlight" with an empty query raises a warning.
+function InteractiveFilterControl() {
+  const { urlParams, setUrlParams } = useAppContext<'filterQuery' | 'filterMode'>();
+
+  const query = typeof urlParams.filterQuery === 'string' ? urlParams.filterQuery : '';
+  const mode = urlParams.filterMode === 'highlight' ? 'highlight' : 'filter';
+
+  const warningText =
+    mode === 'highlight' && query.trim().length === 0 ? 'Enter a query to highlight matching results.' : undefined;
+
+  return (
+    <ControlGroup ariaLabel="Filter results" warningText={warningText}>
+      <Input
+        ariaLabel="Filter results"
+        type="search"
+        value={query}
+        placeholder="Filter results"
+        onChange={e => setUrlParams({ filterQuery: e.detail.value })}
+      />
+      <SegmentedControl
+        selectedId={mode}
+        label="Filter mode"
+        options={[
+          { id: 'filter', text: 'Filter' },
+          { id: 'highlight', text: 'Highlight' },
+        ]}
+        onChange={e => setUrlParams({ filterMode: e.detail.selectedId })}
+      />
+    </ControlGroup>
+  );
+}
+
+// An aggregation group whose second control (the "By" Select) is disabled, like the
+// disabled permutation on the permutations page. The aggregation choice is stateful;
+// choosing "count_values" (which cannot group by labels) raises an error.
+function InteractiveDisabledControl() {
+  const { urlParams, setUrlParams } = useAppContext<'aggregation'>();
+
+  // Default to "sum" (a valid choice) so the example does not start in an error state.
+  const aggregation =
+    AGGREGATIONS.find(option => option.value === urlParams.aggregation) ??
+    AGGREGATIONS.find(option => option.value === 'sum')!;
+
+  const errorText =
+    aggregation.value === 'count_values'
+      ? '"count_values" does not support grouping by labels. Use "sum" or "avg" instead.'
+      : undefined;
+
+  return (
+    <ControlGroup ariaLabel="Aggregation" errorText={errorText}>
+      <Select
+        ariaLabel="Aggregation"
+        inlineLabelText="Aggregation"
+        selectedOption={aggregation}
+        options={AGGREGATIONS}
+        onChange={e => setUrlParams({ aggregation: e.detail.selectedOption.value ?? 'sum' })}
+      />
+      <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} disabled={true} />
+    </ControlGroup>
+  );
+}
+
+// A Multiselect (inline tokens) fused with the built-in remove button, like the
+// multiselect permutation. The selection is stateful; clearing it raises a warning.
+function InteractiveMultiselectControl() {
+  const { urlParams, setUrlParams } = useAppContext<'options' | 'optionsRemoved'>();
+
+  const removed = urlParams.optionsRemoved === true;
+
+  const selectedValues =
+    typeof urlParams.options === 'string' && urlParams.options.length > 0
+      ? urlParams.options.split(',')
+      : ['option-1', 'option-2', 'option-3'];
+  const selectedOptions = MULTI_OPTIONS.filter(option => selectedValues.includes(option.value!));
+
+  const warningText = selectedOptions.length === 0 ? 'Select at least one option.' : undefined;
+
+  return removed ? (
+    <Button iconName="add-plus" onClick={() => setUrlParams({ optionsRemoved: false })}>
+      Restore multiselect
+    </Button>
+  ) : (
+    <ControlGroup
+      ariaLabel="Options"
+      dismissible={true}
+      onDismiss={() => setUrlParams({ optionsRemoved: true })}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove options' }}
+      warningText={warningText}
+    >
+      <Multiselect
+        ariaLabel="Options"
+        inlineTokens={true}
+        selectedOptions={selectedOptions}
+        options={MULTI_OPTIONS}
+        onChange={e => setUrlParams({ options: e.detail.selectedOptions.map(option => option.value).join(',') })}
+      />
+    </ControlGroup>
+  );
+}
+
+const FIELD_STATES: SelectProps.Option[] = [
+  { value: 'none', label: 'No validation' },
+  { value: 'error', label: 'Error' },
+  { value: 'warning', label: 'Warning' },
+];
+
+// A ControlGroup nested inside a FormField. The FormField's errorText / warningText
+// is toggled via URL param to show how the FormField-level validation propagates:
+// the message renders once below the group (from the FormField), and the invalid /
+// warning state flows through FormFieldContext to every control in the group.
+function NestedInFormFieldControl() {
+  const { urlParams, setUrlParams } = useAppContext<'fieldState'>();
+
+  const state = FIELD_STATES.find(option => option.value === urlParams.fieldState) ?? FIELD_STATES[0];
+
+  return (
+    <SpaceBetween size="s">
+      <Select
+        ariaLabel="FormField validation state"
+        selectedOption={state}
+        options={FIELD_STATES}
+        onChange={e => setUrlParams({ fieldState: e.detail.selectedOption.value ?? 'none' })}
+      />
+      <FormField
+        label="Label"
+        description="A ControlGroup rendered as this FormField's control."
+        errorText={state.value === 'error' ? 'This field has a FormField-level error.' : undefined}
+        warningText={state.value === 'warning' ? 'This field has a FormField-level warning.' : undefined}
+      >
+        <ControlGroup ariaLabel="Label matcher">
+          <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={() => {}} />
+          <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+          <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
+        </ControlGroup>
+      </FormField>
+    </SpaceBetween>
+  );
+}
+
+// Two ControlGroups laid out on the same line (a metric clause and a label matcher),
+// followed by a standalone "add" button — like a query-builder row where several
+// grouped clauses sit side by side.
+function MultipleGroupsInLine() {
+  return (
+    <SpaceBetween size="xs" direction="horizontal" alignItems="end">
+      <ControlGroup
+        ariaLabel="Metric"
+        dismissible={true}
+        onDismiss={() => {}}
+        i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove metric' }}
+      >
+        <Input
+          ariaLabel="Metric"
+          inlineLabelText="Metric"
+          value=""
+          placeholder="Select metric name"
+          onChange={() => {}}
+        />
+      </ControlGroup>
+      <ControlGroup
+        ariaLabel="Label"
+        dismissible={true}
+        onDismiss={() => {}}
+        i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove label' }}
+      >
+        <Input ariaLabel="Label name" inlineLabelText="Label" value="" placeholder="Label name" onChange={() => {}} />
+        <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+        <Input ariaLabel="Label value" value="" placeholder="Label value" onChange={() => {}} />
+      </ControlGroup>
+      <Button iconName="add-plus" ariaLabel="Add clause" onClick={() => {}} />
+    </SpaceBetween>
+  );
+}
+
+// A long control group whose natural row width is well over 465px (many controls),
+// so you can observe at which container width it collapses / stacks.
+function LongControlGroup() {
+  return (
+    <ControlGroup
+      ariaLabel="Long label matcher"
+      dismissible={true}
+      onDismiss={() => {}}
+      i18nStrings={{ dismissText: 'Remove', dismissAriaLabel: 'Remove clause' }}
+    >
+      <Input
+        ariaLabel="Label name"
+        inlineLabelText="Label"
+        value="service"
+        placeholder="Label name"
+        onChange={() => {}}
+      />
+      <Select ariaLabel="Operator" selectedOption={OPERATORS[0]} options={OPERATORS} onChange={() => {}} />
+      <Input ariaLabel="Label value" value="production" placeholder="Label value" onChange={() => {}} />
+      <Select
+        ariaLabel="Aggregation"
+        inlineLabelText="Aggregation"
+        selectedOption={AGGREGATIONS[1]}
+        options={AGGREGATIONS}
+        onChange={() => {}}
+      />
+      <Select ariaLabel="By" selectedOption={BY_OPTIONS[0]} options={BY_OPTIONS} onChange={() => {}} />
+      <Input ariaLabel="Limit" inlineLabelText="Limit" value="100" placeholder="Limit" onChange={() => {}} />
+    </ControlGroup>
+  );
+}
+
+interface Scenario {
+  key: string;
+  title: string;
+  description: React.ReactNode;
+  content: React.ReactNode;
+}
+
+const scenarios: Scenario[] = [
+  {
+    key: 'matcher',
+    title: 'Label matcher (triggers error / warning)',
+    description: (
+      <>
+        Pick <code>=~</code> or <code>!~</code> and type an invalid regex (for example <code>[abc</code>) to trigger an
+        error. Pick <code>!=</code> or <code>!~</code> to trigger a warning. The remove button unmounts the group.
+      </>
+    ),
+    content: <InteractiveLabelMatcher prefix="matcher" labeled={false} />,
+  },
+  {
+    key: 'labeledMatcher',
+    title: 'Label matcher with visible labels (triggers error / warning)',
+    description: (
+      <>
+        Same as above, but every control shows a visible inline label. Pick <code>=~</code> or <code>!~</code> and type
+        an invalid regex to trigger an error; pick <code>!=</code> or <code>!~</code> to trigger a warning.
+      </>
+    ),
+    content: <InteractiveLabelMatcher prefix="labeledMatcher" labeled={true} />,
+  },
+  {
+    key: 'filter',
+    title: 'Filter results (input + segmented control)',
+    description: (
+      <>
+        Choose <code>Highlight</code> with an empty query to trigger a warning.
+      </>
+    ),
+    content: <InteractiveFilterControl />,
+  },
+  {
+    key: 'disabled',
+    title: 'Aggregation (with a disabled control)',
+    description: (
+      <>
+        Choose <code>count_values</code> to trigger an error. The trailing &ldquo;By&rdquo; select is disabled.
+      </>
+    ),
+    content: <InteractiveDisabledControl />,
+  },
+  {
+    key: 'multiselect',
+    title: 'Multiselect (inline tokens)',
+    description: 'Clear the selection to trigger a warning. The remove button unmounts the group.',
+    content: <InteractiveMultiselectControl />,
+  },
+  {
+    key: 'nested',
+    title: 'ControlGroup nested in a FormField',
+    description:
+      "Toggle the FormField's validation state. The message renders once below the group, and the invalid / warning styling propagates to every control in the group.",
+    content: <NestedInFormFieldControl />,
+  },
+  {
+    key: 'multiple',
+    title: 'Multiple control groups in one line',
+    description: 'Several grouped clauses laid out side by side on the same line, followed by a standalone add button.',
+    content: <MultipleGroupsInLine />,
+  },
+  {
+    key: 'long',
+    title: 'Long control group (wider than 465px)',
+    description:
+      'A group with many controls, so its natural row width exceeds the 465px stack threshold. Narrow the browser to observe at which container width it collapses / stacks.',
+    content: <LongControlGroup />,
+  },
+];
+
+export default function () {
+  return (
+    <SimplePage title="Control group scenarios">
+      <SpaceBetween size="l">
+        {scenarios.map(scenario => (
+          <Container key={scenario.key} header={<Header description={scenario.description}>{scenario.title}</Header>}>
+            {scenario.content}
+          </Container>
+        ))}
+      </SpaceBetween>
+    </SimplePage>
+  );
+}
