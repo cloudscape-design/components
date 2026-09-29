@@ -14,7 +14,6 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
@@ -567,7 +566,12 @@ const InternalButtonDropdown = React.forwardRef(
           ariaLabel={hasFiltering ? ariaLabel : undefined}
           footer={
             dropdownStatus.content && dropdownStatus.isSticky ? (
-              <StatusFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={hasItems} />
+              <StatusFooter
+                content={isOpen ? dropdownStatus.content : null}
+                id={footerId}
+                hasItems={hasItems}
+                scope="root"
+              />
             ) : null
           }
           content={
@@ -636,10 +640,11 @@ const InternalButtonDropdown = React.forwardRef(
                   // Non-sticky status (finished text) scrolls together with the items, like the
                   // list bottom in Select, instead of covering the last item.
                   <li role="presentation">
-                    <DropdownFooter
+                    <StatusFooter
                       content={isOpen ? dropdownStatus.content : null}
                       id={footerId}
                       hasItems={hasItems}
+                      scope="root"
                     />
                   </li>
                 ) : null}

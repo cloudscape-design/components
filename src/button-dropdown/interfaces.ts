@@ -219,7 +219,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * Use this event to implement the asynchronous behavior for the component.
    *
    * The event is called in the following situations:
-   * * The dropdown opens.
+   * * The dropdown opens, unless the same filtering text was already requested.
    * * The user types inside the filtering input field.
    * * The user scrolls to the end of the list of items, if `statusType` is set to `pending`.
    * * The user clicks on the recovery button in the error state.
@@ -289,7 +289,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   filteringResultsText?: (matchesCount: number, totalCount: number) => string;
 
   /**
-   * Displayed for `filteringType="auto"` when filtering is enabled and there are no matches for the filtering input.
+   * Displayed when filtering is enabled and there are no matches for the filtering input.
+   * With `filteringType="manual"`, this is shown when you set `items` to an empty array while the filtering input has a value.
    */
   noMatch?: React.ReactNode;
 

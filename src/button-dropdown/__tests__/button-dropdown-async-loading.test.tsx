@@ -524,6 +524,27 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     expect(wrapper.findOpenDropdown()).not.toBeNull();
   });
 
+  test('root status lookups ignore the status of an expanded group', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: {
+        statusType: 'finished',
+        finishedText: () => 'End of results',
+        errorText: () => 'Error',
+        recoveryText: 'Retry',
+      },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })).not.toBeNull();
+    expect(wrapper.findErrorRecoveryButton()).toBeNull();
+    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement()).toHaveTextContent('Error');
+    expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('End of results');
+  });
+
   test('treats a group status of "pending" as "finished"', () => {
     const { wrapper } = renderDropdown({
       items: groupItems,

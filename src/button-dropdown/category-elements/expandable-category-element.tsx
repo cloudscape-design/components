@@ -188,7 +188,7 @@ const ExpandableCategoryElement = ({
         trigger={trigger}
         footer={
           expanded && groupDropdownStatus.content && groupDropdownStatus.isSticky ? (
-            <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
+            <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} scope="group" />
           ) : undefined
         }
         content={
@@ -223,7 +223,12 @@ const ExpandableCategoryElement = ({
               {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
                 // Non-sticky status (finished text) follows the items, like in the main dropdown.
                 <li role="presentation">
-                  <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
+                  <StatusFooter
+                    content={groupDropdownStatus.content}
+                    id={footerId}
+                    hasItems={hasGroupItems}
+                    scope="group"
+                  />
                 </li>
               ) : null}
             </ul>

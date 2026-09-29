@@ -9,14 +9,15 @@ import InputWrapper from '../input/index.js';
 import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
-import mobileGroupStyles from '../../../button-dropdown/mobile-expandable-group/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 
-// An expanded group renders as a fly-out dropdown on desktop and as an inline section on mobile.
-const expandedGroupSelector = `.${dropdownStyles.dropdown}[data-open=true], .${mobileGroupStyles.dropdown}[data-open=true]`;
+// The status of the root list and the status of an expanded group carry distinct markers, so a lookup
+// never falls through from one to the other.
+const statusScopeSelector = (expandedGroup: boolean) =>
+  `.${expandedGroup ? styles['test-utils-group-status'] : styles['test-utils-root-status']}`;
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -142,11 +143,11 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
   findErrorRecoveryButton(options = { expandedGroupDropdown: false }): ElementWrapper | null {
-    let dropdown = this.findOpenDropdown();
-    if (options.expandedGroupDropdown && dropdown) {
-      dropdown = dropdown.find(expandedGroupSelector);
-    }
-    return dropdown?.findByClassName(footerStyles.recovery) ?? null;
+    return (
+      this.findOpenDropdown()?.find(
+        `${statusScopeSelector(options.expandedGroupDropdown)} .${footerStyles.recovery}`
+      ) ?? null
+    );
   }
 
   /**
@@ -155,11 +156,10 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
   findStatusIndicator(options = { expandedGroupDropdown: false }): ElementWrapper | null {
-    let dropdown = this.findOpenDropdown();
-    if (options.expandedGroupDropdown && dropdown) {
-      dropdown = dropdown.find(expandedGroupSelector);
-    }
-    return dropdown?.findByClassName(footerStyles.root) ?? null;
+    return (
+      this.findOpenDropdown()?.find(`${statusScopeSelector(options.expandedGroupDropdown)} .${footerStyles.root}`) ??
+      null
+    );
   }
 
   /**
@@ -170,7 +170,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * This utility does not open the dropdown. To find the footer region, call `openDropdown()` first.
    */
   findFooterRegion(): ElementWrapper | null {
-    return this.findOpenDropdown()?.findByClassName(footerStyles.root) ?? null;
+    return this.findOpenDropdown()?.find(`${statusScopeSelector(false)} .${footerStyles.root}`) ?? null;
   }
 
   @usesDom
