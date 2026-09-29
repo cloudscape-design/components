@@ -27,6 +27,11 @@ interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, Inte
   __headingTagRef?: MutableRefObject<HTMLHeadingElement | null>;
   __headingTagTabIndex?: number;
   __inExpandableSection?: boolean;
+  /**
+   * Rendered in the title row but OUTSIDE the heading tag, so interactive content
+   * placed beside the title is not nested inside the heading element.
+   */
+  __additionalTitleContent?: React.ReactNode;
 }
 
 export default function InternalHeader({
@@ -42,6 +47,7 @@ export default function InternalHeader({
   __headingTagRef,
   __headingTagTabIndex,
   __inExpandableSection,
+  __additionalTitleContent,
   ...restProps
 }: InternalHeaderProps) {
   const isMobile = useMobile();
@@ -118,6 +124,9 @@ export default function InternalHeader({
             </InfoLinkLabelContext.Provider>
           )}
         </div>
+        {__additionalTitleContent && (
+          <div className={styles['additional-title-content']}>{__additionalTitleContent}</div>
+        )}
         {actions && (
           <div
             className={clsx(

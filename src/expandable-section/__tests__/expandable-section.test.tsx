@@ -121,6 +121,35 @@ describe('Expandable Section', () => {
         });
       }
     });
+    describe('populates header secondary content slot correctly', () => {
+      for (const variant of variantsWithActions) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            headerSecondaryContent: <Button data-testid="interactive">Interactive</Button>,
+          });
+          const interactive = wrapper.findHeader().find('[data-testid="interactive"]');
+          expect(interactive).toBeTruthy();
+          expect(interactive!.getElement()).toHaveTextContent('Interactive');
+        });
+      }
+    });
+    describe('hideHeaderText keeps the header text accessible while visually hiding it', () => {
+      for (const variant of variantsWithActions) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            hideHeaderText: true,
+          });
+          // Text remains in the DOM (and thus available to assistive technology)...
+          expect(wrapper.findHeaderText()!.getElement()).toHaveTextContent('Test Header');
+          // ...but carries the visually-hidden class that is the actual effect of the prop.
+          expect(wrapper.findHeaderText()!.getElement()).toHaveClass(styles['header-text-hidden']);
+        });
+      }
+    });
     test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked', 'inline'])(
       'populates content slot correctly for "%s" variant',
       variant => {
@@ -366,6 +395,9 @@ describe('Expandable Section', () => {
             if (!variantsWithActions.includes(variant)) {
               test('headerActions', () => {
                 testWarnings({ variant, headerActions: <Button>Action</Button> });
+              });
+              test('headerSecondaryContent', () => {
+                testWarnings({ variant, headerSecondaryContent: <Button>Interactive</Button> });
               });
             }
           });

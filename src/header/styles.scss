@@ -130,6 +130,13 @@
   }
 }
 
+.additional-title-content {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-inline-end: auto;
+}
+
 .title {
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;

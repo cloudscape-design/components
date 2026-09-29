@@ -13593,6 +13593,13 @@ slot (not with the deprecated \`header\`), and not with the navigation variant."
       "type": "string",
     },
     {
+      "description": "Visually hides the header text while keeping it available to assistive technology.
+Use with \`headerSecondaryContent\` to present a purely interactive header control.",
+      "name": "hideHeaderText",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -13649,6 +13656,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "The area next to the heading, used to display an Info link. Use with the container variant.",
       "isDefault": false,
       "name": "headerInfo",
+    },
+    {
+      "description": "Secondary content displayed next to the header text, such as an interactive control or supporting text.
+Use with the default or container variant.",
+      "isDefault": false,
+      "name": "headerSecondaryContent",
     },
     {
       "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",
