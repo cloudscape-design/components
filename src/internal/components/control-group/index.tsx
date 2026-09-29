@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { BaseComponentProps } from '../../../types/base-component';
 import { getBaseProps } from '../../base-component';
-import { ControlGroupContext, ControlGroupPosition } from '../../context/control-group-context';
+import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
 import { flattenChildren } from '../../utils/flatten-children';
 
 import styles from './styles.css.js';
@@ -24,11 +24,11 @@ export default function InternalControlGroup({ children, ...props }: InternalCon
     <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root)}>
       {flattenedChildren.map((child, index) => {
         const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-        const position: ControlGroupPosition =
+        const position: GroupedControlPosition =
           controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
         return (
           <div key={key ? String(key) : index} className={clsx(styles.control, styles[`control-${position}`])}>
-            <ControlGroupContext.Provider value={{ position }}>{child}</ControlGroupContext.Provider>
+            <GroupedControlContext.Provider value={{ position }}>{child}</GroupedControlContext.Provider>
           </div>
         );
       })}

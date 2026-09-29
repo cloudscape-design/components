@@ -13,7 +13,7 @@ import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { ControlGroupPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -27,7 +27,7 @@ import AutosuggestOptionsList from './options-list';
 import styles from './styles.css.js';
 
 interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
-  __controlGroupPosition?: ControlGroupPosition | null;
+  __groupedControlPosition?: GroupedControlPosition | null;
 }
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
@@ -60,7 +60,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
-    __controlGroupPosition,
+    __groupedControlPosition,
     __internalRootRef,
     ...restProps
   } = props;
@@ -229,7 +229,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
-      __controlGroupPosition={__controlGroupPosition}
+      groupedControlPosition={__groupedControlPosition}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

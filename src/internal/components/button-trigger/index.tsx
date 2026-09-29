@@ -10,7 +10,7 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { ControlGroupPosition } from '../../context/control-group-context';
+import { GroupedControlPosition } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
@@ -42,7 +42,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
-  controlGroupPosition?: ControlGroupPosition | null;
+  groupedControlPosition?: GroupedControlPosition | null;
 }
 
 const ButtonTrigger = (
@@ -68,7 +68,7 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
-    controlGroupPosition = null,
+    groupedControlPosition = null,
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
@@ -90,8 +90,8 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      controlGroupPosition && styles.grouped,
-      controlGroupPosition && styles[`grouped-${controlGroupPosition}`],
+      groupedControlPosition && styles.grouped,
+      groupedControlPosition && styles[`grouped-${groupedControlPosition}`],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,

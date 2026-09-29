@@ -11,7 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { ControlGroupPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
@@ -34,7 +34,7 @@ type InternalMultiselectProps = SomeRequired<
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
   InternalBaseComponentProps & {
-    __controlGroupPosition?: ControlGroupPosition | null;
+    __groupedControlPosition?: GroupedControlPosition | null;
   };
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
@@ -71,7 +71,7 @@ const InternalMultiselect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
-      __controlGroupPosition: controlGroupPosition = null,
+      __groupedControlPosition = null,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -142,7 +142,7 @@ const InternalMultiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
-        controlGroupPosition={controlGroupPosition}
+        groupedControlPosition={__groupedControlPosition}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}

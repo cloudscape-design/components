@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createContext, useContext } from 'react';
 
-export type ControlGroupPosition = 'first' | 'middle' | 'last' | 'only';
+export type GroupedControlPosition = 'first' | 'middle' | 'last' | 'only';
 
-export interface ControlGroupContextProps {
+export interface GroupedControlContextProps {
   /**
    * The control's position within a control group,
    * or `null` when the control is not in a control group.
    */
-  position: ControlGroupPosition | null;
+  position: GroupedControlPosition | null;
 }
 
-export const ControlGroupContext = createContext<ControlGroupContextProps>({
+export const GroupedControlContext = createContext<GroupedControlContextProps>({
   position: null,
 });
 
-export function useControlGroupContext() {
-  return useContext(ControlGroupContext);
+export function useGroupedControlContext() {
+  return useContext(GroupedControlContext);
 }

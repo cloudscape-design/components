@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { ControlGroupPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -58,7 +58,7 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
-  __controlGroupPosition?: ControlGroupPosition | null;
+  __groupedControlPosition?: GroupedControlPosition | null;
 }
 
 function InternalInput(
@@ -101,7 +101,7 @@ function InternalInput(
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
     __fullWidth,
-    __controlGroupPosition: controlGroupPosition = null,
+    __groupedControlPosition = null,
     style,
     prefix,
     suffix,
@@ -155,7 +155,9 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const controlGroupClasses = controlGroupPosition ? [styles.grouped, styles[`grouped-${controlGroupPosition}`]] : [];
+  const controlGroupClasses = __groupedControlPosition
+    ? [styles.grouped, styles[`grouped-${__groupedControlPosition}`]]
+    : [];
 
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =

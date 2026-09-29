@@ -3,7 +3,7 @@
 'use client';
 import React from 'react';
 
-import { useControlGroupContext } from '../internal/context/control-group-context';
+import { useGroupedControlContext } from '../internal/context/control-group-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SegmentedControlProps } from './interfaces';
@@ -18,9 +18,11 @@ export default function SegmentedControl(props: SegmentedControlProps) {
       hasDisabledReasons: (props.options ?? []).some(option => Boolean(option.disabledReason)),
     },
   });
-  const { position: controlGroupPosition } = useControlGroupContext();
+  const { position: groupedControlPosition } = useGroupedControlContext();
 
-  return <InternalSegmentedControl {...props} {...baseComponentProps} __controlGroupPosition={controlGroupPosition} />;
+  return (
+    <InternalSegmentedControl {...props} {...baseComponentProps} __groupedControlPosition={groupedControlPosition} />
+  );
 }
 
 applyDisplayName(SegmentedControl, 'SegmentedControl');

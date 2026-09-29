@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { ControlGroupPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
@@ -15,7 +15,7 @@ import { getSegmentedControlRootStyles } from './style';
 import styles from './styles.css.js';
 
 interface InternalSegmentedControlComponentProps extends SegmentedControlProps {
-  controlGroupPosition?: ControlGroupPosition | null;
+  groupedControlPosition?: GroupedControlPosition | null;
 }
 
 export default function InternalSegmentedControl({
@@ -25,7 +25,7 @@ export default function InternalSegmentedControl({
   ariaLabelledby,
   onChange,
   style,
-  controlGroupPosition,
+  groupedControlPosition,
 }: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -57,8 +57,8 @@ export default function InternalSegmentedControl({
     <div
       className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], {
         [styles.refresh]: isVisualRefresh,
-        [styles.grouped]: !!controlGroupPosition,
-        [styles[`grouped-${controlGroupPosition}`]]: !!controlGroupPosition,
+        [styles.grouped]: !!groupedControlPosition,
+        [styles[`grouped-${groupedControlPosition}`]]: !!groupedControlPosition,
       })}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
