@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
@@ -8,7 +8,16 @@ import FormField from '~components/form-field';
 import RadioGroup from '~components/radio-group';
 import SpaceBetween from '~components/space-between';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
+
+type PageContext = React.Context<
+  AppContextType<{
+    expandToViewport: boolean;
+    filteringType: ButtonDropdownProps.FilteringType;
+    serverDelay: string;
+  }>
+>;
 
 const SOURCE_ITEMS: ButtonDropdownProps.Item[] = [
   { id: 'cut', text: 'Cut', labelTag: 'Ctrl+X' },
@@ -31,15 +40,18 @@ function simulateServer(text: string, delayMs: number): Promise<ButtonDropdownPr
 }
 
 export default function ButtonDropdownManualFilteringPage() {
-  const [expandToViewport, setExpandToViewport] = useState(false);
+  // Page configuration lives in the URL so that each setup is directly linkable and targetable by
+  // integration tests. Request results below stay in local state.
+  const {
+    urlParams: { expandToViewport = false, filteringType = 'manual', serverDelay = '400' },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
   const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
 
   // Interactive: filteringType switcher
-  const [filteringType, setFilteringType] = useState<ButtonDropdownProps.FilteringType>('manual');
   const [switcherItems, setSwitcherItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
 
   // Interactive: server delay control
-  const [serverDelay, setServerDelay] = useState('400');
   const [serverItems, setServerItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
   const [serverStatus, setServerStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
 
@@ -54,7 +66,7 @@ export default function ButtonDropdownManualFilteringPage() {
     <SimplePage
       title="ButtonDropdown manual filtering"
       settings={
-        <Checkbox checked={expandToViewport} onChange={e => setExpandToViewport(e.detail.checked)}>
+        <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
           Expand to viewport
         </Checkbox>
       }
@@ -67,7 +79,7 @@ export default function ButtonDropdownManualFilteringPage() {
           <FormField label="filteringType">
             <RadioGroup
               value={filteringType}
-              onChange={e => setFilteringType(e.detail.value as ButtonDropdownProps.FilteringType)}
+              onChange={e => setUrlParams({ filteringType: e.detail.value as ButtonDropdownProps.FilteringType })}
               items={[
                 { value: 'none', label: 'none' },
                 { value: 'auto', label: 'auto (client-side)' },
@@ -95,14 +107,11 @@ export default function ButtonDropdownManualFilteringPage() {
         {/* Interactive: server delay control */}
         <div>
           <h2>Interactive - server delay control</h2>
-          <p>
-            Set delay to 0 ms to stay in the loading state long enough to inspect it, or use 1500 ms for slow network
-            testing.
-          </p>
+          <p>Use 1500 ms to inspect the loading state; 0 ms resolves the request immediately.</p>
           <FormField label="Simulated server delay">
             <RadioGroup
               value={serverDelay}
-              onChange={e => setServerDelay(e.detail.value)}
+              onChange={e => setUrlParams({ serverDelay: e.detail.value })}
               items={[
                 { value: '0', label: '0 ms (instant)' },
                 { value: '400', label: '400 ms' },
