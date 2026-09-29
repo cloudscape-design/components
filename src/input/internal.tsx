@@ -155,7 +155,7 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const controlGroupClasses = __groupedControlPosition
+  const groupedControlClasses = __groupedControlPosition
     ? [styles.grouped, styles[`grouped-${__groupedControlPosition}`]]
     : [];
 
@@ -186,7 +186,7 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
-      !hasPrefixOrSuffix && controlGroupClasses,
+      !hasPrefixOrSuffix && groupedControlClasses,
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -319,7 +319,7 @@ function InternalInput(
             warning && !invalid && styles['input-adorned-container-warning'],
             disabled && styles['input-adorned-container-disabled'],
             readOnly && !disabled && styles['input-adorned-container-readonly'],
-            controlGroupClasses
+            groupedControlClasses
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}
