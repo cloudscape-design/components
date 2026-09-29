@@ -19,6 +19,16 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   expandToViewport?: boolean;
   filteringType?: ButtonDropdownProps.FilteringType;
   fireLoadItems?: (filteringText: string) => void;
+  /**
+   * Called whenever an expandable group gets expanded, regardless of whether it was
+   * expanded with the pointer or with the keyboard.
+   */
+  onGroupExpand?: (group: ButtonDropdownProps.ItemGroup) => void;
+  /**
+   * Returns whether a recovery button is currently rendered inside the dropdown.
+   * While it is, Tab moves focus to it instead of closing the dropdown.
+   */
+  hasRecoveryButton?: () => boolean;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -48,6 +58,8 @@ export function useButtonDropdown({
   expandToViewport = false,
   filteringType,
   fireLoadItems,
+  onGroupExpand,
+  hasRecoveryButton,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const [filteringValue, setFilteringValue] = useState('');
   const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
@@ -131,7 +143,14 @@ export function useButtonDropdown({
     }
   };
 
-  const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
+  // Single entry point for expanding a group so that pointer and keyboard expansion
+  // both notify the consumer (used to load the group's items asynchronously).
+  const expandGroupAndNotify = (group: ButtonDropdownProps.ItemGroup) => {
+    expandGroup(group);
+    onGroupExpand?.(group);
+  };
+
+  const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroupAndNotify(item) : collapseGroup());
 
   const onItemActivate: ItemActivate = (item, event) => {
     const isCheckbox = isCheckboxItem(item);
@@ -242,7 +261,7 @@ export function useButtonDropdown({
           break;
         }
         if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
-          expandGroup();
+          expandGroupAndNotify(targetItem);
         } else if (hasExpandableGroups) {
           collapseGroup();
         }
@@ -265,6 +284,11 @@ export function useButtonDropdown({
         // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
         // focus actually leaves the dropdown.
         if (hasFiltering) {
+          break;
+        }
+        // A recovery button rendered in the status footer must be reachable with Tab. The
+        // dropdown then closes through onDropdownBlur once focus actually leaves it.
+        if (hasRecoveryButton?.()) {
           break;
         }
         // When expanded to viewport the focus can't move naturally to the next element.

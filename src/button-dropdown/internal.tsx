@@ -16,7 +16,6 @@ import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import DropdownStatus from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -32,10 +31,11 @@ import ButtonDropdownFilter from './filter';
 import { ButtonDropdownProps } from './interfaces';
 import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
+import StatusFooter from './status-footer';
 import { countLeafItems } from './utils/filter-items';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { useLoadItems } from './utils/use-load-items';
-import { isLinkItem } from './utils/utils.js';
+import { isItemGroup, isLinkItem } from './utils/utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -128,11 +128,16 @@ const InternalButtonDropdown = React.forwardRef(
 
     const statusType = asyncLoadingProps?.statusType ?? 'finished';
 
-    const { fireLoadItems, handleLoadMore, handleRecoveryClick } = useLoadItems({
+    const { fireLoadItems, handleLoadMore, handleRecoveryClick, fireGroupLoadItems } = useLoadItems({
       onLoadItems,
       items,
       statusType,
     });
+
+    // Whether a recovery button is rendered anywhere in the dropdown. It is derived from the
+    // dropdown status below, which in turn depends on the hook output, so the hook reads the
+    // latest value through a ref instead of receiving it as an argument.
+    const hasRecoveryButtonRef = useRef(false);
 
     const {
       isOpen,
@@ -165,6 +170,12 @@ const InternalButtonDropdown = React.forwardRef(
       isInRestrictedView,
       filteringType,
       fireLoadItems,
+      onGroupExpand: group => {
+        if (group.id && onLoadItems) {
+          fireGroupLoadItems(group.id);
+        }
+      },
+      hasRecoveryButton: () => hasRecoveryButtonRef.current,
     });
 
     const filterRef = useRef<HTMLInputElement>(null);
@@ -412,7 +423,11 @@ const InternalButtonDropdown = React.forwardRef(
     const matchesCount = useMemo(() => countLeafItems(filteredItems), [filteredItems]);
     const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
 
-    const isEmpty = !items || items.length === 0;
+    // Only treat as "truly empty" (no data at all) when the user is not actively filtering.
+    // When filteringValue is set, zero items means "no match" not "empty".
+    const isEmpty = (!items || items.length === 0) && !filteringValue;
+
+    const hasItems = filteredItems.length > 0;
 
     const dropdownStatus = useDropdownStatus({
       statusType,
@@ -427,8 +442,28 @@ const InternalButtonDropdown = React.forwardRef(
       noMatch,
       filteringResultsText: filteredText,
       hasRecoveryCallback: !!onLoadItems,
-      onRecoveryClick: () => handleRecoveryClick(),
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        // The recovery button disappears once loading starts, so move focus back to the
+        // element that owns keyboard interaction to keep the dropdown open.
+        if (hasFiltering) {
+          filterRef.current?.focus();
+        } else {
+          triggerRef.current?.focus({ preventScroll: true });
+        }
+      },
     });
+
+    // A recovery button inside an expanded group is rendered by the category element with the
+    // same conditions as the main status (error state, recovery text, onLoadItems callback).
+    const expandedGroupHasRecoveryButton =
+      showExpandableGroups &&
+      !!recoveryText &&
+      !!onLoadItems &&
+      items.some(
+        item => isItemGroup(item) && isExpanded(item) && getExpandableItemsAsyncLoadingState?.({ item }) === 'error'
+      );
+    hasRecoveryButtonRef.current = dropdownStatus.hasRecoveryButton || expandedGroupHasRecoveryButton;
 
     // Only create a filteringDescription element if filtering is actually enabled,
     // not just if the string is provided.
@@ -501,8 +536,8 @@ const InternalButtonDropdown = React.forwardRef(
           ariaRole={hasFiltering ? 'dialog' : undefined}
           ariaLabel={hasFiltering ? ariaLabel : undefined}
           footer={
-            dropdownStatus.content && dropdownStatus.isSticky && !isEmpty ? (
-              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={!isNoMatch} />
+            dropdownStatus.content && dropdownStatus.isSticky ? (
+              <StatusFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={hasItems} />
             ) : null
           }
           content={
@@ -567,13 +602,18 @@ const InternalButtonDropdown = React.forwardRef(
                   getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
                   onLoadItems={onLoadItems}
                 />
+                {dropdownStatus.content && !dropdownStatus.isSticky ? (
+                  // Non-sticky status (finished text) scrolls together with the items, like the
+                  // list bottom in Select, instead of covering the last item.
+                  <li role="presentation">
+                    <DropdownFooter
+                      content={isOpen ? dropdownStatus.content : null}
+                      id={footerId}
+                      hasItems={hasItems}
+                    />
+                  </li>
+                ) : null}
               </OptionsList>
-              {dropdownStatus.content && !dropdownStatus.isSticky ? (
-                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={false} />
-              ) : null}
-              {dropdownStatus.content && dropdownStatus.isSticky && isEmpty ? (
-                <DropdownStatus>{isOpen ? dropdownStatus.content : null}</DropdownStatus>
-              ) : null}
               {filteringDescriptionEl}
             </>
           }

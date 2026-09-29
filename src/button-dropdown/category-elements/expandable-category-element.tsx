@@ -11,7 +11,6 @@ import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import DropdownFooter from '../../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../../internal/components/dropdown-status';
-import DropdownStatus from '../../internal/components/dropdown-status';
 import { fireNonCancelableEvent } from '../../internal/events';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
@@ -22,6 +21,7 @@ import {
 import { ButtonDropdownProps } from '../interfaces';
 import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
+import StatusFooter from '../status-footer';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
 
@@ -77,13 +77,19 @@ const ExpandableCategoryElement = ({
     isEmpty: !item.items || item.items.length === 0,
     isNoMatch: false,
     hasRecoveryCallback: !!onLoadItems,
-    onRecoveryClick: () =>
+    onRecoveryClick: () => {
       fireNonCancelableEvent(onLoadItems, {
         filteringText: '',
         firstPage: false,
         samePage: true,
         expandedGroupId: groupId,
-      }),
+      });
+      // The recovery button disappears once loading starts. Keep focus inside the group so the
+      // dropdown stays open; in filtering mode focus never left the filter input.
+      if (!filteringEnabled) {
+        triggerRef.current?.focus();
+      }
+    },
   });
 
   useEffect(() => {
@@ -95,15 +101,6 @@ const ExpandableCategoryElement = ({
   const onClick: React.MouseEventHandler = event => {
     if (!disabled) {
       event.preventDefault();
-      // Fire onLoadItems when expanding (not collapsing) a group.
-      if (!expanded && groupId && onLoadItems) {
-        fireNonCancelableEvent(onLoadItems, {
-          filteringText: '',
-          firstPage: true,
-          samePage: false,
-          expandedGroupId: groupId,
-        });
-      }
       onGroupToggle(item, event);
       if (!filteringEnabled) {
         triggerRef.current?.focus();
@@ -205,20 +202,17 @@ const ExpandableCategoryElement = ({
   } else if (disabled) {
     content = trigger;
   } else {
+    const hasGroupItems = !!item.items && item.items.length > 0;
     content = (
       <Dropdown
         open={expanded}
         interior={true}
-        hideBlockBorder={!item.items || item.items.length === 0}
+        hideBlockBorder={!hasGroupItems}
         expandToViewport={expandToViewport}
         trigger={trigger}
         footer={
-          expanded &&
-          groupDropdownStatus.content &&
-          groupDropdownStatus.isSticky &&
-          item.items &&
-          item.items.length > 0 ? (
-            <DropdownFooter content={groupDropdownStatus.content} id={footerId} hasItems={true} />
+          expanded && groupDropdownStatus.content && groupDropdownStatus.isSticky ? (
+            <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
           ) : undefined
         }
         content={
@@ -228,15 +222,7 @@ const ExpandableCategoryElement = ({
               aria-label={item.text}
               className={clsx(styles['items-list-container'], styles['in-dropdown'])}
             >
-              {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
-                <DropdownFooter content={groupDropdownStatus.content} id={footerId} hasItems={false} />
-              ) : null}
-              {groupDropdownStatus.content &&
-              groupDropdownStatus.isSticky &&
-              (!item.items || item.items.length === 0) ? (
-                <DropdownStatus>{groupDropdownStatus.content}</DropdownStatus>
-              ) : null}
-              {item.items && item.items.length > 0 ? (
+              {hasGroupItems ? (
                 <ItemsList
                   items={item.items}
                   onItemActivate={onItemActivate}
@@ -256,6 +242,12 @@ const ExpandableCategoryElement = ({
                   menuId={menuId}
                   filteringDescriptionId={filteringDescriptionId}
                 />
+              ) : null}
+              {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
+                // Non-sticky status (finished text) follows the items, like in the main dropdown.
+                <li role="presentation">
+                  <DropdownFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} />
+                </li>
               ) : null}
             </ul>
           ) : undefined
