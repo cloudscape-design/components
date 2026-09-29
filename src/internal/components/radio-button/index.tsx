@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -49,6 +49,13 @@ export default React.forwardRef(function RadioButton(
 
   const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
   const baseProps = getBaseProps(rest);
+
+  // The select animation only plays once the state has changed since mount.
+  const [initialChecked] = useState(!!checked);
+  const [hasChanged, setHasChanged] = useState(false);
+  if (!hasChanged && !!checked !== initialChecked) {
+    setHasChanged(true);
+  }
 
   return (
     <AbstractSwitch
@@ -110,6 +117,7 @@ export default React.forwardRef(function RadioButton(
               [styles['styled-circle-checked']]: checked,
               [styles['styled-circle-readonly']]: readOnly,
             })}
+            data-awsui-motion-ready={hasChanged ? '' : undefined}
             strokeWidth={30}
             cx={50}
             cy={50}
