@@ -22,6 +22,9 @@ interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   children?: React.ReactNode;
   variant: InternalVariant;
   expanded: boolean | undefined;
+  role?: string;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
   __injectAnalyticsComponentMetadata?: boolean;
 }
 
@@ -31,6 +34,9 @@ export const ExpandableSectionContainer = ({
   header,
   variant,
   expanded,
+  role,
+  ariaLabel,
+  ariaLabelledby,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   ...rest
@@ -45,6 +51,8 @@ export const ExpandableSectionContainer = ({
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
+
+  const ariaProps = { role, ['aria-label']: ariaLabel, ['aria-labelledby']: ariaLabelledby };
 
   if (variant === 'container' || variant === 'stacked') {
     return (
@@ -61,6 +69,8 @@ export const ExpandableSectionContainer = ({
           disableHeaderPaddings={true}
           __hiddenContent={!expanded}
           __internalRootRef={__internalRootRef}
+          __nativeAttributes={ariaProps}
+          __analyticsLabelSelector={`.${analyticsSelectors['header-label']}`}
           {...metadataAttribute}
         >
           {children}
@@ -73,6 +83,7 @@ export const ExpandableSectionContainer = ({
     <div
       className={className}
       {...rest}
+      {...ariaProps}
       ref={__internalRootRef}
       {...metadataAttribute}
       {...getAnalyticsLabelAttribute(`.${analyticsSelectors['header-label']}`)}

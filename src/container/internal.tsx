@@ -51,6 +51,19 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
    */
   __contentKey?: string;
+
+  /**
+   * Native attributes spread onto the container root, for ARIA that `getBaseProps` does not forward
+   * (it forwards only id/className/data-*).
+   */
+  __nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
+
+  /**
+   * Overrides the CSS selector used to resolve the analytics component label. Expandable sections
+   * set this so the label survives `hideHeaderText`, which drops the heading element the default
+   * selector targets.
+   */
+  __analyticsLabelSelector?: string;
 }
 
 export const InternalContainerAsSubstep = React.forwardRef(
@@ -93,6 +106,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     __funnelSubStepProps,
     __subStepRef,
     __contentKey,
+    __nativeAttributes,
+    __analyticsLabelSelector = `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`,
     ...restProps
   }: InternalContainerProps,
   ref: React.Ref<ContainerProps.Ref>
@@ -157,6 +172,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     <div
       {...baseProps}
       {...__funnelSubStepProps}
+      {...__nativeAttributes}
       className={clsx(
         baseProps.className,
         styles.root,
@@ -170,9 +186,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       )}
       ref={mergedRef}
       onBlur={onRootBlur}
-      {...getAnalyticsLabelAttribute(
-        `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
-      )}
+      {...getAnalyticsLabelAttribute(__analyticsLabelSelector)}
       style={getRootStyles(style)}
     >
       {hasMedia && (
