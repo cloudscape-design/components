@@ -159,6 +159,11 @@
     display: flex;
     justify-content: flex-end;
   }
+
+  // A custom `actions` trailing button stays attached and fuses vertically with the
+  // control above it (it keeps the block-axis seam overlap from `.control-last` above,
+  // so no extra rule is needed here). The group's validation text renders below the
+  // whole group, not between the controls and this button, so it always fuses directly.
 }
 
 .hints {

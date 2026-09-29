@@ -261,14 +261,14 @@ const InternalControlGroup = forwardRef(
         // When the group wraps (stacks) the controls fuse vertically: the block-axis
         // seam overlaps just like the inline seam does in a row. A control only detaches
         // (keeps a gap and its own rounded corners) if it genuinely renders a visible
-        // inline label; the built-in dismiss button also stands alone. So a control is
-        // labeled when it has an inline label, and it precedes a detached control when
-        // the next control is labeled or it is the last real control before the dismiss
-        // button.
+        // inline label; the built-in dismiss button also stands alone. A trailing custom
+        // `actions` button, by contrast, stays attached (fuses vertically), so the last
+        // real control before it keeps its seam. So a control is labeled when it has an
+        // inline label, and it precedes a detached control when the next control is
+        // labeled or it is the last real control before the built-in dismiss button.
         const hasInlineLabel = hasInlineLabelProp(child);
         const isLastRealChild = index === flattened.length - 1;
-        const precedesDetached =
-          hasInlineLabelProp(flattened[index + 1]) || (isLastRealChild && (!!dismissible || hasCustomActions));
+        const precedesDetached = hasInlineLabelProp(flattened[index + 1]) || (isLastRealChild && !!dismissible);
         return (
           <div
             key={key ? String(key) : undefined}
@@ -308,7 +308,13 @@ const InternalControlGroup = forwardRef(
           className={clsx(
             styles.control,
             styles[`control-${position}`],
-            styles['control-standalone'],
+            // The built-in dismiss button detaches when the group wraps (a gap above it
+            // and a right-aligned standalone button). A custom `actions` button instead
+            // stays attached and fuses vertically, so it is NOT marked `control-standalone`
+            // — it lays out like a normal stacked control. The validation text renders
+            // below the whole group (not between the controls and this slot), so the
+            // button always fuses directly against the control above it.
+            dismissible && styles['control-standalone'],
             testUtilStyles['control-group-item']
           )}
         >
@@ -319,7 +325,8 @@ const InternalControlGroup = forwardRef(
               // `standaloneWhenStacked` drives the BUILT-IN dismiss button's dual-render
               // presentation (icon-only square in a row, text primary button when
               // stacked). `customStandalone` marks a CONSUMER `actions` button: it fuses
-              // in a row but renders as an ordinary, detached button when the group wraps.
+              // with the group in a row AND stays attached (fused vertically) when the
+              // group wraps, while keeping its own border and background color.
               standaloneWhenStacked: dismissible ? true : undefined,
               customStandalone: dismissible ? undefined : true,
               stacked: isStacked,
@@ -355,18 +362,26 @@ const InternalControlGroup = forwardRef(
       );
     };
 
-    // Composes the controls, the (stacked-only) inline validation messages, and the
-    // dismiss button for a given wrap state. The children are resolved for that same
-    // state, so a `children` render function sees `wrap` matching this layout. When
-    // stacked, the error/warning text sits between the controls and the dismiss button;
-    // otherwise it renders below the group (see the hints block).
+    // The error / warning text renders inside the group, between the controls and the
+    // trailing slot, ONLY when that slot detaches from the controls — i.e. the built-in
+    // `dismissible` button, which becomes a separate standalone button when the group
+    // wraps. A custom `actions` button stays attached to the controls (it fuses
+    // vertically), so the validation text renders below the whole group instead (in the
+    // hints block), matching the row layout.
+    const showInlineValidation = stacked && dismissible;
+
+    // Composes the controls, the (inline-only) validation messages, and the trailing
+    // button for a given wrap state. The children are resolved for that same state, so a
+    // `children` render function sees `wrap` matching this layout.
     const renderGroupContent = (isStacked: boolean) => {
       const flattened = resolveChildren(isStacked);
       const controlCount = getControlCount(flattened);
       return (
         <>
           {renderControlSlots(isStacked, flattened, controlCount)}
-          {isStacked && validationMessages && <div className={styles['inline-hints']}>{validationMessages}</div>}
+          {isStacked && dismissible && validationMessages && (
+            <div className={styles['inline-hints']}>{validationMessages}</div>
+          )}
           {renderDismissSlot(isStacked, controlCount)}
         </>
       );
@@ -421,14 +436,15 @@ const InternalControlGroup = forwardRef(
         </div>
 
         {/*
-          Below-group hints. The error / warning text renders here only while the group is
-          a row; when it wraps (stacks) that text moves inside the group, between the
-          controls and the dismiss button (see renderGroupContent). The description always
-          stays below the group.
+          Below-group hints. The error / warning text renders here unless it is shown
+          inline inside the group (only when the built-in dismiss button detaches on
+          wrap — see `showInlineValidation`). With a custom `actions` button, which stays
+          attached, the validation text renders below the button here, just like the row
+          layout. The description always stays below the group.
         */}
-        {((!stacked && validationMessages) || description) && (
+        {((!showInlineValidation && validationMessages) || description) && (
           <div className={styles.hints}>
-            {!stacked && validationMessages}
+            {!showInlineValidation && validationMessages}
             {description && (
               <div id={descriptionId} className={clsx(styles.description, testUtilStyles.description)}>
                 {description}

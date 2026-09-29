@@ -178,67 +178,149 @@ $tokens: style-api.resolve($props, carrier);
   // above its neighbors so its focus ring is not clipped, and the ring hugs the
   // square edges (zero gutter) instead of the default rounded icon-button ring.
   &.in-control-group {
-    // Match the field controls (input, select) so heights and border widths line up.
-    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
-    background-color: awsui.$color-background-input-default;
     box-sizing: border-box;
-    // Square: equal block and inline size, matching the field control height.
-    min-block-size: awsui.$size-vertical-input;
-    block-size: awsui.$size-vertical-input;
-    inline-size: awsui.$size-vertical-input;
-    padding-inline: 0;
-    // Center the icon within the square.
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 
-    // When the group is stacked, the remove button fills the row like the other
-    // controls instead of staying a square.
-    &.in-control-group-stacked {
-      inline-size: 100%;
-    }
+    // The built-in dismiss button (and any field-styled grouped button) matches the
+    // adjacent field controls: neutral field border/background and a fixed square size.
+    // A CUSTOM `actions` button is excluded here — it keeps its OWN variant border and
+    // background color (wrapped or not) and sizes to its content, only borrowing the
+    // group's fused corners/seam geometry (applied per position below).
+    &:not(.in-control-group-custom-standalone) {
+      // Match the field controls (input, select) so heights and border widths line up.
+      border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+      border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+      background-color: awsui.$color-background-input-default;
+      // Square: equal block and inline size, matching the field control height.
+      min-block-size: awsui.$size-vertical-input;
+      block-size: awsui.$size-vertical-input;
+      inline-size: awsui.$size-vertical-input;
+      padding-inline: 0;
+      // Center the icon within the square.
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-    // Keep the field border on hover/active; icon buttons otherwise clear it to transparent.
-    &:hover,
-    &:active {
-      border-color: awsui.$color-border-input-default;
-    }
+      // When the group is stacked, the remove button fills the row like the other
+      // controls instead of staying a square.
+      &.in-control-group-stacked {
+        inline-size: 100%;
+      }
 
-    // When the group is in an error / warning state AND laid out as a row, paint ONLY the
-    // dismiss button's inline-start border — the seam it shares with the last control —
-    // in the status color, so the group's unit border continues up to and stops at the
-    // button edge. The button's other borders stay neutral. Overrides the neutral border
-    // above (incl. hover/active). Not applied when stacked, where the button is a
-    // separate standalone primary button.
-    &.in-control-group-invalid:not(.in-control-group-stacked) {
-      &,
+      // Keep the field border on hover/active; icon buttons otherwise clear it to transparent.
       &:hover,
       &:active {
-        border-inline-start-color: awsui.$color-text-status-error;
+        border-color: awsui.$color-border-input-default;
       }
-    }
-    &.in-control-group-warning:not(.in-control-group-stacked) {
-      &,
-      &:hover,
-      &:active {
-        border-inline-start-color: awsui.$color-text-status-warning;
+
+      // When the group is in an error / warning state AND laid out as a row, paint ONLY
+      // the dismiss button's inline-start border — the seam it shares with the last
+      // control — in the status color, so the group's unit border continues up to and
+      // stops at the button edge. The button's other borders stay neutral. Overrides the
+      // neutral border above (incl. hover/active). Not applied when stacked, where the
+      // button is a separate standalone primary button.
+      &.in-control-group-invalid:not(.in-control-group-stacked) {
+        &,
+        &:hover,
+        &:active {
+          border-inline-start-color: awsui.$color-text-status-error;
+        }
+      }
+      &.in-control-group-warning:not(.in-control-group-stacked) {
+        &,
+        &:hover,
+        &:active {
+          border-inline-start-color: awsui.$color-text-status-warning;
+        }
+      }
+
+      // The field-styled grouped button's focus ring hugs the square edges (no gutter).
+      // Its corner radius matches the button's own grouped corners, set per position below.
+      @include focus-visible.when-visible {
+        position: relative;
+        z-index: 1;
+        @include style-api.focus-highlight($gutter-block: 0, $gutter-inline: 0, $radius: 0);
+        // The button is an inline-flex container (to center the icon); a percentage
+        // size on the abspos ring can resolve to 0 there, so pin the ring to the
+        // button box directly.
+        &::before {
+          inset: 0;
+          inline-size: auto;
+          block-size: auto;
+        }
       }
     }
 
-    // The focus ring hugs the square edges (no gutter). Its corner radius matches
-    // the button's own grouped corners, set per position below.
-    @include focus-visible.when-visible {
-      position: relative;
-      z-index: 1;
-      @include style-api.focus-highlight($gutter-block: 0, $gutter-inline: 0, $radius: 0);
-      // The button is an inline-flex container (to center the icon); a percentage
-      // size on the abspos ring can resolve to 0 there, so pin the ring to the
-      // button box directly.
-      &::before {
-        inset: 0;
-        inline-size: auto;
-        block-size: auto;
+    // A custom `actions` button keeps its OWN variant border and background color, so the
+    // field styling above is skipped for it. It fills the row when the group is stacked
+    // (like the other stacked controls) and keeps its normal (not squared) button focus
+    // ring, but is still raised above its neighbors so the ring paints over the adjacent
+    // seam rather than being clipped by it.
+    &.in-control-group-custom-standalone {
+      &.in-control-group-stacked {
+        // Full-width in the stacked column; center its label since the button now spans
+        // the whole row (its natural inline-block content would otherwise be leading).
+        inline-size: 100%;
+        text-align: center;
+      }
+
+      // In a row an ICON custom `actions` button (no text) takes the grouped-control
+      // default border: the same neutral field border/background and fixed square size
+      // as the other grouped controls, so it reads as part of the fused unit rather than
+      // a borderless icon button. A text button keeps its own variant appearance.
+      &.button-no-text:not(.in-control-group-stacked) {
+        border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+        border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+        background-color: awsui.$color-background-input-default;
+        min-block-size: awsui.$size-vertical-input;
+        block-size: awsui.$size-vertical-input;
+        inline-size: awsui.$size-vertical-input;
+        padding-inline: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover,
+        &:active {
+          border-color: awsui.$color-border-input-default;
+        }
+
+        // The focus ring hugs the square edges (zero gutter), matching the field-styled
+        // grouped button. Corner radii per position are applied by the shared rules below.
+        @include focus-visible.when-visible {
+          @include style-api.focus-highlight($gutter-block: 0, $gutter-inline: 0, $radius: 0);
+          &::before {
+            inset: 0;
+            inline-size: auto;
+            block-size: auto;
+          }
+        }
+      }
+
+      // When the group is in an error / warning state AND laid out as a row, paint the
+      // button's inline-start border — the seam it shares with the last control — in the
+      // status color, so the group's unit status border continues up to and stops at the
+      // button edge. Applies whether the button keeps its own variant border (text) or
+      // borrows the field border (icon). Placed AFTER the icon field-border block so it
+      // overrides that block's neutral inline-start border (incl. hover/active). Not
+      // applied when stacked, where the button is a separate attached control.
+      &.in-control-group-invalid:not(.in-control-group-stacked) {
+        &,
+        &:hover,
+        &:active {
+          border-inline-start-color: awsui.$color-text-status-error;
+        }
+      }
+      &.in-control-group-warning:not(.in-control-group-stacked) {
+        &,
+        &:hover,
+        &:active {
+          border-inline-start-color: awsui.$color-text-status-warning;
+        }
+      }
+
+      @include focus-visible.when-visible {
+        position: relative;
+        z-index: 1;
       }
     }
   }

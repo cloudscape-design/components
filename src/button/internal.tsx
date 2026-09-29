@@ -155,10 +155,11 @@ export const InternalButton = React.forwardRef(
       warning: inControlGroupWarning,
       customStandalone: inControlGroupCustomStandalone,
     } = useControlGroupContext();
-    // A custom `actions` button fuses with the group in a row, but when the group wraps
-    // (stacks) it must render as an ordinary, detached button — so drop the group's
-    // fusing/field styling entirely in that state (the slot handles right-alignment).
-    const isInControlGroup = isInControlGroupContext && !(inControlGroupCustomStandalone && inControlGroupStacked);
+    // A custom `actions` button participates in the group in every wrap state: it fuses
+    // in a row and stays attached (fused vertically) when the group wraps. Unlike the
+    // field-styled controls, it keeps its OWN border and background color — that is
+    // handled in styles via the `in-control-group-custom-standalone` marker below.
+    const isInControlGroup = isInControlGroupContext;
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
@@ -223,6 +224,7 @@ export const InternalButton = React.forwardRef(
       [styles['in-control-group']]: isInControlGroup,
       [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
       [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
+      [styles['in-control-group-custom-standalone']]: isInControlGroup && inControlGroupCustomStandalone,
       [styles['in-control-group-stacked']]: isInControlGroup && inControlGroupStacked,
       [styles['in-control-group-invalid']]: isInControlGroup && inControlGroupInvalid,
       [styles['in-control-group-warning']]: isInControlGroup && inControlGroupWarning,
