@@ -28,6 +28,7 @@ export interface PopoverBodyProps {
   overflowVisible?: 'content' | 'both';
 
   className?: string;
+  dismissButtonClassName?: string;
   ariaLabelledby?: string;
 
   closeAnalyticsAction?: string;
@@ -46,6 +47,7 @@ const PopoverBody = React.forwardRef(
       variant,
       overflowVisible,
       className,
+      dismissButtonClassName,
       ariaLabelledby,
       closeAnalyticsAction,
     }: PopoverBodyProps,
@@ -90,6 +92,7 @@ const PopoverBody = React.forwardRef(
           ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
           onClick={() => onDismiss?.('close-button')}
           ref={dismissButtonRef}
+          styleClassNames={{ root: dismissButtonClassName }}
         />
       </div>
     );
