@@ -56,25 +56,25 @@ $settle-travel: 8px;
     }
   }
 
-  // Right and left are logical (inline-end and inline-start), so the travel flips in RTL.
+  // Keyframes translate physically, so the horizontal ones swap in RTL.
   &:has(.container-arrow-position-right-top, .container-arrow-position-right-bottom) {
     @include popover-expressive-with-motion {
-      animation-name: awsui-popover-settle-right;
+      animation-name: awsui-popover-settle-end;
     }
     @include styles.with-direction('rtl') {
       @include popover-expressive-with-motion {
-        animation-name: awsui-popover-settle-left;
+        animation-name: awsui-popover-settle-start;
       }
     }
   }
 
   &:has(.container-arrow-position-left-top, .container-arrow-position-left-bottom) {
     @include popover-expressive-with-motion {
-      animation-name: awsui-popover-settle-left;
+      animation-name: awsui-popover-settle-start;
     }
     @include styles.with-direction('rtl') {
       @include popover-expressive-with-motion {
-        animation-name: awsui-popover-settle-right;
+        animation-name: awsui-popover-settle-end;
       }
     }
   }
@@ -83,6 +83,6 @@ $settle-travel: 8px;
 @if theming.has-expressive-motion() {
   @include settle-keyframes(awsui-popover-settle-down, translateY(-$settle-travel));
   @include settle-keyframes(awsui-popover-settle-up, translateY($settle-travel));
-  @include settle-keyframes(awsui-popover-settle-right, translateX(-$settle-travel));
-  @include settle-keyframes(awsui-popover-settle-left, translateX($settle-travel));
+  @include settle-keyframes(awsui-popover-settle-end, translateX(-$settle-travel));
+  @include settle-keyframes(awsui-popover-settle-start, translateX($settle-travel));
 }

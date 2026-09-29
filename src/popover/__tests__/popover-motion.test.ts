@@ -75,7 +75,7 @@ describe('popover settle animation, as compiled', () => {
 
   test('emits one keyframe set per travel direction once the theme opts in', () => {
     const css = compile([THEME]);
-    for (const direction of ['down', 'up', 'right', 'left']) {
+    for (const direction of ['down', 'up', 'end', 'start']) {
       expect(css).toMatch(new RegExp(`@keyframes awsui-popover-settle-${direction}\\s*\\{`));
     }
   });
@@ -92,23 +92,23 @@ describe('popover settle animation, as compiled', () => {
     );
     expect(css).toMatch(
       new RegExp(
-        `${escape(SCOPE)}:has\\(\\.container-arrow-position-right-top, \\.container-arrow-position-right-bottom\\) \\{\\s*animation-name: awsui-popover-settle-right;`
+        `${escape(SCOPE)}:has\\(\\.container-arrow-position-right-top, \\.container-arrow-position-right-bottom\\) \\{\\s*animation-name: awsui-popover-settle-end;`
       )
     );
     expect(css).toMatch(
       new RegExp(
-        `${escape(SCOPE)}:has\\(\\.container-arrow-position-left-top, \\.container-arrow-position-left-bottom\\) \\{\\s*animation-name: awsui-popover-settle-left;`
+        `${escape(SCOPE)}:has\\(\\.container-arrow-position-left-top, \\.container-arrow-position-left-bottom\\) \\{\\s*animation-name: awsui-popover-settle-start;`
       )
     );
   });
 
-  test('swaps the horizontal travel in RTL, since right and left are logical placements', () => {
+  test('swaps the horizontal keyframes in RTL, since right and left are logical placements', () => {
     const css = compile([THEME]);
     expect(css).toMatch(
-      /\.container-arrow-position-right-bottom\):dir\(rtl\) \{\s*animation-name: awsui-popover-settle-left;/
+      /\.container-arrow-position-right-bottom\):dir\(rtl\) \{\s*animation-name: awsui-popover-settle-start;/
     );
     expect(css).toMatch(
-      /\.container-arrow-position-left-bottom\):dir\(rtl\) \{\s*animation-name: awsui-popover-settle-right;/
+      /\.container-arrow-position-left-bottom\):dir\(rtl\) \{\s*animation-name: awsui-popover-settle-end;/
     );
   });
 
