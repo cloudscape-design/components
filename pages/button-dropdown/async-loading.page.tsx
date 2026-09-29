@@ -131,7 +131,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Interactive: flat */}
         <div>
           <h2>Interactive - flat async</h2>
-          <p>Set status and items directly to test any combination without waiting.</p>
           <SpaceBetween size="s" direction="horizontal">
             <FormField label="statusType">
               <Select
@@ -171,7 +170,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Interactive: groups */}
         <div>
           <h2>Interactive - expandable groups</h2>
-          <p>Set status and items per group independently. Expand each group to see its state.</p>
           <SpaceBetween size="s" direction="horizontal">
             <FormField label="Group A - statusType">
               <Select
@@ -239,7 +237,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Preconfigured: paginated flat async */}
         <div>
           <h2>Preconfigured - flat async (paginated)</h2>
-          <p>Items load on open and paginate on scroll. Filter input triggers server-side search.</p>
           <ButtonDropdown
             items={paginatedItems as ButtonDropdownProps.Items}
             filteringType="manual"
@@ -271,7 +268,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Preconfigured: per-group async */}
         <div>
           <h2>Preconfigured - per-group async</h2>
-          <p>File loads after 5 s. Edit always errors after 5 s. View loads forever.</p>
           <ButtonDropdown
             items={
               [
@@ -315,7 +311,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
         {/* Preconfigured: error + recovery */}
         <div>
           <h2>Preconfigured - error with recovery</h2>
-          <p>Opens in error state. Retry recovers after 5 s.</p>
           <ButtonDropdown
             items={errorItems}
             asyncLoadingProps={{

@@ -75,7 +75,6 @@ export default function ButtonDropdownManualFilteringPage() {
         {/* Interactive: filteringType switcher */}
         <div>
           <h2>Interactive - filteringType switcher</h2>
-          <p>Switch between none, auto, and manual on the same dropdown to compare behavior.</p>
           <FormField label="filteringType">
             <RadioGroup
               value={filteringType}
@@ -107,7 +106,6 @@ export default function ButtonDropdownManualFilteringPage() {
         {/* Interactive: server delay control */}
         <div>
           <h2>Interactive - server delay control</h2>
-          <p>Use 1500 ms to inspect the loading state; 0 ms resolves the request immediately.</p>
           <FormField label="Simulated server delay">
             <RadioGroup
               value={serverDelay}
@@ -149,7 +147,6 @@ export default function ButtonDropdownManualFilteringPage() {
         {/* Preconfigured: client-side manual */}
         <div>
           <h2>Preconfigured - client-side manual filtering</h2>
-          <p>App filters synchronously inside onLoadItems. No status indicators needed.</p>
           <ButtonDropdown
             items={clientItems}
             filteringType="manual"
@@ -169,7 +166,6 @@ export default function ButtonDropdownManualFilteringPage() {
         {/* Preconfigured: server-side manual */}
         <div>
           <h2>Preconfigured - server-side manual filtering</h2>
-          <p>App calls a fake API on every filter change. Loading spinner appears while the request is in flight.</p>
           <ButtonDropdown
             items={preItems}
             filteringType="manual"
