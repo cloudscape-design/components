@@ -17,7 +17,7 @@
 @mixin select {
   &.styled-circle-checked[data-awsui-motion-ready] {
     @include radio-expressive-with-motion {
-      animation: awsui-radio-select 200ms cubic-bezier(0.2, 0, 0, 1);
+      animation: awsui-radio-select 250ms cubic-bezier(0.2, 0, 0, 1);
     }
 
     @if theming.has-expressive-motion() {
