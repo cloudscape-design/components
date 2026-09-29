@@ -93,6 +93,28 @@ describe('ButtonDropdown async loading', () => {
     expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: false, samePage: true });
   });
 
+  test('requests the next page when the dropdown opens with statusType "pending" and the list does not fill it', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      asyncLoadingProps: { statusType: 'pending' },
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    // In addition to the first-page request fired on open, the list reports it is not scrollable yet.
+    expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: false, samePage: false });
+  });
+
+  test('does not request the next page on open when statusType is "finished"', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      asyncLoadingProps: { statusType: 'finished' },
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    expect(onLoadItems).toHaveBeenCalledTimes(1);
+    expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: true, samePage: false });
+  });
+
   test('does not apply client-side filtering when filteringType is "manual"', () => {
     const { wrapper } = renderDropdown({
       filteringType: 'manual',
@@ -442,6 +464,82 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.click();
     expect(wrapper.findOpenDropdown()).not.toBeNull();
     expect(wrapper.findExpandableCategoryById('g1')!.find('[aria-expanded="true"]')).not.toBeNull();
+  });
+
+  test('fires a same-page request for the group when its recovery button is clicked', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Error', recoveryText: 'Retry' },
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    onLoadItems.mockClear();
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.click();
+    expect(onLoadItems).toHaveBeenCalledTimes(1);
+    expect(onLoadItems).toHaveBeenCalledWith({
+      filteringText: '',
+      firstPage: false,
+      samePage: true,
+      expandedGroupId: 'g1',
+    });
+  });
+
+  test('moves focus to the group header after its recovery button is activated', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Error', recoveryText: 'Retry' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.click();
+    expect(document.activeElement).toBe(
+      wrapper.findExpandableCategoryById('g1')!.find('[aria-haspopup="true"]')!.getElement()
+    );
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+  });
+
+  test('moves focus to the filter input after a group recovery button is activated in filtering mode', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      filteringType: 'manual',
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Error', recoveryText: 'Retry' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    const recoveryButton = wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!;
+    // Tab from the filter input lands on the recovery button, so focus is no longer on the input.
+    recoveryButton.focus();
+    recoveryButton.click();
+    expect(document.activeElement).toBe(wrapper.findFilteringInput()!.findNativeInput().getElement());
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+  });
+
+  test('treats a group status of "pending" as "finished"', () => {
+    const { wrapper } = renderDropdown({
+      items: groupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: () => 'pending',
+      asyncLoadingProps: { empty: () => 'No actions in this group', finishedText: () => 'End of group' },
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement()).toHaveTextContent(
+      'No actions in this group'
+    );
+    wrapper.findExpandableCategoryById('g2')!.click();
+    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement()).toHaveTextContent(
+      'End of group'
+    );
   });
 
   test('Tab does not close the dropdown while a group recovery button is shown', () => {

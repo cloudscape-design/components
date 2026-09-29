@@ -36,7 +36,7 @@ export default function ItemsList({
   filteringDescriptionId,
   asyncLoadingProps,
   getExpandableItemsAsyncLoadingState,
-  onLoadItems,
+  onGroupRecoveryClick,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -92,6 +92,9 @@ export default function ItemsList({
             filteringEnabled={filteringEnabled}
             menuId={menuId}
             filteringDescriptionId={filteringDescriptionId}
+            asyncLoadingProps={asyncLoadingProps}
+            getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+            onGroupRecoveryClick={onGroupRecoveryClick}
           />
         ) : (
           <ExpandableCategoryElement
@@ -117,7 +120,7 @@ export default function ItemsList({
             filteringDescriptionId={filteringDescriptionId}
             asyncLoadingProps={asyncLoadingProps}
             getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
-            onLoadItems={onLoadItems}
+            onGroupRecoveryClick={onGroupRecoveryClick}
           />
         )
       ) : null;
