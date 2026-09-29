@@ -365,7 +365,7 @@ const permutations = createPermutations<KeyValuePairsProps>([
         {
           label: (
             <SpaceBetween size={'xxs'} direction={'horizontal'} alignItems={'center'}>
-              <Icon key={'icon'} name={'status-info'} size="inherit" />
+              <Icon key={'icon'} name={'status-info'} />
               <div key={'label'}>Label for key</div>
             </SpaceBetween>
           ),
