@@ -21,6 +21,7 @@ interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBas
 // Style API v2
 export interface StyleClassNames {
   copyButton?: string;
+  statusPopover?: string;
 }
 
 export default function InternalCopyToClipboard({
@@ -119,6 +120,7 @@ export default function InternalCopyToClipboard({
       triggerType="custom"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
+      styleClassNames={{ popover: styleClassNames?.statusPopover }}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
       __onOpen={onClick}
     >

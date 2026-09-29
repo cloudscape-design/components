@@ -21,3 +21,10 @@
     --awsui-style-color: #{palette.$accent-active};
   }
 }
+
+.copy-status-popover {
+  --awsui-style-background-color: #{palette.$surface-alt};
+  --awsui-style-border-color: #{palette.$border-accent};
+  --awsui-style-border-width: 1px;
+  --awsui-style-border-radius: 4px;
+}

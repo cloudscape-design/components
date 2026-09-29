@@ -6,6 +6,8 @@ import { render } from '@testing-library/react';
 import CopyToClipboard, { CopyToClipboardProps } from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
+
 function renderCopyToClipboard(props: Partial<CopyToClipboardProps> & Record<string, unknown> = {}) {
   const { container } = render(
     <CopyToClipboard
@@ -22,28 +24,41 @@ function renderCopyToClipboard(props: Partial<CopyToClipboardProps> & Record<str
 
 describe('CopyToClipboard Style API v2', () => {
   test.each<CopyToClipboardProps.Variant>(['button', 'icon', 'inline'])(
-    'applies styleClassNames (variant=%s)',
+    'applies the copyButton slot (variant=%s)',
     variant => {
-      const { wrapper } = renderCopyToClipboard({
+      const { container, wrapper } = renderCopyToClipboard({
         variant,
-        styleClassNames: { copyButton: 'a', textToDisplay: 'b', unknown: 'c' },
+        styleClassNames: { copyButton: 'a', unknown: 'b' },
       });
-      const button = wrapper.findCopyButton().getElement();
-      expect(button).toHaveClass('a');
-      expect(button).not.toHaveClass('b');
-      expect(button).not.toHaveClass('c');
-
-      if (variant === 'inline') {
-        const text = wrapper.findDisplayedText();
-        expect(text!.getElement()).not.toHaveClass('a');
-        expect(text!.getElement()).toHaveClass('b');
-        expect(text!.getElement()).not.toHaveClass('c');
-      }
+      expect(wrapper.findCopyButton().getElement()).toHaveClass('a');
+      expect(container.querySelector('.b')).toBeNull();
     }
   );
 
+  test('forwards the statusPopover slot to the status popover', () => {
+    const { container, wrapper } = renderCopyToClipboard({ styleClassNames: { statusPopover: 'a' } });
+    wrapper.findCopyButton().click();
+    expect(wrapper.findStatusText()).not.toBeNull();
+    expect(container.querySelector(`.${popoverStyles.container}`)).toHaveClass('a');
+    expect(wrapper.findCopyButton().getElement()).not.toHaveClass('a');
+  });
+
+  test('forwards the statusPopover slot when the popover is rendered in a portal', () => {
+    const { wrapper } = renderCopyToClipboard({
+      popoverRenderWithPortal: true,
+      styleClassNames: { statusPopover: 'a' },
+    });
+    wrapper.findCopyButton().click();
+    expect(wrapper.findStatusText({ popoverRenderWithPortal: true })).not.toBeNull();
+    expect(document.body.querySelector(`.${popoverStyles.container}`)).toHaveClass('a');
+  });
+
   test('does not leak the styleClassNames prop to the DOM', () => {
-    const { container } = renderCopyToClipboard({ styleClassNames: { copyButton: 'a', textToDisplay: 'b' } });
-    expect(container.querySelector('[styleClassNames]')).toBeNull();
+    const { wrapper } = renderCopyToClipboard({
+      popoverRenderWithPortal: true,
+      styleClassNames: { copyButton: 'a', statusPopover: 'b' },
+    });
+    wrapper.findCopyButton().click();
+    expect(document.body.querySelector('[styleClassNames]')).toBeNull();
   });
 });

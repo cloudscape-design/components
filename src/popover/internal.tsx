@@ -33,6 +33,13 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   isInline?: boolean;
   __visible?: boolean;
   __onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+interface StyleClassNames {
+  popover?: string;
+  dismissButton?: string;
 }
 
 export default React.forwardRef(InternalPopover);
@@ -59,6 +66,7 @@ function InternalPopover(
     __closeAnalyticsAction,
     __visible: controlledVisible,
     __onVisibleChange: onVisibleChange,
+    styleClassNames,
 
     ...restProps
   }: InternalPopoverProps,
@@ -180,6 +188,7 @@ function InternalPopover(
         arrow={position => <Arrow position={position} />}
         renderWithPortal={renderWithPortal}
         zIndex={renderWithPortal ? 7000 : undefined}
+        className={styleClassNames?.popover}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <PopoverBody
@@ -187,6 +196,7 @@ function InternalPopover(
             dismissAriaLabel={dismissAriaLabel}
             header={header}
             onDismiss={onDismiss}
+            dismissButtonClassName={styleClassNames?.dismissButton}
             overflowVisible="both"
             closeAnalyticsAction={__closeAnalyticsAction}
           >

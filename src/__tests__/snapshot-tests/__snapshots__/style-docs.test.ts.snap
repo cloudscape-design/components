@@ -123,6 +123,13 @@ exports[`Style API docs definition for copy-to-clipboard matches the snapshot: c
       },
       "name": "copyButton",
     },
+    {
+      "forwardsTo": {
+        "component": "popover",
+        "slot": "popover",
+      },
+      "name": "statusPopover",
+    },
   ],
 }
 `;
@@ -159,6 +166,47 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for popover matches the snapshot: popover 1`] = `
+{
+  "slots": [
+    {
+      "name": "popover",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "slots": [
+    {
+      "name": "tooltip",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -168,5 +216,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "copy-to-clipboard",
   "dropdown",
   "link",
+  "popover",
+  "tooltip",
 ]
 `;

@@ -3,6 +3,8 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as popover-style-api;
 
 .arrow {
   // Arrow design:
@@ -64,19 +66,22 @@
 
   &-outer {
     &::after {
-      background-color: awsui.$color-border-popover;
+      background-color: style-api.value(popover-style-api.$tokens, border-color, awsui.$color-border-popover);
     }
   }
 
   &-inner {
-    inset-block-start: calc(awsui.$border-width-popover + 1px);
+    // The inner triangle is shifted by the border width plus up to 1px so that the uncovered part of the
+    // outer triangle renders as the border; min() collapses the shift to 0 for a borderless popover.
+    $border-width: style-api.value(popover-style-api.$tokens, border-width, awsui.$border-width-popover);
+    inset-block-start: calc(#{$border-width} + min(#{$border-width}, 1px));
 
     &::after {
       border-start-start-radius: 1px;
       border-start-end-radius: 0;
       border-end-start-radius: 0;
       border-end-end-radius: 0;
-      background-color: awsui.$color-background-popover;
+      background-color: style-api.value(popover-style-api.$tokens, background-color, awsui.$color-background-popover);
     }
   }
 

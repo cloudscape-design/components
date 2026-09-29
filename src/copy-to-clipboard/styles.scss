@@ -6,8 +6,9 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/style-api' as style-api;
 
-// The copy button forwards styling to the nested Button component's `root` slot.
+// The copy button and the status popover forward styling to the nested Button and Popover components.
 @include style-api.docs-forward('copyButton', 'button', 'root');
+@include style-api.docs-forward('statusPopover', 'popover', 'popover');
 
 .root {
   display: contents;
