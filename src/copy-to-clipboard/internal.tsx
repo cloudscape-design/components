@@ -15,7 +15,14 @@ import { CopyToClipboardProps } from './interfaces';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
+interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  copyButton?: string;
+}
 
 export default function InternalCopyToClipboard({
   variant = 'button',
@@ -31,6 +38,7 @@ export default function InternalCopyToClipboard({
   disabledReason,
   onCopySuccess,
   onCopyFailure,
+  styleClassNames,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -97,6 +105,7 @@ export default function InternalCopyToClipboard({
       formAction="none"
       disabled={disabled}
       disabledReason={disabledReason}
+      styleClassNames={{ root: styleClassNames?.copyButton }}
     >
       {copyButtonText}
     </InternalButton>

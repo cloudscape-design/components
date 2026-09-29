@@ -7,7 +7,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { CopyToClipboardProps } from './interfaces';
-import InternalCopyToClipboard from './internal';
+import InternalCopyToClipboard, { StyleClassNames } from './internal';
 
 export { CopyToClipboardProps };
 
@@ -29,6 +29,7 @@ export default function CopyToClipboard({
       wrapText={wrapText}
       {...baseProps}
       {...filteredProps}
+      styleClassNames={(filteredProps as { styleClassNames?: StyleClassNames }).styleClassNames}
     />
   );
 }
