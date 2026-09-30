@@ -326,9 +326,7 @@ function InternalInput(
           {hasPrefix && (
             <>
               <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{prefix}</span>
               </span>
               <span className={styles['input-adornment-divider']} />
             </>
@@ -338,9 +336,7 @@ function InternalInput(
             <>
               <span className={styles['input-adornment-divider']} />
               <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{suffix}</span>
               </span>
             </>
           )}
@@ -377,7 +373,7 @@ function InternalInput(
   ) : (
     renderInputWithPrefixSuffix(rootProps)
   );
-  return inputWithLabel;
+  return <ResetGroupedControlContext>{inputWithLabel}</ResetGroupedControlContext>;
 }
 
 export default React.forwardRef(InternalInput);
