@@ -15,9 +15,9 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceStatusIndicatorPaddingHorizontal: '2px',
 
-  spaceContainerHeaderTop: { comfortable: '12px', compact: '10px' },
+  // spaceContainerHeaderTop: { comfortable: '12px', compact: '10px' },
   spaceContainerContentVertical: { comfortable: '20px', compact: '12px' },
-  spaceContainerHorizontal: { comfortable: '{spaceL}', compact: '{spaceM}' },
+  // spaceContainerHorizontal: { comfortable: '{spaceL}', compact: '{spaceM}' },
 
   spaceScaledL: { comfortable: '{spaceL}', compact: '{spaceS}' },
 
