@@ -107,15 +107,14 @@
   // cannot paint over adjacent controls.
   isolation: isolate;
 
-  // Raise the focused slot above its neighbors AND above the group's inline label
-  // (`z-index: 2`, see `.inline-label`). A control only opens a dropdown (Select,
-  // Autosuggest, ...) while it is focused, and that dropdown is confined to this slot's
-  // stacking context (`isolation: isolate`); if the slot stayed below the label the
-  // label would paint over the open dropdown. Sitting above the label also lets the
-  // focused control's border/ring paint over the label notch, which is correct while
-  // the control is active.
+  // Raise the focused control's slot above its neighbors so its focus ring is painted
+  // over the adjacent control's seam border. It stays BELOW the group's inline label
+  // (`z-index: 2`, see `.inline-label`) so a focused control's ring does not paint over
+  // the label notch. A control's dropdown (Select, Autosuggest, ...) that needs to paint
+  // above the label should use `expandToViewport`, which portals it out of this slot's
+  // stacking context.
   &:focus-within {
-    z-index: 3;
+    z-index: 1;
   }
 
   &:empty {
