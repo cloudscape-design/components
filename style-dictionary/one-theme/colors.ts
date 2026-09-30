@@ -234,6 +234,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Code view ─────────────────────────────────────────────────────────────
   colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
+
+  // ── GenAI chat ────────────────────────────────────────────────────────────
+  colorBackgroundChatBubbleIncoming: { light: '{colorNeutral250}', dark: '{colorNeutral900}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
