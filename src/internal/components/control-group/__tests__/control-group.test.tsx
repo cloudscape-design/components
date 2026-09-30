@@ -9,9 +9,9 @@ import {
   useGroupedControlContext,
 } from '../../../../../lib/components/internal/context/control-group-context';
 
-function PositionProbe() {
+function PositionProbe({ testId = 'probe' }: { testId?: string }) {
   const { position } = useGroupedControlContext();
-  return <div data-testid="probe">{position ?? 'none'}</div>;
+  return <div data-testid={testId}>{position ?? 'none'}</div>;
 }
 
 describe('Control group', () => {
@@ -33,7 +33,7 @@ describe('Control group', () => {
     expect(document.activeElement).toBe(alphaInput);
   });
 
-  test('exposes a grouped position to a direct child control', () => {
+  test('exposes the "only" position to a single child control', () => {
     const { getByTestId } = render(
       <InternalControlGroup>
         <PositionProbe />
@@ -41,6 +41,20 @@ describe('Control group', () => {
     );
 
     expect(getByTestId('probe')).toHaveTextContent('only');
+  });
+
+  test('exposes first / middle / last positions to each child in order', () => {
+    const { getByTestId } = render(
+      <InternalControlGroup>
+        <PositionProbe testId="a" />
+        <PositionProbe testId="b" />
+        <PositionProbe testId="c" />
+      </InternalControlGroup>
+    );
+
+    expect(getByTestId('a')).toHaveTextContent('first');
+    expect(getByTestId('b')).toHaveTextContent('middle');
+    expect(getByTestId('c')).toHaveTextContent('last');
   });
 
   test('resets the grouped position for content wrapped in ResetGroupedControlContext', () => {
