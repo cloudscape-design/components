@@ -1,70 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as sass from 'sass';
+import { compilePopoverMotion as compile } from './settle-motion';
 
-const SRC_ROOT = path.resolve(__dirname, '../..'); // .../src
+import { EXPRESSIVE_MOTION_SCOPE, ONE_THEME as THEME } from '../../__tests__/compile-motion-scss';
 
-const MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'popover/motion.scss'), 'utf8');
-const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
-
-const THEME = '.awsui-one-theme';
-const SCOPE = `:global(${THEME}:not(.awsui-motion-disabled):not(.awsui-mode-entering)) .container`;
-
-/**
- * Compiles `motion.scss` against the real `theming.scss`, for an artefact whose
- * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
- * jest's jsdom environment, so every module is served from memory; the shared `styles` and
- * `tokens` modules are stubs with only what the file reads.
- */
-function compile(optedInThemes: string[]): string {
-  return sass.compileString(`@use 'motion';`, {
-    importers: [
-      {
-        canonicalize(url: string) {
-          if (url.endsWith('motion')) {
-            return new URL('mem:motion');
-          }
-          if (url.endsWith('theming')) {
-            return new URL('mem:theming');
-          }
-          if (url.startsWith('awsui:')) {
-            return new URL('mem:resolved-tokens');
-          }
-          if (url.endsWith('tokens')) {
-            return new URL('mem:tokens');
-          }
-          if (url.endsWith('styles')) {
-            return new URL('mem:styles');
-          }
-          return null;
-        },
-        load(canonicalUrl: URL) {
-          const contents = {
-            'mem:motion': MOTION_SOURCE,
-            'mem:theming': THEMING_SOURCE,
-            'mem:tokens': `
-              $motion-duration-show-paced: 1ms;
-              $motion-easing-show-paced: linear;
-              $motion-duration-refresh-only-fast: 1ms;
-              $motion-easing-refresh-only-a: linear;
-            `,
-            'mem:styles': `
-              @mixin with-motion { @content; }
-              @mixin with-direction($direction) { &:dir(#{$direction}) { @content; } }
-              @mixin animation-fade-in {}
-            `,
-            'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
-              .map(selector => `(selector: "${selector}", tokens: ())`)
-              .join(',')}];`,
-          }[canonicalUrl.href];
-          return { contents: contents ?? '', syntax: 'scss' as const };
-        },
-      },
-    ],
-  }).css;
-}
+const SCOPE = `:global(${EXPRESSIVE_MOTION_SCOPE}) .container`;
 
 describe('popover settle animation, as compiled', () => {
   test('emits nothing of it for an artefact with no opted-in theme', () => {

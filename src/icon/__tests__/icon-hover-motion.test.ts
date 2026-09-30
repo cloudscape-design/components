@@ -1,51 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as sass from 'sass';
+import { compileMotionScss, ONE_THEME as THEME, readSource } from '../../__tests__/compile-motion-scss';
 
-const SRC_ROOT = path.resolve(__dirname, '../..'); // .../src
+const HOVER_MOTION_SOURCE = readSource('icon/hover-motion.scss');
 
-const HOVER_MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'icon/hover-motion.scss'), 'utf8');
-const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
-
-const THEME = '.awsui-one-theme';
-
-/**
- * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact whose
- * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
- * jest's jsdom environment, so every module is served from memory; `source` lets the
- * mutation tests below patch the map without touching the file on disk.
- */
-function compile(optedInThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
-  return sass.compileString(`@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`, {
-    importers: [
-      {
-        canonicalize(url: string) {
-          if (url.endsWith('hover-motion')) {
-            return new URL('mem:hover-motion');
-          }
-          if (url.endsWith('theming')) {
-            return new URL('mem:theming');
-          }
-          if (url.startsWith('awsui:')) {
-            return new URL('mem:resolved-tokens');
-          }
-          return null;
-        },
-        load(canonicalUrl: URL) {
-          const contents = {
-            'mem:hover-motion': source,
-            'mem:theming': THEMING_SOURCE,
-            'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
-              .map(selector => `(selector: "${selector}", tokens: ())`)
-              .join(',')}];`,
-          }[canonicalUrl.href];
-          return { contents: contents ?? '', syntax: 'scss' as const };
-        },
-      },
-    ],
-  }).css;
+/** Compiles `hover-motion.scss`; `source` lets the mutation tests below patch it without touching the file on disk. */
+function compile(artefactThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
+  return compileMotionScss({
+    entry: `@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`,
+    artefactThemes,
+    inline: { 'hover-motion': source },
+  });
 }
 
 /**

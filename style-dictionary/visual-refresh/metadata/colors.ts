@@ -199,6 +199,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundLayoutToolbar: {
     description:
