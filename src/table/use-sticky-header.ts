@@ -1,11 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useLayoutEffect } from 'react';
+import { RefObject } from 'react';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-
-import { useMobile } from '../internal/hooks/use-mobile';
-import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
+import { useStickyHeaderSync } from '../internal/components/sticky-header/use-sticky-header-sync';
 
 export const useStickyHeader = (
   tableRef: RefObject<HTMLElement>,
@@ -13,39 +10,11 @@ export const useStickyHeader = (
   secondaryTheadRef: RefObject<HTMLElement>,
   secondaryTableRef: RefObject<HTMLElement>,
   tableWrapperRef: RefObject<HTMLElement>
-) => {
-  const isMobile = useMobile();
-  // Sync the sizes of the column header copies in the sticky header with the originals
-  const syncColumnHeaderWidths = useCallback(() => {
-    if (
-      tableRef.current &&
-      theadRef.current &&
-      secondaryTheadRef.current &&
-      secondaryTableRef.current &&
-      tableWrapperRef.current
-    ) {
-      // Use the full thead height to account for multi-row headers (grouped columns).
-      const thead = theadRef.current.closest('thead') ?? theadRef.current;
-      tableWrapperRef.current.style.marginBlockStart = `-${thead.getBoundingClientRect().height}px`;
-    }
-  }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
-  useLayoutEffect(() => {
-    syncColumnHeaderWidths();
+) =>
+  useStickyHeaderSync({
+    realTableRef: tableRef,
+    realHeaderRef: theadRef,
+    copyHeaderRef: secondaryTheadRef,
+    copyTableRef: secondaryTableRef,
+    tuckTargetRef: tableWrapperRef,
   });
-  useResizeObserver(theadRef, syncColumnHeaderWidths);
-  const scrollToTop = () => {
-    if (!isMobile && theadRef.current && secondaryTheadRef.current && tableWrapperRef.current) {
-      const scrollDist = calculateScrollingOffset(theadRef.current, secondaryTheadRef.current);
-      if (scrollDist > 0) {
-        scrollUpBy(scrollDist, tableWrapperRef.current);
-      }
-    }
-  };
-  const { scrollToItem } = stickyScrolling(tableWrapperRef, secondaryTheadRef);
-  const scrollToRow = (itemNode: HTMLElement | null) => {
-    if (!isMobile) {
-      scrollToItem(itemNode);
-    }
-  };
-  return { scrollToRow, scrollToTop };
-};

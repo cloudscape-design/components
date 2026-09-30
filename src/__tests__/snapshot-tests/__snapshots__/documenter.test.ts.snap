@@ -30151,6 +30151,18 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Pins the header to the top of the page as the body scrolls. Supported with grid layout.",
+      "name": "stickyHeader",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Distance in pixels from the top at which the sticky header pins.",
+      "name": "stickyHeaderOffset",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": [
     {
