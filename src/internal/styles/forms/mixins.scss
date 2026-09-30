@@ -119,7 +119,9 @@
 @mixin form-focus-element(
   $border-radius: constants.$control-border-radius,
   $border-color: awsui.$color-border-input-focused,
-  $box-shadow: foundation.$box-shadow-focused-light
+  $box-shadow: foundation.$box-shadow-focused-light,
+  $border-block-width: null,
+  $border-inline-width: null
 ) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
@@ -127,6 +129,12 @@
 
   border-block: awsui.$border-width-field solid $border-color;
   border-inline: awsui.$border-width-field solid $border-color;
+  @if $border-block-width {
+    border-block-width: $border-block-width;
+  }
+  @if $border-inline-width {
+    border-inline-width: $border-inline-width;
+  }
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
@@ -139,11 +147,19 @@
   $background-color: awsui.$color-background-input-disabled,
   $border-color: awsui.$color-border-input-disabled,
   $color: awsui.$color-text-input-disabled,
-  $cursor: auto
+  $cursor: auto,
+  $border-block-width: null,
+  $border-inline-width: null
 ) {
   background-color: $background-color;
   border-block: awsui.$border-width-field solid $border-color;
   border-inline: awsui.$border-width-field solid $border-color;
+  @if $border-block-width {
+    border-block-width: $border-block-width;
+  }
+  @if $border-inline-width {
+    border-inline-width: $border-inline-width;
+  }
   color: $color;
   cursor: $cursor;
 }
@@ -158,11 +174,19 @@
 
 @mixin form-readonly-element(
   $background-color: awsui.$color-background-input-default,
-  $border-color: awsui.$color-border-input-disabled
+  $border-color: awsui.$color-border-input-disabled,
+  $border-block-width: null,
+  $border-inline-width: null
 ) {
   background-color: $background-color;
   border-block: awsui.$border-width-field solid $border-color;
   border-inline: awsui.$border-width-field solid $border-color;
+  @if $border-block-width {
+    border-block-width: $border-block-width;
+  }
+  @if $border-inline-width {
+    border-inline-width: $border-inline-width;
+  }
 }
 
 @mixin button-trigger-readonly-element {
@@ -199,12 +223,18 @@
 @mixin form-invalid-control(
   $color: awsui.$color-text-status-error,
   $border-color: awsui.$color-text-status-error,
+  $padding-inline-start: constants.$invalid-control-left-padding,
+  $border-inline-width: null,
   $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  padding-inline-start: $padding-inline-start;
+  @if $border-inline-width {
+    border-inline-width: $border-inline-width;
+  } @else {
+    border-inline-start-width: constants.$invalid-control-left-border;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
@@ -214,12 +244,18 @@
 @mixin form-warning-control(
   $color: awsui.$color-text-status-warning,
   $border-color: awsui.$color-text-status-warning,
+  $padding-inline-start: constants.$invalid-control-left-padding,
+  $border-inline-width: null,
   $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  padding-inline-start: $padding-inline-start;
+  @if $border-inline-width {
+    border-inline-width: $border-inline-width;
+  } @else {
+    border-inline-start-width: constants.$invalid-control-left-border;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
@@ -329,19 +365,27 @@ $inline-label-border-radius: 2px;
   margin-block-start: calc(awsui.$space-scaled-xs * -1);
 }
 
-@mixin inline-label {
-  background: linear-gradient(
+// The label's backdrop: the surrounding surface at the top, the field's background at the bottom.
+@function inline-label-background($field-background) {
+  @return linear-gradient(
     to bottom,
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
-    awsui.$color-background-input-default
+    $field-background
   );
+}
+
+@mixin inline-label(
+  $color: awsui.$color-text-form-label,
+  $background: inline-label-background(awsui.$color-background-input-default)
+) {
+  background: $background;
   border-start-start-radius: $inline-label-border-radius;
   border-start-end-radius: $inline-label-border-radius;
   border-end-start-radius: $inline-label-border-radius;
   border-end-end-radius: $inline-label-border-radius;
   box-sizing: border-box;
   display: inline-block;
-  color: awsui.$color-text-form-label;
+  color: $color;
   font-weight: awsui.$font-display-label-weight;
   font-size: awsui.$font-size-body-s;
   line-height: 14px;
@@ -355,10 +399,6 @@ $inline-label-border-radius: 2px;
   z-index: 1;
 }
 
-@mixin inline-label-disabled {
-  background: linear-gradient(
-    to bottom,
-    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
-    awsui.$color-background-input-disabled
-  );
+@mixin inline-label-disabled($background: inline-label-background(awsui.$color-background-input-disabled)) {
+  background: $background;
 }
