@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 @use './motion';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
@@ -156,15 +155,6 @@ $modal-z-index: 5000;
 
 .header--text {
   /* used in test-utils */
-
-  // The header receives focus on open when no dismiss button is rendered, so it needs a visible
-  // focus indicator. Shown only for keyboard users, matching every other focusable element.
-  &:focus {
-    outline: none;
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-    }
-  }
 }
 
 .footer {

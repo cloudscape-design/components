@@ -228,13 +228,14 @@ function PortaledModal({
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
   const headerTextRef = useRef<HTMLSpanElement>(null);
+  const headingTagRef = useRef<HTMLHeadingElement | null>(null);
   const { subStepRef } = useFunnelSubStep();
 
   // Without a dismiss button there is no predictable first focusable element, so focus the
   // heading to announce what the modal is about. When no header is given, fall back to the
   // dialog.
   const hasHeader = header !== undefined && header !== null && header !== false && header !== '';
-  const autoFocusTarget = hideDismissButton ? (hasHeader ? headerTextRef : dialogRef) : undefined;
+  const autoFocusTarget = hideDismissButton ? (hasHeader ? headingTagRef : dialogRef) : undefined;
 
   const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
     useModalDimensions({
@@ -301,6 +302,8 @@ function PortaledModal({
                     <InternalHeader
                       variant="h2"
                       __disableActionsWrapping={true}
+                      __headingTagRef={headingTagRef}
+                      __headingTagTabIndex={-1}
                       actions={
                         hideDismissButton ? undefined : (
                           <div
@@ -320,12 +323,7 @@ function PortaledModal({
                         )
                       }
                     >
-                      <span
-                        ref={headerTextRef}
-                        id={headerId}
-                        className={styles['header--text']}
-                        {...(autoFocusTarget === headerTextRef && { tabIndex: -1 })}
-                      >
+                      <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
                         {header}
                       </span>
                     </InternalHeader>

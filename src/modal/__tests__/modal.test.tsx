@@ -538,14 +538,14 @@ describe('Modal component', () => {
   });
 
   describe('initial focus when hideDismissButton is set', () => {
-    it('focuses the header text', () => {
+    it('focuses the header heading', () => {
       const wrapper = renderModal({ visible: true, hideDismissButton: true, header: 'Assign a region' });
-      const headerText = wrapper.findHeader().findByClassName(styles['header--text'])!.getElement();
-      expect(document.activeElement).toBe(headerText);
-      expect(headerText).toHaveAttribute('tabindex', '-1');
+      const heading = wrapper.findHeader().find('h2')!.getElement();
+      expect(document.activeElement).toBe(heading);
+      expect(heading).toHaveAttribute('tabindex', '-1');
     });
 
-    it('focuses the header text in preference to focusable content', () => {
+    it('focuses the header heading in preference to focusable content', () => {
       let textFieldRef: HTMLInputElement | null = null;
       const wrapper = renderModal({
         visible: true,
@@ -553,7 +553,7 @@ describe('Modal component', () => {
         header: 'Assign a region',
         children: <input ref={input => (textFieldRef = input)} />,
       });
-      expect(document.activeElement).toBe(wrapper.findHeader().findByClassName(styles['header--text'])!.getElement());
+      expect(document.activeElement).toBe(wrapper.findHeader().find('h2')!.getElement());
       expect(document.activeElement).not.toBe(textFieldRef);
     });
 
@@ -573,11 +573,13 @@ describe('Modal component', () => {
       expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
     });
 
-    it('does not make the header text focusable when the dismiss button is rendered', () => {
-      const wrapper = renderModal({ visible: true, header: 'Assign a region' });
-      expect(wrapper.findHeader().findByClassName(styles['header--text'])!.getElement()).not.toHaveAttribute(
-        'tabindex'
-      );
+    it('keeps the heading out of the tab order even though it is programmatically focusable', () => {
+      // The heading carries tabIndex={-1} unconditionally. -1 is load-bearing: it must stay
+      // reachable for autoFocus without becoming a tab stop for keyboard users.
+      for (const hideDismissButton of [true, false]) {
+        const wrapper = renderModal({ visible: true, hideDismissButton, header: 'Assign a region' });
+        expect(wrapper.findHeader().find('h2')!.getElement()).toHaveAttribute('tabindex', '-1');
+      }
     });
 
     it('keeps the dialog focusable so focus stays inside it when a non-focusable area is clicked', () => {
