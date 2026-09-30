@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -58,7 +58,6 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
-  __groupedControlPosition?: GroupedControlPosition | null;
 }
 
 function InternalInput(
@@ -101,7 +100,6 @@ function InternalInput(
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
     __fullWidth,
-    __groupedControlPosition = null,
     style,
     prefix,
     suffix,
@@ -111,6 +109,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
+  const { position: groupedControlPosition } = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -155,8 +154,8 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const groupedControlClasses = __groupedControlPosition
-    ? [styles.grouped, styles[`grouped-${__groupedControlPosition}`]]
+  const groupedControlClasses = groupedControlPosition
+    ? [styles.grouped, styles[`grouped-${groupedControlPosition}`]]
     : [];
 
   const inputStyles = getInputStyles(style);

@@ -13,7 +13,6 @@ import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -26,9 +25,7 @@ import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
 
-interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
-  __groupedControlPosition?: GroupedControlPosition | null;
-}
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {
@@ -60,7 +57,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
-    __groupedControlPosition,
     __internalRootRef,
     ...restProps
   } = props;
@@ -203,78 +199,73 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   hasItems.current = hasItems.current || autosuggestItemsState.items.length > 0;
 
   return (
-    <ResetGroupedControlContext>
-      <AutosuggestInput
-        {...restProps}
-        className={clsx(styles.root, restProps.className)}
-        ref={autosuggestInputRef}
-        __internalRootRef={__internalRootRef}
-        value={value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        onKeyUp={handleKeyUp}
-        onKeyDown={handleKeyDown}
-        name={name}
-        controlId={controlId}
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readOnly}
-        autoFocus={autoFocus}
-        ariaLabel={ariaLabel}
-        ariaRequired={ariaRequired}
-        clearAriaLabel={clearAriaLabel}
-        disableBrowserAutocorrect={disableBrowserAutocorrect}
-        expandToViewport={expandToViewport}
-        ariaControls={listId}
-        ariaActivedescendant={highlightedOptionId}
-        dropdownExpanded={shouldRenderDropdownContent}
-        style={style}
-        groupedControlPosition={__groupedControlPosition}
-        dropdownContent={
-          shouldRenderDropdownContent && (
-            <AutosuggestOptionsList
-              renderOption={renderOption}
-              statusType={statusType}
-              autosuggestItemsState={autosuggestItemsState}
-              autosuggestItemsHandlers={autosuggestItemsHandlers}
-              highlightedOptionId={highlightedOptionId}
-              highlightText={value}
-              listId={listId}
-              controlId={controlId}
-              handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-              hasDropdownStatus={dropdownStatus.content !== null}
-              virtualScroll={virtualScroll}
-              selectedAriaLabel={selectedAriaLabel}
-              renderHighlightedAriaLive={renderHighlightedAriaLive}
-              listBottom={
-                !dropdownStatus.isSticky ? (
-                  <DropdownFooter content={dropdownStatus.content} id={footerControlId} />
-                ) : null
-              }
-              ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
-            />
-          )
-        }
-        dropdownFooter={
-          dropdownStatus.isSticky && dropdownStatus.content ? (
-            <DropdownFooter
-              id={footerControlId}
-              content={dropdownStatus.content}
-              hasItems={autosuggestItemsState.items.length >= 1}
-            />
-          ) : null
-        }
-        // Forces dropdown position recalculation when new options are loaded
-        dropdownContentKey={hasItems.current.toString()}
-        loopFocus={dropdownStatus.hasRecoveryButton}
-        onCloseDropdown={handleCloseDropdown}
-        onDelayedInput={handleDelayedInput}
-        onPressArrowDown={handlePressArrowDown}
-        onPressArrowUp={handlePressArrowUp}
-        onPressEnter={handlePressEnter}
-      />
-    </ResetGroupedControlContext>
+    <AutosuggestInput
+      {...restProps}
+      className={clsx(styles.root, restProps.className)}
+      ref={autosuggestInputRef}
+      __internalRootRef={__internalRootRef}
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
+      onKeyUp={handleKeyUp}
+      onKeyDown={handleKeyDown}
+      name={name}
+      controlId={controlId}
+      placeholder={placeholder}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      ariaLabel={ariaLabel}
+      ariaRequired={ariaRequired}
+      clearAriaLabel={clearAriaLabel}
+      disableBrowserAutocorrect={disableBrowserAutocorrect}
+      expandToViewport={expandToViewport}
+      ariaControls={listId}
+      ariaActivedescendant={highlightedOptionId}
+      dropdownExpanded={shouldRenderDropdownContent}
+      style={style}
+      dropdownContent={
+        shouldRenderDropdownContent && (
+          <AutosuggestOptionsList
+            renderOption={renderOption}
+            statusType={statusType}
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
+            highlightedOptionId={highlightedOptionId}
+            highlightText={value}
+            listId={listId}
+            controlId={controlId}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+            hasDropdownStatus={dropdownStatus.content !== null}
+            virtualScroll={virtualScroll}
+            selectedAriaLabel={selectedAriaLabel}
+            renderHighlightedAriaLive={renderHighlightedAriaLive}
+            listBottom={
+              !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+            }
+            ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
+          />
+        )
+      }
+      dropdownFooter={
+        dropdownStatus.isSticky && dropdownStatus.content ? (
+          <DropdownFooter
+            id={footerControlId}
+            content={dropdownStatus.content}
+            hasItems={autosuggestItemsState.items.length >= 1}
+          />
+        ) : null
+      }
+      // Forces dropdown position recalculation when new options are loaded
+      dropdownContentKey={hasItems.current.toString()}
+      loopFocus={dropdownStatus.hasRecoveryButton}
+      onCloseDropdown={handleCloseDropdown}
+      onDelayedInput={handleDelayedInput}
+      onPressArrowDown={handlePressArrowDown}
+      onPressArrowUp={handlePressArrowUp}
+      onPressEnter={handlePressEnter}
+    />
   );
 });
 

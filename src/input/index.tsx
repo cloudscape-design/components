@@ -5,7 +5,6 @@ import React, { Ref, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
-import { useGroupedControlContext } from '../internal/context/control-group-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { InputProps } from './interfaces';
@@ -56,7 +55,6 @@ const Input = React.forwardRef(
       props: { autoComplete, autoFocus, disableBrowserAutocorrect, inputMode, readOnly, spellcheck, type },
     });
     const baseProps = getBaseProps(rest);
-    const { position: groupedControlPosition } = useGroupedControlContext();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -109,7 +107,6 @@ const Input = React.forwardRef(
           prefix,
           suffix,
           inlineLabelText,
-          __groupedControlPosition: groupedControlPosition,
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}

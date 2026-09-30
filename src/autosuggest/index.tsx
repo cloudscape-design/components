@@ -5,7 +5,6 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useGroupedControlContext } from '../internal/context/control-group-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
@@ -49,7 +48,6 @@ const Autosuggest = React.forwardRef(
     };
 
     const externalProps = getExternalProps(props);
-    const { position: groupedControlPosition } = useGroupedControlContext();
     return (
       <InternalAutosuggest
         renderOption={renderOption}
@@ -60,7 +58,6 @@ const Autosuggest = React.forwardRef(
         {...externalProps}
         {...baseComponentProps}
         ref={ref}
-        __groupedControlPosition={groupedControlPosition}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );

@@ -12,7 +12,7 @@ import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
-import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -37,7 +37,6 @@ import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
-  __groupedControlPosition?: GroupedControlPosition | null;
 }
 
 const InternalSelect = React.forwardRef(
@@ -72,7 +71,6 @@ const InternalSelect = React.forwardRef(
       expandToViewport,
       autoFocus,
       __inFilteringToken,
-      __groupedControlPosition,
       __internalRootRef,
       renderOption,
       renderDropdownHeader,
@@ -85,6 +83,7 @@ const InternalSelect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const { position: groupedControlPosition } = useGroupedControlContext();
 
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
@@ -196,7 +195,7 @@ const InternalSelect = React.forwardRef(
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}
-        groupedControlPosition={__groupedControlPosition}
+        groupedControlPosition={groupedControlPosition}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}

@@ -23,7 +23,7 @@ import { BaseKeyDetail, NonCancelableEventHandler } from '../../../types/events'
 import { FormFieldValidationControlProps } from '../../../types/form-field';
 import { getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
-import { GroupedControlPosition } from '../../context/control-group-context';
+import { ResetGroupedControlContext } from '../../context/control-group-context';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -59,7 +59,6 @@ interface AutosuggestInputProps
   onPressArrowUp?: () => void;
   onPressEnter?: () => boolean;
   style?: InputProps['style'];
-  groupedControlPosition?: GroupedControlPosition | null;
 }
 
 interface AutosuggestInputFocusOptions {
@@ -107,7 +106,6 @@ const AutosuggestInput = React.forwardRef(
       onPressArrowUp,
       onPressEnter,
       style,
-      groupedControlPosition,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -332,7 +330,6 @@ const AutosuggestInput = React.forwardRef(
               nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
               style={style}
-              __groupedControlPosition={groupedControlPosition}
               {...formFieldContext}
             />
           }
@@ -341,7 +338,9 @@ const AutosuggestInput = React.forwardRef(
           footer={
             dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']} onKeyDown={handleDropdownKeyDown}>
-                {open && dropdownFooter ? dropdownFooter : null}
+                <ResetGroupedControlContext>
+                  {open && dropdownFooter ? dropdownFooter : null}
+                </ResetGroupedControlContext>
               </div>
             )
           }
@@ -350,7 +349,7 @@ const AutosuggestInput = React.forwardRef(
           content={
             open && dropdownContent ? (
               <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-                {dropdownContent}
+                <ResetGroupedControlContext>{dropdownContent}</ResetGroupedControlContext>
               </div>
             ) : null
           }

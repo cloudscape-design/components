@@ -5,7 +5,6 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useGroupedControlContext } from '../internal/context/control-group-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataMultiselectComponent } from './analytics-metadata/interfaces';
@@ -53,8 +52,6 @@ const Multiselect = React.forwardRef(
       },
     });
 
-    const { position: groupedControlPosition } = useGroupedControlContext();
-
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataMultiselectComponent = {
       name: 'awsui.Multiselect',
       label: `.${buttonTriggerAnalyticsSelectors['button-trigger']}`,
@@ -84,7 +81,6 @@ const Multiselect = React.forwardRef(
         {...restProps}
         {...baseComponentProps}
         ref={ref}
-        __groupedControlPosition={groupedControlPosition}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );

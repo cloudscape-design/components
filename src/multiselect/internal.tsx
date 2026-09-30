@@ -11,7 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
@@ -33,9 +33,7 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps & {
-    __groupedControlPosition?: GroupedControlPosition | null;
-  };
+  InternalBaseComponentProps;
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 
@@ -71,13 +69,13 @@ const InternalMultiselect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
-      __groupedControlPosition = null,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const { position: groupedControlPosition } = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
 
     const selfControlId = useUniqueId('trigger');
@@ -142,7 +140,7 @@ const InternalMultiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
-        groupedControlPosition={__groupedControlPosition}
+        groupedControlPosition={groupedControlPosition}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
