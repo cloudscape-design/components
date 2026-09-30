@@ -58,7 +58,7 @@ const InternalSpaceBetween = forwardRef(
           return (
             <div
               key={key ? String(key) : undefined}
-              className={clsx(styles.child, alignItems && styles['child-aligned'])}
+              className={clsx(styles.child, alignItems && direction === 'horizontal' && styles['child-aligned'])}
             >
               {child}
             </div>
