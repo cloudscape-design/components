@@ -59,68 +59,38 @@ const autosuggest = (
 );
 
 const permutations = createPermutations<InternalControlGroupProps>([
-  { children: [input] },
-  { children: [autosuggest] },
-  {
-    children: [segmentedControl],
-  },
-  {
-    children: [select],
-  },
-  {
-    children: [multiselect],
-  },
   {
     children: [
+      input,
+      autosuggest,
+      segmentedControl,
+      select,
+      multiselect,
       <>
         {input}
         {select}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {input}
         {segmentedControl}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {autosuggest}
         {select}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {autosuggest}
         {segmentedControl}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {select}
         {multiselect}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {input}
         {select}
         {input}
       </>,
-    ],
-  },
-  {
-    children: [
       <>
         {autosuggest}
         {select}
