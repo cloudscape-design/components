@@ -48,18 +48,19 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontWeightFlashbarHeader: '500',
 
   // ── Form labels ───────────────────────────────────────────────────────────
-  fontSizeFormLabel: '14px',
-  lineHeightFormLabel: '20px',
+  // fontSizeFormLabel: '14px',
+  // lineHeightFormLabel: '20px',
   fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
 
   // ── Body text ─────────────────────────────────────────────────────────────
   fontSizeBodyM: { comfortable: '14px', compact: '13px' },
+  lineHeightBodyM: { comfortable: '20px', compact: '16px' },
   fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
-  fontSizeKeyValuePairsLabel: '14px',
-  lineHeightKeyValuePairsLabel: '20px',
+  // fontSizeKeyValuePairsLabel: '14px',
+  // lineHeightKeyValuePairsLabel: '20px',
   fontWeightKeyValuePairsLabel: '400',
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
