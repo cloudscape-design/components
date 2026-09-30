@@ -44,6 +44,7 @@ const InternalControlGroup = forwardRef(
       dismissible,
       onDismiss,
       actions,
+      actionsPosition = 'inline',
       wrapBehavior = 'auto',
       i18nStrings,
       __internalRootRef,
@@ -124,6 +125,12 @@ const InternalControlGroup = forwardRef(
     // Whether a trailing standalone slot is rendered at all (built-in dismiss or custom
     // actions). `actions` may resolve to falsy content, so treat that as no slot.
     const hasCustomActions = !dismissible && actions !== null && actions !== undefined && actions !== false;
+
+    // A custom `actions` button can sit at the group's END SIDE when the group wraps
+    // (`actionsPosition="side"`): the controls stack in a column on the leading side and
+    // the button spans the full height beside them. This only applies to a custom
+    // `actions` slot (not the built-in dismiss), and only once the group is stacked.
+    const sideActions = actionsPosition === 'side' && hasCustomActions;
 
     // The trailing standalone slot (the built-in remove button when `dismissible`, or
     // custom `actions`) counts as an extra control, so positions (first/middle/last/only)
@@ -285,6 +292,10 @@ const InternalControlGroup = forwardRef(
                 position,
                 hasInlineLabel,
                 precedesDetached,
+                // In side mode the controls stack in a column with the button fused on
+                // their END side, so a control's end-side corners stay squared (only the
+                // leading/outer corners round). The controls need to know this.
+                sideActions: sideActions && isStacked ? true : undefined,
                 stacked: isStacked,
               }}
             >
@@ -316,6 +327,9 @@ const InternalControlGroup = forwardRef(
             // this slot), so the button always fuses directly against the control above it.
             dismissible && styles['control-standalone'],
             hasCustomActions && styles['control-actions'],
+            // In side mode (stacked) the actions slot sits beside the control column and
+            // spans its full height instead of stacking below it.
+            sideActions && isStacked && styles['control-actions-side'],
             testUtilStyles['control-group-item']
           )}
         >
@@ -330,6 +344,9 @@ const InternalControlGroup = forwardRef(
               // group wraps, while keeping its own border and background color.
               standaloneWhenStacked: dismissible ? true : undefined,
               customStandalone: dismissible ? undefined : true,
+              // In side mode the button fuses on its leading (inline-start) edge like a
+              // row control and spans the column height, rather than fusing on its top.
+              sideActions: sideActions && isStacked ? true : undefined,
               stacked: isStacked,
               // The trailing slot has no validation state of its own; pass the
               // group's state so it paints its border (incl. the seam with the last
@@ -377,6 +394,21 @@ const InternalControlGroup = forwardRef(
     const renderGroupContent = (isStacked: boolean) => {
       const flattened = resolveChildren(isStacked);
       const controlCount = getControlCount(flattened);
+      // Side layout (stacked): the control slots stack inside a column wrapper, and the
+      // button slot is a sibling that stretches to the column's height. In a row (and in
+      // the inline layout) the slots and button are flat siblings of `.group`, fused.
+      if (sideActions && isStacked) {
+        // The button is a separate column here, not part of the vertical stack, so the
+        // control slots' first/middle/last positions are computed among the controls
+        // ALONE (excluding the button). Otherwise the last real control would be `middle`
+        // (the button would take `last`) and would not round its outer bottom corner.
+        return (
+          <>
+            <div className={styles['controls-stack']}>{renderControlSlots(isStacked, flattened, flattened.length)}</div>
+            {renderDismissSlot(isStacked, controlCount)}
+          </>
+        );
+      }
       return (
         <>
           {renderControlSlots(isStacked, flattened, controlCount)}
@@ -407,6 +439,7 @@ const InternalControlGroup = forwardRef(
           className={clsx(
             styles.group,
             stacked && styles.stacked,
+            sideActions && stacked && styles['group-actions-side'],
             invalid && styles.invalid,
             warning && styles.warning
           )}

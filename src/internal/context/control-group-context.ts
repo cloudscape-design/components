@@ -54,6 +54,14 @@ export interface ControlGroupContextProps {
    */
   customStandalone?: boolean;
   /**
+   * True for a custom `actions` button placed at the group's END SIDE while the group is
+   * stacked (`actionsPosition="side"`). Unlike the default stacked custom button (which
+   * fuses on its block-start edge and fills the row width), a side button spans the full
+   * height of the stacked control column and fuses on its leading (inline-start) edge,
+   * like a control in a row.
+   */
+  sideActions?: boolean;
+  /**
    * True when the group is in an error state. Consumed by the built-in dismiss button
    * (which has no validation state of its own) so it paints its border — including the
    * seam it shares with the last control — in the error color, continuing the group's

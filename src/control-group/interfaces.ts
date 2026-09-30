@@ -93,6 +93,21 @@ export interface ControlGroupProps extends BaseComponentProps {
   actions?: React.ReactNode | ((state: ControlGroupProps.LayoutState) => React.ReactNode);
 
   /**
+   * Where the trailing `actions` slot sits when the group wraps (stacks):
+   *
+   * - `"inline"` (default): the actions slot joins the vertical stack as the last item,
+   *   fused below the controls.
+   * - `"side"`: the actions slot stays attached at the group's end (inline-end) side and
+   *   spans the full height of the stacked controls, so the controls stack in a column
+   *   on the leading side and the actions button sits beside them.
+   *
+   * In the row layout both values behave the same (the actions slot is fused at the end
+   * of the row). This only applies to a custom `actions` slot, not the built-in
+   * `dismissible` button.
+   */
+  actionsPosition?: ControlGroupProps.ActionsPosition;
+
+  /**
    * Controls how the group decides between the row and the wrapped (stacked) layout:
    *
    * - `"auto"` (default): the group measures its controls against the available width
@@ -146,6 +161,13 @@ export namespace ControlGroupProps {
    * (`"wrap"`).
    */
   export type WrapBehavior = 'auto' | 'nowrap' | 'wrap';
+
+  /**
+   * Where the trailing `actions` slot sits when the group wraps: fused into the stack as
+   * the last item (`"inline"`), or attached at the group's end side spanning the full
+   * height of the stacked controls (`"side"`).
+   */
+  export type ActionsPosition = 'inline' | 'side';
 
   /**
    * The current layout state passed to the `children` render function.

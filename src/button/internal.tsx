@@ -154,6 +154,7 @@ export const InternalButton = React.forwardRef(
       invalid: inControlGroupInvalid,
       warning: inControlGroupWarning,
       customStandalone: inControlGroupCustomStandalone,
+      sideActions: inControlGroupSideActions,
     } = useControlGroupContext();
     // A custom `actions` button participates in the group in every wrap state: it fuses
     // in a row and stays attached (fused vertically) when the group wraps. Unlike the
@@ -225,6 +226,7 @@ export const InternalButton = React.forwardRef(
       [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
       [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
       [styles['in-control-group-custom-standalone']]: isInControlGroup && inControlGroupCustomStandalone,
+      [styles['in-control-group-side-actions']]: isInControlGroup && inControlGroupSideActions,
       [styles['in-control-group-stacked']]: isInControlGroup && inControlGroupStacked,
       [styles['in-control-group-invalid']]: isInControlGroup && inControlGroupInvalid,
       [styles['in-control-group-warning']]: isInControlGroup && inControlGroupWarning,

@@ -205,6 +205,63 @@
   // whole group, not between the controls and this button, so it always fuses directly.
 }
 
+// Side actions layout (stacked): the trailing custom `actions` button stays attached at
+// the group's END side and spans the full height of the stacked controls. The group is a
+// ROW of [controls column][button]; the controls stack vertically inside `.controls-stack`
+// and the button stretches to the column's height.
+.group.stacked.group-actions-side {
+  // Override the `.stacked` column direction: lay the column and the side button in a row.
+  flex-direction: row;
+  // Stretch the button slot to match the control column's height.
+  align-items: stretch;
+  inline-size: 100%;
+
+  // The control column takes the remaining width and stacks its slots vertically, using
+  // the same block-axis fusing the stacked group normally applies to its direct slots.
+  > .controls-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+
+    > .control {
+      inline-size: 100%;
+
+      &.control-middle,
+      &.control-last {
+        margin-inline-start: 0;
+        margin-block-start: calc(-1 * #{awsui.$border-width-field});
+      }
+
+      // A detached (labeled) control keeps a gap instead of overlapping the block seam.
+      &.control-labeled.control-middle,
+      &.control-labeled.control-last {
+        margin-block-start: awsui.$space-scaled-xs;
+      }
+    }
+  }
+
+  // The side button slot: overlap its leading (inline-start) seam onto the control column
+  // so their borders coincide into one seam (the same one-border-width overlap a row uses
+  // on the inline axis), and let the button fill the slot height. It is a direct
+  // `.group.stacked > .control.control-last`, so it also picks up that rule's block-start
+  // overlap (`margin-block-start: -1px`), which would pull it a pixel ABOVE the column —
+  // reset it, since on the side axis the seam is inline, not block.
+  > .control-actions-side {
+    display: flex;
+    align-items: stretch;
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+    margin-block-start: 0;
+    // This slot is a direct `.group.stacked > .control`, so it also picks up that rule's
+    // `inline-size: 100%`. In this row layout that would make the button demand the full
+    // width and squeeze the control column down to about half. Size it to its content
+    // instead so the column (`flex: 1 1 auto`) takes all the remaining width.
+    inline-size: auto;
+    flex: none;
+  }
+}
+
 .hints {
   margin-block-start: awsui.$space-scaled-xxs;
 }

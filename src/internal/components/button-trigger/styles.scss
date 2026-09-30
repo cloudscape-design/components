@@ -285,5 +285,22 @@ $icon-offset: awsui.$space-xxxs;
         @include styles.control-group-grouped-stacked-precedes-detached-corners('middle', $radius: $r);
       }
     }
+    // Side actions: the button is fused on the control column's END side, so only the
+    // controls' leading/outer corners round; the end-side corners stay squared. Placed
+    // last so it overrides the plain stacked corners above.
+    &.in-control-group-side-actions {
+      &.in-control-group-first {
+        @include styles.control-group-grouped-stacked-side-corners('first', $radius: $r);
+        @include focus-visible.when-visible {
+          @include styles.control-group-grouped-stacked-side-corners('first', $radius: $r);
+        }
+      }
+      &.in-control-group-last {
+        @include styles.control-group-grouped-stacked-side-corners('last', $radius: $r);
+        @include focus-visible.when-visible {
+          @include styles.control-group-grouped-stacked-side-corners('last', $radius: $r);
+        }
+      }
+    }
   }
 }

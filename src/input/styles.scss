@@ -314,6 +314,23 @@
         @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
       }
     }
+    // Side actions: the button is fused on the control column's END side, so the controls'
+    // end-side corners stay squared (only their leading/outer corners round). Overrides
+    // the plain stacked corners above. Placed last so it wins.
+    &.input-in-control-group-side-actions {
+      &.input-in-control-group-first {
+        @include styles.control-group-grouped-stacked-side-corners('first');
+        &:focus {
+          @include styles.control-group-grouped-stacked-side-corners('first');
+        }
+      }
+      &.input-in-control-group-last {
+        @include styles.control-group-grouped-stacked-side-corners('last');
+        &:focus {
+          @include styles.control-group-grouped-stacked-side-corners('last');
+        }
+      }
+    }
   }
 }
 
@@ -371,6 +388,22 @@
       @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
       &:focus-within {
         @include styles.control-group-grouped-stacked-precedes-detached-corners('middle');
+      }
+    }
+    // Side actions: only the controls' leading/outer corners round (see the native input
+    // rule above for the rationale).
+    &.input-adorned-container-in-control-group-side-actions {
+      &.input-adorned-container-in-control-group-first {
+        @include styles.control-group-grouped-stacked-side-corners('first');
+        &:focus-within {
+          @include styles.control-group-grouped-stacked-side-corners('first');
+        }
+      }
+      &.input-adorned-container-in-control-group-last {
+        @include styles.control-group-grouped-stacked-side-corners('last');
+        &:focus-within {
+          @include styles.control-group-grouped-stacked-side-corners('last');
+        }
       }
     }
   }

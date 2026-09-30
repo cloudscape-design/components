@@ -317,7 +317,10 @@ $tokens: style-api.resolve($props, carrier);
       //     with the control above — is painted in the status color, so the group's status
       //     border continues down onto the top of the button. The button's other three
       //     borders keep its own (variant) border color.
-      &.in-control-group-invalid {
+      // Not applied to the side-actions button: when the button spans the group's height
+      // at the end side it keeps its OWN (variant) border in the error/warning state
+      // rather than adopting the group's status color.
+      &.in-control-group-invalid:not(.in-control-group-side-actions) {
         &:not(.in-control-group-stacked) {
           &,
           &:hover,
@@ -333,7 +336,7 @@ $tokens: style-api.resolve($props, carrier);
           }
         }
       }
-      &.in-control-group-warning {
+      &.in-control-group-warning:not(.in-control-group-side-actions) {
         &:not(.in-control-group-stacked) {
           &,
           &:hover,
@@ -348,6 +351,42 @@ $tokens: style-api.resolve($props, carrier);
             border-block-start-color: awsui.$color-text-status-warning;
           }
         }
+      }
+
+      // Side actions (stacked): the button sits at the group's END side and spans the full
+      // height of the stacked control column, fusing on its LEADING (inline-start) edge
+      // like a `last` control in a row — rather than filling the row width and fusing on
+      // its top. Overrides the block-axis stacked rules above. Placed AFTER them so it wins.
+      &.in-control-group-side-actions {
+        // Fill the stretched slot height; size to content on the inline axis.
+        block-size: auto;
+        min-block-size: 100%;
+        align-self: stretch;
+        inline-size: auto;
+        text-align: center;
+
+        // Match the field controls' border width so the button's top/bottom edges line up
+        // with the column (a wider button border would otherwise poke a pixel above the
+        // first control / below the last one in themes where the button border is thicker).
+        border-block-width: awsui.$border-width-field;
+        border-inline-width: awsui.$border-width-field;
+
+        // Row-style fused corners: square the leading (inline-start) corners it shares
+        // with the control column, round the trailing (inline-end) corners.
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        border-start-end-radius: awsui.$border-radius-input;
+        border-end-end-radius: awsui.$border-radius-input;
+
+        &.button-no-text {
+          // Keep the field width for an icon button, but full column height (not a square).
+          inline-size: awsui.$size-vertical-input;
+          block-size: auto;
+        }
+
+        // The side button keeps its OWN (variant) border in the error/warning state — it
+        // does not adopt the group's status border. (The status border overrides above
+        // are excluded for `.in-control-group-side-actions`.)
       }
 
       @include focus-visible.when-visible {

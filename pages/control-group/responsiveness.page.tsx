@@ -42,13 +42,17 @@ const LABEL_VALUE_SUGGESTIONS: AutosuggestProps.Option[] = [
 
 const enteredTextLabel = (value: string) => `Use: ${value}`;
 
-// The two icons the remove button can use. `remove` is the trash-can icon.
+// The two icons the dismiss button can use. `remove` is the trash-can icon.
 type RemoveIcon = 'close' | 'remove';
 const REMOVE_ICONS: RemoveIcon[] = ['close', 'remove'];
 
 // The field component used for the label name / value controls.
 type ControlKind = 'input' | 'autosuggest';
 const CONTROL_KINDS: ControlKind[] = ['input', 'autosuggest'];
+
+// Where the dismiss button sits when the group wraps: `inline` stacks it below the
+// controls; `side` attaches it at the end, spanning the stacked controls' height.
+const ACTIONS_POSITIONS: ControlGroupProps.ActionsPosition[] = ['inline', 'side'];
 
 // When stretching autosuggests, give each one this fixed width. The autosuggest reserves
 // extra inline padding for its clear button once a value is entered, which changes its
@@ -59,7 +63,7 @@ const CONTROL_KINDS: ControlKind[] = ['input', 'autosuggest'];
 const STRETCH_WIDTH = 180;
 
 // Page options are stored in URL params so they survive reloads and can be shared.
-type PageParams = 'icon' | 'switchWhenWrapping' | 'control' | 'stretch';
+type PageParams = 'icon' | 'switchWhenWrapping' | 'control' | 'stretch' | 'actionsPosition';
 
 const resizableContainerStyle: React.CSSProperties = {
   resize: 'horizontal',
@@ -68,7 +72,7 @@ const resizableContainerStyle: React.CSSProperties = {
   minInlineSize: 200,
   maxInlineSize: '100%',
   padding: 16,
-  paddingBlockEnd: 100,
+  paddingBlockEnd: 150,
   border: '1px dashed var(--awsui-color-border-divider-default, #b6bec9)',
   borderRadius: 8,
 };
@@ -126,14 +130,18 @@ function ControlledQueryBuilder({
   switchWhenWrapping,
   control,
   stretch,
+  actionsPosition,
 }: {
   iconName: RemoveIcon;
   switchWhenWrapping: boolean;
   control: ControlKind;
   stretch: boolean;
+  actionsPosition: ControlGroupProps.ActionsPosition;
 }) {
   const [clauses, setClauses] = useState<ControlledClause[]>(INITIAL_CONTROLLED_CLAUSES);
   const [nextId, setNextId] = useState(INITIAL_CONTROLLED_CLAUSES.length + 1);
+
+  const actionsSide = actionsPosition === 'side';
 
   // Measure the builder's own width. Below WRAP_THRESHOLD the clauses stack vertically.
   const [width, measureRef] = useContainerQuery(entry => entry.contentBoxWidth);
@@ -201,11 +209,12 @@ function ControlledQueryBuilder({
     </>
   );
 
-  // The trailing remove button. It is always an icon-only button in a row; when the group
+  // The trailing dismiss button. It is always an icon-only button in a row; when the group
   // wraps it either stays an icon button or, if `switchWhenWrapping` is set, becomes a
-  // regular (text) button.
+  // regular (text) button. In side mode it always stays an icon button (it spans the full
+  // height of the stacked column beside the controls).
   const renderRemoveButton = (clause: ControlledClause, wrap: boolean) => {
-    if (wrap && switchWhenWrapping) {
+    if (wrap && switchWhenWrapping && !actionsSide) {
       return <Button onClick={() => removeClause(clause.id)}>Remove</Button>;
     }
     return (
@@ -220,6 +229,7 @@ function ControlledQueryBuilder({
         key={clause.id}
         inlineLabelText="Label"
         wrapBehavior={wrapBehavior}
+        actionsPosition={actionsPosition}
         errorText={errorText}
         warningText={warningText}
         actions={({ wrap }: { wrap: boolean }) => renderRemoveButton(clause, wrap)}
@@ -271,11 +281,19 @@ export default function () {
   // "Stretch" only applies to autosuggest (it fixes the autosuggest's clear-button width
   // jump); it is ignored for plain inputs.
   const stretch = control === 'autosuggest' && urlParams.stretch === true;
+  // Where the dismiss button sits when wrapping: `inline` (stacked below the controls) or
+  // `side` (attached at the end, spanning the stacked controls' height).
+  const actionsPosition: ControlGroupProps.ActionsPosition = ACTIONS_POSITIONS.includes(
+    urlParams.actionsPosition as ControlGroupProps.ActionsPosition
+  )
+    ? (urlParams.actionsPosition as ControlGroupProps.ActionsPosition)
+    : 'inline';
+  const actionsSide = actionsPosition === 'side';
 
   return (
     <SimplePage
       title="Control group responsiveness"
-      subtitle="A query builder built from ControlGroup clauses. Resize the container (drag the handle) to see the clauses stack their controls once a clause no longer fits its line. Use the options below to control the field type and the trailing remove button."
+      subtitle="A query builder built from ControlGroup clauses. Resize the container (drag the handle) to see the clauses stack their controls once a clause no longer fits its line. Use the options below to control the field type and the trailing dismiss button."
       settings={
         <SpaceBetween size="xxl" direction="horizontal">
           <FormField label="Field control">
@@ -288,7 +306,7 @@ export default function () {
               ]}
             />
           </FormField>
-          <FormField label="Remove button icon">
+          <FormField label="Dismiss button icon">
             <RadioGroup
               value={iconName}
               onChange={({ detail }) => setUrlParams({ icon: detail.value })}
@@ -298,19 +316,39 @@ export default function () {
               ]}
             />
           </FormField>
-          <SpaceBetween size="s">
-            <Checkbox
-              checked={switchWhenWrapping}
-              onChange={({ detail }) => setUrlParams({ switchWhenWrapping: detail.checked })}
-            >
-              Change to regular button when wrapping
-            </Checkbox>
-            {control === 'autosuggest' && (
-              <Checkbox checked={stretch} onChange={({ detail }) => setUrlParams({ stretch: detail.checked })}>
+          <FormField
+            label="Dismiss button responsive layout"
+            description="When the group wraps: stack the button below the controls, or attach it at the end spanning their height."
+          >
+            <SpaceBetween size="s">
+              <RadioGroup
+                value={actionsPosition}
+                onChange={({ detail }) => setUrlParams({ actionsPosition: detail.value })}
+                items={[
+                  { value: 'inline', label: 'Bottom' },
+                  { value: 'side', label: 'Side' },
+                ]}
+              />
+              <Checkbox
+                checked={switchWhenWrapping}
+                disabled={actionsSide}
+                onChange={({ detail }) => setUrlParams({ switchWhenWrapping: detail.checked })}
+              >
+                Change to regular button when wrapping
+              </Checkbox>
+            </SpaceBetween>
+          </FormField>
+          {control === 'autosuggest' && (
+            <FormField label="Autosuggest width">
+              <Checkbox
+                checked={stretch}
+                onChange={({ detail }) => setUrlParams({ stretch: detail.checked })}
+                description="This prevents layout shifts while entering content"
+              >
                 Pin autosuggests to a fixed width
               </Checkbox>
-            )}
-          </SpaceBetween>
+            </FormField>
+          )}
         </SpaceBetween>
       }
     >
@@ -320,6 +358,7 @@ export default function () {
           switchWhenWrapping={switchWhenWrapping}
           control={control}
           stretch={stretch}
+          actionsPosition={actionsPosition}
         />
       </div>
     </SimplePage>
