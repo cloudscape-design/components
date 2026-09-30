@@ -47,6 +47,20 @@ describe('ButtonDropdown async loading', () => {
     expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: true, samePage: false });
   });
 
+  test('fires onLoadItems on open when the handler is attached after an earlier open without it', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper, rerender } = renderDropdown({ filteringType: 'manual' });
+    wrapper.openDropdown();
+    wrapper.openDropdown();
+    rerender(
+      <ButtonDropdown items={items} filteringType="manual" onLoadItems={event => onLoadItems(event.detail)}>
+        Actions
+      </ButtonDropdown>
+    );
+    wrapper.openDropdown();
+    expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: true, samePage: false });
+  });
+
   test('fires onLoadItems with firstPage=true when filteringText changes', async () => {
     const onLoadItems = jest.fn();
     const { wrapper } = renderDropdown({

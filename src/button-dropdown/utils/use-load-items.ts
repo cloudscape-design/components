@@ -15,7 +15,9 @@ export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsPro
   const prevFilteringText = useRef<string | undefined>(undefined);
 
   const fireLoadItems = (filteringText: string) => {
-    if (prevFilteringText.current === filteringText) {
+    // Without a handler nothing is requested, so the text must not count as requested either:
+    // otherwise a handler attached later would have its first request deduplicated away.
+    if (!onLoadItems || prevFilteringText.current === filteringText) {
       return;
     }
     prevFilteringText.current = filteringText;
