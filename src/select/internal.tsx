@@ -12,7 +12,7 @@ import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
-import { GroupedControlPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -276,54 +276,56 @@ const InternalSelect = React.forwardRef(
     hasOptions.current = hasOptions.current || options.length > 0;
 
     return (
-      <div
-        {...baseProps}
-        ref={mergedRef}
-        className={clsx(styles.root, baseProps.className)}
-        onKeyDown={handleNativeSearch}
-      >
-        <Dropdown
-          {...dropdownProps}
-          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.ariaRole
-              ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
-              : undefined
-          }
-          open={isOpen}
-          stretchTriggerHeight={!!__inFilteringToken}
-          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
-          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
-          trigger={trigger}
-          header={dropdownHeader}
-          onMouseDown={handleMouseDown}
-          footer={dropdownFooter}
-          expandToViewport={expandToViewport}
-          // Forces dropdown position recalculation when new options are loaded
-          contentKey={hasOptions.current.toString()}
-          content={
-            <ListComponent
-              listBottom={
-                !dropdownStatus.isSticky ? (
-                  <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-                ) : null
-              }
-              renderOption={renderOption}
-              menuProps={menuProps}
-              getOptionProps={getOptionProps}
-              filteredOptions={filteredOptions}
-              filteringValue={filteringValue}
-              ref={scrollToIndex}
-              hasDropdownStatus={dropdownStatus.content !== null}
-              screenReaderContent={announcement}
-              highlightType={highlightType}
-            />
-          }
-        />
-        <div hidden={true} id={selectAriaLabelId}>
-          {ariaLabel || inlineLabelText}
+      <ResetGroupedControlContext>
+        <div
+          {...baseProps}
+          ref={mergedRef}
+          className={clsx(styles.root, baseProps.className)}
+          onKeyDown={handleNativeSearch}
+        >
+          <Dropdown
+            {...dropdownProps}
+            ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+            ariaDescribedby={
+              dropdownProps.ariaRole
+                ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+                : undefined
+            }
+            open={isOpen}
+            stretchTriggerHeight={!!__inFilteringToken}
+            minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+            maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
+            trigger={trigger}
+            header={dropdownHeader}
+            onMouseDown={handleMouseDown}
+            footer={dropdownFooter}
+            expandToViewport={expandToViewport}
+            // Forces dropdown position recalculation when new options are loaded
+            contentKey={hasOptions.current.toString()}
+            content={
+              <ListComponent
+                listBottom={
+                  !dropdownStatus.isSticky ? (
+                    <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                  ) : null
+                }
+                renderOption={renderOption}
+                menuProps={menuProps}
+                getOptionProps={getOptionProps}
+                filteredOptions={filteredOptions}
+                filteringValue={filteringValue}
+                ref={scrollToIndex}
+                hasDropdownStatus={dropdownStatus.content !== null}
+                screenReaderContent={announcement}
+                highlightType={highlightType}
+              />
+            }
+          />
+          <div hidden={true} id={selectAriaLabelId}>
+            {ariaLabel || inlineLabelText}
+          </div>
         </div>
-      </div>
+      </ResetGroupedControlContext>
     );
   }
 );

@@ -11,7 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { GroupedControlPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
@@ -195,71 +195,73 @@ const InternalMultiselect = React.forwardRef(
     hasOptions.current = hasOptions.current || options.length > 0;
 
     return (
-      <div
-        {...baseProps}
-        ref={__internalRootRef}
-        className={clsx(styles.root, baseProps.className)}
-        {...multiselectProps.getWrapperProps()}
-      >
-        <Dropdown
-          {...dropdownProps}
-          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.ariaRole
-              ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
-              : undefined
-          }
-          open={multiselectProps.isOpen}
-          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
-          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
-          trigger={trigger}
-          header={dropdownHeader}
-          footer={dropdownFooter}
-          expandToViewport={expandToViewport}
-          // Forces dropdown position recalculation when new options are loaded
-          contentKey={hasOptions.current.toString()}
-          content={
-            <ListComponent
-              renderOption={renderOption}
-              listBottom={
-                !dropdownStatus.isSticky ? (
-                  <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-                ) : null
-              }
-              menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
-              getOptionProps={multiselectProps.getOptionProps}
-              filteredOptions={multiselectProps.filteredOptions}
-              filteringValue={filteringValue}
-              ref={multiselectProps.scrollToIndex}
-              hasDropdownStatus={dropdownStatus.content !== null}
-              checkboxes={true}
-              useInteractiveGroups={true}
-              screenReaderContent={multiselectProps.announcement}
-              highlightType={multiselectProps.highlightType}
-              firstOptionSticky={hasFilteredOptions && enableSelectAll}
-              isMultiSelect={true}
-            />
-          }
-        />
-
-        {showTokens && (
-          <InternalTokenGroup
-            {...multiselectProps.getTokenProps()}
-            className={styles.tokens}
-            alignment="horizontal"
-            limit={tokenLimit}
-            items={tokens}
-            i18nStrings={tokenGroupI18nStrings}
-            limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
-            limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
-            disableOuterPadding={true}
-            readOnly={readOnly}
-            isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+      <ResetGroupedControlContext>
+        <div
+          {...baseProps}
+          ref={__internalRootRef}
+          className={clsx(styles.root, baseProps.className)}
+          {...multiselectProps.getWrapperProps()}
+        >
+          <Dropdown
+            {...dropdownProps}
+            ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
+            ariaDescribedby={
+              dropdownProps.ariaRole
+                ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+                : undefined
+            }
+            open={multiselectProps.isOpen}
+            minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+            maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
+            trigger={trigger}
+            header={dropdownHeader}
+            footer={dropdownFooter}
+            expandToViewport={expandToViewport}
+            // Forces dropdown position recalculation when new options are loaded
+            contentKey={hasOptions.current.toString()}
+            content={
+              <ListComponent
+                renderOption={renderOption}
+                listBottom={
+                  !dropdownStatus.isSticky ? (
+                    <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+                  ) : null
+                }
+                menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                getOptionProps={multiselectProps.getOptionProps}
+                filteredOptions={multiselectProps.filteredOptions}
+                filteringValue={filteringValue}
+                ref={multiselectProps.scrollToIndex}
+                hasDropdownStatus={dropdownStatus.content !== null}
+                checkboxes={true}
+                useInteractiveGroups={true}
+                screenReaderContent={multiselectProps.announcement}
+                highlightType={multiselectProps.highlightType}
+                firstOptionSticky={hasFilteredOptions && enableSelectAll}
+                isMultiSelect={true}
+              />
+            }
           />
-        )}
 
-        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
-      </div>
+          {showTokens && (
+            <InternalTokenGroup
+              {...multiselectProps.getTokenProps()}
+              className={styles.tokens}
+              alignment="horizontal"
+              limit={tokenLimit}
+              items={tokens}
+              i18nStrings={tokenGroupI18nStrings}
+              limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
+              limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
+              disableOuterPadding={true}
+              readOnly={readOnly}
+              isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+            />
+          )}
+
+          <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
+        </div>
+      </ResetGroupedControlContext>
     );
   }
 );

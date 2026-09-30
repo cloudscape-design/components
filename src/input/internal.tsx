@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { GroupedControlPosition } from '../internal/context/control-group-context';
+import { GroupedControlPosition, ResetGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -327,7 +327,9 @@ function InternalInput(
           {hasPrefix && (
             <>
               <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>{prefix}</span>
+                <span className={styles['input-adornment-content']}>
+                  <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
+                </span>
               </span>
               <span className={styles['input-adornment-divider']} />
             </>
@@ -337,7 +339,9 @@ function InternalInput(
             <>
               <span className={styles['input-adornment-divider']} />
               <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>{suffix}</span>
+                <span className={styles['input-adornment-content']}>
+                  <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
+                </span>
               </span>
             </>
           )}
