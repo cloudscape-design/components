@@ -43,7 +43,8 @@
     gap: calc(#{seg.$segment-gap} * 2 - #{seg.$segment-divider-width});
   }
 
-  &:not(.grouped) {
+  &:not(.grouped),
+  &.grouped-only {
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       display: none;
     }
@@ -62,7 +63,8 @@
 .select {
   display: none;
 
-  &:not(.grouped) {
+  &:not(.grouped),
+  &.grouped-only {
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       display: block;
     }
