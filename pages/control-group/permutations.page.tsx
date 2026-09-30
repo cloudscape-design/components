@@ -36,18 +36,26 @@ const suggestions: AutosuggestProps.Option[] = [{ value: 'CPUUtilization' }, { v
 
 const enteredTextLabel = (value: string) => `Use: ${value}`;
 
-const input = <Input value="service" onChange={noop} />;
-
-const select = <Select selectedOption={operators[0]} options={operators} onChange={noop} />;
-
+const input = <Input ariaLabel="Value" value="service" onChange={noop} />;
+const select = <Select ariaLabel="Operator" selectedOption={operators[0]} options={operators} onChange={noop} />;
 const multiselect = (
-  <Multiselect inlineTokens={true} selectedOptions={[multiOptions[0]]} options={multiOptions} onChange={noop} />
+  <Multiselect
+    ariaLabel="Labels"
+    inlineTokens={true}
+    selectedOptions={[multiOptions[0]]}
+    options={multiOptions}
+    onChange={noop}
+  />
 );
-
-const segmentedControl = <SegmentedControl selectedId="and" options={segments} onChange={noop} />;
-
+const segmentedControl = <SegmentedControl selectedId="and" options={segments} label="Join" onChange={noop} />;
 const autosuggest = (
-  <Autosuggest value="CPU" onChange={noop} options={suggestions} enteredTextLabel={enteredTextLabel} />
+  <Autosuggest
+    ariaLabel="Metric"
+    value="CPU"
+    onChange={noop}
+    options={suggestions}
+    enteredTextLabel={enteredTextLabel}
+  />
 );
 
 const permutations = createPermutations<InternalControlGroupProps>([
