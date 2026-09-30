@@ -9,6 +9,7 @@ import Button from '~components/button';
 import Checkbox from '~components/checkbox';
 import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import FormField from '~components/form-field';
+import Input from '~components/input';
 import RadioGroup from '~components/radio-group';
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
@@ -45,8 +46,20 @@ const enteredTextLabel = (value: string) => `Use: ${value}`;
 type RemoveIcon = 'close' | 'remove';
 const REMOVE_ICONS: RemoveIcon[] = ['close', 'remove'];
 
+// The field component used for the label name / value controls.
+type ControlKind = 'input' | 'autosuggest';
+const CONTROL_KINDS: ControlKind[] = ['input', 'autosuggest'];
+
+// When stretching autosuggests, give each one this fixed width. The autosuggest reserves
+// extra inline padding for its clear button once a value is entered, which changes its
+// intrinsic width and (because the ControlGroup row sizes to content) shifts the whole
+// layout as the field goes empty/non-empty. Pinning the width absorbs that fluctuation so
+// nothing moves. A `min-inline-size` alone is not enough: the non-empty intrinsic width
+// can exceed the minimum, so the field would still grow and shrink around it.
+const STRETCH_WIDTH = 180;
+
 // Page options are stored in URL params so they survive reloads and can be shared.
-type PageParams = 'icon' | 'switchWhenWrapping';
+type PageParams = 'icon' | 'switchWhenWrapping' | 'control' | 'stretch';
 
 const resizableContainerStyle: React.CSSProperties = {
   resize: 'horizontal',
@@ -111,9 +124,13 @@ function validateClause({ name, operator, value }: ControlledClause): { errorTex
 function ControlledQueryBuilder({
   iconName,
   switchWhenWrapping,
+  control,
+  stretch,
 }: {
   iconName: RemoveIcon;
   switchWhenWrapping: boolean;
+  control: ControlKind;
+  stretch: boolean;
 }) {
   const [clauses, setClauses] = useState<ControlledClause[]>(INITIAL_CONTROLLED_CLAUSES);
   const [nextId, setNextId] = useState(INITIAL_CONTROLLED_CLAUSES.length + 1);
@@ -132,33 +149,55 @@ function ControlledQueryBuilder({
   const updateClause = (id: number, patch: Partial<ControlledClause>) =>
     setClauses(prev => prev.map(clause => (clause.id === id ? { ...clause, ...patch } : clause)));
 
+  // A single name/value field, rendered as either an Input or an Autosuggest. When
+  // stretching autosuggests (and only while the group is a ROW), the field is wrapped at a
+  // fixed width so the intrinsic-width jump the autosuggest's clear button causes (in the
+  // content-sized ControlGroup row) does not move the layout. Once the group wraps, the
+  // controls fill the full stacked width, so the fixed width is dropped. `stretch` only
+  // applies to autosuggest.
+  //
+  // Autosuggests use `expandToViewport` so their dropdown portals out of the control
+  // slot's stacking context and renders above the group's inline label (otherwise the
+  // label paints over the open dropdown).
+  const renderField = (
+    label: string,
+    fieldValue: string,
+    suggestions: AutosuggestProps.Option[],
+    onValueChange: (value: string) => void
+  ) => {
+    if (control === 'input') {
+      return (
+        <Input ariaLabel={label} value={fieldValue} placeholder={label} onChange={e => onValueChange(e.detail.value)} />
+      );
+    }
+    const autosuggest = (
+      <Autosuggest
+        ariaLabel={label}
+        value={fieldValue}
+        placeholder={label}
+        options={suggestions}
+        enteredTextLabel={enteredTextLabel}
+        clearAriaLabel="Clear"
+        expandToViewport={true}
+        onChange={e => onValueChange(e.detail.value)}
+      />
+    );
+    return stretch && !wrapped ? <div style={{ inlineSize: STRETCH_WIDTH }}>{autosuggest}</div> : autosuggest;
+  };
+
   // The editing controls for a clause.
   const renderClauseControls = (clause: ControlledClause) => (
     <>
-      <Autosuggest
-        ariaLabel="Label name"
-        value={clause.name}
-        placeholder="Label name"
-        options={LABEL_NAME_SUGGESTIONS}
-        enteredTextLabel={enteredTextLabel}
-        clearAriaLabel="Clear"
-        onChange={e => updateClause(clause.id, { name: e.detail.value })}
-      />
+      {renderField('Label name', clause.name, LABEL_NAME_SUGGESTIONS, value =>
+        updateClause(clause.id, { name: value })
+      )}
       <Select
         ariaLabel="Operator"
         selectedOption={clause.operator}
         options={OPERATORS}
         onChange={e => updateClause(clause.id, { operator: e.detail.selectedOption })}
       />
-      <Autosuggest
-        ariaLabel="Label value"
-        value={clause.value}
-        placeholder="Label value"
-        options={LABEL_VALUE_SUGGESTIONS}
-        enteredTextLabel={enteredTextLabel}
-        clearAriaLabel="Clear"
-        onChange={e => updateClause(clause.id, { value: e.detail.value })}
-      />
+      {renderField('Label value', clause.value, LABEL_VALUE_SUGGESTIONS, value => updateClause(clause.id, { value }))}
     </>
   );
 
@@ -226,13 +265,29 @@ export default function () {
     ? (urlParams.icon as RemoveIcon)
     : 'close';
   const switchWhenWrapping = urlParams.switchWhenWrapping === true;
+  const control: ControlKind = CONTROL_KINDS.includes(urlParams.control as ControlKind)
+    ? (urlParams.control as ControlKind)
+    : 'autosuggest';
+  // "Stretch" only applies to autosuggest (it fixes the autosuggest's clear-button width
+  // jump); it is ignored for plain inputs.
+  const stretch = control === 'autosuggest' && urlParams.stretch === true;
 
   return (
     <SimplePage
       title="Control group responsiveness"
-      subtitle="A query builder built from ControlGroup clauses. Resize the container (drag the handle) to see the clauses stack their controls once a clause no longer fits its line. Use the options below to control the trailing remove button."
+      subtitle="A query builder built from ControlGroup clauses. Resize the container (drag the handle) to see the clauses stack their controls once a clause no longer fits its line. Use the options below to control the field type and the trailing remove button."
       settings={
-        <SpaceBetween size="xl" direction="horizontal">
+        <SpaceBetween size="xxl" direction="horizontal">
+          <FormField label="Field control">
+            <RadioGroup
+              value={control}
+              onChange={({ detail }) => setUrlParams({ control: detail.value })}
+              items={[
+                { value: 'autosuggest', label: 'Autosuggest' },
+                { value: 'input', label: 'Input' },
+              ]}
+            />
+          </FormField>
           <FormField label="Remove button icon">
             <RadioGroup
               value={iconName}
@@ -243,17 +298,29 @@ export default function () {
               ]}
             />
           </FormField>
-          <Checkbox
-            checked={switchWhenWrapping}
-            onChange={({ detail }) => setUrlParams({ switchWhenWrapping: detail.checked })}
-          >
-            Change to regular button when wrapping
-          </Checkbox>
+          <SpaceBetween size="s">
+            <Checkbox
+              checked={switchWhenWrapping}
+              onChange={({ detail }) => setUrlParams({ switchWhenWrapping: detail.checked })}
+            >
+              Change to regular button when wrapping
+            </Checkbox>
+            {control === 'autosuggest' && (
+              <Checkbox checked={stretch} onChange={({ detail }) => setUrlParams({ stretch: detail.checked })}>
+                Pin autosuggests to a fixed width
+              </Checkbox>
+            )}
+          </SpaceBetween>
         </SpaceBetween>
       }
     >
       <div style={resizableContainerStyle}>
-        <ControlledQueryBuilder iconName={iconName} switchWhenWrapping={switchWhenWrapping} />
+        <ControlledQueryBuilder
+          iconName={iconName}
+          switchWhenWrapping={switchWhenWrapping}
+          control={control}
+          stretch={stretch}
+        />
       </div>
     </SimplePage>
   );
