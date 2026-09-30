@@ -190,6 +190,18 @@
       @include styles.control-group-invalid-reset-leading-seam;
     }
 
+    // The leading-seam reset above restores the leading border to the normal field width
+    // and resets the leading padding to the plain field padding — but that padding does
+    // not leave room for a start icon (for example the magnifying glass of a search-style
+    // Autosuggest), so its text would overlap the icon. When such a control has a start
+    // icon, restore the icon padding. The first control keeps its thick leading indicator,
+    // so it uses the invalid start-icon compensation from `.input-invalid`/`.input-warning`
+    // above; only the seam-reset middle/last controls need this.
+    &.input-has-icon-start.input-in-control-group-middle:not(.input-in-control-group-stacked),
+    &.input-has-icon-start.input-in-control-group-last:not(.input-in-control-group-stacked) {
+      padding-inline-start: styles.$control-icon-horizontal-padding;
+    }
+
     // Stacked (wrapped): the controls fuse into a vertical unit. The inline-start (thick
     // indicator) and inline-end borders run down the whole column and stay painted; only
     // the block-axis seams BETWEEN fused controls are interior and get reset. A control's

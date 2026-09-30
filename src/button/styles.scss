@@ -263,17 +263,17 @@ $tokens: style-api.resolve($props, carrier);
         text-align: center;
       }
 
-      // In a row an ICON custom `actions` button (no text) takes the grouped-control
-      // default border: the same neutral field border/background and fixed square size
-      // as the other grouped controls, so it reads as part of the fused unit rather than
-      // a borderless icon button. A text button keeps its own variant appearance.
-      &.button-no-text:not(.in-control-group-stacked) {
+      // An ICON custom `actions` button (no text) takes the grouped-control default
+      // border in BOTH layouts: the same neutral field border/background as the other
+      // grouped controls, so it reads as part of the fused unit rather than a borderless
+      // icon button. In a row it is a fixed square; when the group wraps it fuses
+      // vertically and fills the row like the other stacked controls. A text button
+      // keeps its own variant appearance in both layouts.
+      &.button-no-text {
         border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
         border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
         background-color: awsui.$color-background-input-default;
         min-block-size: awsui.$size-vertical-input;
-        block-size: awsui.$size-vertical-input;
-        inline-size: awsui.$size-vertical-input;
         padding-inline: 0;
         display: inline-flex;
         align-items: center;
@@ -282,6 +282,17 @@ $tokens: style-api.resolve($props, carrier);
         &:hover,
         &:active {
           border-color: awsui.$color-border-input-default;
+        }
+
+        // Row: a fixed square (equal block and inline size), matching the field controls.
+        &:not(.in-control-group-stacked) {
+          block-size: awsui.$size-vertical-input;
+          inline-size: awsui.$size-vertical-input;
+        }
+        // Stacked: fill the row like the other stacked controls (the base custom-standalone
+        // `in-control-group-stacked` rule sets `inline-size: 100%`; keep the field height).
+        &.in-control-group-stacked {
+          block-size: awsui.$size-vertical-input;
         }
 
         // The focus ring hugs the square edges (zero gutter), matching the field-styled
@@ -296,25 +307,46 @@ $tokens: style-api.resolve($props, carrier);
         }
       }
 
-      // When the group is in an error / warning state AND laid out as a row, paint the
-      // button's inline-start border — the seam it shares with the last control — in the
-      // status color, so the group's unit status border continues up to and stops at the
-      // button edge. Applies whether the button keeps its own variant border (text) or
-      // borrows the field border (icon). Placed AFTER the icon field-border block so it
-      // overrides that block's neutral inline-start border (incl. hover/active). Not
-      // applied when stacked, where the button is a separate attached control.
-      &.in-control-group-invalid:not(.in-control-group-stacked) {
-        &,
-        &:hover,
-        &:active {
-          border-inline-start-color: awsui.$color-text-status-error;
+      // When the group is in an error / warning state, the button continues the group's
+      // unit status border onto its own edges. Placed AFTER the icon field-border block
+      // so it overrides that block's neutral border (incl. hover/active).
+      //
+      //   - ROW: only the button's inline-start border — the seam it shares with the last
+      //     control — is painted, so the status border runs up to and stops at the button.
+      //   - WRAPPED (stacked): only the button's block-start border — the seam it shares
+      //     with the control above — is painted in the status color, so the group's status
+      //     border continues down onto the top of the button. The button's other three
+      //     borders keep its own (variant) border color.
+      &.in-control-group-invalid {
+        &:not(.in-control-group-stacked) {
+          &,
+          &:hover,
+          &:active {
+            border-inline-start-color: awsui.$color-text-status-error;
+          }
+        }
+        &.in-control-group-stacked {
+          &,
+          &:hover,
+          &:active {
+            border-block-start-color: awsui.$color-text-status-error;
+          }
         }
       }
-      &.in-control-group-warning:not(.in-control-group-stacked) {
-        &,
-        &:hover,
-        &:active {
-          border-inline-start-color: awsui.$color-text-status-warning;
+      &.in-control-group-warning {
+        &:not(.in-control-group-stacked) {
+          &,
+          &:hover,
+          &:active {
+            border-inline-start-color: awsui.$color-text-status-warning;
+          }
+        }
+        &.in-control-group-stacked {
+          &,
+          &:hover,
+          &:active {
+            border-block-start-color: awsui.$color-text-status-warning;
+          }
         }
       }
 

@@ -107,8 +107,15 @@
   // cannot paint over adjacent controls.
   isolation: isolate;
 
+  // Raise the focused slot above its neighbors AND above the group's inline label
+  // (`z-index: 2`, see `.inline-label`). A control only opens a dropdown (Select,
+  // Autosuggest, ...) while it is focused, and that dropdown is confined to this slot's
+  // stacking context (`isolation: isolate`); if the slot stayed below the label the
+  // label would paint over the open dropdown. Sitting above the label also lets the
+  // focused control's border/ring paint over the label notch, which is correct while
+  // the control is active.
   &:focus-within {
-    z-index: 1;
+    z-index: 3;
   }
 
   &:empty {
@@ -128,6 +135,39 @@
   &.control-last {
     margin-inline-start: calc(-1 * #{awsui.$border-width-field});
   }
+}
+
+// When the group wraps in an error / warning state, each field control paints a thick
+// status indicator down its inline-start edge. That indicator's top-left / bottom-left
+// corner miters against the control's own (neutral) interior block seam, which cuts a
+// small gray notch into the otherwise continuous red/orange left edge at every seam. To
+// keep the leading edge unbroken, draw a continuous status bar over the inline-start of
+// each field control slot (painted above the control's borders, so it covers the notch).
+// The stacked slots overlap by one border width, so the per-slot bars join into one line.
+// The trailing button slot is excluded: the attached button keeps its own (blue) left
+// border, and only its top border continues the status color (see button styles).
+.group.stacked.invalid,
+.group.stacked.warning {
+  > .control:not(.control-standalone):not(.control-actions)::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: awsui.$border-invalid-width;
+    z-index: 1;
+    pointer-events: none;
+  }
+  // Round the leading bar's top corner on the first slot so it follows the unit's rounded
+  // top-left; the remaining slots keep a square leading edge (they fuse vertically).
+  > .control-first::before {
+    border-start-start-radius: awsui.$border-radius-input;
+  }
+}
+.group.stacked.invalid > .control:not(.control-standalone):not(.control-actions)::before {
+  background-color: awsui.$color-text-status-error;
+}
+.group.stacked.warning > .control:not(.control-standalone):not(.control-actions)::before {
+  background-color: awsui.$color-text-status-warning;
 }
 
 // When the group is stacked, the seam overlaps on the block axis instead of the

@@ -311,10 +311,11 @@ const InternalControlGroup = forwardRef(
             // The built-in dismiss button detaches when the group wraps (a gap above it
             // and a right-aligned standalone button). A custom `actions` button instead
             // stays attached and fuses vertically, so it is NOT marked `control-standalone`
-            // — it lays out like a normal stacked control. The validation text renders
-            // below the whole group (not between the controls and this slot), so the
-            // button always fuses directly against the control above it.
+            // — it lays out like a normal stacked control (`control-actions`). The
+            // validation text renders below the whole group (not between the controls and
+            // this slot), so the button always fuses directly against the control above it.
             dismissible && styles['control-standalone'],
+            hasCustomActions && styles['control-actions'],
             testUtilStyles['control-group-item']
           )}
         >

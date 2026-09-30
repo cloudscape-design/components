@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { useControlGroupContext } from '../internal/context/control-group-context';
+import { ControlGroupContext, useControlGroupContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -282,16 +282,26 @@ function InternalInput(
           } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
         : {})}
     >
-      <InternalButton
-        // Used for test utils
-        className={styles['input-button-right']}
-        variant="inline-icon-pointer-target"
-        formAction="none"
-        iconName={__endIcon}
-        onClick={__onEndIconClick}
-        ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
-        disabled={disabled}
-      />
+      {/*
+        Reset the ControlGroup context so this internal clear/search button does not
+        inherit the group's fused field styling (borders, square sizing). The context is
+        meant for the control that occupies the group slot (the input itself), not the
+        buttons the input renders inside. Without this, an Input used inside a
+        ControlGroup (for example the field of an Autosuggest) leaks the group styling
+        onto its clear button.
+      */}
+      <ControlGroupContext.Provider value={{ isInControlGroup: false }}>
+        <InternalButton
+          // Used for test utils
+          className={styles['input-button-right']}
+          variant="inline-icon-pointer-target"
+          formAction="none"
+          iconName={__endIcon}
+          onClick={__onEndIconClick}
+          ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
+          disabled={disabled}
+        />
+      </ControlGroupContext.Provider>
     </span>
   ) : null;
 
