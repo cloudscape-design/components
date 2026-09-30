@@ -81,6 +81,9 @@ $sizes-vertical: (
   align-items: end;
 }
 
+// Propagate `align-items` to the internal wrapper element to prevent possible misalignments.
+// When the consumer-provided content is an inline element shorter than the line height,
+// this component-rendered child can be taller than it, giving room for misalignment.
 .child-aligned {
   display: flex;
   align-items: inherit;
