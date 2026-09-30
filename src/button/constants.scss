@@ -19,6 +19,7 @@ $variants: (
     'disabled-background': awsui.$color-background-button-normal-disabled,
     'disabled-border-color': awsui.$color-border-button-normal-disabled,
     'disabled-color': awsui.$color-text-button-normal-disabled,
+    'min-block-size': awsui.$size-vertical-input,
   ),
   'primary': (
     'default-background': awsui.$color-background-button-primary-default,
@@ -33,6 +34,7 @@ $variants: (
     'disabled-background': awsui.$color-background-button-primary-disabled,
     'disabled-border-color': awsui.$color-border-button-primary-disabled,
     'disabled-color': awsui.$color-text-button-primary-disabled,
+    'min-block-size': awsui.$size-vertical-input,
   ),
   'link': (
     'default-background': awsui.$color-background-button-link-default,
@@ -47,6 +49,7 @@ $variants: (
     'disabled-background': awsui.$color-background-button-link-disabled,
     'disabled-border-color': awsui.$color-border-button-link-disabled,
     'disabled-color': awsui.$color-text-button-link-disabled,
+    'min-block-size': awsui.$size-vertical-input,
   ),
   'icon': (
     'default-background': transparent,
