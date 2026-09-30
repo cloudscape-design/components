@@ -87,6 +87,10 @@ const permutations = createPermutations<InternalControlGroupProps>([
         {multiselect}
       </>,
       <>
+        {multiselect}
+        {select}
+      </>,
+      <>
         {input}
         {select}
         {input}
@@ -94,6 +98,16 @@ const permutations = createPermutations<InternalControlGroupProps>([
       <>
         {autosuggest}
         {select}
+        {autosuggest}
+      </>,
+      <>
+        {input}
+        {multiselect}
+        {input}
+      </>,
+      <>
+        {autosuggest}
+        {multiselect}
         {autosuggest}
       </>,
     ],
