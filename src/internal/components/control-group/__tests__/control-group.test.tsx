@@ -4,15 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import InternalControlGroup from '../../../../../lib/components/internal/components/control-group';
-import {
-  ResetGroupedControlContext,
-  useGroupedControlContext,
-} from '../../../../../lib/components/internal/context/control-group-context';
-
-function PositionProbe({ testId = 'probe' }: { testId?: string }) {
-  const { position } = useGroupedControlContext();
-  return <div data-testid={testId}>{position ?? 'none'}</div>;
-}
+import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
+import { PositionProbe } from './common';
 
 describe('Control group', () => {
   test('keeps focus on a control when the children are reordered', () => {
