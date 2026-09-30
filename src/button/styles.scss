@@ -116,6 +116,7 @@ $tokens: style-api.resolve($props, carrier);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  min-block-size: awsui.$size-vertical-input;
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
