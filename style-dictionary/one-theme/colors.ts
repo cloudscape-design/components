@@ -204,7 +204,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
 
   // ── Table ─────────────────────────────────────────────────────────────────
-  colorBackgroundCellShaded: { light: '{colorNeutral150}', dark: '{colorNeutral900}' },
+  colorBackgroundCellShaded: { light: '{colorNeutral200}', dark: '{colorNeutral900}' },
   colorBorderCellShaded: { light: '{colorNeutral300}', dark: '{colorNeutral700}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────

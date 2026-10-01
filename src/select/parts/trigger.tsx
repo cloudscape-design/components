@@ -7,6 +7,7 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import ButtonTrigger from '../../internal/components/button-trigger';
 import Option from '../../internal/components/option';
+import { GroupedControlPosition } from '../../internal/context/control-group-context';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
@@ -30,6 +31,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   inFilteringToken?: 'root' | 'nested';
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
+  groupedControlPosition?: GroupedControlPosition | null;
 }
 
 const Trigger = React.forwardRef(
@@ -51,6 +53,7 @@ const Trigger = React.forwardRef(
       disabled,
       readOnly,
       renderOption,
+      groupedControlPosition,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -145,6 +148,7 @@ const Trigger = React.forwardRef(
         hasCustomContent={hasCustomContent}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={ariaLabelledbyIds}
+        groupedControlPosition={groupedControlPosition}
       >
         {triggerContent}
       </ButtonTrigger>
