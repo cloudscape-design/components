@@ -90,13 +90,14 @@ interface Spec {
   color?: string;
   icon?: IconProps.Name;
   count?: string;
+  category?: string;
 }
 
 const FIELDS: Spec[] = [
-  { name: '@log', color: RED, count: '100%' },
-  { name: '@message', color: RED, count: '100%' },
-  { name: 'ResourceType', color: PURPLE, count: '42%' },
-  { name: 'statusCode', color: PURPLE, count: '88%' },
+  { name: '@log', color: RED, count: '100%', category: 'System' },
+  { name: '@message', color: RED, count: '100%', category: 'System' },
+  { name: 'ResourceType', color: PURPLE, count: '42%', category: 'Indexed' },
+  { name: 'statusCode', color: PURPLE, count: '88%', category: 'Indexed' },
 ];
 const SEVERITY: Spec[] = [
   { name: 'Critical', color: RED },
@@ -161,7 +162,7 @@ function Tokens({
                 <Popover
                   size="large"
                   dismissButton={false}
-                  content={<FieldDetails field={it.name} category="System" color={it.color ?? RED} />}
+                  content={<FieldDetails field={it.name} category={it.category ?? 'System'} color={it.color ?? RED} />}
                 >
                   {it.name}
                 </Popover>
@@ -238,8 +239,8 @@ export default function TokenAdditionsPage() {
             Clicking the label opens a popover with contextual actions. Composed by passing Popover in the label slot,
             no dedicated prop.
           </p>
-          <h3>Field details</h3>
-          <Tokens items={META} kind="popover" testIdPrefix="popover" />
+          <h3>Field details with prefix and secondary text</h3>
+          <Tokens items={FIELDS} kind="popover" testIdPrefix="popover" />
         </section>
 
         <section>
