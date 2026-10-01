@@ -43,16 +43,31 @@
     gap: calc(#{seg.$segment-gap} * 2 - #{seg.$segment-divider-width});
   }
 
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    display: none;
+  &:not(.grouped),
+  &.grouped-only {
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: none;
+    }
+  }
+}
+
+.grouped {
+  @include styles.grouped-control;
+
+  &.grouped-middle,
+  &.grouped-last {
+    border-inline-start: none;
   }
 }
 
 .select {
   display: none;
 
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    display: block;
+  &:not(.grouped),
+  &.grouped-only {
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: block;
+    }
   }
 }
 

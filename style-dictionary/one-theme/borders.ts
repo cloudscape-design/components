@@ -31,7 +31,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusBadge: '16px',
   borderRadiusButton: '4px',
   borderRadiusContainer: '2px',
-  borderRadiusDropdown: '6px',
+  borderRadiusDropdown: '4px',
   borderRadiusDropzone: '2px',
   borderRadiusFlashbar: '2px',
   borderRadiusInput: '4px',
