@@ -158,6 +158,7 @@ function Tokens({
             <Token
               key={it.name}
               {...common}
+              ariaLabel={common.ariaLabel ?? it.name}
               label={
                 <Popover
                   size="large"
@@ -196,6 +197,7 @@ export default function TokenAdditionsPage() {
           />
           <h3>2. Popover token - contextual actions</h3>
           <Token
+            ariaLabel="@logStream, System field, 100% coverage"
             label={
               <Popover
                 size="large"
