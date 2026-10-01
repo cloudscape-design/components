@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import Button, { ButtonProps } from '~components/button';
@@ -11,10 +13,14 @@ import ExpandableSection from '~components/expandable-section';
 import Grid from '~components/grid';
 import Header from '~components/header';
 import HelpPanel from '~components/help-panel';
+import Modal from '~components/modal';
 import PanelLayout from '~components/panel-layout';
 import SideNavigation from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
-import ToggleButton, { ToggleButtonProps } from '~components/toggle-button';
+
+import styles from './styles.scss';
+
+const RESPONSIVE_BREAKPOINT = 800;
 
 const TIME_PERIOD_ITEMS = [
   { id: '15m', text: 'Last 15 minutes' },
@@ -31,6 +37,25 @@ const TIME_ZONE_ITEMS = [
   { id: 'local', text: 'Local time' },
 ];
 
+function BrowseSections() {
+  return (
+    <SpaceBetween size="xs">
+      <ExpandableSection headerText="Recent queries" defaultExpanded={true}>
+        <Box color="text-body-secondary">Your most recent queries appear here.</Box>
+      </ExpandableSection>
+      <ExpandableSection headerText="Saved queries">
+        <Box color="text-body-secondary">Queries you have saved appear here.</Box>
+      </ExpandableSection>
+      <ExpandableSection headerText="Metrics">
+        <Box color="text-body-secondary">Browse metrics to query against.</Box>
+      </ExpandableSection>
+      <ExpandableSection headerText="Labels">
+        <Box color="text-body-secondary">Filter and browse by label.</Box>
+      </ExpandableSection>
+    </SpaceBetween>
+  );
+}
+
 interface BrowseProps {
   collapseRef: React.Ref<ButtonProps.Ref>;
   onClose: () => void;
@@ -38,52 +63,60 @@ interface BrowseProps {
 
 function Browse({ collapseRef, onClose }: BrowseProps) {
   return (
-    <Container
-      header={
-        <Header
-          variant="h2"
-          actions={
-            <Button
-              ref={collapseRef}
-              variant="icon"
-              iconName="angle-left"
-              ariaLabel="Collapse browse panel"
-              onClick={onClose}
-            />
-          }
-        >
-          Browse
-        </Header>
-      }
-      fitHeight={true}
-    >
-      <SpaceBetween size="xs">
-        <ExpandableSection headerText="Recent queries" defaultExpanded={true}>
-          <Box color="text-body-secondary">Your most recent queries appear here.</Box>
-        </ExpandableSection>
-        <ExpandableSection headerText="Saved queries">
-          <Box color="text-body-secondary">Queries you have saved appear here.</Box>
-        </ExpandableSection>
-        <ExpandableSection headerText="Metrics">
-          <Box color="text-body-secondary">Browse metrics to query against.</Box>
-        </ExpandableSection>
-        <ExpandableSection headerText="Labels">
-          <Box color="text-body-secondary">Filter and browse by label.</Box>
-        </ExpandableSection>
-      </SpaceBetween>
-    </Container>
+    <div className={styles['panel-reveal-from-left']}>
+      <Container
+        header={
+          <Header
+            variant="h2"
+            actions={
+              <Button
+                ref={collapseRef}
+                variant="icon"
+                iconName="angle-left"
+                ariaLabel="Collapse browse panel"
+                onClick={onClose}
+              />
+            }
+          >
+            Browse
+          </Header>
+        }
+        fitHeight={true}
+      >
+        <BrowseSections />
+      </Container>
+    </div>
   );
 }
 
-function MainContent() {
+function MainContent({ browseStack = null }: { browseStack?: React.ReactNode }) {
   const [vizOpen, setVizOpen] = useState(false);
-  const vizToggleRef = useRef<ToggleButtonProps.Ref>(null);
+  const vizToggleRef = useRef<ButtonProps.Ref>(null);
   const vizCloseRef = useRef<ButtonProps.Ref>(null);
   const vizMounted = useRef(false);
+
+  const [vizRegionWidth, vizRegionRef] = useContainerQuery(entry => entry.contentBoxWidth, []);
+  const vizAsModal = vizRegionWidth !== null && vizRegionWidth < RESPONSIVE_BREAKPOINT;
+
+  // Entering modal mode must never auto-open the modal; it opens only on a button click.
+  const prevVizAsModal = useRef(vizAsModal);
+  useEffect(() => {
+    if (vizAsModal && !prevVizAsModal.current) {
+      setVizOpen(false);
+    }
+    prevVizAsModal.current = vizAsModal;
+  }, [vizAsModal]);
 
   useEffect(() => {
     if (!vizMounted.current) {
       vizMounted.current = true;
+      return;
+    }
+    // The modal manages its own focus; only hand focus back to the toggle on close.
+    if (vizAsModal) {
+      if (!vizOpen) {
+        vizToggleRef.current?.focus();
+      }
       return;
     }
     if (vizOpen) {
@@ -91,82 +124,112 @@ function MainContent() {
     } else {
       vizToggleRef.current?.focus();
     }
-  }, [vizOpen]);
+  }, [vizOpen, vizAsModal]);
 
-  const resultsHeader = (
-    <Header
-      variant="h2"
-      actions={
-        <ToggleButton
-          ref={vizToggleRef}
-          pressed={vizOpen}
-          onChange={({ detail }) => setVizOpen(detail.pressed)}
-          iconName="settings"
-          pressedIconName="settings"
-          ariaLabel="Toggle visualization panel"
-          ariaControls="visualization-panel"
-        />
-      }
-    >
-      Results
-    </Header>
+  const vizToggle = (
+    <Button
+      ref={vizToggleRef}
+      variant="icon"
+      iconName="settings"
+      ariaLabel="Toggle visualization panel"
+      ariaExpanded={vizOpen}
+      ariaControls="visualization-panel"
+      onClick={() => setVizOpen(open => !open)}
+    />
   );
 
-  const resultsWithViz = (
-    <div id="visualization-panel">
-      <PanelLayout
-        display={vizOpen ? 'all' : 'main-only'}
-        panelPosition="side-end"
-        resizable={true}
-        defaultPanelSize={320}
-        minPanelSize={240}
-        maxPanelSize={560}
-        i18nStrings={{
-          resizeHandleAriaLabel: 'Resize visualization panel',
-          resizeHandleTooltipText: 'Drag to resize',
-        }}
-        mainContent={
-          <Container header={resultsHeader}>
-            <Box color="text-body-secondary" padding={{ vertical: 'xxl' }} textAlign="center">
-              Query results appear here.
-            </Box>
+  const resultsBody = (
+    <Box color="text-body-secondary" padding={{ vertical: 'xxl' }} textAlign="center">
+      Query results appear here.
+    </Box>
+  );
+
+  const vizBody = <Box color="text-body-secondary">Charts and visualizations of your results appear here.</Box>;
+
+  const resultsWithViz = vizAsModal ? (
+    <>
+      <Container
+        header={
+          <Header variant="h2" actions={vizToggle}>
+            Results
+          </Header>
+        }
+      >
+        {resultsBody}
+      </Container>
+      <Modal
+        visible={vizOpen}
+        onDismiss={() => setVizOpen(false)}
+        header="Visualization"
+        closeAriaLabel="Close visualization"
+      >
+        {vizBody}
+      </Modal>
+    </>
+  ) : (
+    <PanelLayout
+      display={vizOpen ? 'all' : 'main-only'}
+      panelPosition="side-end"
+      resizable={true}
+      defaultPanelSize={320}
+      minPanelSize={240}
+      maxPanelSize={560}
+      i18nStrings={{
+        resizeHandleAriaLabel: 'Resize visualization panel',
+        resizeHandleTooltipText: 'Drag to resize',
+      }}
+      mainContent={
+        <Container
+          header={
+            <Header variant="h2" actions={vizToggle}>
+              Results
+            </Header>
+          }
+        >
+          {resultsBody}
+        </Container>
+      }
+      panelContent={
+        <div className={styles['panel-reveal-from-right']}>
+          <Container
+            header={
+              <Header
+                variant="h2"
+                actions={
+                  <Button
+                    ref={vizCloseRef}
+                    variant="icon"
+                    iconName="angle-right"
+                    ariaLabel="Close visualization panel"
+                    onClick={() => setVizOpen(false)}
+                  />
+                }
+              >
+                Visualization
+              </Header>
+            }
+            fitHeight={true}
+          >
+            {vizBody}
           </Container>
-        }
-        panelContent={
-          <div role="region" aria-label="Visualization">
-            <Box padding={{ horizontal: 's' }}>
-              <SpaceBetween size="s">
-                <Header
-                  variant="h3"
-                  actions={
-                    <Button
-                      ref={vizCloseRef}
-                      variant="icon"
-                      iconName="angle-right"
-                      ariaLabel="Close visualization panel"
-                      onClick={() => setVizOpen(false)}
-                    />
-                  }
-                >
-                  Visualization
-                </Header>
-                <Box color="text-body-secondary">Charts and visualizations of your results appear here.</Box>
-              </SpaceBetween>
-            </Box>
-          </div>
-        }
-      />
-    </div>
+        </div>
+      }
+    />
   );
 
   return (
     <SpaceBetween size="l">
-      <Container header={<Header variant="h2">Query</Header>}>
-        <Box color="text-body-secondary" padding={{ vertical: 'xxl' }} textAlign="center">
-          Compose your query here.
-        </Box>
-      </Container>
-      {resultsWithViz}
+      <div>
+        {browseStack}
+        <Container variant={browseStack ? 'stacked' : 'default'} header={<Header variant="h2">Query</Header>}>
+          <Box color="text-body-secondary" padding={{ vertical: 'xxl' }} textAlign="center">
+            Compose your query here.
+          </Box>
+        </Container>
+      </div>
+      <div id="visualization-panel" ref={vizRegionRef}>
+        {resultsWithViz}
+      </div>
     </SpaceBetween>
   );
 }
@@ -179,14 +242,21 @@ export default function QueryConsolePage() {
   const [timePeriod, setTimePeriod] = useState(TIME_PERIOD_ITEMS[1]);
   const [timeZone, setTimeZone] = useState(TIME_ZONE_ITEMS[0]);
 
-  const toggleRef = useRef<ToggleButtonProps.Ref>(null);
+  const toggleRef = useRef<ButtonProps.Ref>(null);
   const collapseRef = useRef<ButtonProps.Ref>(null);
   // Skip the mount pass so the panel doesn't grab focus on initial render.
   const mounted = useRef(false);
 
+  const [browseRegionWidth, browseRegionRef] = useContainerQuery(entry => entry.contentBoxWidth, []);
+  const browseAsExpandable = browseRegionWidth !== null && browseRegionWidth < RESPONSIVE_BREAKPOINT;
+
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
+      return;
+    }
+    // In the stacked layout the ExpandableSection owns focus; only the side panel hands focus around.
+    if (browseAsExpandable) {
       return;
     }
     if (browseOpen) {
@@ -194,20 +264,23 @@ export default function QueryConsolePage() {
     } else {
       toggleRef.current?.focus();
     }
-  }, [browseOpen]);
+  }, [browseOpen, browseAsExpandable]);
 
   const controlsStrip = (
     <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
       <div>
-        <ToggleButton
-          ref={toggleRef}
-          pressed={browseOpen}
-          onChange={({ detail }) => setBrowseOpen(detail.pressed)}
-          iconName="settings"
-          pressedIconName="settings"
-          ariaLabel="Toggle browse panel"
-          ariaControls="browse-panel"
-        />
+        {!browseAsExpandable && (
+          <Button
+            ref={toggleRef}
+            variant="link"
+            iconName="menu"
+            ariaExpanded={browseOpen}
+            ariaControls="browse-panel"
+            onClick={() => setBrowseOpen(open => !open)}
+          >
+            Browse
+          </Button>
+        )}
       </div>
       <Box float="right">
         <SpaceBetween direction="horizontal" size="xs">
@@ -276,21 +349,36 @@ export default function QueryConsolePage() {
         <SpaceBetween size="l">
           <Header variant="h1">Query</Header>
           {controlsStrip}
-          <div id="browse-panel">
-            <PanelLayout
-              display={browseOpen ? 'all' : 'main-only'}
-              panelPosition="side-start"
-              resizable={true}
-              defaultPanelSize={280}
-              minPanelSize={220}
-              maxPanelSize={480}
-              i18nStrings={{
-                resizeHandleAriaLabel: 'Resize browse panel',
-                resizeHandleTooltipText: 'Drag to resize',
-              }}
-              panelContent={<Browse collapseRef={collapseRef} onClose={() => setBrowseOpen(false)} />}
-              mainContent={<MainContent />}
-            />
+          <div id="browse-panel" ref={browseRegionRef}>
+            {browseAsExpandable ? (
+              <MainContent
+                browseStack={
+                  <ExpandableSection
+                    variant="stacked"
+                    headerText="Browse"
+                    expanded={browseOpen}
+                    onChange={({ detail }) => setBrowseOpen(detail.expanded)}
+                  >
+                    <BrowseSections />
+                  </ExpandableSection>
+                }
+              />
+            ) : (
+              <PanelLayout
+                display={browseOpen ? 'all' : 'main-only'}
+                panelPosition="side-start"
+                resizable={true}
+                defaultPanelSize={280}
+                minPanelSize={220}
+                maxPanelSize={480}
+                i18nStrings={{
+                  resizeHandleAriaLabel: 'Resize browse panel',
+                  resizeHandleTooltipText: 'Drag to resize',
+                }}
+                panelContent={<Browse collapseRef={collapseRef} onClose={() => setBrowseOpen(false)} />}
+                mainContent={<MainContent />}
+              />
+            )}
           </div>
         </SpaceBetween>
       }
