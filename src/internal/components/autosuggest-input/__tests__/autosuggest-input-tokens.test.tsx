@@ -3321,7 +3321,7 @@ describe('removeToken rAF normal path: focus adjacent token (lines 412-416)', ()
 
     // The rAF focuses a dismiss button in the updated token list
     // (positionInVisible=0 clamped to dismissButtons.length-1=1, focus call made)
-    expect(wrapper.findAllTokens().length).toBe(2);
+    expect(wrapper.findTokens().length).toBe(2);
 
     jest.useRealTimers();
   });
