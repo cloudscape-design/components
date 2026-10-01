@@ -119,6 +119,23 @@ const permutations = createPermutations<InternalControlGroupProps>([
   },
 ]);
 
+const inlineLabelPermutations = createPermutations<InternalControlGroupProps>([
+  {
+    inlineLabelText: ['Threshold'],
+    children: [
+      <>
+        {input}
+        {select}
+      </>,
+      <>
+        {select}
+        {input}
+        {multiselect}
+      </>,
+    ],
+  },
+]);
+
 export default function ControlGroupPermutations() {
   // The name `direction` is already taken for the LTR/RTL URL parameter
   const { urlParams, setUrlParams } = useAppContext<'controlGroupDirection'>();
@@ -144,6 +161,10 @@ export default function ControlGroupPermutations() {
       <PermutationsView
         permutations={permutations}
         render={permutation => <ControlGroup {...permutation} direction={direction} />}
+      />
+      <PermutationsView
+        permutations={inlineLabelPermutations}
+        render={permutation => <ControlGroup {...permutation} />}
       />
     </PermutationsPage>
   );

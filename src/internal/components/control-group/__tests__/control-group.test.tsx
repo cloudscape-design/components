@@ -105,4 +105,31 @@ describe('Control group', () => {
       expect(getByTestId('direction')).toHaveTextContent('vertical');
     });
   });
+
+  test('renders the inline label and wires it to the group via aria-labelledby', () => {
+    const { getByRole, getByText } = render(
+      <InternalControlGroup inlineLabelText="Threshold">
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </InternalControlGroup>
+    );
+
+    const group = getByRole('group');
+    const label = getByText('Threshold');
+
+    expect(label.id).toBeTruthy();
+    expect(group.getAttribute('aria-labelledby')).toBe(label.id);
+  });
+
+  test('omits the inline label and aria-labelledby when inlineLabelText is not set', () => {
+    const { getByRole, queryByText } = render(
+      <InternalControlGroup>
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </InternalControlGroup>
+    );
+
+    expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
+    expect(queryByText('Threshold')).toBeNull();
+  });
 });
