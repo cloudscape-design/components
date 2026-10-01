@@ -26,7 +26,7 @@ function ModalWithAnalyticsFunnel({
   analyticsMetadata,
   baseComponentProps,
   size = 'medium',
-  hideDismissButton = false,
+  hideDismissButton,
   ...props
 }: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
   const modalId = useUniqueId();
