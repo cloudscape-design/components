@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "خطأ",
     "selectedAriaLabel": "مُحدَّد",
-    "enteredTextLabel": "استخدم: \"{value}\"",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{استخدم: \"{value}\"}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{استخدم: \"{value}\"}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "إعادة المحاولة"
   },
   "breadcrumb-group": {

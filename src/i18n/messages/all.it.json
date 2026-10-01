@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "Errore",
     "selectedAriaLabel": "Selezionato",
-    "enteredTextLabel": "Utilizza: «{value}»",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Utilizza: «{value}»}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Utilizza: «{value}»}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "Riprova"
   },
   "breadcrumb-group": {

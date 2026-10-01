@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "Hata",
     "selectedAriaLabel": "Seçili",
-    "enteredTextLabel": "Şunu kullan: \"{value}\"",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Şunu kullan: \"{value}\"}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Şunu kullan: \"{value}\"}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "Yeniden dene"
   },
   "breadcrumb-group": {

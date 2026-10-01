@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "Kesalahan",
     "selectedAriaLabel": "Dipilih",
-    "enteredTextLabel": "Gunakan: \"{value}\"",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Gunakan: \"{value}\"}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{Gunakan: \"{value}\"}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "Coba lagi"
   },
   "breadcrumb-group": {

@@ -57,6 +57,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    tokens,
+    i18nStrings,
     __internalRootRef,
     ...restProps
   } = props;
@@ -79,22 +81,51 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
   const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
+  const isTokenMode = tokens !== undefined;
+
   if (restProps.recoveryText && !onLoadItems) {
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
+
+  const resolvedEnteredTextLabel =
+    enteredTextLabel ??
+    i18nStrings?.enteredTextLabel ??
+    i18n(
+      'i18nStrings.enteredTextLabel',
+      undefined,
+      format => (v: string) => format({ value: v, isTokenMode: String(isTokenMode) })
+    ) ??
+    i18n(
+      'enteredTextLabel',
+      undefined,
+      format => (v: string) => format({ value: v, isTokenMode: String(isTokenMode) })
+    ) ??
+    (isTokenMode ? (v: string) => `Add "${v}"` : undefined);
+
+  const resolvedTokenOverflowAriaLabel =
+    i18nStrings?.tokenOverflowAriaLabel ??
+    i18n('i18nStrings.tokenOverflowAriaLabel', undefined, format => (n: number) => format({ count: n })) ??
+    ((n: number) => `${n} more items`);
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
-    enteredTextLabel,
+    enteredTextLabel: resolvedEnteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
     onSelectItem: (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
+      const selectedValue = option.value || '';
+      if (isTokenMode && selectedValue) {
+        // In token mode: add selected value as a token and clear the input
+        const currentTokens = tokens ?? [];
+        const updated = [...currentTokens, { value: selectedValue, dismissLabel: selectedValue }];
+        fireNonCancelableEvent(onChange, { value: '', tokens: updated });
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
       fireNonCancelableEvent(onSelect, {
-        value,
+        value: selectedValue,
         selectedOption: option.type !== 'use-entered' ? option.option : undefined,
       });
       autosuggestInputRef.current?.close();
@@ -225,6 +256,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      tokens={isTokenMode ? tokens : undefined}
+      tokenOverflowAriaLabel={resolvedTokenOverflowAriaLabel}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList
