@@ -109,7 +109,6 @@ function InternalInput(
     prefix,
     suffix,
     inlineLabelText,
-    inlineLabelText,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -346,24 +345,6 @@ function InternalInput(
     <div
       {...extraProps}
       className={clsx(extraProps.className, styles['input-container'])}
-  // Root-level props (base component props, root class/ref, and analytics metadata)
-  // are applied to the outermost rendered element so the component root always
-  // contains the whole component, including the inline label when present.
-  const rootProps = {
-    ...baseProps,
-    className: baseProps.className,
-    ref: __internalRootRef,
-    ...(__injectAnalyticsComponentMetadata
-      ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
-      : copyAnalyticsMetadataAttribute(rest)),
-  };
-
-  const renderInputWithPrefixSuffix = (
-    extraProps: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> } = {}
-  ) => (
-    <div
-      {...extraProps}
-      className={clsx(extraProps.className, styles['input-container'])}
       dir={type === 'email' ? 'ltr' : undefined}
     >
       {__startIcon && (
@@ -417,7 +398,6 @@ function InternalInput(
           {endIcon}
         </div>
       ) : (
-        mainInput
         mainInput
       )}
       {!hasPrefixOrSuffix && endIcon}
