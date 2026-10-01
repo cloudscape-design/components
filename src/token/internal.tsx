@@ -64,7 +64,6 @@ function InternalToken({
   onDismiss,
   tooltipContent,
   prefix,
-  secondaryText,
 
   // Internal
   role,
@@ -126,6 +125,7 @@ function InternalToken({
       return {
         ...labelObject,
         disabled,
+        labelTag,
         __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{sizedIcon(icon)}</span>,
       };
     } else {
@@ -208,11 +208,6 @@ function InternalToken({
             labelId={ariaLabelledbyId}
             customContent={__customContent}
           />
-          {secondaryText !== undefined && (
-            <span aria-hidden="true" className={styles['secondary-text']}>
-              {secondaryText}
-            </span>
-          )}
           {onDismiss && (
             <DismissButton
               disabled={disabled}

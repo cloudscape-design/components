@@ -33724,12 +33724,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "boolean",
     },
     {
-      "description": "Secondary text shown inline after the label, such as a count or percentage.",
-      "name": "secondaryText",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "An object containing CSS properties to customize the token's visual appearance.
 Refer to the [style](/components/token/?tabId=style) tab for more details.",
       "inlineType": {
@@ -33913,7 +33907,7 @@ Only applies to plain text labels.",
     {
       "description": "Specifies the token's visual style and functionality.
 
-For \`inline\` only label, icon and dismiss button are displayed.
+For \`inline\` only label, label tag, icon and dismiss button are displayed.
 
 Defaults to \`normal\` if not specified.",
       "inlineType": {
