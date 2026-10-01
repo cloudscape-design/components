@@ -98,6 +98,11 @@ function MainContent({ browseStack = null }: { browseStack?: React.ReactNode }) 
   const [vizRegionWidth, vizRegionRef] = useContainerQuery(entry => entry.contentBoxWidth, []);
   const vizAsModal = vizRegionWidth !== null && vizRegionWidth < RESPONSIVE_BREAKPOINT;
 
+  // Read the current layout inside the focus effect without making it a dependency,
+  // so crossing the breakpoint on resize never moves focus — only a user open/close does.
+  const vizAsModalRef = useRef(vizAsModal);
+  vizAsModalRef.current = vizAsModal;
+
   // Entering modal mode must never auto-open the modal; it opens only on a button click.
   const prevVizAsModal = useRef(vizAsModal);
   useEffect(() => {
@@ -113,7 +118,7 @@ function MainContent({ browseStack = null }: { browseStack?: React.ReactNode }) 
       return;
     }
     // The modal manages its own focus; only hand focus back to the toggle on close.
-    if (vizAsModal) {
+    if (vizAsModalRef.current) {
       if (!vizOpen) {
         vizToggleRef.current?.focus();
       }
@@ -124,9 +129,18 @@ function MainContent({ browseStack = null }: { browseStack?: React.ReactNode }) 
     } else {
       vizToggleRef.current?.focus();
     }
-  }, [vizOpen, vizAsModal]);
+  }, [vizOpen]);
 
-  const vizToggle = (
+  const vizToggle = vizAsModal ? (
+    <Button
+      ref={vizToggleRef}
+      variant="icon"
+      iconName="settings"
+      ariaLabel="Open visualization"
+      ariaHaspopup="dialog"
+      onClick={() => setVizOpen(true)}
+    />
+  ) : (
     <Button
       ref={vizToggleRef}
       variant="icon"
