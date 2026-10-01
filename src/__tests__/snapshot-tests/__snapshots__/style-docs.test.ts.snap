@@ -147,6 +147,26 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for radio-button matches the snapshot: radio-button 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "tokens": [
+        "color",
+        "background-color",
+        "border-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
 {
   "slots": [
@@ -186,6 +206,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "radio-button",
   "toggle",
 ]
 `;

@@ -555,6 +555,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -4246,6 +4253,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -7947,6 +7961,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -11638,6 +11659,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -15339,6 +15367,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -19035,6 +19070,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#232f3e",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -22726,6 +22768,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "color-background-layout-panel": {
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-layout-panel-content": {
+      "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
@@ -26432,6 +26481,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -30123,6 +30179,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -33824,6 +33887,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -37515,6 +37585,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -41216,6 +41293,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -44907,6 +44991,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -48608,6 +48699,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#161d26",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -52304,6 +52402,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#161d26",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -55995,6 +56100,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-background-layout-panel": {
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-layout-panel-content": {
+      "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
