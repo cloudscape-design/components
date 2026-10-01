@@ -4,7 +4,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useDensityMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -329,6 +329,8 @@ function TokenDismissButton({
   parent: boolean;
   disabled?: boolean;
 }) {
+  const isOneTheme = isThemeActive(Theme.OneTheme);
+
   return (
     <button
       type="button"
@@ -343,7 +345,11 @@ function TokenDismissButton({
       data-awsui-motion-trigger="hover"
       {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
-      <InternalIcon name="close" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
+      <InternalIcon
+        name="close"
+        size={isOneTheme ? 'x-small' : undefined}
+        nativeAttributes={{ 'data-awsui-motion-target': '' }}
+      />
     </button>
   );
 }
