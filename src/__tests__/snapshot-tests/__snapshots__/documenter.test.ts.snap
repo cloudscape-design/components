@@ -33724,6 +33724,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "boolean",
     },
     {
+      "description": "Secondary text shown inline after the label, such as a count or percentage.",
+      "name": "secondaryText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "An object containing CSS properties to customize the token's visual appearance.
 Refer to the [style](/components/token/?tabId=style) tab for more details.",
       "inlineType": {
@@ -33939,6 +33945,14 @@ When \`variant="inline"\`, icon size should be \`x-small\`.",
 For \`variant="inline"\`, only plain text is supported, for example, strings or numbers.",
       "isDefault": false,
       "name": "label",
+    },
+    {
+      "description": "Slot for a decorative category marker before the label, typically a color dot.
+
+The slot is \`aria-hidden\` and must not contain interactive content. Convey the category
+in the \`label\` or \`ariaLabel\` as well - color must never be the only signal.",
+      "isDefault": false,
+      "name": "prefix",
     },
   ],
   "releaseStatus": "stable",
