@@ -63,6 +63,8 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  prefix,
+  secondaryText,
 
   // Internal
   role,
@@ -191,6 +193,11 @@ function InternalToken({
           )}
           style={tokenRootStyleProps}
         >
+          {prefix && (
+            <span aria-hidden="true" className={styles.prefix}>
+              {prefix}
+            </span>
+          )}
           <Option
             className={clsx(isInline && styles['token-option-inline'])}
             triggerVariant={isInline}
@@ -201,6 +208,11 @@ function InternalToken({
             labelId={ariaLabelledbyId}
             customContent={__customContent}
           />
+          {secondaryText !== undefined && (
+            <span aria-hidden="true" className={styles['secondary-text']}>
+              {secondaryText}
+            </span>
+          )}
           {onDismiss && (
             <DismissButton
               disabled={disabled}
