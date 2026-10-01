@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "오류",
     "selectedAriaLabel": "선택됨",
-    "enteredTextLabel": "사용: ‘{value}’",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{사용: ‘{value}’}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{사용: ‘{value}’}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "재시도"
   },
   "breadcrumb-group": {

@@ -49,7 +49,9 @@
   "autosuggest": {
     "errorIconAriaLabel": "错误",
     "selectedAriaLabel": "已选定",
-    "enteredTextLabel": "使用：“{value}”",
+    "enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{使用：“{value}”}}",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, true{Add \"{value}\"} other{使用：“{value}”}}",
+    "i18nStrings.tokenOverflowAriaLabel": "{hiddenCount} more items",
     "recoveryText": "重试"
   },
   "breadcrumb-group": {

@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
 import {
   HighlightedOptionHandlers,
@@ -55,14 +54,11 @@ export const useAutosuggestItems = ({
   hideEnteredTextLabel,
   onSelectItem,
 }: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
-  const i18n = useInternalI18n('autosuggest');
   const [showAll, setShowAll] = useState(false);
 
   const { items, getItemGroup, getItemParent } = useMemo(() => createItems(options), [options]);
 
-  const enteredItemLabel = i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format =>
-    format({ value: filterValue })
-  );
+  const enteredItemLabel = enteredTextLabel?.(filterValue);
 
   if (!enteredItemLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');

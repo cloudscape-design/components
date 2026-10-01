@@ -3088,11 +3088,23 @@ exports[`Components definition for autosuggest matches the snapshot: autosuggest
     },
     {
       "cancelable": false,
-      "description": "Called whenever a user changes the input value (by typing or pasting).
-The event \`detail\` contains the current value of the field.",
+      "description": "Called whenever the input value or token list changes.
+
+In default mode, fires on every keystroke with \`{ value }\`.
+When \`tokens\` is provided, fires in three situations:
+* Keystroke — \`value\` is the new text; \`tokens\` is unchanged.
+* Token added — \`value\` is \`""\`; \`tokens\` contains the updated list.
+* Token dismissed — \`value\` is unchanged; \`tokens\` contains the updated list.
+
+\`tokens\` is \`undefined\` when not in tokens mode.",
       "detailInlineType": {
-        "name": "BaseChangeDetail",
+        "name": "AutosuggestProps.ChangeDetail",
         "properties": [
+          {
+            "name": "tokens",
+            "optional": true,
+            "type": "ReadonlyArray<AutosuggestProps.Token>",
+          },
           {
             "name": "value",
             "optional": false,
@@ -3101,7 +3113,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "BaseChangeDetail",
+      "detailType": "AutosuggestProps.ChangeDetail",
       "name": "onChange",
     },
     {
@@ -3615,6 +3627,8 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.enteredTextLabel\` instead. This prop continues to work but will
+be removed in a future major version.",
       "description": "Specifies a function that generates the custom value indicator (for example, \`Use "\${value}"\`).",
       "i18nTag": true,
       "inlineType": {
@@ -3725,6 +3739,52 @@ Note: Manual filtering doesn't disable match highlighting.",
       "name": "hideEnteredTextOption",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "An object containing localized strings for the tokens mode UI.
+Applies only when \`tokens\` is provided.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "AutosuggestProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "enteredTextLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(hiddenCount: number) => string",
+              "parameters": [
+                {
+                  "name": "hiddenCount",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenOverflowAriaLabel",
+            "optional": true,
+            "type": "((hiddenCount: number) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AutosuggestProps.I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -4175,6 +4235,16 @@ Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
         "core",
       ],
       "type": "AutosuggestProps.Style",
+    },
+    {
+      "description": "Specifies the list of tokens to display as inline pills.
+When this prop is provided (including an empty array), the component enters tokens mode:
+accepted values accumulate as inline dismissible token pills before the text input.
+Tokens that overflow the available width collapse into a \`+N\` pill.
+This is a controlled prop — update it in response to \`onChange\`.",
+      "name": "tokens",
+      "optional": true,
+      "type": "ReadonlyArray<AutosuggestProps.Token>",
     },
     {
       "description": "Specifies the text entered into the form element.",

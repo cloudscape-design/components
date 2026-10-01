@@ -196,6 +196,20 @@
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
+  &.input-has-no-border {
+    min-block-size: unset;
+    border-block-width: 0;
+    border-inline-width: 0;
+    box-shadow: none;
+    background-color: transparent;
+    &:focus,
+    &:hover {
+      border-block-width: 0;
+      border-inline-width: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
 }
 
 .grouped {
