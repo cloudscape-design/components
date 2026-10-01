@@ -246,7 +246,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * does not fire `onLoadItems`. If null or undefined, the status will be treated as `finished`.
    */
   getExpandableItemsAsyncLoadingState?: (options: {
-    item: ButtonDropdownProps.ItemOrGroup;
+    item: ButtonDropdownProps.ItemGroup;
   }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined;
 
   /**

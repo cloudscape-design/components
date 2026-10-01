@@ -5,7 +5,7 @@ import React from 'react';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { KeyCode } from '../internal/keycode';
 
-import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface StatusFooterProps {
   content: React.ReactNode | null;
@@ -27,7 +27,7 @@ const StatusFooter = ({ content, id, hasItems, scope }: StatusFooterProps) => {
   };
   return (
     <div
-      className={styles[`test-utils-${scope}-status`]}
+      className={testUtilStyles[`${scope}-status`]}
       onClick={event => event.stopPropagation()}
       onKeyDown={stopActivationKeys}
       onKeyUp={stopActivationKeys}
