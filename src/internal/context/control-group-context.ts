@@ -62,6 +62,13 @@ export interface ControlGroupContextProps {
    */
   sideActions?: boolean;
   /**
+   * True for the controls inside the ControlGroup's hidden measurement ghost. Those
+   * duplicates must NOT register with an ambient roving tab-stop navigation provider
+   * (for example a TreeView's), or the hidden copies would pollute that provider's
+   * focusable set and break arrow-key navigation between the real controls.
+   */
+  isGhost?: boolean;
+  /**
    * True when the group is in an error state. Consumed by the built-in dismiss button
    * (which has no validation state of its own) so it paints its border — including the
    * seam it shares with the last control — in the error color, continuing the group's

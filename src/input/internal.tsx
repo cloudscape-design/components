@@ -3,7 +3,12 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useMergeRefs,
+  useSingleTabStopNavigation,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -160,6 +165,7 @@ function InternalInput(
     hasInlineLabel: inControlGroupLabeled,
     precedesDetached: inControlGroupPrecedesLabeled,
     sideActions: inControlGroupSideActions,
+    isGhost: inControlGroupGhost,
     stacked: inControlGroupStacked,
   } = useControlGroupContext();
 
@@ -247,6 +253,21 @@ function InternalInput(
   }
 
   const mergedRef = useMergeRefs(ref, inputRef);
+
+  // Register with a ControlGroup's roving tab-stop navigation so the group is a single
+  // Register with an ambient roving tab-stop navigation provider (for example a TreeView,
+  // which wraps its items in one) so the input is reachable with the arrow keys. The hook
+  // is inert when there is no provider above — it returns the input's normal tab index —
+  // so this is a no-op outside such a container. A ControlGroup measurement-ghost copy
+  // passes a detached ref so it never registers (its hidden duplicate would otherwise
+  // pollute the provider's focusable set).
+  const navRegistrationRef = useRef<HTMLInputElement>(null);
+  const { tabIndex: navTabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : inputRef, {
+    tabIndex: attributes.tabIndex,
+  });
+  if (!inControlGroupGhost) {
+    attributes.tabIndex = navTabIndex;
+  }
 
   // type = "visualSearch" renders a type="text' input
   if (attributes.type === 'visualSearch') {

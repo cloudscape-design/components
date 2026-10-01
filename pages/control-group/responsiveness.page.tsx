@@ -7,8 +7,10 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Button from '~components/button';
 import Checkbox from '~components/checkbox';
+import Container from '~components/container';
 import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import FormField from '~components/form-field';
+import Header from '~components/header';
 import Input from '~components/input';
 import RadioGroup from '~components/radio-group';
 import Select, { SelectProps } from '~components/select';
@@ -46,6 +48,11 @@ const enteredTextLabel = (value: string) => `Use: ${value}`;
 type RemoveIcon = 'close' | 'remove';
 const REMOVE_ICONS: RemoveIcon[] = ['close', 'remove'];
 
+// How the dismiss button presents across wrap states: always an icon button, always a
+// text button, or responsive (icon in a row, text when the group wraps).
+type ButtonMode = 'icon' | 'text' | 'responsive';
+const BUTTON_MODES: ButtonMode[] = ['icon', 'text', 'responsive'];
+
 // The field component used for the label name / value controls.
 type ControlKind = 'input' | 'autosuggest';
 const CONTROL_KINDS: ControlKind[] = ['input', 'autosuggest'];
@@ -62,8 +69,18 @@ const ACTIONS_POSITIONS: ControlGroupProps.ActionsPosition[] = ['inline', 'side'
 // can exceed the minimum, so the field would still grow and shrink around it.
 const STRETCH_WIDTH = 180;
 
-// Page options are stored in URL params so they survive reloads and can be shared.
-type PageParams = 'icon' | 'switchWhenWrapping' | 'control' | 'stretch' | 'actionsPosition';
+// Page options are stored in URL params so they survive reloads and can be shared. The
+// button options are per-example (each example has its own key) so changing one example's
+// options does not affect the other: the query builder uses `buttonMode`/`actionsPosition`,
+// the Input+button example uses `buttonMode2`/`actionsPosition2`.
+type PageParams =
+  | 'icon'
+  | 'buttonMode'
+  | 'control'
+  | 'stretch'
+  | 'actionsPosition'
+  | 'buttonMode2'
+  | 'actionsPosition2';
 
 const resizableContainerStyle: React.CSSProperties = {
   resize: 'horizontal',
@@ -127,13 +144,13 @@ function validateClause({ name, operator, value }: ControlledClause): { errorTex
 
 function ControlledQueryBuilder({
   iconName,
-  switchWhenWrapping,
+  buttonMode,
   control,
   stretch,
   actionsPosition,
 }: {
   iconName: RemoveIcon;
-  switchWhenWrapping: boolean;
+  buttonMode: ButtonMode;
   control: ControlKind;
   stretch: boolean;
   actionsPosition: ControlGroupProps.ActionsPosition;
@@ -209,12 +226,14 @@ function ControlledQueryBuilder({
     </>
   );
 
-  // The trailing dismiss button. It is always an icon-only button in a row; when the group
-  // wraps it either stays an icon button or, if `switchWhenWrapping` is set, becomes a
-  // regular (text) button. In side mode it always stays an icon button (it spans the full
-  // height of the stacked column beside the controls).
+  // The trailing dismiss button. `buttonMode` picks its presentation:
+  //   - `icon`: always an icon-only button.
+  //   - `text`: always a regular text button, even in side layout.
+  //   - `responsive`: an icon button in a row, a text button once the group wraps. In side
+  //     layout the button spans the stacked column's height, so responsive stays an icon.
   const renderRemoveButton = (clause: ControlledClause, wrap: boolean) => {
-    if (wrap && switchWhenWrapping && !actionsSide) {
+    const asText = buttonMode === 'text' || (buttonMode === 'responsive' && !actionsSide && wrap);
+    if (asText) {
       return <Button onClick={() => removeClause(clause.id)}>Remove</Button>;
     }
     return (
@@ -268,99 +287,198 @@ function ControlledQueryBuilder({
   );
 }
 
+// A minimal group of a single Input fused with a button, to show how a button behaves in
+// a ControlGroup across wrap states: it fuses in the row and detaches once the group
+// wraps. Where it goes when wrapping follows the page's "Button responsive layout" option
+// (`inline` stacks it below, `side` attaches it at the end spanning the controls' height),
+// and its presentation follows the "Button variant" option (icon / normal / responsive). In
+// side mode a responsive button stays an icon (it spans the stacked column's height), but a
+// normal button is still a text button. Resize the container to see it wrap.
+function InputWithTextButton({
+  buttonMode,
+  actionsPosition,
+}: {
+  buttonMode: ButtonMode;
+  actionsPosition: ControlGroupProps.ActionsPosition;
+}) {
+  const [value, setValue] = useState('');
+  const search = () => window.alert(`Search: ${value}`);
+  const actionsSide = actionsPosition === 'side';
+  return (
+    <ControlGroup
+      inlineLabelText="Search"
+      actionsPosition={actionsPosition}
+      actions={({ wrap }: { wrap: boolean }) => {
+        const asText = buttonMode === 'text' || (buttonMode === 'responsive' && !actionsSide && wrap);
+        return asText ? (
+          <Button variant="primary" onClick={search}>
+            Search
+          </Button>
+        ) : (
+          <Button variant="icon" iconName="search" ariaLabel="Search" onClick={search} />
+        );
+      }}
+    >
+      <Input
+        ariaLabel="Search query"
+        value={value}
+        placeholder="Enter a query"
+        onChange={e => setValue(e.detail.value)}
+      />
+    </ControlGroup>
+  );
+}
+
 export default function () {
   const { urlParams, setUrlParams } = useAppContext<PageParams>();
 
   const iconName: RemoveIcon = REMOVE_ICONS.includes(urlParams.icon as RemoveIcon)
     ? (urlParams.icon as RemoveIcon)
     : 'close';
-  const switchWhenWrapping = urlParams.switchWhenWrapping === true;
   const control: ControlKind = CONTROL_KINDS.includes(urlParams.control as ControlKind)
     ? (urlParams.control as ControlKind)
     : 'autosuggest';
   // "Stretch" only applies to autosuggest (it fixes the autosuggest's clear-button width
   // jump); it is ignored for plain inputs.
   const stretch = control === 'autosuggest' && urlParams.stretch === true;
-  // Where the dismiss button sits when wrapping: `inline` (stacked below the controls) or
-  // `side` (attached at the end, spanning the stacked controls' height).
-  const actionsPosition: ControlGroupProps.ActionsPosition = ACTIONS_POSITIONS.includes(
-    urlParams.actionsPosition as ControlGroupProps.ActionsPosition
-  )
-    ? (urlParams.actionsPosition as ControlGroupProps.ActionsPosition)
-    : 'inline';
-  const actionsSide = actionsPosition === 'side';
+
+  // Resolve the button options from their (per-example) URL params, falling back to
+  // defaults for unset/invalid values.
+  const parseButtonMode = (value: unknown): ButtonMode =>
+    BUTTON_MODES.includes(value as ButtonMode) ? (value as ButtonMode) : 'responsive';
+  const parseActionsPosition = (value: unknown): ControlGroupProps.ActionsPosition =>
+    ACTIONS_POSITIONS.includes(value as ControlGroupProps.ActionsPosition)
+      ? (value as ControlGroupProps.ActionsPosition)
+      : 'inline';
+
+  // Query builder's button options.
+  const buttonMode = parseButtonMode(urlParams.buttonMode);
+  const actionsPosition = parseActionsPosition(urlParams.actionsPosition);
+  // Input+button example's button options (separate keys so the two examples are independent).
+  const buttonMode2 = parseButtonMode(urlParams.buttonMode2);
+  const actionsPosition2 = parseActionsPosition(urlParams.actionsPosition2);
+
+  // The two button options, rendered per example. Each example passes its own current
+  // values and the URL-param keys to write to, so changing one example's options does not
+  // affect the other. `buttonMode` = button presentation; `actionsPosition` = where the
+  // trailing button goes when the group wraps.
+  const renderButtonOptions = (
+    currentButtonMode: ButtonMode,
+    currentActionsPosition: ControlGroupProps.ActionsPosition,
+    buttonModeParam: PageParams,
+    actionsPositionParam: PageParams
+  ) => (
+    <SpaceBetween size="xxl" direction="horizontal">
+      <FormField label="Button responsive layout" description="Where the button sits when the component wraps">
+        <RadioGroup
+          value={currentActionsPosition}
+          onChange={({ detail }) => setUrlParams({ [actionsPositionParam]: detail.value })}
+          items={[
+            { value: 'inline', label: 'Bottom' },
+            { value: 'side', label: 'Side' },
+          ]}
+        />
+      </FormField>
+      <FormField label="Button variant">
+        <RadioGroup
+          value={currentButtonMode}
+          onChange={({ detail }) => setUrlParams({ [buttonModeParam]: detail.value })}
+          items={[
+            { value: 'icon', label: 'icon' },
+            { value: 'text', label: 'normal' },
+            // Responsive relies on wrap -> text, which side layout never does (the button
+            // stays an icon spanning the column), so it is disabled there.
+            {
+              value: 'responsive',
+              label: 'Responsive',
+              description: 'icon in a row, normal when wrapping.',
+              disabled: currentActionsPosition === 'side',
+            },
+          ]}
+        />
+      </FormField>
+    </SpaceBetween>
+  );
 
   return (
     <SimplePage
       title="Control group responsiveness"
       subtitle="A query builder built from ControlGroup clauses. Resize the container (drag the handle) to see the clauses stack their controls once a clause no longer fits its line. Use the options below to control the field type and the trailing dismiss button."
-      settings={
-        <SpaceBetween size="xxl" direction="horizontal">
-          <FormField label="Field control">
-            <RadioGroup
-              value={control}
-              onChange={({ detail }) => setUrlParams({ control: detail.value })}
-              items={[
-                { value: 'autosuggest', label: 'Autosuggest' },
-                { value: 'input', label: 'Input' },
-              ]}
-            />
-          </FormField>
-          <FormField label="Dismiss button icon">
-            <RadioGroup
-              value={iconName}
-              onChange={({ detail }) => setUrlParams({ icon: detail.value })}
-              items={[
-                { value: 'close', label: 'close' },
-                { value: 'remove', label: 'trash' },
-              ]}
-            />
-          </FormField>
-          <FormField
-            label="Dismiss button responsive layout"
-            description="When the group wraps: stack the button below the controls, or attach it at the end spanning their height."
-          >
-            <SpaceBetween size="s">
-              <RadioGroup
-                value={actionsPosition}
-                onChange={({ detail }) => setUrlParams({ actionsPosition: detail.value })}
-                items={[
-                  { value: 'inline', label: 'Bottom' },
-                  { value: 'side', label: 'Side' },
-                ]}
-              />
-              <Checkbox
-                checked={switchWhenWrapping}
-                disabled={actionsSide}
-                onChange={({ detail }) => setUrlParams({ switchWhenWrapping: detail.checked })}
-              >
-                Change to regular button when wrapping
-              </Checkbox>
-            </SpaceBetween>
-          </FormField>
-          {control === 'autosuggest' && (
-            <FormField label="Autosuggest width">
-              <Checkbox
-                checked={stretch}
-                onChange={({ detail }) => setUrlParams({ stretch: detail.checked })}
-                description="This prevents layout shifts while entering content"
-              >
-                Pin autosuggests to a fixed width
-              </Checkbox>
-            </FormField>
-          )}
-        </SpaceBetween>
-      }
     >
-      <div style={resizableContainerStyle}>
-        <ControlledQueryBuilder
-          iconName={iconName}
-          switchWhenWrapping={switchWhenWrapping}
-          control={control}
-          stretch={stretch}
-          actionsPosition={actionsPosition}
-        />
-      </div>
+      <SpaceBetween size="l">
+        <Container
+          header={
+            <Header
+              variant="h2"
+              description="ControlGroup clauses that stack their controls once a clause no longer fits."
+            >
+              Query builder
+            </Header>
+          }
+        >
+          <SpaceBetween size="xs">
+            <SpaceBetween size="xxl" direction="horizontal">
+              {renderButtonOptions(buttonMode, actionsPosition, 'buttonMode', 'actionsPosition')}
+              {/* These two options only shape the query builder: its field type and dismiss icon. */}
+              <FormField label="Field control">
+                <RadioGroup
+                  value={control}
+                  onChange={({ detail }) => setUrlParams({ control: detail.value })}
+                  items={[
+                    { value: 'autosuggest', label: 'Autosuggest' },
+                    { value: 'input', label: 'Input' },
+                  ]}
+                />
+              </FormField>
+              <FormField label="Dismiss button icon">
+                <RadioGroup
+                  value={iconName}
+                  onChange={({ detail }) => setUrlParams({ icon: detail.value })}
+                  items={[
+                    { value: 'close', label: 'close' },
+                    { value: 'remove', label: 'trash' },
+                  ]}
+                />
+              </FormField>
+              {control === 'autosuggest' && (
+                <FormField label="Autosuggest width">
+                  <Checkbox
+                    checked={stretch}
+                    onChange={({ detail }) => setUrlParams({ stretch: detail.checked })}
+                    description="This prevents layout shifts while entering content"
+                  >
+                    Pin autosuggests to a fixed width
+                  </Checkbox>
+                </FormField>
+              )}
+            </SpaceBetween>
+            <div style={resizableContainerStyle}>
+              <ControlledQueryBuilder
+                iconName={iconName}
+                buttonMode={buttonMode}
+                control={control}
+                stretch={stretch}
+                actionsPosition={actionsPosition}
+              />
+            </div>
+          </SpaceBetween>
+        </Container>
+
+        <Container
+          header={
+            <Header variant="h2" description="A single Input fused with a button that detaches when the group wraps.">
+              Input with button
+            </Header>
+          }
+        >
+          <SpaceBetween size="xs">
+            {renderButtonOptions(buttonMode2, actionsPosition2, 'buttonMode2', 'actionsPosition2')}
+            <div style={resizableContainerStyle}>
+              <InputWithTextButton buttonMode={buttonMode2} actionsPosition={actionsPosition2} />
+            </div>
+          </SpaceBetween>
+        </Container>
+      </SpaceBetween>
     </SimplePage>
   );
 }

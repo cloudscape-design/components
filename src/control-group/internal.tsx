@@ -261,7 +261,12 @@ const InternalControlGroup = forwardRef(
     // row (`isStacked === false`) so its measured width doesn't depend on the current
     // collapse state; when `children` is a render function the ghost also measures the
     // non-wrapped content, which is what a row would need.
-    const renderControlSlots = (isStacked: boolean, flattened: Array<React.ReactNode>, controlCount: number) =>
+    const renderControlSlots = (
+      isStacked: boolean,
+      flattened: Array<React.ReactNode>,
+      controlCount: number,
+      isGhost: boolean
+    ) =>
       flattened.map((child, index) => {
         const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
         const position = getPosition(index, controlCount);
@@ -296,6 +301,9 @@ const InternalControlGroup = forwardRef(
                 // their END side, so a control's end-side corners stay squared (only the
                 // leading/outer corners round). The controls need to know this.
                 sideActions: sideActions && isStacked ? true : undefined,
+                // The measurement ghost's controls must not register with an ambient
+                // roving navigation provider (see the ghost render below).
+                isGhost: isGhost || undefined,
                 stacked: isStacked,
               }}
             >
@@ -309,7 +317,7 @@ const InternalControlGroup = forwardRef(
     // custom `actions` content. Both render in the same standalone wrapper and control
     // context so they fuse in a row, detach when the group wraps, and continue the
     // group's error/warning border styling.
-    const renderDismissSlot = (isStacked: boolean, controlCount: number) => {
+    const renderDismissSlot = (isStacked: boolean, controlCount: number, isGhost: boolean) => {
       if (!dismissible && !hasCustomActions) {
         return null;
       }
@@ -347,6 +355,7 @@ const InternalControlGroup = forwardRef(
               // In side mode the button fuses on its leading (inline-start) edge like a
               // row control and spans the column height, rather than fusing on its top.
               sideActions: sideActions && isStacked ? true : undefined,
+              isGhost: isGhost || undefined,
               stacked: isStacked,
               // The trailing slot has no validation state of its own; pass the
               // group's state so it paints its border (incl. the seam with the last
@@ -391,7 +400,7 @@ const InternalControlGroup = forwardRef(
     // Composes the controls, the (inline-only) validation messages, and the trailing
     // button for a given wrap state. The children are resolved for that same state, so a
     // `children` render function sees `wrap` matching this layout.
-    const renderGroupContent = (isStacked: boolean) => {
+    const renderGroupContent = (isStacked: boolean, isGhost = false) => {
       const flattened = resolveChildren(isStacked);
       const controlCount = getControlCount(flattened);
       // Side layout (stacked): the control slots stack inside a column wrapper, and the
@@ -404,18 +413,20 @@ const InternalControlGroup = forwardRef(
         // (the button would take `last`) and would not round its outer bottom corner.
         return (
           <>
-            <div className={styles['controls-stack']}>{renderControlSlots(isStacked, flattened, flattened.length)}</div>
-            {renderDismissSlot(isStacked, controlCount)}
+            <div className={styles['controls-stack']}>
+              {renderControlSlots(isStacked, flattened, flattened.length, isGhost)}
+            </div>
+            {renderDismissSlot(isStacked, controlCount, isGhost)}
           </>
         );
       }
       return (
         <>
-          {renderControlSlots(isStacked, flattened, controlCount)}
+          {renderControlSlots(isStacked, flattened, controlCount, isGhost)}
           {isStacked && dismissible && validationMessages && (
             <div className={styles['inline-hints']}>{validationMessages}</div>
           )}
-          {renderDismissSlot(isStacked, controlCount)}
+          {renderDismissSlot(isStacked, controlCount, isGhost)}
         </>
       );
     };
@@ -465,7 +476,14 @@ const InternalControlGroup = forwardRef(
         */}
         <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
           <div className={clsx(styles.group, invalid && styles.invalid, warning && styles.warning)}>
-            {renderGroupContent(false)}
+            {/*
+              The ghost duplicates every control for width measurement. Its controls are
+              rendered with `isGhost` so they do NOT register with an ambient roving
+              navigation provider (for example a TreeView's) — otherwise the hidden
+              duplicates would pollute that provider's focusable set and break arrow-key
+              navigation between the real controls.
+            */}
+            {renderGroupContent(false, true)}
           </div>
         </div>
 

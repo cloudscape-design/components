@@ -155,6 +155,7 @@ export const InternalButton = React.forwardRef(
       warning: inControlGroupWarning,
       customStandalone: inControlGroupCustomStandalone,
       sideActions: inControlGroupSideActions,
+      isGhost: inControlGroupGhost,
     } = useControlGroupContext();
     // A custom `actions` button participates in the group in every wrap state: it fuses
     // in a row and stays attached (fused vertically) when the group wraps. Unlike the
@@ -234,7 +235,11 @@ export const InternalButton = React.forwardRef(
     });
 
     const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
-    const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
+    // A ControlGroup measurement-ghost copy passes a detached ref so it never registers
+    // with an ambient roving navigation provider (its hidden duplicate would otherwise
+    // pollute the provider's focusable set).
+    const navRegistrationRef = useRef<HTMLElement>(null);
+    const { tabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
 

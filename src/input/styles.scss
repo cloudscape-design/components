@@ -324,10 +324,24 @@
           @include styles.control-group-grouped-stacked-side-corners('first');
         }
       }
+      &.input-in-control-group-middle {
+        @include styles.control-group-grouped-stacked-side-corners('middle');
+        &:focus {
+          @include styles.control-group-grouped-stacked-side-corners('middle');
+        }
+      }
       &.input-in-control-group-last {
         @include styles.control-group-grouped-stacked-side-corners('last');
         &:focus {
           @include styles.control-group-grouped-stacked-side-corners('last');
+        }
+      }
+      // A single control forms the whole leading column: its leading corners round and the
+      // end corners the side button fuses against stay squared.
+      &.input-in-control-group-only {
+        @include styles.control-group-grouped-stacked-side-corners('only');
+        &:focus {
+          @include styles.control-group-grouped-stacked-side-corners('only');
         }
       }
     }
@@ -397,6 +411,18 @@
         @include styles.control-group-grouped-stacked-side-corners('first');
         &:focus-within {
           @include styles.control-group-grouped-stacked-side-corners('first');
+        }
+      }
+      &.input-adorned-container-in-control-group-middle {
+        @include styles.control-group-grouped-stacked-side-corners('middle');
+        &:focus-within {
+          @include styles.control-group-grouped-stacked-side-corners('middle');
+        }
+      }
+      &.input-adorned-container-in-control-group-only {
+        @include styles.control-group-grouped-stacked-side-corners('only');
+        &:focus-within {
+          @include styles.control-group-grouped-stacked-side-corners('only');
         }
       }
       &.input-adorned-container-in-control-group-last {

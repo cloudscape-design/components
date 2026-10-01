@@ -3,7 +3,12 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+import {
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+  useSingleTabStopNavigation,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
@@ -81,8 +86,16 @@ const ButtonTrigger = (
     hasInlineLabel: inControlGroupLabeled,
     precedesDetached: inControlGroupPrecedesLabeled,
     sideActions: inControlGroupSideActions,
+    isGhost: inControlGroupGhost,
     stacked: inControlGroupStacked,
   } = useControlGroupContext();
+  // Register with an ambient roving tab-stop navigation provider (for example a TreeView)
+  // so the trigger is reachable with the arrow keys. Inert when there is no provider above.
+  // A ControlGroup measurement-ghost copy passes a detached ref so it never registers.
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const navRegistrationRef = React.useRef<HTMLButtonElement>(null);
+  const { tabIndex: navTabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : buttonRef);
+  const mergedRef = useMergeRefs(ref, buttonRef);
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -133,6 +146,10 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
+  if (!inControlGroupGhost) {
+    attributes.tabIndex = navTabIndex;
+  }
+
   const analyticsMetadata:
     | GeneratedAnalyticsMetadataButtonTriggerExpand
     | GeneratedAnalyticsMetadataButtonTriggerCollapse = {
@@ -144,7 +161,7 @@ const ButtonTrigger = (
 
   return (
     <button
-      ref={ref}
+      ref={mergedRef}
       {...attributes}
       data-awsui-motion-trigger="hover"
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
