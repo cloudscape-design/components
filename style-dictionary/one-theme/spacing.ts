@@ -15,11 +15,12 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceStatusIndicatorPaddingHorizontal: '2px',
 
-  spaceContainerHeaderTop: { comfortable: '12px', compact: '8px' },
   spaceContainerContentVertical: { comfortable: '20px', compact: '12px' },
 
+  spaceScaledL: { comfortable: '{spaceL}', compact: '{spaceS}' },
+
   spaceExpandToggleFocusOutlineGutter: { comfortable: '4px', compact: '1px' },
-  spaceTableCellVertical: { comfortable: '8px', compact: '2px' },
+  spaceTableCellVertical: { comfortable: '8px', compact: '4px' },
   spaceTableHeaderFocusOutlineGutter: '0px',
   spaceButtonInlineLinkFocusOutlineGutter: { comfortable: '4px', compact: '1px' },
 };
