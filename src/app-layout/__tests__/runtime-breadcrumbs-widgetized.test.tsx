@@ -15,6 +15,7 @@ import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-too
 
 const wrapper = createWrapper();
 const originalIntersectionObserver = window.IntersectionObserver;
+const externalOwnedBreadcrumbsKey = Symbol.for('awsui-widget-api-external-owned-breadcrumbs');
 const defaultItems: BreadcrumbGroupProps['items'] = [
   { text: 'Home', href: '/home' },
   { text: 'Resource', href: '/resource' },
@@ -45,6 +46,15 @@ function registerExternalContainer(container: HTMLElement) {
   return { received, registration };
 }
 
+function setBreadcrumbsOwnedExternally(value: boolean | undefined) {
+  const flagHolder = window as unknown as Record<symbol, boolean | undefined>;
+  if (value === undefined) {
+    delete flagHolder[externalOwnedBreadcrumbsKey];
+  } else {
+    flagHolder[externalOwnedBreadcrumbsKey] = value;
+  }
+}
+
 function ExternalBreadcrumbGroup() {
   const [breadcrumbs, setBreadcrumbs] = React.useState<BreadcrumbGroupProps | null>(null);
 
@@ -62,16 +72,44 @@ function ExternalBreadcrumbGroup() {
 }
 
 beforeEach(() => {
+  setBreadcrumbsOwnedExternally(undefined);
   clearInitialMessages();
 });
 
 afterEach(() => {
   cleanup();
   clearInitialMessages();
+  setBreadcrumbsOwnedExternally(undefined);
   window.IntersectionObserver = originalIntersectionObserver;
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+  test('hides toolbar breadcrumbs from the first render while an external consumer loads', async () => {
+    setBreadcrumbsOwnedExternally(true);
+    const { rerender } = render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+
+    expectAppLayoutBreadcrumbsToBeExternallyOwned();
+    expect(getAppLayoutBreadcrumbGroup()).toBeTruthy();
+
+    const externalContainer = document.createElement('div');
+    document.body.appendChild(externalContainer);
+    let registration: ReturnType<typeof registerExternalContainer>['registration'];
+    act(() => {
+      registration = registerExternalContainer(externalContainer).registration;
+    });
+
+    await waitFor(() => expect(externalContainer).toHaveTextContent('Home / Resource'));
+    expectAppLayoutBreadcrumbsToBeExternallyOwned();
+
+    act(() => registration!.unregister());
+    expectAppLayoutBreadcrumbsToBeExternallyOwned();
+
+    setBreadcrumbsOwnedExternally(undefined);
+    rerender(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+    expect(getAppLayoutBreadcrumbsSection()?.getElement()).not.toHaveAttribute('data-awsui-external-breadcrumbs');
+    externalContainer.remove();
+  });
+
   test('renders slot breadcrumbs in an external container and restores App Layout on unregister', async () => {
     const externalContainer = document.createElement('div');
     document.body.appendChild(externalContainer);
