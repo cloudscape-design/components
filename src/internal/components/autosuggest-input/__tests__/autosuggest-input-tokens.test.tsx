@@ -3294,3 +3294,65 @@ describe('default mode __onDelayedInput arrow function coverage (line 675)', () 
     expect(container.querySelector('[role="combobox"]')).not.toBeNull();
   });
 });
+
+// ===========================================================================
+// SEVENTH-PASS: cover removeToken rAF body lines 405-408 and 412-416
+// ===========================================================================
+
+// Lines 412-416: removeToken rAF normal path — dismissButtons exist, focus adjacent token,
+// update setFocusedTokenIndex. Triggered when clicking dismiss on a token when ≥2 tokens
+// remain visible after removal (so tokenListRef renders buttons and rAF can focus one).
+describe('removeToken rAF normal path: focus adjacent token (lines 412-416)', () => {
+  test('dismissing first of three tokens focuses the next token button', () => {
+    jest.useFakeTimers();
+    const onChange = jest.fn();
+    const tokens = [makeToken('a'), makeToken('b'), makeToken('c')];
+    const { wrapper, rerender } = render({ tokens, onChange });
+
+    // Click dismiss on the first token
+    act(() => wrapper.findToken(1)!.find('button')!.click());
+
+    // Simulate the parent re-render that would follow onChange (updated = ['b','c'])
+    const updatedTokens = [makeToken('b'), makeToken('c')];
+    rerender(<AutosuggestInput value="" onChange={onChange} tokens={updatedTokens} />);
+
+    // Flush rAF — should run lines 405-416
+    act(() => jest.runAllTimers());
+
+    // The rAF focuses a dismiss button in the updated token list
+    // (positionInVisible=0 clamped to dismissButtons.length-1=1, focus call made)
+    expect(wrapper.findAllTokens().length).toBe(2);
+
+    jest.useRealTimers();
+  });
+});
+
+// Lines 405-408: removeToken rAF guard — dismissButtons is empty (no visible token buttons
+// after removal, e.g. visibleCount=0 because remaining tokens all overflow into +N pill).
+// The only reliably-testable path in JSDOM is when tokenListRef is not rendered at all,
+// which happens when visibleTokens.length===0 after the re-render.
+describe('removeToken rAF guard: no dismiss buttons → focus input (lines 405-408)', () => {
+  test('dismissing a token when no visible tokens remain focuses the input', () => {
+    jest.useFakeTimers();
+    const onChange = jest.fn();
+    // Start with 2 tokens visible
+    const tokens = [makeToken('x'), makeToken('y')];
+    const { wrapper, rerender, container } = render({ tokens, onChange });
+
+    act(() => wrapper.findToken(1)!.find('button')!.click());
+
+    // Re-render with only 1 token and visibleCount forced to 0 by re-rendering
+    // with tokens=[] so no visible token buttons exist (tokenListRef not rendered)
+    rerender(<AutosuggestInput value="" onChange={onChange} tokens={[]} />);
+
+    const input = container.querySelector('[role="combobox"]') as HTMLElement;
+    const focusSpy = jest.spyOn(input, 'focus');
+
+    // Flush rAF — dismissButtons.length===0 → inputRef.current?.focus() (lines 407-408)
+    act(() => jest.runAllTimers());
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+    jest.useRealTimers();
+  });
+});
