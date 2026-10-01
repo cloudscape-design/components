@@ -138,8 +138,9 @@
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
+  $border-radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
   &.header-full-page {
     background-color: awsui.$color-background-layout-main;
   }
@@ -206,8 +207,8 @@
   }
 
   &.with-hidden-content {
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: $border-radius;
+    border-end-end-radius: $border-radius;
   }
 
   &-variant-cards {
