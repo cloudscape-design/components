@@ -234,10 +234,13 @@
 }
 
 @mixin container-style {
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  // Custom radius from the container style API if set, otherwise the token. Stacked
+  // containers still flatten adjacent corners because those rules set a literal 0.
+  $radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
   box-sizing: border-box;
 
   &.refresh {
@@ -250,19 +253,19 @@
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     z-index: 1;
   }
 
   &:not(.refresh)::after {
     @include utils.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     box-shadow: awsui.$shadow-container;
   }
 }
