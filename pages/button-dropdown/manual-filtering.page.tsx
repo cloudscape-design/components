@@ -11,8 +11,11 @@ import SpaceBetween from '~components/space-between';
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
+type Scenario = 'client' | 'server';
+
 type PageContext = React.Context<
   AppContextType<{
+    scenario: Scenario;
     expandToViewport: boolean;
     filteringType: ButtonDropdownProps.FilteringType;
     serverDelay: string;
@@ -43,155 +46,109 @@ export default function ButtonDropdownManualFilteringPage() {
   // Page configuration lives in the URL so that each setup is directly linkable and targetable by
   // integration tests. Request results below stay in local state.
   const {
-    urlParams: { expandToViewport = false, filteringType = 'manual', serverDelay = '400' },
+    urlParams: { scenario = 'client', expandToViewport = false, filteringType = 'manual', serverDelay = '400' },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
 
-  // Interactive: filteringType switcher
-  const [switcherItems, setSwitcherItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
+  // Scenario "client": items filtered synchronously by the consumer when filteringType is manual.
+  const [clientItems, setClientItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
 
-  // Interactive: server delay control
+  // Scenario "server": items fetched from a simulated server with a configurable delay.
   const [serverItems, setServerItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
   const [serverStatus, setServerStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
 
-  // Preconfigured: client-side manual filtering
-  const [clientItems, setClientItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
-
-  // Preconfigured: server-side manual filtering (fixed 400 ms)
-  const [preItems, setPreItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
-  const [preStatus, setPreStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
+  const content =
+    scenario === 'client' ? (
+      <ButtonDropdown
+        items={filteringType === 'manual' ? clientItems : SOURCE_ITEMS}
+        filteringType={filteringType}
+        filteringPlaceholder="Filter actions"
+        noMatch={<span>No actions match.</span>}
+        expandToViewport={expandToViewport}
+        filteringResultsText={(m, t) => `${m} of ${t}`}
+        onItemClick={onItemClick}
+        onLoadItems={({ detail: { filteringText } }) => {
+          setClientItems(filterItems(filteringText));
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    ) : (
+      <ButtonDropdown
+        items={serverItems}
+        filteringType="manual"
+        filteringPlaceholder="Search actions"
+        asyncLoadingProps={{
+          statusType: serverStatus,
+          loadingText: () => 'Searching...',
+          empty: () => 'No actions found',
+        }}
+        noMatch={<span>No actions match.</span>}
+        expandToViewport={expandToViewport}
+        filteringResultsText={(m, t) => `${m} of ${t}`}
+        onItemClick={onItemClick}
+        onLoadItems={({ detail: { filteringText } }) => {
+          setServerStatus('loading');
+          setServerItems([]);
+          simulateServer(filteringText, parseInt(serverDelay, 10)).then(results => {
+            setServerItems(results);
+            setServerStatus('finished');
+          });
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    );
 
   return (
     <SimplePage
       title="ButtonDropdown manual filtering"
       settings={
-        <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
-          Expand to viewport
-        </Checkbox>
+        <SpaceBetween size="m" direction="horizontal">
+          <FormField label="Scenario">
+            <RadioGroup
+              value={scenario}
+              onChange={e => setUrlParams({ scenario: e.detail.value as Scenario })}
+              items={[
+                { value: 'client', label: 'Client-side filtering' },
+                { value: 'server', label: 'Server-side filtering' },
+              ]}
+            />
+          </FormField>
+          {scenario === 'client' && (
+            <FormField label="filteringType">
+              <RadioGroup
+                value={filteringType}
+                onChange={e => setUrlParams({ filteringType: e.detail.value as ButtonDropdownProps.FilteringType })}
+                items={[
+                  { value: 'none', label: 'none' },
+                  { value: 'auto', label: 'auto (client-side)' },
+                  { value: 'manual', label: 'manual (consumer-controlled)' },
+                ]}
+              />
+            </FormField>
+          )}
+          {scenario === 'server' && (
+            <FormField label="Simulated server delay">
+              <RadioGroup
+                value={serverDelay}
+                onChange={e => setUrlParams({ serverDelay: e.detail.value })}
+                items={[
+                  { value: '0', label: '0 ms (instant)' },
+                  { value: '400', label: '400 ms' },
+                  { value: '1500', label: '1500 ms (slow)' },
+                ]}
+              />
+            </FormField>
+          )}
+          <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
+            Expand to viewport
+          </Checkbox>
+        </SpaceBetween>
       }
     >
-      <SpaceBetween size="xxl">
-        {/* Interactive: filteringType switcher */}
-        <div>
-          <h2>Interactive - filteringType switcher</h2>
-          <FormField label="filteringType">
-            <RadioGroup
-              value={filteringType}
-              onChange={e => setUrlParams({ filteringType: e.detail.value as ButtonDropdownProps.FilteringType })}
-              items={[
-                { value: 'none', label: 'none' },
-                { value: 'auto', label: 'auto (client-side)' },
-                { value: 'manual', label: 'manual (consumer-controlled)' },
-              ]}
-            />
-          </FormField>
-          <br />
-          <ButtonDropdown
-            items={filteringType === 'manual' ? switcherItems : SOURCE_ITEMS}
-            filteringType={filteringType}
-            filteringPlaceholder="Filter actions"
-            noMatch={<span>No actions match.</span>}
-            expandToViewport={expandToViewport}
-            filteringResultsText={(m, t) => `${m} of ${t}`}
-            onItemClick={onItemClick}
-            onLoadItems={({ detail: { filteringText } }) => {
-              setSwitcherItems(filterItems(filteringText));
-            }}
-          >
-            Actions
-          </ButtonDropdown>
-        </div>
-
-        {/* Interactive: server delay control */}
-        <div>
-          <h2>Interactive - server delay control</h2>
-          <FormField label="Simulated server delay">
-            <RadioGroup
-              value={serverDelay}
-              onChange={e => setUrlParams({ serverDelay: e.detail.value })}
-              items={[
-                { value: '0', label: '0 ms (instant)' },
-                { value: '400', label: '400 ms' },
-                { value: '1500', label: '1500 ms (slow)' },
-              ]}
-            />
-          </FormField>
-          <br />
-          <ButtonDropdown
-            items={serverItems}
-            filteringType="manual"
-            filteringPlaceholder="Search actions"
-            asyncLoadingProps={{
-              statusType: serverStatus,
-              loadingText: () => 'Searching...',
-              empty: () => 'No actions found',
-            }}
-            noMatch={<span>No actions match.</span>}
-            expandToViewport={expandToViewport}
-            filteringResultsText={(m, t) => `${m} of ${t}`}
-            onItemClick={onItemClick}
-            onLoadItems={({ detail: { filteringText } }) => {
-              setServerStatus('loading');
-              setServerItems([]);
-              simulateServer(filteringText, parseInt(serverDelay, 10)).then(results => {
-                setServerItems(results);
-                setServerStatus('finished');
-              });
-            }}
-          >
-            Actions
-          </ButtonDropdown>
-        </div>
-
-        {/* Preconfigured: client-side manual */}
-        <div>
-          <h2>Preconfigured - client-side manual filtering</h2>
-          <ButtonDropdown
-            items={clientItems}
-            filteringType="manual"
-            filteringPlaceholder="Filter actions"
-            noMatch={<span>No actions match. Try a different keyword.</span>}
-            expandToViewport={expandToViewport}
-            filteringResultsText={(m, t) => `${m} of ${t} matches`}
-            onItemClick={onItemClick}
-            onLoadItems={({ detail: { filteringText } }) => {
-              setClientItems(filterItems(filteringText));
-            }}
-          >
-            Actions
-          </ButtonDropdown>
-        </div>
-
-        {/* Preconfigured: server-side manual */}
-        <div>
-          <h2>Preconfigured - server-side manual filtering</h2>
-          <ButtonDropdown
-            items={preItems}
-            filteringType="manual"
-            filteringPlaceholder="Search actions"
-            asyncLoadingProps={{
-              statusType: preStatus,
-              loadingText: () => 'Searching...',
-              empty: () => 'No actions found',
-            }}
-            noMatch={<span>No actions match. Try a different keyword.</span>}
-            expandToViewport={expandToViewport}
-            filteringResultsText={(m, t) => `${m} of ${t} matches`}
-            onItemClick={onItemClick}
-            onLoadItems={({ detail: { filteringText } }) => {
-              setPreStatus('loading');
-              setPreItems([]);
-              simulateServer(filteringText, 400).then(results => {
-                setPreItems(results);
-                setPreStatus('finished');
-              });
-            }}
-          >
-            Actions
-          </ButtonDropdown>
-        </div>
-      </SpaceBetween>
+      {content}
     </SimplePage>
   );
 }

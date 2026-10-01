@@ -6604,11 +6604,11 @@ Return values are:
 The items of a group are loaded in a single page: \`pending\` is treated as \`finished\`, and scrolling inside a group
 does not fire \`onLoadItems\`. If null or undefined, the status will be treated as \`finished\`.",
       "inlineType": {
-        "name": "(options: { item: ButtonDropdownProps.ItemOrGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null",
+        "name": "(options: { item: ButtonDropdownProps.ItemGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null",
         "parameters": [
           {
             "name": "options",
-            "type": "{ item: ButtonDropdownProps.ItemOrGroup; }",
+            "type": "{ item: ButtonDropdownProps.ItemGroup; }",
           },
         ],
         "returnType": "ButtonDropdownProps.AsyncLoadingStatusType | null",
@@ -6616,7 +6616,7 @@ does not fire \`onLoadItems\`. If null or undefined, the status will be treated 
       },
       "name": "getExpandableItemsAsyncLoadingState",
       "optional": true,
-      "type": "((options: { item: ButtonDropdownProps.ItemOrGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined)",
+      "type": "((options: { item: ButtonDropdownProps.ItemGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined)",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",

@@ -10,6 +10,7 @@ import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
+import testUtilStyles from '../../../button-dropdown/test-classes/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
@@ -17,7 +18,7 @@ import footerStyles from '../../../internal/components/dropdown-status/styles.se
 // The status of the root list and the status of an expanded group carry distinct markers, so a lookup
 // never falls through from one to the other.
 const statusScopeSelector = (expandedGroup: boolean) =>
-  `.${expandedGroup ? styles['test-utils-group-status'] : styles['test-utils-root-status']}`;
+  `.${expandedGroup ? testUtilStyles['group-status'] : testUtilStyles['root-status']}`;
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
