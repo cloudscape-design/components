@@ -25,7 +25,22 @@ const multiOptions: MultiselectProps.Option[] = [
   { value: '2', label: 'Option 2' },
 ];
 
-const suggestions: AutosuggestProps.Option[] = [{ value: 'CPUUtilization' }, { value: 'MemoryUtilization' }];
+const suggestions: AutosuggestProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
+  value: `Metric ${i + 1}`,
+}));
+
+// Long option lists so the control groups' open dropdowns extend far enough down
+// to overlap the standalone controls below, making the "dropdown paints over the
+// label" behavior easy to eyeball.
+const longOperators: SelectProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
+  value: `op-${i + 1}`,
+  label: `Operator ${i + 1}`,
+}));
+
+const longMultiOptions: MultiselectProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
+  value: `${i + 1}`,
+  label: `Option ${i + 1}`,
+}));
 
 const enteredTextLabel = (value: string) => `Use: ${value}`;
 
@@ -38,8 +53,8 @@ export default function ControlGroupLabels() {
         <ControlGroup inlineLabelText="Filter by metric">
           <Select
             ariaLabel="Operator"
-            selectedOption={operators[0]}
-            options={operators}
+            selectedOption={longOperators[0]}
+            options={longOperators}
             onChange={noop}
             expandToViewport={true}
           />
@@ -50,14 +65,14 @@ export default function ControlGroupLabels() {
           <Multiselect
             ariaLabel="Labels"
             inlineTokens={true}
-            selectedOptions={[multiOptions[0]]}
-            options={multiOptions}
+            selectedOptions={[longMultiOptions[0]]}
+            options={longMultiOptions}
             onChange={noop}
             expandToViewport={true}
           />
           <Autosuggest
             ariaLabel="Metric"
-            value="CPU"
+            value=""
             onChange={noop}
             options={suggestions}
             enteredTextLabel={enteredTextLabel}
