@@ -209,7 +209,6 @@ const ExpandableNavigationHeader = ({
       id={id}
       className={clsx(
         className,
-        styles['click-target'],
         analyticsSelectors['header-label'],
         expandIconPosition === 'end' && styles['header-icon-end']
       )}
