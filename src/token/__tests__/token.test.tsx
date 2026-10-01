@@ -155,6 +155,35 @@ describe('Token', () => {
     });
   });
 
+  describe('Prefix', () => {
+    test('renders prefix in an aria-hidden slot', () => {
+      const wrapper = renderToken({
+        label: 'Test token',
+        prefix: <span data-testid="prefix-dot" />,
+      });
+      const prefix = wrapper.findByClassName(styles.prefix)!.getElement();
+      expect(prefix).toHaveAttribute('aria-hidden', 'true');
+      expect(prefix).toContainElement(screen.getByTestId('prefix-dot'));
+    });
+
+    test('does not render prefix slot when prefix is not set', () => {
+      const wrapper = renderToken({ label: 'Test token' });
+      expect(wrapper.findByClassName(styles.prefix)).toBeNull();
+    });
+  });
+
+  describe('Label tag', () => {
+    test('renders label tag for normal variant', () => {
+      const wrapper = renderToken({ label: 'Test token', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+
+    test('renders label tag for inline variant', () => {
+      const wrapper = renderToken({ label: 'Test token', variant: 'inline', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+  });
+
   describe('One theme', () => {
     beforeEach(() => {
       document.body.classList.add('awsui-one-theme');

@@ -147,7 +147,7 @@ function Tokens({
           label: it.name,
           variant,
           prefix: it.color ? <Dot color={it.color} /> : undefined,
-          secondaryText: it.count,
+          labelTag: it.count,
           icon: it.icon ? <Icon name={it.icon} size={inline ? 'small' : 'normal'} /> : undefined,
           ariaLabel: it.count ? `${it.name}, ${it.count}` : undefined,
         };
@@ -185,12 +185,12 @@ export default function TokenAdditionsPage() {
         <section>
           <h2>API proposal usage examples</h2>
           <p>Renders the exact code from the API proposal, for doc screenshots.</p>
-          <h3>1. Field token with prefix and secondary text</h3>
+          <h3>1. Field token with prefix and label tag</h3>
           <Token
             label="@data_format"
             ariaLabel="@data_format, General field, 17% coverage"
             prefix={<Dot color={colorChartsPaletteCategorical2} />}
-            secondaryText="17%"
+            labelTag="17%"
             dismissLabel="Remove @data_format"
             onDismiss={() => {}}
           />
@@ -205,7 +205,7 @@ export default function TokenAdditionsPage() {
                 @logStream
               </Popover>
             }
-            secondaryText="100%"
+            labelTag="100%"
             dismissLabel="Remove @logStream"
             onDismiss={() => {}}
           />
@@ -225,8 +225,10 @@ export default function TokenAdditionsPage() {
         </section>
 
         <section>
-          <h2>Secondary text</h2>
-          <p>A secondary value next to the label, such as coverage or a count.</p>
+          <h2>Label tag</h2>
+          <p>
+            The existing labelTag prop, now also shown for the inline variant, for values such as coverage or a count.
+          </p>
           <h3>With percentage</h3>
           <Tokens items={META} testIdPrefix="meta" />
           <h3>With color, icon, and count</h3>
@@ -239,14 +241,14 @@ export default function TokenAdditionsPage() {
             Clicking the label opens a popover with contextual actions. Composed by passing Popover in the label slot,
             no dedicated prop.
           </p>
-          <h3>Field details with prefix and secondary text</h3>
+          <h3>Field details with prefix and label tag</h3>
           <Tokens items={FIELDS} kind="popover" testIdPrefix="popover" />
         </section>
 
         <section>
           <h2>Inline</h2>
-          <h3>With prefix and secondary text</h3>
-          <Tokens items={FIELDS} variant="inline" testIdPrefix="inline" />
+          <h3>With prefix and label tag</h3>
+          <Tokens items={FIELDS} variant="inline" testIdPrefix="inline" kind="popover" />
         </section>
 
         <section>

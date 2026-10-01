@@ -39,7 +39,7 @@ export interface TokenProps extends BaseComponentProps {
   /**
    * Specifies the token's visual style and functionality.
    *
-   * For `inline` only label, icon and dismiss button are displayed.
+   * For `inline` only label, label tag, icon and dismiss button are displayed.
    *
    * Defaults to `normal` if not specified.
    */
@@ -70,11 +70,6 @@ export interface TokenProps extends BaseComponentProps {
    * in the `label` or `ariaLabel` as well - color must never be the only signal.
    */
   prefix?: React.ReactNode;
-
-  /**
-   * Secondary text shown inline after the label, such as a count or percentage.
-   */
-  secondaryText?: string;
 
   /**
    * Content to display in the tooltip when `variant="inline"`. The tooltip appears when the token label is truncated due to insufficient space.
