@@ -105,6 +105,24 @@ describe('global breadcrumbs consumer', () => {
   );
 
   test(
+    'hides App Layout breadcrumbs before the external consumer loads',
+    setupTest('global-nav-breadcrumbs-reserved', {}, async page => {
+      await expect(page.hasConsumerBreadcrumbs()).resolves.toBe(false);
+      await expect(page.hasAppLayoutBreadcrumbs()).resolves.toBe(true);
+      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
+
+      await page.clickTestId('toggle-nav-header');
+      await page.waitForVisible(consumerBreadcrumbs.toSelector());
+      await expect(page.getConsumerBreadcrumbsText()).resolves.toContain('Resource');
+      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
+
+      await page.clickTestId('toggle-nav-header');
+      await page.waitForAssertion(() => expect(page.hasConsumerBreadcrumbs()).resolves.toBe(false));
+      await expect(page.isAppLayoutBreadcrumbsDisplayed()).resolves.toBe(false);
+    })
+  );
+
+  test(
     'coordinates breadcrumbs from multiple App Layout instances',
     setupTest('global-nav-breadcrumbs-multi-layout', {}, async page => {
       await page.clickTestId('toggle-nav-header');

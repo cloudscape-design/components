@@ -19,6 +19,7 @@ import { useIntersectionObserver } from '../../../internal/hooks/use-intersectio
 import { useMobile } from '../../../internal/hooks/use-mobile';
 import { metrics } from '../../../internal/metrics';
 import { useGetGlobalBreadcrumbs } from '../../../internal/plugins/helpers/use-global-breadcrumbs';
+import { isBreadcrumbsOwnedExternally } from '../../../internal/plugins/widget/core';
 import { BreadcrumbsConsumerPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
@@ -462,6 +463,7 @@ export const useAppLayout = (
   const rootRef = useMergeRefs(rootRefInternal, intersectionObserverRef, onMountRootRef);
 
   const currentBreadcrumbs = breadcrumbs ? ownBreadcrumbsProps : discoveredBreadcrumbsProps;
+  const breadcrumbsExternallyOwned = isBreadcrumbsOwnedExternally() || hasBreadcrumbsConsumer;
 
   useLayoutEffect(() => {
     if (!isIntersecting) {
@@ -695,7 +697,7 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
-      breadcrumbsExternallyOwned: hasBreadcrumbsConsumer,
+      breadcrumbsExternallyOwned,
       reportOwnBreadcrumbsProps,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,
