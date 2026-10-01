@@ -55,10 +55,16 @@
 
 .inline-label {
   @include forms.inline-label;
+  // Raise the label above the focused slot (which sits at z-index 1) so a
+  // control's focus ring paints under the label notch instead of over it.
+  z-index: 2;
 }
 
 .inline-label-wrapper {
   @include forms.inline-label-wrapper;
+  // Contain the label and the control slots in one stacking context so their
+  // z-indexes resolve against each other (label 2 over focused slot 1).
+  isolation: isolate;
 }
 
 .inline-label-trigger-wrapper {

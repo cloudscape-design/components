@@ -42,7 +42,15 @@ const suggestions: AutosuggestProps.Option[] = [{ value: 'CPUUtilization' }, { v
 const enteredTextLabel = (value: string) => `Use: ${value}`;
 
 const input = <Input ariaLabel="Value" value="service" onChange={noop} />;
-const select = <Select ariaLabel="Operator" selectedOption={operators[0]} options={operators} onChange={noop} />;
+const select = (
+  <Select
+    ariaLabel="Operator"
+    selectedOption={operators[0]}
+    options={operators}
+    onChange={noop}
+    expandToViewport={true}
+  />
+);
 const multiselect = (
   <Multiselect
     ariaLabel="Labels"
@@ -50,6 +58,7 @@ const multiselect = (
     selectedOptions={[multiOptions[0]]}
     options={multiOptions}
     onChange={noop}
+    expandToViewport={true}
   />
 );
 const segmentedControl = <SegmentedControl selectedId="and" options={segments} label="Join" onChange={noop} />;
@@ -60,6 +69,7 @@ const autosuggest = (
     onChange={noop}
     options={suggestions}
     enteredTextLabel={enteredTextLabel}
+    expandToViewport={true}
   />
 );
 
