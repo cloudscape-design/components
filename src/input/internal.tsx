@@ -14,7 +14,6 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -109,7 +108,6 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
-  const { position: groupedControlPosition } = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -153,11 +151,6 @@ function InternalInput(
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
-
-  const groupedControlClasses = groupedControlPosition
-    ? [styles.grouped, styles[`grouped-${groupedControlPosition}`]]
-    : [];
-
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
     hasPrefixOrSuffix && inputStyles
@@ -185,7 +178,6 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
-      !hasPrefixOrSuffix && groupedControlClasses,
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -317,8 +309,7 @@ function InternalInput(
             invalid && styles['input-adorned-container-invalid'],
             warning && !invalid && styles['input-adorned-container-warning'],
             disabled && styles['input-adorned-container-disabled'],
-            readOnly && !disabled && styles['input-adorned-container-readonly'],
-            groupedControlClasses
+            readOnly && !disabled && styles['input-adorned-container-readonly']
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}
@@ -326,9 +317,7 @@ function InternalInput(
           {hasPrefix && (
             <>
               <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{prefix}</span>
               </span>
               <span className={styles['input-adornment-divider']} />
             </>
@@ -338,9 +327,7 @@ function InternalInput(
             <>
               <span className={styles['input-adornment-divider']} />
               <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{suffix}</span>
               </span>
             </>
           )}

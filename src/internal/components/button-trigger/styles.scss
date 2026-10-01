@@ -159,8 +159,4 @@ $icon-offset: awsui.$space-xxxs;
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
   }
-
-  &.grouped {
-    @include styles.grouped-control;
-  }
 }
