@@ -358,27 +358,19 @@ export default function () {
   const buttonMode2 = parseButtonMode(urlParams.buttonMode2);
   const actionsPosition2 = parseActionsPosition(urlParams.actionsPosition2);
 
-  // The two button options, rendered per example. Each example passes its own current
-  // values and the URL-param keys to write to, so changing one example's options does not
-  // affect the other. `buttonMode` = button presentation; `actionsPosition` = where the
-  // trailing button goes when the group wraps.
+  // The button-variant option, rendered per example. Each example passes its own current
+  // values and the URL-param key to write to, so changing one example's option does not
+  // affect the other. `buttonMode` = button presentation. The button's wrap position
+  // (`actionsPosition`) defaults to `inline` (bottom) and no longer has a UI control; it
+  // stays reachable via the `actionsPosition`/`actionsPosition2` URL params, and
+  // `currentActionsPosition` is still read here to disable the responsive variant in side
+  // layout.
   const renderButtonOptions = (
     currentButtonMode: ButtonMode,
     currentActionsPosition: ControlGroupProps.ActionsPosition,
-    buttonModeParam: PageParams,
-    actionsPositionParam: PageParams
+    buttonModeParam: PageParams
   ) => (
     <SpaceBetween size="xxl" direction="horizontal">
-      <FormField label="Button responsive layout" description="Where the button sits when the component wraps">
-        <RadioGroup
-          value={currentActionsPosition}
-          onChange={({ detail }) => setUrlParams({ [actionsPositionParam]: detail.value })}
-          items={[
-            { value: 'inline', label: 'Bottom' },
-            { value: 'side', label: 'Side' },
-          ]}
-        />
-      </FormField>
       <FormField label="Button variant">
         <RadioGroup
           value={currentButtonMode}
@@ -418,7 +410,7 @@ export default function () {
         >
           <SpaceBetween size="xs">
             <SpaceBetween size="xxl" direction="horizontal">
-              {renderButtonOptions(buttonMode, actionsPosition, 'buttonMode', 'actionsPosition')}
+              {renderButtonOptions(buttonMode, actionsPosition, 'buttonMode')}
               {/* These two options only shape the query builder: its field type and dismiss icon. */}
               <FormField label="Field control">
                 <RadioGroup
@@ -472,7 +464,7 @@ export default function () {
           }
         >
           <SpaceBetween size="xs">
-            {renderButtonOptions(buttonMode2, actionsPosition2, 'buttonMode2', 'actionsPosition2')}
+            {renderButtonOptions(buttonMode2, actionsPosition2, 'buttonMode2')}
             <div style={resizableContainerStyle}>
               <InputWithTextButton buttonMode={buttonMode2} actionsPosition={actionsPosition2} />
             </div>
