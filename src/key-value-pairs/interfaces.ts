@@ -6,8 +6,7 @@ import { BaseComponentProps } from '../types/base-component';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
   /**
-   * Specifies the number of columns in each grid row.
-   * Valid values are any integer between 1 and 4. It defaults to 1.
+   * Specifies the number of columns in each grid row. It defaults to 1.
    */
   columns?: number;
   /**
