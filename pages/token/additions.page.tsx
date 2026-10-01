@@ -162,6 +162,7 @@ function Tokens({
               label={
                 <Popover
                   size="large"
+                  triggerType={inline ? 'text-inline' : 'text'}
                   dismissButton={false}
                   content={<FieldDetails field={it.name} category={it.category ?? 'System'} color={it.color ?? RED} />}
                 >
