@@ -2,9 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
+import clsx from 'clsx';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
+import { resolveSettleDirection } from '../../popover/__tests__/settle-motion';
+
+import { ONE_THEME } from '../../__tests__/compile-motion-scss';
+import popoverStyles from '../../../lib/components/popover/styles.selectors.js';
 
 function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.Position }) {
   render(
@@ -160,5 +165,43 @@ describe('Tooltip', () => {
 
     expect(content).not.toBeNull();
     expect(content!.getElement()).toHaveTextContent('Test tooltip content');
+  });
+});
+
+describe('Tooltip entrance motion', () => {
+  // The rules are compiled from popover/motion.scss and matched against the tooltip's real DOM,
+  // so this fails if the tooltip ever stops rendering through the popover container.
+  function renderAndResolve(arrowPosition: string, { theme = ONE_THEME, rtl = false, motionDisabled = false } = {}) {
+    document.documentElement.className = clsx(theme.slice(1), motionDisabled && 'awsui-motion-disabled');
+    document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+    const { unmount } = render(<Tooltip getTrack={() => null} content="Test tooltip content" />);
+    const container = createWrapper().findTooltip()!.findByClassName(popoverStyles.container)!.getElement();
+    // jsdom has no layout, so the resolved placement never gets computed; pin it by hand.
+    container.querySelector(`.${popoverStyles['container-arrow']}`)!.classList.add(popoverStyles[arrowPosition]);
+    const direction = resolveSettleDirection(container);
+    unmount();
+    return direction;
+  }
+
+  afterEach(() => {
+    document.documentElement.className = '';
+    document.documentElement.dir = '';
+  });
+
+  it('settles down when placed below the trigger, and up when placed above it', () => {
+    expect(renderAndResolve('container-arrow-position-bottom-center')).toBe('down');
+    expect(renderAndResolve('container-arrow-position-top-center')).toBe('up');
+  });
+
+  it('travels horizontally for side placements, and flips the travel in RTL', () => {
+    expect(renderAndResolve('container-arrow-position-right-top')).toBe('end');
+    expect(renderAndResolve('container-arrow-position-left-bottom')).toBe('start');
+    expect(renderAndResolve('container-arrow-position-right-top', { rtl: true })).toBe('start');
+    expect(renderAndResolve('container-arrow-position-left-bottom', { rtl: true })).toBe('end');
+  });
+
+  it('does not animate when motion is disabled or the theme has not opted in', () => {
+    expect(renderAndResolve('container-arrow-position-top-center', { motionDisabled: true })).toBeNull();
+    expect(renderAndResolve('container-arrow-position-right-top', { theme: '.awsui-visual-refresh' })).toBeNull();
   });
 });
