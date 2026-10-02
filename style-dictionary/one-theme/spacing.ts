@@ -15,7 +15,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceStatusIndicatorPaddingHorizontal: '2px',
 
-  spaceContainerContentVertical: { comfortable: '20px', compact: '12px' },
+  spaceContainerContentVertical: { comfortable: '20px', compact: '16px' },
 
   spaceScaledL: { comfortable: '{spaceL}', compact: '{spaceS}' },
 
