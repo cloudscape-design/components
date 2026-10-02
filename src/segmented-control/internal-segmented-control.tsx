@@ -3,7 +3,11 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { GroupedControlDirection, GroupedControlPosition } from '../internal/context/control-group-context';
+import {
+  getGroupedControlClassNames,
+  GroupedControlDirection,
+  GroupedControlPosition,
+} from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
@@ -60,12 +64,15 @@ export default function InternalSegmentedControl({
 
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], {
-        [styles.refresh]: isVisualRefresh,
-        [styles.grouped]: isGrouped,
-        [styles[`grouped-${groupedControlDirection}-${groupedControlPosition}`]]: isGrouped,
-        [styles['grouped-vertical']]: isGrouped && groupedControlDirection === 'vertical',
-      })}
+      className={clsx(
+        styles['segment-part'],
+        styles[`segment-count-${options?.length}`],
+        ...getGroupedControlClassNames(styles, groupedControlPosition ?? null, groupedControlDirection ?? 'horizontal'),
+        {
+          [styles.refresh]: isVisualRefresh,
+          [styles['grouped-vertical']]: isGrouped && groupedControlDirection === 'vertical',
+        }
+      )}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
       role="toolbar"

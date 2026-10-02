@@ -14,7 +14,11 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
+import {
+  getGroupedControlClassNames,
+  ResetGroupedControlContext,
+  useGroupedControlContext,
+} from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -154,10 +158,7 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const groupedControlClasses =
-    groupedControlPosition && groupedControlDirection
-      ? [styles.grouped, styles[`grouped-${groupedControlDirection}-${groupedControlPosition}`]]
-      : [];
+  const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlPosition, groupedControlDirection);
 
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =

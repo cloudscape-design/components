@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import InternalFormField from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
-import { useGroupedControlContext } from '../internal/context/control-group-context';
+import { getGroupedControlClassNames, useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalSelect, { InternalSelectProps } from '../select/internal';
@@ -46,8 +46,6 @@ export default function InternalSegmentedControl({
     onChange: event => fireNonCancelableEvent(onChange, { selectedId: event.detail.selectedOption.value! }),
   };
 
-  const isGrouped = !!(groupedControlPosition && groupedControlDirection);
-
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
       <InternalSegmentedControlComponent
@@ -61,10 +59,10 @@ export default function InternalSegmentedControl({
         groupedControlDirection={groupedControlDirection}
       />
       <div
-        className={clsx(styles.select, {
-          [styles.grouped]: isGrouped,
-          [styles[`grouped-${groupedControlDirection}-${groupedControlPosition}`]]: isGrouped,
-        })}
+        className={clsx(
+          styles.select,
+          ...getGroupedControlClassNames(styles, groupedControlPosition, groupedControlDirection)
+        )}
       >
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
         {!ariaLabelledby && label && (
