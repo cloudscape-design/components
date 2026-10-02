@@ -63,6 +63,7 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  prefix,
 
   // Internal
   role,
@@ -124,6 +125,7 @@ function InternalToken({
       return {
         ...labelObject,
         disabled,
+        labelTag,
         __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{sizedIcon(icon)}</span>,
       };
     } else {
@@ -191,6 +193,11 @@ function InternalToken({
           )}
           style={tokenRootStyleProps}
         >
+          {prefix && (
+            <span aria-hidden="true" className={styles.prefix}>
+              {prefix}
+            </span>
+          )}
           <Option
             className={clsx(isInline && styles['token-option-inline'])}
             triggerVariant={isInline}
