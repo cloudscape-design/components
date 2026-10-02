@@ -10,8 +10,9 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { GroupedControlPosition } from '../../context/control-group-context';
+import { GroupedControlContextProps } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
@@ -42,7 +43,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
-  groupedControlPosition?: GroupedControlPosition | null;
+  groupedControlProps?: GroupedControlContextProps;
 }
 
 const ButtonTrigger = (
@@ -68,12 +69,13 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
-    groupedControlPosition = null,
+    groupedControlProps = { position: null, direction: 'horizontal' },
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
+
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -90,8 +92,7 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      groupedControlPosition && styles.grouped,
-      groupedControlPosition && styles[`grouped-${groupedControlPosition}`],
+      ...getGroupedControlClassNames(styles, groupedControlProps.position, groupedControlProps.direction),
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
