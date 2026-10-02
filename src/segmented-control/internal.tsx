@@ -28,7 +28,7 @@ export default function InternalSegmentedControl({
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
-  const { position: groupedControlPosition, direction: groupedControlDirection } = useGroupedControlContext();
+  const groupedControlProps = useGroupedControlContext();
 
   const selectOptions = (options || []).map(option => {
     const label = option.text || option.iconAlt;
@@ -56,13 +56,12 @@ export default function InternalSegmentedControl({
         ariaLabelledby={ariaLabelledby}
         onChange={onChange}
         style={style}
-        groupedControlPosition={groupedControlPosition}
-        groupedControlDirection={groupedControlDirection}
+        groupedControlProps={groupedControlProps}
       />
       <div
         className={clsx(
           styles.select,
-          ...getGroupedControlClassNames(styles, groupedControlPosition, groupedControlDirection)
+          ...getGroupedControlClassNames(styles, groupedControlProps.position, groupedControlProps.direction)
         )}
       >
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}

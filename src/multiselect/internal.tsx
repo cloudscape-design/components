@@ -75,7 +75,7 @@ const InternalMultiselect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
-    const { position: groupedControlPosition, direction: groupedControlDirection } = useGroupedControlContext();
+    const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
 
     const selfControlId = useUniqueId('trigger');
@@ -140,8 +140,7 @@ const InternalMultiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
-        groupedControlPosition={groupedControlPosition}
-        groupedControlDirection={groupedControlDirection}
+        groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}

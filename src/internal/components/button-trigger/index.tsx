@@ -10,7 +10,7 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { GroupedControlDirection, GroupedControlPosition } from '../../context/control-group-context';
+import { GroupedControlContextProps } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import {
@@ -43,8 +43,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
-  groupedControlPosition?: GroupedControlPosition | null;
-  groupedControlDirection?: GroupedControlDirection;
+  groupedControlProps?: GroupedControlContextProps;
 }
 
 const ButtonTrigger = (
@@ -70,8 +69,7 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
-    groupedControlPosition = null,
-    groupedControlDirection = 'horizontal',
+    groupedControlProps = { position: null, direction: 'horizontal' },
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
@@ -94,7 +92,7 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      ...getGroupedControlClassNames(styles, groupedControlPosition, groupedControlDirection),
+      ...getGroupedControlClassNames(styles, groupedControlProps.position, groupedControlProps.direction),
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
