@@ -26,6 +26,15 @@ const permutations = createPermutations<ColumnLayoutProps>([
     variant: ['text-grid'],
     columns: [1, 2, 3, 4],
   },
+  // 5 and 7 cannot be expressed in the 12-column renderer, so these exercise the CSS grid one.
+  {
+    variant: ['default'],
+    columns: [5, 7],
+  },
+  {
+    variant: ['text-grid'],
+    columns: [5, 6],
+  },
 ]);
 
 export default function ColumnLayoutPermutationsPage() {
