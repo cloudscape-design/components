@@ -58,6 +58,8 @@ export default function InternalExpandableSection({
   headerDescription,
   headerInfo,
   headerActions,
+  headerSecondaryContent,
+  hideHeaderText,
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
@@ -157,6 +159,8 @@ export default function InternalExpandableSection({
           headerCounter={headerCounter}
           headerInfo={headerInfo}
           headerActions={headerActions}
+          headerSecondaryContent={headerSecondaryContent}
+          hideHeaderText={hideHeaderText}
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
           hideExpandIcon={__hideExpandIcon}
