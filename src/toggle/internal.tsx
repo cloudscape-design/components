@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -60,6 +60,13 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
+
+    // The handle's follow-through animation only plays once the state has changed since mount.
+    const [initialChecked] = useState(!!checked);
+    const [hasChanged, setHasChanged] = useState(false);
+    if (!hasChanged && !!checked !== initialChecked) {
+      setHasChanged(true);
+    }
 
     const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {};
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataToggleComponent = {
@@ -130,6 +137,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
               [styles['toggle-handle-disabled']]: disabled,
               [styles['toggle-handle-readonly']]: readOnly,
             })}
+            data-awsui-motion-ready={hasChanged ? '' : undefined}
             style={getStyledControlStyle(style, checked, disabled, readOnly)}
           />
         }
