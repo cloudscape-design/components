@@ -10,9 +10,15 @@ import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
+import testUtilStyles from '../../../button-dropdown/test-classes/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import inputStyles from '../../../input/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+
+// The status of the root list and the status of an expanded group carry distinct markers, so a lookup
+// never falls through from one to the other.
+const statusScopeSelector = (expandedGroup: boolean) =>
+  `.${expandedGroup ? testUtilStyles['group-status'] : testUtilStyles['root-status']}`;
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -133,6 +139,31 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Finds the error recovery button when item loading fails.
+   * Set `expandedGroupDropdown` to true to access the recovery button of an expanded group.
+   * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   */
+  findErrorRecoveryButton(options = { expandedGroupDropdown: false }): ElementWrapper | null {
+    return (
+      this.findOpenDropdown()?.find(
+        `${statusScopeSelector(options.expandedGroupDropdown)} .${footerStyles.recovery}`
+      ) ?? null
+    );
+  }
+
+  /**
+   * Finds the status displayed at the footer of the dropdown.
+   * Set `expandedGroupDropdown` to true to access the status of an expanded group.
+   * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   */
+  findStatusIndicator(options = { expandedGroupDropdown: false }): ElementWrapper | null {
+    return (
+      this.findOpenDropdown()?.find(`${statusScopeSelector(options.expandedGroupDropdown)} .${footerStyles.root}`) ??
+      null
+    );
+  }
+
+  /**
    * Finds the footer region rendered at the bottom of the open dropdown. When filtering is enabled and text is
    * entered, this contains content rendered by filteringResultsText if there are matching items and the `noMatch`
    * content if there are none. Returns null if there is no open dropdown or the footer is not displayed.
@@ -140,7 +171,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * This utility does not open the dropdown. To find the footer region, call `openDropdown()` first.
    */
   findFooterRegion(): ElementWrapper | null {
-    return this.findOpenDropdown()?.findByClassName(footerStyles.root) ?? null;
+    return this.findOpenDropdown()?.find(`${statusScopeSelector(false)} .${footerStyles.root}`) ?? null;
   }
 
   @usesDom

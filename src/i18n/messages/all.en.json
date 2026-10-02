@@ -58,7 +58,9 @@
   "button-dropdown": {
     "filteringResultsText": "{matchesCount} out of {totalCount} items",
     "noMatch": "No matching actions",
-    "i18nStrings.filteringItemAriaDescription": "Keep typing to filter results."
+    "i18nStrings.filteringItemAriaDescription": "Keep typing to filter results.",
+    "recoveryText": "Retry",
+    "errorIconAriaLabel": "Error"
   },
   "button": {
     "i18nStrings.externalIconAriaLabel": "Opens in a new tab"

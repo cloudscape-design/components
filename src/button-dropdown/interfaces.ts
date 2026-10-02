@@ -3,10 +3,10 @@
 import React, { ReactNode } from 'react';
 
 import { ButtonProps } from '../button/interfaces';
-import { ExpandToViewport } from '../dropdown/interfaces';
+import { ExpandToViewport, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../types/base-component';
-import { BaseNavigationDetail, CancelableEventHandler } from '../types/events';
+import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 /**
  * @awsuiSystem core
  */
@@ -155,6 +155,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   iconSvg?: React.ReactNode;
   /**
    * Controls expandability of the item groups.
+   * If group items are loaded asynchronously, return each group's status from `getExpandableItemsAsyncLoadingState`.
    */
   expandableGroups?: boolean;
   /**
@@ -196,11 +197,72 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   fullWidth?: boolean;
 
   /**
-   * Enables filtering of the dropdown items.
+   * Contains all the properties for async loading. Make sure to listen to `onLoadItems`.
    *
-   * When set to `auto`, a search input is rendered inside the dropdown and the items are filtered as the user
-   * types. Items are matched client-side using a case-insensitive substring match against their `text`,
-   * `secondaryText`, and `labelTag`.
+   * The text properties (`empty`, `loadingText`, `finishedText`, `errorText`) are functions that receive the
+   * `expandedGroupId` when the status belongs to an expandable group, and no argument for the root list.
+   * * `empty` - (Optional) Displayed when there are no items to display. This is only shown when `statusType` is set to `finished` or not set at all.
+   * * `loadingText` - (Optional) Specifies the text to display when in the loading state.
+   * * `finishedText` - (Optional) Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+   * * `errorText` - (Optional) Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+   * * `recoveryText` (i18n) - (Optional) Specifies the text for the recovery button. The text is displayed next to the error text. Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+   * * `errorIconAriaLabel` (i18n) - (Optional) Provides a text alternative for the error icon in the error message.
+   * * `statusType` - (Optional) Specifies the current status of loading more items.
+   * * * `pending` - Indicates that no request is in progress, but more items may be loaded.
+   * * * `loading` - Indicates that data fetching is in progress.
+   * * * `finished` - Indicates that pagination has finished and no more requests are expected.
+   * * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+   */
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+
+  /**
+   * Use this event to implement the asynchronous behavior for the component.
+   *
+   * The event is called in the following situations:
+   * * The dropdown opens, unless the same filtering text was already requested.
+   * * The user types inside the filtering input field.
+   * * The user scrolls to the end of the list of items, if `statusType` is set to `pending`.
+   * * The user clicks on the recovery button in the error state.
+   * * The user expands an expandable group.
+   *
+   * The detail object contains the following properties:
+   * * `filteringText` - The value that you need to use to fetch items. It is empty for events about an expandable group.
+   * * `firstPage` - Indicates that you should fetch the first page of items that match the `filteringText`.
+   * * `samePage` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+   * * `expandedGroupId` - Set when the event is about an expandable group: the ID of the group whose items you need to load.
+   **/
+  onLoadItems?: NonCancelableEventHandler<ButtonDropdownProps.LoadItemsDetail>;
+
+  /**
+   * Specifies the async loading status of individual expandable groups.
+   * Use only if you load the nested items asynchronously upon expanding a group.
+   *
+   * Return values are:
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that the group's items are loaded and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+   *
+   * The items of a group are loaded in a single page: `pending` is treated as `finished`, and scrolling inside a group
+   * does not fire `onLoadItems`. If null or undefined, the status will be treated as `finished`.
+   */
+  getExpandableItemsAsyncLoadingState?: (options: {
+    item: ButtonDropdownProps.ItemGroup;
+  }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined;
+
+  /**
+   * Determines how filtering is applied to the dropdown `items`:
+   *
+   * * `auto` - The component will automatically filter items based on user input.
+   * * `manual` - You will set up `onLoadItems` event listeners and filter items on your side or request
+   * them from server.
+   *
+   * If you set this property to `auto`, the component will filter the provided `items` based on the value of the filtering input field.
+   * The filtering text is matched against the item's `text`, `secondaryText`, and `labelTag`.
+   *
+   * If you set this property to `manual`, the default filtering mechanism is disabled and all provided `items` are
+   * displayed in the dropdown list. In that case make sure that you use the `onLoadItems` events in order
+   * to set the `items` property to the items that are relevant for the user, given the filtering input value.
+   *
    */
   filteringType?: ButtonDropdownProps.FilteringType;
 
@@ -228,6 +290,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
   /**
    * Displayed when filtering is enabled and there are no matches for the filtering input.
+   * With `filteringType="manual"`, this is shown when you set `items` to an empty array while the filtering input has a value.
    */
   noMatch?: React.ReactNode;
 
@@ -271,7 +334,52 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
-  export type FilteringType = 'auto' | 'none';
+  export type FilteringType = 'none' | 'auto' | 'manual';
+
+  export interface AsyncLoadingProps {
+    /**
+     * Displayed when there are no items to display.
+     * This is only shown when `statusType` is set to `finished` or not set at all.
+     */
+    empty?: (expandedGroupId?: string) => ReactNode;
+    /**
+     * Specifies the text to display when in the loading state.
+     **/
+    loadingText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+     **/
+    finishedText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+     **/
+    errorText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text for the recovery button. The text is displayed next to the error text.
+     * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+     * @i18n
+     **/
+    recoveryText?: string;
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     * @i18n
+     */
+    errorIconAriaLabel?: string;
+    /**
+     * Specifies the current status of loading more items.
+     * * `pending` - Indicates that no request is in progress, but more items may be loaded.
+     * * `loading` - Indicates that data fetching is in progress.
+     * * `finished` - Indicates that pagination has finished and no more requests are expected.
+     * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+     **/
+    statusType?: ButtonDropdownProps.AsyncLoadingStatusType;
+  }
+
+  export type AsyncLoadingStatusType = 'pending' | 'loading' | 'finished' | 'error';
+
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {
+    expandedGroupId?: string;
+  }
 
   export interface I18nStrings {
     filteringItemAriaDescription?: string;
