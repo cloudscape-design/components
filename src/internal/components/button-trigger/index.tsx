@@ -10,12 +10,9 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import {
-  getGroupedControlClassNames,
-  GroupedControlDirection,
-  GroupedControlPosition,
-} from '../../context/control-group-context';
+import { GroupedControlDirection, GroupedControlPosition } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,

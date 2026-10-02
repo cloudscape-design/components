@@ -43,21 +43,3 @@ export function ResetGroupedControlContext({ children }: { children: React.React
     <GroupedControlContext.Provider value={{ position: null, direction }}>{children}</GroupedControlContext.Provider>
   );
 }
-
-/**
- * Builds the shared grouped-control CSS classes for a consumer.
- *
- * Returns an empty list when the control is not in a group (falsy `position`),
- * otherwise the `grouped` base class plus the position/direction modifier.
- * Spread the result into `clsx(...)` at the call site.
- */
-export function getGroupedControlClassNames(
-  styles: Record<string, string>,
-  position: GroupedControlPosition | null,
-  direction: GroupedControlDirection
-): string[] {
-  if (!position) {
-    return [];
-  }
-  return [styles.grouped, styles[`grouped-${direction}-${position}`]];
-}

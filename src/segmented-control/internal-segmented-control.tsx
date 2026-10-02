@@ -3,11 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import {
-  getGroupedControlClassNames,
-  GroupedControlDirection,
-  GroupedControlPosition,
-} from '../internal/context/control-group-context';
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
+import { GroupedControlDirection, GroupedControlPosition } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';

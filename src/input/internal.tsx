@@ -14,11 +14,8 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import {
-  getGroupedControlClassNames,
-  ResetGroupedControlContext,
-  useGroupedControlContext,
-} from '../internal/context/control-group-context';
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
