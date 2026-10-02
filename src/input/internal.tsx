@@ -109,7 +109,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
-  const { position: groupedControlPosition } = useGroupedControlContext();
+  const { position: groupedControlPosition, direction: groupedControlDirection } = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -154,9 +154,10 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const groupedControlClasses = groupedControlPosition
-    ? [styles.grouped, styles[`grouped-${groupedControlPosition}`]]
-    : [];
+  const groupedControlClasses =
+    groupedControlPosition && groupedControlDirection
+      ? [styles.grouped, styles[`grouped-${groupedControlDirection}-${groupedControlPosition}`]]
+      : [];
 
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =

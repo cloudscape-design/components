@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { GroupedControlPosition } from '../internal/context/control-group-context';
+import { GroupedControlDirection, GroupedControlPosition } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 
 interface InternalSegmentedControlComponentProps extends SegmentedControlProps {
   groupedControlPosition?: GroupedControlPosition | null;
+  groupedControlDirection?: GroupedControlDirection;
 }
 
 export default function InternalSegmentedControl({
@@ -26,6 +27,7 @@ export default function InternalSegmentedControl({
   onChange,
   style,
   groupedControlPosition,
+  groupedControlDirection,
 }: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -53,12 +55,16 @@ export default function InternalSegmentedControl({
   };
   const isVisualRefresh = useVisualRefresh();
 
+  const isGrouped = !!(groupedControlPosition && groupedControlDirection);
+  const isGroupedVertical = isGrouped && groupedControlDirection === 'vertical';
+
   return (
     <div
       className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], {
         [styles.refresh]: isVisualRefresh,
-        [styles.grouped]: !!groupedControlPosition,
-        [styles[`grouped-${groupedControlPosition}`]]: !!groupedControlPosition,
+        [styles.grouped]: isGrouped,
+        [styles[`grouped-${groupedControlDirection}-${groupedControlPosition}`]]: isGrouped,
+        [styles['grouped-vertical']]: isGrouped && groupedControlDirection === 'vertical',
       })}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
@@ -104,6 +110,7 @@ export default function InternalSegmentedControl({
               }}
               onKeyDown={event => moveHighlight(event, focusableSegmentIndex)}
               style={style}
+              fullWidth={isGroupedVertical}
             />
           );
         })}

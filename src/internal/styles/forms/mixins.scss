@@ -363,28 +363,43 @@ $inline-label-border-radius: 2px;
 
 @mixin grouped-control {
   $radius: constants.$control-border-radius;
-  &.grouped-first {
-    border-start-start-radius: $radius;
-    border-end-start-radius: $radius;
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
+
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+
+  &-horizontal {
+    &-first {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
   }
-  &.grouped-middle {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-  }
-  &.grouped-last {
-    border-start-end-radius: $radius;
-    border-end-end-radius: $radius;
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-  }
-  &.grouped-only {
-    border-start-start-radius: $radius;
-    border-start-end-radius: $radius;
-    border-end-start-radius: $radius;
-    border-end-end-radius: $radius;
+
+  &-vertical {
+    &-first {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+    }
   }
 }

@@ -46,6 +46,11 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   border-inline: none;
   border-block: none;
 
+  // Center the text when the segment stretches to full width
+  &.full-width {
+    justify-content: center;
+  }
+
   &:not(.refresh) {
     block-size: calc(100% - $segment-gap - (2 * awsui.$border-width-field));
   }
