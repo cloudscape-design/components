@@ -26,7 +26,7 @@ export default function InternalSegmentedControl({
   ariaLabelledby,
   onChange,
   style,
-  groupedControlProps,
+  groupedControlProps = { position: null, direction: 'horizontal' },
 }: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -54,19 +54,15 @@ export default function InternalSegmentedControl({
   };
   const isVisualRefresh = useVisualRefresh();
 
-  const isGrouped = !!groupedControlProps?.position;
-  const isGroupedVertical = isGrouped && groupedControlProps?.direction === 'vertical';
+  const isGrouped = !!groupedControlProps.position;
+  const isGroupedVertical = isGrouped && groupedControlProps.direction === 'vertical';
 
   return (
     <div
       className={clsx(
         styles['segment-part'],
         styles[`segment-count-${options?.length}`],
-        ...getGroupedControlClassNames(
-          styles,
-          groupedControlProps?.position ?? null,
-          groupedControlProps?.direction ?? 'horizontal'
-        ),
+        ...getGroupedControlClassNames(styles, groupedControlProps),
         {
           [styles.refresh]: isVisualRefresh,
           [styles['grouped-vertical']]: isGroupedVertical,

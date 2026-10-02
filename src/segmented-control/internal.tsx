@@ -58,12 +58,7 @@ export default function InternalSegmentedControl({
         style={style}
         groupedControlProps={groupedControlProps}
       />
-      <div
-        className={clsx(
-          styles.select,
-          ...getGroupedControlClassNames(styles, groupedControlProps.position, groupedControlProps.direction)
-        )}
-      >
+      <div className={clsx(styles.select, ...getGroupedControlClassNames(styles, groupedControlProps))}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
         {!ariaLabelledby && label && (
           <InternalFormField label={label} stretch={true}>

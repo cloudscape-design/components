@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { GroupedControlDirection, GroupedControlPosition } from '../../context/control-group-context';
+import { GroupedControlContextProps } from '../../context/control-group-context';
 
 /**
  * Builds the shared grouped-control CSS classes for a consumer.
@@ -11,8 +11,7 @@ import { GroupedControlDirection, GroupedControlPosition } from '../../context/c
  */
 export function getGroupedControlClassNames(
   styles: Record<string, string>,
-  position: GroupedControlPosition | null,
-  direction: GroupedControlDirection
+  { position, direction }: GroupedControlContextProps
 ): string[] {
   if (!position) {
     return [];

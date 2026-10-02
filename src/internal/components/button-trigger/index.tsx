@@ -92,7 +92,7 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      ...getGroupedControlClassNames(styles, groupedControlProps.position, groupedControlProps.direction),
+      ...getGroupedControlClassNames(styles, groupedControlProps),
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
