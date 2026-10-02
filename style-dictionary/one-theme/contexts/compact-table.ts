@@ -12,7 +12,7 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXs: '{spaceXxs}',
   spaceScaledS: '{spaceXs}',
   spaceScaledM: '{spaceS}',
-  spaceScaledL: '{spaceM}',
+  spaceScaledL: '{spaceS}',
   spaceScaledXl: '{spaceL}',
   spaceScaledXxl: '{spaceXl}',
   spaceScaledXxxl: '{spaceXxl}',
