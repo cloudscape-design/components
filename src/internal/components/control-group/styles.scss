@@ -42,11 +42,12 @@
   &-last {
     // Overlap each non-first slot onto its predecessor by one border width,
     // so the two adjacent borders coincide into a single seam.
+    $margin: calc(-1 * #{awsui.$border-width-field});
     &-horizontal {
-      margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+      margin-inline-start: $margin;
     }
     &-vertical {
-      margin-block-start: calc(-1 * #{awsui.$border-width-field});
+      margin-block-start: $margin;
     }
   }
 }
