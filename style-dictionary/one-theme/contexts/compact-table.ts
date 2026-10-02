@@ -23,7 +23,7 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
 };
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
-  sizeVerticalInput: '28px',
+  sizeVerticalInput: '26px',
 };
 
 const typographyTokens: StyleDictionary.DensityTypographyDictionary = {
