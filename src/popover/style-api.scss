@@ -1,0 +1,7 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles/style-api' as style-api;
+
+// Style API v2 tokens of the popover surface, shared by Popover and Tooltip.
+$tokens: style-api.resolve((color, background, border-color, border-width, border-radius), carrier);

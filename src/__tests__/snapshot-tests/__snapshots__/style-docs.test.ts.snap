@@ -147,6 +147,30 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for popover matches the snapshot: popover 1`] = `
+{
+  "slots": [
+    {
+      "name": "popover",
+      "tokens": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for radio-button matches the snapshot: radio-button 1`] = `
 {
   "slots": [
@@ -198,6 +222,23 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 }
 `;
 
+exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "slots": [
+    {
+      "name": "tooltip",
+      "tokens": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -206,7 +247,9 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "popover",
   "radio-button",
   "toggle",
+  "tooltip",
 ]
 `;

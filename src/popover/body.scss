@@ -3,12 +3,15 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as popover-style-api;
 
 $header-row-margin-block-end: awsui.$space-xs;
 
 .body {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
+  color: style-api.value(popover-style-api.$tokens, color, awsui.$color-text-body-default);
 
   padding-block: awsui.$space-s;
   padding-inline: awsui.$space-m;
@@ -61,7 +64,7 @@ $header-row-margin-block-end: awsui.$space-xs;
   // This prevents word-break style of the parent components to have an effect on the popover content.
   word-break: normal;
 
-  color: awsui.$color-text-body-secondary;
+  color: style-api.value(popover-style-api.$tokens, color, awsui.$color-text-body-secondary);
   flex: 1 1 auto;
   min-inline-size: 0;
 
