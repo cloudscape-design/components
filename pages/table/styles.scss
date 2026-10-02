@@ -7,15 +7,3 @@
 .borderless-wrapper {
   background-color: tokens.$color-background-status-warning;
 }
-
-// Query editor code area for the CloudWatch Logs Insights demo page.
-// Font size follows the global density mode: 14px in comfortable (default),
-// 13px in compact mode (signalled by the .awsui-compact-mode ancestor class).
-.query-editor-code {
-  font-size: 14px;
-}
-
-// stylelint-disable selector-combinator-disallowed-list, selector-class-pattern
-:global(.awsui-compact-mode) .query-editor-code {
-  font-size: 13px;
-}
