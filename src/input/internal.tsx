@@ -3,7 +3,12 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useMergeRefs,
+  useSingleTabStopNavigation,
+  useUniqueId,
+  warnOnce,
+} from '@cloudscape-design/component-toolkit/internal';
 import {
   copyAnalyticsMetadataAttribute,
   getAnalyticsMetadataAttribute,
@@ -14,7 +19,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
+import { ControlGroupContext, useControlGroupContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -109,7 +114,6 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
-  const { position: groupedControlPosition } = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -148,16 +152,25 @@ function InternalInput(
   // When an inline label is rendered, the native input must have an id so the
   // label's htmlFor can reference it. Fall back to a generated id if none was provided.
   const generatedControlId = useUniqueId('input');
-  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+  const controlId =
+    nativeInputAttributes?.id ?? controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+
+  // When inside a ControlGroup, this control keeps its own border but drops the
+  // radius and doubled border on the sides where it meets a neighbor, so the
+  // group reads as one fused unit. Its position decides which sides.
+  const {
+    isInControlGroup,
+    position: controlGroupPosition,
+    hasInlineLabel: inControlGroupLabeled,
+    precedesDetached: inControlGroupPrecedesLabeled,
+    sideActions: inControlGroupSideActions,
+    isGhost: inControlGroupGhost,
+    stacked: inControlGroupStacked,
+  } = useControlGroupContext();
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
-
-  const groupedControlClasses = groupedControlPosition
-    ? [styles.grouped, styles[`grouped-${groupedControlPosition}`]]
-    : [];
-
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
     hasPrefixOrSuffix && inputStyles
@@ -185,7 +198,12 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
-      !hasPrefixOrSuffix && groupedControlClasses,
+      isInControlGroup && styles['input-in-control-group'],
+      isInControlGroup && controlGroupPosition && styles[`input-in-control-group-${controlGroupPosition}`],
+      isInControlGroup && inControlGroupLabeled && styles['input-in-control-group-labeled'],
+      isInControlGroup && inControlGroupPrecedesLabeled && styles['input-in-control-group-precedes-labeled'],
+      isInControlGroup && inControlGroupSideActions && styles['input-in-control-group-side-actions'],
+      isInControlGroup && inControlGroupStacked && styles['input-in-control-group-stacked'],
       hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
@@ -235,6 +253,21 @@ function InternalInput(
 
   const mergedRef = useMergeRefs(ref, inputRef);
 
+  // Register with a ControlGroup's roving tab-stop navigation so the group is a single
+  // Register with an ambient roving tab-stop navigation provider (for example a TreeView,
+  // which wraps its items in one) so the input is reachable with the arrow keys. The hook
+  // is inert when there is no provider above — it returns the input's normal tab index —
+  // so this is a no-op outside such a container. A ControlGroup measurement-ghost copy
+  // passes a detached ref so it never registers (its hidden duplicate would otherwise
+  // pollute the provider's focusable set).
+  const navRegistrationRef = useRef<HTMLInputElement>(null);
+  const { tabIndex: navTabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : inputRef, {
+    tabIndex: attributes.tabIndex,
+  });
+  if (!inControlGroupGhost) {
+    attributes.tabIndex = navTabIndex;
+  }
+
   // type = "visualSearch" renders a type="text' input
   if (attributes.type === 'visualSearch') {
     attributes.type = 'text';
@@ -271,16 +304,26 @@ function InternalInput(
           } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
         : {})}
     >
-      <InternalButton
-        // Used for test utils
-        className={styles['input-button-right']}
-        variant="inline-icon-pointer-target"
-        formAction="none"
-        iconName={__endIcon}
-        onClick={__onEndIconClick}
-        ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
-        disabled={disabled}
-      />
+      {/*
+        Reset the ControlGroup context so this internal clear/search button does not
+        inherit the group's fused field styling (borders, square sizing). The context is
+        meant for the control that occupies the group slot (the input itself), not the
+        buttons the input renders inside. Without this, an Input used inside a
+        ControlGroup (for example the field of an Autosuggest) leaks the group styling
+        onto its clear button.
+      */}
+      <ControlGroupContext.Provider value={{ isInControlGroup: false }}>
+        <InternalButton
+          // Used for test utils
+          className={styles['input-button-right']}
+          variant="inline-icon-pointer-target"
+          formAction="none"
+          iconName={__endIcon}
+          onClick={__onEndIconClick}
+          ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
+          disabled={disabled}
+        />
+      </ControlGroupContext.Provider>
     </span>
   ) : null;
 
@@ -318,7 +361,18 @@ function InternalInput(
             warning && !invalid && styles['input-adorned-container-warning'],
             disabled && styles['input-adorned-container-disabled'],
             readOnly && !disabled && styles['input-adorned-container-readonly'],
-            groupedControlClasses
+            isInControlGroup && styles['input-adorned-container-in-control-group'],
+            isInControlGroup &&
+              controlGroupPosition &&
+              styles[`input-adorned-container-in-control-group-${controlGroupPosition}`],
+            isInControlGroup && inControlGroupLabeled && styles['input-adorned-container-in-control-group-labeled'],
+            isInControlGroup &&
+              inControlGroupPrecedesLabeled &&
+              styles['input-adorned-container-in-control-group-precedes-labeled'],
+            isInControlGroup &&
+              inControlGroupSideActions &&
+              styles['input-adorned-container-in-control-group-side-actions'],
+            isInControlGroup && inControlGroupStacked && styles['input-adorned-container-in-control-group-stacked']
           )}
           aria-disabled={disabled || undefined}
           style={adornedContainerStyles}
@@ -326,21 +380,18 @@ function InternalInput(
           {hasPrefix && (
             <>
               <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{prefix}</span>
               </span>
               <span className={styles['input-adornment-divider']} />
             </>
           )}
           {mainInput}
+          {mainInput}
           {hasSuffix && (
             <>
               <span className={styles['input-adornment-divider']} />
               <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
-                </span>
+                <span className={styles['input-adornment-content']}>{suffix}</span>
               </span>
             </>
           )}

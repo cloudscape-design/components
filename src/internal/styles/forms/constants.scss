@@ -6,6 +6,12 @@
 
 $control-border-radius: awsui.$border-radius-input;
 
+// Container-query condition at which a ControlGroup stops laying its controls out
+// in a row and stacks them vertically. Shared by the ControlGroup wrapper and by
+// each participating control's fused-corner styling so they flip together. This
+// is a container query (based on the group's available width), not the viewport.
+$control-group-stack-query: '(max-width: 465px)';
+
 // Use for options in dropdowns
 $option-padding-vertical: awsui.$space-option-padding-vertical;
 $option-padding-horizontal: awsui.$space-option-padding-horizontal;

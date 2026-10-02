@@ -3,14 +3,19 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+import {
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+  useSingleTabStopNavigation,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
-import { GroupedControlPosition } from '../../context/control-group-context';
+import { useControlGroupContext } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
@@ -42,7 +47,6 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
-  groupedControlPosition?: GroupedControlPosition | null;
 }
 
 const ButtonTrigger = (
@@ -68,12 +72,30 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
-    groupedControlPosition = null,
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
+  // When inside a ControlGroup, the trigger keeps its own border but fuses with
+  // neighbors (squared interior corners + collapsed seam). Its position decides
+  // which sides.
+  const {
+    isInControlGroup,
+    position: controlGroupPosition,
+    hasInlineLabel: inControlGroupLabeled,
+    precedesDetached: inControlGroupPrecedesLabeled,
+    sideActions: inControlGroupSideActions,
+    isGhost: inControlGroupGhost,
+    stacked: inControlGroupStacked,
+  } = useControlGroupContext();
+  // Register with an ambient roving tab-stop navigation provider (for example a TreeView)
+  // so the trigger is reachable with the arrow keys. Inert when there is no provider above.
+  // A ControlGroup measurement-ghost copy passes a detached ref so it never registers.
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const navRegistrationRef = React.useRef<HTMLButtonElement>(null);
+  const { tabIndex: navTabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : buttonRef);
+  const mergedRef = useMergeRefs(ref, buttonRef);
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -90,8 +112,12 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      groupedControlPosition && styles.grouped,
-      groupedControlPosition && styles[`grouped-${groupedControlPosition}`],
+      isInControlGroup && styles['in-control-group'],
+      isInControlGroup && controlGroupPosition && styles[`in-control-group-${controlGroupPosition}`],
+      isInControlGroup && inControlGroupLabeled && styles['in-control-group-labeled'],
+      isInControlGroup && inControlGroupPrecedesLabeled && styles['in-control-group-precedes-labeled'],
+      isInControlGroup && inControlGroupSideActions && styles['in-control-group-side-actions'],
+      isInControlGroup && inControlGroupStacked && styles['in-control-group-stacked'],
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
@@ -120,6 +146,10 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
+  if (!inControlGroupGhost) {
+    attributes.tabIndex = navTabIndex;
+  }
+
   const analyticsMetadata:
     | GeneratedAnalyticsMetadataButtonTriggerExpand
     | GeneratedAnalyticsMetadataButtonTriggerCollapse = {
@@ -131,7 +161,7 @@ const ButtonTrigger = (
 
   return (
     <button
-      ref={ref}
+      ref={mergedRef}
       {...attributes}
       data-awsui-motion-trigger="hover"
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}

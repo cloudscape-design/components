@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../icon/internal';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
@@ -48,6 +48,18 @@ export const Segment = React.forwardRef(
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
     const isVisualRefresh = useVisualRefresh();
 
+    // Register the ACTIVE segment with an ambient roving tab-stop navigation provider (for
+    // example a TreeView), so the segmented control is reachable with the arrow keys as a
+    // single stop. Only the active segment is ever tabbable (the control does its own
+    // internal Left/Right roving), so registering it is enough; inactive segments pass a
+    // detached ref so they don't register. Inert when there is no provider above.
+    const registrationRef = useRef<HTMLElement>(null);
+    const { tabIndex: navTabIndex, navigationActive } = useSingleTabStopNavigation(
+      isActive ? buttonRef : registrationRef,
+      { tabIndex }
+    );
+    const resolvedTabIndex = navigationActive && isActive ? navTabIndex : tabIndex;
+
     return (
       <button
         className={clsx(
@@ -62,7 +74,7 @@ export const Segment = React.forwardRef(
         disabled={disabled && !disabledReason}
         aria-disabled={isDisabledWithReason ? 'true' : undefined}
         type="button"
-        tabIndex={tabIndex}
+        tabIndex={resolvedTabIndex}
         aria-pressed={isActive ? 'true' : 'false'}
         aria-label={!text ? iconAlt : undefined}
         onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}

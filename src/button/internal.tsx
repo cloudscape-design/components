@@ -22,6 +22,7 @@ import {
   getTextFromSelector,
 } from '../internal/analytics/selectors';
 import { useButtonContext } from '../internal/context/button-context';
+import { useControlGroupContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -145,6 +146,22 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
+    const {
+      isInControlGroup: isInControlGroupContext,
+      position: controlGroupPosition,
+      standaloneWhenStacked: inControlGroupStandalone,
+      stacked: inControlGroupStacked,
+      invalid: inControlGroupInvalid,
+      warning: inControlGroupWarning,
+      customStandalone: inControlGroupCustomStandalone,
+      sideActions: inControlGroupSideActions,
+      isGhost: inControlGroupGhost,
+    } = useControlGroupContext();
+    // A custom `actions` button participates in the group in every wrap state: it fuses
+    // in a row and stays attached (fused vertically) when the group wraps. Unlike the
+    // field-styled controls, it keeps its OWN border and background color — that is
+    // handled in styles via the `in-control-group-custom-standalone` marker below.
+    const isInControlGroup = isInControlGroupContext;
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
@@ -206,11 +223,23 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
       [styles['button-compact']]: __compact,
+      [styles['in-control-group']]: isInControlGroup,
+      [styles[`in-control-group-${controlGroupPosition}`]]: isInControlGroup && !!controlGroupPosition,
+      [styles['in-control-group-standalone']]: isInControlGroup && inControlGroupStandalone,
+      [styles['in-control-group-custom-standalone']]: isInControlGroup && inControlGroupCustomStandalone,
+      [styles['in-control-group-side-actions']]: isInControlGroup && inControlGroupSideActions,
+      [styles['in-control-group-stacked']]: isInControlGroup && inControlGroupStacked,
+      [styles['in-control-group-invalid']]: isInControlGroup && inControlGroupInvalid,
+      [styles['in-control-group-warning']]: isInControlGroup && inControlGroupWarning,
       [styles.link]: isAnchor,
     });
 
     const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
-    const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
+    // A ControlGroup measurement-ghost copy passes a detached ref so it never registers
+    // with an ambient roving navigation provider (its hidden duplicate would otherwise
+    // pollute the provider's focusable set).
+    const navRegistrationRef = useRef<HTMLElement>(null);
+    const { tabIndex } = useSingleTabStopNavigation(inControlGroupGhost ? navRegistrationRef : buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
 
