@@ -57,7 +57,7 @@ export const Segment = React.forwardRef(
           { [styles.disabled]: !!disabled },
           { [styles.selected]: isActive },
           { [styles.refresh]: isVisualRefresh },
-          { [styles['full-width']]: !!fullWidth }
+          { [styles['full-width']]: fullWidth }
         )}
         ref={useMergeRefs(ref, buttonRef)}
         onClick={onClick}

@@ -67,7 +67,7 @@ export default function InternalSegmentedControl({
         ...getGroupedControlClassNames(styles, groupedControlPosition ?? null, groupedControlDirection ?? 'horizontal'),
         {
           [styles.refresh]: isVisualRefresh,
-          [styles['grouped-vertical']]: isGrouped && groupedControlDirection === 'vertical',
+          [styles['grouped-vertical']]: isGroupedVertical,
         }
       )}
       aria-label={label}
