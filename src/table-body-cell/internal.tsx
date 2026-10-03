@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
-import { NativeAttributes } from '../types/native-attributes';
 import { TableBodyCellProps } from './interfaces';
 
 import bodyCellStyles from '../table/body-cell/styles.css.js';
@@ -18,7 +17,7 @@ export type InternalTableBodyCellProps = Omit<TableBodyCellProps, 'isRowHeader'>
   wrapLines?: boolean;
   // Non-base native attributes injected by internal callers (the existing Table's td-element): role and
   // sizing. Base props (className/id/data-*) flow directly and are read via getBaseProps.
-  nativeAttributes?: NativeAttributes<React.ThHTMLAttributes<HTMLTableCellElement>>;
+  nativeAttributes?: Omit<React.ComponentPropsWithoutRef<'td'>, 'children'> & Record<`data-${string}`, string>;
   tabIndex?: number;
   onClick?: React.MouseEventHandler<HTMLTableCellElement>;
   onFocus?: React.FocusEventHandler<HTMLTableCellElement>;

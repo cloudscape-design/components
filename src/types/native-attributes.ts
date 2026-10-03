@@ -2,6 +2,5 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-export type NativeAttributes<T extends React.HTMLAttributes<HTMLElement>> =
-  | (Omit<T, 'children'> & Record<`data-${string}`, string>)
-  | undefined;
+export type NativeAttributes<ET extends HTMLElement, AT extends React.HTMLAttributes<ET>> = Omit<AT, 'children'> &
+  Record<`data-${string}`, string> & { readonly ref?: React.Ref<ET> };

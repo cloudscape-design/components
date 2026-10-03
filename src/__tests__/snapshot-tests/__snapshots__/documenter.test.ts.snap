@@ -142,13 +142,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAnchorAttributes",
@@ -156,7 +161,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native button element.
@@ -164,13 +169,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -178,7 +188,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -3763,13 +3773,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -3777,7 +3792,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
@@ -4273,13 +4288,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -4287,7 +4305,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the badge's visual appearance.
@@ -5042,13 +5060,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -5056,7 +5077,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "{}",
@@ -5884,13 +5905,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAnchorAttributes",
@@ -5898,7 +5924,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -5906,13 +5932,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -5920,7 +5951,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -6984,35 +7015,41 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "object",
         "properties": [
           {
             "inlineType": {
-              "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+              "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
               "type": "union",
               "values": [
                 "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
                 "Record<\`data-\${string}\`, string>",
+                "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
               ],
             },
             "name": "anchor",
             "optional": true,
-            "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+            "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
           },
           {
             "inlineType": {
-              "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+              "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
               "type": "union",
               "values": [
                 "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
                 "Record<\`data-\${string}\`, string>",
+                "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
               ],
             },
             "name": "button",
             "optional": true,
-            "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+            "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
           },
         ],
         "type": "object",
@@ -7022,7 +7059,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "{ button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>; anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>; }",
+      "type": "{ button?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>> | undefined; anchor?: NativeAttributes<...> | undefined; }",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -7030,13 +7067,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeTriggerAttributes",
@@ -7044,7 +7086,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Specifies a render function to render custom options in the dropdown menu.
@@ -8340,13 +8382,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -8354,7 +8401,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -11065,13 +11112,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -11079,7 +11131,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -12443,13 +12495,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -12457,7 +12512,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'horizontal'",
@@ -15986,13 +16041,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -16000,7 +16058,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -17305,13 +17363,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -17319,7 +17382,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -17705,13 +17768,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLDivElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -17719,7 +17785,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the item card's visual appearance.
@@ -18667,13 +18733,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -18681,7 +18752,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
@@ -22995,13 +23066,18 @@ Some attributes will be automatically combined with internal attribute values:
 - Event handlers will be chained, unless the default is prevented.
 
 We do not support using this attribute to apply custom styling.
-When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
+When \`tokens\` is defined, nativeTextareaAttributes will be ignored.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLTextAreaElement> | undefined; }",
         ],
       },
       "name": "nativeTextareaAttributes",
@@ -23009,7 +23085,7 @@ When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -24301,13 +24377,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -24315,7 +24396,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the radio button is read-only, which prevents the
@@ -27885,13 +27966,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLDivElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -27899,7 +27983,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "Defines the spacing between the individual items of the content.",
@@ -27962,13 +28046,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -27976,7 +28063,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -28241,13 +28328,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -28255,7 +28345,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'success'",
@@ -32006,13 +32096,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLTextAreaElement> | undefined; }",
         ],
       },
       "name": "nativeTextareaAttributes",
@@ -32020,7 +32115,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32676,13 +32771,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -32690,7 +32790,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32871,13 +32971,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -32885,7 +32990,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -33382,13 +33487,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -33396,7 +33506,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "defaultValue": "false",

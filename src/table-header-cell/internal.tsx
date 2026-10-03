@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
-import { NativeAttributes } from '../types/native-attributes';
 import { TableHeaderCellProps } from './interfaces';
 
 import headerCellStyles from '../table/header-cell/styles.css.js';
@@ -17,7 +16,7 @@ export type InternalTableHeaderCellProps = TableHeaderCellProps & {
   tabIndex?: number;
   // Non-base native attributes injected by internal callers (the existing Table's th-element): colSpan,
   // scope, role, aria-sort. Base props (className/id/data-*) flow directly and are read via getBaseProps.
-  nativeAttributes?: NativeAttributes<React.ThHTMLAttributes<HTMLTableCellElement>>;
+  nativeAttributes?: Omit<React.ComponentPropsWithoutRef<'td'>, 'children'> & Record<`data-${string}`, string>;
   disableContentWrapper?: boolean;
   disableDivider?: boolean;
 };

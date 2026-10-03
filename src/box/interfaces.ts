@@ -157,9 +157,11 @@ export interface BoxProps extends BaseComponentProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+  nativeAttributes?: NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace BoxProps {

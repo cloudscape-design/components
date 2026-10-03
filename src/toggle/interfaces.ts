@@ -37,9 +37,13 @@ export interface ToggleProps extends BaseCheckboxProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
+   *
    * @awsuiSystem core
    */
-  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+  nativeInputAttributes?: NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export namespace ToggleProps {
