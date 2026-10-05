@@ -80,7 +80,8 @@ type PageParams =
   | 'stretch'
   | 'actionsPosition'
   | 'buttonMode2'
-  | 'actionsPosition2';
+  | 'actionsPosition2'
+  | 'controlledWrap';
 
 const resizableContainerStyle: React.CSSProperties = {
   resize: 'horizontal',
@@ -148,12 +149,18 @@ function ControlledQueryBuilder({
   control,
   stretch,
   actionsPosition,
+  controlledWrap,
 }: {
   iconName: RemoveIcon;
   buttonMode: ButtonMode;
   control: ControlKind;
   stretch: boolean;
   actionsPosition: ControlGroupProps.ActionsPosition;
+  // When true (default), the builder measures its own width and pushes the wrap decision
+  // down to every clause via `wrapBehavior`, so all clauses stack together. When false,
+  // the builder omits `wrapBehavior` and each ControlGroup falls back to its own built-in
+  // `"auto"` behavior, deciding independently whether it fits.
+  controlledWrap: boolean;
 }) {
   const [clauses, setClauses] = useState<ControlledClause[]>(INITIAL_CONTROLLED_CLAUSES);
   const [nextId, setNextId] = useState(INITIAL_CONTROLLED_CLAUSES.length + 1);
@@ -163,8 +170,14 @@ function ControlledQueryBuilder({
   // Measure the builder's own width. Below WRAP_THRESHOLD the clauses stack vertically.
   const [width, measureRef] = useContainerQuery(entry => entry.contentBoxWidth);
   const wrapped = width !== null && width < WRAP_THRESHOLD;
-  // The wrap decision is pushed down to every clause so they all stack together.
-  const wrapBehavior: ControlGroupProps.WrapBehavior = wrapped ? 'wrap' : 'nowrap';
+  // The wrap decision is pushed down to every clause so they all stack together — but only
+  // when `controlledWrap` is set. Otherwise `wrapBehavior` is left undefined so each clause
+  // uses its own built-in `"auto"` behavior.
+  const wrapBehavior: ControlGroupProps.WrapBehavior | undefined = controlledWrap
+    ? wrapped
+      ? 'wrap'
+      : 'nowrap'
+    : undefined;
 
   const addClause = () => {
     setClauses(prev => [...prev, { id: nextId, name: '', operator: OPERATORS[0], value: '' }]);
@@ -342,6 +355,11 @@ export default function () {
   // jump); it is ignored for plain inputs.
   const stretch = control === 'autosuggest' && urlParams.stretch === true;
 
+  // Whether the query builder pushes its measured wrap decision down to every clause via
+  // `wrapBehavior`, or omits it so each ControlGroup uses its own built-in `"auto"`
+  // behavior (the default). Page-controlled only when explicitly set.
+  const controlledWrap = urlParams.controlledWrap === true;
+
   // Resolve the button options from their (per-example) URL params, falling back to
   // defaults for unset/invalid values.
   const parseButtonMode = (value: unknown): ButtonMode =>
@@ -451,6 +469,24 @@ export default function () {
                   </Checkbox>
                 </FormField>
               )}
+              <FormField label="Wrap behavior" description="How each clause decides to stack its controls">
+                <RadioGroup
+                  value={controlledWrap ? 'controlled' : 'builtin'}
+                  onChange={({ detail }) => setUrlParams({ controlledWrap: detail.value === 'controlled' })}
+                  items={[
+                    {
+                      value: 'controlled',
+                      label: 'Page-controlled',
+                      description: 'The page measures its width and sets wrapBehavior on every clause.',
+                    },
+                    {
+                      value: 'builtin',
+                      label: 'Built-in',
+                      description: 'Each clause decides on its own (wrapBehavior unset).',
+                    },
+                  ]}
+                />
+              </FormField>
             </SpaceBetween>
             <div style={resizableContainerStyle}>
               <ControlledQueryBuilder
@@ -459,6 +495,7 @@ export default function () {
                 control={control}
                 stretch={stretch}
                 actionsPosition={actionsPosition}
+                controlledWrap={controlledWrap}
               />
             </div>
           </SpaceBetween>
