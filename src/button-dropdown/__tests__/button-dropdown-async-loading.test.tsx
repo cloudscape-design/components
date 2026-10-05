@@ -374,6 +374,24 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     });
   });
 
+  test('warns and does not fire onLoadItems when an async group without an id is expanded', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: [{ text: 'No id group', items: [] as ButtonDropdownProps.Items } as ButtonDropdownProps.ItemGroup],
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: () => 'loading',
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    onLoadItems.mockClear();
+    wrapper.findOpenDropdown()!.find('[aria-expanded="false"]')!.click();
+    expect(onLoadItems).not.toHaveBeenCalled();
+    expect(warnOnce).toHaveBeenCalledWith(
+      'ButtonDropdown',
+      'Expandable groups need an `id` for `onLoadItems` to fire when they expand.'
+    );
+  });
+
   test('shows per-group loading status from getExpandableItemsAsyncLoadingState', () => {
     const { wrapper } = renderDropdown({
       items: groupItems,
@@ -613,6 +631,63 @@ describe('ButtonDropdown async loading with expandable groups', () => {
       firstPage: true,
       samePage: false,
       expandedGroupId: 'g1',
+    });
+  });
+
+  describe('activating while an expanded group has no items yet', () => {
+    const renderLoadingGroup = () => {
+      const onItemClick = jest.fn();
+      const result = renderDropdown({
+        items: groupItems,
+        expandableGroups: true,
+        getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'loading' : null),
+        onLoadItems: () => {},
+        onItemClick,
+      });
+      return { ...result, onItemClick };
+    };
+
+    test.each([
+      ['Enter', 'keydown', KeyCode.enter],
+      ['Space', 'keyup', KeyCode.space],
+    ] as const)('%s after expanding with a click keeps the dropdown open', (_, eventType, keyCode) => {
+      const { wrapper, onItemClick } = renderLoadingGroup();
+      wrapper.openDropdown();
+      wrapper.findExpandableCategoryById('g1')!.click();
+      wrapper.findOpenDropdown()![eventType](keyCode);
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+      expect(wrapper.findExpandableCategoryById('g1')!.find('[aria-expanded="true"]')).not.toBeNull();
+      expect(onItemClick).not.toHaveBeenCalled();
+    });
+
+    test('Enter after expanding with the keyboard keeps the dropdown open', () => {
+      const { wrapper, onItemClick } = renderLoadingGroup();
+      wrapper.findNativeButton().keydown(KeyCode.down);
+      wrapper.findOpenDropdown()!.keydown(KeyCode.right);
+      wrapper.findOpenDropdown()!.keydown(KeyCode.enter);
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
+      expect(onItemClick).not.toHaveBeenCalled();
+    });
+
+    test('Enter activates the first item once the group items have loaded', () => {
+      const { wrapper, onItemClick, rerender } = renderLoadingGroup();
+      wrapper.openDropdown();
+      wrapper.findExpandableCategoryById('g1')!.click();
+      rerender(
+        <ButtonDropdown
+          items={[{ id: 'g1', text: 'Group 1', items: [{ id: 'g1i1', text: 'Loaded action' }] }, groupItems[1]]}
+          expandableGroups={true}
+          getExpandableItemsAsyncLoadingState={() => 'finished'}
+          onLoadItems={() => {}}
+          onItemClick={onItemClick}
+        >
+          Actions
+        </ButtonDropdown>
+      );
+      wrapper.findOpenDropdown()!.keydown(KeyCode.enter);
+      expect(onItemClick).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: expect.objectContaining({ id: 'g1i1' }) })
+      );
     });
   });
 

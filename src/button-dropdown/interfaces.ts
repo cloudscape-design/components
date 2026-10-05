@@ -19,7 +19,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * The following properties are supported across all types:
    *
    * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox`. Defaults to `action` if `items` undefined and `group` otherwise.
-   * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
+   * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories. Mandatory for expandable groups whose items you load asynchronously.
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
@@ -223,7 +223,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * * The user types inside the filtering input field.
    * * The user scrolls to the end of the list of items, if `statusType` is set to `pending`.
    * * The user clicks on the recovery button in the error state.
-   * * The user expands an expandable group.
+   * * The user expands an expandable group that has an `id`.
    *
    * The detail object contains the following properties:
    * * `filteringText` - The value that you need to use to fetch items. It is empty for events about an expandable group.
@@ -244,6 +244,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * The items of a group are loaded in a single page: `pending` is treated as `finished`, and scrolling inside a group
    * does not fire `onLoadItems`. If null or undefined, no status-specific text is displayed (but `empty` can still be shown for an empty group).
+   * The function is only called for groups that have an `id`.
    */
   getExpandableItemsAsyncLoadingState?: (options: {
     item: ButtonDropdownProps.ItemGroup;

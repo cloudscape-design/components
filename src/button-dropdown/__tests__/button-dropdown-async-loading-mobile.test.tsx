@@ -102,6 +102,22 @@ describe('ButtonDropdown async loading with expandable groups on mobile', () => 
     expect(findOpenMobileGroup(wrapper)).not.toBeNull();
   });
 
+  test('renders the error status outside the group menu and links it with aria-describedby', () => {
+    const { wrapper } = renderDropdown({
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { errorText: () => 'Failed to load', recoveryText: 'Retry' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+
+    const groupMenu = findOpenMobileGroup(wrapper)!.find('[role="menu"]')!.getElement();
+    const recoveryButton = wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.getElement();
+    expect(groupMenu).not.toContainElement(recoveryButton);
+    const footer = document.getElementById(groupMenu.getAttribute('aria-describedby')!);
+    expect(footer).toContainElement(recoveryButton);
+  });
+
   test('does not render a recovery button without onLoadItems', () => {
     const { wrapper } = renderDropdown({
       getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),

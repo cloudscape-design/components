@@ -172,8 +172,13 @@ const InternalButtonDropdown = React.forwardRef(
       filteringType,
       fireLoadItems,
       onGroupExpand: group => {
-        if (group.id && onLoadItems) {
+        if (!onLoadItems) {
+          return;
+        }
+        if (group.id) {
           fireGroupLoadItems(group.id);
+        } else if (getExpandableItemsAsyncLoadingState) {
+          warnOnce('ButtonDropdown', 'Expandable groups need an `id` for `onLoadItems` to fire when they expand.');
         }
       },
       hasRecoveryButton: () => hasRecoveryButtonRef.current,

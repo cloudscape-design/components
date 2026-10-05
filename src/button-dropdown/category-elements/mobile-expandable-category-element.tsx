@@ -167,47 +167,58 @@ const MobileExpandableCategoryElement = ({
     content = (
       <MobileExpandableGroup open={expanded} trigger={trigger}>
         {expanded && (hasGroupItems || groupDropdownStatus.content) && (
-          <ul
-            role="menu"
-            aria-label={item.text}
-            aria-describedby={groupDropdownStatus.content ? footerId : undefined}
-            className={styles['items-list-container']}
-          >
-            {hasGroupItems ? (
-              <ItemsList
-                items={item.items}
-                onItemActivate={onItemActivate}
-                onGroupToggle={onGroupToggle}
-                targetItem={targetItem}
-                isHighlighted={isHighlighted}
-                isKeyboardHighlight={isKeyboardHighlight}
-                isExpanded={isExpanded}
-                lastInDropdown={lastInDropdown}
-                highlightItem={highlightItem}
-                hasCategoryHeader={true}
-                variant={variant}
-                position={position}
-                renderItem={renderItem}
-                parentProps={groupProps}
-                filteringText={filteringText}
-                filteringEnabled={filteringEnabled}
-                menuId={menuId}
-                filteringDescriptionId={filteringDescriptionId}
+          <>
+            <ul
+              role="menu"
+              aria-label={item.text}
+              aria-describedby={groupDropdownStatus.content ? footerId : undefined}
+              className={styles['items-list-container']}
+            >
+              {hasGroupItems ? (
+                <ItemsList
+                  items={item.items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={lastInDropdown}
+                  highlightItem={highlightItem}
+                  hasCategoryHeader={true}
+                  variant={variant}
+                  position={position}
+                  renderItem={renderItem}
+                  parentProps={groupProps}
+                  filteringText={filteringText}
+                  filteringEnabled={filteringEnabled}
+                  menuId={menuId}
+                  filteringDescriptionId={filteringDescriptionId}
+                />
+              ) : null}
+              {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
+                // Finished text has no interactive content, so it follows the items inside the menu, like on desktop.
+                <li role="presentation">
+                  <StatusFooter
+                    content={groupDropdownStatus.content}
+                    id={footerId}
+                    hasItems={hasGroupItems}
+                    scope="group"
+                  />
+                </li>
+              ) : null}
+            </ul>
+            {groupDropdownStatus.content && groupDropdownStatus.isSticky ? (
+              // Loading, error and empty statuses render outside the group menu, like the desktop sticky footer,
+              // so the recovery button is not a child of role="menu".
+              <StatusFooter
+                content={groupDropdownStatus.content}
+                id={footerId}
+                hasItems={hasGroupItems}
+                scope="group"
               />
             ) : null}
-            {groupDropdownStatus.content ? (
-              // The group is inline in the main list, so every status (loading, error, empty,
-              // finished) follows the items instead of being a sticky footer.
-              <li role="presentation">
-                <StatusFooter
-                  content={groupDropdownStatus.content}
-                  id={footerId}
-                  hasItems={hasGroupItems}
-                  scope="group"
-                />
-              </li>
-            ) : null}
-          </ul>
+          </>
         )}
       </MobileExpandableGroup>
     );
