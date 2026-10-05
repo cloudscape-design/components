@@ -85,6 +85,7 @@ export function useButtonDropdown({
 
   const {
     targetItem,
+    isHighlightPending,
     isHighlighted,
     isKeyboardHighlight,
     isExpanded,
@@ -201,6 +202,11 @@ export function useButtonDropdown({
   };
 
   const actOnParentDropdown = (event: React.KeyboardEvent) => {
+    // The highlight points into an expanded group whose items haven't loaded yet. There is
+    // nothing to activate, and the dropdown must stay open so the items can arrive.
+    if (isHighlightPending) {
+      return;
+    }
     // if there is no highlighted item we act on the trigger by opening or closing dropdown
     if (!targetItem) {
       if (isOpen && !isInRestrictedView) {

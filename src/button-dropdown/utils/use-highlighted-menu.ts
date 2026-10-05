@@ -14,6 +14,9 @@ interface UseHighlightedMenuOptions {
 }
 
 interface UseHighlightedMenuApi extends HighlightProps {
+  // true when the highlight points at a position that has no item, for example the first child
+  // of an expanded group whose items are still loading
+  isHighlightPending: boolean;
   moveHighlight: (direction: -1 | 1, loop?: boolean) => void;
   expandGroup: (group?: ButtonDropdownProps.ItemGroup) => void;
   collapseGroup: () => void;
@@ -33,6 +36,7 @@ export default function useHighlightedMenu({
   const { getItem, getItemIndex, getSequentialIndex, getParentIndex } = useMemo(() => createItemsTree(items), [items]);
 
   const targetItem = useMemo(() => getItem(targetIndex), [targetIndex, getItem]);
+  const isHighlightPending = targetIndex.length > 0 && !targetItem;
 
   const isHighlighted = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
@@ -138,6 +142,7 @@ export default function useHighlightedMenu({
 
   return {
     targetItem,
+    isHighlightPending,
     isHighlighted,
     isKeyboardHighlight,
     isExpanded,
