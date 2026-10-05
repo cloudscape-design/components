@@ -444,7 +444,9 @@ const InternalButtonDropdown = React.forwardRef(
 
     // Only treat as "truly empty" (no data at all) when the user is not actively filtering.
     // When filteringValue is set, zero items means "no match" not "empty".
-    const isEmpty = (!items || items.length === 0) && !filteringValue;
+    // `empty` is only shown once loading has finished (unset statusType is normalized to `finished`),
+    // so a `pending` list with no items yet doesn't announce an empty result.
+    const isEmpty = statusType === 'finished' && (!items || items.length === 0) && !filteringValue;
 
     const hasItems = filteredItems.length > 0;
 
