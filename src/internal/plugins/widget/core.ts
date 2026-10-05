@@ -7,11 +7,13 @@ import { InitialMessage, WidgetMessage } from './interfaces';
 const storageKeyMessageHandler = Symbol.for('awsui-widget-api-message-handler');
 const storageKeyInitialMessages = Symbol.for('awsui-widget-api-initial-messages');
 const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer');
+const storageKeyExternalOwnedBreadcrumbs = Symbol.for('awsui-widget-api-external-owned-breadcrumbs');
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: MessageHandler | undefined;
   [storageKeyInitialMessages]: Array<InitialMessage<unknown>> | undefined;
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
+  [storageKeyExternalOwnedBreadcrumbs]: boolean | undefined;
 }
 
 const oneTimeMessageTypes = ['emit-notification'];
@@ -61,6 +63,17 @@ export function registerAppLayoutHandler(handler: MessageHandler) {
 
 export function clearInitialMessages() {
   getWindow()[storageKeyInitialMessages] = undefined;
+}
+
+/**
+ * Returns whether an external consumer reserved breadcrumbs rendering before AppLayout loaded by setting
+ * `window[Symbol.for('awsui-widget-api-external-owned-breadcrumbs')] = true`.
+ */
+export function isBreadcrumbsOwnedExternally() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  return getWindow()[storageKeyExternalOwnedBreadcrumbs] === true;
 }
 
 /**
