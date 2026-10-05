@@ -4,6 +4,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import Container, { ContainerProps } from '../../../lib/components/container';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/container/styles.css.js';
@@ -170,7 +171,9 @@ describe('Style API', () => {
 
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(240, 240, 235)');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('purple');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('240px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.containerStyleBorderRadius)).toBe(
+      '240px'
+    );
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('6px');
     expect(
       getComputedStyle(wrapper.findByClassName(styles['content-inner'])!.getElement()).getPropertyValue('padding-block')
