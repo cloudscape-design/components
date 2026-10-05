@@ -40,6 +40,9 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
     padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
   }
+  @if map.get($variant, 'min-block-size') {
+    min-block-size: map.get($variant, 'min-block-size');
+  }
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
@@ -150,6 +153,15 @@ $tokens: style-api.resolve($props, carrier);
       @include style-api.focus-highlight(
         $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
         $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
+        $radius: $radius,
+        $width: $width,
+        $color: $color
+      );
+    }
+
+    &.variant-inline-link {
+      @include style-api.focus-highlight(
+        $gutter-block: awsui.$space-button-inline-link-focus-outline-gutter,
         $radius: $radius,
         $width: $width,
         $color: $color

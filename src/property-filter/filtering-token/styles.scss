@@ -24,6 +24,8 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
   display: flex;
   align-content: stretch;
 
+  min-block-size: awsui.$size-vertical-input;
+
   // Make tokens larger so that individual and group tokens appear of the same size.
   &.has-groups {
     min-block-size: calc(2px + #{awsui.$size-vertical-input});
