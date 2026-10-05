@@ -8,6 +8,8 @@ const workspace = require('../utils/workspace');
 const ALWAYS_VISUAL_REFRESH = process.env.ALWAYS_VISUAL_REFRESH === 'true';
 const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
 
+const isAlwaysVisualRefresh = theme => !!theme.alwaysVisualRefresh || ALWAYS_VISUAL_REFRESH;
+
 function writeEnvironmentFile(theme) {
   const filepath = 'internal/environment';
   const values = {
@@ -16,7 +18,7 @@ function writeEnvironmentFile(theme) {
     GIT_SHA: workspace.gitCommitVersion,
     THEME: theme.name,
     SYSTEM: 'core',
-    ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh || ALWAYS_VISUAL_REFRESH,
+    ALWAYS_VISUAL_REFRESH: isAlwaysVisualRefresh(theme),
     INCLUDE_ONE_THEME: INCLUDE_ONE_THEME,
   };
   const basePath = path.join(theme.outputPath, filepath);
@@ -38,8 +40,22 @@ function writeEnvironmentFile(theme) {
   );
 }
 
+// Classic AppLayout can never render when visual refresh is always on. A static import
+// would still put it in every consumer bundle, so it is left out of the generated module.
+function writeAppLayoutImplementationsFile(theme) {
+  writeFile(
+    path.join(theme.outputPath, 'app-layout/implementations.js'),
+    isAlwaysVisualRefresh(theme)
+      ? 'export var ClassicAppLayout = null;'
+      : "export { default as ClassicAppLayout } from './classic';"
+  );
+}
+
 module.exports = function generateEnvironment() {
-  themes.forEach(theme => writeEnvironmentFile(theme));
+  themes.forEach(theme => {
+    writeEnvironmentFile(theme);
+    writeAppLayoutImplementationsFile(theme);
+  });
 
   return Promise.resolve();
 };
