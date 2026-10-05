@@ -243,7 +243,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
    *
    * The items of a group are loaded in a single page: `pending` is treated as `finished`, and scrolling inside a group
-   * does not fire `onLoadItems`. If null or undefined, the status will be treated as `finished`.
+   * does not fire `onLoadItems`. If null or undefined, no status-specific text is displayed (but `empty` can still be shown for an empty group).
    */
   getExpandableItemsAsyncLoadingState?: (options: {
     item: ButtonDropdownProps.ItemGroup;
