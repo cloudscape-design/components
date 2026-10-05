@@ -321,6 +321,28 @@ describe('ButtonDropdown status display', () => {
     expect(status).not.toBeNull();
     expect(status!.getElement()).toHaveTextContent('No actions found');
   });
+  test('does not show empty text when items are empty and statusType is "pending"', () => {
+    const { wrapper } = renderDropdown({
+      items: [],
+      asyncLoadingProps: {
+        statusType: 'pending',
+        empty: () => 'No actions found',
+      },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    expect(wrapper.findStatusIndicator()).toBeNull();
+    expect(wrapper.findOpenDropdown()!.getElement()).not.toHaveTextContent('No actions found');
+  });
+
+  test('shows empty text when items are empty and statusType is not set', () => {
+    const { wrapper } = renderDropdown({
+      items: [],
+      asyncLoadingProps: { empty: () => 'No actions found' },
+    });
+    wrapper.openDropdown();
+    expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('No actions found');
+  });
 
   test('shows no status indicator when statusType is "finished" with no special text', () => {
     const { wrapper } = renderDropdown({
