@@ -78,6 +78,11 @@ const InternalMultiselect = React.forwardRef(
     const { position: groupedControlPosition } = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
 
+    // When rendered inside a control group, tokens are always shown inline in the
+    // trigger regardless of the `inlineTokens` prop, since there is no room to
+    // display tokens below the control within a group.
+    const showTokensInline = inlineTokens || groupedControlPosition !== null;
+
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
     const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
@@ -138,7 +143,7 @@ const InternalMultiselect = React.forwardRef(
         triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         selectedOptions={selectedOptions}
-        triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
+        triggerVariant={showTokensInline ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
         groupedControlPosition={groupedControlPosition}
         inlineLabelText={inlineLabelText}
@@ -166,7 +171,7 @@ const InternalMultiselect = React.forwardRef(
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
-    const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
+    const showTokens = !hideTokens && !showTokensInline && tokens.length > 0;
 
     const tokenGroupI18nStrings: TokenGroupProps.I18nStrings = {
       limitShowFewer: i18nStrings?.tokenLimitShowFewer,
