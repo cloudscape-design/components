@@ -81,7 +81,7 @@ const InternalMultiselect = React.forwardRef(
     // When rendered inside a control group, tokens are always shown inline in the
     // trigger regardless of the `inlineTokens` prop, since there is no room to
     // display tokens below the control within a group.
-    const showTokensInline = inlineTokens || groupedControlPosition !== null;
+    const showTokensInline = inlineTokens || !!groupedControlProps.position;
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
