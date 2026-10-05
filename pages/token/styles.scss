@@ -35,6 +35,15 @@
   border-end-end-radius: 50%;
 }
 
+// Gives the dot the same 16px box as a normal-size Icon, so it lines up in the token's icon slot.
+.dot-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  block-size: 16px;
+}
+
 .field-details {
   inline-size: 320px;
 }

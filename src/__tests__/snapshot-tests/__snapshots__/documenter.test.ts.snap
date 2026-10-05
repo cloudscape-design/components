@@ -33940,14 +33940,6 @@ For \`variant="inline"\`, only plain text is supported, for example, strings or 
       "isDefault": false,
       "name": "label",
     },
-    {
-      "description": "Slot for a decorative category marker before the label, typically a color dot.
-
-The slot is \`aria-hidden\` and must not contain interactive content. Convey the category
-in the \`label\` or \`ariaLabel\` as well - color must never be the only signal.",
-      "isDefault": false,
-      "name": "prefix",
-    },
   ],
   "releaseStatus": "stable",
 }

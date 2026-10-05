@@ -13,8 +13,8 @@ import { colorChartsPaletteCategorical2 } from '~design-tokens';
 
 import styles from './styles.scss';
 
-// Colors are consumer-owned: the token provides the prefix slot, the consuming team
-// chooses the visual (per the kickoff). A real console would use its own design tokens.
+// A color dot is a custom icon passed through the existing icon slot. Colors are consumer-owned;
+// a real console would use its own design tokens.
 const RED = '#d13212';
 const ORANGE = '#ec7211';
 const YELLOW = '#f2c811';
@@ -23,7 +23,11 @@ const BLUE = '#0972d3';
 const PURPLE = '#7d4bcb';
 
 function Dot({ color }: { color: string }) {
-  return <span className={styles.dot} style={{ backgroundColor: color }} />;
+  return (
+    <span className={styles['dot-icon']} aria-hidden="true">
+      <span className={styles.dot} style={{ backgroundColor: color }} />
+    </span>
+  );
 }
 
 function QueryAction({ icon, label }: { icon: IconProps.Name; label: string }) {
@@ -63,7 +67,7 @@ function FieldDetails({ field, category, color }: { field: string; category: str
             copyErrorText={`Failed to copy ${field}`}
           />
         </SpaceBetween>
-        <Token variant="inline" label={category} prefix={<Dot color={color} />} />
+        <Token variant="inline" label={category} icon={<Dot color={color} />} />
       </div>
       <div className={styles['coverage-row']}>
         <span>Coverage</span>
@@ -146,9 +150,12 @@ function Tokens({
           'data-testid': `${testIdPrefix}-${it.name}`,
           label: it.name,
           variant,
-          prefix: it.color ? <Dot color={it.color} /> : undefined,
           labelTag: it.count,
-          icon: it.icon ? <Icon name={it.icon} size={inline ? 'small' : 'normal'} /> : undefined,
+          icon: it.icon ? (
+            <Icon name={it.icon} size={inline ? 'small' : 'normal'} />
+          ) : it.color ? (
+            <Dot color={it.color} />
+          ) : undefined,
           ariaLabel: it.count ? `${it.name}, ${it.count}` : undefined,
         };
         const dismiss = dismissible ? { dismissLabel: `Remove ${it.name}`, onDismiss: () => {} } : {};
@@ -187,11 +194,11 @@ export default function TokenAdditionsPage() {
         <section>
           <h2>API proposal usage examples</h2>
           <p>Renders the exact code from the API proposal, for doc screenshots.</p>
-          <h3>1. Field token with prefix and label tag</h3>
+          <h3>1. Field token with a color dot icon and label tag</h3>
           <Token
             label="@data_format"
             ariaLabel="@data_format, General field, 17% coverage"
-            prefix={<Dot color={colorChartsPaletteCategorical2} />}
+            icon={<Dot color={colorChartsPaletteCategorical2} />}
             labelTag="17%"
             dismissLabel="Remove @data_format"
             onDismiss={() => {}}
@@ -217,9 +224,10 @@ export default function TokenAdditionsPage() {
         </section>
 
         <section>
-          <h2>Prefix</h2>
+          <h2>Color dot icon</h2>
           <p>
-            A color dot marks a category, passed via the prefix slot. Always paired with a label, never color alone.
+            A color dot marks a category, passed as a custom icon through the icon slot. Always paired with a label,
+            never color alone.
           </p>
           <h3>With dismiss</h3>
           <Tokens items={SEVERITY} dismissible={true} testIdPrefix="severity" />
@@ -234,7 +242,7 @@ export default function TokenAdditionsPage() {
           </p>
           <h3>With percentage</h3>
           <Tokens items={META} testIdPrefix="meta" />
-          <h3>With color, icon, and count</h3>
+          <h3>With icon and count</h3>
           <Tokens items={META_FULL} testIdPrefix="meta-full" />
         </section>
 
@@ -244,13 +252,13 @@ export default function TokenAdditionsPage() {
             Clicking the label opens a popover with contextual actions. Composed by passing Popover in the label slot,
             no dedicated prop.
           </p>
-          <h3>Field details with prefix and label tag</h3>
+          <h3>Field details with color dot icon and label tag</h3>
           <Tokens items={FIELDS} kind="popover" testIdPrefix="popover" />
         </section>
 
         <section>
           <h2>Inline</h2>
-          <h3>With prefix and label tag</h3>
+          <h3>With color dot icon and label tag</h3>
           <Tokens items={FIELDS} variant="inline" testIdPrefix="inline" kind="popover" />
         </section>
 

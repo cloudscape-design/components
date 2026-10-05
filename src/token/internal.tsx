@@ -63,7 +63,6 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
-  prefix,
 
   // Internal
   role,
@@ -193,11 +192,6 @@ function InternalToken({
           )}
           style={tokenRootStyleProps}
         >
-          {prefix && (
-            <span aria-hidden="true" className={styles.prefix}>
-              {prefix}
-            </span>
-          )}
           <Option
             className={clsx(isInline && styles['token-option-inline'])}
             triggerVariant={isInline}

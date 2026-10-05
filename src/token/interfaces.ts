@@ -64,14 +64,6 @@ export interface TokenProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler;
 
   /**
-   * Slot for a decorative category marker before the label, typically a color dot.
-   *
-   * The slot is `aria-hidden` and must not contain interactive content. Convey the category
-   * in the `label` or `ariaLabel` as well - color must never be the only signal.
-   */
-  prefix?: React.ReactNode;
-
-  /**
    * Content to display in the tooltip when `variant="inline"`. The tooltip appears when the token label is truncated due to insufficient space.
    *
    * Only applies to plain text labels.

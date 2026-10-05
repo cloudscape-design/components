@@ -142,11 +142,3 @@
     color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
   }
 }
-
-.prefix {
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-  margin-inline-end: awsui.$space-xxs;
-  align-self: center;
-}
