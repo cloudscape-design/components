@@ -26,7 +26,7 @@ export default function InternalSegmentedControl({
   ariaLabelledby,
   onChange,
   style,
-  groupedControlProps = { position: null, direction: 'horizontal' },
+  groupedControlProps,
 }: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -54,20 +54,17 @@ export default function InternalSegmentedControl({
   };
   const isVisualRefresh = useVisualRefresh();
 
-  const isGrouped = !!groupedControlProps.position;
-  const isGroupedVertical = isGrouped && groupedControlProps.direction === 'vertical';
+  const isGrouped = !!groupedControlProps?.position;
+  const isGroupedVertical = isGrouped && groupedControlProps?.direction === 'vertical';
+
+  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : [];
 
   return (
     <div
-      className={clsx(
-        styles['segment-part'],
-        styles[`segment-count-${options?.length}`],
-        ...getGroupedControlClassNames(styles, groupedControlProps),
-        {
-          [styles.refresh]: isVisualRefresh,
-          [styles['grouped-vertical']]: isGroupedVertical,
-        }
-      )}
+      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], ...groupedControlClassNames, {
+        [styles.refresh]: isVisualRefresh,
+        [styles['grouped-vertical']]: isGroupedVertical,
+      })}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
       role="toolbar"
