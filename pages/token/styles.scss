@@ -24,26 +24,7 @@
 }
 
 // Demo-only helpers for the Token additions page. Dynamic, consumer-owned colors
-// (the category dot, coverage bar, log-group highlight) stay inline on the element.
-.dot {
-  display: inline-block;
-  inline-size: 8px;
-  block-size: 8px;
-  border-start-start-radius: 50%;
-  border-start-end-radius: 50%;
-  border-end-start-radius: 50%;
-  border-end-end-radius: 50%;
-}
-
-// Gives the dot the same 16px box as a normal-size Icon, so it lines up in the token's icon slot.
-.dot-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 16px;
-  block-size: 16px;
-}
-
+// (the coverage bar, log-group highlight) stay inline on the element.
 .field-details {
   inline-size: 320px;
 }

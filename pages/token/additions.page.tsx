@@ -24,9 +24,13 @@ const PURPLE = '#7d4bcb';
 
 function Dot({ color }: { color: string }) {
   return (
-    <span className={styles['dot-icon']} aria-hidden="true">
-      <span className={styles.dot} style={{ backgroundColor: color }} />
-    </span>
+    <Icon
+      svg={
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false">
+          <circle cx="8" cy="8" r="4" fill={color} className="no-stroke" />
+        </svg>
+      }
+    />
   );
 }
 
