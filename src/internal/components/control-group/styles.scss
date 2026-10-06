@@ -60,6 +60,15 @@
   z-index: 2;
 }
 
+// Clear the Multiselect inline-token row the same way the Multiselect's own
+// inline label does (mirrors src/select/parts/styles.scss .inline-label-inline-tokens).
+// Applied by index.tsx only when the group contains an inline-token control, so
+// plain-trigger groups keep the base offset.
+.inline-label-inline-tokens {
+  padding-block-end: 0;
+  transform: translateY(-1.5px);
+}
+
 .inline-label-wrapper {
   @include forms.inline-label-wrapper;
   // Contain the label and the control slots in one stacking context so their

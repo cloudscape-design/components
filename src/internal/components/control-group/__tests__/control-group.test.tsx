@@ -5,7 +5,10 @@ import { render } from '@testing-library/react';
 
 import ControlGroup from '../../../../../lib/components/internal/components/control-group';
 import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
+import Multiselect from '../../../../../lib/components/multiselect';
 import { DirectionProbe, PositionProbe } from './common';
+
+import styles from '../../../../../lib/components/internal/components/control-group/styles.css.js';
 
 describe('Control group', () => {
   test('keeps focus on a control when the children are reordered', () => {
@@ -119,6 +122,28 @@ describe('Control group', () => {
 
     expect(label.id).toBeTruthy();
     expect(group.getAttribute('aria-labelledby')).toBe(label.id);
+  });
+
+  test('applies the inline-token clearance class on the label when a child is a Multiselect', () => {
+    const { getByText } = render(
+      <ControlGroup inlineLabelText="Threshold">
+        <Multiselect selectedOptions={[]} options={[]} inlineTokens={true} />
+        <input data-testid="beta" />
+      </ControlGroup>
+    );
+
+    expect(getByText('Threshold')).toHaveClass(styles['inline-label-inline-tokens']);
+  });
+
+  test('does not apply the inline-token clearance class when no child is a Multiselect', () => {
+    const { getByText } = render(
+      <ControlGroup inlineLabelText="Threshold">
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </ControlGroup>
+    );
+
+    expect(getByText('Threshold')).not.toHaveClass(styles['inline-label-inline-tokens']);
   });
 
   test('omits the inline label and aria-labelledby when inlineLabelText is not set', () => {
