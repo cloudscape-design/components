@@ -35,10 +35,7 @@ export default function ControlGroupLabels() {
   return (
     <SimplePage
       title="Control group labels"
-      subtitle="Exercises the control group inline label: how it stacks above the controls, how it
-        interacts with each leading control's focus ring, and how an open dropdown paints over the
-        label and the controls below. Standalone controls with an inline label are shown for
-        comparison."
+      subtitle="Labels should be displayed above focus rings but below dropdowns."
       settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
       screenshotArea={{}}
     >
