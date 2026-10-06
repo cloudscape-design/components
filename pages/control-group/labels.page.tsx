@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Box, SpaceBetween } from '~components';
+import { SpaceBetween } from '~components';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Input from '~components/input';
 import ControlGroup from '~components/internal/components/control-group';
@@ -10,7 +10,8 @@ import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Select, { SelectProps } from '~components/select';
 
 import { SimplePage } from '../app/templates';
-import { enteredTextLabel, multiOptions, noop, operators } from './common';
+import FocusTarget from '../common/focus-target';
+import { DirectionSettings, enteredTextLabel, multiOptions, noop, operators, useControlGroupDirection } from './common';
 
 const suggestions: AutosuggestProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
   value: `Metric ${i + 1}`,
@@ -30,12 +31,21 @@ const longMultiOptions: MultiselectProps.Option[] = Array.from({ length: 20 }, (
 }));
 
 export default function ControlGroupLabels() {
-  return (
-    <SimplePage title="Control group labels" screenshotArea={{}}>
-      <SpaceBetween size="l">
-        <Box variant="h2">Control groups with label</Box>
+  const { direction, setDirection } = useControlGroupDirection();
 
-        <ControlGroup inlineLabelText="Filter by metric">
+  return (
+    <SimplePage
+      title="Control group labels"
+      subtitle="Exercises the control group inline label: how it stacks above the controls, how it
+        interacts with each leading control's focus ring, and how an open dropdown paints over the
+        label and the controls below. Standalone controls with an inline label are shown for
+        comparison."
+      settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
+      screenshotArea={{}}
+    >
+      <FocusTarget />
+      <SpaceBetween size="l">
+        <ControlGroup inlineLabelText="Filter by metric" direction={direction}>
           <Select
             data-testid="grouped-select"
             ariaLabel="Operator"
@@ -47,7 +57,7 @@ export default function ControlGroupLabels() {
           <Input ariaLabel="Value" value="service" onChange={noop} />
         </ControlGroup>
 
-        <ControlGroup inlineLabelText="Threshold">
+        <ControlGroup inlineLabelText="Threshold" direction={direction}>
           <Multiselect
             data-testid="grouped-multiselect"
             ariaLabel="Labels"
@@ -67,7 +77,7 @@ export default function ControlGroupLabels() {
           />
         </ControlGroup>
 
-        <ControlGroup inlineLabelText="Metric name">
+        <ControlGroup inlineLabelText="Metric name" direction={direction}>
           <Autosuggest
             data-testid="grouped-autosuggest"
             ariaLabel="Metric"
@@ -86,7 +96,7 @@ export default function ControlGroupLabels() {
           />
         </ControlGroup>
 
-        <ControlGroup inlineLabelText="Service">
+        <ControlGroup inlineLabelText="Service" direction={direction}>
           <Input data-testid="grouped-input" ariaLabel="Value" value="service" onChange={noop} />
           <Autosuggest
             ariaLabel="Metric"
@@ -97,8 +107,6 @@ export default function ControlGroupLabels() {
             expandToViewport={true}
           />
         </ControlGroup>
-
-        <Box variant="h2">Standalone components with inline label</Box>
 
         <Input inlineLabelText="Service name" ariaLabel="Service name" value="service" onChange={noop} />
         <Select
