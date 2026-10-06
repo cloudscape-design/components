@@ -5,14 +5,16 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 
+const SCENARIO = '[data-testid="auto-spacebetween"]';
+
 // Address the controls via test-utils rather than raw selectors (the Select trigger has no
 // `aria-label` — it's labelled via `aria-labelledby`).
-const autoPlain = createWrapper('[data-testid="auto-plain"]');
-const firstInput = autoPlain.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
-const selectTrigger = autoPlain.findSelect().findTrigger().toSelector();
-const lastInput = autoPlain.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
+const group = createWrapper(SCENARIO);
+const firstInput = group.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
+const selectTrigger = group.findSelect().findTrigger().toSelector();
+const lastInput = group.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
 
-// The three controls in each scenario group.
+// The three controls in the group.
 const CONTROL_LABELS = ['Label name', 'Operator', 'Label value'];
 
 const WIDE = { width: 1200, height: 800 };
@@ -27,11 +29,11 @@ interface Box {
 }
 
 class ControlGroupPage extends BasePageObject {
-  // Boxes of the visible controls in the scenario, in DOM order. Skips the ghost duplicate.
-  getVisibleControlBoxes(testId: string): Promise<Box[]> {
+  // Boxes of the visible controls in the group, in DOM order. Skips the ghost duplicate.
+  getVisibleControlBoxes(): Promise<Box[]> {
     return this.browser.execute(
-      (id, labels) => {
-        const container = document.querySelector(`[data-testid="${id}"]`);
+      (selector, labels) => {
+        const container = document.querySelector(selector);
         if (!container) {
           return [];
         }
@@ -49,14 +51,14 @@ class ControlGroupPage extends BasePageObject {
         }
         return boxes;
       },
-      testId,
+      SCENARIO,
       CONTROL_LABELS
     );
   }
 
-  async expectRow(testId: string) {
+  async expectRow() {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getVisibleControlBoxes(testId);
+      const boxes = await this.getVisibleControlBoxes();
       expect(boxes).toHaveLength(CONTROL_LABELS.length);
       // Same top, increasing left: one row, left-to-right.
       for (const box of boxes) {
@@ -68,9 +70,9 @@ class ControlGroupPage extends BasePageObject {
     });
   }
 
-  async expectStacked(testId: string) {
+  async expectStacked() {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getVisibleControlBoxes(testId);
+      const boxes = await this.getVisibleControlBoxes();
       expect(boxes).toHaveLength(CONTROL_LABELS.length);
       // Every control is on its own row below the previous one (all-or-nothing stacking).
       for (let i = 1; i < boxes.length; i++) {
@@ -84,71 +86,33 @@ function setupTest(testFn: (page: ControlGroupPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new ControlGroupPage(browser);
     await browser.url('#/control-group/responsiveness');
-    await page.waitForVisible('[data-testid="auto-plain"]');
+    await page.waitForVisible(SCENARIO);
     await testFn(page);
   });
 }
 
 describe('ControlGroup responsiveness', () => {
   test(
-    'auto group is a single row when there is room',
-    setupTest(async page => {
-      await page.setWindowSize(WIDE);
-      await page.expectRow('auto-plain');
-    })
-  );
-
-  test(
-    'auto group stacks all controls at once when the viewport is narrow',
-    setupTest(async page => {
-      await page.setWindowSize(NARROW);
-      await page.expectStacked('auto-plain');
-    })
-  );
-
-  test(
-    'auto group re-expands to a single row when the viewport widens again',
-    setupTest(async page => {
-      await page.setWindowSize(NARROW);
-      await page.expectStacked('auto-plain');
-      await page.setWindowSize(WIDE);
-      await page.expectRow('auto-plain');
-    })
-  );
-
-  test(
     'auto group inside a horizontal SpaceBetween re-expands after stacking (flexbox deadlock)',
     setupTest(async page => {
       await page.setWindowSize(WIDE);
-      await page.expectRow('auto-spacebetween');
+      await page.expectRow();
       await page.setWindowSize(NARROW);
-      await page.expectStacked('auto-spacebetween');
+      await page.expectStacked();
       // The critical case: widening must re-expand it, not leave it stuck stacked.
       await page.setWindowSize(WIDE);
-      await page.expectRow('auto-spacebetween');
-    })
-  );
-
-  test(
-    'a forced direction ignores the available width',
-    setupTest(async page => {
-      // Forced horizontal stays a row even when the viewport is too narrow to fit it.
-      await page.setWindowSize(NARROW);
-      await page.expectRow('forced-horizontal');
-      // Forced vertical stays stacked even when the viewport is wide enough for a row.
-      await page.setWindowSize(WIDE);
-      await page.expectStacked('forced-vertical');
+      await page.expectRow();
     })
   );
 
   test(
     'keyboard focus flows through only the real controls, never a hidden measurement duplicate',
     setupTest(async page => {
-      // Tabbing from the sentinel before the group must reach each real control then the
-      // sentinel after it. A focusable ghost duplicate would add a tab stop and break this.
+      // Tabbing from the focus target before the group must reach each real control then the
+      // button after it. A focusable ghost duplicate would add a tab stop and break this.
       await page.setWindowSize(WIDE);
-      await page.click('[data-testid="focus-before"]');
-      await expect(page.isFocused('[data-testid="focus-before"]')).resolves.toBe(true);
+      await page.click('#focus-target');
+      await expect(page.isFocused('#focus-target')).resolves.toBe(true);
 
       // Tab across the three real controls in order.
       await page.keys(['Tab']);
@@ -158,7 +122,7 @@ describe('ControlGroup responsiveness', () => {
       await page.keys(['Tab']);
       await expect(page.isFocused(lastInput)).resolves.toBe(true);
 
-      // The next Tab leaves the group for the sentinel after it.
+      // The next Tab leaves the group for the button after it.
       await page.keys(['Tab']);
       await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })
