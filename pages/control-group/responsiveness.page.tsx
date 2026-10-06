@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import Box from '~components/box';
+import Button from '~components/button';
 import Input from '~components/input';
 import ControlGroup, { InternalControlGroupProps } from '~components/internal/components/control-group';
 import Select, { SelectProps } from '~components/select';
@@ -53,9 +54,17 @@ export default function ControlGroupResponsiveness() {
       <SpaceBetween size="l">
         <SpaceBetween size="xs">
           <Box variant="h2">Auto group</Box>
+          {/*
+            Focusable sentinels bracket the group so an integ test can tab from `focus-before`
+            through exactly the real controls to `focus-after`. If any hidden ghost duplicate
+            were keyboard-focusable, the group would absorb extra tab stops and focus would not
+            reach `focus-after` in the expected number of presses.
+          */}
+          <Button data-testid="focus-before">Focus before</Button>
           <div data-testid="auto-plain" style={scenarioContainerStyle}>
             <Group />
           </div>
+          <Button data-testid="focus-after">Focus after</Button>
         </SpaceBetween>
 
         <SpaceBetween size="xs">

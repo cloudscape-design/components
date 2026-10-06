@@ -3,6 +3,16 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
+import createWrapper from '../../../../../lib/components/test-utils/selectors';
+
+// Scope the finders to the plain auto group so the real controls are addressed through the
+// component test-utils rather than raw attribute selectors (the Select trigger is labelled
+// via `aria-labelledby`, not `aria-label`, so it has no direct `aria-label` to match).
+const autoPlain = createWrapper('[data-testid="auto-plain"]');
+const firstInput = autoPlain.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
+const selectTrigger = autoPlain.findSelect().findTrigger().toSelector();
+const lastInput = autoPlain.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
+
 // The dev page lays out one control group per scenario, each wrapped in a `data-testid`
 // container. Each group holds three controls with these aria labels; the auto groups also
 // render a hidden measurement duplicate, which this test ignores by reading only the boxes
@@ -137,6 +147,35 @@ describe('ControlGroup responsiveness', () => {
       // Forced vertical stays stacked even when the viewport is wide enough for a row.
       await page.setWindowSize(WIDE);
       await page.expectStacked('forced-vertical');
+    })
+  );
+
+  test(
+    'keyboard focus flows through only the real controls, never a hidden measurement duplicate',
+    setupTest(async page => {
+      // The group renders a hidden duplicate of its controls to measure the row width. Those
+      // duplicates must not be keyboard-focusable, or they would add phantom tab stops. Tab
+      // from the button before the group: focus must visit each real control once (the Select
+      // is a single tab stop at its trigger) and then land on the button after the group — a
+      // total of (controls + 1) presses. An extra, hidden tab stop would divert focus and this
+      // sequence would fail.
+      await page.setWindowSize(WIDE);
+      await page.click('[data-testid="focus-before"]');
+      await expect(page.isFocused('[data-testid="focus-before"]')).resolves.toBe(true);
+
+      // Tab across the three real controls in order. The ghost duplicate's controls share the
+      // same markup, but it is inert and `visibility: hidden`, so focus can never rest on them.
+      await page.keys(['Tab']);
+      await expect(page.isFocused(firstInput)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isFocused(selectTrigger)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isFocused(lastInput)).resolves.toBe(true);
+
+      // The next Tab leaves the group entirely, reaching the sentinel after it — proving no
+      // hidden duplicate sits between the last real control and the following focus target.
+      await page.keys(['Tab']);
+      await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })
   );
 });
