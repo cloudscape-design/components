@@ -37,6 +37,7 @@ export default function ControlGroupLabels() {
 
         <ControlGroup inlineLabelText="Filter by metric">
           <Select
+            data-testid="grouped-select"
             ariaLabel="Operator"
             selectedOption={longOperators[0]}
             options={longOperators}
@@ -48,6 +49,7 @@ export default function ControlGroupLabels() {
 
         <ControlGroup inlineLabelText="Threshold">
           <Multiselect
+            data-testid="grouped-multiselect"
             ariaLabel="Labels"
             inlineTokens={true}
             selectedOptions={[longMultiOptions[0]]}
