@@ -83,7 +83,7 @@ const InternalSelect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
-    const { position: groupedControlPosition } = useGroupedControlContext();
+    const groupedControlProps = useGroupedControlContext();
 
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
@@ -195,7 +195,7 @@ const InternalSelect = React.forwardRef(
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}
-        groupedControlPosition={groupedControlPosition}
+        groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
