@@ -17,9 +17,8 @@ const suggestions: AutosuggestProps.Option[] = Array.from({ length: 20 }, (_, i)
   value: `Metric ${i + 1}`,
 }));
 
-// Long option lists so the control groups' open dropdowns extend far enough down
-// to overlap the standalone controls below, making the "dropdown paints over the
-// label" behavior easy to eyeball.
+// Long option lists so the control groups' open dropdowns extend far enough down to overlap the standalone controls below,
+// to test that dropdowns are rendered over labels and not the other way around.
 const longOperators: SelectProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
   value: `op-${i + 1}`,
   label: `Operator ${i + 1}`,
