@@ -9,6 +9,13 @@
 .root {
   @include styles.styles-reset;
   display: flex;
+  // `flex-shrink: 0` keeps the group at its natural width in a flex parent (for example
+  // a `SpaceBetween`), so the parent wraps whole groups to the next line instead of
+  // squeezing one narrower than its controls — which is what lets the ancestor-walk find
+  // the real available width. It is inert for a normal block child.
+  flex-shrink: 0;
+  // Anchor the absolutely-positioned measurement ghost to the root.
+  position: relative;
 
   &-horizontal {
     flex-direction: row;
@@ -50,4 +57,25 @@
       margin-block-start: $margin;
     }
   }
+}
+
+// Hidden ghost row, used only to measure the width the controls need as a single row
+// (see index.tsx). It is out of flow so it never affects the root's width, and sized to
+// its content (`max-content`) so it reports the true natural row width rather than being
+// capped by the available space. It must not be `display: none` (that reports zero width)
+// and must not be focusable or announced (it is `aria-hidden` + `inert`). It mirrors the
+// `.root` row layout so the measurement matches a single inline row.
+.ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: max-content;
+  visibility: hidden;
+  pointer-events: none;
+  block-size: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
 }
