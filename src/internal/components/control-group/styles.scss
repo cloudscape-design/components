@@ -55,18 +55,13 @@
 
 .inline-label {
   @include forms.inline-label;
+  // A grouped Multiselect always renders inline tokens, whose row sits higher
+  // than normal trigger text, so the group label always clears that row the same
+  // way the Multiselect's own inline label does.
+  @include forms.inline-label-inline-tokens;
   // Raise the label above the focused slot (which sits at z-index 1) so a
   // control's focus ring paints under the label notch instead of over it.
   z-index: 2;
-}
-
-// Clear the Multiselect inline-token row the same way the Multiselect's own
-// inline label does (mirrors src/select/parts/styles.scss .inline-label-inline-tokens).
-// Applied by index.tsx only when the group contains an inline-token control, so
-// plain-trigger groups keep the base offset.
-.inline-label-inline-tokens {
-  padding-block-end: 0;
-  transform: translateY(-1.5px);
 }
 
 .inline-label-wrapper {

@@ -34,19 +34,6 @@ export default function InternalControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  // A grouped Multiselect always renders its tokens inline in the trigger, which
-  // sits higher than normal trigger text. The group's single inline label must
-  // drop the shared mixin's bottom padding and nudge up to clear that token row;
-  // otherwise it overlaps the tokens. Only Multiselect does this inside a group,
-  // so detecting its presence (by displayName, to stay decoupled from its module)
-  // is enough. Plain-trigger groups keep the base offset.
-  const hasInlineTokenControl = flattenedChildren.some(
-    child =>
-      React.isValidElement(child) &&
-      typeof child.type !== 'string' &&
-      (child.type as { displayName?: string }).displayName === 'Multiselect'
-  );
-
   const controls = (
     <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root, styles[`root-${direction}`])}>
       {flattenedChildren.map((child, index) => {
@@ -68,10 +55,7 @@ export default function InternalControlGroup({
   if (inlineLabelText) {
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles['inline-label-wrapper'])}>
-        <label
-          id={labelId}
-          className={clsx(styles['inline-label'], hasInlineTokenControl && styles['inline-label-inline-tokens'])}
-        >
+        <label id={labelId} className={clsx(styles['inline-label'])}>
           {inlineLabelText}
         </label>
         <div className={styles['inline-label-trigger-wrapper']}>
