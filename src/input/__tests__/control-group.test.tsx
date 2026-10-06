@@ -10,9 +10,8 @@ import { PositionProbe } from '../../internal/components/control-group/__tests__
 const noop = () => {};
 
 describe('Input in control group', () => {
-  // The control group renders a hidden measurement ghost that duplicates its children,
-  // so prefix/suffix content (which renders immediately) appears twice. The first match
-  // is the real control's; the second is in the inert ghost.
+  // The measurement ghost duplicates the children, so prefix/suffix content matches twice;
+  // the first match is the real control's.
   test('resets the context for prefix content', () => {
     const { getAllByTestId } = render(
       <ControlGroup>

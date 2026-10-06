@@ -17,9 +17,8 @@ import { flattenChildren } from '../../utils/flatten-children';
 
 import styles from './styles.css.js';
 
-// The prop widens the shared two-value `GroupedControlDirection` with `'auto'`, which only
-// exists at the component boundary: `'auto'` measures and resolves to a concrete axis before
-// anything reaches context, classes, or SCSS.
+// `'auto'` exists only at the prop boundary; it resolves to a concrete axis before reaching
+// context, classes, or SCSS.
 type ControlGroupDirection = GroupedControlDirection | 'auto';
 
 export interface InternalControlGroupProps extends BaseComponentProps {
@@ -40,20 +39,14 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
     const controlCount = flattenedChildren.length;
 
-    // Stack the controls only when they don't fit the available width. The decision
-    // compares two independent widths so the group's own collapse can't feed back into it
-    // (which would leave it stuck stacked):
-    //   - `availableWidth`: the width of the line the group sits on (see below).
-    //   - `requiredRowWidth`: the width the controls need as a single row, measured from a
-    //     hidden ghost row that is always a row and out of flow, so it never shrinks.
+    // Compare two independent widths so the group's own collapse can't feed back and leave it
+    // stuck stacked: `availableWidth` (the line the group sits on) vs `requiredRowWidth` (what
+    // the controls need as one row, measured from the never-shrinking ghost below).
     const [availableWidth, setAvailableWidth] = useState<number | null>(null);
     const [requiredRowWidth, ghostWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
 
-    // The root is `flex-shrink: 0` (see styles.scss), so it and any shrink-wrapping
-    // ancestor take the group's width — including the narrow width after it stacks. So to
-    // measure the real available width we walk up and skip those ancestors, stopping at the
-    // first one that actually constrains the group. Its width does not follow the collapse,
-    // so the group re-expands when the space returns.
+    // Walk up past shrink-wrapping ancestors to the first one that actually constrains the
+    // group. Its width doesn't follow the group's collapse, so the group can re-expand.
     const rootElRef = useRef<HTMLDivElement | null>(null);
     const observerRef = useRef<ResizeObserver | null>(null);
 
@@ -65,11 +58,9 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
       const rootWidth = root.getBoundingClientRect().width;
       let container: HTMLElement | null = root.parentElement;
       let available: number | null = null;
-      // Walk up (bounded) to the first ancestor that constrains the group, skipping ones
-      // that just shrink-wrap to it.
       for (let i = 0; container && i < 20; i++) {
         const style = getComputedStyle(container);
-        // clientWidth excludes borders/scrollbar; subtract padding for the content box.
+        // Content-box width: clientWidth minus inline padding.
         const paddingInline = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         const contentWidth = container.clientWidth - paddingInline;
         available = contentWidth;
@@ -77,8 +68,7 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         if (contentWidth > rootWidth + 1) {
           break;
         }
-        // Not wider, but it clips/scrolls or the group overflows it: it constrains the
-        // group, so its (narrower) width is the available width.
+        // Same width but clips/scrolls (or the group overflows it): it constrains the group.
         const clipsOrScrolls =
           style.overflowX !== 'visible' ||
           style.overflow !== 'visible' ||
@@ -86,7 +76,7 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         if (clipsOrScrolls) {
           break;
         }
-        // Otherwise it just shrink-wraps to the group: skip it and keep looking.
+        // Otherwise it just shrink-wraps to the group: keep looking.
         container = container.parentElement;
       }
       setAvailableWidth(available);
@@ -115,11 +105,8 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
 
     useLayoutEffect(() => () => observerRef.current?.disconnect(), []);
 
-    // The ghost row renders a full duplicate of the controls for width measurement. It is
-    // visually hidden and out of flow, but its inputs/selects/buttons would still be in the
-    // tab order (and announced), adding phantom tab stops between control groups. Mark the
-    // whole subtree `inert` so it is non-focusable and hidden from assistive tech. Set
-    // imperatively via a ref because `inert` isn't rendered by React < 19.
+    // Mark the ghost subtree `inert` so its duplicated controls add no tab stops and are
+    // hidden from assistive tech. Set via ref because `inert` isn't rendered by React < 19.
     const ghostElRef = useRef<HTMLDivElement | null>(null);
     useLayoutEffect(() => {
       if (ghostElRef.current) {
@@ -128,15 +115,12 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
     });
     const ghostRef = useMergeRefs(ghostWidthRef, ghostElRef);
 
-    // Decide the layout. In `auto` mode: measure and stack the controls as one unit when the
-    // row doesn't fit. The `-1` tolerance avoids flipping on sub-pixel rounding; the group
-    // stays a row until both widths are measured (the documented fallback).
+    // Stack when the row doesn't fit. The `-1` tolerance avoids flipping on sub-pixel
+    // rounding; stay a row until both widths are measured.
     const stacked =
       availableWidth !== null && requiredRowWidth !== null ? availableWidth < requiredRowWidth - 1 : false;
 
-    // Resolve the component-level `direction` (which may be `'auto'`) into the two-value
-    // `GroupedControlDirection` that feeds the root class, every control class, and the
-    // context. A forced direction wins and ignores the measurement; `'auto'` uses `stacked`.
+    // A forced direction wins; `'auto'` uses the measurement.
     const resolvedDirection: GroupedControlDirection =
       direction === 'auto' ? (stacked ? 'vertical' : 'horizontal') : direction;
 
@@ -167,12 +151,8 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         {renderControlSlots()}
 
         {/*
-        Hidden ghost row, used only to measure the width the controls need as a single
-        row. It is always a row, `aria-hidden`, inert (set via ref above), and out of
-        flow, so its width is stable regardless of whether the visible group has stacked.
-        It duplicates the same children, which is why consumers that probe the DOM by
-        test id can match both the real and ghost copy. Only rendered in `auto` mode,
-        since a forced direction needs no measurement.
+        Hidden row that duplicates the controls to measure their single-row width, out of
+        flow so its width is stable when the visible group stacks. Only needed in `auto` mode.
       */}
         {direction === 'auto' && (
           <div ref={ghostRef} className={styles.ghost} aria-hidden="true">

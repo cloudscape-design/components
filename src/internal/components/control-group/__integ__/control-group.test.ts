@@ -5,25 +5,20 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 
-// Scope the finders to the plain auto group so the real controls are addressed through the
-// component test-utils rather than raw attribute selectors (the Select trigger is labelled
-// via `aria-labelledby`, not `aria-label`, so it has no direct `aria-label` to match).
+// Address the controls via test-utils rather than raw selectors (the Select trigger has no
+// `aria-label` — it's labelled via `aria-labelledby`).
 const autoPlain = createWrapper('[data-testid="auto-plain"]');
 const firstInput = autoPlain.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
 const selectTrigger = autoPlain.findSelect().findTrigger().toSelector();
 const lastInput = autoPlain.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
 
-// The dev page lays out one control group per scenario, each wrapped in a `data-testid`
-// container. Each group holds three controls with these aria labels; the auto groups also
-// render a hidden measurement duplicate, which this test ignores by reading only the boxes
-// of visible (non-zero-height) controls.
+// The three controls in each scenario group.
 const CONTROL_LABELS = ['Label name', 'Operator', 'Label value'];
 
 const WIDE = { width: 1200, height: 800 };
 const NARROW = { width: 360, height: 800 };
 
-// Field boxes are bottom-aligned within a row (`align-items: flex-end`), so compare `top`
-// with a small tolerance rather than exact equality; it also absorbs sub-pixel rounding.
+// Tolerance for comparing control tops in a row (bottom-aligned fields, sub-pixel rounding).
 const ROW_TOP_TOLERANCE = 2;
 
 interface Box {
@@ -32,9 +27,7 @@ interface Box {
 }
 
 class ControlGroupPage extends BasePageObject {
-  // Returns the bounding boxes of the real (visible) controls inside the given scenario
-  // wrapper, left-to-right in DOM order. The hidden measurement ghost is skipped because its
-  // controls have zero height.
+  // Boxes of the visible controls in the scenario, in DOM order. Skips the ghost duplicate.
   getVisibleControlBoxes(testId: string): Promise<Box[]> {
     return this.browser.execute(
       (id, labels) => {
@@ -47,7 +40,7 @@ class ControlGroupPage extends BasePageObject {
           const elements = Array.from(container.querySelectorAll(`[aria-label="${label}"]`));
           for (const element of elements) {
             const rect = element.getBoundingClientRect();
-            // Skip the hidden ghost duplicate (collapsed to zero height, out of flow).
+            // The ghost duplicate has zero height; skip it.
             if (rect.height > 0) {
               boxes.push({ top: rect.top, left: rect.left });
               break;
@@ -65,11 +58,10 @@ class ControlGroupPage extends BasePageObject {
     await this.waitForAssertion(async () => {
       const boxes = await this.getVisibleControlBoxes(testId);
       expect(boxes).toHaveLength(CONTROL_LABELS.length);
-      // All controls share approximately the same top (one row)...
+      // Same top, increasing left: one row, left-to-right.
       for (const box of boxes) {
         expect(Math.abs(box.top - boxes[0].top)).toBeLessThanOrEqual(ROW_TOP_TOLERANCE);
       }
-      // ...and are placed left-to-right.
       for (let i = 1; i < boxes.length; i++) {
         expect(boxes[i].left).toBeGreaterThan(boxes[i - 1].left);
       }
@@ -131,8 +123,7 @@ describe('ControlGroup responsiveness', () => {
       await page.expectRow('auto-spacebetween');
       await page.setWindowSize(NARROW);
       await page.expectStacked('auto-spacebetween');
-      // The critical case: widening the viewport must break the parent/child deadlock and
-      // let the group re-expand, instead of staying stuck stacked.
+      // The critical case: widening must re-expand it, not leave it stuck stacked.
       await page.setWindowSize(WIDE);
       await page.expectRow('auto-spacebetween');
     })
@@ -153,18 +144,13 @@ describe('ControlGroup responsiveness', () => {
   test(
     'keyboard focus flows through only the real controls, never a hidden measurement duplicate',
     setupTest(async page => {
-      // The group renders a hidden duplicate of its controls to measure the row width. Those
-      // duplicates must not be keyboard-focusable, or they would add phantom tab stops. Tab
-      // from the button before the group: focus must visit each real control once (the Select
-      // is a single tab stop at its trigger) and then land on the button after the group — a
-      // total of (controls + 1) presses. An extra, hidden tab stop would divert focus and this
-      // sequence would fail.
+      // Tabbing from the sentinel before the group must reach each real control then the
+      // sentinel after it. A focusable ghost duplicate would add a tab stop and break this.
       await page.setWindowSize(WIDE);
       await page.click('[data-testid="focus-before"]');
       await expect(page.isFocused('[data-testid="focus-before"]')).resolves.toBe(true);
 
-      // Tab across the three real controls in order. The ghost duplicate's controls share the
-      // same markup, but it is inert and `visibility: hidden`, so focus can never rest on them.
+      // Tab across the three real controls in order.
       await page.keys(['Tab']);
       await expect(page.isFocused(firstInput)).resolves.toBe(true);
       await page.keys(['Tab']);
@@ -172,8 +158,7 @@ describe('ControlGroup responsiveness', () => {
       await page.keys(['Tab']);
       await expect(page.isFocused(lastInput)).resolves.toBe(true);
 
-      // The next Tab leaves the group entirely, reaching the sentinel after it — proving no
-      // hidden duplicate sits between the last real control and the following focus target.
+      // The next Tab leaves the group for the sentinel after it.
       await page.keys(['Tab']);
       await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })

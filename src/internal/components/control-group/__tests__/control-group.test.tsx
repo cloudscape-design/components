@@ -14,8 +14,7 @@ describe('Control group', () => {
 
     const { getAllByTestId, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    // In auto mode the group renders a hidden measurement duplicate of its children, so a
-    // test id can match more than once; the first match is the real (focusable) control.
+    // The measurement duplicate matches the test id too; the first match is the real control.
     const alphaInput = getAllByTestId('alpha')[0];
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
@@ -29,8 +28,7 @@ describe('Control group', () => {
   });
 
   describe('position', () => {
-    // In auto mode each child is duplicated for measurement, so every probe matches twice;
-    // the first match is the real control.
+    // Each probe matches twice (real + measurement duplicate); the first match is the real one.
     test('exposes the "only" position to a single child control', () => {
       const { getAllByTestId } = render(
         <ControlGroup>
@@ -71,8 +69,7 @@ describe('Control group', () => {
   });
 
   describe('direction', () => {
-    // Without layout (jsdom), auto measurement never stacks, so the default resolves to
-    // horizontal.
+    // In jsdom there's no layout, so auto never stacks and defaults to horizontal.
     test('defaults the direction to "horizontal" and exposes it to each child', () => {
       const { getAllByTestId } = render(
         <ControlGroup>

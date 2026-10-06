@@ -25,8 +25,7 @@ describe('Multiselect in control group', () => {
     );
     createWrapper(container).findMultiselect()!.openDropdown();
 
-    // The control group renders a hidden measurement ghost that duplicates its children,
-    // so the dropdown footer renders twice (the real dropdown and the ghost's). The first
+    // The measurement ghost duplicates the children, so the footer renders twice; the first
     // match is the real control's.
     expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
   });

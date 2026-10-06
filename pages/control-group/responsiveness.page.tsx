@@ -16,9 +16,7 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-// The scenario containers are tied to the viewport width (`inlineSize: '100%'`) so that an
-// integ test can drive the available width with `setWindowSize`. Narrowing the viewport below
-// the group's required row width stacks all controls at once; widening it re-expands them.
+// Full-width so an integ test can drive the available width with `setWindowSize`.
 const scenarioContainerStyle: React.CSSProperties = {
   inlineSize: '100%',
   padding: 16,
@@ -54,12 +52,7 @@ export default function ControlGroupResponsiveness() {
       <SpaceBetween size="l">
         <SpaceBetween size="xs">
           <Box variant="h2">Auto group</Box>
-          {/*
-            Focusable sentinels bracket the group so an integ test can tab from `focus-before`
-            through exactly the real controls to `focus-after`. If any hidden ghost duplicate
-            were keyboard-focusable, the group would absorb extra tab stops and focus would not
-            reach `focus-after` in the expected number of presses.
-          */}
+          {/* Sentinels for the integ test to tab through the group and out the other side. */}
           <Button data-testid="focus-before">Focus before</Button>
           <div data-testid="auto-plain" style={scenarioContainerStyle}>
             <Group />
@@ -70,12 +63,8 @@ export default function ControlGroupResponsiveness() {
         <SpaceBetween size="xs">
           <Box variant="h2">Auto group inside SpaceBetween (flexbox deadlock)</Box>
           {/*
-            The group sits inside a horizontal SpaceBetween (a flex row) alongside another
-            element, itself inside the viewport-constrained container. A naive "measure my
-            parent" group would deadlock here: once stacked, the shrink-wrapping flex item
-            reports the collapsed width, so the group would never see the room to re-expand.
-            The ancestor-walk skips those shrink-wrapping ancestors, so widening the viewport
-            re-expands the group.
+            Inside a flex row, a naive "measure my parent" group would stay stuck stacked once
+            collapsed. The ancestor-walk skips the shrink-wrapping flex item, so it re-expands.
           */}
           <div data-testid="auto-spacebetween" style={scenarioContainerStyle}>
             <SpaceBetween direction="horizontal" size="s">

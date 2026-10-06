@@ -9,12 +9,10 @@
 .root {
   @include styles.styles-reset;
   display: flex;
-  // `flex-shrink: 0` keeps the group at its natural width in a flex parent (for example
-  // a `SpaceBetween`), so the parent wraps whole groups to the next line instead of
-  // squeezing one narrower than its controls — which is what lets the ancestor-walk find
-  // the real available width. It is inert for a normal block child.
+  // Keep the group at its natural width in a flex parent so the ancestor-walk can measure
+  // the real available width instead of the group's own shrunk width.
   flex-shrink: 0;
-  // Anchor the absolutely-positioned measurement ghost to the root.
+  // Anchor the absolutely-positioned ghost.
   position: relative;
 
   &-horizontal {
@@ -59,12 +57,8 @@
   }
 }
 
-// Hidden ghost row, used only to measure the width the controls need as a single row
-// (see index.tsx). It is out of flow so it never affects the root's width, and sized to
-// its content (`max-content`) so it reports the true natural row width rather than being
-// capped by the available space. It must not be `display: none` (that reports zero width)
-// and must not be focusable or announced (it is `aria-hidden` + `inert`). It mirrors the
-// `.root` row layout so the measurement matches a single inline row.
+// Measurement ghost (see index.tsx): out of flow and `max-content` wide so it reports the
+// controls' natural single-row width. Not `display: none` (that would measure zero).
 .ghost {
   position: absolute;
   inset-block-start: 0;
