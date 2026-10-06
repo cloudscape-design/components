@@ -28,16 +28,13 @@ export const enteredTextLabel = (value: string) => `Use: ${value}`;
 
 export type Direction = NonNullable<InternalControlGroupProps['direction']>;
 
-// Reads/writes the control group layout direction from the `controlGroupDirection`
-// URL param. The name `direction` is already taken for the LTR/RTL URL parameter.
 export function useControlGroupDirection() {
-  const { urlParams, setUrlParams } = useAppContext<'controlGroupDirection'>();
+  const { urlParams, setUrlParams } = useAppContext<'controlGroupDirection'>(); // The name `direction` is already taken for the LTR/RTL URL parameter
   const direction: Direction = urlParams.controlGroupDirection === 'vertical' ? 'vertical' : 'horizontal';
   const setDirection = (value: Direction) => setUrlParams({ controlGroupDirection: value });
   return { direction, setDirection };
 }
 
-// Shared "Direction" settings control reused across the control group dev pages.
 export function DirectionSettings({
   direction,
   setDirection,
