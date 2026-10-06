@@ -251,7 +251,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * @awsuiSystem core
    */
-  nativeTriggerAttributes?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>;
+  nativeTriggerAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
   /**
    * Attributes to add to the native element of the `mainAction`.
@@ -271,8 +271,8 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * @awsuiSystem core
    */
   nativeMainActionAttributes?: {
-    button?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>;
-    anchor?: NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+    button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
   };
 }
 

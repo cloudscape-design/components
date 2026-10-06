@@ -86,7 +86,7 @@ export interface ItemCardProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
 }
 
 export namespace ItemCardProps {

@@ -116,7 +116,7 @@ export interface ActionCardProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeButtonAttributes?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>;
+  nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
   /**
    * Attributes to add to the native `a` element (when `href` is provided).
@@ -132,7 +132,7 @@ export interface ActionCardProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAnchorAttributes?: NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+  nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
 
 export namespace ActionCardProps {

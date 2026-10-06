@@ -309,7 +309,7 @@ export interface PromptInputProps
    *
    * @awsuiSystem core
    */
-  nativeTextareaAttributes?: NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
+  nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
    * @awsuiSystem core

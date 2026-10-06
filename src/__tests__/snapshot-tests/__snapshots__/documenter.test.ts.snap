@@ -148,7 +148,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
@@ -161,7 +161,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native button element.
@@ -175,7 +175,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
@@ -188,7 +188,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -3779,7 +3779,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -3792,7 +3792,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
@@ -4292,7 +4292,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -4305,7 +4305,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the badge's visual appearance.
@@ -5064,7 +5064,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -5077,7 +5077,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "{}",
@@ -5911,7 +5911,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
@@ -5924,7 +5924,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -5938,7 +5938,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
@@ -5951,7 +5951,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -7025,7 +7025,7 @@ operations performed directly on the native element may bypass the built-in comp
         "properties": [
           {
             "inlineType": {
-              "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+              "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
               "type": "union",
               "values": [
                 "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
@@ -7035,11 +7035,11 @@ operations performed directly on the native element may bypass the built-in comp
             },
             "name": "anchor",
             "optional": true,
-            "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+            "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
           },
           {
             "inlineType": {
-              "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+              "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
               "type": "union",
               "values": [
                 "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
@@ -7049,7 +7049,7 @@ operations performed directly on the native element may bypass the built-in comp
             },
             "name": "button",
             "optional": true,
-            "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+            "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
           },
         ],
         "type": "object",
@@ -7059,7 +7059,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "{ button?: NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>> | undefined; anchor?: NativeAttributes<...> | undefined; }",
+      "type": "{ button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>> | undefined; anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>> | undefined; }",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -7073,7 +7073,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
@@ -7086,7 +7086,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Specifies a render function to render custom options in the dropdown menu.
@@ -8388,7 +8388,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -8401,7 +8401,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -11118,7 +11118,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -11131,7 +11131,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -12499,7 +12499,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -12512,7 +12512,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'horizontal'",
@@ -16045,7 +16045,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -16058,7 +16058,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -17369,7 +17369,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -17382,7 +17382,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -17772,7 +17772,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
@@ -17785,7 +17785,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the item card's visual appearance.
@@ -18739,7 +18739,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
@@ -18752,7 +18752,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
@@ -23062,7 +23062,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
+        "name": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
@@ -23075,7 +23075,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
+      "type": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -24373,7 +24373,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -24386,7 +24386,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the radio button is read-only, which prevents the
@@ -27960,7 +27960,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
@@ -27973,7 +27973,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "Defines the spacing between the individual items of the content.",
@@ -28040,7 +28040,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -28053,7 +28053,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -28322,7 +28322,7 @@ We do not support using this attribute to apply custom styling.
 
 Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
@@ -28335,7 +28335,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'success'",
@@ -32092,7 +32092,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
+        "name": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
@@ -32105,7 +32105,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
+      "type": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32767,7 +32767,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -32780,7 +32780,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32967,7 +32967,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
@@ -32980,7 +32980,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -33483,7 +33483,7 @@ Pass a \`ref\` to access the native element for measurement, observation, or thi
 For actions such as focus or selection, use the component's explicit ref methods;
 operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
@@ -33496,7 +33496,7 @@ operations performed directly on the native element may bypass the built-in comp
       "systemTags": [
         "core",
       ],
-      "type": "NativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "defaultValue": "false",

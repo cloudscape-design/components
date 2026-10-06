@@ -94,7 +94,7 @@ export interface BaseInputProps {
    *
    * @awsuiSystem core
    */
-  nativeInputAttributes?: NativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>;
+  nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 }
 
 export interface InputAutoCorrect {

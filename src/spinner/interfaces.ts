@@ -27,7 +27,7 @@ export interface SpinnerProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<HTMLElement, React.HTMLAttributes<HTMLElement>>;
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
 }
 
 export namespace SpinnerProps {

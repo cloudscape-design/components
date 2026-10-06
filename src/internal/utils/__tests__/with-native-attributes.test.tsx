@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import WithNativeAttributes from '../with-native-attributes';
+import WithNativeAttributes, { NativeAttributes } from '../with-native-attributes';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -230,5 +230,20 @@ describe('WithNativeAttributes', () => {
 
     expect(internalRef.current).toBe(container.firstChild);
     expect(nativeRef.current).toBe(container.firstChild);
+  });
+
+  test('infers the ref element type from the attributes type', () => {
+    // Compile-time assertions: the element the ref receives is recovered from the attributes type
+    // (via React.DOMAttributes<E>), so callers name the attributes only.
+    const anchor: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>> = {
+      ref: React.createRef<HTMLAnchorElement>(),
+    };
+    const generic: NativeAttributes<React.HTMLAttributes<HTMLElement>> = { ref: React.createRef<HTMLElement>() };
+    const mismatched: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>> = {
+      // @ts-expect-error a ref for a different element than the attributes target is rejected
+      ref: React.createRef<HTMLDivElement>(),
+    };
+
+    expect([anchor, generic, mismatched]).toHaveLength(3);
   });
 });

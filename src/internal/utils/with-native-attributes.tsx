@@ -9,23 +9,23 @@ import type { NativeAttributes } from '../../types/native-attributes';
 
 export type SkipWarnings = boolean | string[];
 
-type NativeAttributesProps<ET extends HTMLElement, AT extends React.HTMLAttributes<ET>> = {
+type NativeAttributesProps<AT extends React.HTMLAttributes<HTMLElement>> = {
   tag: string;
   children?: ReactNode;
   skipWarnings?: SkipWarnings;
-  nativeAttributes?: NativeAttributes<ET, AT>;
+  nativeAttributes?: NativeAttributes<AT>;
   componentName: string;
-} & Omit<NativeAttributes<ET, AT>, 'ref'>;
+} & Omit<NativeAttributes<AT>, 'ref'>;
 interface ForwardRefType {
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
-    props: NativeAttributesProps<ET, AT> & { ref?: React.Ref<ET> }
+    props: NativeAttributesProps<AT> & { ref?: React.Ref<ET> }
   ): JSX.Element;
 }
 
 export function processAttributes<ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
-  rest: Omit<NativeAttributesProps<ET, AT>, 'children' | 'tag' | 'skipWarnings' | 'componentName' | 'nativeAttributes'>,
+  rest: Omit<NativeAttributesProps<AT>, 'children' | 'tag' | 'skipWarnings' | 'componentName' | 'nativeAttributes'>,
   componentName: string,
-  nativeAttributes?: NativeAttributes<ET, AT>,
+  nativeAttributes?: NativeAttributes<AT>,
   skipWarnings?: SkipWarnings
 ) {
   return Object.entries(nativeAttributes || {}).reduce(
@@ -62,13 +62,15 @@ export function processAttributes<ET extends HTMLElement, AT extends React.HTMLA
 
 export default React.forwardRef(
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
-    { tag, nativeAttributes, children, skipWarnings, componentName, ...rest }: NativeAttributesProps<ET, AT>,
+    { tag, nativeAttributes, children, skipWarnings, componentName, ...rest }: NativeAttributesProps<AT>,
     ref: React.ForwardedRef<ET>
   ) => {
     const Tag = tag;
 
     // Merge the internal forwarded ref with the consumer-provided ref from nativeAttributes.
-    const mergedRef = useMergeRefs(ref, nativeAttributes?.ref);
+    // `NativeElement<AT>` resolves to `ET` at every call site (`AT extends HTMLAttributes<ET>`), but stays
+    // deferred inside the generic body, so the two ref types have to be unified explicitly.
+    const mergedRef = useMergeRefs(ref, nativeAttributes?.ref as React.Ref<ET> | undefined);
 
     const processedAttributes = processAttributes<ET, AT>(rest, componentName, nativeAttributes, skipWarnings);
 
