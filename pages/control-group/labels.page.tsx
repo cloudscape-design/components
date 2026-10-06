@@ -44,6 +44,14 @@ export default function ControlGroupLabels() {
     >
       <FocusTarget />
       <SpaceBetween size="l">
+        <Select
+          data-testid="standalone-select"
+          inlineLabelText="Namespace"
+          ariaLabel="Namespace"
+          selectedOption={longOperators[0]}
+          options={longOperators}
+          onChange={noop}
+        />
         <ControlGroup inlineLabelText="Filter by metric" direction={direction}>
           <Select
             data-testid="grouped-select"
