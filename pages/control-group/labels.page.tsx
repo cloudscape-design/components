@@ -10,20 +10,7 @@ import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Select, { SelectProps } from '~components/select';
 
 import { SimplePage } from '../app/templates';
-
-const noop = () => {
-  /* empty handler to suppress controlled-component warnings */
-};
-
-const operators: SelectProps.Option[] = [
-  { value: '=', label: '=' },
-  { value: '!=', label: '!=' },
-];
-
-const multiOptions: MultiselectProps.Option[] = [
-  { value: '1', label: 'Option 1' },
-  { value: '2', label: 'Option 2' },
-];
+import { enteredTextLabel, multiOptions, noop, operators } from './common';
 
 const suggestions: AutosuggestProps.Option[] = Array.from({ length: 20 }, (_, i) => ({
   value: `Metric ${i + 1}`,
@@ -41,8 +28,6 @@ const longMultiOptions: MultiselectProps.Option[] = Array.from({ length: 20 }, (
   value: `${i + 1}`,
   label: `Option ${i + 1}`,
 }));
-
-const enteredTextLabel = (value: string) => `Use: ${value}`;
 
 export default function ControlGroupLabels() {
   return (
