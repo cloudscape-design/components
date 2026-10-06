@@ -75,13 +75,13 @@ const InternalMultiselect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
-    const { position: groupedControlPosition } = useGroupedControlContext();
+    const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
 
     // When rendered inside a control group, tokens are always shown inline in the
     // trigger regardless of the `inlineTokens` prop, since there is no room to
     // display tokens below the control within a group.
-    const showTokensInline = inlineTokens || groupedControlPosition !== null;
+    const showTokensInline = inlineTokens || !!groupedControlProps.position;
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -145,7 +145,7 @@ const InternalMultiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         triggerVariant={showTokensInline ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
-        groupedControlPosition={groupedControlPosition}
+        groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}

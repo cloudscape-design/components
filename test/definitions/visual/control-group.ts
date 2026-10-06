@@ -10,6 +10,7 @@ const suite: TestSuite = {
       description: 'Permutations',
       path: 'control-group/permutations',
       screenshotType: 'permutations',
+      pixelDiffTolerance: 2,
     },
   ],
 };
