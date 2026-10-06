@@ -67,6 +67,37 @@ export default function ControlGroupLabels() {
           />
         </ControlGroup>
 
+        <ControlGroup inlineLabelText="Metric name">
+          <Autosuggest
+            data-testid="grouped-autosuggest"
+            ariaLabel="Metric"
+            value="CPU"
+            onChange={noop}
+            options={suggestions}
+            enteredTextLabel={enteredTextLabel}
+            expandToViewport={true}
+          />
+          <Select
+            ariaLabel="Operator"
+            selectedOption={longOperators[0]}
+            options={longOperators}
+            onChange={noop}
+            expandToViewport={true}
+          />
+        </ControlGroup>
+
+        <ControlGroup inlineLabelText="Service">
+          <Input data-testid="grouped-input" ariaLabel="Value" value="service" onChange={noop} />
+          <Autosuggest
+            ariaLabel="Metric"
+            value=""
+            onChange={noop}
+            options={suggestions}
+            enteredTextLabel={enteredTextLabel}
+            expandToViewport={true}
+          />
+        </ControlGroup>
+
         <Box variant="h2">Standalone components with inline label</Box>
 
         <Input inlineLabelText="Service name" ariaLabel="Service name" value="service" onChange={noop} />
