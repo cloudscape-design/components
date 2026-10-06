@@ -62,6 +62,14 @@ const suite: TestSuite = {
         await page.click('aria/Show modal');
       },
     },
+    {
+      description: 'hide-dismiss-button',
+      path: 'modal/hide-dismiss-button',
+      screenshotType: 'viewport',
+      setup: async ({ page }) => {
+        await page.click('#show-modal');
+      },
+    },
     ...['true', 'false'].map<TestSuite>(footer => {
       const tests: TestDefinition[] = [
         {

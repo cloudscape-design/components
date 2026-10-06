@@ -3,15 +3,20 @@
 import React from 'react';
 
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import FormField from '~components/form-field';
 import Input from '~components/input';
 import ControlGroup, { InternalControlGroupProps } from '~components/internal/components/control-group';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+import RadioGroup from '~components/radio-group';
 import SegmentedControl, { SegmentedControlProps } from '~components/segmented-control';
 import Select, { SelectProps } from '~components/select';
 
+import { useAppContext } from '../app/app-context';
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+
+type Direction = NonNullable<InternalControlGroupProps['direction']>;
 
 const noop = () => {
   /* empty handler to suppress controlled-component warnings */
@@ -115,9 +120,31 @@ const permutations = createPermutations<InternalControlGroupProps>([
 ]);
 
 export default function ControlGroupPermutations() {
+  // The name `direction` is already taken for the LTR/RTL URL parameter
+  const { urlParams, setUrlParams } = useAppContext<'controlGroupDirection'>();
+  const direction: Direction = urlParams.controlGroupDirection === 'vertical' ? 'vertical' : 'horizontal';
+
   return (
-    <PermutationsPage title="Control group permutations" i18n={{}}>
-      <PermutationsView permutations={permutations} render={permutation => <ControlGroup {...permutation} />} />
+    <PermutationsPage
+      title="Control group permutations"
+      i18n={{}}
+      settings={
+        <FormField label="Direction">
+          <RadioGroup
+            value={direction}
+            onChange={({ detail }) => setUrlParams({ controlGroupDirection: detail.value as Direction })}
+            items={[
+              { value: 'horizontal', label: 'Horizontal' },
+              { value: 'vertical', label: 'Vertical' },
+            ]}
+          />
+        </FormField>
+      }
+    >
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => <ControlGroup {...permutation} direction={direction} />}
+      />
     </PermutationsPage>
   );
 }

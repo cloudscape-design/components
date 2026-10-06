@@ -9,11 +9,21 @@
 .root {
   @include styles.styles-reset;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  // Align controls along their bottom edge so their field boxes line up
-  // even when one control is taller than another.
-  align-items: flex-end;
+
+  &-horizontal {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    // Align controls along their bottom edge so their field boxes line up
+    // even when one control is taller than another.
+    align-items: flex-end;
+  }
+
+  &-vertical {
+    flex-direction: column;
+    // Stretch stacked controls to share the group's inline size so their
+    // fused block edges line up across the full width.
+    align-items: stretch;
+  }
 }
 
 .control {
@@ -27,10 +37,17 @@
   &:focus-within {
     z-index: 1;
   }
-  // Overlap each non-first slot onto its predecessor by one border width,
-  // so the two adjacent borders coincide into a single seam.
-  &.control-middle,
-  &.control-last {
-    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+
+  &-middle,
+  &-last {
+    // Overlap each non-first slot onto its predecessor by one border width,
+    // so the two adjacent borders coincide into a single seam.
+    $margin: calc(-1 * #{awsui.$border-width-field});
+    &-horizontal {
+      margin-inline-start: $margin;
+    }
+    &-vertical {
+      margin-block-start: $margin;
+    }
   }
 }
