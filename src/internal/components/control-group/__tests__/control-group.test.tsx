@@ -108,10 +108,10 @@ describe('Control group', () => {
 
   test('renders the inline label and wires it to the group via aria-labelledby', () => {
     const { getByRole, getByText } = render(
-      <InternalControlGroup inlineLabelText="Threshold">
+      <ControlGroup inlineLabelText="Threshold">
         <input data-testid="alpha" />
         <input data-testid="beta" />
-      </InternalControlGroup>
+      </ControlGroup>
     );
 
     const group = getByRole('group');
@@ -123,10 +123,10 @@ describe('Control group', () => {
 
   test('omits the inline label and aria-labelledby when inlineLabelText is not set', () => {
     const { getByRole, queryByText } = render(
-      <InternalControlGroup>
+      <ControlGroup>
         <input data-testid="alpha" />
         <input data-testid="beta" />
-      </InternalControlGroup>
+      </ControlGroup>
     );
 
     expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
