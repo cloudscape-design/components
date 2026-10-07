@@ -367,7 +367,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   });
 
   describe('with appLayoutHideToolbarBreadcrumbs flag', () => {
-    const flagName = 'appLayoutHideToolbarBreadcrumbs' as Parameters<typeof setGlobalFlag>[0];
+    const flagName = 'appLayoutHideToolbarBreadcrumbs';
 
     beforeEach(() => setGlobalFlag(flagName, true));
     afterEach(() => setGlobalFlag(flagName, undefined));
