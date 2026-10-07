@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/utils/theming' as theming;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
@@ -17,8 +18,10 @@ $disabled-background: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color
 $disabled-color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
 $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active);
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
+$selected-border-width: awsui.$border-width-field;
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
+$one-theme-segment-gap: calc(#{$segment-gap} - #{$segment-divider-width});
 $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
 
 .segment {
@@ -90,6 +93,11 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   &:not(.refresh):not(:last-child)::after {
     inset-inline-end: calc(-1 * $segment-gap);
   }
+  @include theming.one-theme-only {
+    &:not(:last-child)::after {
+      content: none;
+    }
+  }
 
   @for $i from 1 through 6 {
     &:nth-child(#{$i}) {
@@ -100,6 +108,10 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   &.selected {
     background: $selected-background;
     color: $selected-color;
+
+    @include theming.one-theme-only {
+      box-shadow: inset 0 0 0 $selected-border-width awsui.$color-border-segment-active;
+    }
   }
 
   &:hover:not(.selected):not(.disabled):not(:focus) {
@@ -117,6 +129,9 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   position: relative;
   inset-inline-start: calc(-1 * #{awsui.$space-xxs});
   margin-inline-end: awsui.$space-xxs;
+  @include theming.one-theme-only {
+    inset-inline-start: calc(-1 * #{awsui.$space-xxxs});
+  }
 }
 
 .with-no-text {
