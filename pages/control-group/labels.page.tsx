@@ -37,6 +37,7 @@ export default function ControlGroupLabels() {
       title="Control group labels"
       subtitle="Labels should be displayed above focus rings but below dropdowns."
       settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
+      i18n={{}}
       screenshotArea={{}}
     >
       <FocusTarget />
