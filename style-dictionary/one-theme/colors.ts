@@ -77,6 +77,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
     dark: '{colorBackgroundControlDisabled}',
   },
   colorBackgroundToggleDefault: { light: '{colorNeutral650}', dark: '{colorNeutral500}' },
+  colorShadowToggleHandle: { light: 'transparent', dark: 'transparent' },
 
   // ── Input / form ──────────────────────────────────────────────────────────
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
