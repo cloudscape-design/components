@@ -27,10 +27,18 @@ const NARROW = { width: 360, height: 800 };
 const ROW_TOP_TOLERANCE = 2;
 
 class ControlGroupPage extends BasePageObject {
+  // Resize, then let the ResizeObserver -> state update -> relayout settle before asserting
+  // (the stacking decision is measured asynchronously, not applied synchronously on resize).
+  async resize(size: { width: number; height: number }) {
+    await this.setWindowSize(size);
+    await this.waitForJsTimers();
+  }
+
   // Bounding boxes of the real controls, in DOM order. `get` is 1-based.
   async getControlBoxes() {
     const boxes = [];
     for (let i = 1; i <= EXPECTED_CONTROL_COUNT; i++) {
+      console.log(i, controls.get(i).toSelector());
       boxes.push(await this.getBoundingBox(controls.get(i).toSelector()));
     }
     return boxes;
@@ -54,6 +62,7 @@ class ControlGroupPage extends BasePageObject {
     await this.waitForAssertion(async () => {
       const boxes = await this.getControlBoxes();
       expect(boxes).toHaveLength(EXPECTED_CONTROL_COUNT);
+      console.log({ boxes });
       // Every control is on its own row below the previous one (all-or-nothing stacking).
       for (let i = 1; i < boxes.length; i++) {
         expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].top);
@@ -75,12 +84,12 @@ describe('ControlGroup responsiveness', () => {
   test(
     'auto group inside a horizontal SpaceBetween re-expands after stacking (flexbox deadlock)',
     setupTest(async page => {
-      await page.setWindowSize(WIDE);
+      await page.resize(WIDE);
       await page.expectRow();
-      await page.setWindowSize(NARROW);
+      await page.resize(NARROW);
       await page.expectStacked();
       // The critical case: widening must re-expand it, not leave it stuck stacked.
-      await page.setWindowSize(WIDE);
+      await page.resize(WIDE);
       await page.expectRow();
     })
   );
@@ -90,7 +99,7 @@ describe('ControlGroup responsiveness', () => {
     setupTest(async page => {
       // Tabbing from the focus target before the group must reach each real control then the
       // button after it. A focusable ghost duplicate would add a tab stop and break this.
-      await page.setWindowSize(WIDE);
+      await page.resize(WIDE);
       await page.click('#focus-target');
       await expect(page.isFocused('#focus-target')).resolves.toBe(true);
 
