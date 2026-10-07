@@ -23,3 +23,6 @@ export const useAppLayoutToolbarDesignEnabled = () => {
 
   return isToolbarPublic || isToolbarPrivate;
 };
+
+export const isAppLayoutHideToolbarBreadcrumbsEnabled = () =>
+  !!getGlobalFlag('appLayoutHideToolbarBreadcrumbs' as Parameters<typeof getGlobalFlag>[0]);
