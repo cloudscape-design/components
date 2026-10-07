@@ -34,23 +34,16 @@ export default function InternalControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const controls = (
-    <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root, styles[`root-${direction}`])}>
-      {flattenedChildren.map((child, index) => {
-        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-        const position: GroupedControlPosition =
-          controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
-        return (
-          <div
-            key={key ? String(key) : index}
-            className={clsx(styles.control, styles[`control-${position}-${direction}`])}
-          >
-            <GroupedControlContext.Provider value={{ position, direction }}>{child}</GroupedControlContext.Provider>
-          </div>
-        );
-      })}
-    </div>
-  );
+  const controls = flattenedChildren.map((child, index) => {
+    const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+    const position: GroupedControlPosition =
+      controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
+    return (
+      <div key={key ? String(key) : index} className={clsx(styles.control, styles[`control-${position}-${direction}`])}>
+        <GroupedControlContext.Provider value={{ position, direction }}>{child}</GroupedControlContext.Provider>
+      </div>
+    );
+  });
 
   if (inlineLabelText) {
     return (
@@ -59,7 +52,7 @@ export default function InternalControlGroup({
           {inlineLabelText}
         </label>
         <div className={styles['inline-label-trigger-wrapper']}>
-          <div role="group" aria-labelledby={labelId} className={styles.root}>
+          <div role="group" aria-labelledby={labelId} className={clsx(styles.root, styles[`root-${direction}`])}>
             {controls}
           </div>
         </div>
@@ -68,7 +61,7 @@ export default function InternalControlGroup({
   }
 
   return (
-    <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root)}>
+    <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root, styles[`root-${direction}`])}>
       {controls}
     </div>
   );
