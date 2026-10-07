@@ -8,19 +8,17 @@ import ControlGroupWrapper from '../../../../../lib/components/test-utils/select
 
 const SCENARIO = '[data-testid="auto-spacebetween"]';
 
-const scope = createWrapper(SCENARIO);
-
 // `findControls` returns only the real controls (the measurement duplicate is excluded), so
-// their count and geometry are reliable without filtering out the ghost by hand.
-const controls = scope.findComponent(`.${ControlGroupWrapper.rootSelector}`, ControlGroupWrapper)!.findControls();
-
-// The Select trigger has no `aria-label` (it's labelled via `aria-labelledby`), so address it
-// through the component finders rather than a raw selector.
-const firstInput = scope.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
-const selectTrigger = scope.findSelect().findTrigger().toSelector();
-const lastInput = scope.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
+// addressing them by 1-based index keeps every finder off the ghost's duplicate markup.
+const controls = createWrapper(SCENARIO)
+  .findComponent(`.${ControlGroupWrapper.rootSelector}`, ControlGroupWrapper)!
+  .findControls();
 
 const EXPECTED_CONTROL_COUNT = 3;
+
+const firstInput = controls.get(1).findInput().findNativeInput().toSelector();
+const selectTrigger = controls.get(2).findSelect().findTrigger().toSelector();
+const lastInput = controls.get(3).findInput().findNativeInput().toSelector();
 
 const WIDE = { width: 1200, height: 800 };
 const NARROW = { width: 360, height: 800 };
