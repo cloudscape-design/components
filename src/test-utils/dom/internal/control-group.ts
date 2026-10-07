@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../internal/components/control-group/styles.selectors.js';
+import testUtilStyles from '../../../internal/components/control-group/test-classes/styles.selectors.js';
 
 export default class ControlGroupWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testUtilStyles.root;
 
   /**
-   * Returns the individual fused controls.
+   * Returns the individual fused controls. The direct-child selector excludes the hidden
+   * measurement duplicate, whose controls are nested under the ghost.
    */
   findControls(): Array<ElementWrapper> {
-    return this.findAll(`:scope > .${styles.control}`);
+    return this.findAll(`:scope > .${testUtilStyles.control}`);
   }
 }

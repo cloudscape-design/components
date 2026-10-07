@@ -16,6 +16,7 @@ import { useFitsInline } from '../../hooks/use-fits-inline';
 import { flattenChildren } from '../../utils/flatten-children';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 // `'auto'` exists only at the prop boundary; it resolves to a concrete axis before reaching
 // context, classes, or SCSS.
@@ -53,7 +54,7 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         return (
           <div
             key={key ? String(key) : index}
-            className={clsx(styles.control, styles[`control-${position}-${resolvedDirection}`])}
+            className={clsx(testUtilStyles.control, styles.control, styles[`control-${position}-${resolvedDirection}`])}
           >
             <GroupedControlContext.Provider value={{ position, direction: resolvedDirection }}>
               {child}
@@ -67,7 +68,7 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         {...baseProps}
         ref={mergedRootRef}
         role="group"
-        className={clsx(baseProps.className, styles.root, styles[`root-${resolvedDirection}`])}
+        className={clsx(baseProps.className, testUtilStyles.root, styles.root, styles[`root-${resolvedDirection}`])}
       >
         {renderControlSlots()}
 
