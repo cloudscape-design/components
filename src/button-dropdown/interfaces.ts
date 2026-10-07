@@ -23,7 +23,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-   * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
+   * - `disabledReason` (ReactNode) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the item's accessible description, and interactive elements inside it can't be reached.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    * - `dataAttributes` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
@@ -113,8 +113,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * Provides a reason why the button dropdown is disabled (only when `disabled` is `true`).
    * If provided, the disabled button becomes focusable.
+   *
+   * Accepts formatted content. Keep it to text and inline formatting: the content is also used as the
+   * button's accessible description, and interactive elements inside it can't be reached.
    */
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents clicks.
@@ -313,7 +316,7 @@ export namespace ButtonDropdownProps {
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     disabled?: boolean;
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     loading?: boolean;
     loadingText?: string;
     href?: string;
@@ -336,7 +339,7 @@ export namespace ButtonDropdownProps {
     ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     /**
      * @deprecated Has no effect.
      */
@@ -423,7 +426,7 @@ export interface CustomTriggerProps {
   testUtilsClass: string;
   ariaLabel: string | undefined;
   disabled: boolean;
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   isOpen: boolean;
   onClick: () => void;
   ariaExpanded: boolean;
