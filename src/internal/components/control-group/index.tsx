@@ -12,8 +12,8 @@ import {
   GroupedControlDirection,
   GroupedControlPosition,
 } from '../../context/control-group-context';
+import { useFitsInline } from '../../hooks/use-fits-inline';
 import { flattenChildren } from '../../utils/flatten-children';
-import { useResponsiveDirection } from './use-responsive-direction';
 
 import styles from './styles.css.js';
 
@@ -39,8 +39,11 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
     const controlCount = flattenedChildren.length;
 
-    const { resolvedDirection, rootRef, ghostRef } = useResponsiveDirection(direction);
+    // Only `'auto'` measures; a forced direction wins and the ghost is not rendered.
+    const { overflows, rootRef, ghostRef } = useFitsInline<HTMLDivElement>();
     const mergedRootRef = useMergeRefs(ref, rootRef);
+    const resolvedDirection: GroupedControlDirection =
+      direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
 
     const renderControlSlots = () =>
       flattenedChildren.map((child, index) => {
