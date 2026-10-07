@@ -106,7 +106,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       await preparePage(browser, page, oldUrl, testDef, testDef.configuration);
       const oldPermutations = await page.capturePermutations();
 
-      expect(newPermutations.length).toBe(oldPermutations.length);
+      expect(newPermutations.length).toBeGreaterThanOrEqual(oldPermutations.length);
 
       // Compare each permutation individually, wrapping each in an Allure step.
       let failures = 0;

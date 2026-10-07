@@ -23,6 +23,7 @@ import { BaseKeyDetail, NonCancelableEventHandler } from '../../../types/events'
 import { FormFieldValidationControlProps } from '../../../types/form-field';
 import { getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
+import { ResetGroupedControlContext } from '../../context/control-group-context';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -337,7 +338,9 @@ const AutosuggestInput = React.forwardRef(
           footer={
             dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']} onKeyDown={handleDropdownKeyDown}>
-                {open && dropdownFooter ? dropdownFooter : null}
+                <ResetGroupedControlContext>
+                  {open && dropdownFooter ? dropdownFooter : null}
+                </ResetGroupedControlContext>
               </div>
             )
           }
@@ -346,7 +349,7 @@ const AutosuggestInput = React.forwardRef(
           content={
             open && dropdownContent ? (
               <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-                {dropdownContent}
+                <ResetGroupedControlContext>{dropdownContent}</ResetGroupedControlContext>
               </div>
             ) : null
           }

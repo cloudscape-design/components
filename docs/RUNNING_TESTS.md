@@ -103,7 +103,3 @@ To override, first confirm the diffs in the Allure report are intentional, then 
 - **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
 
 Either way the workflow posts a `visual-regression-override` success commit status on that SHA and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
-
-### Adding tests for a new component
-
-Create `test/definitions/visual/<component>.ts` exporting a `TestSuite`. The build picks it up automatically — the barrel (`lib/test-definitions/index.js`) is generated from the files in `test/definitions/visual`, with one export per file, so there is no index to update by hand.

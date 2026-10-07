@@ -77,6 +77,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
     dark: '{colorBackgroundControlDisabled}',
   },
   colorBackgroundToggleDefault: { light: '{colorNeutral650}', dark: '{colorNeutral500}' },
+  colorShadowToggleHandle: { light: 'transparent', dark: 'transparent' },
 
   // ── Input / form ──────────────────────────────────────────────────────────
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
@@ -204,7 +205,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
 
   // ── Table ─────────────────────────────────────────────────────────────────
-  colorBackgroundCellShaded: { light: '{colorNeutral150}', dark: '{colorNeutral900}' },
+  colorBackgroundCellShaded: { light: '{colorNeutral200}', dark: '{colorNeutral900}' },
   colorBorderCellShaded: { light: '{colorNeutral300}', dark: '{colorNeutral700}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────

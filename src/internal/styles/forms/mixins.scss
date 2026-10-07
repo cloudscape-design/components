@@ -117,7 +117,6 @@
 // Use for form input elements, excluding buttons
 // or for elements that have a light border and light background
 @mixin form-focus-element(
-  $border-radius: constants.$control-border-radius,
   $border-color: awsui.$color-border-input-focused,
   $box-shadow: foundation.$box-shadow-focused-light
 ) {
@@ -127,10 +126,6 @@
 
   border-block: awsui.$border-width-field solid $border-color;
   border-inline: awsui.$border-width-field solid $border-color;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
 
   box-shadow: $box-shadow;
 }
@@ -239,10 +234,13 @@
 }
 
 @mixin container-style {
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  // Custom radius from the container style API if set, otherwise the token. Stacked
+  // containers still flatten adjacent corners because those rules set a literal 0.
+  $radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
   box-sizing: border-box;
 
   &.refresh {
@@ -255,19 +253,19 @@
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     z-index: 1;
   }
 
   &:not(.refresh)::after {
     @include utils.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     box-shadow: awsui.$shadow-container;
   }
 }
@@ -361,4 +359,47 @@ $inline-label-border-radius: 2px;
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
     awsui.$color-background-input-disabled
   );
+}
+
+@mixin grouped-control {
+  $radius: constants.$control-border-radius;
+
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+
+  &-horizontal {
+    &-first {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+
+  &-vertical {
+    &-first {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+    }
+  }
 }

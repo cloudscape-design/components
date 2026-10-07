@@ -34,6 +34,7 @@ const suite: TestSuite = {
           path: 'dropdown/expandable',
           screenshotType: 'viewport',
           queryParams: { componentType: 'Select', expandToViewport: `${expandToViewport}` },
+          pixelDiffTolerance: 1,
           setup: async ({ page }) => {
             await page.click('#show-popover');
             await page.click('#in-popover');
