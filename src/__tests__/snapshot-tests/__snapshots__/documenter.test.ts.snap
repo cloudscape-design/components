@@ -17954,8 +17954,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     {
       "defaultValue": "1",
-      "description": "Specifies the number of columns in each grid row.
-Valid values are any integer between 1 and 4. It defaults to 1.",
+      "description": "Specifies the number of columns in each grid row. It defaults to 1.",
       "name": "columns",
       "optional": true,
       "type": "number",
