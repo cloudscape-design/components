@@ -14,8 +14,11 @@ const controls = createWrapper(SCENARIO)
   .findComponent(`.${ControlGroupWrapper.rootSelector}`, ControlGroupWrapper)!
   .findControls();
 
-const EXPECTED_CONTROL_COUNT = 3;
+const EXPECTED_CONTROL_COUNT = 6;
 
+// The group alternates Input, Select, Input, ... so odd controls are inputs and even ones
+// are selects. The focus test tabs across the first few to confirm the real controls are
+// reachable in order and the hidden ghost adds no tab stops.
 const firstInput = controls.get(1).findInput().findNativeInput().toSelector();
 const selectTrigger = controls.get(2).findSelect().findTrigger().toSelector();
 const lastInput = controls.get(3).findInput().findNativeInput().toSelector();
@@ -94,7 +97,7 @@ describe('ControlGroup responsiveness', () => {
       await page.click('#focus-target');
       await expect(page.isFocused('#focus-target')).resolves.toBe(true);
 
-      // Tab across the three real controls in order.
+      // Tab across the first three real controls in order.
       await page.keys(['Tab']);
       await expect(page.isFocused(firstInput)).resolves.toBe(true);
       await page.keys(['Tab']);
@@ -102,7 +105,12 @@ describe('ControlGroup responsiveness', () => {
       await page.keys(['Tab']);
       await expect(page.isFocused(lastInput)).resolves.toBe(true);
 
-      // The next Tab leaves the group for the button after it.
+      // Tab through the remaining controls; one Tab per control then leaves the group for the
+      // button after it. A focusable ghost duplicate would add extra tab stops and this final
+      // target would not be reached in the expected number of presses.
+      for (let i = 3; i < EXPECTED_CONTROL_COUNT; i++) {
+        await page.keys(['Tab']);
+      }
       await page.keys(['Tab']);
       await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })

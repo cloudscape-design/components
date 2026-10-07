@@ -17,41 +17,38 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-const scenarioContainerStyle: React.CSSProperties = {
-  padding: 16,
-  border: '1px dashed var(--awsui-color-border-divider-default, #b6bec9)',
-  borderRadius: 8,
-};
-
-// Each control is wide enough that the group's required single-row width (~3 x 250px) exceeds
-// the browser's minimum window width, so the group reliably stacks at the narrow viewport.
-const controlStyle: React.CSSProperties = { inlineSize: 250 };
-
+// Six controls so the group's required single-row width comfortably exceeds the browser's
+// minimum window width, so it reliably stacks at the narrow viewport.
 function Group() {
   const [name, setName] = useState('service');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   const [value, setValue] = useState('production');
+  const [name2, setName2] = useState('region');
+  const [operator2, setOperator2] = useState<SelectProps.Option>(operators[0]);
+  const [value2, setValue2] = useState('us-east-1');
   return (
     <ControlGroup>
-      <div style={controlStyle}>
-        <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
-      </div>
-      <div style={controlStyle}>
-        <Select
-          ariaLabel="Operator"
-          selectedOption={operator}
-          options={operators}
-          onChange={e => setOperator(e.detail.selectedOption)}
-        />
-      </div>
-      <div style={controlStyle}>
-        <Input
-          ariaLabel="Label value"
-          value={value}
-          placeholder="Label value"
-          onChange={e => setValue(e.detail.value)}
-        />
-      </div>
+      <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
+      <Select
+        ariaLabel="Operator"
+        selectedOption={operator}
+        options={operators}
+        onChange={e => setOperator(e.detail.selectedOption)}
+      />
+      <Input ariaLabel="Label value" value={value} placeholder="Label value" onChange={e => setValue(e.detail.value)} />
+      <Input ariaLabel="Label name 2" value={name2} placeholder="Label name" onChange={e => setName2(e.detail.value)} />
+      <Select
+        ariaLabel="Operator 2"
+        selectedOption={operator2}
+        options={operators}
+        onChange={e => setOperator2(e.detail.selectedOption)}
+      />
+      <Input
+        ariaLabel="Label value 2"
+        value={value2}
+        placeholder="Label value"
+        onChange={e => setValue2(e.detail.value)}
+      />
     </ControlGroup>
   );
 }
@@ -63,16 +60,10 @@ export default function ControlGroupResponsiveness() {
       subtitle="An auto group inside a horizontal SpaceBetween: the flexbox deadlock case. Narrowing the viewport stacks all its controls at once; widening it must re-expand them, not leave them stuck stacked."
     >
       <FocusTarget />
-      {/*
-        Inside a flex row, a naive "measure my parent" group would stay stuck stacked once
-        collapsed. The ancestor-walk skips the shrink-wrapping flex item, so it re-expands.
-      */}
-      <div data-testid="auto-spacebetween" style={scenarioContainerStyle}>
-        <SpaceBetween direction="horizontal" size="s">
-          <Group />
-          <Box variant="p">Sibling content</Box>
-        </SpaceBetween>
-      </div>
+      <SpaceBetween direction="horizontal" size="s" data-testid="auto-spacebetween">
+        <Group />
+        <Box variant="p">Sibling content</Box>
+      </SpaceBetween>
       <Button data-testid="focus-after">Focus after</Button>
     </SimplePage>
   );
