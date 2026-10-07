@@ -38,7 +38,6 @@ class ControlGroupPage extends BasePageObject {
   async getControlBoxes() {
     const boxes = [];
     for (let i = 1; i <= EXPECTED_CONTROL_COUNT; i++) {
-      console.log(i, controls.get(i).toSelector());
       boxes.push(await this.getBoundingBox(controls.get(i).toSelector()));
     }
     return boxes;

@@ -17,12 +17,17 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-// Full-width so an integ test can drive the available width with `setWindowSize`.
+// A definite, viewport-relative width that clips. The group is `flex-shrink: 0`, so with an
+// auto width it would prop this container (and the whole content column) open to its own
+// min-content and the window could never narrow it. A `vw` width tracks `setWindowSize`
+// regardless of the group's width, and `overflow: hidden` makes it a constraining ancestor.
 const scenarioContainerStyle: React.CSSProperties = {
-  inlineSize: '100%',
+  inlineSize: '90vw',
+  overflow: 'hidden',
   padding: 16,
   border: '1px dashed var(--awsui-color-border-divider-default, #b6bec9)',
   borderRadius: 8,
+  boxSizing: 'border-box',
 };
 
 function Group() {
