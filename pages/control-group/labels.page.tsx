@@ -56,7 +56,6 @@ export default function ControlGroupLabels() {
             selectedOption={longOperators[0]}
             options={longOperators}
             onChange={noop}
-            expandToViewport={true}
           />
           <Input ariaLabel="Value" value="service" onChange={noop} />
         </ControlGroup>
@@ -69,7 +68,6 @@ export default function ControlGroupLabels() {
             selectedOptions={[longMultiOptions[0]]}
             options={longMultiOptions}
             onChange={noop}
-            expandToViewport={true}
           />
           <Autosuggest
             ariaLabel="Metric"
@@ -77,7 +75,6 @@ export default function ControlGroupLabels() {
             onChange={noop}
             options={suggestions}
             enteredTextLabel={enteredTextLabel}
-            expandToViewport={true}
           />
         </ControlGroup>
 
@@ -89,15 +86,8 @@ export default function ControlGroupLabels() {
             onChange={noop}
             options={suggestions}
             enteredTextLabel={enteredTextLabel}
-            expandToViewport={true}
           />
-          <Select
-            ariaLabel="Operator"
-            selectedOption={longOperators[0]}
-            options={longOperators}
-            onChange={noop}
-            expandToViewport={true}
-          />
+          <Select ariaLabel="Operator" selectedOption={longOperators[0]} options={longOperators} onChange={noop} />
         </ControlGroup>
 
         <ControlGroup inlineLabelText="Service" direction={direction}>
@@ -108,7 +98,6 @@ export default function ControlGroupLabels() {
             onChange={noop}
             options={suggestions}
             enteredTextLabel={enteredTextLabel}
-            expandToViewport={true}
           />
         </ControlGroup>
 
@@ -119,7 +108,6 @@ export default function ControlGroupLabels() {
           selectedOption={operators[0]}
           options={operators}
           onChange={noop}
-          expandToViewport={true}
         />
         <Multiselect
           inlineLabelText="Labels"
@@ -128,7 +116,6 @@ export default function ControlGroupLabels() {
           selectedOptions={[multiOptions[0]]}
           options={multiOptions}
           onChange={noop}
-          expandToViewport={true}
         />
       </SpaceBetween>
     </SimplePage>

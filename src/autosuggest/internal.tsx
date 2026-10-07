@@ -13,6 +13,7 @@ import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -170,6 +171,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   const formFieldContext = useFormFieldContext(restProps);
+  const groupedControlProps = useGroupedControlContext();
+  // When grouped, the dropdown is portaled regardless of the public
+  // `expandToViewport` prop so it escapes the control slot's stacking context
+  // and paints over the group's inline label (which the focus ring stays under).
+  const effectiveExpandToViewport = expandToViewport || !!groupedControlProps.position;
   const selfControlId = useUniqueId('input');
   const footerControlId = useUniqueId('footer');
   const controlId = formFieldContext.controlId ?? selfControlId;
@@ -220,7 +226,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaRequired={ariaRequired}
       clearAriaLabel={clearAriaLabel}
       disableBrowserAutocorrect={disableBrowserAutocorrect}
-      expandToViewport={expandToViewport}
+      expandToViewport={effectiveExpandToViewport}
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
