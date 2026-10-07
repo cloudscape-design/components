@@ -122,10 +122,7 @@ const permutations = createPermutations<InternalControlGroupProps>([
 export default function ControlGroupPermutations() {
   // The name `direction` is already taken for the LTR/RTL URL parameter
   const { urlParams, setUrlParams } = useAppContext<'controlGroupDirection'>();
-  const direction: Direction =
-    urlParams.controlGroupDirection === 'vertical' || urlParams.controlGroupDirection === 'auto'
-      ? urlParams.controlGroupDirection
-      : 'horizontal';
+  const direction: Direction = urlParams.controlGroupDirection === 'vertical' ? 'vertical' : 'horizontal';
 
   return (
     <PermutationsPage
@@ -139,7 +136,6 @@ export default function ControlGroupPermutations() {
             items={[
               { value: 'horizontal', label: 'Horizontal' },
               { value: 'vertical', label: 'Vertical' },
-              { value: 'auto', label: 'Auto' },
             ]}
           />
         </FormField>
