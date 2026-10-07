@@ -4,18 +4,23 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
+import ControlGroupWrapper from '../../../../../lib/components/test-utils/selectors/internal/control-group';
 
 const SCENARIO = '[data-testid="auto-spacebetween"]';
 
-// Address the controls via test-utils rather than raw selectors (the Select trigger has no
-// `aria-label` — it's labelled via `aria-labelledby`).
-const group = createWrapper(SCENARIO);
-const firstInput = group.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
-const selectTrigger = group.findSelect().findTrigger().toSelector();
-const lastInput = group.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
+const scope = createWrapper(SCENARIO);
 
-// The three controls in the group.
-const CONTROL_LABELS = ['Label name', 'Operator', 'Label value'];
+// `findControls` returns only the real controls (the measurement duplicate is excluded), so
+// their count and geometry are reliable without filtering out the ghost by hand.
+const controls = scope.findComponent(`.${ControlGroupWrapper.rootSelector}`, ControlGroupWrapper)!.findControls();
+
+// The Select trigger has no `aria-label` (it's labelled via `aria-labelledby`), so address it
+// through the component finders rather than a raw selector.
+const firstInput = scope.findInput('[aria-label="Label name"]').findNativeInput().toSelector();
+const selectTrigger = scope.findSelect().findTrigger().toSelector();
+const lastInput = scope.findInput('[aria-label="Label value"]').findNativeInput().toSelector();
+
+const EXPECTED_CONTROL_COUNT = 3;
 
 const WIDE = { width: 1200, height: 800 };
 const NARROW = { width: 360, height: 800 };
@@ -23,43 +28,20 @@ const NARROW = { width: 360, height: 800 };
 // Tolerance for comparing control tops in a row (bottom-aligned fields, sub-pixel rounding).
 const ROW_TOP_TOLERANCE = 2;
 
-interface Box {
-  top: number;
-  left: number;
-}
-
 class ControlGroupPage extends BasePageObject {
-  // Boxes of the visible controls in the group, in DOM order. Skips the ghost duplicate.
-  getVisibleControlBoxes(): Promise<Box[]> {
-    return this.browser.execute(
-      (selector, labels) => {
-        const container = document.querySelector(selector);
-        if (!container) {
-          return [];
-        }
-        const boxes: Array<{ top: number; left: number }> = [];
-        for (const label of labels) {
-          const elements = Array.from(container.querySelectorAll(`[aria-label="${label}"]`));
-          for (const element of elements) {
-            const rect = element.getBoundingClientRect();
-            // The ghost duplicate has zero height; skip it.
-            if (rect.height > 0) {
-              boxes.push({ top: rect.top, left: rect.left });
-              break;
-            }
-          }
-        }
-        return boxes;
-      },
-      SCENARIO,
-      CONTROL_LABELS
-    );
+  // Bounding boxes of the real controls, in DOM order. `get` is 1-based.
+  async getControlBoxes() {
+    const boxes = [];
+    for (let i = 1; i <= EXPECTED_CONTROL_COUNT; i++) {
+      boxes.push(await this.getBoundingBox(controls.get(i).toSelector()));
+    }
+    return boxes;
   }
 
   async expectRow() {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getVisibleControlBoxes();
-      expect(boxes).toHaveLength(CONTROL_LABELS.length);
+      const boxes = await this.getControlBoxes();
+      expect(boxes).toHaveLength(EXPECTED_CONTROL_COUNT);
       // Same top, increasing left: one row, left-to-right.
       for (const box of boxes) {
         expect(Math.abs(box.top - boxes[0].top)).toBeLessThanOrEqual(ROW_TOP_TOLERANCE);
@@ -72,8 +54,8 @@ class ControlGroupPage extends BasePageObject {
 
   async expectStacked() {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getVisibleControlBoxes();
-      expect(boxes).toHaveLength(CONTROL_LABELS.length);
+      const boxes = await this.getControlBoxes();
+      expect(boxes).toHaveLength(EXPECTED_CONTROL_COUNT);
       // Every control is on its own row below the previous one (all-or-nothing stacking).
       for (let i = 1; i < boxes.length; i++) {
         expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].top);
