@@ -17,18 +17,15 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-// A definite, viewport-relative width that clips. The group is `flex-shrink: 0`, so with an
-// auto width it would prop this container (and the whole content column) open to its own
-// min-content and the window could never narrow it. A `vw` width tracks `setWindowSize`
-// regardless of the group's width, and `overflow: hidden` makes it a constraining ancestor.
 const scenarioContainerStyle: React.CSSProperties = {
-  inlineSize: '90vw',
-  overflow: 'hidden',
   padding: 16,
   border: '1px dashed var(--awsui-color-border-divider-default, #b6bec9)',
   borderRadius: 8,
-  boxSizing: 'border-box',
 };
+
+// Each control is wide enough that the group's required single-row width (~3 x 250px) exceeds
+// the browser's minimum window width, so the group reliably stacks at the narrow viewport.
+const controlStyle: React.CSSProperties = { inlineSize: 250 };
 
 function Group() {
   const [name, setName] = useState('service');
@@ -36,14 +33,25 @@ function Group() {
   const [value, setValue] = useState('production');
   return (
     <ControlGroup>
-      <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
-      <Select
-        ariaLabel="Operator"
-        selectedOption={operator}
-        options={operators}
-        onChange={e => setOperator(e.detail.selectedOption)}
-      />
-      <Input ariaLabel="Label value" value={value} placeholder="Label value" onChange={e => setValue(e.detail.value)} />
+      <div style={controlStyle}>
+        <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
+      </div>
+      <div style={controlStyle}>
+        <Select
+          ariaLabel="Operator"
+          selectedOption={operator}
+          options={operators}
+          onChange={e => setOperator(e.detail.selectedOption)}
+        />
+      </div>
+      <div style={controlStyle}>
+        <Input
+          ariaLabel="Label value"
+          value={value}
+          placeholder="Label value"
+          onChange={e => setValue(e.detail.value)}
+        />
+      </div>
     </ControlGroup>
   );
 }
