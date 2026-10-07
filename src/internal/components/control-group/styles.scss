@@ -60,14 +60,10 @@
 // Measurement ghost (see index.tsx): out of flow and `max-content` wide so it reports the
 // controls' natural single-row width. Not `display: none` (that would measure zero).
 .ghost {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  @include styles.measurement-ghost;
+  // Lay out the controls as a single row sized to their content, so the measured width is the
+  // width they need inline.
   inline-size: max-content;
-  visibility: hidden;
-  pointer-events: none;
-  block-size: 0;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
