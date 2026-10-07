@@ -25,36 +25,20 @@ const scenarioContainerStyle: React.CSSProperties = {
   borderRadius: 8,
 };
 
-// Each control has a fixed width so the group's required single-row width (~3 x 200px) is
-// deterministic: comfortably wider than the NARROW viewport (must stack) and narrower than
-// the WIDE one (must be a row).
-const controlStyle = { width: 200 };
-
 function Group() {
   const [name, setName] = useState('service');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
   const [value, setValue] = useState('production');
   return (
     <ControlGroup>
-      <div style={controlStyle}>
-        <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
-      </div>
-      <div style={controlStyle}>
-        <Select
-          ariaLabel="Operator"
-          selectedOption={operator}
-          options={operators}
-          onChange={e => setOperator(e.detail.selectedOption)}
-        />
-      </div>
-      <div style={controlStyle}>
-        <Input
-          ariaLabel="Label value"
-          value={value}
-          placeholder="Label value"
-          onChange={e => setValue(e.detail.value)}
-        />
-      </div>
+      <Input ariaLabel="Label name" value={name} placeholder="Label name" onChange={e => setName(e.detail.value)} />
+      <Select
+        ariaLabel="Operator"
+        selectedOption={operator}
+        options={operators}
+        onChange={e => setOperator(e.detail.selectedOption)}
+      />
+      <Input ariaLabel="Label value" value={value} placeholder="Label value" onChange={e => setValue(e.detail.value)} />
     </ControlGroup>
   );
 }
