@@ -173,7 +173,7 @@ export default function HeroshotOverviewPage() {
 
         <Heroshot label="Box" stretch={true}>
           <SpaceBetween size="xxs">
-            <Box variant="h3">Instance details</Box>
+            <Box variant="h2">Instance details</Box>
             <Box variant="p" color="text-body-secondary">
               Review the configuration before you launch the instance.
             </Box>
@@ -182,6 +182,7 @@ export default function HeroshotOverviewPage() {
 
         <Heroshot label="BreadcrumbGroup" stretch={true}>
           <BreadcrumbGroup
+            ariaLabel="Breadcrumbs"
             items={[
               { text: 'Service', href: '#' },
               { text: 'Instances', href: '#' },
@@ -278,6 +279,7 @@ export default function HeroshotOverviewPage() {
         <Heroshot label="CopyToClipboard">
           <CopyToClipboard
             variant="inline"
+            copyButtonAriaLabel="Copy instance ID"
             textToCopy="i-01af2c9d8e7b6a5f4"
             copySuccessText="Instance ID copied"
             copyErrorText="Instance ID failed to copy"
@@ -364,7 +366,14 @@ export default function HeroshotOverviewPage() {
         <Heroshot label="Flashbar" stretch={true}>
           <Flashbar
             items={[
-              { type: 'success', header: 'Instance launched', dismissible: true, onDismiss: noop, id: 'success' },
+              {
+                type: 'success',
+                header: 'Instance launched',
+                dismissible: true,
+                dismissLabel: 'Dismiss message',
+                onDismiss: noop,
+                id: 'success',
+              },
               { type: 'in-progress', header: 'Attaching volume', loading: true, id: 'progress' },
             ]}
           />
@@ -428,7 +437,7 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot label="Input" stretch={true}>
-          <Input value="my-instance" onChange={noop} />
+          <Input value="my-instance" ariaLabel="Instance name" onChange={noop} />
         </Heroshot>
 
         <Heroshot label="ItemCard" stretch={true}>
@@ -530,12 +539,19 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot label="PromptInput" stretch={true}>
-          <PromptInput value="How do I resize an instance?" onChange={noop} actionButtonIconName="send" />
+          <PromptInput
+            value="How do I resize an instance?"
+            ariaLabel="Ask a question"
+            onChange={noop}
+            actionButtonIconName="send"
+            actionButtonAriaLabel="Send"
+          />
         </Heroshot>
 
         <Heroshot label="PropertyFilter" stretch={true}>
           <PropertyFilter
             query={{ operation: 'and', tokens: [{ propertyKey: 'type', operator: '=', value: 't3.medium' }] }}
+            filteringAriaLabel="Filter instances"
             onChange={noop}
             filteringProperties={[
               { key: 'type', propertyLabel: 'Type', groupValuesLabel: 'Type values', operators: ['='] },
@@ -660,13 +676,13 @@ export default function HeroshotOverviewPage() {
 
         <Heroshot label="TextContent" stretch={true}>
           <TextContent>
-            <h3>Instances</h3>
+            <h2>Instances</h2>
             <p>An instance is a virtual server in the cloud.</p>
           </TextContent>
         </Heroshot>
 
         <Heroshot label="TextFilter" stretch={true}>
-          <TextFilter filteringText="t3" countText="3 matches" onChange={noop} />
+          <TextFilter filteringText="t3" filteringAriaLabel="Filter instances" countText="3 matches" onChange={noop} />
         </Heroshot>
 
         <Heroshot label="Textarea" stretch={true}>
@@ -716,13 +732,22 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot label="Token">
-          <Token label="us-east-1" description="US East (N. Virginia)" onDismiss={noop} />
+          <Token
+            label="us-east-1"
+            description="US East (N. Virginia)"
+            dismissLabel="Remove us-east-1"
+            onDismiss={noop}
+          />
         </Heroshot>
 
         <Heroshot label="TokenGroup">
           <TokenGroup
             onDismiss={noop}
-            items={[{ label: 'us-east-1' }, { label: 'us-west-2' }, { label: 'eu-west-1' }]}
+            items={[
+              { label: 'us-east-1', dismissLabel: 'Remove us-east-1' },
+              { label: 'us-west-2', dismissLabel: 'Remove us-west-2' },
+              { label: 'eu-west-1', dismissLabel: 'Remove eu-west-1' },
+            ]}
           />
         </Heroshot>
 
