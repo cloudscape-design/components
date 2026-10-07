@@ -68,9 +68,7 @@ export default React.forwardRef(
     const Tag = tag;
 
     // Merge the internal forwarded ref with the consumer-provided ref from nativeAttributes.
-    // `NativeElement<AT>` resolves to `ET` at every call site (`AT extends HTMLAttributes<ET>`), but stays
-    // deferred inside the generic body, so the two ref types have to be unified explicitly.
-    const mergedRef = useMergeRefs(ref, nativeAttributes?.ref as React.Ref<ET> | undefined);
+    const mergedRef = useMergeRefs(ref, nativeAttributes?.ref);
 
     const processedAttributes = processAttributes<ET, AT>(rest, componentName, nativeAttributes, skipWarnings);
 
