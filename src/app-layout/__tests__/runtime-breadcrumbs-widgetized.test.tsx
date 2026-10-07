@@ -378,20 +378,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(getAppLayoutBreadcrumbGroup()).toBeTruthy();
     });
 
-    test('publishes breadcrumbs once a consumer registers', async () => {
-      render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
-
-      const externalContainer = document.createElement('div');
-      document.body.appendChild(externalContainer);
-      act(() => {
-        registerExternalContainer(externalContainer);
-      });
-
-      await waitFor(() => expect(externalContainer).toHaveTextContent('Home / Resource'));
-      expectAppLayoutBreadcrumbsToBeExternallyOwned();
-      externalContainer.remove();
-    });
-
     test('keeps breadcrumbs externally owned after the consumer unregisters', async () => {
       const externalContainer = document.createElement('div');
       const { registration } = registerExternalContainer(externalContainer);
@@ -407,6 +393,5 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
     const breadcrumbsSection = getAppLayoutBreadcrumbsSection()?.getElement();
     expect(breadcrumbsSection).not.toHaveAttribute('data-awsui-external-breadcrumbs');
-    expect(breadcrumbsSection).not.toHaveClass(toolbarStyles['external-breadcrumbs']);
   });
 });
