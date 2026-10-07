@@ -67,6 +67,7 @@ const pluralizationMap = {
   PromptInput: 'PromptInputs',
   PropertyFilter: 'PropertyFilters',
   RadioButton: 'RadioButtons',
+  RichTextEditor: 'RichTextEditors',
   RadioGroup: 'RadioGroups',
   S3ResourceSelector: 'S3ResourceSelectors',
   SegmentedControl: 'SegmentedControls',
