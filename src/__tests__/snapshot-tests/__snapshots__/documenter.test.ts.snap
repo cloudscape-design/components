@@ -13566,14 +13566,14 @@ Use to assign unique labels when there are multiple expandable sections with the
       "type": "string",
     },
     {
-      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with the container variant.
+      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with the container or stacked variants.
 Behaves similar to the Header component counter.",
       "name": "headerCounter",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
+      "description": "Supplementary text below the heading. Use with the container, default, footer, inline or stacked variants.",
       "name": "headerDescription",
       "optional": true,
       "type": "string",
@@ -13647,12 +13647,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "header",
     },
     {
-      "description": "Actions for the header. Use with the default or container variant.",
+      "description": "Actions for the header. Use with the default or container, default, inline or stacked variants.",
       "isDefault": false,
       "name": "headerActions",
     },
     {
-      "description": "The area next to the heading, used to display an Info link. Use with the container variant.",
+      "description": "The area next to the heading, used to display an Info link. Use with the container or stacked variants.",
       "isDefault": false,
       "name": "headerInfo",
     },
@@ -19736,6 +19736,16 @@ plus the header height and the footer height.",
       "name": "height",
       "optional": true,
       "type": "number",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines whether the close button is displayed in the header.
+When set to \`true\`, the close button isn't rendered, and the user resolves
+the modal by choosing one of the actions in the footer.
+ESC and clicks outside the modal still call \`onDismiss\`.",
+      "name": "hideDismissButton",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
