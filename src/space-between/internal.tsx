@@ -36,6 +36,8 @@ const InternalSpaceBetween = forwardRef(
    */
     const flattenedChildren = flattenChildren(children, 'SpaceBetween');
 
+    const propagateAlignment = alignItems && direction === 'horizontal';
+
     return (
       <WithNativeAttributes
         {...baseProps}
@@ -56,7 +58,10 @@ const InternalSpaceBetween = forwardRef(
           const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
           return (
-            <div key={key ? String(key) : undefined} className={styles.child}>
+            <div
+              key={key ? String(key) : undefined}
+              className={clsx(styles.child, propagateAlignment && styles['child-aligned'])}
+            >
               {child}
             </div>
           );

@@ -3,6 +3,8 @@
 import * as React from 'react';
 
 import Badge, { BadgeProps } from '~components/badge';
+import Icon from '~components/icon';
+import SpaceBetween from '~components/space-between';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -27,6 +29,10 @@ const permutations = createPermutations<BadgeProps>([
       <>
         Badge with <strong>html</strong>
       </>,
+      <SpaceBetween key="with-icon" direction="horizontal" alignItems="center" size="xxs">
+        <Icon name="status-info" size="x-small" />
+        <span>Badge with icon</span>
+      </SpaceBetween>,
     ],
   },
 ]);
