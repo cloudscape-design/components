@@ -7,7 +7,10 @@ import { BaseComponentProps } from '../types/base-component';
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**
    * Specifies the number of columns in each grid row.
-   * When `minColumnWidth` is not set, only up to 4 columns are supported.
+   *
+   * Layouts with more than 4 columns are rendered using CSS grid. They collapse responsively
+   * to two columns and then one as the container narrows, matching the behavior of layouts
+   * with 4 columns or fewer.
    */
   columns?: number;
 

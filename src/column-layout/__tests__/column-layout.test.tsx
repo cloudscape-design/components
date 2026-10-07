@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import cssGridStyles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 import styles from '../../../lib/components/column-layout/styles.css.js';
 
 function renderColumnLayout(props: ColumnLayoutProps = {}) {
@@ -23,8 +24,17 @@ describe('ColumnLayout component', () => {
 
     [2, 3, 4].forEach(columnCount => {
       it(`can have ${columnCount} columns`, () => {
-        const wrapper = renderColumnLayout({ columns: columnCount as 2 | 3 | 4 });
+        const wrapper = renderColumnLayout({ columns: columnCount });
         expect(wrapper.getElement()).toHaveClass(styles[`grid-columns-${columnCount}`]);
+      });
+    });
+
+    [5, 6, 12].forEach(columnCount => {
+      it(`uses the CSS grid renderer for ${columnCount} columns`, () => {
+        const { container } = render(<ColumnLayout columns={columnCount} />);
+        // The 12-column renderer cannot express these counts, so it must not be used.
+        expect(createWrapper(container).findGrid()).toBeNull();
+        expect(container.querySelector(`.${cssGridStyles['css-grid']}`)).not.toBeNull();
       });
     });
   });
