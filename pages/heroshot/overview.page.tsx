@@ -1,131 +1,876 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Alert, Autosuggest, Box, Button, ButtonGroup, FormField, Link, SpaceBetween } from '~components';
+import {
+  ActionCard,
+  Alert,
+  AnchorNavigation,
+  AppLayout,
+  AppLayoutToolbar,
+  AreaChart,
+  AttributeEditor,
+  Autosuggest,
+  Badge,
+  BarChart,
+  Box,
+  BreadcrumbGroup,
+  Button,
+  ButtonDropdown,
+  ButtonGroup,
+  Calendar,
+  Cards,
+  Checkbox,
+  ColumnLayout,
+  Container,
+  ContentLayout,
+  CopyToClipboard,
+  DateInput,
+  DatePicker,
+  DateRangePicker,
+  Dialog,
+  Divider,
+  ExpandableSection,
+  FileDropzone,
+  FileInput,
+  FileTokenGroup,
+  FileUpload,
+  Flashbar,
+  Form,
+  FormField,
+  Grid,
+  Header,
+  HelpPanel,
+  Icon,
+  Input,
+  ItemCard,
+  KeyValuePairs,
+  LineChart,
+  Link,
+  List,
+  MixedLineBarChart,
+  Multiselect,
+  Pagination,
+  PieChart,
+  ProgressBar,
+  PromptInput,
+  PropertyFilter,
+  RadioButton,
+  RadioGroup,
+  SegmentedControl,
+  Select,
+  SideNavigation,
+  Skeleton,
+  Slider,
+  SpaceBetween,
+  Spinner,
+  StatusIndicator,
+  Steps,
+  Table,
+  Tabs,
+  TagEditor,
+  Textarea,
+  TextContent,
+  TextFilter,
+  Tiles,
+  TimeInput,
+  Toggle,
+  ToggleButton,
+  Token,
+  TokenGroup,
+  TopNavigation,
+  TreeView,
+} from '~components';
 import Dropdown from '~components/dropdown/internal';
 import Option from '~components/internal/components/option';
 import OptionsList from '~components/internal/components/options-list';
 import SelectableItem from '~components/internal/components/selectable-item';
 
-import { i18nStrings as alertI18nStrings } from '../alert/common';
 import { SimplePage } from '../app/templates';
 import { Heroshot } from '../common/heroshot';
+import { IframeWrapper } from '../utils/iframe-wrapper';
 
 export default function HeroshotOverviewPage() {
   return (
-    <SimplePage
-      title="Heroshots"
-      subtitle="Thumbnail candidates for the components overview pages of the documentation website."
-      screenshotArea={{}}
-      i18n={{}}
-    >
-      <Section title="Button">
-        <Heroshot label="Primary and normal">
+    <SimplePage title="Heroshots" screenshotArea={{ disableAnimations: true }} i18n={{}}>
+      {/* The frames have a fixed size, so the gallery wraps them instead of stacking 70+ rows. */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+        <Heroshot label="ActionCard" stretch={true}>
+          <ActionCard
+            header="Create a VPC"
+            description="Set up an isolated network for your resources."
+            icon={<Icon name="add-plus" />}
+            href="#"
+          />
+        </Heroshot>
+
+        <Heroshot label="Alert" stretch={true}>
+          <Alert type="info" header="Instance type updated" dismissible={true}>
+            The change applies after the next restart. <Link href="#">Learn more</Link>
+          </Alert>
+        </Heroshot>
+
+        <Heroshot label="AnchorNavigation" stretch={true}>
+          <AnchorNavigation activeHref="#overview" anchors={anchors} />
+        </Heroshot>
+
+        <Heroshot label="AppLayout" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
+          <IframeWrapper id="heroshot-app-layout" size={LAYOUT_CONTENT_SIZE} AppComponent={AppLayoutHeroshot} />
+        </Heroshot>
+
+        <Heroshot label="AppLayoutToolbar" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
+          <IframeWrapper
+            id="heroshot-app-layout-toolbar"
+            size={LAYOUT_CONTENT_SIZE}
+            AppComponent={AppLayoutToolbarHeroshot}
+          />
+        </Heroshot>
+
+        <Heroshot label="AreaChart" stretch={true}>
+          <AreaChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[{ title: 'Requests', type: 'area', data: timeSeries }]}
+          />
+        </Heroshot>
+
+        <Heroshot label="AttributeEditor" align="start" stretch={true}>
+          <AttributeEditor
+            addButtonText="Add tag"
+            removeButtonText="Remove"
+            items={[{ key: 'Environment', value: 'Production' }]}
+            definition={[
+              { label: 'Key', control: item => <Input value={item.key} readOnly={true} onChange={noop} /> },
+              { label: 'Value', control: item => <Input value={item.value} readOnly={true} onChange={noop} /> },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Autosuggest" align="start" stretch={true}>
+          <OpenAutosuggest />
+        </Heroshot>
+
+        <Heroshot label="Badge">
+          <SpaceBetween size="xs" direction="horizontal">
+            <Badge>Default</Badge>
+            <Badge color="blue">Blue</Badge>
+            <Badge color="green">Green</Badge>
+            <Badge color="red">Red</Badge>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="BarChart" stretch={true}>
+          <BarChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[{ title: 'Requests', type: 'bar', data: timeSeries }]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Box" stretch={true}>
+          <SpaceBetween size="xxs">
+            <Box variant="h3">Instance details</Box>
+            <Box variant="p" color="text-body-secondary">
+              Review the configuration before you launch the instance.
+            </Box>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="BreadcrumbGroup" stretch={true}>
+          <BreadcrumbGroup
+            items={[
+              { text: 'Service', href: '#' },
+              { text: 'Instances', href: '#' },
+              { text: 'i-01af2c', href: '#' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Button">
           <SpaceBetween size="xs" direction="horizontal">
             <Button>Cancel</Button>
             <Button variant="primary">Create resource</Button>
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Variants">
-          <SpaceBetween size="xs" alignItems="center">
-            <Button variant="primary">Primary button</Button>
-            <Button>Normal button</Button>
-            <Button variant="link">Link button</Button>
-          </SpaceBetween>
-        </Heroshot>
-
-        <Heroshot label="Icons and states">
-          <SpaceBetween size="xs" alignItems="center">
-            <SpaceBetween size="xs" direction="horizontal">
-              <Button iconName="add-plus" variant="primary">
-                Add
-              </Button>
-              <Button iconName="refresh" ariaLabel="Refresh" />
-              <Button iconName="external" iconAlign="right" href="#">
-                Open
-              </Button>
-            </SpaceBetween>
-            <SpaceBetween size="xs" direction="horizontal">
-              <Button loading={true}>Loading</Button>
-              <Button disabled={true}>Disabled</Button>
-            </SpaceBetween>
-          </SpaceBetween>
-        </Heroshot>
-
-        <Heroshot label="With button group">
-          <SpaceBetween size="xs" alignItems="center">
-            <Button variant="primary">Create resource</Button>
-            <ButtonGroup
-              ariaLabel="Resource actions"
-              variant="icon"
-              items={[
-                { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy' },
-                { type: 'icon-button', id: 'edit', iconName: 'edit', text: 'Edit' },
-                { type: 'icon-button', id: 'remove', iconName: 'remove', text: 'Remove' },
-              ]}
-            />
-          </SpaceBetween>
-        </Heroshot>
-      </Section>
-
-      <Section title="Alert">
-        <Heroshot label="Info with link" stretch={true}>
-          <Alert i18nStrings={alertI18nStrings} type="info" header="Instance type updated" dismissible={true}>
-            The change applies after the next restart. <Link href="#">Learn more</Link>
-          </Alert>
-        </Heroshot>
-
-        <Heroshot label="Types" stretch={true}>
-          <SpaceBetween size="xs">
-            <Alert i18nStrings={alertI18nStrings} type="success" header="Resource created" />
-            <Alert i18nStrings={alertI18nStrings} type="warning" header="Approaching service quota" />
-            <Alert i18nStrings={alertI18nStrings} type="error" header="Unable to delete resource" />
-          </SpaceBetween>
-        </Heroshot>
-
-        <Heroshot label="Error with action" stretch={true}>
-          <Alert
-            i18nStrings={alertI18nStrings}
-            type="error"
-            header="Unable to load instances"
-            action={<Button>Retry</Button>}
+        <Heroshot label="ButtonDropdown">
+          <ButtonDropdown
+            items={[
+              { id: 'edit', text: 'Edit' },
+              { id: 'duplicate', text: 'Duplicate' },
+              { id: 'delete', text: 'Delete' },
+            ]}
           >
-            The request timed out after 30 seconds.
-          </Alert>
-        </Heroshot>
-      </Section>
-
-      <Section title="Autosuggest">
-        <Heroshot label="Open suggestions" align="start" stretch={true}>
-          <OpenAutosuggest />
+            Actions
+          </ButtonDropdown>
         </Heroshot>
 
-        <Heroshot label="With form field" stretch={true}>
-          <FormField label="Region" description="Choose the region to deploy to.">
-            <ClosedAutosuggest value="us-east-1" />
+        <Heroshot label="ButtonGroup">
+          <ButtonGroup
+            ariaLabel="Resource actions"
+            variant="icon"
+            items={[
+              { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy' },
+              { type: 'icon-button', id: 'edit', iconName: 'edit', text: 'Edit' },
+              { type: 'icon-button', id: 'remove', iconName: 'remove', text: 'Remove' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Calendar" stretch={true}>
+          <Calendar value="2026-10-06" onChange={noop} />
+        </Heroshot>
+
+        <Heroshot label="Cards" stretch={true}>
+          <Cards
+            items={instances.slice(0, 1)}
+            selectedItems={[instances[0]]}
+            selectionType="multi"
+            onSelectionChange={noop}
+            ariaLabels={{ selectionGroupLabel: 'Instances', itemSelectionLabel: (_data, item) => item.id }}
+            cardDefinition={{
+              header: item => item.id,
+              sections: [{ id: 'type', header: 'Type', content: item => item.type }],
+            }}
+          />
+        </Heroshot>
+
+        <Heroshot label="Checkbox">
+          <SpaceBetween size="xs">
+            <Checkbox checked={true} onChange={noop}>
+              Enable monitoring
+            </Checkbox>
+            <Checkbox checked={false} onChange={noop}>
+              Enable termination protection
+            </Checkbox>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="ColumnLayout" stretch={true}>
+          <ColumnLayout columns={2}>
+            <SpaceBetween size="xxs">
+              <Box variant="awsui-key-label">Instance type</Box>
+              <div>t3.medium</div>
+            </SpaceBetween>
+            <SpaceBetween size="xxs">
+              <Box variant="awsui-key-label">Region</Box>
+              <div>us-east-1</div>
+            </SpaceBetween>
+          </ColumnLayout>
+        </Heroshot>
+
+        <Heroshot label="Container" stretch={true}>
+          <Container header={<Header variant="h2">Instance details</Header>}>
+            <KeyValuePairs items={[{ label: 'Instance type', value: 't3.medium' }]} />
+          </Container>
+        </Heroshot>
+
+        <Heroshot label="ContentLayout" stretch={true}>
+          <ContentLayout header={<Header variant="h1">Instances</Header>}>
+            <Container>Content</Container>
+          </ContentLayout>
+        </Heroshot>
+
+        <Heroshot label="CopyToClipboard">
+          <CopyToClipboard
+            variant="inline"
+            textToCopy="i-01af2c9d8e7b6a5f4"
+            copySuccessText="Instance ID copied"
+            copyErrorText="Instance ID failed to copy"
+          />
+        </Heroshot>
+
+        <Heroshot label="DateInput" stretch={true}>
+          <FormField label="Start date">
+            <DateInput value="2026-10-06" onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Empty" stretch={true}>
-          <ClosedAutosuggest value="" />
+        <Heroshot label="DatePicker" stretch={true}>
+          <FormField label="Start date">
+            <DatePicker value="2026-10-06" onChange={noop} />
+          </FormField>
         </Heroshot>
-      </Section>
+
+        <Heroshot label="DateRangePicker" stretch={true}>
+          <FormField label="Date range">
+            <DateRangePicker
+              value={{ type: 'absolute', startDate: '2026-10-01', endDate: '2026-10-06' }}
+              relativeOptions={[]}
+              isValidRange={() => ({ valid: true })}
+              onChange={noop}
+            />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Dialog" stretch={true}>
+          <Dialog
+            header="Delete instance"
+            onDismiss={noop}
+            footer={
+              <SpaceBetween size="xs" direction="horizontal">
+                <Button>Cancel</Button>
+                <Button variant="primary">Delete</Button>
+              </SpaceBetween>
+            }
+          >
+            This action cannot be undone.
+          </Dialog>
+        </Heroshot>
+
+        <Heroshot label="Divider" stretch={true}>
+          <SpaceBetween size="s">
+            <Box>Instance settings</Box>
+            <Divider />
+            <Box>Network settings</Box>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="ExpandableSection" stretch={true}>
+          <ExpandableSection headerText="Advanced settings" defaultExpanded={true}>
+            <KeyValuePairs items={[{ label: 'Termination protection', value: 'Enabled' }]} />
+          </ExpandableSection>
+        </Heroshot>
+
+        <Heroshot label="FileDropzone" stretch={true}>
+          <FileDropzone onChange={noop}>Drop files to upload</FileDropzone>
+        </Heroshot>
+
+        <Heroshot label="FileInput">
+          <FileInput value={[]} onChange={noop}>
+            Choose file
+          </FileInput>
+        </Heroshot>
+
+        <Heroshot label="FileTokenGroup" stretch={true}>
+          <FileTokenGroup
+            items={[{ file: certificateFile }]}
+            onDismiss={noop}
+            showFileSize={true}
+            i18nStrings={{ removeFileAriaLabel: index => `Remove file ${index + 1}` }}
+          />
+        </Heroshot>
+
+        <Heroshot label="FileUpload" stretch={true}>
+          <FormField label="Certificate">
+            <FileUpload value={[certificateFile]} onChange={noop} showFileSize={true} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Flashbar" stretch={true}>
+          <Flashbar
+            items={[
+              { type: 'success', header: 'Instance launched', dismissible: true, onDismiss: noop, id: 'success' },
+              { type: 'in-progress', header: 'Attaching volume', loading: true, id: 'progress' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Form" align="start" stretch={true}>
+          <Form
+            header={<Header variant="h1">Create instance</Header>}
+            actions={
+              <SpaceBetween size="xs" direction="horizontal">
+                <Button>Cancel</Button>
+                <Button variant="primary">Create</Button>
+              </SpaceBetween>
+            }
+          >
+            <Container>
+              <FormField label="Name">
+                <Input value="" onChange={noop} />
+              </FormField>
+            </Container>
+          </Form>
+        </Heroshot>
+
+        <Heroshot label="FormField" stretch={true}>
+          <FormField label="Instance name" description="Must be unique within the region.">
+            <Input value="my-instance" onChange={noop} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Grid" stretch={true}>
+          <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
+            <Container>Main</Container>
+            <Container>Side</Container>
+          </Grid>
+        </Heroshot>
+
+        <Heroshot label="Header" stretch={true}>
+          <Header
+            variant="h2"
+            description="Instances running in this region."
+            counter="(12)"
+            actions={<Button variant="primary">Launch instance</Button>}
+          >
+            Instances
+          </Header>
+        </Heroshot>
+
+        <Heroshot label="HelpPanel" align="start" stretch={true}>
+          <HelpPanel header={<h2>Instances</h2>}>
+            <p>An instance is a virtual server in the cloud.</p>
+          </HelpPanel>
+        </Heroshot>
+
+        <Heroshot label="Icon">
+          <SpaceBetween size="s" direction="horizontal">
+            <Icon name="settings" size="big" />
+            <Icon name="status-positive" size="big" variant="success" />
+            <Icon name="status-warning" size="big" variant="warning" />
+            <Icon name="folder" size="big" />
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="Input" stretch={true}>
+          <Input value="my-instance" onChange={noop} />
+        </Heroshot>
+
+        <Heroshot label="ItemCard" stretch={true}>
+          <ItemCard
+            header="t3.medium"
+            description="2 vCPU, 4 GiB memory"
+            footer={<Link href="#">Compare types</Link>}
+          />
+        </Heroshot>
+
+        <Heroshot label="KeyValuePairs" stretch={true}>
+          <KeyValuePairs
+            columns={2}
+            items={[
+              { label: 'Instance type', value: 't3.medium' },
+              { label: 'Region', value: 'us-east-1' },
+              { label: 'Status', value: <StatusIndicator>Running</StatusIndicator> },
+              { label: 'Launched', value: 'Oct 6, 2026' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="LineChart" stretch={true}>
+          <LineChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[{ title: 'Requests', type: 'line', data: timeSeries }]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Link">
+          <SpaceBetween size="xs">
+            <Link href="#">Secondary link</Link>
+            <Link href="#" variant="primary">
+              Primary link
+            </Link>
+            <Link href="#" external={true}>
+              External link
+            </Link>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="List" align="start" stretch={true}>
+          <List
+            ariaLabel="Instances"
+            items={instances}
+            renderItem={item => ({ id: item.id, content: item.id, secondaryContent: item.type })}
+          />
+        </Heroshot>
+
+        <Heroshot label="MixedLineBarChart" stretch={true}>
+          <MixedLineBarChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[
+              { title: 'Requests', type: 'bar', data: timeSeries },
+              { title: 'Average', type: 'line', data: timeSeries },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Multiselect" stretch={true}>
+          <FormField label="Security groups">
+            <Multiselect
+              selectedOptions={[
+                { label: 'default', value: 'sg-1' },
+                { label: 'web', value: 'sg-2' },
+              ]}
+              options={[]}
+              onChange={noop}
+            />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Pagination">
+          <Pagination currentPageIndex={2} pagesCount={5} onChange={noop} />
+        </Heroshot>
+
+        <Heroshot label="PieChart" stretch={true}>
+          <PieChart
+            variant="donut"
+            size="small"
+            hideFilter={true}
+            hideLegend={true}
+            hideTitles={true}
+            hideDescriptions={true}
+            innerMetricValue="128"
+            innerMetricDescription="instances"
+            data={pieData}
+          />
+        </Heroshot>
+
+        <Heroshot label="ProgressBar" stretch={true}>
+          <ProgressBar value={68} label="Snapshot progress" description="Copying volume data" />
+        </Heroshot>
+
+        <Heroshot label="PromptInput" stretch={true}>
+          <PromptInput value="How do I resize an instance?" onChange={noop} actionButtonIconName="send" />
+        </Heroshot>
+
+        <Heroshot label="PropertyFilter" stretch={true}>
+          <PropertyFilter
+            query={{ operation: 'and', tokens: [{ propertyKey: 'type', operator: '=', value: 't3.medium' }] }}
+            onChange={noop}
+            filteringProperties={[
+              { key: 'type', propertyLabel: 'Type', groupValuesLabel: 'Type values', operators: ['='] },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="RadioButton">
+          <RadioButton name="purchase-option" value="on-demand" checked={true} onSelect={noop}>
+            On-demand
+          </RadioButton>
+        </Heroshot>
+
+        <Heroshot label="RadioGroup">
+          <RadioGroup
+            value="on-demand"
+            onChange={noop}
+            items={[
+              { value: 'on-demand', label: 'On-demand' },
+              { value: 'spot', label: 'Spot' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="SegmentedControl">
+          <SegmentedControl
+            selectedId="table"
+            onChange={noop}
+            label="View"
+            options={[
+              { id: 'table', text: 'Table' },
+              { id: 'cards', text: 'Cards' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Select" stretch={true}>
+          <FormField label="Instance type">
+            <Select selectedOption={{ label: 't3.medium', value: 't3.medium' }} options={[]} onChange={noop} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="SideNavigation" align="start" stretch={true}>
+          <SideNavigation
+            header={{ text: 'Service', href: '#' }}
+            activeHref="#instances"
+            items={[
+              { type: 'link', text: 'Dashboard', href: '#dashboard' },
+              { type: 'link', text: 'Instances', href: '#instances' },
+              { type: 'link', text: 'Volumes', href: '#volumes' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Skeleton" stretch={true}>
+          <SpaceBetween size="s">
+            <Skeleton variant="text-heading-m" width="60%" />
+            <Skeleton variant="text-body-m" />
+            <Skeleton variant="text-body-m" width="80%" />
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="Slider" stretch={true}>
+          <FormField label="Volume size">
+            <Slider value={40} min={0} max={100} onChange={noop} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="SpaceBetween" stretch={true}>
+          <SpaceBetween size="s">
+            <Container>First</Container>
+            <Container>Second</Container>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="Spinner">
+          <Spinner size="large" />
+        </Heroshot>
+
+        <Heroshot label="StatusIndicator">
+          <SpaceBetween size="xs">
+            <StatusIndicator type="success">Running</StatusIndicator>
+            <StatusIndicator type="in-progress">Pending</StatusIndicator>
+            <StatusIndicator type="error">Failed</StatusIndicator>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="Steps" stretch={true}>
+          <Steps
+            steps={[
+              { status: 'success', header: 'Validated template' },
+              { status: 'loading', header: 'Creating resources' },
+              { status: 'pending', header: 'Running health checks' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Table" align="start" stretch={true}>
+          <Table
+            variant="embedded"
+            items={instances}
+            columnDefinitions={[
+              { id: 'id', header: 'ID', cell: item => item.id },
+              { id: 'type', header: 'Type', cell: item => item.type },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="Tabs" stretch={true}>
+          <Tabs
+            tabs={[
+              { id: 'details', label: 'Details', content: 'Instance details' },
+              { id: 'monitoring', label: 'Monitoring' },
+              { id: 'tags', label: 'Tags' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="TagEditor" align="start" stretch={true}>
+          <TagEditor tags={[{ key: 'Environment', value: 'Production', existing: false }]} onChange={noop} />
+        </Heroshot>
+
+        <Heroshot label="TextContent" stretch={true}>
+          <TextContent>
+            <h3>Instances</h3>
+            <p>An instance is a virtual server in the cloud.</p>
+          </TextContent>
+        </Heroshot>
+
+        <Heroshot label="TextFilter" stretch={true}>
+          <TextFilter filteringText="t3" countText="3 matches" onChange={noop} />
+        </Heroshot>
+
+        <Heroshot label="Textarea" stretch={true}>
+          <FormField label="Description">
+            <Textarea value="Hosts the public web tier." onChange={noop} rows={2} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Tiles" stretch={true}>
+          <Tiles
+            value="on-demand"
+            onChange={noop}
+            columns={2}
+            items={[
+              { value: 'on-demand', label: 'On-demand' },
+              { value: 'spot', label: 'Spot' },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="TimeInput" stretch={true}>
+          <FormField label="Start time">
+            <TimeInput value="14:30" onChange={noop} />
+          </FormField>
+        </Heroshot>
+
+        <Heroshot label="Toggle">
+          <SpaceBetween size="xs">
+            <Toggle checked={true} onChange={noop}>
+              Detailed monitoring
+            </Toggle>
+            <Toggle checked={false} onChange={noop}>
+              Auto scaling
+            </Toggle>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="ToggleButton">
+          <SpaceBetween size="xs" direction="horizontal">
+            <ToggleButton pressed={true} iconName="star-filled" pressedIconName="star-filled" onChange={noop}>
+              Favorite
+            </ToggleButton>
+            <ToggleButton pressed={false} iconName="star" pressedIconName="star-filled" onChange={noop}>
+              Favorite
+            </ToggleButton>
+          </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot label="Token">
+          <Token label="us-east-1" description="US East (N. Virginia)" onDismiss={noop} />
+        </Heroshot>
+
+        <Heroshot label="TokenGroup">
+          <TokenGroup
+            onDismiss={noop}
+            items={[{ label: 'us-east-1' }, { label: 'us-west-2' }, { label: 'eu-west-1' }]}
+          />
+        </Heroshot>
+
+        <Heroshot label="TopNavigation" stretch={true} padding={0}>
+          <TopNavigation
+            identity={{ title: 'Service', href: '#' }}
+            utilities={[
+              { type: 'button', iconName: 'notification', ariaLabel: 'Notifications' },
+              { type: 'menu-dropdown', text: 'Account', items: [{ id: 'profile', text: 'Profile' }] },
+            ]}
+          />
+        </Heroshot>
+
+        <Heroshot label="TreeView" stretch={true}>
+          <TreeView
+            ariaLabel="Resources"
+            items={treeItems}
+            expandedItems={['vpc']}
+            onItemToggle={noop}
+            getItemId={item => item.id}
+            getItemChildren={item => item.children}
+            renderItem={item => ({ content: item.label })}
+          />
+        </Heroshot>
+      </div>
     </SimplePage>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <SpaceBetween size="s">
-      <Box variant="h2">{title}</Box>
-      <SpaceBetween size="l" direction="horizontal">
-        {children}
-      </SpaceBetween>
+const noop = () => {};
+
+const instances = [
+  { id: 'i-01af2c', type: 't3.medium' },
+  { id: 'i-02bd3e', type: 'm5.large' },
+  { id: 'i-03ce4f', type: 'c5.xlarge' },
+];
+
+/**
+ * Viewport the page-level layouts are rendered at before being scaled into the frame. Matches the
+ * 346:170 frame ratio so nothing is letterboxed, and is wide enough for the layout to lay out its
+ * panels side by side rather than collapsing to its narrow-viewport behaviour.
+ */
+const LAYOUT_CONTENT_SIZE = { width: 1280, height: 629 };
+
+/**
+ * Shared by both layout heroshots so the only visible difference between them is the toolbar that
+ * app layout toolbar adds.
+ */
+const layoutSlots = {
+  navigationOpen: true,
+  toolsOpen: true,
+  onNavigationChange: noop,
+  onToolsChange: noop,
+  breadcrumbs: (
+    <BreadcrumbGroup
+      items={[
+        { text: 'Service', href: '#' },
+        { text: 'Instances', href: '#' },
+      ]}
+    />
+  ),
+  navigation: (
+    <SideNavigation
+      header={{ text: 'Service', href: '#' }}
+      activeHref="#instances"
+      items={[
+        { type: 'link', text: 'Dashboard', href: '#dashboard' },
+        { type: 'link', text: 'Instances', href: '#instances' },
+        { type: 'link', text: 'Volumes', href: '#volumes' },
+      ]}
+    />
+  ),
+  tools: (
+    <HelpPanel header={<h2>Instances</h2>}>
+      <p>An instance is a virtual server in the cloud.</p>
+    </HelpPanel>
+  ),
+  content: (
+    <SpaceBetween size="m">
+      <Header variant="h1" actions={<Button variant="primary">Launch instance</Button>}>
+        Instances
+      </Header>
+      <Table
+        variant="container"
+        header={<Header counter="(3)">Running instances</Header>}
+        items={instances}
+        columnDefinitions={[
+          { id: 'id', header: 'Instance ID', cell: item => item.id },
+          { id: 'type', header: 'Type', cell: item => item.type },
+          { id: 'status', header: 'Status', cell: () => <StatusIndicator>Running</StatusIndicator> },
+        ]}
+      />
     </SpaceBetween>
-  );
+  ),
+} as const;
+
+/**
+ * App layout measures the viewport to place its panels, so scaling a plain `div` would leave it
+ * laying out against the browser window instead of the frame. Rendering it in an iframe gives it a
+ * viewport of exactly `LAYOUT_CONTENT_SIZE`, which the frame then scales down as a whole.
+ */
+function AppLayoutHeroshot() {
+  return <AppLayout {...layoutSlots} />;
 }
+
+/** Same technique as {@link AppLayoutHeroshot}; the toolbar is what distinguishes the thumbnail. */
+function AppLayoutToolbarHeroshot() {
+  return <AppLayoutToolbar {...layoutSlots} />;
+}
+
+const anchors = [
+  { text: 'Overview', href: '#overview', level: 1 },
+  { text: 'Networking', href: '#networking', level: 1 },
+  { text: 'Subnets', href: '#subnets', level: 2 },
+];
+
+const timeSeries = [
+  { x: 'Mon', y: 120 },
+  { x: 'Tue', y: 180 },
+  { x: 'Wed', y: 140 },
+  { x: 'Thu', y: 220 },
+  { x: 'Fri', y: 190 },
+];
+
+const pieData = [
+  { title: 'Running', value: 84 },
+  { title: 'Stopped', value: 32 },
+  { title: 'Pending', value: 12 },
+];
+
+interface TreeItem {
+  id: string;
+  label: string;
+  children?: TreeItem[];
+}
+
+const treeItems: TreeItem[] = [
+  {
+    id: 'vpc',
+    label: 'vpc-0a1b2c',
+    children: [
+      { id: 'subnet-a', label: 'subnet-public-a' },
+      { id: 'subnet-b', label: 'subnet-private-b' },
+    ],
+  },
+];
+
+const certificateFile = new File([new Uint8Array(2048)], 'certificate.pem', { type: 'application/x-pem-file' });
 
 const autosuggestOptions = [
   { value: 'us-east-1' },
@@ -154,9 +899,18 @@ function OpenAutosuggest() {
       // The frame clips its overflow, so without this the dropdown would shrink to the remaining
       // space inside the frame and cut off the last option mid-row.
       stretchHeight={true}
-      onOutsideClick={() => {}}
-      onMouseDown={() => {}}
-      trigger={<ClosedAutosuggest value={highlightText} />}
+      onOutsideClick={noop}
+      onMouseDown={noop}
+      trigger={
+        <Autosuggest
+          value={highlightText}
+          onChange={noop}
+          options={autosuggestOptions}
+          ariaLabel="Region"
+          enteredTextLabel={enteredTextLabel}
+          empty="No matches found"
+        />
+      }
       content={
         <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Region">
           <SelectableItem highlighted={true} highlightType="keyboard">
@@ -169,22 +923,6 @@ function OpenAutosuggest() {
           ))}
         </OptionsList>
       }
-    />
-  );
-}
-
-function ClosedAutosuggest({ value: initialValue }: { value: string }) {
-  const [value, setValue] = useState(initialValue);
-
-  return (
-    <Autosuggest
-      value={value}
-      onChange={event => setValue(event.detail.value)}
-      options={autosuggestOptions}
-      ariaLabel="Region"
-      placeholder="Choose a region"
-      enteredTextLabel={enteredTextLabel}
-      empty="No matches found"
     />
   );
 }

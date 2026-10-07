@@ -39,7 +39,19 @@ function syncClasses(from: HTMLElement, to: HTMLElement) {
   };
 }
 
-export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: React.ComponentType }) {
+export function IframeWrapper({
+  id,
+  AppComponent,
+  size,
+}: {
+  id: string;
+  AppComponent: React.ComponentType;
+  /**
+   * Renders the iframe at this fixed pixel size instead of filling the screen. The iframe is its own
+   * viewport, so this is how a page-level layout can be given a viewport that differs from the browser's.
+   */
+  size?: { width: number; height: number };
+}) {
   const cleanupRef = useRef<(() => void) | null>(null);
 
   // use callback ref instead of useEffect to avoid double effect issues in React 18+ strict mode
@@ -51,7 +63,14 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
         return;
       }
       const iframeEl = container.ownerDocument.createElement('iframe');
-      iframeEl.className = styles['full-screen'];
+      if (size) {
+        iframeEl.style.inlineSize = `${size.width}px`;
+        iframeEl.style.blockSize = `${size.height}px`;
+        iframeEl.style.border = '0';
+        iframeEl.style.display = 'block';
+      } else {
+        iframeEl.className = styles['full-screen'];
+      }
       iframeEl.id = id;
       iframeEl.title = id;
       container.appendChild(iframeEl);
@@ -67,6 +86,15 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
       const innerAppRoot = iframeDocument.createElement('div');
       iframeDocument.body.appendChild(innerAppRoot);
       iframeDocument.dir = document.dir;
+      if (size) {
+        // A fixed-size iframe is used to give a page-level layout an exact viewport, so the document
+        // has to fill it: without this the default body margin shows as a gutter and the layout only
+        // grows to its content height instead of the full frame.
+        iframeDocument.documentElement.style.blockSize = '100%';
+        iframeDocument.body.style.blockSize = '100%';
+        iframeDocument.body.style.margin = '0';
+        innerAppRoot.style.blockSize = '100%';
+      }
       const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
 
       // Wait for the copied stylesheets to load before mounting the app. Mounting synchronously
@@ -87,7 +115,7 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
         container.removeChild(iframeEl);
       };
     },
-    [AppComponent, id]
+    [AppComponent, id, size]
   );
 
   return <div ref={mountIframe}></div>;
