@@ -44,4 +44,18 @@ describe('Multiselect in control group', () => {
     expect(inlineTokens[0].findLabel().getElement()).toHaveTextContent('One');
     expect(multiselect.findTokens()).toHaveLength(0);
   });
+
+  it('renders the dropdown in a portal even if `expandToViewport` is not set', () => {
+    const { container } = render(
+      <ControlGroup>
+        <Multiselect selectedOptions={[]} options={options} onChange={noop} />
+      </ControlGroup>
+    );
+
+    const multiselect = createWrapper(container).findMultiselect()!;
+    multiselect.openDropdown();
+
+    expect(multiselect.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
+    expect(multiselect.findDropdown().findOpenDropdown()).toBeNull();
+  });
 });

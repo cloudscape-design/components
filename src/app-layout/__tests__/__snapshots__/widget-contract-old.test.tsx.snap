@@ -155,11 +155,11 @@ Map {
         "toolbar": 0,
       },
     },
-    "breadcrumbsExternallyOwned": false,
     "featureNotificationsProps": {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
     "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": null,
@@ -1017,11 +1017,11 @@ Map {
         "toolbar": 0,
       },
     },
-    "breadcrumbsExternallyOwned": false,
     "featureNotificationsProps": {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
     "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": null,
@@ -2081,11 +2081,11 @@ Map {
         "toolbar": 0,
       },
     },
-    "breadcrumbsExternallyOwned": false,
     "featureNotificationsProps": {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
     "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": "security",

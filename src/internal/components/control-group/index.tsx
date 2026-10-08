@@ -3,7 +3,7 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { BaseComponentProps } from '../../../types/base-component';
 import { getBaseProps } from '../../base-component';
@@ -31,11 +31,17 @@ export interface InternalControlGroupProps extends BaseComponentProps {
    * - `'horizontal'` / `'vertical'`: forces that axis and skips measurement.
    */
   direction?: ControlGroupDirection;
+  /**
+   * When set, renders an inline label above the group and associates it with the
+   * group via `aria-labelledby`.
+   */
+  inlineLabelText?: string;
 }
 
 const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProps>(
-  ({ children, direction = 'auto', ...props }, ref) => {
+  ({ children, direction = 'auto', inlineLabelText, ...props }, ref) => {
     const baseProps = getBaseProps(props);
+    const labelId = useUniqueId('control-group-label');
 
     const flattenedChildren = flattenChildren(children, 'ControlGroup');
     const controlCount = flattenedChildren.length;
@@ -63,19 +69,25 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         );
       });
 
-    return (
+    // The role="group" subtree is identical whether or not a label is present: it keeps our root
+    // ref, test class, structural classes, and the measurement ghost (only in `auto` mode). We
+    // build it once and place it either bare (spreading baseProps) or inside the inline-label
+    // wrapper (where baseProps live on the outer wrapper instead). `extraProps` carries whatever
+    // the chosen branch puts on the group div (baseProps when bare, aria-labelledby when labeled)
+    // and `className` is any extra class to merge with the structural ones.
+    const renderGroup = (extraProps: Record<string, unknown>, className?: string) => (
       <div
-        {...baseProps}
+        {...extraProps}
         ref={mergedRootRef}
         role="group"
-        className={clsx(baseProps.className, testUtilStyles.root, styles.root, styles[`root-${resolvedDirection}`])}
+        className={clsx(className, testUtilStyles.root, styles.root, styles[`root-${resolvedDirection}`])}
       >
         {renderControlSlots()}
 
         {/*
-        Hidden row that duplicates the controls to measure their single-row width, out of
-        flow so its width is stable when the visible group stacks. Only needed in `auto` mode.
-      */}
+          Hidden row that duplicates the controls to measure their single-row width, out of
+          flow so its width is stable when the visible group stacks. Only needed in `auto` mode.
+        */}
         {direction === 'auto' && (
           <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
             {renderControlSlots()}
@@ -83,6 +95,25 @@ const InternalControlGroup = forwardRef<HTMLDivElement, InternalControlGroupProp
         )}
       </div>
     );
+
+    if (inlineLabelText) {
+      // When labeled, the consumer's props/className land on the outer wrapper (matching main);
+      // the inner role="group" div keeps the structural classes, ref, and test class.
+      return (
+        <div
+          {...baseProps}
+          className={clsx(baseProps.className, testUtilStyles['inline-label-wrapper'], styles['inline-label-wrapper'])}
+        >
+          <label id={labelId} className={clsx(testUtilStyles['inline-label'], styles['inline-label'])}>
+            {inlineLabelText}
+          </label>
+          <div className={styles['inline-label-trigger-wrapper']}>{renderGroup({ 'aria-labelledby': labelId })}</div>
+        </div>
+      );
+    }
+
+    // When unlabeled, the consumer's props/className land directly on the role="group" root.
+    return renderGroup(baseProps as Record<string, unknown>, baseProps.className);
   }
 );
 
