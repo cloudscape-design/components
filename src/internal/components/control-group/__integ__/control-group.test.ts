@@ -35,11 +35,19 @@ class ControlGroupPage extends BasePageObject {
   async debugState(label: string) {
     const info = await this.browser.execute(scenario => {
       const root = document.querySelector(`${scenario} [role="group"]`) as HTMLElement | null;
+      // The ghost is the absolutely-positioned measurement row (last child of the root).
+      const ghost = root?.querySelector(':scope > [class*="awsui_ghost"]') as HTMLElement | null;
+      const realControls = root ? Array.from(root.querySelectorAll(':scope > [class*="awsui_control"]')) : [];
       return {
         found: !!root,
         className: root?.className,
         rootWidth: root?.getBoundingClientRect().width,
-        realControlCount: root ? root.querySelectorAll(':scope > [class*="awsui_control"]').length : 0,
+        realControlCount: realControls.length,
+        // `requiredWidth` is read from this ghost: if it collapsed to ~rootWidth instead of the
+        // controls' natural single-row width, the group can never detect that it overflows.
+        ghostWidth: ghost?.getBoundingClientRect().width,
+        ghostScrollWidth: ghost?.scrollWidth,
+        realControlWidths: realControls.map(el => Math.round(el.getBoundingClientRect().width)),
       };
     }, SCENARIO);
     console.log(`CONTROL_GROUP_DEBUG ${label}`, JSON.stringify(info));
