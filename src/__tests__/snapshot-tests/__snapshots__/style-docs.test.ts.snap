@@ -48,18 +48,19 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
   "slots": [
     {
       "name": "root",
-      "properties": [],
-      "propertyDescriptions": {},
-      "tokenDescriptions": {},
-      "tokens": [
+      "properties": [
         "color",
         "background-color",
-        "border-color",
-        "border-width",
+        "border",
         "border-radius",
-        "padding-block",
-        "padding-inline",
+        "padding",
+        "font-family",
+        "font-size",
+        "font-weight",
       ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
     },
   ],
 }
