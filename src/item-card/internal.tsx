@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -36,6 +38,7 @@ export default function InternalItemCard({
 }: InternalItemCardProps) {
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
+  const rootRef = useMergeRefs(__internalRootRef, nativeAttributes?.ref);
 
   const headerRowEmpty = !header && !description && !icon && !actions;
 
@@ -58,7 +61,7 @@ export default function InternalItemCard({
   );
 
   return (
-    <div ref={__internalRootRef} {...baseProps} {...rootAttributes}>
+    <div {...baseProps} {...rootAttributes} ref={rootRef}>
       <div className={styles['inner-card']}>
         {!headerRowEmpty && (
           <div
