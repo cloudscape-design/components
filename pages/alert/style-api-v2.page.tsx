@@ -15,7 +15,7 @@ export default function () {
         <Alert
           type="success"
           dismissible={true}
-          action={<Button {...{ styleClassNames: { button: styles['alert-genai-action'] } }}>Generate again</Button>}
+          action={<Button {...{ styleClassNames: { root: styles['alert-genai-action'] } }}>Generate again</Button>}
           {...{
             styleClassNames: {
               root: styles['alert-genai'],

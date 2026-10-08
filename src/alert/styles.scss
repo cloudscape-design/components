@@ -13,10 +13,9 @@
 
 @use './motion';
 
-$props: style-api.combine(style-api.$surface, (padding-block, padding-inline), style-api.$focus-ring);
-$tokens: style-api.resolve($props, carrier);
+$tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.register($tokens);
-@include style-api.docs('root', $tokens);
+@include style-api.docs('root', $tokens, $properties: (color, background-color, border, border-radius, padding));
 
 .root {
   @include styles.styles-reset;
@@ -31,7 +30,7 @@ $tokens: style-api.resolve($props, carrier);
 .alert {
   @include style-api.carriers($tokens);
   @include styles.styles-reset;
-  color: style-api.value($tokens, color, awsui.$color-text-alert-default);
+  color: awsui.$color-text-alert-default;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -39,13 +38,13 @@ $tokens: style-api.resolve($props, carrier);
   border-block-end: awsui.$border-width-alert-block-end solid;
   border-inline-start: awsui.$border-width-alert-inline-start solid;
   border-inline-end: awsui.$border-width-alert-inline-end solid;
-  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
-  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
-  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
-  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-alert);
-  padding-block: style-api.value($tokens, padding-block, awsui.$space-alert-vertical);
-  padding-inline: style-api.value($tokens, padding-inline, awsui.$space-alert-horizontal);
-  background-color: style-api.value($tokens, background-color, awsui.$color-background-container-content);
+  border-start-start-radius: awsui.$border-radius-alert;
+  border-start-end-radius: awsui.$border-radius-alert;
+  border-end-start-radius: awsui.$border-radius-alert;
+  border-end-end-radius: awsui.$border-radius-alert;
+  padding-block: awsui.$space-alert-vertical;
+  padding-inline: awsui.$space-alert-horizontal;
+  background-color: awsui.$color-background-container-content;
 }
 
 .alert-wrapper {
@@ -97,13 +96,7 @@ $tokens: style-api.resolve($props, carrier);
   }
 }
 
-$icon-props: (color);
-$icon-tokens: style-api.resolve($icon-props, carrier);
-@include style-api.docs('icon', $icon-tokens);
-
-.icon {
-  @include style-api.carriers($icon-tokens);
-}
+@include style-api.docs('icon', $properties: (color));
 
 .text {
   min-inline-size: 0;
@@ -173,14 +166,10 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: style-api.value($tokens, border-color, map.get($_border-colors, $type));
-    background-color: style-api.value($tokens, background-color, map.get($_background-colors, $type));
+    border-color: map.get($_border-colors, $type);
+    background-color: map.get($_background-colors, $type);
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: style-api.value(
-        $icon-tokens,
-        color,
-        var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
-      );
+      color: var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)});
     }
   }
 }
