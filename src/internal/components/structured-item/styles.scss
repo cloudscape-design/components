@@ -26,6 +26,10 @@
   min-inline-size: 0;
 }
 
+.actions {
+  margin-inline-start: auto;
+}
+
 .content-wrap {
   flex-grow: 1;
   display: flex;
@@ -39,14 +43,13 @@
   &.wrap-actions {
     flex-wrap: wrap;
   }
+
+  &:not(.wrap-actions) > .actions {
+    flex-shrink: 0;
+  }
 }
 
 .content {
   flex-grow: 1;
   min-inline-size: 0;
-}
-
-.actions {
-  flex-shrink: 0;
-  margin-inline-start: auto;
 }

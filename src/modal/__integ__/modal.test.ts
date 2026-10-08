@@ -67,17 +67,30 @@ test(
     const modalContent = modal.findContent();
     const footerSelector = modal.findFooter().toSelector();
     for (let i = 0; i < 100; i++) {
-      page.keys('Tab');
+      await page.keys('Tab');
       const input = modalContent
         .findAll('div')
         .get(i + 1)
         .find('input');
       const inputSelector = input.toSelector();
-      expect(await page.isFocused(inputSelector)).toBe(true);
-      const inputBox = await page.getBoundingBox(inputSelector);
-      const footerBox = await page.getBoundingBox(footerSelector);
-      const inputCenter = inputBox.top + inputBox.height / 2;
-      expect(inputCenter).toBeLessThan(footerBox.top);
+      // Collected in a single script evaluation. Asking for the focus state and the two
+      // bounding boxes separately costs three WebDriver round-trips per iteration, which
+      // over 100 iterations put this test at the edge of its timeout on CI.
+      const { isFocused, inputCenter, footerTop } = await browser.execute(
+        (inputSel: string, footerSel: string) => {
+          const inputElement = document.querySelector(inputSel)!;
+          const inputRect = inputElement.getBoundingClientRect();
+          return {
+            isFocused: document.activeElement === inputElement,
+            inputCenter: inputRect.top + inputRect.height / 2,
+            footerTop: document.querySelector(footerSel)!.getBoundingClientRect().top,
+          };
+        },
+        inputSelector,
+        footerSelector
+      );
+      expect(isFocused).toBe(true);
+      expect(inputCenter).toBeLessThan(footerTop);
     }
   })
 );

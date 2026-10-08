@@ -246,3 +246,26 @@ describe('native attributes', () => {
     expect(input).toHaveClass('additional-class');
   });
 });
+
+describe('handle follow-through animation', () => {
+  const readyAttribute = 'data-awsui-motion-ready';
+
+  test('does not animate a toggle that is checked on mount', () => {
+    const { wrapper } = renderToggle(<Toggle checked={true} />);
+    expect(findStyledElement(wrapper)).not.toHaveAttribute(readyAttribute);
+  });
+
+  test('animates once the state changes after mount', () => {
+    const { wrapper, rerender } = renderToggle(<Toggle checked={false} />);
+    rerender(<Toggle checked={true} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+
+  test('keeps animating after a toggle mounted as checked is switched off and on', () => {
+    const { wrapper, rerender } = renderToggle(<Toggle checked={true} />);
+    rerender(<Toggle checked={false} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+    rerender(<Toggle checked={true} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+});

@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "在新索引標籤中開啟"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} 個項目 (共 {totalCount} 個）",
+    "noMatch": "沒有相符的動作",
+    "i18nStrings.filteringItemAriaDescription": "繼續輸入以篩選結果。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "下個月",
     "previousMonthAriaLabel": "上個月",
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "清除篩選條件",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}，0 個項目} one {{label}，1 個項目} other {{label}，{count} 個項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
   },
   "copy-to-clipboard": {
@@ -175,6 +181,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "已選取從 {startDate} 到 {endDate} 的範圍",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {最後{amount}秒} one {最後{amount}秒} other {最後{amount}秒}}} minute {{amount, plural, zero {最後{amount}分鐘} one {最後{amount}分鐘} other {最後{amount}分鐘}}} hour {{amount, plural, zero {最後{amount}小時} one {最後{amount}小時} other {最後{amount}小時}}} day {{amount, plural, zero {最後{amount}天} one {最後{amount}天} other {最後{amount}天}}} week {{amount, plural, zero {最後{amount}週} one {最後{amount}週} other {最後{amount}週}}} month {{amount, plural, zero {最後{amount}個月} one {最後{amount}個月} other {最後{amount}個月}}} year {{amount, plural, zero {最後{amount}年} one {最後{amount}年} other {最後{amount}年}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒} one {秒} other {秒}}} minute {{amount, plural, zero {分鐘} one {分鐘} other {分鐘}}} hour {{amount, plural, zero {小時} one {小時} other {小時}}} day {{amount, plural, zero {天} one {天} other {天}}} week {{amount, plural, zero {週} one {週} other {週}}} month {{amount, plural, zero {個月} one {個月} other {個月}}} year {{amount, plural, zero {年} one {年} other {年}}} other {}}"
+  },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "關閉對話方塊"
   },
   "drawer": {
     "i18nStrings.loadingText": "載入內容"
@@ -256,7 +265,8 @@
     "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
     "i18nStrings.jumpToPageInputLabel": "頁面",
     "i18nStrings.jumpToPageError": "頁面超出範圍。顯示最後一個可用頁面。",
-    "i18nStrings.jumpToPageLoadingText": "正在載入"
+    "i18nStrings.jumpToPageLoadingText": "正在載入",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",

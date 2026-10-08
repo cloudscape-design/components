@@ -11,7 +11,7 @@ import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, AppLayoutWidgetizedState } from '../interfaces';
 import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
 import { ToolbarSlot } from '../skeleton/slots';
 import { ToolbarBreadcrumbsSection, ToolbarContainer } from '../skeleton/toolbar-container';
@@ -68,12 +68,16 @@ export interface ToolbarProps {
 
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  breadcrumbsExternallyOwned?: AppLayoutWidgetizedState['breadcrumbsExternallyOwned'];
+  reportOwnBreadcrumbsProps?: AppLayoutWidgetizedState['reportOwnBreadcrumbsProps'];
   toolbarProps: ToolbarProps;
   featureNotificationsProps?: FeatureNotificationsProps;
 }
 
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
+  breadcrumbsExternallyOwned,
+  reportOwnBreadcrumbsProps,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
   toolbarProps = {},
@@ -231,6 +235,8 @@ export function AppLayoutToolbarImplementation({
             <ToolbarBreadcrumbsSection
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+              breadcrumbsExternallyOwned={breadcrumbsExternallyOwned}
+              reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
               includeTestUtils={true}
             />
           </AppLayoutBuiltInErrorBoundary>

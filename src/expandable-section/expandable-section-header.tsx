@@ -7,7 +7,8 @@ import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-too
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
-import InternalIcon from '../icon/internal';
+import { useInternalComponentIcons } from '../icon-provider/use-component-icons';
+import { CustomizableIcon } from '../internal/components/customizable-icon';
 import { isDevelopment } from '../internal/is-development';
 import {
   GeneratedAnalyticsMetadataExpandableSectionCollapse,
@@ -27,6 +28,66 @@ import styles from './styles.css.js';
 
 const componentName = 'ExpandableSection';
 
+interface ExpandIconButtonProps {
+  icon: JSX.Element;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  ariaControls: string;
+  expanded: boolean;
+  onClick: MouseEventHandler;
+  stopPropagation?: boolean;
+  className?: string;
+}
+
+/**
+ * Standalone expand/collapse caret button used when the icon renders OUTSIDE
+ * the main clickable header area (navigation variant) or outside the headerButton
+ * (end-position with actions/container). This is always an independent interactive
+ * element with its own ARIA attributes.
+ */
+const ExpandIconButton = ({
+  icon,
+  ariaLabel,
+  ariaLabelledBy,
+  ariaControls,
+  expanded,
+  onClick,
+  stopPropagation,
+  className,
+}: ExpandIconButtonProps) => {
+  const stopKeyPropagation = stopPropagation
+    ? (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.stopPropagation();
+        }
+      }
+    : undefined;
+  return (
+    <button
+      className={clsx(styles['icon-container'], styles['expand-button'], className)}
+      type="button"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
+      onClick={
+        stopPropagation
+          ? event => {
+              event.stopPropagation();
+              onClick(event);
+            }
+          : onClick
+      }
+      onKeyUp={stopKeyPropagation}
+      onKeyDown={stopKeyPropagation}
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+    >
+      {icon}
+    </button>
+  );
+};
+
 interface ExpandableDefaultHeaderProps {
   id: string;
   descriptionId?: string;
@@ -40,10 +101,12 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
+  expandIconPosition: 'start' | 'end';
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
   ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
 }
 
 interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
@@ -63,6 +126,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headerActions?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -107,6 +171,7 @@ const ExpandableDeprecatedHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
       {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
@@ -125,22 +190,41 @@ const ExpandableNavigationHeader = ({
   expanded,
   children,
   icon,
+  expandIconPosition,
+  hideExpandIcon,
 }: ExpandableNavigationHeaderProps) => {
+  const expandButton = hideExpandIcon ? null : (
+    <ExpandIconButton
+      icon={icon}
+      ariaLabelledBy={ariaLabelledBy}
+      ariaLabel={ariaLabel}
+      ariaControls={ariaControls}
+      expanded={expanded}
+      onClick={onClick}
+      className={expandIconPosition === 'end' ? styles['icon-container-end'] : undefined}
+    />
+  );
   return (
-    <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
-      <button
-        className={clsx(styles['icon-container'], styles['expand-button'])}
-        aria-labelledby={ariaLabelledBy}
-        aria-label={ariaLabel}
-        aria-controls={ariaControls}
-        aria-expanded={expanded}
-        type="button"
-        onClick={onClick}
-        {...getExpandActionAnalyticsMetadataAttribute(expanded)}
-      >
-        {icon}
-      </button>
-      {children}
+    <div
+      id={id}
+      className={clsx(
+        className,
+        analyticsSelectors['header-label'],
+        expandIconPosition === 'end' && styles['header-icon-end']
+      )}
+      data-awsui-motion-trigger="hover"
+    >
+      {expandIconPosition === 'end' ? (
+        <>
+          {children}
+          {expandButton}
+        </>
+      ) : (
+        <>
+          {expandButton}
+          {children}
+        </>
+      )}
     </div>
   );
 };
@@ -163,6 +247,7 @@ const ExpandableHeaderTextWrapper = ({
   headingTagOverride,
   onKeyUp,
   onKeyDown,
+  expandIconPosition,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
@@ -175,6 +260,11 @@ const ExpandableHeaderTextWrapper = ({
     </span>
   );
   const listeners = { onClick, onKeyDown, onKeyUp };
+  const iconAtEnd = expandIconPosition === 'end';
+  // For the variants that allow actions, when end placement is active, the icon is rendered outside the
+  // InternalHeader so it appears at the inline-end of the wrapper, past any header actions.
+  // Other variants render the icon at the end of the headerButton itself.
+  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions);
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
@@ -185,11 +275,56 @@ const ExpandableHeaderTextWrapper = ({
   const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
+
+  // The hover-motion trigger follows whichever element actually owns the click handler above —
+  // that element is the real interactive surface, so it's also the sane hover boundary for the caret.
+  const motionTriggerAttribute = { 'data-awsui-motion-trigger': 'hover' } as const;
+  const headerButtonMotionTrigger = headerButtonListeners ? motionTriggerAttribute : undefined;
+  const headingTagMotionTrigger = headingTagListeners ? motionTriggerAttribute : undefined;
+  const wrapperMotionTrigger = wrapperListeners ? motionTriggerAttribute : undefined;
+
+  // Standalone caret button — used when the icon is rendered OUTSIDE the headerButton
+  // (end-position with container or actions). Must be its own <button> for accessibility.
+  const expandButton = (
+    <ExpandIconButton
+      icon={icon}
+      ariaLabel={ariaLabel}
+      ariaLabelledBy={!ariaLabel ? id : undefined}
+      ariaControls={ariaControls}
+      expanded={expanded}
+      onClick={onClick}
+      stopPropagation={true}
+      className={clsx(styles[`icon-container-${variant}`], styles['icon-container-end'])}
+    />
+  );
+
+  // Decorative inline icon — used when the caret is INSIDE the headerButton
+  // (which itself is the interactive element). A nested <button> would be illegal.
+  const expandIcon = (
+    <span
+      className={clsx(
+        styles['icon-container'],
+        styles[`icon-container-${variant}`],
+        iconAtEnd && styles['icon-container-end']
+      )}
+    >
+      {icon}
+    </span>
+  );
+
+  const outsideIcon = renderIconOutsideHeader ? expandButton : null;
+
+  const textElement = (
+    <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
+      {children}
+    </span>
+  );
   const headerButton = (
     <span
       className={clsx(
         styles['expand-button'],
         isContainer ? styles['header-container-button'] : styles['header-button'],
+        iconAtEnd && styles['header-button-icon-end'],
         headerButtonListeners && styles['click-target']
       )}
       role="button"
@@ -200,39 +335,54 @@ const ExpandableHeaderTextWrapper = ({
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
+      {...headerButtonMotionTrigger}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
-      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
-        {children}
-      </span>
+      {renderIconOutsideHeader ? (
+        textElement
+      ) : iconAtEnd ? (
+        <>
+          {textElement}
+          {expandIcon}
+        </>
+      ) : (
+        <>
+          {expandIcon}
+          {textElement}
+        </>
+      )}
     </span>
   );
 
   return (
     <div
-      className={clsx(className, wrapperListeners && styles['click-target'])}
+      className={clsx(className, wrapperListeners && styles['click-target'], iconAtEnd && styles['header-icon-end'])}
       {...wrapperListeners}
+      {...wrapperMotionTrigger}
       {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       {isContainer ? (
-        <InternalHeader
-          variant="h2"
-          description={description}
-          counter={headerCounter}
-          info={headerInfo}
-          actions={actions}
-          headingTagOverride={headingTagOverride}
-          __inExpandableSection={true}
-        >
-          {headerButton}
-        </InternalHeader>
+        <>
+          <InternalHeader
+            variant="h2"
+            description={description}
+            counter={headerCounter}
+            info={headerInfo}
+            actions={actions}
+            headingTagOverride={headingTagOverride}
+            __inExpandableSection={true}
+          >
+            {headerButton}
+          </InternalHeader>
+          {outsideIcon}
+        </>
       ) : (
         <>
-          <div className={clsx(actions && styles['header-actions-wrapper'])}>
+          <div className={clsx(styles['header-content'], actions && styles['header-actions-wrapper'])}>
             <HeadingTag
               className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
               {...headingTagListeners}
+              {...headingTagMotionTrigger}
               {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
             >
               {headerButton}
@@ -240,6 +390,7 @@ const ExpandableHeaderTextWrapper = ({
             {actions}
           </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
+          {outsideIcon}
         </>
       )}
     </div>
@@ -265,13 +416,21 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
+  expandIconPosition,
+  hideExpandIcon,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
+  const icons = useInternalComponentIcons('expandable-section');
   const icon = (
-    <InternalIcon
+    <CustomizableIcon
+      customIcon={icons?.expandToggle?.({ expanded: !!expanded })}
       size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
-      className={clsx(styles.icon, expanded && styles.expanded)}
-      name={isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled'}
+      className={styles['icon-position']}
+      fallback={{
+        name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
+        className: clsx(styles.icon, expanded && styles.expanded),
+        nativeAttributes: { 'data-awsui-motion-target': '' },
+      }}
     />
   );
   const defaultHeaderProps = {
@@ -282,6 +441,7 @@ export const ExpandableSectionHeader = ({
     ariaLabel: ariaLabel,
     onClick: onClick,
     variant,
+    expandIconPosition,
   };
 
   if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {
@@ -309,9 +469,10 @@ export const ExpandableSectionHeader = ({
       <ExpandableNavigationHeader
         className={clsx(className, wrapperClassName)}
         ariaLabelledBy={ariaLabelledBy}
+        hideExpandIcon={hideExpandIcon}
         {...defaultHeaderProps}
       >
-        {headerText ?? header}
+        <span className={styles['header-navigation-content']}>{headerText ?? header}</span>
       </ExpandableNavigationHeader>
     );
   }

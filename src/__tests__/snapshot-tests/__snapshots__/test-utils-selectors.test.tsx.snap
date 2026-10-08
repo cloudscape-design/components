@@ -253,6 +253,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "dialog": [
+    "awsui_content_jocwy",
+    "awsui_dismiss-button_jocwy",
+    "awsui_footer_jocwy",
+    "awsui_header-actions_jocwy",
+    "awsui_header_jocwy",
+    "awsui_root_17w22",
+  ],
   "divider": [
     "awsui_divider-label_1noo2",
     "awsui_divider_1noo2",
@@ -376,8 +384,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_icon_h11ix",
   ],
   "input": [
+    "awsui_inline-label_2rhyz",
     "awsui_input-button-right_2rhyz",
     "awsui_input-container_2rhyz",
+    "awsui_input-prefix_2rhyz",
+    "awsui_input-suffix_2rhyz",
     "awsui_input_2rhyz",
     "awsui_root_2rhyz",
   ],
@@ -487,17 +498,21 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1d2i7",
   ],
   "multiselect": [
+    "awsui_dropdown-footer_f8g6q",
+    "awsui_dropdown-header_f8g6q",
     "awsui_root_f8g6q",
   ],
   "navigable-group": [
     "awsui_root_efqlv",
   ],
   "pagination": [
+    "awsui_arrow_fvjdu",
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
     "awsui_jump-to-page-input_fvjdu",
     "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
+    "awsui_pages-compact-text_lmd86",
     "awsui_root_fvjdu",
   ],
   "panel-layout": [
@@ -588,6 +603,8 @@ exports[`test-utils selectors 1`] = `
   ],
   "select": [
     "awsui_disabled-reason-tooltip_dwuol",
+    "awsui_dropdown-footer_r2vco",
+    "awsui_dropdown-header_r2vco",
     "awsui_inline-label_dwuol",
     "awsui_inline-token-list_dwuol",
     "awsui_placeholder_dwuol",
@@ -639,6 +656,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1cbgc",
   ],
   "steps": [
+    "awsui_annotation_gxp9y",
     "awsui_container_gxp9y",
     "awsui_details_gxp9y",
     "awsui_header_gxp9y",
@@ -669,6 +687,24 @@ exports[`test-utils selectors 1`] = `
     "awsui_tools-pagination_wih1l",
     "awsui_tools-preferences_wih1l",
     "awsui_wrapper_wih1l",
+  ],
+  "table-body": [
+    "awsui_body_1i6l7",
+  ],
+  "table-body-cell": [
+    "awsui_cell_2seex",
+  ],
+  "table-head": [
+    "awsui_head_1otu2",
+  ],
+  "table-header-cell": [
+    "awsui_header-cell_uzgsh",
+  ],
+  "table-root": [
+    "awsui_root_1pkvc",
+  ],
+  "table-row": [
+    "awsui_row_3yyds",
   ],
   "tabs": [
     "awsui_actions-container_14rmt",

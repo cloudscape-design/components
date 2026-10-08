@@ -22,7 +22,6 @@ interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   children?: React.ReactNode;
   variant: InternalVariant;
   expanded: boolean | undefined;
-  disableContentPaddings: boolean | undefined;
   __injectAnalyticsComponentMetadata?: boolean;
 }
 
@@ -32,7 +31,6 @@ export const ExpandableSectionContainer = ({
   header,
   variant,
   expanded,
-  disableContentPaddings,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   ...rest
@@ -59,7 +57,7 @@ export const ExpandableSectionContainer = ({
           className={className}
           header={header}
           variant={variant === 'stacked' ? 'stacked' : 'default'}
-          disableContentPaddings={disableContentPaddings || !expanded}
+          disableContentPaddings={true}
           disableHeaderPaddings={true}
           __hiddenContent={!expanded}
           __internalRootRef={__internalRootRef}

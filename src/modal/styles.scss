@@ -27,6 +27,12 @@ $modal-z-index: 5000;
 
   cursor: pointer;
 
+  // Without a dismiss button the modal is asking the user to choose one of the footer actions,
+  // so the overlay shouldn't suggest that clicking it will close the modal.
+  &.hide-dismiss-button {
+    cursor: default;
+  }
+
   &.hidden {
     display: none;
   }

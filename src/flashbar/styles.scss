@@ -151,7 +151,7 @@
   border-inline-start-color: awsui.$color-border-status-success;
 
   > .flash-body > .flash-focus-container > .flash-icon {
-    color: awsui.$color-text-status-success;
+    color: awsui.$color-text-flashbar-icon-success;
   }
 }
 
@@ -160,7 +160,7 @@
   border-inline-start-color: awsui.$color-border-status-error;
 
   > .flash-body > .flash-focus-container > .flash-icon {
-    color: awsui.$color-text-status-error;
+    color: awsui.$color-text-flashbar-icon-error;
   }
 }
 
@@ -170,7 +170,7 @@
   border-inline-start-color: awsui.$color-border-status-info;
 
   > .flash-body > .flash-focus-container > .flash-icon {
-    color: awsui.$color-text-status-info;
+    color: awsui.$color-text-flashbar-icon-info;
   }
 }
 
@@ -180,6 +180,6 @@
   border-inline-start-color: awsui.$color-border-status-warning;
 
   > .flash-body > .flash-focus-container > .flash-icon {
-    color: awsui.$color-text-status-warning;
+    color: awsui.$color-text-flashbar-icon-warning;
   }
 }

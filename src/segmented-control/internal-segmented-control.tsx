@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
+import { GroupedControlContextProps } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
@@ -13,6 +15,10 @@ import { getSegmentedControlRootStyles } from './style';
 
 import styles from './styles.css.js';
 
+interface InternalSegmentedControlComponentProps extends SegmentedControlProps {
+  groupedControlProps?: GroupedControlContextProps;
+}
+
 export default function InternalSegmentedControl({
   selectedId,
   options,
@@ -20,7 +26,8 @@ export default function InternalSegmentedControl({
   ariaLabelledby,
   onChange,
   style,
-}: SegmentedControlProps) {
+  groupedControlProps,
+}: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
     return option.id === selectedId;
@@ -47,10 +54,16 @@ export default function InternalSegmentedControl({
   };
   const isVisualRefresh = useVisualRefresh();
 
+  const isGrouped = !!groupedControlProps?.position;
+  const isGroupedVertical = isGrouped && groupedControlProps?.direction === 'vertical';
+
+  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : [];
+
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], {
+      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], ...groupedControlClassNames, {
         [styles.refresh]: isVisualRefresh,
+        [styles['grouped-vertical']]: isGroupedVertical,
       })}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
@@ -96,6 +109,7 @@ export default function InternalSegmentedControl({
               }}
               onKeyDown={event => moveHighlight(event, focusableSegmentIndex)}
               style={style}
+              fullWidth={isGroupedVertical}
             />
           );
         })}

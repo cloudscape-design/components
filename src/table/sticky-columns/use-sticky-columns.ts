@@ -20,6 +20,12 @@ import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './ut
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
 const MINIMUM_SCROLLABLE_SPACE = 148;
+// The first sticky cell gets extra padding when the table is scrolled (see padInlineStart), which is then included in
+// the measured sticky width. A lower minimum applies in that case, so that applying the padding cannot disable the
+// feature. The difference must not be smaller than the padding in any theme or density mode. Removing the padding can
+// disable the feature within a range of wrapper widths up to that difference (largest for tables with selection, where
+// the padding is set but does not change the cell width).
+const MINIMUM_SCROLLABLE_SPACE_WHILE_STUCK = MINIMUM_SCROLLABLE_SPACE - 24;
 
 export interface StickyColumnsModel {
   store: ReadonlyAsyncStore<StickyColumnsState>;
@@ -139,11 +145,11 @@ interface UseStickyCellStylesProps {
   stickyColumns: StickyColumnsModel;
   columnId: PropertyKey;
   getClassName: (styles: null | StickyColumnsCellState) => Record<string, boolean>;
-  // Optional column to inherit the boundary shadow flags from. Used by group header cells
+  // Optional column to inherit the boundary flags from. Used by group header cells
   // that span multiple leaves: the cell's offset is owned by `columnId` (one of its child
-  // leaves), but the boundary shadow lives on a different leaf (the group's boundary child).
+  // leaves), but the boundary shadow/border lives on a different leaf (the group's boundary child).
   // The hook keeps a single subscription/writer and merges the boundary leaf's
-  // `lastInsetInlineStart` / `lastInsetInlineEnd` into the cell state passed to getClassName.
+  // `lastInsetInline*` / `boundaryInline*` flags into the cell state passed to getClassName.
   boundaryColumnId?: PropertyKey;
 }
 
@@ -153,9 +159,9 @@ interface StickyCellStyles {
   style?: React.CSSProperties;
 }
 
-// Merges the boundary leaf's shadow flags into the position leaf's cell state.
+// Merges the boundary leaf's shadow and border flags into the position leaf's cell state.
 // Returns the position state untouched when there is no boundary column or no boundary state.
-function mergeBoundaryShadow(
+function mergeBoundaryState(
   positionState: null | StickyColumnsCellState,
   boundaryState: null | StickyColumnsCellState
 ): null | StickyColumnsCellState {
@@ -164,7 +170,9 @@ function mergeBoundaryShadow(
   }
   if (
     positionState.lastInsetInlineStart === boundaryState.lastInsetInlineStart &&
-    positionState.lastInsetInlineEnd === boundaryState.lastInsetInlineEnd
+    positionState.lastInsetInlineEnd === boundaryState.lastInsetInlineEnd &&
+    positionState.boundaryInlineStart === boundaryState.boundaryInlineStart &&
+    positionState.boundaryInlineEnd === boundaryState.boundaryInlineEnd
   ) {
     return positionState;
   }
@@ -172,6 +180,8 @@ function mergeBoundaryShadow(
     ...positionState,
     lastInsetInlineStart: positionState.lastInsetInlineStart || boundaryState.lastInsetInlineStart,
     lastInsetInlineEnd: positionState.lastInsetInlineEnd || boundaryState.lastInsetInlineEnd,
+    boundaryInlineStart: positionState.boundaryInlineStart || boundaryState.boundaryInlineStart,
+    boundaryInlineEnd: positionState.boundaryInlineEnd || boundaryState.boundaryInlineEnd,
   };
 }
 
@@ -201,7 +211,7 @@ export function useStickyCellStyles({
       const selector = (state: StickyColumnsState) => {
         const positionState = state.cellState.get(columnId) ?? null;
         const boundaryState = boundaryColumnId !== undefined ? (state.cellState.get(boundaryColumnId) ?? null) : null;
-        return mergeBoundaryShadow(positionState, boundaryState);
+        return mergeBoundaryState(positionState, boundaryState);
       };
 
       const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
@@ -243,7 +253,7 @@ export function useStickyCellStyles({
   const storeState = stickyColumns.store.get();
   const positionStyles = storeState.cellState.get(columnId) ?? null;
   const boundaryStyles = boundaryColumnId !== undefined ? (storeState.cellState.get(boundaryColumnId) ?? null) : null;
-  const mergedStyles = mergeBoundaryShadow(positionStyles, boundaryStyles);
+  const mergedStyles = mergeBoundaryState(positionStyles, boundaryStyles);
   return {
     ref: refCallback,
     className: mergedStyles ? clsx(getClassName(mergedStyles)) : undefined,
@@ -334,6 +344,8 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
         padInlineStart: isFirstColumn && this.padInlineStart,
         lastInsetInlineStart: this.isStuckToTheInlineStart && lastLeftStickyColumnIndex === index,
         lastInsetInlineEnd: this.isStuckToTheInlineEnd && lastRightStickyColumnIndex === index,
+        boundaryInlineStart: lastLeftStickyColumnIndex === index,
+        boundaryInlineEnd: lastRightStickyColumnIndex === index,
         offset: {
           insetInlineStart: stickySide === 'inline-start' ? stickyColumnOffsetLeft : undefined,
           insetInlineEnd: stickySide === 'inline-end' ? stickyColumnOffsetRight : undefined,
@@ -361,10 +373,12 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     }
 
     const totalStickySpace = this.cellOffsets.stickyWidthInlineStart + this.cellOffsets.stickyWidthInlineEnd;
-    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
-    const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
-    const hasEnoughScrollableSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tablePaddingLeft + tablePaddingRight < wrapperWidth;
+    const tablePaddingInlineStart = parseFloat(getComputedStyle(props.table).paddingInlineStart) || 0;
+    const tablePaddingInlineEnd = parseFloat(getComputedStyle(props.table).paddingInlineEnd) || 0;
+    const tablePaddings = tablePaddingInlineStart + tablePaddingInlineEnd;
+    const isFirstCellPadded = this.get().cellState.get(props.visibleColumns[0])?.padInlineStart ?? false;
+    const minimumScrollableSpace = isFirstCellPadded ? MINIMUM_SCROLLABLE_SPACE_WHILE_STUCK : MINIMUM_SCROLLABLE_SPACE;
+    const hasEnoughScrollableSpace = minimumScrollableSpace < wrapperWidth - totalStickySpace - tablePaddings;
     if (!hasEnoughScrollableSpace) {
       return false;
     }

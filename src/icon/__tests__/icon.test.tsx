@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Icon, { IconProps } from '../../../lib/components/icon';
+import IconProvider from '../../../lib/components/icon-provider';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/icon/styles.css.js';
@@ -200,5 +201,41 @@ describe.each(['plain', 'svg', 'url'])('native attributes: %s', type => {
     const { container } = render(<Icon nativeAttributes={{ className: 'additional-class' }} {...attributes} />);
     expect(container.firstChild).toHaveClass(styles.icon);
     expect(container.firstChild).toHaveClass('additional-class');
+  });
+});
+
+describe('custom icons from IconProvider', () => {
+  const customSvg = (
+    <svg data-testid="custom" focusable={false}>
+      <circle cx="8" cy="8" r="7" />
+    </svg>
+  );
+
+  test('wraps a provider-supplied custom icon in a metrics span', () => {
+    const { container } = render(
+      <IconProvider icons={{ settings: customSvg }}>
+        <Icon name="settings" size="inherit" />
+      </IconProvider>
+    );
+    const span = container.querySelector(`.${styles['custom-icon']}`);
+    expect(span).not.toBeNull();
+    expect(span!.querySelector('[data-testid="custom"]')).not.toBeNull();
+    expect(span!.className).toEqual(expect.stringContaining('size-normal'));
+  });
+
+  test('wraps a custom-named icon that is not part of the iconography', () => {
+    const { container } = render(
+      <IconProvider icons={{ 'my-custom-icon': customSvg } as any}>
+        <Icon name={'my-custom-icon' as any} />
+      </IconProvider>
+    );
+    const span = container.querySelector(`.${styles['custom-icon']}`);
+    expect(span).not.toBeNull();
+    expect(span!.querySelector('[data-testid="custom"]')).not.toBeNull();
+  });
+
+  test('does not wrap a built-in named icon', () => {
+    const { container } = render(<Icon name="settings" />);
+    expect(container.querySelector(`.${styles['custom-icon']}`)).toBeNull();
   });
 });

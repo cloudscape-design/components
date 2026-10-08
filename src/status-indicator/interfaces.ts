@@ -54,6 +54,7 @@ export namespace StatusIndicatorProps {
     | 'pending'
     | 'in-progress'
     | 'loading'
-    | 'not-started';
+    | 'not-started'
+    | 'log';
   export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
 }

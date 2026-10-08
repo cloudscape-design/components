@@ -7,7 +7,10 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../internal/styles/utils/theming';
 
+// Column width tracks the toggle icon size:
+// 28px for visual-refresh (16px normal icon), 24px for One Theme (12px x-small icon).
 $item-toggle-column-width: 28px;
+$item-toggle-column-width-one-theme: 24px;
 
 .treeitem-group {
   @include styles.styles-reset-ul;
@@ -50,18 +53,22 @@ $item-toggle-column-width: 28px;
       }
     }
 
-    @include theming.one-theme-only {
-      align-items: center;
-      > .expand-toggle-wrapper > .toggle {
-        inset-inline-start: 0px;
-        inset-block-start: 3px;
-      }
-
-      &.with-icon {
+    &.with-icon {
+      /* this comment keeps the class in the style sheet */
+      @include theming.one-theme-only {
         align-items: baseline;
         > .expand-toggle-wrapper > .toggle {
           inset-block-start: 2px;
         }
+      }
+    }
+
+    @include theming.one-theme-only {
+      align-items: baseline;
+      grid-template-columns: $item-toggle-column-width-one-theme 1fr;
+      > .expand-toggle-wrapper > .toggle {
+        inset-inline-start: 0px;
+        inset-block-start: 2px;
       }
     }
 

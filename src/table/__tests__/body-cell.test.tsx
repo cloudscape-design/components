@@ -70,8 +70,6 @@ const commonProps: TestBodyCellProps = {
   isEditable: true,
   isPrevSelected: false,
   isNextSelected: false,
-  isFirstRow: true,
-  isLastRow: true,
   isSelected: false,
   wrapLines: false,
   stickyState: result.current,

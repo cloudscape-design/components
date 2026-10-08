@@ -9,6 +9,7 @@ import MockDate from 'mockdate';
 
 import '../../__a11y__/to-validate-a11y';
 import Calendar, { CalendarProps } from '../../../lib/components/calendar';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -96,6 +97,29 @@ describe('Calendar locale DE', () => {
   test('start of the week is Monday', () => {
     const { wrapper } = renderCalendar();
     expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
+  });
+});
+
+describe('Calendar I18nProvider locale', () => {
+  function renderWithProvider(props: CalendarProps = defaultProps) {
+    const { container } = render(
+      <TestI18nProvider messages={{}} locale="de-DE">
+        <Calendar {...props} />
+      </TestI18nProvider>
+    );
+    return createWrapper(container).findCalendar()!;
+  }
+
+  test('uses I18nProvider locale when no locale property is provided', () => {
+    const wrapper = renderWithProvider({ ...defaultProps, value: '2022-01-07' });
+    expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('Januar 2022');
+  });
+
+  test('explicit locale property takes precedence over I18nProvider locale', () => {
+    const wrapper = renderWithProvider({ ...defaultProps, value: '2022-01-07', locale: 'en-US' });
+    expect(findCalendarWeekdays(wrapper)[0]).toBe('Sun');
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
   });
 });
 

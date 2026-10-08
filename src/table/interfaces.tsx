@@ -67,8 +67,16 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * - `totalRows` (number) - The total number of rows that should be rendered. If `items`
    *    are also provided, those items will be rendered first, and `totalRows - items.length`
    *    additional skeleton rows rendered after.
+   * - `totalRows` ('auto') - The number of skeleton rows is calculated from the available viewport height.
+   * - `maxAutoRows` (number) - Limits the number of skeleton rows rendered when `totalRows` is set to `'auto'`.
+   * - `minAutoRows` (number) - Sets the minimum number of skeleton rows rendered when `totalRows` is set to `'auto'`.
+   *    Defaults to 1. Useful for tables rendered off-screen, where the calculated available height would
+   *    otherwise yield a single row.
+   * - `renderCell` ((column) => ReactNode) - Renders a custom skeleton placeholder per column, for cells whose
+   *    final content is not a single line of text (for example, multi-line cells, status indicators, or actions).
+   *    Return `undefined` for a column to fall back to the default single-line skeleton.
    */
-  skeleton?: TableProps.SkeletonConfig;
+  skeleton?: TableProps.SkeletonConfig<T>;
 
   /**
    * Specifies a property that uniquely identifies an individual item.
@@ -770,9 +778,33 @@ export namespace TableProps {
     item: T;
   }
 
-  export interface SkeletonConfig {
-    totalRows: number;
+  interface BaseSkeletonConfig<T> {
+    /**
+     * Renders a custom skeleton placeholder for each cell of the given column while data is loading.
+     * Use for columns whose final content is not a single line of text, so the placeholder matches the
+     * settled cell shape and the load-to-settle transition stays stable. Compose the returned content
+     * from the `Skeleton` component. Return `undefined` for a column to use the default single-line
+     * skeleton; return `null` to render an empty placeholder for that column.
+     *
+     * The returned content is rendered inside an `aria-hidden` row, so it is not announced to screen
+     * readers; do not render focusable or interactive elements.
+     */
+    renderCell?: (column: TableProps.ColumnDefinition<T>) => React.ReactNode;
   }
+
+  export interface FixedSkeletonConfig<T = any> extends BaseSkeletonConfig<T> {
+    totalRows: number;
+    maxAutoRows?: never;
+    minAutoRows?: never;
+  }
+
+  export interface AutoSkeletonConfig<T = any> extends BaseSkeletonConfig<T> {
+    totalRows: 'auto';
+    maxAutoRows?: number;
+    minAutoRows?: number;
+  }
+
+  export type SkeletonConfig<T = any> = FixedSkeletonConfig<T> | AutoSkeletonConfig<T>;
 }
 
 export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;

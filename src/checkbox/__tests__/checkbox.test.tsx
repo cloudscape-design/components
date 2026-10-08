@@ -109,6 +109,34 @@ describe('native and styled control synchronization', () => {
   });
 });
 
+describe('checkmark draw-in animation', () => {
+  const readyAttribute = 'data-awsui-motion-ready';
+
+  test('does not animate a checkmark that is checked on mount', () => {
+    const { wrapper } = renderCheckbox(<Checkbox checked={true} />);
+    expect(findStyledElement(wrapper)).not.toHaveAttribute(readyAttribute);
+  });
+
+  test('animates the checkmark once the state changes after mount', () => {
+    const { wrapper, rerender } = renderCheckbox(<Checkbox checked={false} />);
+    rerender(<Checkbox checked={true} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+
+  test('keeps animating after a checkbox mounted as checked is toggled off and on', () => {
+    const { wrapper, rerender } = renderCheckbox(<Checkbox checked={true} />);
+    rerender(<Checkbox checked={false} />);
+    rerender(<Checkbox checked={true} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+
+  test('animates the indeterminate line once the state changes after mount', () => {
+    const { wrapper, rerender } = renderCheckbox(<Checkbox checked={false} />);
+    rerender(<Checkbox checked={false} indeterminate={true} />);
+    expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+});
+
 test('fires a single onChange event on label click', () => {
   const onChange = jest.fn();
   const { wrapper } = renderCheckbox(<Checkbox checked={false} onChange={onChange} />);

@@ -97,3 +97,16 @@ describe('native attributes', () => {
     expect(container.firstChild).toHaveClass('additional-class');
   });
 });
+
+describe('Style API v2', () => {
+  test('applies styleClassNames', () => {
+    const badge = renderBadge(<Badge {...({ styleClassNames: { root: 'a', unknown: 'b' } } as any)}>x</Badge>);
+    expect(badge).toHaveClass('a');
+    expect(badge).not.toHaveClass('b');
+  });
+
+  test('does not leak the styleClassNames prop to the DOM', () => {
+    const badge = renderBadge(<Badge {...({ styleClassNames: { root: 'custom-root' } } as any)}>x</Badge>);
+    expect(badge).not.toHaveAttribute('styleClassNames');
+  });
+});

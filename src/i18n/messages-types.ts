@@ -74,6 +74,14 @@ export interface I18nFormatArgTypes {
   button: {
     'i18nStrings.externalIconAriaLabel': never;
   };
+  'button-dropdown': {
+    filteringResultsText: {
+      matchesCount: string | number;
+      totalCount: string | number;
+    };
+    noMatch: never;
+    'i18nStrings.filteringItemAriaDescription': never;
+  };
   calendar: {
     nextMonthAriaLabel: never;
     previousMonthAriaLabel: never;
@@ -144,8 +152,8 @@ export interface I18nFormatArgTypes {
     };
     'contentDisplayPreference.liveAnnouncementDndDiscarded': never;
     'contentDisplayPreference.liveAnnouncementDndGroupLabel': {
-      label: string;
       count: number;
+      label: string;
     };
     'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder': never;
     'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel': never;
@@ -224,6 +232,9 @@ export interface I18nFormatArgTypes {
       unit: string;
       amount: number;
     };
+  };
+  dialog: {
+    'i18nStrings.dismissAriaLabel': never;
   };
   drawer: {
     'i18nStrings.loadingText': never;
@@ -335,6 +346,11 @@ export interface I18nFormatArgTypes {
     'i18nStrings.jumpToPageInputLabel': never;
     'i18nStrings.jumpToPageError': never;
     'i18nStrings.jumpToPageLoadingText': never;
+    'i18nStrings.pagesCompactText': {
+      openEnd: string;
+      currentPage: string | number;
+      pagesCount: string | number;
+    };
   };
   'panel-resize-handle': {
     'i18nStrings.resizeHandleAriaLabel': never;

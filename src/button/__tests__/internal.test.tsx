@@ -17,6 +17,28 @@ test('supports __iconClass property', () => {
   expect(container.querySelector(`button .${styles.icon}`)).toHaveClass('example-class');
 });
 
+describe('hover-motion attributes', () => {
+  test('the rendered button is trigger and target, so consumer-provided icons animate too', () => {
+    const { container } = render(<InternalButton iconName="settings">Label</InternalButton>);
+    const button = container.querySelector('button')!;
+    expect(button).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+    expect(button).toHaveAttribute('data-awsui-motion-target', '');
+    expect(button.querySelector(`.${styles.icon}`)).toBeTruthy();
+  });
+
+  test('the rendered anchor (link button) is trigger and target', () => {
+    const { container } = render(
+      <InternalButton href="#" iconName="settings">
+        Label
+      </InternalButton>
+    );
+    const anchor = container.querySelector('a')!;
+    expect(anchor).toHaveAttribute('data-awsui-motion-trigger', 'hover');
+    expect(anchor).toHaveAttribute('data-awsui-motion-target', '');
+    expect(anchor.querySelector(`.${styles.icon}`)).toBeTruthy();
+  });
+});
+
 test('sets disabled and does not set aria-disabled, when __focusable is not provided', () => {
   const { container } = render(<InternalButton disabled={true} />);
 

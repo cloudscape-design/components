@@ -340,9 +340,10 @@ function TokenDismissButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      data-awsui-motion-trigger="hover"
       {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
-      <InternalIcon name="close" />
+      <InternalIcon name="close" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
     </button>
   );
 }
@@ -354,8 +355,9 @@ function TokenEditButton({ ariaLabel, disabled }: { ariaLabel: string; disabled?
       className={clsx(styles['edit-button'], testUtilStyles['filtering-token-edit-button'])}
       aria-label={ariaLabel}
       disabled={disabled}
+      data-awsui-motion-trigger="hover"
     >
-      <InternalIcon name="edit" />
+      <InternalIcon name="edit" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
     </button>
   );
 }

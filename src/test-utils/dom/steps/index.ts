@@ -18,6 +18,13 @@ class StepWrapper extends ComponentWrapper {
   findDetails(): ElementWrapper | null {
     return this.findByClassName(styles.details);
   }
+
+  /**
+   * Finds the annotation of a step
+   */
+  findAnnotation(): ElementWrapper | null {
+    return this.findByClassName(styles.annotation);
+  }
 }
 export default class StepsWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;

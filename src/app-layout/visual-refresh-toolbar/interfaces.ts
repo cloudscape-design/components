@@ -14,6 +14,7 @@ import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
+import { BreadcrumbsSlotContextType } from './contexts';
 import { FeatureNotificationsProps } from './state/use-feature-notifications';
 
 export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
@@ -90,6 +91,8 @@ export interface AppLayoutInternals {
 }
 
 export interface AppLayoutWidgetizedState extends AppLayoutInternals {
+  breadcrumbsExternallyOwned?: boolean;
+  reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
   isNested: boolean;
   verticalOffsets: VerticalLayoutOutput;
   navigationAnimationDisabled: boolean;

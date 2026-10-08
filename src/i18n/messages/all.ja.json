@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount} 件のうち {matchesCount} 件の商品",
+    "noMatch": "一致するアクションなし",
+    "i18nStrings.filteringItemAriaDescription": "入力を続けると結果が絞り込まれます。"
+  },
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "フィルターをクリア",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}、0 個の項目} one {{label}、1 個の項目} other {{label}、{count} 個の項目}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
   },
   "copy-to-clipboard": {
@@ -175,6 +181,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {直近 {amount} 秒間} one {直近 {amount} 秒間} other {直近 {amount} 秒間}}} minute {{amount, plural, zero {直近 {amount} 分間} one {直近 {amount} 分間} other {直近 {amount} 分間}}} hour {{amount, plural, zero {直近 {amount} 時間} one {直近 {amount} 時間} other {直近 {amount} 時間}}} day {{amount, plural, zero {直近 {amount} 日間} one {直近 {amount} 日間} other {直近 {amount} 日間}}} week {{amount, plural, zero {直近 {amount} 週間} one {直近 {amount} 週間} other {直近 {amount} 週間}}} month {{amount, plural, zero {直近 {amount} か月間} one {直近 {amount} か月間} other {直近 {amount} か月間}}} year {{amount, plural, zero {直近 {amount} 年間} one {直近 {amount} 年間} other {直近 {amount} 年間}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {秒間} one {秒間} other {秒間}}} minute {{amount, plural, zero {分間} one {分間} other {分間}}} hour {{amount, plural, zero {時間} one {時間} other {時間}}} day {{amount, plural, zero {日間} one {日間} other {日間}}} week {{amount, plural, zero {週間} one {週間} other {週間}}} month {{amount, plural, zero {か月間} one {か月間} other {か月間}}} year {{amount, plural, zero {年間} one {年間} other {年間}}} other {}}"
+  },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "ダイアログを閉じる"
   },
   "drawer": {
     "i18nStrings.loadingText": "コンテンツのロード中"
@@ -256,7 +265,8 @@
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "i18nStrings.jumpToPageInputLabel": "ページ",
     "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。",
-    "i18nStrings.jumpToPageLoadingText": "ロード中"
+    "i18nStrings.jumpToPageLoadingText": "ロード中",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",

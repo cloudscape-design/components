@@ -11,7 +11,8 @@ const modes = [
   createMotionMode('.awsui-motion-disabled'),
 ];
 
-const builder = new ThemeBuilder('visual-refresh', '.awsui-visual-refresh', modes);
+// Scoped with :not(.awsui-one-theme) so one-theme takes precedence when both classes are present.
+const builder = new ThemeBuilder('visual-refresh', '.awsui-visual-refresh:not(.awsui-one-theme)', modes);
 const theme = buildVisualRefresh(builder);
 
 export default theme;

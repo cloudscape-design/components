@@ -89,7 +89,9 @@
 
   &-input {
     inline-size: 87px;
-    margin-block-start: -0.6em;
+    // This element contains the inline label and the HTML input element.
+    // Push it upwards to let the HTML input element look vertically centered.
+    margin-block-start: calc(-0.6em - #{awsui.$space-scaled-xs});
     overflow: visible;
   }
 }
@@ -98,8 +100,14 @@
   color: awsui.$color-text-interactive-default;
 }
 
+.pages-compact {
+  color: awsui.$color-text-pagination-page-number-default;
+  white-space: nowrap;
+}
+
 .page-item,
-.dots {
+.dots,
+.pages-compact {
   margin-block: styles.$control-padding-vertical;
   margin-inline: awsui.$space-xxs;
   text-align: center;
@@ -114,6 +122,7 @@
   }
 }
 
-.root-disabled > .dots {
+.root-disabled > .dots,
+.root-disabled > .pages-compact {
   color: awsui.$color-text-interactive-disabled;
 }

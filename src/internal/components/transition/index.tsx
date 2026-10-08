@@ -11,25 +11,29 @@ import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal'
 
 export type TransitionStatus = ReactTransitionGroupTransitionStatus | 'enter' | 'exit';
 
-interface TransitionProps {
+interface TransitionProps<T extends HTMLElement> {
   in: boolean;
   exit?: boolean;
 
   disabled?: boolean;
 
-  children: (state: TransitionStatus, transitioningElementRef: MutableRefObject<any>) => React.ReactNode;
+  children: (
+    state: TransitionStatus,
+    transitioningElementRef: MutableRefObject<T | null>,
+    motionDisabled: boolean
+  ) => React.ReactNode;
   onStatusChange?: (status: TransitionStatus) => void;
   transitionChangeDelay?: { entering?: number };
   exitTimeout?: number;
 }
 
 /**
- * This component is a wrapper around the CSSTransition component.
+ * This component wraps react-transition-group's Transition component.
  *
- * It provides a second parameter in its rendering function that must be
- * attached to the node that is transitioning.
+ * Its rendering function receives the transition state, a ref that must be attached to the transitioning node,
+ * and whether motion is disabled by either user preference or the disabled prop.
  */
-export function Transition({
+export function Transition<T extends HTMLElement = any>({
   in: isIn,
   children,
   exit = true,
@@ -38,8 +42,8 @@ export function Transition({
   transitionChangeDelay,
   exitTimeout,
   ...rest
-}: TransitionProps) {
-  const transitionRootElement = useRef<HTMLElement>(null);
+}: TransitionProps<T>) {
+  const transitionRootElement = useRef<T>(null);
   // the initial state of the transition should be either 'exited' or 'entered' depending
   // on the `in` property, this mimicks how internally the Transition component works here:
   // https://github.com/reactjs/react-transition-group/blob/6cbd6aaedaf8e9472007640b429ddb48c6c24158/src/Transition.js#L121
@@ -113,7 +117,7 @@ export function Transition({
       }}
       {...rest}
     >
-      {() => children(transitionState, transitionRootElement)}
+      {() => children(transitionState, transitionRootElement, motionDisabled)}
     </ReactTransitionGroupTransition>
   );
 }

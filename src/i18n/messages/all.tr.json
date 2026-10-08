@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount}/{totalCount} öge",
+    "noMatch": "Eşleşen eylem yok",
+    "i18nStrings.filteringItemAriaDescription": "Sonuçları filtrelemek için yazmaya devam edin."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Gelecek ay",
     "previousMonthAriaLabel": "Önceki ay",
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filtreyi temizle",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 öğe} one {{label}, 1 öğe} other {{label}, {count} öğe}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 eşleşme} one {1 eşleşme} other {{count} eşleşme}}"
   },
   "copy-to-clipboard": {
@@ -175,6 +181,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}-{endDate} aralığı seçildi",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Son {amount} saniye} one {Son {amount} saniye} other {Son {amount} saniye}}} minute {{amount, plural, zero {Son {amount} dakika} one {Son {amount} dakika} other {Son {amount} dakika}}} hour {{amount, plural, zero {Son {amount} saat} one {Son {amount} saat} other {Son {amount} saat}}} day {{amount, plural, zero {Son {amount} gün} one {Son {amount} gün} other {Son {amount} gün}}} week {{amount, plural, zero {Son {amount} hafta} one {Son {amount} hafta} other {Son {amount} hafta}}} month {{amount, plural, zero {Son {amount} ay} one {Son {amount} ay} other {Son {amount} ay}}} year {{amount, plural, zero {Son {amount} yıl} one {Son {amount} yıl} other {Son {amount} yıl}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {saniye} one {saniye} other {saniye}}} minute {{amount, plural, zero {dakika} one {dakika} other {dakika}}} hour {{amount, plural, zero {saat} one {saat} other {saat}}} day {{amount, plural, zero {gün} one {gün} other {gün}}} week {{amount, plural, zero {hafta} one {hafta} other {hafta}}} month {{amount, plural, zero {ay} one {ay} other {ay}}} year {{amount, plural, zero {yıl} one {yıl} other {yıl}}} other {}}"
+  },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "İletişim kutusunu kapat"
   },
   "drawer": {
     "i18nStrings.loadingText": "İçerik yükleniyor"
@@ -255,8 +264,9 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
-    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
+    "i18nStrings.jumpToPageError": "Sayfa aralık dışında. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",

@@ -1,10 +1,36 @@
-/*
- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- SPDX-License-Identifier: Apache-2.0
-*/
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as tokens;
+@use '../internal/styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin popover-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+$settle-travel: 8px;
+
+@mixin settle-keyframes($name, $from) {
+  @keyframes #{$name} {
+    from {
+      opacity: 0;
+      transform: $from;
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
 
 .container {
   @include styles.with-motion {
@@ -18,4 +44,45 @@
       @include styles.animation-fade-in;
     }
   }
+
+  // The popover travels out from its trigger as it appears.
+  @include popover-expressive-with-motion {
+    animation: awsui-popover-settle-down 250ms cubic-bezier(0.3, 0, 0.2, 1);
+  }
+
+  &:has(.container-arrow-position-top-left, .container-arrow-position-top-center, .container-arrow-position-top-right) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-up;
+    }
+  }
+
+  // Keyframes translate physically, so the horizontal ones swap in RTL.
+  &:has(.container-arrow-position-right-top, .container-arrow-position-right-bottom) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-end;
+    }
+    @include styles.with-direction('rtl') {
+      @include popover-expressive-with-motion {
+        animation-name: awsui-popover-settle-start;
+      }
+    }
+  }
+
+  &:has(.container-arrow-position-left-top, .container-arrow-position-left-bottom) {
+    @include popover-expressive-with-motion {
+      animation-name: awsui-popover-settle-start;
+    }
+    @include styles.with-direction('rtl') {
+      @include popover-expressive-with-motion {
+        animation-name: awsui-popover-settle-end;
+      }
+    }
+  }
+}
+
+@if theming.has-expressive-motion() {
+  @include settle-keyframes(awsui-popover-settle-down, translateY(-$settle-travel));
+  @include settle-keyframes(awsui-popover-settle-up, translateY($settle-travel));
+  @include settle-keyframes(awsui-popover-settle-end, translateX(-$settle-travel));
+  @include settle-keyframes(awsui-popover-settle-start, translateX($settle-travel));
 }

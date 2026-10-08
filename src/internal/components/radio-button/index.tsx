@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -19,7 +19,13 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalRadioButtonProps extends RadioButtonProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   __skipNativeAttributesWarnings?: SkipWarnings;
+}
+
+// Style API v2
+interface StyleClassNames {
+  control?: string;
 }
 
 export default React.forwardRef(function RadioButton(
@@ -28,12 +34,16 @@ export default React.forwardRef(function RadioButton(
     children,
     value,
     checked,
+    ariaLabel,
+    ariaLabelledby,
+    ariaDescribedby,
     description,
     disabled,
     controlId,
     readOnly,
     className,
     style,
+    styleClassNames,
     nativeInputAttributes,
     onSelect,
     __skipNativeAttributesWarnings,
@@ -47,13 +57,23 @@ export default React.forwardRef(function RadioButton(
   const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
   const baseProps = getBaseProps(rest);
 
+  // The select animation only plays once the state has changed since mount.
+  const [initialChecked] = useState(!!checked);
+  const [hasChanged, setHasChanged] = useState(false);
+  if (!hasChanged && !!checked !== initialChecked) {
+    setHasChanged(true);
+  }
+
   return (
     <AbstractSwitch
       {...baseProps}
       className={clsx(testUtilStyles.root, className)}
-      controlClassName={styles['radio-control']}
+      controlClassName={clsx(styleClassNames?.control, styles['radio-control'])}
       outlineClassName={styles.outline}
       label={children}
+      ariaLabel={ariaLabel}
+      ariaLabelledby={ariaLabelledby}
+      ariaDescribedby={ariaDescribedby}
       description={description}
       disabled={disabled}
       readOnly={readOnly}
@@ -104,6 +124,7 @@ export default React.forwardRef(function RadioButton(
               [styles['styled-circle-checked']]: checked,
               [styles['styled-circle-readonly']]: readOnly,
             })}
+            data-awsui-motion-ready={hasChanged ? '' : undefined}
             strokeWidth={30}
             cx={50}
             cy={50}

@@ -59,6 +59,7 @@ const LinkItem = forwardRef(
         href={href}
         target={anchorTarget}
         rel={anchorRel}
+        data-awsui-motion-trigger="hover"
         {...(testId ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -83,6 +84,7 @@ const ButtonItem = forwardRef(
         ref={ref}
         className={styles['overflow-menu-control']}
         onClick={onClick}
+        data-awsui-motion-trigger="hover"
         {...(typeof testId === 'string' ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -109,7 +111,7 @@ const NavigationItem = forwardRef(
       <ButtonItem
         ref={ref}
         startIcon={startIcon}
-        endIcon={<InternalIcon name="angle-right" />}
+        endIcon={<InternalIcon name="angle-right" nativeAttributes={{ 'data-awsui-motion-target': '' }} />}
         testId={testId}
         onClick={() =>
           navigate('dropdown-menu', {
@@ -139,11 +141,12 @@ const ExpandableItem: React.FC<
         className={clsx(styles['overflow-menu-control'], styles['overflow-menu-control-expandable-menu-trigger'])}
         onClick={() => setExpanded(value => !value)}
         aria-expanded={expanded}
+        data-awsui-motion-trigger="hover"
       >
         <ListItem
           endIcon={
             <span className={spinWhenOpen(styles, 'icon', expanded)}>
-              <InternalIcon name="caret-down-filled" />
+              <InternalIcon name="caret-down-filled" nativeAttributes={{ 'data-awsui-motion-target': '' }} />
             </span>
           }
         >

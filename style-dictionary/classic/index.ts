@@ -9,6 +9,7 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createTopNavigationContext,
+  excludeOneTheme,
 } from '../utils/contexts.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
@@ -43,12 +44,19 @@ export async function buildClassicOpenSource(builder: ThemeBuilder) {
 
   builder.addContext(createCompactTableContext((await import('./contexts/compact-table.js')).tokens));
   builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
-  builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
-  builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
-  builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
   builder.addContext(
     createAppLayoutToolsDrawerTriggerContext((await import('./contexts/tools-drawer-trigger.js')).tokens)
   );
+
+  // One theme styles notifications through base tokens and defines no flashbar
+  // or alert contexts. For packages bundling both themes, we scope out one
+  // theme so contexts don't override one theme colors.
+  const notificationContexts = [
+    createFlashbarContext((await import('./contexts/flashbar.js')).tokens),
+    createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens),
+    createAlertContext((await import('./contexts/alert.js')).tokens),
+  ];
+  notificationContexts.forEach(context => builder.addContext(excludeOneTheme(context)));
 
   return builder.build();
 }

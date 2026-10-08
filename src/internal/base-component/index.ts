@@ -8,6 +8,7 @@ import { BaseComponentProps } from '../../types/base-component';
 import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
 
 // these styles needed to be imported for every public component
+import '../base-theme/styles.css.js';
 import './styles.css.js';
 
 initAwsUiVersions(PACKAGE_SOURCE, PACKAGE_VERSION);

@@ -42,6 +42,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthCard: '0px',
   borderWidthDropdown: '1px',
   borderWidthField: '1px',
+  borderWidthNotificationStackBar: '1px',
   borderWidthPopover: '1px',
   borderWidthToken: '1px',
   borderRadiusActionCardDefault: '{borderRadiusCardDefault}',

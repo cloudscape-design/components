@@ -31,7 +31,7 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
   test(
     'focuses on the input by default',
     setupTest(expandToViewport, async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       const input = getFilterInput(page);
       await page.waitForAssertion(async () => expect(await page.isFocused(input)).toBe(true));
     })
@@ -40,7 +40,7 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
   test(
     'filters when text is typed',
     setupTest(expandToViewport, async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       const input = getFilterInput(page);
       const itemsBefore = await page.getAllItemsCount();
 
@@ -55,7 +55,7 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
   test(
     'tabbing to the clear button and activating it clears the input',
     setupTest(expandToViewport, async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       const input = getFilterInput(page);
       await page.setValue(input, 'copy');
 
@@ -77,7 +77,7 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
   test(
     'shift+tabbing from the clear button to the input keeps the input open',
     setupTest(expandToViewport, async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       const input = getFilterInput(page);
       await page.setValue(input, 'copy');
 
@@ -97,7 +97,7 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
   test(
     'tabbing after clear button closes the dropdown',
     setupTest(expandToViewport, async page => {
-      await page.openDropdown();
+      await page.clickTrigger();
       const input = getFilterInput(page);
       await page.setValue(input, 'copy');
 
@@ -110,6 +110,44 @@ describe.each([true, false])('Button dropdown filtering (with expandToViewport=%
       // Tabbing past the clear button moves focus out of the dropdown, which closes it.
       await page.keys('Tab');
       await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
+    })
+  );
+
+  test(
+    'clicking the trigger to close the dropdown does not reopen it',
+    setupTest(expandToViewport, async page => {
+      // Open the dropdown; focus lands on the filter input.
+      await page.clickTrigger();
+      const input = getFilterInput(page);
+      await page.waitForAssertion(async () => expect(await page.isFocused(input)).toBe(true));
+
+      // Click the trigger to close it. This blurs the filter input (focus moves to the
+      // trigger) and fires the trigger's click. The focus-leave must not close the dropdown
+      // and let the click reopen it — clicking once should close and keep it closed.
+      await page.clickTrigger();
+
+      await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
+
+      // Wait long enough that a close-then-reopen would have re-rendered the open dropdown,
+      // then confirm it is (and stays) closed.
+      await page.pause(300);
+      await expect(page.isDropdownOpen()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'moving focus to the trigger with the keyboard closes the dropdown',
+    setupTest(expandToViewport, async page => {
+      // Open the dropdown; focus lands on the filter input.
+      await page.clickTrigger();
+      const input = getFilterInput(page);
+      await page.waitForAssertion(async () => expect(await page.isFocused(input)).toBe(true));
+
+      // Shift+Tab moves focus from the filter input back to the trigger.
+      await page.keys(['Shift', 'Tab', 'Null']);
+
+      await page.waitForAssertion(async () => expect(await page.isDropdownOpen()).toBe(false));
+      await expect(page.isFocused(page.getTrigger())).resolves.toBe(true);
     })
   );
 });

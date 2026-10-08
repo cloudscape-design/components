@@ -114,8 +114,6 @@ export default function InlineEditorPermutations() {
                       item={{}}
                       column={{ ...baseColumnDefinition, editConfig: permutation }}
                       isEditable={true}
-                      isFirstRow={false}
-                      isLastRow={false}
                       isNextSelected={false}
                       isPrevSelected={false}
                       isSelected={false}

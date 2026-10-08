@@ -44,6 +44,9 @@ export interface BoxProps extends BaseComponentProps {
    *   `full` together with `aspectRatio: 'equal'` to render a circle.
    *
    * Composes with existing Box props such as `padding` and `margin`.
+   *
+   * This is a One Theme only feature and must not be used in VR.
+   * @awsuiSystem one-theme
    */
   visualAccent?: BoxProps.VisualAccent;
   /**

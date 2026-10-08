@@ -11,6 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
@@ -20,6 +21,7 @@ import Filter from '../select/parts/filter';
 import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
+import { composeDropdownContent } from '../select/utils/dropdown-customization';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
@@ -63,13 +65,23 @@ const InternalMultiselect = React.forwardRef(
       autoFocus,
       enableSelectAll,
       renderOption,
+      renderDropdownHeader,
+      renderDropdownFooter,
+      dropdownRole,
+      dropdownAriaDescribedby,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
+
+    // When rendered inside a control group, tokens are always shown inline in the
+    // trigger regardless of the `inlineTokens` prop, since there is no room to
+    // display tokens below the control within a group.
+    const showTokensInline = inlineTokens || !!groupedControlProps.position;
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -91,8 +103,17 @@ const InternalMultiselect = React.forwardRef(
       externalRef,
       enableSelectAll,
       i18nStrings,
+      dropdownRole,
+      dropdownAriaDescribedby,
       ...restProps,
     });
+
+    const dropdownContentProps: MultiselectProps.DropdownContentProps = {
+      filterText: filteringValue,
+      closeDropdown: multiselectProps.closeDropdown,
+    };
+    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
+    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
 
     const filter = (
       <Filter
@@ -122,8 +143,9 @@ const InternalMultiselect = React.forwardRef(
         triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         selectedOptions={selectedOptions}
-        triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
+        triggerVariant={showTokensInline ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
+        groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
@@ -149,7 +171,7 @@ const InternalMultiselect = React.forwardRef(
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
-    const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
+    const showTokens = !hideTokens && !showTokensInline && tokens.length > 0;
 
     const tokenGroupI18nStrings: TokenGroupProps.I18nStrings = {
       limitShowFewer: i18nStrings?.tokenLimitShowFewer,
@@ -160,75 +182,89 @@ const InternalMultiselect = React.forwardRef(
     const dropdownProps = multiselectProps.getDropdownProps();
     const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
 
+    const statusFooter = dropdownStatus.isSticky ? (
+      <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+    ) : null;
+    const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
+      filter,
+      customDropdownHeader,
+      customDropdownFooter,
+      statusFooter,
+      dropdownHeaderClass: styles['dropdown-header'],
+      dropdownFooterClass: styles['dropdown-footer'],
+    });
+
     const hasOptions = useRef(options.length > 0);
     hasOptions.current = hasOptions.current || options.length > 0;
 
     return (
-      <div
-        {...baseProps}
-        ref={__internalRootRef}
-        className={clsx(styles.root, baseProps.className)}
-        {...multiselectProps.getWrapperProps()}
-      >
-        <Dropdown
-          {...dropdownProps}
-          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
-          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
-          open={multiselectProps.isOpen}
-          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
-          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
-          trigger={trigger}
-          header={filter}
-          footer={
-            dropdownStatus.isSticky ? (
-              <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-            ) : null
-          }
-          expandToViewport={expandToViewport}
-          // Forces dropdown position recalculation when new options are loaded
-          contentKey={hasOptions.current.toString()}
-          content={
-            <ListComponent
-              renderOption={renderOption}
-              listBottom={
-                !dropdownStatus.isSticky ? (
-                  <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-                ) : null
-              }
-              menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
-              getOptionProps={multiselectProps.getOptionProps}
-              filteredOptions={multiselectProps.filteredOptions}
-              filteringValue={filteringValue}
-              ref={multiselectProps.scrollToIndex}
-              hasDropdownStatus={dropdownStatus.content !== null}
-              checkboxes={true}
-              useInteractiveGroups={true}
-              screenReaderContent={multiselectProps.announcement}
-              highlightType={multiselectProps.highlightType}
-              firstOptionSticky={hasFilteredOptions && enableSelectAll}
-              isMultiSelect={true}
-            />
-          }
-        />
-
-        {showTokens && (
-          <InternalTokenGroup
-            {...multiselectProps.getTokenProps()}
-            className={styles.tokens}
-            alignment="horizontal"
-            limit={tokenLimit}
-            items={tokens}
-            i18nStrings={tokenGroupI18nStrings}
-            limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
-            limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
-            disableOuterPadding={true}
-            readOnly={readOnly}
-            isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+      <ResetGroupedControlContext>
+        <div
+          {...baseProps}
+          ref={__internalRootRef}
+          className={clsx(styles.root, baseProps.className)}
+          {...multiselectProps.getWrapperProps()}
+        >
+          <Dropdown
+            {...dropdownProps}
+            ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
+            ariaDescribedby={
+              dropdownProps.ariaRole
+                ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+                : undefined
+            }
+            open={multiselectProps.isOpen}
+            minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+            maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
+            trigger={trigger}
+            header={dropdownHeader}
+            footer={dropdownFooter}
+            expandToViewport={expandToViewport}
+            // Forces dropdown position recalculation when new options are loaded
+            contentKey={hasOptions.current.toString()}
+            content={
+              <ListComponent
+                renderOption={renderOption}
+                listBottom={
+                  !dropdownStatus.isSticky ? (
+                    <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+                  ) : null
+                }
+                menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                getOptionProps={multiselectProps.getOptionProps}
+                filteredOptions={multiselectProps.filteredOptions}
+                filteringValue={filteringValue}
+                ref={multiselectProps.scrollToIndex}
+                hasDropdownStatus={dropdownStatus.content !== null}
+                checkboxes={true}
+                useInteractiveGroups={true}
+                screenReaderContent={multiselectProps.announcement}
+                highlightType={multiselectProps.highlightType}
+                firstOptionSticky={hasFilteredOptions && enableSelectAll}
+                isMultiSelect={true}
+              />
+            }
           />
-        )}
 
-        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
-      </div>
+          {showTokens && (
+            <InternalTokenGroup
+              {...multiselectProps.getTokenProps()}
+              className={styles.tokens}
+              alignment="horizontal"
+              limit={tokenLimit}
+              items={tokens}
+              i18nStrings={tokenGroupI18nStrings}
+              limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
+              limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
+              disableOuterPadding={true}
+              readOnly={readOnly}
+              isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+            />
+          )}
+
+          <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
+        </div>
+      </ResetGroupedControlContext>
     );
   }
 );

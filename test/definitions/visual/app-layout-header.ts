@@ -3,10 +3,9 @@
 import { TestDefinition, TestSuite } from '../types';
 
 const suite: TestSuite = {
-  description: 'Headers',
+  description: 'AppLayout',
   componentName: 'app-layout',
   tests: [
-    // ── Headers ───────────────────────────────────────────────────────────
     {
       description: 'Headers',
       tests: [600, 1280].flatMap(width => [

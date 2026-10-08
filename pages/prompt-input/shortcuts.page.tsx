@@ -43,6 +43,7 @@ type DemoContext = React.Context<
     enableAutoFocus: boolean;
     useIframe: boolean;
     useLongPlaceholder: boolean;
+    minRows: string;
   }>
 >;
 
@@ -320,7 +321,9 @@ function ShortcutsDemo() {
     hasName,
     enableAutoFocus,
     useLongPlaceholder,
+    minRows: minRowsParam,
   } = urlParams;
+  const minRows = Math.max(1, parseInt(minRowsParam, 10) || 1);
 
   const [items, setItems] = React.useState([
     { label: 'Item 1', dismissLabel: 'Remove item 1', disabled: isDisabled },
@@ -555,6 +558,20 @@ function ShortcutsDemo() {
           </label>
         </div>
 
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <label>
+            Min rows:
+            <input
+              id="min-rows-input"
+              type="number"
+              min="1"
+              value={minRows}
+              onChange={e => setUrlParams({ minRows: String(Math.max(1, parseInt(e.target.value, 10) || 1)) })}
+              style={{ width: '60px', marginLeft: '4px' }}
+            />
+          </label>
+        </div>
+
         <p>Trigger counter value: {triggerCounter}</p>
 
         {extractedText || tokens.length > 0 ? (
@@ -638,6 +655,7 @@ function ShortcutsDemo() {
                   );
                 }}
                 placeholder={useLongPlaceholder ? placeholderText : 'Ask a question'}
+                minRows={minRows}
                 maxRows={hasInfiniteMaxRows ? -1 : 4}
                 disabled={isDisabled}
                 readOnly={isReadOnly}

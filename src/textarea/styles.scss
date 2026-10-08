@@ -14,8 +14,8 @@
 
 .textarea {
   @include styles.styles-reset;
-  // Restore browsers' default resize values
-  resize: auto;
+  // Matches browsers' default for textarea; overridden by the resize modifiers below
+  resize: both;
   // Restore default text cursor
   cursor: text;
   // Allow multi-line placeholders
@@ -43,6 +43,25 @@
   box-shadow: var(#{custom-props.$styleBoxShadowDefault});
 
   @include styles.font-body-m;
+
+  // Physical axes are used here rather than logical ones: resize axes follow
+  // `writing-mode`, which is always horizontal-tb, so `block`/`inline` would
+  // resolve identically in both LTR and RTL.
+  &.textarea-resize-both {
+    resize: both;
+  }
+
+  &.textarea-resize-horizontal {
+    resize: horizontal;
+  }
+
+  &.textarea-resize-vertical {
+    resize: vertical;
+  }
+
+  &.textarea-resize-none {
+    resize: none;
+  }
 
   &:hover {
     border-color: var(

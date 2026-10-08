@@ -5,6 +5,7 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -64,6 +65,8 @@ const ButtonDropdown = React.forwardRef(
     });
     const baseProps = getBaseProps(props);
 
+    const i18n = useInternalI18n('button-dropdown');
+
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataButtonDropdownComponent = {
       name: 'awsui.ButtonDropdown',
       label: `.${analyticsSelectors['trigger-label']}`,
@@ -99,9 +102,18 @@ const ButtonDropdown = React.forwardRef(
         filteringPlaceholder={filteringPlaceholder}
         filteringAriaLabel={filteringAriaLabel}
         filteringClearAriaLabel={filteringClearAriaLabel}
-        filteringResultsText={filteringResultsText}
+        filteringResultsText={i18n(
+          'filteringResultsText',
+          filteringResultsText,
+          format => (matchesCount, totalCount) => format({ matchesCount, totalCount })
+        )}
         noMatch={noMatch}
-        i18nStrings={i18nStrings}
+        i18nStrings={{
+          filteringItemAriaDescription: i18n(
+            'i18nStrings.filteringItemAriaDescription',
+            i18nStrings?.filteringItemAriaDescription
+          ),
+        }}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}

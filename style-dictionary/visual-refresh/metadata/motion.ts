@@ -51,6 +51,17 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
   },
 
+  motionDurationTooltipEnter: {
+    description: 'The duration for the tooltip enter transition.',
+    public: true,
+    themeable: true,
+  },
+  motionEasingTooltipEnter: {
+    description: 'The easing curve for the tooltip enter transition.',
+    public: true,
+    themeable: true,
+  },
+
   motionKeyframesFadeIn: {
     description: 'The CSS keyframes for showing an element.',
     public: true,

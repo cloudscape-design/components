@@ -107,6 +107,15 @@ describe('Steps', () => {
     expect(wrapper.findItems()[3]!.findHeader()!.getElement()).toHaveTextContent('Analyzing security rules');
   });
 
+  test('renders correct steps headers in horizontal orientation', () => {
+    const wrapper = renderSteps({ steps: successfulSteps, orientation: 'horizontal' });
+
+    expect(wrapper.findItems()[0]!.findHeader()!.getElement()).toHaveTextContent('Listed EC2 instances');
+    expect(wrapper.findItems()[1]!.findHeader()!.getElement()).toHaveTextContent('Gathered Security Group IDs');
+    expect(wrapper.findItems()[2]!.findHeader()!.getElement()).toHaveTextContent('Checked Cross Region Consent');
+    expect(wrapper.findItems()[3]!.findHeader()!.getElement()).toHaveTextContent('Analyzing security rules');
+  });
+
   test('renders correct steps details', () => {
     const wrapper = renderSteps({ steps: successfulSteps });
 
@@ -114,6 +123,48 @@ describe('Steps', () => {
     expect(wrapper.findItems()[1]!.findDetails()!.getElement()).toHaveTextContent('Security Groups IDs:');
     expect(wrapper.findItems()[2]!.findDetails()).toBeNull();
     expect(wrapper.findItems()[3]!.findDetails()).toBeNull();
+  });
+
+  describe('annotation', () => {
+    test('renders annotation content', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'log', annotation: '10:30' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('does not render annotation when not provided', () => {
+      const wrapper = renderSteps({ steps: [{ header: 'Event', status: 'success' }] });
+
+      expect(wrapper.findItems()[0].findAnnotation()).toBeNull();
+    });
+
+    test('renders annotation content in horizontal mode', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
+
+    test('renders annotation in horizontal mode when using renderStep', () => {
+      const wrapper = renderSteps({
+        steps: [{ header: 'Event', status: 'log', annotation: '10:30' }],
+        orientation: 'horizontal',
+        renderStep: (step: StepsProps.Step) => ({ header: <span>Custom: {step.header}</span> }),
+      });
+
+      expect(wrapper.findItems()[0].findAnnotation()!.getElement()).toHaveTextContent('10:30');
+    });
   });
 
   describe('Accessibility', () => {
@@ -263,6 +314,19 @@ describe('Steps', () => {
       expect(wrapper.findAll('[data-testid="custom-header"]')).not.toHaveLength(0);
       expect(wrapper.findAll('[data-testid="custom-details"]')).not.toHaveLength(0);
       expect(wrapper.findAll('[data-testid="custom-icon"]')).not.toHaveLength(0);
+    });
+
+    test('renders correct custom step headers in horizontal orientation', () => {
+      const wrapper = renderSteps({
+        steps: stepsForCustomRender,
+        orientation: 'horizontal',
+        renderStep: customRenderStep,
+      });
+
+      expect(wrapper.findItems()[0].findHeader()!.getElement()).toHaveTextContent(
+        'Custom: Checked Cross Region Consent'
+      );
+      expect(wrapper.findItems()[1].findHeader()!.getElement()).toHaveTextContent('Custom: Analyzing security rules');
     });
 
     test('does not render status indicators when using renderStep with icon', () => {

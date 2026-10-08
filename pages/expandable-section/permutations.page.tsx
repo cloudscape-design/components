@@ -5,12 +5,25 @@ import React from 'react';
 import Button from '~components/button';
 import Container from '~components/container';
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
+import InternalExpandableSection from '~components/expandable-section/internal';
 import Header from '~components/header';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 import Table from '~components/table';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
+// Eight 200px columns give the table a min-content width far wider than the section that holds it.
+const wideColumnDefinitions = Array.from({ length: 8 }, (_, index) => ({
+  id: `column-${index + 1}`,
+  header: `Configuration column ${index + 1}`,
+  cell: (item: { id: number }) => `Item ${item.id} value ${index + 1}`,
+  minWidth: 200,
+}));
+
+const wideItems = Array.from({ length: 3 }, (_, index) => ({ id: index + 1 }));
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<ExpandableSectionProps>([
@@ -158,7 +171,32 @@ const permutations = createPermutations<ExpandableSectionProps>([
     children: ['Sample content'],
   },
 ]);
-/* eslint-enable react/jsx-key */
+
+const endIconPermutations = createPermutations<ExpandableSectionProps>([
+  {
+    variant: ['default', 'footer', 'navigation', 'container'],
+    headerText: [
+      'Short Header',
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ],
+    headerActions: [
+      undefined,
+      <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+        <Button variant="inline-link">Action</Button>
+        <Button>Another action</Button>
+        <StatusIndicator>Information</StatusIndicator>
+      </SpaceBetween>,
+    ],
+  },
+]);
+
+const overflowPermutations = createPermutations<ExpandableSectionProps>([
+  {
+    defaultExpanded: [true],
+    variant: ['default', 'container'],
+    headerText: ['Content wider than the section'],
+  },
+]);
 
 export default function ExpandableSectionPermutations() {
   return (
@@ -166,6 +204,32 @@ export default function ExpandableSectionPermutations() {
       <h1>Expandable Section permutations</h1>
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={permutation => <ExpandableSection {...permutation} />} />
+        <PermutationsView
+          permutations={endIconPermutations}
+          render={permutation => (
+            <InternalExpandableSection {...permutation} defaultExpanded={true} __expandIconPosition="end">
+              Variant {permutation.variant} section content
+            </InternalExpandableSection>
+          )}
+        />
+        {/* The narrow wrapper is outside the section on purpose: content that manages its own inline
+            overflow must scroll within the section rather than stretch it past the red boundary. */}
+        <PermutationsView
+          permutations={overflowPermutations}
+          render={permutation => (
+            <div style={{ inlineSize: 400, borderInline: '1px solid red', borderBlock: '1px solid red' }}>
+              <ExpandableSection {...permutation}>
+                <Table
+                  variant="embedded"
+                  columnDefinitions={wideColumnDefinitions}
+                  items={wideItems}
+                  // The scrollable table wrapper becomes a region landmark, which needs a unique name per permutation.
+                  ariaLabels={{ tableLabel: `Wide table in ${permutation.variant} section` }}
+                />
+              </ExpandableSection>
+            </div>
+          )}
+        />
       </ScreenshotArea>
     </>
   );

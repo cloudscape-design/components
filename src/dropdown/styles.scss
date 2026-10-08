@@ -7,6 +7,12 @@
 @use '../internal/styles/tokens' as awsui;
 @use './motion';
 @use '../internal/generated/custom-css-properties/index' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+$props: (background-color, border-color, border-width, border-radius);
+$tokens: style-api.resolve($props, carrier);
+@include style-api.register($tokens);
+@include style-api.docs('dropdown', $tokens);
 
 .root {
   @include styles.styles-reset;
@@ -41,14 +47,27 @@
     // Apply styles-reset to ensure font-family and other styles are properly set
     // when expandToViewport is true (dropdown rendered via portal to document.body)
     @include styles.styles-reset;
+    @include style-api.carriers($tokens);
     white-space: inherit;
     position: relative;
-    background-color: awsui.$color-background-dropdown-item-default;
+    background-color: style-api.value($tokens, background-color, awsui.$color-background-dropdown-item-default);
     outline: none;
     @include styles.dropdown-shadow(
-      $border-color: var(#{custom-props.$dropdownContentBorderColor}, #{awsui.$color-border-dropdown-container}),
-      $border-width: var(#{custom-props.$dropdownContentBorderWidth}, #{awsui.$border-width-popover}),
-      $border-radius: var(#{custom-props.$dropdownContentBorderRadius}, #{awsui.$border-radius-dropdown})
+      $border-color: style-api.value(
+          $tokens,
+          border-color,
+          var(#{custom-props.$dropdownContentBorderColor}, #{awsui.$color-border-dropdown-container})
+        ),
+      $border-width: style-api.value(
+          $tokens,
+          border-width,
+          var(#{custom-props.$dropdownContentBorderWidth}, #{awsui.$border-width-popover})
+        ),
+      $border-radius: style-api.value(
+          $tokens,
+          border-radius,
+          var(#{custom-props.$dropdownContentBorderRadius}, #{awsui.$border-radius-dropdown})
+        )
     );
 
     // Don't show dropdown border when there's no dropdown content

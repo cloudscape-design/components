@@ -24,6 +24,8 @@ const i18nStrings: PaginationProps.I18nStrings = {
 export default function PaginationSimplePage() {
   const [basicPageIndex, setBasicPageIndex] = useState(1);
   const [jumpPageIndex, setJumpPageIndex] = useState(1);
+  const [compactPageIndex, setCompactPageIndex] = useState(1);
+  const [compactOpenEndPageIndex, setCompactOpenEndPageIndex] = useState(1);
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -45,6 +47,25 @@ export default function PaginationSimplePage() {
           i18nStrings={i18nStrings}
           jumpToPage={{}}
           onChange={event => setJumpPageIndex(event.detail.currentPageIndex)}
+        />
+
+        <h2>Compact pages</h2>
+        <Pagination
+          pagesVariant="compact"
+          currentPageIndex={compactPageIndex}
+          pagesCount={20}
+          ariaLabels={paginationLabels}
+          onChange={event => setCompactPageIndex(event.detail.currentPageIndex)}
+        />
+
+        <h2>Compact pages with open end</h2>
+        <Pagination
+          pagesVariant="compact"
+          currentPageIndex={compactOpenEndPageIndex}
+          pagesCount={20}
+          openEnd={true}
+          ariaLabels={paginationLabels}
+          onChange={event => setCompactOpenEndPageIndex(event.detail.currentPageIndex)}
         />
       </ScreenshotArea>
     </I18nProvider>

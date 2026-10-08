@@ -5,9 +5,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming';
 
+// Column width tracks the toggle icon size:
+// 28px for visual-refresh (16px normal icon), 24px for One Theme (12px x-small icon).
 $item-toggle-column-width: 28px;
+$item-toggle-column-width-one-theme: 24px;
 $connector-line-width: awsui.$border-divider-list-width;
+$connector-inline-offset: calc(($item-toggle-column-width - $connector-line-width) / 2 - 2px);
+$connector-inline-offset-one-theme: calc(($item-toggle-column-width-one-theme - $connector-line-width) / 2 - 2px);
 
 .vertical-connector {
   background-color: awsui.$color-tree-view-connector-line;
@@ -18,13 +24,21 @@ $connector-line-width: awsui.$border-divider-list-width;
     grid-column: 1;
     block-size: 100%;
     position: relative;
-    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2 - 2px);
+    inset-inline-start: $connector-inline-offset;
+
+    @include theming.one-theme-only {
+      inset-inline-start: $connector-inline-offset-one-theme;
+    }
   }
 
   &.absolute {
     position: absolute;
     inset: 0;
     inset-block-end: awsui.$space-scaled-xs;
-    inset-inline-start: calc(($item-toggle-column-width - $connector-line-width) / 2 - 2px);
+    inset-inline-start: $connector-inline-offset;
+
+    @include theming.one-theme-only {
+      inset-inline-start: $connector-inline-offset-one-theme;
+    }
   }
 }

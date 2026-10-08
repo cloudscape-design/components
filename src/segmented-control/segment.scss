@@ -1,7 +1,5 @@
-/*
- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- SPDX-License-Identifier: Apache-2.0
-*/
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 @use 'sass:map';
 @use '../internal/styles' as styles;
@@ -21,7 +19,7 @@ $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-b
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
-$segment-radius: calc(awsui.$border-radius-button - 3px);
+$segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
 
 .segment {
   @include styles.font-body-m;
@@ -47,6 +45,11 @@ $segment-radius: calc(awsui.$border-radius-button - 3px);
 
   border-inline: none;
   border-block: none;
+
+  // Center the text when the segment stretches to full width
+  &.full-width {
+    justify-content: center;
+  }
 
   &:not(.refresh) {
     block-size: calc(100% - $segment-gap - (2 * awsui.$border-width-field));
@@ -81,7 +84,7 @@ $segment-radius: calc(awsui.$border-radius-button - 3px);
     block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
     min-block-size: calc(awsui.$line-height-body-m - $segment-gap * 2);
     inline-size: $segment-divider-width;
-    background: awsui.$color-border-input-default;
+    background: awsui.$color-border-segment-divider;
     z-index: 1;
   }
   &:not(.refresh):not(:last-child)::after {

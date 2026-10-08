@@ -267,6 +267,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: false,
   },
+  fontDecorationLineLinkSecondary: {
+    description: 'The text decoration line of secondary links. For example: underline, none.',
+    themeable: false,
+    public: false,
+  },
   fontWeightBreadcrumbCurrent: {
     description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
     themeable: true,

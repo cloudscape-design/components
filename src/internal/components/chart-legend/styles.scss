@@ -32,6 +32,7 @@
 }
 
 .marker {
+  @include styles.text-wrapping;
   display: inline-flex;
   align-items: flex-start;
   padding-block: 0;

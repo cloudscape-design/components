@@ -16,7 +16,6 @@ const noop = () => {};
 
 interface SkeletonRowsProps {
   count: number;
-  hasDataRows: boolean;
   totalColumnsCount: number;
   loadingText: string | undefined;
   hasSelection: boolean;
@@ -30,11 +29,11 @@ interface SkeletonRowsProps {
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
   colIndexOffset: number;
+  renderCell: TableProps.SkeletonConfig<any>['renderCell'];
 }
 
 export function SkeletonRows({
   count,
-  hasDataRows,
   totalColumnsCount,
   loadingText,
   hasSelection,
@@ -48,6 +47,7 @@ export function SkeletonRows({
   wrapLines,
   resizableColumns,
   colIndexOffset,
+  renderCell,
 }: SkeletonRowsProps) {
   return (
     <>
@@ -57,16 +57,12 @@ export function SkeletonRows({
         </td>
       </tr>
       {Array.from({ length: count }, (_, i) => {
-        const isFirstRow = !hasDataRows && i === 0;
-        const isLastRow = i === count - 1;
         return (
           <tr key={`skeleton-row-${i}`} className={styles.row} aria-hidden="true">
             {hasSelection && <td className={styles['selection-control']} />}
             {visibleColumnDefinitions.map((column: any, colIndex: number) => (
               <TableBodyCell
                 key={`skeleton-${getColumnKey(column, colIndex)}`}
-                isFirstRow={isFirstRow}
-                isLastRow={isLastRow}
                 isSelected={false}
                 isPrevSelected={false}
                 isNextSelected={false}
@@ -82,7 +78,14 @@ export function SkeletonRows({
                 ariaLabels={ariaLabels}
                 column={{
                   ...column,
-                  cell: () => <InternalSkeleton variant="dynamic" tagOverride="span" />,
+                  cell: () => {
+                    const customSkeleton = renderCell?.(column);
+                    return customSkeleton === undefined ? (
+                      <InternalSkeleton variant="dynamic" tagOverride="span" />
+                    ) : (
+                      customSkeleton
+                    );
+                  },
                 }}
                 item={{}}
                 wrapLines={wrapLines}

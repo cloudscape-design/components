@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -22,7 +22,15 @@ import { getAbstractSwitchStyles, getStyledControlStyle } from './style';
 import styles from './styles.css.js';
 
 interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
+}
+
+// Style API v2
+interface StyleClassNames {
+  control?: string;
+  label?: string;
+  description?: string;
 }
 
 const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
@@ -43,6 +51,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       nativeInputAttributes,
       __internalRootRef,
       style,
+      styleClassNames,
       __injectAnalyticsComponentMetadata,
       ...rest
     },
@@ -51,6 +60,13 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
+
+    // The handle's follow-through animation only plays once the state has changed since mount.
+    const [initialChecked] = useState(!!checked);
+    const [hasChanged, setHasChanged] = useState(false);
+    if (!hasChanged && !!checked !== initialChecked) {
+      setHasChanged(true);
+    }
 
     const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {};
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataToggleComponent = {
@@ -74,7 +90,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       <AbstractSwitch
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
-        controlClassName={clsx(styles['toggle-control'], {
+        controlClassName={clsx(styleClassNames?.control, styles['toggle-control'], {
           [styles['toggle-control-checked']]: checked,
           [styles['toggle-control-disabled']]: disabled,
           [styles['toggle-control-readonly']]: readOnly,
@@ -84,7 +100,9 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         disabled={disabled}
         readOnly={readOnly}
         label={children}
+        labelClassName={styleClassNames?.label}
         description={description}
+        descriptionClassName={styleClassNames?.description}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
@@ -119,6 +137,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
               [styles['toggle-handle-disabled']]: disabled,
               [styles['toggle-handle-readonly']]: readOnly,
             })}
+            data-awsui-motion-ready={hasChanged ? '' : undefined}
             style={getStyledControlStyle(style, checked, disabled, readOnly)}
           />
         }

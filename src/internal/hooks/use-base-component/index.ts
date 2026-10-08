@@ -4,13 +4,14 @@ import React from 'react';
 
 import {
   ComponentConfiguration,
+  initThemes,
   useComponentMetadata,
   useComponentMetrics,
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../../../types/analytics';
-import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
+import { ALWAYS_VISUAL_REFRESH, PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
 import { getVisualTheme } from '../../utils/get-visual-theme';
 import { useVisualRefresh } from '../use-visual-mode';
 import { useMissingStylesCheck } from './styles-check';
@@ -28,11 +29,24 @@ export interface InternalBaseComponentProps {
  * attached to the (internal) component's root DOM node. The hook takes care of attaching the metadata to this
  * root DOM node and emits the telemetry for this component.
  */
+
+let themesInitialized = false;
+
+/** for testing only */
+export function clearThemesInitialized() {
+  themesInitialized = false;
+}
+
 export default function useBaseComponent(
   componentName: string,
   config?: ComponentConfiguration,
   analyticsMetadata?: AnalyticsMetadata
 ) {
+  if (!themesInitialized) {
+    initThemes({ skipVisualRefresh: ALWAYS_VISUAL_REFRESH });
+    themesInitialized = true;
+  }
+
   const isVisualRefresh = useVisualRefresh();
   const theme = getVisualTheme(THEME, isVisualRefresh);
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);

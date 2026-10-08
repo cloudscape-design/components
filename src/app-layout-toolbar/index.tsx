@@ -62,6 +62,7 @@ const AppLayoutToolbar = React.forwardRef(
           disableContentPaddings: rest.disableContentPaddings,
           navigationWidth,
           navigationHide: rest.navigationHide,
+          navigationCloseBehavior: rest.navigationCloseBehavior,
           toolsHide: rest.toolsHide,
           toolsWidth,
           maxContentWidth,

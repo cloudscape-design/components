@@ -40,6 +40,7 @@ const Textarea = React.forwardRef(
       ariaRequired,
       name,
       rows,
+      resize = 'both',
       placeholder,
       autoFocus,
       ariaLabel,
@@ -50,7 +51,15 @@ const Textarea = React.forwardRef(
     ref: Ref<TextareaProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('Textarea', {
-      props: { autoComplete, autoFocus, disableBrowserAutocorrect, disableBrowserSpellcheck, readOnly, spellcheck },
+      props: {
+        autoComplete,
+        autoFocus,
+        disableBrowserAutocorrect,
+        disableBrowserSpellcheck,
+        readOnly,
+        resize,
+        spellcheck,
+      },
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
@@ -68,7 +77,7 @@ const Textarea = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, {
+      className: clsx(styles.textarea, styles[`textarea-resize-${resize}`], {
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
         [styles['textarea-warning']]: warning && !invalid,

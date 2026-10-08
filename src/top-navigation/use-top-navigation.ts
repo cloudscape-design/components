@@ -96,8 +96,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       fullIdentityWidth: getOptionalElementWidth(virtualRef.current, `.${styles.identity}`),
       titleWidth: getOptionalElementWidth(virtualRef.current, `.${styles.title}`),
       searchSlotWidth: getOptionalElementWidth(virtualRef.current, `.${styles.search}`),
-      searchUtilityWidth: virtualRef.current.querySelector('[data-utility-special="search"]')!.getBoundingClientRect()
-        .width,
+      searchUtilityWidth: getOptionalElementWidth(virtualRef.current, '[data-utility-special="search"]'),
       utilitiesLeftPadding: parseFloat(
         getComputedStyle(virtualRef.current.querySelector(`.${styles.utilities}`)!).paddingLeft || '0px'
       ),
@@ -107,9 +106,7 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       utilityWithoutLabelWidths: Array.prototype.slice
         .call(virtualRef.current.querySelectorAll(`[data-utility-hide="true"]`))
         .map((element: Element) => element.getBoundingClientRect().width),
-      menuTriggerUtilityWidth: virtualRef.current
-        .querySelector('[data-utility-special="menu-trigger"]')!
-        .getBoundingClientRect().width,
+      menuTriggerUtilityWidth: getOptionalElementWidth(virtualRef.current, '[data-utility-special="menu-trigger"]'),
     };
     setResponsiveState(determineBestResponsiveState(responsiveStates, sizeConfiguration));
   }, [responsiveStates, hasSearch]);

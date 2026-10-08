@@ -13,30 +13,33 @@ import InternalPagination from './internal';
 
 export { PaginationProps };
 
-const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>((props, ref) => {
-  const baseComponentProps = useBaseComponent('Pagination', {
-    props: { openEnd: props.openEnd },
-    metadata: { hasJumpToPage: !!props.jumpToPage },
-  });
-  return (
-    <InternalPagination
-      {...props}
-      {...baseComponentProps}
-      ref={ref}
-      {...getAnalyticsMetadataAttribute({
-        component: {
-          name: 'awsui.Pagination',
-          label: { root: 'self' },
-          properties: {
-            openEnd: `${!!props.openEnd}`,
-            pagesCount: `${props.pagesCount || ''}`,
-            currentPageIndex: `${props.currentPageIndex}`,
-          },
-        } as GeneratedAnalyticsMetadataPaginationComponent,
-      })}
-    />
-  );
-});
+const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>(
+  ({ pagesVariant = 'normal', ...props }, ref) => {
+    const baseComponentProps = useBaseComponent('Pagination', {
+      props: { openEnd: props.openEnd, pagesVariant },
+      metadata: { hasJumpToPage: !!props.jumpToPage },
+    });
+    return (
+      <InternalPagination
+        pagesVariant={pagesVariant}
+        {...props}
+        {...baseComponentProps}
+        ref={ref}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'awsui.Pagination',
+            label: { root: 'self' },
+            properties: {
+              openEnd: `${!!props.openEnd}`,
+              pagesCount: `${props.pagesCount || ''}`,
+              currentPageIndex: `${props.currentPageIndex}`,
+            },
+          } as GeneratedAnalyticsMetadataPaginationComponent,
+        })}
+      />
+    );
+  }
+);
 
 applyDisplayName(Pagination, 'Pagination');
 

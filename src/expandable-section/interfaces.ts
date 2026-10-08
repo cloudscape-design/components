@@ -51,7 +51,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   variant?: ExpandableSectionProps.Variant;
 
   /**
-   * Determines whether the content section's default padding is removed. This default padding is only present for the `container` variant.
+   * Determines whether the default padding around the content section is removed.
    */
   disableContentPaddings?: boolean;
 
@@ -71,12 +71,12 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerText?: React.ReactNode;
 
   /**
-   * Supplementary text below the heading. Use with the container, default or footer variants.
+   * Supplementary text below the heading. Use with the container, default, footer, inline or stacked variants.
    */
   headerDescription?: string;
 
   /**
-   * Specifies secondary text that's displayed to the right of the heading title. Use with the container variant.
+   * Specifies secondary text that's displayed to the right of the heading title. Use with the container or stacked variants.
    * Behaves similar to the Header component counter.
    */
   headerCounter?: string;
@@ -102,12 +102,12 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<ExpandableSectionProps.ChangeDetail>;
 
   /**
-   * The area next to the heading, used to display an Info link. Use with the container variant.
+   * The area next to the heading, used to display an Info link. Use with the container or stacked variants.
    */
   headerInfo?: React.ReactNode;
 
   /**
-   * Actions for the header. Use with the default or container variant.
+   * Actions for the header. Use with the default or container, default, inline or stacked variants.
    */
   headerActions?: React.ReactNode;
 }

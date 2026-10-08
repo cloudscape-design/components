@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Dropdown from '../dropdown/internal';
-import { useInternalI18n } from '../i18n/context';
+import { useInternalI18n, useLocale } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import ButtonTrigger from '../internal/components/button-trigger';
@@ -175,7 +175,8 @@ const DateRangePicker = React.forwardRef(
 
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
-    const normalizedLocale = normalizeLocale('DateRangePicker', locale);
+    const contextLocale = useLocale();
+    const normalizedLocale = normalizeLocale('DateRangePicker', locale || contextLocale);
 
     const closeDropdown = (focusTrigger = false) => {
       setIsDropDownOpen(false);

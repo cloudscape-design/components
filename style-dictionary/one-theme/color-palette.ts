@@ -5,7 +5,7 @@ import pick from 'lodash/pick.js';
 
 import { ReferenceTokens } from '@cloudscape-design/theming-build';
 
-import { paletteTokens as brand } from '../core/color-palette.js';
+import { paletteTokens as brand } from '../core/palette-values.js';
 import { expandColorDictionary, expandReferenceTokens } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { referenceTokens as vrReferenceTokens, tokens as parentTokens } from '../visual-refresh/color-palette.js';
@@ -66,13 +66,13 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
     'colorRed600',
     'colorRed900',
     'colorRed1000',
-    'colorYellow50',
-    'colorYellow300',
-    'colorYellow400',
-    'colorYellow500',
-    'colorYellow800',
-    'colorYellow900',
-    'colorYellow1000',
+    'colorOneThemeYellow50',
+    'colorOneThemeYellow300',
+    'colorOneThemeYellow400',
+    'colorOneThemeYellow500',
+    'colorOneThemeYellow800',
+    'colorOneThemeYellow900',
+    'colorOneThemeYellow1000',
     'colorPurple400',
     'colorPurple700',
     'colorAmber400',
@@ -127,6 +127,7 @@ const referenceTokens: ReferenceTokens = {
       100: brand.colorRed100,
       300: brand.colorRed300,
       400: brand.colorRed400,
+      500: brand.colorRed500,
       600: brand.colorRed600,
       700: brand.colorRed700,
       800: brand.colorRed800,
@@ -138,6 +139,7 @@ const referenceTokens: ReferenceTokens = {
       50: brand.colorGreen50,
       100: brand.colorGreen100,
       200: brand.colorGreen200,
+      300: brand.colorGreen300,
       500: brand.colorGreen500,
       600: brand.colorGreen600,
       700: brand.colorGreen700,
@@ -146,16 +148,16 @@ const referenceTokens: ReferenceTokens = {
       1000: brand.colorGreen1000,
     },
     warning: {
-      50: brand.colorYellow50,
-      100: brand.colorYellow100,
-      200: brand.colorYellow200,
-      300: brand.colorYellow300,
-      400: brand.colorYellow400,
-      500: brand.colorYellow500,
-      800: brand.colorYellow800,
-      900: brand.colorYellow900,
-      950: brand.colorYellow950,
-      1000: brand.colorYellow1000,
+      50: brand.colorOneThemeYellow50,
+      100: brand.colorOneThemeYellow100,
+      200: brand.colorOneThemeYellow200,
+      300: brand.colorOneThemeYellow300,
+      400: brand.colorOneThemeYellow400,
+      500: brand.colorOneThemeYellow500,
+      800: brand.colorOneThemeYellow800,
+      900: brand.colorOneThemeYellow900,
+      950: brand.colorOneThemeYellow950,
+      1000: brand.colorOneThemeYellow1000,
     },
     info: {
       50: brand.colorIndigo50,

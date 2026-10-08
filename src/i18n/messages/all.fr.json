@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{matchesCount} sur {totalCount} éléments",
+    "noMatch": "Aucune action correspondante",
+    "i18nStrings.filteringItemAriaDescription": "Continuez à taper pour filtrer les résultats."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Mois suivant",
     "previousMonthAriaLabel": "Mois précédent",
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Effacer le filtre",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0 éléments} one {{label}, 1 élément} other {{label}, {count} éléments}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 correspondances} one {1 correspondance} other {{count} correspondances}}"
   },
   "copy-to-clipboard": {
@@ -175,6 +181,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Dernières {amount} secondes} one {Dernière {amount} seconde} other {Dernières {amount} secondes}}} minute {{amount, plural, zero {Dernières {amount} minutes} one {Dernière {amount} minute} other {Dernières {amount} minutes}}} hour {{amount, plural, zero {Dernières {amount} heures} one {Dernière {amount} heure} other {Dernières {amount} heures}}} day {{amount, plural, zero {Derniers {amount} jours} one {Dernier {amount} jour} other {Derniers {amount} jours}}} week {{amount, plural, zero {Dernières {amount} semaines} one {Dernière {amount} semaine} other {Dernières {amount} semaines}}} month {{amount, plural, zero {Derniers {amount} mois} one {Dernier {amount} mois} other {Derniers {amount} mois}}} year {{amount, plural, zero {Dernières {amount} années} one {Dernière {amount} année} other {Dernières {amount} années}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {secondes} one {seconde} other {secondes}}} minute {{amount, plural, zero {minutes} one {minute} other {minutes}}} hour {{amount, plural, zero {heures} one {heure} other {heures}}} day {{amount, plural, zero {jours} one {jour} other {jours}}} week {{amount, plural, zero {semaines} one {semaine} other {semaines}}} month {{amount, plural, zero {mois} one {mois} other {mois}}} year {{amount, plural, zero {années} one {année} other {années}}} other {}}"
+  },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "Fermer le dialogue"
   },
   "drawer": {
     "i18nStrings.loadingText": "Chargement du contenu en cours"
@@ -256,7 +265,8 @@
     "ariaLabels.jumpToPageButtonLabel": "Aller à la page",
     "i18nStrings.jumpToPageInputLabel": "Page",
     "i18nStrings.jumpToPageError": "Page hors de portée. Affichage de la dernière page disponible.",
-    "i18nStrings.jumpToPageLoadingText": "Chargement en cours"
+    "i18nStrings.jumpToPageLoadingText": "Chargement en cours",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage} sur plus de {pagesCount}} false {{currentPage} sur {pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement du panneau",

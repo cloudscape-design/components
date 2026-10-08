@@ -1,5 +1,7 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.47 13.4099L4 10.6999H1V4.69994H4L6.47 1.98994C7.01 1.39994 8 1.77994 8 2.57994V12.8099C8 13.6099 7.01 13.9999 6.47 13.3999V13.4099Z" class="stroke-linejoin-round"/>
-<path d="M11 5.70996L14.99 9.70996" class="stroke-linejoin-round"/>
-<path d="M15 5.70996L11 9.69996" class="stroke-linejoin-round"/>
+<path d="M12.995 7.70996L11 5.70996" pathLength="1" class="stroke-linejoin-round awsui-icon-arm"/>
+<path d="M12.995 7.70996L14.99 9.70996" pathLength="1" class="stroke-linejoin-round awsui-icon-arm"/>
+<path d="M13 7.70496L15 5.70996" pathLength="1" class="stroke-linejoin-round awsui-icon-arm"/>
+<path d="M13 7.70496L11 9.69996" pathLength="1" class="stroke-linejoin-round awsui-icon-arm"/>
 </svg>

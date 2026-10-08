@@ -190,12 +190,24 @@ describe('FormField component', () => {
     describe('debouncing', () => {
       const DEBOUNCE_TIME_MS = 1000;
 
-      beforeEach(() => jest.useFakeTimers());
-      afterEach(() => jest.useRealTimers());
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        jest.useRealTimers();
+        jest.restoreAllMocks();
+      });
 
       test('renders characterCountText directly on initial render', () => {
         const { wrapper } = renderFormField({ characterCountText: 'this is a string' });
         expect(wrapper.findCharacterCount()!.getElement()).toHaveTextContent('this is a string');
+      });
+
+      test('does not schedule a debounce timer on initial mount', () => {
+        const setTimeoutSpy = jest.spyOn(window, 'setTimeout');
+        renderFormField({ characterCountText: 'this is a string' });
+        expect(setTimeoutSpy).not.toHaveBeenCalled();
       });
 
       test("wrapper.findCharacterCount() doesn't return the debounced version of the slot", () => {

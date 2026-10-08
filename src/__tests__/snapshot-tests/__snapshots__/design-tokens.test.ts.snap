@@ -77,6 +77,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -546,6 +550,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -1144,6 +1155,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
           },
         },
         "color-border-segment-hover": {
@@ -2399,6 +2417,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -3273,6 +3319,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -3301,32 +3354,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -3341,6 +3401,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -3706,6 +3780,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -4175,6 +4253,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -4773,6 +4858,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
           },
         },
         "color-border-segment-hover": {
@@ -6028,6 +6120,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -6902,6 +7022,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -6930,32 +7057,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -6970,6 +7104,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -7335,6 +7483,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of popovers.",
           "$value": "2px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "0px",
@@ -7804,6 +7956,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -8402,6 +8561,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
           },
         },
         "color-border-segment-hover": {
@@ -9657,6 +9823,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -10531,6 +10725,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -10559,32 +10760,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -10599,6 +10807,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -10963,6 +11185,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -11433,6 +11659,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -12033,6 +12266,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -13286,6 +13526,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -14160,6 +14428,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -14188,32 +14463,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -14228,6 +14510,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -14592,6 +14888,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -15062,6 +15362,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -15662,6 +15969,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -16915,6 +17229,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -17789,6 +18131,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -17817,32 +18166,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -17857,6 +18213,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -18221,6 +18591,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
           "$value": "2px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -18691,6 +19065,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#232f3e",
             "light": "#232f3e",
@@ -19289,6 +19670,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#414750",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-border-segment-hover": {
@@ -20542,6 +20930,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
           },
         },
         "color-text-avatar": {
@@ -21418,6 +21834,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "0ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -21446,32 +21869,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "ease-out",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-none-35003c",
-            "disabled": "awsui-none-35003c",
+            "default": "awsui-none-kjh8f3",
+            "disabled": "awsui-none-kjh8f3",
           },
         },
         "shadow-card": {
@@ -21486,6 +21916,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -21850,6 +22294,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
       "$value": "2px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
+      "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {
       "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
@@ -22320,6 +22768,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "color-background-layout-panel": {
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-layout-panel-content": {
+      "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
@@ -22918,6 +23373,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#687078",
       },
     },
     "color-border-segment-hover": {
@@ -24171,6 +24633,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#879596",
         "light": "#879596",
+      },
+    },
+    "color-text-action-card-icon-active": {
+      "$description": "The color of icons in action cards in active state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#002b66",
+      },
+    },
+    "color-text-action-card-icon-default": {
+      "$description": "The default color of icons in action cards.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-text-action-card-icon-disabled": {
+      "$description": "The color of icons in action cards in disabled state.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#aab7b8",
+      },
+    },
+    "color-text-action-card-icon-hover": {
+      "$description": "The color of icons in action cards in hover state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#002b66",
       },
     },
     "color-text-avatar": {
@@ -25047,6 +25537,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "disabled": "0ms",
       },
     },
+    "motion-duration-tooltip-enter": {
+      "$description": "The duration for the tooltip enter transition.",
+      "$value": {
+        "default": "0ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-easing-avatar-gen-ai-gradient": {
       "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": {
@@ -25075,32 +25572,39 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "disabled": "ease-out",
       },
     },
+    "motion-easing-tooltip-enter": {
+      "$description": "The easing curve for the tooltip enter transition.",
+      "$value": {
+        "default": "cubic-bezier(0, 0, 0, 1)",
+        "disabled": "cubic-bezier(0, 0, 0, 1)",
+      },
+    },
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-jiml2r",
+        "disabled": "awsui-fade-in-jiml2r",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-au27m5",
+        "disabled": "awsui-fade-out-au27m5",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-kjh8f3",
+        "disabled": "awsui-none-kjh8f3",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-none-35003c",
-        "disabled": "awsui-none-35003c",
+        "default": "awsui-none-kjh8f3",
+        "disabled": "awsui-none-kjh8f3",
       },
     },
     "shadow-card": {
@@ -25115,6 +25619,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+      },
+    },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
       },
     },
     "size-side-navigation-item-height": {
@@ -25483,6 +26001,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -25954,6 +26476,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -26552,6 +27081,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-border-segment-hover": {
@@ -27807,6 +28343,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -28681,6 +29245,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -28709,32 +29280,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -28749,6 +29327,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -29112,6 +29704,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -29583,6 +30179,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -30181,6 +30784,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-hover": {
@@ -31434,6 +32044,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-avatar": {
@@ -32310,6 +32948,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -32338,32 +32983,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -32378,6 +33030,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -32741,6 +33407,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -33217,6 +33887,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -33810,6 +34487,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-border-segment-hover": {
@@ -35065,6 +35749,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -35939,6 +36651,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -35967,32 +36686,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -36007,6 +36733,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -36370,6 +37110,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -36846,6 +37590,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-layout-toggle-active": {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": {
@@ -37439,6 +38190,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-border-segment-hover": {
@@ -38694,6 +39452,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -39568,6 +40354,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -39596,32 +40389,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -39636,6 +40436,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -39999,6 +40813,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -40470,6 +41288,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -41070,6 +41895,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -42323,6 +43155,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -43197,6 +44057,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -43225,32 +44092,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -43265,6 +44139,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -43628,6 +44516,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-popover": {
           "$description": "The border radius of popovers.",
+          "$value": "8px",
+        },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
           "$value": "8px",
         },
         "border-radius-tabs-focus-ring": {
@@ -44099,6 +44991,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -44699,6 +45598,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
+          },
+        },
         "color-border-segment-hover": {
           "$description": "Deprecated - this token is no longer in use.",
           "$value": {
@@ -45952,6 +46858,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -46826,6 +47760,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -46854,32 +47795,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -46894,6 +47842,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -47259,6 +48221,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -47728,6 +48694,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -48326,6 +49299,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-hover": {
@@ -49581,6 +50561,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -50455,6 +51463,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -50483,32 +51498,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -50523,6 +51545,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -50888,6 +51924,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of popovers.",
           "$value": "8px",
         },
+        "border-radius-support-prompt": {
+          "$description": "The border radius of support prompts.",
+          "$value": "8px",
+        },
         "border-radius-tabs-focus-ring": {
           "$description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
           "$value": "20px",
@@ -51357,6 +52397,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-layout-panel": {
           "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-layout-panel-content": {
+          "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -51955,6 +53002,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-border-segment-divider": {
+          "$description": "The color of the dividers between segments in a segmented control.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-border-segment-hover": {
@@ -53210,6 +54264,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-action-card-icon-active": {
+          "$description": "The color of icons in action cards in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-action-card-icon-default": {
+          "$description": "The default color of icons in action cards.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-action-card-icon-disabled": {
+          "$description": "The color of icons in action cards in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-action-card-icon-hover": {
+          "$description": "The color of icons in action cards in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-avatar": {
           "$description": "The text and icon color of avatars.",
           "$value": {
@@ -54084,6 +55166,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-tooltip-enter": {
+          "$description": "The duration for the tooltip enter transition.",
+          "$value": {
+            "default": "115ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-easing-avatar-gen-ai-gradient": {
           "$description": "The easing curve for gradient motion of gen-ai avatars.",
           "$value": {
@@ -54112,32 +55201,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "cubic-bezier(1, 0, 0.83, 1)",
           },
         },
+        "motion-easing-tooltip-enter": {
+          "$description": "The easing curve for the tooltip enter transition.",
+          "$value": {
+            "default": "cubic-bezier(0, 0, 0, 1)",
+            "disabled": "cubic-bezier(0, 0, 0, 1)",
+          },
+        },
         "motion-keyframes-fade-in": {
           "$description": "The CSS keyframes for showing an element.",
           "$value": {
-            "default": "awsui-fade-in-35003c",
-            "disabled": "awsui-fade-in-35003c",
+            "default": "awsui-fade-in-jiml2r",
+            "disabled": "awsui-fade-in-jiml2r",
           },
         },
         "motion-keyframes-fade-out": {
           "$description": "The CSS keyframes for hiding an element.",
           "$value": {
-            "default": "awsui-fade-out-35003c",
-            "disabled": "awsui-fade-out-35003c",
+            "default": "awsui-fade-out-au27m5",
+            "disabled": "awsui-fade-out-au27m5",
           },
         },
         "motion-keyframes-scale-popup": {
           "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
           "$value": {
-            "default": "awsui-scale-popup-35003c",
-            "disabled": "awsui-scale-popup-35003c",
+            "default": "awsui-scale-popup-2m9987",
+            "disabled": "awsui-scale-popup-2m9987",
           },
         },
         "motion-keyframes-status-icon-error": {
           "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
           "$value": {
-            "default": "awsui-status-icon-error-35003c",
-            "disabled": "awsui-status-icon-error-35003c",
+            "default": "awsui-status-icon-error-mjjk3s",
+            "disabled": "awsui-status-icon-error-mjjk3s",
           },
         },
         "shadow-card": {
@@ -54152,6 +55248,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "size-side-navigation-collapsed-width": {
+          "$description": "The default width of the collapsed side navigation rail.",
+          "$value": {
+            "comfortable": "52px",
+            "compact": "52px",
+          },
+        },
+        "size-side-navigation-item-collapsed": {
+          "$description": "The square size of collapsed side navigation items.",
+          "$value": {
+            "comfortable": "30px",
+            "compact": "28px",
           },
         },
         "size-side-navigation-item-height": {
@@ -54515,6 +55625,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-radius-popover": {
       "$description": "The border radius of popovers.",
+      "$value": "8px",
+    },
+    "border-radius-support-prompt": {
+      "$description": "The border radius of support prompts.",
       "$value": "8px",
     },
     "border-radius-tabs-focus-ring": {
@@ -54986,6 +56100,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-background-layout-panel": {
       "$description": "The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-layout-panel-content": {
+      "$description": "The background color of app layout panel content area. For example: The side navigation and tools panel content background color.",
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
@@ -55584,6 +56705,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
+      },
+    },
+    "color-border-segment-divider": {
+      "$description": "The color of the dividers between segments in a segmented control.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
       },
     },
     "color-border-segment-hover": {
@@ -56839,6 +57967,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#8c8c94",
       },
     },
+    "color-text-action-card-icon-active": {
+      "$description": "The color of icons in action cards in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
+    "color-text-action-card-icon-default": {
+      "$description": "The default color of icons in action cards.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-action-card-icon-disabled": {
+      "$description": "The color of icons in action cards in disabled state.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
+      },
+    },
+    "color-text-action-card-icon-hover": {
+      "$description": "The color of icons in action cards in hover state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
     "color-text-avatar": {
       "$description": "The text and icon color of avatars.",
       "$value": {
@@ -57713,6 +58869,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "disabled": "0ms",
       },
     },
+    "motion-duration-tooltip-enter": {
+      "$description": "The duration for the tooltip enter transition.",
+      "$value": {
+        "default": "115ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-easing-avatar-gen-ai-gradient": {
       "$description": "The easing curve for gradient motion of gen-ai avatars.",
       "$value": {
@@ -57741,32 +58904,39 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "disabled": "cubic-bezier(1, 0, 0.83, 1)",
       },
     },
+    "motion-easing-tooltip-enter": {
+      "$description": "The easing curve for the tooltip enter transition.",
+      "$value": {
+        "default": "cubic-bezier(0, 0, 0, 1)",
+        "disabled": "cubic-bezier(0, 0, 0, 1)",
+      },
+    },
     "motion-keyframes-fade-in": {
       "$description": "The CSS keyframes for showing an element.",
       "$value": {
-        "default": "awsui-fade-in-35003c",
-        "disabled": "awsui-fade-in-35003c",
+        "default": "awsui-fade-in-jiml2r",
+        "disabled": "awsui-fade-in-jiml2r",
       },
     },
     "motion-keyframes-fade-out": {
       "$description": "The CSS keyframes for hiding an element.",
       "$value": {
-        "default": "awsui-fade-out-35003c",
-        "disabled": "awsui-fade-out-35003c",
+        "default": "awsui-fade-out-au27m5",
+        "disabled": "awsui-fade-out-au27m5",
       },
     },
     "motion-keyframes-scale-popup": {
       "$description": "The CSS keyframes for scaling up an element to draw the user's attention.",
       "$value": {
-        "default": "awsui-scale-popup-35003c",
-        "disabled": "awsui-scale-popup-35003c",
+        "default": "awsui-scale-popup-2m9987",
+        "disabled": "awsui-scale-popup-2m9987",
       },
     },
     "motion-keyframes-status-icon-error": {
       "$description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
       "$value": {
-        "default": "awsui-status-icon-error-35003c",
-        "disabled": "awsui-status-icon-error-35003c",
+        "default": "awsui-status-icon-error-mjjk3s",
+        "disabled": "awsui-status-icon-error-mjjk3s",
       },
     },
     "shadow-card": {
@@ -57781,6 +58951,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "size-side-navigation-collapsed-width": {
+      "$description": "The default width of the collapsed side navigation rail.",
+      "$value": {
+        "comfortable": "52px",
+        "compact": "52px",
+      },
+    },
+    "size-side-navigation-item-collapsed": {
+      "$description": "The square size of collapsed side navigation items.",
+      "$value": {
+        "comfortable": "30px",
+        "compact": "28px",
       },
     },
     "size-side-navigation-item-height": {

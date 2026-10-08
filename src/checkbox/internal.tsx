@@ -26,7 +26,15 @@ import styles from './styles.css.js';
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
   showOutline?: boolean;
+  styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
+}
+
+// Style API v2
+interface StyleClassNames {
+  control?: string;
+  label?: string;
+  description?: string;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
@@ -49,6 +57,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       showOutline,
       ariaControls,
       style,
+      styleClassNames,
       nativeInputAttributes,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
@@ -87,13 +96,15 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       <AbstractSwitch
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
-        controlClassName={styles['checkbox-control']}
+        controlClassName={clsx(styleClassNames?.control, styles['checkbox-control'])}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
         readOnly={readOnly}
         label={children}
+        labelClassName={styleClassNames?.label}
         description={description}
+        descriptionClassName={styleClassNames?.description}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}

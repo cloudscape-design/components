@@ -1,5 +1,5 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M13 9.01172V3.01172H7" class="stroke-linejoin-round"/>
-<path d="M13.02 3L7 9.01" class="stroke-linejoin-round"/>
+<path d="M13 9.01172V3.01172H7" class="stroke-linejoin-round awsui-icon-arrow"/>
+<path d="M13.02 3L7 9.01" class="stroke-linejoin-round awsui-icon-arrow"/>
 <path d="M3 5.01172V13.0117H9H11.01" class="stroke-linejoin-round"/>
 </svg>

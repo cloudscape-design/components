@@ -10,6 +10,7 @@ export type Wrapper = ReturnType<typeof createWrapper>;
 export interface ScreenshotTestConfiguration {
   width?: number;
   height?: number;
+  skipBrowsers?: string[];
 }
 
 // 'screenshotArea' — captures the .screenshot-area element on the page.
@@ -27,6 +28,7 @@ export interface TestDefinition {
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
   pixelDiffTolerance?: number;
+  visualRefreshOnly?: boolean;
   setup?: (context: {
     page: VisualTestPageObject;
     wrapper: Wrapper;
@@ -38,5 +40,6 @@ export interface TestDefinition {
 export interface TestSuite {
   componentName?: string;
   description: string;
+  visualRefreshOnly?: boolean;
   tests: Array<TestDefinition | TestSuite>;
 }

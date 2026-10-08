@@ -29,6 +29,18 @@ export interface TextareaProps
   rows?: number;
 
   /**
+   * Specifies the directions in which the user can resize the textarea:
+   *
+   * * `both` (default) - The user can change both the width and the height.
+   * * `vertical` - The user can only change the height. Use this when the textarea
+   *   is next to other content that a width change would disrupt.
+   * * `horizontal` - The user can only change the width.
+   * * `none` - The user can't resize the textarea. Longer content scrolls instead.
+   *   Consider using the `rows` property to make the initial height fit the expected content.
+   */
+  resize?: TextareaProps.Resize;
+
+  /**
    * Specifies whether to disable browser spellcheck feature.
    * If you set this to `true`, it disables native browser capability
    * that checks for spelling/grammar errors.
@@ -61,6 +73,8 @@ export interface TextareaProps
 
 export namespace TextareaProps {
   export type KeyDetail = BaseKeyDetail;
+
+  export type Resize = 'both' | 'horizontal' | 'vertical' | 'none';
 
   export interface ChangeDetail {
     /**

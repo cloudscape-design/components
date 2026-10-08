@@ -15,6 +15,8 @@ const permutations = createPermutations<InputProps>([
     disabled: [false, true],
     readOnly: [false, true],
     onChange: [() => {}],
+    prefix: [undefined, '$'],
+    suffix: [undefined, 'USD'],
     style: [
       {
         root: {

@@ -38,7 +38,7 @@ beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
 describe('Input renders correct analytics metadata', () => {
-  describe('on the right button', () => {
+  describe('on the end button', () => {
     test('when it is the clear button', () => {
       const renderResult = render(<Input value="value" onChange={() => {}} type="search" clearAriaLabel="clear" />);
       const clearInputButton = createWrapper(renderResult.container).findInput()!.findClearButton()!.getElement();
@@ -51,11 +51,11 @@ describe('Input renders correct analytics metadata', () => {
       });
     });
     test('when it is not the clear button', () => {
-      const renderResult = render(<InternalInput value="value" onChange={() => {}} __rightIcon="settings" />);
-      const rightIconButton = createWrapper(renderResult.container)
-        .findByClassName(styles['input-icon-right'])!
+      const renderResult = render(<InternalInput value="value" onChange={() => {}} __endIcon="settings" />);
+      const endIconButton = createWrapper(renderResult.container)
+        .findByClassName(styles['input-icon-end'])!
         .getElement();
-      expect(getGeneratedAnalyticsMetadata(rightIconButton)).toEqual({});
+      expect(getGeneratedAnalyticsMetadata(endIconButton)).toEqual({});
     });
   });
   describe('on the component', () => {

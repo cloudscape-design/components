@@ -222,6 +222,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
   /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   * @i18n
    */
   filteringResultsText?: (matchesCount: number, totalCount: number) => string;
 
@@ -232,6 +233,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: ButtonDropdownProps.I18nStrings;
 
@@ -362,6 +364,11 @@ export namespace ButtonDropdownProps {
     id?: string;
     text?: string;
     items: Items;
+    /**
+     * Controls whether this group renders as an expandable submenu, overriding `expandableGroups`
+     * for this group. Defaults to the `expandableGroups` value when unset.
+     */
+    expandable?: boolean;
   }
 
   export type ItemOrGroup = Item | CheckboxItem | ItemGroup;

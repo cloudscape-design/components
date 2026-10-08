@@ -58,6 +58,11 @@
   "button": {
     "i18nStrings.externalIconAriaLabel": "새 탭에서 열림"
   },
+  "button-dropdown": {
+    "filteringResultsText": "{totalCount}개 항목 중 {matchesCount}개",
+    "noMatch": "일치하는 작업 없음",
+    "i18nStrings.filteringItemAriaDescription": "결과를 필터링하려면 계속 입력하세요."
+  },
   "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",
@@ -125,6 +130,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "필터 지우기",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, zero {{label}, 0개 항목} one {{label}, 1개 항목} other {{label}, {count}개 항목}}",
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0개 일치} one {1개 일치} other {{count}개 일치}}"
   },
   "copy-to-clipboard": {
@@ -175,6 +181,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}~{endDate}에서 선택한 범위",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {지난 {amount}초} one {지난 {amount}초} other {지난 {amount}초}}} minute {{amount, plural, zero {지난 {amount}분} one {지난 {amount}분} other {지난 {amount}분}}} hour {{amount, plural, zero {지난 {amount}시간} one {지난 {amount}시간} other {지난 {amount}시간}}} day {{amount, plural, zero {지난 {amount}일} one {지난 {amount}일} other {지난 {amount}일}}} week {{amount, plural, zero {지난 {amount}주} one {지난 {amount}주} other {지난 {amount}주}}} month {{amount, plural, zero {지난 {amount}개월} one {지난 {amount}개월} other {지난 {amount}개월}}} year {{amount, plural, zero {지난 {amount}년} one {지난 {amount}년} other {지난 {amount}년}}} other {}}",
     "i18nStrings.formatUnit": "{unit, select, second {{amount, plural, zero {초} one {초} other {초}}} minute {{amount, plural, zero {분} one {분} other {분}}} hour {{amount, plural, zero {시간} one {시간} other {시간}}} day {{amount, plural, zero {일} one {일} other {일}}} week {{amount, plural, zero {주} one {주} other {주}}} month {{amount, plural, zero {개월} one {개월} other {개월}}} year {{amount, plural, zero {년} one {년} other {년}}} other {}}"
+  },
+  "dialog": {
+    "i18nStrings.dismissAriaLabel": "대화 상자 닫기"
   },
   "drawer": {
     "i18nStrings.loadingText": "콘텐츠 로드 중"
@@ -256,7 +265,8 @@
     "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
     "i18nStrings.jumpToPageInputLabel": "페이지",
     "i18nStrings.jumpToPageError": "페이지가 범위를 벗어났습니다. 마지막으로 사용 가능한 페이지를 표시합니다.",
-    "i18nStrings.jumpToPageLoadingText": "로드 중"
+    "i18nStrings.jumpToPageLoadingText": "로드 중",
+    "i18nStrings.pagesCompactText": "{openEnd, select, true {{currentPage}/{pagesCount}+} false {{currentPage}/{pagesCount}} other {}}"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",

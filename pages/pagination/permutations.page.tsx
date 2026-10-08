@@ -19,6 +19,7 @@ const paginationLabels: PaginationProps.Labels = {
 
 const permutations = createPermutations<PaginationProps>([
   {
+    pagesVariant: ['compact'],
     currentPageIndex: [7],
     pagesCount: [15],
     disabled: [true],
@@ -26,6 +27,7 @@ const permutations = createPermutations<PaginationProps>([
     jumpToPage: [undefined, { loading: false }],
   },
   {
+    pagesVariant: ['compact', 'normal'],
     currentPageIndex: [1, 6, 15],
     pagesCount: [15],
     openEnd: [true, false],

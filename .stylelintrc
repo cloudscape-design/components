@@ -4,7 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
-    "custom-property-pattern": "^(?!.+)",
+    "custom-property-pattern": "^awsui-(internal-)?style-",
     "scss/comment-no-empty": null,
     "scss/operator-no-newline-after": null,
     "selector-pseudo-class-no-unknown": [
@@ -58,7 +58,28 @@
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always",
-        "@cloudscape-design/no-motion-outside-of-mixin": [true]
+        "@cloudscape-design/no-motion-outside-of-mixin": [true],
+        "@cloudscape-design/license-headers": [
+          true,
+          {
+            "header": "\n Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n SPDX-License-Identifier: Apache-2.0\n",
+            "commentType": "line"
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "./src/**/styles.scss"
+      ],
+      "rules": {
+        "@cloudscape-design/license-headers": [
+          true,
+          {
+            "header": "\n Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n SPDX-License-Identifier: Apache-2.0\n",
+            "commentType": "block"
+          }
+        ]
       }
     }
   ],

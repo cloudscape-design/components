@@ -11,7 +11,12 @@ import { SpinnerProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-interface InternalSpinnerProps extends SpinnerProps, InternalBaseComponentProps {}
+// `x-small` is intentionally internal-only: it matches One Theme's x-small status icons and is not part of the public Spinner API
+type InternalSpinnerSize = SpinnerProps.Size | 'x-small';
+
+interface InternalSpinnerProps extends Omit<SpinnerProps, 'size'>, InternalBaseComponentProps {
+  size?: InternalSpinnerSize;
+}
 
 export default function InternalSpinner({
   size = 'normal',

@@ -9,22 +9,19 @@ import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SomeRequired } from '../internal/types';
 /**
  * @awsuiSystem core
  */
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalSpinner from '../spinner/internal';
 import { StatusIndicatorProps } from './interfaces';
-import { InternalStatusIndicatorType } from './internal-interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalStatusIndicatorProps extends Omit<StatusIndicatorProps, 'type'>, InternalBaseComponentProps {
-  /**
-   * Status type. The internal `log` value renders a plain dot for Steps.
-   */
-  type: InternalStatusIndicatorType;
-
+export interface InternalStatusIndicatorProps
+  extends SomeRequired<StatusIndicatorProps, 'type'>,
+    InternalBaseComponentProps {
   /**
    * Play an animation on the error icon when first rendered
    */
@@ -39,20 +36,30 @@ export interface InternalStatusIndicatorProps extends Omit<StatusIndicatorProps,
    * The CSS behavior of the status indicator container element.
    */
   __display?: 'inline' | 'inline-block';
+
+  /**
+   * Renders the status indicator without its container background, for embedding inside other components.
+   */
+  __embedded?: boolean;
 }
 
-const typeToIcon: (size: IconProps.Size) => Record<InternalStatusIndicatorType, JSX.Element> = size => ({
-  error: <InternalIcon name="status-negative" size={size} />,
-  warning: <InternalIcon name="status-warning" size={size} />,
-  success: <InternalIcon name="status-positive" size={size} />,
-  info: <InternalIcon name="status-info" size={size} />,
-  stopped: <InternalIcon name="status-stopped" size={size} />,
-  pending: <InternalIcon name="status-pending" size={size} />,
-  'in-progress': <InternalIcon name="status-in-progress" size={size} />,
-  loading: <InternalSpinner />,
-  'not-started': <InternalIcon name="status-not-started" size={size} />,
-  log: <InternalIcon name="dot" size={size} />,
-});
+const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => {
+  // Spinner supports a narrower size set than icons (no 'small'/'medium'/'inherit'); map to a valid
+  // spinner size so the loading spinner matches the sibling status icons.
+  const spinnerSize = size === 'x-small' ? 'x-small' : 'normal';
+  return {
+    error: <InternalIcon name="status-negative" size={size} />,
+    warning: <InternalIcon name="status-warning" size={size} />,
+    success: <InternalIcon name="status-positive" size={size} />,
+    info: <InternalIcon name="status-info" size={size} />,
+    stopped: <InternalIcon name="status-stopped" size={size} />,
+    pending: <InternalIcon name="status-pending" size={size} />,
+    'in-progress': <InternalIcon name="status-in-progress" size={size} />,
+    loading: <InternalSpinner size={spinnerSize} />,
+    'not-started': <InternalIcon name="status-not-started" size={size} />,
+    log: <InternalIcon name="dot" size={size} />,
+  };
+};
 
 interface InternalStatusIconProps extends Pick<InternalStatusIndicatorProps, 'type' | 'iconAriaLabel'> {
   animate?: InternalStatusIndicatorProps['__animate'];
@@ -90,6 +97,7 @@ export default function StatusIndicator({
   __internalRootRef,
   __size = isThemeActive(Theme.OneTheme) ? 'x-small' : 'normal',
   __display = 'inline-block',
+  __embedded = false,
   ...rest
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
@@ -102,6 +110,7 @@ export default function StatusIndicator({
       className={clsx(
         styles.root,
         styles[`status-${type}`],
+        __embedded && styles.embedded,
         {
           [styles[`color-override-${colorOverride}`]]: colorOverride,
         },

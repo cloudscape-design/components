@@ -172,6 +172,12 @@ export function TabHeaderBar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [horizontalOverflow, widthChange, tabs.length]);
 
+  // Keep the roving tab stop in sync with the active tab so that keyboard focus
+  // lands on the active tab even when it is selected programmatically.
+  useEffect(() => {
+    setFocusedTabId(activeTabId);
+  }, [activeTabId]);
+
   useEffect(() => {
     scrollIntoViewIfPossible(true);
     // Smooth scrolling should only be called upon activeId change
@@ -613,11 +619,16 @@ const TabTrigger = forwardRef(
     };
 
     return tab.href ? (
-      <a {...commonProps} href={tab.href}>
+      <a {...commonProps} href={tab.href} data-awsui-motion-trigger="hover">
         {children}
       </a>
     ) : (
-      <button {...commonProps} type="button" disabled={tab.disabled && !isDisabledWithReason}>
+      <button
+        {...commonProps}
+        type="button"
+        disabled={tab.disabled && !isDisabledWithReason}
+        data-awsui-motion-trigger="hover"
+      >
         {children}
       </button>
     );

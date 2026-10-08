@@ -17,6 +17,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthFlashbarInlineStart: '2px',
   borderWidthItemSelected: '1px',
   borderWidthCardSelected: '1px',
+  borderWidthNotificationStackBar: '1px',
 
   // ── Icon stroke widths ────────────────────────────────────────────────────
   borderWidthIconSmall: '1.5px',
@@ -28,20 +29,22 @@ const tokens: StyleDictionary.BordersDictionary = {
   // ── Border radii ──────────────────────────────────────────────────────────
   borderRadiusAlert: '2px',
   borderRadiusBadge: '16px',
-  borderRadiusButton: '2px',
-  borderRadiusContainer: '4px',
-  borderRadiusDropdown: '2px',
-  borderRadiusDropzone: '4px',
+  borderRadiusButton: '4px',
+  borderRadiusContainer: '2px',
+  borderRadiusDropdown: '4px',
+  borderRadiusDropzone: '2px',
   borderRadiusFlashbar: '2px',
-  borderRadiusInput: '2px',
-  borderRadiusItem: '2px',
+  borderRadiusInput: '4px',
+  borderRadiusItem: '4px',
   borderRadiusPopover: '4px',
   borderRadiusSideNavigationItemCollapsed: '{borderRadiusItem}',
   borderRadiusStatusIndicator: '2px',
   borderRadiusTabsFocusRing: '4px',
-  borderRadiusToken: '2px',
+  borderRadiusToken: '4px',
   borderRadiusTokenInline: '{borderRadiusToken}',
-  borderRadiusTutorialPanelItem: '4px',
+  borderRadiusTutorialPanelItem: '2px',
+  borderRadiusChatBubble: '4px',
+  borderRadiusSupportPrompt: '4px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);

@@ -3,9 +3,12 @@
 module.exports = {
   clean: require('./clean'),
   docs: require('./docs'),
+  styleDocs: require('./style-docs'),
   generateEnvironment: require('./generate-environment'),
   generateIcons: require('./generate-icons'),
   generateIndexFile: require('./generate-index-file'),
+  generateVisualTests: require('./generate-visual-tests'),
+  generateTestDefinitionsIndex: require('./generate-test-definitions-index'),
   generateCustomCssPropertiesMap: require('./generate-custom-css-properties'),
   packageJSON: require('./package-json'),
   styles: require('./styles'),

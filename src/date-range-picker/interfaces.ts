@@ -41,7 +41,8 @@ export interface DateRangePickerBaseProps {
   /**
    * The locale to be used for rendering month names and defining the
    * starting date of the week. If not provided, it will be determined
-   * from the page and browser locales. Supported values and formats
+   * from the locale of the surrounding I18nProvider,
+   * or the page and browser locales otherwise. Supported values and formats
    * are as-per the [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
    */
   locale?: string;

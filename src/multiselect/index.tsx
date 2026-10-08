@@ -41,10 +41,14 @@ const Multiselect = React.forwardRef(
         virtualScroll: restProps.virtualScroll,
         readOnly: restProps.readOnly,
         enableSelectAll: restProps.enableSelectAll,
+        dropdownRole: restProps.dropdownRole,
       },
       metadata: {
         hasInlineLabel: Boolean(restProps.inlineLabelText),
         hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
+        hasDropdownHeader: Boolean(restProps.renderDropdownHeader),
+        hasDropdownFooter: Boolean(restProps.renderDropdownFooter),
+        hasDropdownAriaDescribedby: Boolean(restProps.dropdownAriaDescribedby),
       },
     });
 
