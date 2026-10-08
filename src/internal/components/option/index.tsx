@@ -93,7 +93,7 @@ const Option = ({
     >
       {icon}
       <SpanOrDivTag className={styles.content}>
-        <SpanOrDivTag className={styles['label-content']}>
+        <SpanOrDivTag className={clsx(styles['label-content'], triggerVariant && styles['trigger-variant'])}>
           {option.labelContent ? (
             <SpanOrDivTag className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</SpanOrDivTag>
           ) : (
