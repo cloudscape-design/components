@@ -353,6 +353,12 @@ $inline-label-border-radius: 2px;
   z-index: 1;
 }
 
+// Adjusts an inline label's vertical position so it does not overlap inline tokens.
+@mixin inline-label-inline-tokens {
+  padding-block-end: 0;
+  transform: translateY(-1.5px);
+}
+
 @mixin inline-label-disabled {
   background: linear-gradient(
     to bottom,
