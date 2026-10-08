@@ -6,6 +6,7 @@ const {
   clean,
   docs,
   styleDocs,
+  styleMixins,
   generateEnvironment,
   generateIcons,
   generateIndexFile,
@@ -31,7 +32,7 @@ const quickBuild = series(
   clean,
   parallel(packageJSON, generateI18nMessages, generateEnvironment, generateIcons, generateIndexFile, copyFiles),
   parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils),
-  bundleVendorFiles
+  parallel(bundleVendorFiles, styleMixins)
 );
 
 exports.clean = clean;
@@ -60,5 +61,5 @@ exports.watch = () => {
   );
   watch(['src/i18n/messages/*.json'], generateI18nMessages);
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
-  watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
+  watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], series(styles, styleMixins));
 };

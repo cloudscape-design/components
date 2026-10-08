@@ -51,9 +51,9 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   }
 }
 
-@mixin docs($name, $map) {
+@mixin docs($name, $tokens: null, $properties: null, $descriptions: null) {
   @if enabled() {
-    @include toolkit.docs($name, $map);
+    @include toolkit.docs($name, $tokens, $properties, $descriptions);
   }
 }
 
