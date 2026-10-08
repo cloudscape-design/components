@@ -120,6 +120,29 @@ $tokens: style-api.resolve($props, carrier);
     }
   }
 
+  // Fuse the button onto a control group as its `action`: it reads the grouped-control
+  // context and applies the shared corner mixin to its own painted root.
+  &.grouped {
+    // Match the field height recipe so the fused action aligns; normal/primary heights
+    // match only while $border-width-button == $border-width-field (true by default).
+    padding-block: awsui.$space-field-vertical;
+    min-block-size: awsui.$size-vertical-input;
+
+    // Keep the fused action on one line.
+    white-space: nowrap;
+
+    @include styles.grouped-control;
+
+    &.variant-icon {
+      // Icon variant is borderless; draw the control border so the fused strip is continuous.
+      border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+      border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+
+      // 8px per side (requested): stock icon-only padding is too tight beside the fields.
+      padding-inline: awsui.$space-xs;
+    }
+  }
+
   &:focus {
     outline: none;
     text-decoration: none;
@@ -151,6 +174,23 @@ $tokens: style-api.resolve($props, carrier);
         $width: $width,
         $color: $color
       );
+    }
+
+    // Trace the fused icon action's flat-start / rounded-end border so the ring sits
+    // flush. Scoped to the only shape it fits: the horizontal-last icon action, whose
+    // painted border is $border-width-field with 0/$border-radius-input corners.
+    &.grouped-horizontal-last.variant-icon {
+      outline-offset: calc(-1 * #{awsui.$border-width-field});
+      &::before {
+        inset-inline-start: 0;
+        inset-block-start: 0;
+        inline-size: 100%;
+        block-size: 100%;
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        border-start-end-radius: awsui.$border-radius-input;
+        border-end-end-radius: awsui.$border-radius-input;
+      }
     }
   }
 

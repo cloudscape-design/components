@@ -408,4 +408,32 @@ $inline-label-border-radius: 2px;
       border-start-end-radius: 0;
     }
   }
+
+  // When an action is fused onto the group's inline-end, the controls' corners that
+  // face the action become interior to the fused strip and must be squared so the
+  // action owns the only rounded inline-end corners. These rules run on the SAME
+  // element the base grouped-control radii paint on (each control applies this mixin
+  // to its own painted element), so they reach the visible corner for every control
+  // type without any component reaching into another's DOM.
+  &-end-action {
+    // Horizontal: only the trailing control (last, or the single `only`) sits against
+    // the action; first/middle already have their inline-end corners squared.
+    &-horizontal {
+      &-last,
+      &-only {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+      }
+    }
+    // Vertical: the action spans the full block height on the inline-end, so every
+    // control's inline-end corners face it. (middle controls are already fully squared.)
+    &-vertical {
+      &-first,
+      &-last,
+      &-only {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+      }
+    }
+  }
 }

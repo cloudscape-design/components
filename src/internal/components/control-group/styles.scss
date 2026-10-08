@@ -14,35 +14,70 @@
   &-horizontal {
     flex-direction: row;
     flex-wrap: nowrap;
-    // Align controls along their bottom edge so their field boxes line up
-    // even when one control is taller than another.
+    // Line up the controls' field boxes along their bottom edge.
     align-items: flex-end;
   }
 
   &-vertical {
     flex-direction: column;
-    // Stretch stacked controls to share the group's inline size so their
-    // fused block edges line up across the full width.
+    // Stretch stacked controls so their fused block edges align across the width.
     align-items: stretch;
   }
 }
 
+.layout {
+  display: flex;
+  flex-direction: row;
+  // The action fuses beside the controls (no column-gap) as if it were the last control.
+}
+
+.action-slot {
+  // Layout wrapper; the inner button owns the fused border/radius and fills the slot.
+  // Intentionally no `flex: 1`: the slot sizes to the action, not the row.
+  display: flex;
+  // Raise on focus so the button's focus ring paints over the seam border.
+  isolation: isolate;
+  &:focus-within {
+    z-index: 1;
+  }
+}
+
+.layout-horizontal {
+  align-items: flex-end;
+
+  // Overlap by one border width so the action's inline-start border fuses into the seam.
+  > .action-slot {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+  }
+}
+
+.layout-vertical {
+  // The action spans the full column height.
+  align-items: stretch;
+
+  // Seam onto the column's inline-end edge and let the button fill the slot vertically.
+  > .action-slot {
+    margin-inline-start: calc(-1 * #{awsui.$border-width-field});
+    align-items: stretch;
+  }
+}
+
+// Corners facing the action are squared by the grouped-control mixin (`-end-action`) on
+// each control's own painted element, not from here. See internal/styles/forms/mixins.scss.
+
 .control {
   // Let slots shrink below their content so a narrow group compresses, not overflows.
   min-inline-size: 0;
-  // Establish a stacking context per slot so a control's internal z-indexes stay
-  // contained within its own slot and cannot paint over adjacent controls.
+  // Contain each control's internal z-indexes within its own slot.
   isolation: isolate;
-  // Raise the focused control's slot above its neighbors so its focus ring is
-  // painted over the adjacent control's seam border.
+  // Raise the focused slot so its focus ring paints over the adjacent seam border.
   &:focus-within {
     z-index: 1;
   }
 
   &-middle,
   &-last {
-    // Overlap each non-first slot onto its predecessor by one border width,
-    // so the two adjacent borders coincide into a single seam.
+    // Overlap onto the predecessor by one border width so adjacent borders fuse into a seam.
     $margin: calc(-1 * #{awsui.$border-width-field});
     &-horizontal {
       margin-inline-start: $margin;

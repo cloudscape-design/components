@@ -21,7 +21,9 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { useButtonContext } from '../internal/context/button-context';
+import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -145,6 +147,11 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
+    // Read the grouped-control context so a button used as a control group `action`
+    // fuses onto the controls like the other grouped controls (Input, Select, …):
+    // the shared corner mixin flattens the facing corners on the button's own root,
+    // where its border + radius are actually painted.
+    const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
@@ -199,15 +206,22 @@ export const InternalButton = React.forwardRef(
     };
 
     const stylingClassName = styleClassNames?.root;
-    const buttonClass = clsx(props.className, stylingClassName, styles.button, styles[`variant-${variant}`], {
-      [styles.disabled]: isNotInteractive,
-      [styles['disabled-with-reason']]: isDisabledWithReason,
-      [styles['button-no-wrap']]: !wrapText,
-      [styles['button-no-text']]: !shouldHaveContent,
-      [styles['full-width']]: shouldHaveContent && fullWidth,
-      [styles['button-compact']]: __compact,
-      [styles.link]: isAnchor,
-    });
+    const buttonClass = clsx(
+      props.className,
+      stylingClassName,
+      styles.button,
+      styles[`variant-${variant}`],
+      ...getGroupedControlClassNames(styles, groupedControlProps),
+      {
+        [styles.disabled]: isNotInteractive,
+        [styles['disabled-with-reason']]: isDisabledWithReason,
+        [styles['button-no-wrap']]: !wrapText,
+        [styles['button-no-text']]: !shouldHaveContent,
+        [styles['full-width']]: shouldHaveContent && fullWidth,
+        [styles['button-compact']]: __compact,
+        [styles.link]: isAnchor,
+      }
+    );
 
     const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
