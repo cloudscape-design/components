@@ -34,8 +34,6 @@ $tokens: style-api.resolve($props, carrier);
     border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
     border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
   }
-  position: relative;
-  text-decoration: none;
   @if map.get($variant, 'padding') {
     padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
     padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
@@ -55,7 +53,6 @@ $tokens: style-api.resolve($props, carrier);
     );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
-    text-decoration: none;
   }
 
   &:active {
@@ -90,7 +87,6 @@ $tokens: style-api.resolve($props, carrier);
       var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
     );
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
-    text-decoration: none;
     cursor: auto;
   }
 }
@@ -116,6 +112,7 @@ $tokens: style-api.resolve($props, carrier);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  position: relative;
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
