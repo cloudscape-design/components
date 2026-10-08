@@ -3,24 +3,45 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '@cloudscape-design/component-toolkit/styling' as styling;
 @use '../style-api/palette' as palette;
 
 .badge {
-  --awsui-style-border-color: transparent;
-  --awsui-style-border-radius: 4px;
-  --awsui-style-border-width: 3px;
-  --awsui-style-padding-block: 6px;
-  --awsui-style-padding-inline: 12px;
+  @include styling.override {
+    border-color: transparent;
+    border-start-start-radius: 4px;
+    border-start-end-radius: 4px;
+    border-end-start-radius: 4px;
+    border-end-end-radius: 4px;
+    border-width: 3px;
+    padding-block: 6px;
+    padding-inline: 12px;
+  }
 }
 
 .badge-info-pill {
-  --awsui-style-background-color: #{palette.$accent};
-  --awsui-style-color: #{palette.$text-on-accent};
-  --awsui-style-border-radius: 77px;
+  @include styling.override {
+    background-color: palette.$accent;
+    color: palette.$text-on-accent;
+    border-start-start-radius: 77px;
+    border-start-end-radius: 77px;
+    border-end-start-radius: 77px;
+    border-end-end-radius: 77px;
+  }
 }
 
 .badge-error-square {
-  --awsui-style-background-color: #{palette.$error-surface};
-  --awsui-style-color: #{palette.$error};
-  --awsui-style-border-color: #{palette.$error};
+  @include styling.override {
+    background-color: palette.$error-surface;
+    color: palette.$error;
+    border-color: palette.$error;
+  }
+}
+
+.badge-label {
+  @include styling.override {
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 400;
+  }
 }
