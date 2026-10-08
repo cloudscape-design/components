@@ -7,6 +7,7 @@
 @use 'segment' as seg;
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -41,6 +42,10 @@
     padding-inline: calc(awsui.$space-static-xxxs + awsui.$border-width-field);
     padding-block: 0;
     gap: calc(#{seg.$segment-gap} * 2 - #{seg.$segment-divider-width});
+  }
+
+  @include theming.one-theme-only {
+    gap: #{seg.$one-theme-segment-gap};
   }
 
   &:not(.grouped),

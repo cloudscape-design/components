@@ -119,10 +119,14 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
-  colorBackgroundSegmentActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentActive: '{colorBackgroundToggleButtonNormalPressed}',
   colorBackgroundSegmentDefault: { light: 'transparent', dark: 'transparent' },
-  colorTextSegmentActive: { light: '{colorNeutral200}', dark: '{colorNeutral950}' },
-  colorTextSegmentDefault: { light: '{colorNeutral600}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentHover: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundSegmentDisabled: { light: 'transparent', dark: 'transparent' },
+  colorBackgroundSegmentWrapper: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
+  colorBorderSegmentActive: '{colorBorderToggleButtonNormalPressed}',
+  colorTextSegmentActive: '{colorTextToggleButtonNormalPressed}',
+  colorTextSegmentDefault: '{colorTextButtonNormalDefault}',
   colorTextSegmentHover: '{colorTextButtonNormalHover}',
 
   // ── Slider / progress ─────────────────────────────────────────────────────
