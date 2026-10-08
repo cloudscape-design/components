@@ -17,10 +17,6 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-// `overflow: hidden` makes this a definite constraining ancestor whose width tracks the
-// viewport: the `flex-shrink: 0` group would otherwise prop it (and the whole content column)
-// open to its own width, so narrowing the window could never narrow the group's available
-// space. Clipping lets the width follow `setWindowSize` deterministically across environments.
 const scenarioContainerStyle: React.CSSProperties = {
   inlineSize: '100%',
   overflow: 'hidden',
