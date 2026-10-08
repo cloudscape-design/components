@@ -13,8 +13,10 @@ import { ButtonDropdownProps } from '../interfaces';
 import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
 import MobileExpandableGroup from '../mobile-expandable-group/mobile-expandable-group';
+import StatusFooter from '../status-footer';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item.js';
+import { useExpandableGroupStatus } from './use-expandable-group-status';
 
 import styles from './styles.css.js';
 
@@ -37,11 +39,27 @@ const MobileExpandableCategoryElement = ({
   filteringEnabled,
   menuId,
   filteringDescriptionId,
+  asyncLoadingProps,
+  getExpandableItemsAsyncLoadingState,
+  onGroupRecoveryClick,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
   const isKeyboardHighlighted = isKeyboardHighlight(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
+
+  const {
+    status: groupDropdownStatus,
+    footerId,
+    hasGroupItems,
+  } = useExpandableGroupStatus({
+    item,
+    asyncLoadingProps,
+    getExpandableItemsAsyncLoadingState,
+    onGroupRecoveryClick,
+    filteringEnabled,
+    triggerRef,
+  });
 
   useEffect(() => {
     if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
@@ -148,29 +166,59 @@ const MobileExpandableCategoryElement = ({
   } else {
     content = (
       <MobileExpandableGroup open={expanded} trigger={trigger}>
-        {item.items && expanded && (
-          <ul role="menu" aria-label={item.text} className={styles['items-list-container']}>
-            <ItemsList
-              items={item.items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={lastInDropdown}
-              highlightItem={highlightItem}
-              hasCategoryHeader={true}
-              variant={variant}
-              position={position}
-              renderItem={renderItem}
-              parentProps={groupProps}
-              filteringText={filteringText}
-              filteringEnabled={filteringEnabled}
-              menuId={menuId}
-              filteringDescriptionId={filteringDescriptionId}
-            />
-          </ul>
+        {expanded && (hasGroupItems || groupDropdownStatus.content) && (
+          <>
+            <ul
+              role="menu"
+              aria-label={item.text}
+              aria-describedby={groupDropdownStatus.content ? footerId : undefined}
+              className={styles['items-list-container']}
+            >
+              {hasGroupItems ? (
+                <ItemsList
+                  items={item.items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={lastInDropdown}
+                  highlightItem={highlightItem}
+                  hasCategoryHeader={true}
+                  variant={variant}
+                  position={position}
+                  renderItem={renderItem}
+                  parentProps={groupProps}
+                  filteringText={filteringText}
+                  filteringEnabled={filteringEnabled}
+                  menuId={menuId}
+                  filteringDescriptionId={filteringDescriptionId}
+                />
+              ) : null}
+              {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
+                // Finished text has no interactive content, so it follows the items inside the menu, like on desktop.
+                <li role="presentation">
+                  <StatusFooter
+                    content={groupDropdownStatus.content}
+                    id={footerId}
+                    hasItems={hasGroupItems}
+                    scope="group"
+                  />
+                </li>
+              ) : null}
+            </ul>
+            {groupDropdownStatus.content && groupDropdownStatus.isSticky ? (
+              // Loading, error and empty statuses render outside the group menu, like the desktop sticky footer,
+              // so the recovery button is not a child of role="menu".
+              <StatusFooter
+                content={groupDropdownStatus.content}
+                id={footerId}
+                hasItems={hasGroupItems}
+                scope="group"
+              />
+            ) : null}
+          </>
         )}
       </MobileExpandableGroup>
     );

@@ -17,8 +17,10 @@ import {
 import { ButtonDropdownProps } from '../interfaces';
 import { CategoryProps } from '../internal-interfaces';
 import ItemsList from '../items-list';
+import StatusFooter from '../status-footer';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
+import { useExpandableGroupStatus } from './use-expandable-group-status';
 
 import styles from './styles.css.js';
 
@@ -42,12 +44,28 @@ const ExpandableCategoryElement = ({
   filteringEnabled,
   menuId,
   filteringDescriptionId,
+  asyncLoadingProps,
+  getExpandableItemsAsyncLoadingState,
+  onGroupRecoveryClick,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
   const isKeyboardHighlighted = isKeyboardHighlight(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
   const ref = useRef<HTMLLIElement>(null);
+
+  const {
+    status: groupDropdownStatus,
+    footerId,
+    hasGroupItems,
+  } = useExpandableGroupStatus({
+    item,
+    asyncLoadingProps,
+    getExpandableItemsAsyncLoadingState,
+    onGroupRecoveryClick,
+    filteringEnabled,
+    triggerRef,
+  });
 
   useEffect(() => {
     if (triggerRef.current && highlighted && !expanded && !filteringEnabled) {
@@ -165,35 +183,54 @@ const ExpandableCategoryElement = ({
       <Dropdown
         open={expanded}
         interior={true}
-        hideBlockBorder={false}
+        hideBlockBorder={!hasGroupItems}
         expandToViewport={expandToViewport}
         trigger={trigger}
+        footer={
+          expanded && groupDropdownStatus.content && groupDropdownStatus.isSticky ? (
+            <StatusFooter content={groupDropdownStatus.content} id={footerId} hasItems={hasGroupItems} scope="group" />
+          ) : undefined
+        }
         content={
-          item.items && expanded ? (
+          expanded ? (
             <ul
               role="menu"
               aria-label={item.text}
+              aria-describedby={groupDropdownStatus.content ? footerId : undefined}
               className={clsx(styles['items-list-container'], styles['in-dropdown'])}
             >
-              <ItemsList
-                items={item.items}
-                onItemActivate={onItemActivate}
-                onGroupToggle={onGroupToggle}
-                targetItem={targetItem}
-                isHighlighted={isHighlighted}
-                isKeyboardHighlight={isKeyboardHighlight}
-                isExpanded={isExpanded}
-                lastInDropdown={lastInDropdown}
-                highlightItem={highlightItem}
-                variant={variant}
-                position={position}
-                renderItem={renderItem}
-                parentProps={groupProps}
-                filteringText={filteringText}
-                filteringEnabled={filteringEnabled}
-                menuId={menuId}
-                filteringDescriptionId={filteringDescriptionId}
-              />
+              {hasGroupItems ? (
+                <ItemsList
+                  items={item.items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={lastInDropdown}
+                  highlightItem={highlightItem}
+                  variant={variant}
+                  position={position}
+                  renderItem={renderItem}
+                  parentProps={groupProps}
+                  filteringText={filteringText}
+                  filteringEnabled={filteringEnabled}
+                  menuId={menuId}
+                  filteringDescriptionId={filteringDescriptionId}
+                />
+              ) : null}
+              {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
+                // Non-sticky status (finished text) follows the items, like in the main dropdown.
+                <li role="presentation">
+                  <StatusFooter
+                    content={groupDropdownStatus.content}
+                    id={footerId}
+                    hasItems={hasGroupItems}
+                    scope="group"
+                  />
+                </li>
+              ) : null}
             </ul>
           ) : undefined
         }
