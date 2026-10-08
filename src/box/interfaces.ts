@@ -187,6 +187,9 @@ export namespace BoxProps {
      * The coordinated background and foreground color pair applied to the accent wrapper.
      * Each color works in both light and dark modes.
      *
+     * Use one of the following color options: `indigo`, `yellow`, `red`, `green`, `grey`,
+     * `purple`, `orange`, or `teal`.
+     *
      * The background color is applied directly to the wrapper. The foreground color is applied
      * as the wrapper's CSS `color` and is therefore only picked up by content that inherits the
      * current color, such as an `Icon` or a nested `Box` with `color="inherit"`. Content that
@@ -215,21 +218,7 @@ export namespace BoxProps {
   }
 
   export namespace VisualAccent {
-    export type Color =
-      | 'red'
-      | 'yellow'
-      | 'indigo'
-      | 'green'
-      | 'orange'
-      | 'purple'
-      | 'lime'
-      | 'grey'
-      | 'teal'
-      | 'blue'
-      | 'violet'
-      | 'magenta'
-      | 'pink'
-      | 'amber';
+    export type Color = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'grey' | 'teal';
     export type AspectRatio = 'auto' | 'equal';
     export type BorderRadius = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | 'full';
   }
