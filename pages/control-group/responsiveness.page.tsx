@@ -17,8 +17,17 @@ const operators: SelectProps.Option[] = [
   { value: '!=', label: '!=' },
 ];
 
-// Six controls so the group's required single-row width comfortably exceeds the browser's
-// minimum window width, so it reliably stacks at the narrow viewport.
+// `overflow: hidden` makes this a definite constraining ancestor whose width tracks the
+// viewport: the `flex-shrink: 0` group would otherwise prop it (and the whole content column)
+// open to its own width, so narrowing the window could never narrow the group's available
+// space. Clipping lets the width follow `setWindowSize` deterministically across environments.
+const scenarioContainerStyle: React.CSSProperties = {
+  inlineSize: '100%',
+  overflow: 'hidden',
+};
+
+// Six controls so the group's required single-row width comfortably exceeds the narrow
+// viewport, so it reliably stacks there and is a row at the wide viewport.
 function Group() {
   const [name, setName] = useState('service');
   const [operator, setOperator] = useState<SelectProps.Option>(operators[0]);
@@ -60,10 +69,12 @@ export default function ControlGroupResponsiveness() {
       subtitle="An auto group inside a horizontal SpaceBetween: the flexbox deadlock case. Narrowing the viewport stacks all its controls at once; widening it must re-expand them, not leave them stuck stacked."
     >
       <FocusTarget />
-      <SpaceBetween direction="horizontal" size="s" data-testid="auto-spacebetween">
-        <Group />
-        <Box variant="p">Sibling content</Box>
-      </SpaceBetween>
+      <div data-testid="auto-spacebetween" style={scenarioContainerStyle}>
+        <SpaceBetween direction="horizontal" size="s">
+          <Group />
+          <Box variant="p">Sibling content</Box>
+        </SpaceBetween>
+      </div>
       <Button data-testid="focus-after">Focus after</Button>
     </SimplePage>
   );
