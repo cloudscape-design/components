@@ -27,6 +27,7 @@ export function PropertyEditorContentCustom<TokenValue = any>({
   filter,
   value,
   onChange,
+  submit,
   operatorForm,
 }: {
   property: InternalFilteringProperty;
@@ -34,6 +35,7 @@ export function PropertyEditorContentCustom<TokenValue = any>({
   filter: string;
   value: null | TokenValue;
   onChange: (value: null | TokenValue) => void;
+  submit: () => void;
   operatorForm: ExtendedOperatorForm<TokenValue>;
 }) {
   const labelId = useUniqueId();
@@ -45,7 +47,7 @@ export function PropertyEditorContentCustom<TokenValue = any>({
 
       <div className={styles['property-editor-form']}>
         <FormFieldContext.Provider value={{ ariaLabelledby: labelId }}>
-          {operatorForm({ value, onChange, operator, filter })}
+          {operatorForm({ value, onChange, operator, filter, submit })}
         </FormFieldContext.Provider>
       </div>
     </div>

@@ -7,7 +7,6 @@ import {
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
-  PropertyFilterOperatorForm,
   PropertyFilterOperatorFormat,
   PropertyFilterOperatorFormProps,
   PropertyFilterOption,
@@ -252,17 +251,50 @@ export interface PropertyFilterFreeTextFiltering {
   defaultOperator?: PropertyFilterOperator;
 }
 
+// TODO: replace with PropertyFilterOperatorFormProps from collection-hooks once the `submit` property is released.
+// Extends the collection-hooks operator form props with a `submit` callback that lets a custom form
+// apply its value as a token programmatically (for example, on the "Enter" key).
+export interface PropertyFilterOperatorFormPropsExtended<TokenValue>
+  extends PropertyFilterOperatorFormProps<TokenValue> {
+  /**
+   * Applies the current form value as a filtering token, equivalent to activating the form's built-in
+   * submit ("Apply") action. Use it to submit a custom form programmatically, for example from an
+   * `onKeyDown` handler that reacts to the "Enter" key inside an input.
+   *
+   * The value that gets applied is the last one propagated through `onChange`. Make sure to call
+   * `onChange` before `submit` so that the intended value is used.
+   */
+  submit?: () => void;
+}
+// TODO: replace with PropertyFilterOperatorForm from collection-hooks once the `submit` property is released.
+export type PropertyFilterOperatorFormExtended<TokenValue> = React.FC<
+  PropertyFilterOperatorFormPropsExtended<TokenValue>
+>;
+
+// TODO: replace with PropertyFilterOperatorExtended from collection-hooks once the `submit` property is released.
+// Mirrors the collection-hooks operator, but uses the augmented form renderer so that custom forms
+// receive the `submit` callback.
+export interface PropertyFilterOperatorExtendedAugmented<TokenValue>
+  extends Omit<PropertyFilterOperatorExtended<TokenValue>, 'form'> {
+  form?: PropertyFilterOperatorFormExtended<TokenValue>;
+}
+// TODO: replace with PropertyFilterProperty from collection-hooks once the `submit` property is released.
+export interface PropertyFilterPropertyAugmented<TokenValue = any>
+  extends Omit<PropertyFilterProperty<TokenValue>, 'operators'> {
+  operators?: readonly (PropertyFilterOperator | PropertyFilterOperatorExtendedAugmented<TokenValue>)[];
+}
+
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type TokenGroup = PropertyFilterTokenGroup;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
-  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
-  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
-  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtendedAugmented<TokenValue>;
+  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormPropsExtended<TokenValue>;
+  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorFormExtended<TokenValue>;
   export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
-  export type FilteringProperty = PropertyFilterProperty;
+  export type FilteringProperty = PropertyFilterPropertyAugmented;
   export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
   export type Query = PropertyFilterQuery;
   export type StatusType = DropdownStatusProps.StatusType;
@@ -372,8 +404,8 @@ export type Token = PropertyFilterProps.Token;
 export type TokenGroup = PropertyFilterProps.TokenGroup;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
-export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
-export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtendedAugmented<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorFormExtended<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
@@ -207,5 +207,143 @@ describe('extended operators', () => {
     expect(wrapper.findTokens()).toHaveLength(2);
     expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('index = EQ1');
     expect(wrapper.findTokens()[1].getElement()).toHaveTextContent('index != NEQ2');
+  });
+});
+
+describe('extended operator form submit', () => {
+  // Custom form that lifts its value via onChange and applies it via the injected `submit` callback,
+  // either through a dedicated button or by pressing "Enter" inside the input.
+  const submittableProperty: FilteringProperty = {
+    key: 'index',
+    operators: [
+      {
+        operator: '=',
+        form: ({ value, onChange, submit }) => (
+          <div>
+            <input
+              data-testid="custom-input"
+              value={value ?? ''}
+              onChange={event => onChange(event.target.value)}
+              onKeyDown={event => {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                  submit?.();
+                }
+              }}
+            />
+            <button data-testid="custom-submit" onClick={() => submit?.()}>
+              apply
+            </button>
+          </div>
+        ),
+      },
+    ],
+    propertyLabel: 'index',
+    groupValuesLabel: 'index value',
+  };
+  const submittableProps = { filteringProperties: [submittableProperty] };
+
+  test('custom form receives a submit callback in the dropdown flow', () => {
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent(submittableProps);
+    wrapper.setInputValue('index =');
+    expect(pageWrapper.find('[data-testid="custom-submit"]')).not.toBe(null);
+  });
+
+  test('custom form submit applies the token in the dropdown flow (submit button)', () => {
+    const onChange = jest.fn();
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({ ...submittableProps, onChange });
+
+    wrapper.setInputValue('index =');
+    const input = pageWrapper.find('[data-testid="custom-input"]')!.getElement() as HTMLInputElement;
+    act(() => {
+      fireEvent.change(input, { target: { value: 'abc' } });
+    });
+    act(() => pageWrapper.find('[data-testid="custom-submit"]')!.click());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokens: [{ propertyKey: 'index', operator: '=', value: 'abc' }] },
+      })
+    );
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+  });
+
+  test('custom form submit applies the token in the dropdown flow (Enter key)', () => {
+    const onChange = jest.fn();
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({ ...submittableProps, onChange });
+
+    wrapper.setInputValue('index =');
+    const input = pageWrapper.find('[data-testid="custom-input"]')!.getElement() as HTMLInputElement;
+    act(() => {
+      fireEvent.change(input, { target: { value: 'xyz' } });
+    });
+    act(() => {
+      fireEvent.keyDown(input, { key: 'Enter', keyCode: 13 });
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokens: [{ propertyKey: 'index', operator: '=', value: 'xyz' }] },
+      })
+    );
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+  });
+
+  test('custom form submit applies changes from the token editor', () => {
+    const onChange = jest.fn();
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({
+      ...submittableProps,
+      onChange,
+      query: { tokens: [{ propertyKey: 'index', value: 'abc', operator: '=' }], operation: 'and' },
+    });
+
+    const [contentWrapper] = openTokenEditor(wrapper, 0);
+    const input = contentWrapper.find('[data-testid="custom-input"]')!.getElement() as HTMLInputElement;
+    act(() => {
+      fireEvent.change(input, { target: { value: 'def' } });
+    });
+    act(() => pageWrapper.find('[data-testid="custom-submit"]')!.click());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokens: [{ propertyKey: 'index', operator: '=', value: 'def' }] },
+      })
+    );
+  });
+
+  test('submit is optional: forms that ignore it keep working', () => {
+    // Regression guard for backward compatibility: a form that never calls submit still applies via the
+    // built-in submit button.
+    const onChange = jest.fn();
+    const property: FilteringProperty = {
+      key: 'index',
+      operators: [
+        {
+          operator: '=',
+          form: ({ value, onChange }) => (
+            <input data-testid="legacy-input" value={value ?? ''} onChange={event => onChange(event.target.value)} />
+          ),
+        },
+      ],
+      propertyLabel: 'index',
+      groupValuesLabel: 'index value',
+    };
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({
+      filteringProperties: [property],
+      onChange,
+    });
+
+    wrapper.setInputValue('index =');
+    const input = pageWrapper.find('[data-testid="legacy-input"]')!.getElement() as HTMLInputElement;
+    act(() => {
+      fireEvent.change(input, { target: { value: 'legacy' } });
+    });
+    act(() => wrapper.findPropertySubmitButton()!.click());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokens: [{ propertyKey: 'index', operator: '=', value: 'legacy' }] },
+      })
+    );
   });
 });
