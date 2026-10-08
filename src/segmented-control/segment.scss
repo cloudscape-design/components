@@ -18,7 +18,8 @@ $disabled-background: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color
 $disabled-color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
 $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active);
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
-$selected-border-width: awsui.$border-width-field;
+$selected-border-width-prop: --awsui-internal-style-segment-selected-border-width;
+$selected-border-width: var(#{$selected-border-width-prop}, 0);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
 $one-theme-segment-gap: calc(#{$segment-gap} - #{$segment-divider-width});
@@ -94,6 +95,8 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
     inset-inline-end: calc(-1 * $segment-gap);
   }
   @include theming.one-theme-only {
+    #{$selected-border-width-prop}: #{awsui.$border-width-field};
+
     &:not(:last-child)::after {
       content: none;
     }
@@ -108,10 +111,7 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   &.selected {
     background: $selected-background;
     color: $selected-color;
-
-    @include theming.one-theme-only {
-      box-shadow: inset 0 0 0 $selected-border-width awsui.$color-border-segment-active;
-    }
+    box-shadow: inset 0 0 0 $selected-border-width awsui.$color-border-segment-active;
   }
 
   &:hover:not(.selected):not(.disabled):not(:focus) {
