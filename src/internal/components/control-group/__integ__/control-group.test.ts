@@ -30,6 +30,21 @@ const NARROW = { width: 360, height: 800 };
 const ROW_TOP_TOLERANCE = 2;
 
 class ControlGroupPage extends BasePageObject {
+  // TEMP DIAGNOSTIC (remove once CI is understood): logs the group's resolved class and width
+  // plus the control count the wrapper finds, to reveal what CI actually renders/measures.
+  async debugState(label: string) {
+    const info = await this.browser.execute(scenario => {
+      const root = document.querySelector(`${scenario} [role="group"]`) as HTMLElement | null;
+      return {
+        found: !!root,
+        className: root?.className,
+        rootWidth: root?.getBoundingClientRect().width,
+        realControlCount: root ? root.querySelectorAll(':scope > [class*="awsui_control"]').length : 0,
+      };
+    }, SCENARIO);
+    console.log(`CONTROL_GROUP_DEBUG ${label}`, JSON.stringify(info));
+  }
+
   // Bounding boxes of the real controls, in DOM order. `get` is 1-based.
   async getControlBoxes() {
     const boxes = [];
@@ -79,8 +94,10 @@ describe('ControlGroup responsiveness', () => {
     'auto group inside a horizontal SpaceBetween re-expands after stacking (flexbox deadlock)',
     setupTest(async page => {
       await page.setWindowSize(WIDE);
+      await page.debugState('WIDE');
       await page.expectRow();
       await page.setWindowSize(NARROW);
+      await page.debugState('NARROW');
       await page.expectStacked();
       // The critical case: widening must re-expand it, not leave it stuck stacked.
       await page.setWindowSize(WIDE);
