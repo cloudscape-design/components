@@ -68,7 +68,7 @@ export interface ToolbarProps {
 
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
-  breadcrumbsExternallyOwned?: AppLayoutWidgetizedState['breadcrumbsExternallyOwned'];
+  hideBreadcrumbsInToolbar?: AppLayoutWidgetizedState['hideBreadcrumbsInToolbar'];
   reportOwnBreadcrumbsProps?: AppLayoutWidgetizedState['reportOwnBreadcrumbsProps'];
   toolbarProps: ToolbarProps;
   featureNotificationsProps?: FeatureNotificationsProps;
@@ -76,7 +76,7 @@ export interface AppLayoutToolbarImplementationProps {
 
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
-  breadcrumbsExternallyOwned,
+  hideBreadcrumbsInToolbar,
   reportOwnBreadcrumbsProps,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
@@ -235,7 +235,7 @@ export function AppLayoutToolbarImplementation({
             <ToolbarBreadcrumbsSection
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-              breadcrumbsExternallyOwned={breadcrumbsExternallyOwned}
+              hideBreadcrumbsInToolbar={hideBreadcrumbsInToolbar}
               reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
               includeTestUtils={true}
             />
