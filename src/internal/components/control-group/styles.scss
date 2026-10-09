@@ -5,6 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../styles/forms/mixins' as forms;
 
 .root {
   @include styles.styles-reset;
@@ -50,4 +51,26 @@
       margin-block-start: $margin;
     }
   }
+}
+
+.inline-label {
+  @include forms.inline-label;
+  // A grouped Multiselect always renders inline tokens, whose row sits higher
+  // than normal trigger text, so the group label always clears that row the same
+  // way the Multiselect's own inline label does.
+  @include forms.inline-label-inline-tokens;
+  // Raise the label above the focused slot (which sits at z-index 1) so a
+  // control's focus ring paints under the label notch instead of over it.
+  z-index: 2;
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+  // Contain the label and the control slots in one stacking context so their
+  // z-indexes resolve against each other (label 2 over focused slot 1).
+  isolation: isolate;
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
 }

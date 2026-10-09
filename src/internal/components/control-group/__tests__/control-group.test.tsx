@@ -5,7 +5,13 @@ import { render } from '@testing-library/react';
 
 import ControlGroup from '../../../../../lib/components/internal/components/control-group';
 import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
+import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
 import { DirectionProbe, PositionProbe } from './common';
+
+function findControlGroup(container: HTMLElement) {
+  const element = container.querySelector<HTMLElement>(`.${ControlGroupWrapper.rootSelector}`);
+  return element && new ControlGroupWrapper(element);
+}
 
 describe('Control group', () => {
   test('keeps focus on a control when the children are reordered', () => {
@@ -104,5 +110,33 @@ describe('Control group', () => {
 
       expect(getByTestId('direction')).toHaveTextContent('vertical');
     });
+  });
+
+  test('renders the inline label and wires it to the group via aria-labelledby', () => {
+    const { container, getByRole } = render(
+      <ControlGroup inlineLabelText="Threshold">
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </ControlGroup>
+    );
+
+    const group = getByRole('group');
+    const label = findControlGroup(container)!.findInlineLabel()!.getElement();
+
+    expect(label).toHaveTextContent('Threshold');
+    expect(label.id).toBeTruthy();
+    expect(group.getAttribute('aria-labelledby')).toBe(label.id);
+  });
+
+  test('omits the inline label and aria-labelledby when inlineLabelText is not set', () => {
+    const { container, getByRole } = render(
+      <ControlGroup>
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </ControlGroup>
+    );
+
+    expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
+    expect(findControlGroup(container)).toBeNull();
   });
 });
