@@ -193,7 +193,7 @@ function InternalToken({
           style={tokenRootStyleProps}
         >
           <Option
-            className={clsx(isInline && styles['token-option-inline'])}
+            className={clsx(isInline && styles['token-option-inline'], onDismiss && styles['token-option-dismissible'])}
             triggerVariant={isInline}
             option={buildOptionDefinition()}
             disableTitleTooltip={!!tooltipContent}
