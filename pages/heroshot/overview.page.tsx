@@ -95,7 +95,7 @@ export default function HeroshotOverviewPage() {
     <SimplePage title="Heroshots" screenshotArea={{ disableAnimations: true }} i18n={{}}>
       {/* The frames have a fixed size, so the gallery wraps them instead of stacking 70+ rows. */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-        <Heroshot label="ActionCard" stretch={true}>
+        <Heroshot id="action-card" label="ActionCard" stretch={true}>
           <ActionCard
             header="Create a VPC"
             description="Set up an isolated network for your resources."
@@ -104,21 +104,21 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Alert" stretch={true}>
+        <Heroshot id="alert" label="Alert" stretch={true}>
           <Alert type="info" header="Instance type updated" dismissible={true}>
             The change applies after the next restart. <Link href="#">Learn more</Link>
           </Alert>
         </Heroshot>
 
-        <Heroshot label="AnchorNavigation" stretch={true}>
+        <Heroshot id="anchor-navigation" label="AnchorNavigation" stretch={true}>
           <AnchorNavigation activeHref="#overview" anchors={anchors} />
         </Heroshot>
 
-        <Heroshot label="AppLayout" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
+        <Heroshot id="app-layout" label="AppLayout" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
           <IframeWrapper id="heroshot-app-layout" size={LAYOUT_CONTENT_SIZE} AppComponent={AppLayoutHeroshot} />
         </Heroshot>
 
-        <Heroshot label="AppLayoutToolbar" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
+        <Heroshot id="app-layout-toolbar" label="AppLayoutToolbar" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
           <IframeWrapper
             id="heroshot-app-layout-toolbar"
             size={LAYOUT_CONTENT_SIZE}
@@ -126,7 +126,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="AreaChart" stretch={true}>
+        <Heroshot id="area-chart" label="AreaChart" stretch={true}>
           <AreaChart
             height={110}
             hideFilter={true}
@@ -136,7 +136,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="AttributeEditor" align="start" stretch={true}>
+        <Heroshot id="attribute-editor" label="AttributeEditor" align="start" stretch={true}>
           <AttributeEditor
             addButtonText="Add tag"
             removeButtonText="Remove"
@@ -148,11 +148,11 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Autosuggest" align="start" stretch={true}>
+        <Heroshot id="autosuggest" label="Autosuggest" align="start" stretch={true}>
           <OpenAutosuggest />
         </Heroshot>
 
-        <Heroshot label="Badge">
+        <Heroshot id="badge" label="Badge">
           <SpaceBetween size="xs" direction="horizontal">
             <Badge>Default</Badge>
             <Badge color="blue">Blue</Badge>
@@ -161,7 +161,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="BarChart" stretch={true}>
+        <Heroshot id="bar-chart" label="BarChart" stretch={true}>
           <BarChart
             height={110}
             hideFilter={true}
@@ -171,7 +171,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Box" stretch={true}>
+        <Heroshot id="box" label="Box" stretch={true}>
           <SpaceBetween size="xxs">
             <Box variant="h2">Instance details</Box>
             <Box variant="p" color="text-body-secondary">
@@ -180,7 +180,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="BreadcrumbGroup" stretch={true}>
+        <Heroshot id="breadcrumb-group" label="BreadcrumbGroup" stretch={true}>
           <BreadcrumbGroup
             ariaLabel="Breadcrumbs"
             items={[
@@ -191,14 +191,14 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Button">
+        <Heroshot id="button" label="Button">
           <SpaceBetween size="xs" direction="horizontal">
             <Button>Cancel</Button>
             <Button variant="primary">Create resource</Button>
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="ButtonDropdown">
+        <Heroshot id="button-dropdown" label="ButtonDropdown">
           <ButtonDropdown
             items={[
               { id: 'edit', text: 'Edit' },
@@ -210,7 +210,7 @@ export default function HeroshotOverviewPage() {
           </ButtonDropdown>
         </Heroshot>
 
-        <Heroshot label="ButtonGroup">
+        <Heroshot id="button-group" label="ButtonGroup">
           <ButtonGroup
             ariaLabel="Resource actions"
             variant="icon"
@@ -222,11 +222,11 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Calendar" stretch={true}>
+        <Heroshot id="calendar" label="Calendar" stretch={true}>
           <Calendar value="2026-10-06" onChange={noop} />
         </Heroshot>
 
-        <Heroshot label="Cards" stretch={true}>
+        <Heroshot id="cards" label="Cards" stretch={true}>
           <Cards
             items={instances.slice(0, 1)}
             selectedItems={[instances[0]]}
@@ -240,7 +240,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Checkbox">
+        <Heroshot id="checkbox" label="Checkbox">
           <SpaceBetween size="xs">
             <Checkbox checked={true} onChange={noop}>
               Enable monitoring
@@ -251,7 +251,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="ColumnLayout" stretch={true}>
+        <Heroshot id="column-layout" label="ColumnLayout" stretch={true}>
           <ColumnLayout columns={2}>
             <SpaceBetween size="xxs">
               <Box variant="awsui-key-label">Instance type</Box>
@@ -264,19 +264,19 @@ export default function HeroshotOverviewPage() {
           </ColumnLayout>
         </Heroshot>
 
-        <Heroshot label="Container" stretch={true}>
+        <Heroshot id="container" label="Container" stretch={true}>
           <Container header={<Header variant="h2">Instance details</Header>}>
             <KeyValuePairs items={[{ label: 'Instance type', value: 't3.medium' }]} />
           </Container>
         </Heroshot>
 
-        <Heroshot label="ContentLayout" stretch={true}>
+        <Heroshot id="content-layout" label="ContentLayout" stretch={true}>
           <ContentLayout header={<Header variant="h1">Instances</Header>}>
             <Container>Content</Container>
           </ContentLayout>
         </Heroshot>
 
-        <Heroshot label="CopyToClipboard">
+        <Heroshot id="copy-to-clipboard" label="CopyToClipboard">
           <CopyToClipboard
             variant="inline"
             copyButtonAriaLabel="Copy instance ID"
@@ -286,19 +286,19 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="DateInput" stretch={true}>
+        <Heroshot id="date-input" label="DateInput" stretch={true}>
           <FormField label="Start date">
             <DateInput value="2026-10-06" onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="DatePicker" stretch={true}>
+        <Heroshot id="date-picker" label="DatePicker" stretch={true}>
           <FormField label="Start date">
             <DatePicker value="2026-10-06" onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="DateRangePicker" stretch={true}>
+        <Heroshot id="date-range-picker" label="DateRangePicker" stretch={true}>
           <FormField label="Date range">
             <DateRangePicker
               value={{ type: 'absolute', startDate: '2026-10-01', endDate: '2026-10-06' }}
@@ -309,7 +309,7 @@ export default function HeroshotOverviewPage() {
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Dialog" stretch={true}>
+        <Heroshot id="dialog" label="Dialog" stretch={true}>
           <Dialog
             header="Delete instance"
             onDismiss={noop}
@@ -324,7 +324,7 @@ export default function HeroshotOverviewPage() {
           </Dialog>
         </Heroshot>
 
-        <Heroshot label="Divider" stretch={true}>
+        <Heroshot id="divider" label="Divider" stretch={true}>
           <SpaceBetween size="s">
             <Box>Instance settings</Box>
             <Divider />
@@ -332,23 +332,23 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="ExpandableSection" stretch={true}>
+        <Heroshot id="expandable-section" label="ExpandableSection" stretch={true}>
           <ExpandableSection headerText="Advanced settings" defaultExpanded={true}>
             <KeyValuePairs items={[{ label: 'Termination protection', value: 'Enabled' }]} />
           </ExpandableSection>
         </Heroshot>
 
-        <Heroshot label="FileDropzone" stretch={true}>
+        <Heroshot id="file-dropzone" label="FileDropzone" stretch={true}>
           <FileDropzone onChange={noop}>Drop files to upload</FileDropzone>
         </Heroshot>
 
-        <Heroshot label="FileInput">
+        <Heroshot id="file-input" label="FileInput">
           <FileInput value={[]} onChange={noop}>
             Choose file
           </FileInput>
         </Heroshot>
 
-        <Heroshot label="FileTokenGroup" stretch={true}>
+        <Heroshot id="file-token-group" label="FileTokenGroup" stretch={true}>
           <FileTokenGroup
             items={[{ file: certificateFile }]}
             onDismiss={noop}
@@ -357,13 +357,13 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="FileUpload" stretch={true}>
+        <Heroshot id="file-upload" label="FileUpload" stretch={true}>
           <FormField label="Certificate">
             <FileUpload value={[certificateFile]} onChange={noop} showFileSize={true} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Flashbar" stretch={true}>
+        <Heroshot id="flashbar" label="Flashbar" stretch={true}>
           <Flashbar
             items={[
               {
@@ -379,7 +379,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Form" align="start" stretch={true}>
+        <Heroshot id="form" label="Form" align="start" stretch={true}>
           <Form
             header={<Header variant="h1">Create instance</Header>}
             actions={
@@ -397,20 +397,20 @@ export default function HeroshotOverviewPage() {
           </Form>
         </Heroshot>
 
-        <Heroshot label="FormField" stretch={true}>
+        <Heroshot id="form-field" label="FormField" stretch={true}>
           <FormField label="Instance name" description="Must be unique within the region.">
             <Input value="my-instance" onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Grid" stretch={true}>
+        <Heroshot id="grid" label="Grid" stretch={true}>
           <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
             <Container>Main</Container>
             <Container>Side</Container>
           </Grid>
         </Heroshot>
 
-        <Heroshot label="Header" stretch={true}>
+        <Heroshot id="header" label="Header" stretch={true}>
           <Header
             variant="h2"
             description="Instances running in this region."
@@ -421,13 +421,13 @@ export default function HeroshotOverviewPage() {
           </Header>
         </Heroshot>
 
-        <Heroshot label="HelpPanel" align="start" stretch={true}>
+        <Heroshot id="help-panel" label="HelpPanel" align="start" stretch={true}>
           <HelpPanel header={<h2>Instances</h2>}>
             <p>An instance is a virtual server in the cloud.</p>
           </HelpPanel>
         </Heroshot>
 
-        <Heroshot label="Icon">
+        <Heroshot id="icon" label="Icon">
           <SpaceBetween size="s" direction="horizontal">
             <Icon name="settings" size="big" />
             <Icon name="status-positive" size="big" variant="success" />
@@ -436,11 +436,11 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Input" stretch={true}>
+        <Heroshot id="input" label="Input" stretch={true}>
           <Input value="my-instance" ariaLabel="Instance name" onChange={noop} />
         </Heroshot>
 
-        <Heroshot label="ItemCard" stretch={true}>
+        <Heroshot id="item-card" label="ItemCard" stretch={true}>
           <ItemCard
             header="t3.medium"
             description="2 vCPU, 4 GiB memory"
@@ -448,7 +448,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="KeyValuePairs" stretch={true}>
+        <Heroshot id="key-value-pairs" label="KeyValuePairs" stretch={true}>
           <KeyValuePairs
             columns={2}
             items={[
@@ -460,7 +460,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="LineChart" stretch={true}>
+        <Heroshot id="line-chart" label="LineChart" stretch={true}>
           <LineChart
             height={110}
             hideFilter={true}
@@ -470,7 +470,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Link">
+        <Heroshot id="link" label="Link">
           <SpaceBetween size="xs">
             <Link href="#">Secondary link</Link>
             <Link href="#" variant="primary">
@@ -482,7 +482,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="List" align="start" stretch={true}>
+        <Heroshot id="list" label="List" align="start" stretch={true}>
           <List
             ariaLabel="Instances"
             items={instances}
@@ -490,7 +490,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="MixedLineBarChart" stretch={true}>
+        <Heroshot id="mixed-line-bar-chart" label="MixedLineBarChart" stretch={true}>
           <MixedLineBarChart
             height={110}
             hideFilter={true}
@@ -503,7 +503,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Multiselect" stretch={true}>
+        <Heroshot id="multiselect" label="Multiselect" stretch={true}>
           <FormField label="Security groups">
             <Multiselect
               selectedOptions={[
@@ -516,11 +516,11 @@ export default function HeroshotOverviewPage() {
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Pagination">
+        <Heroshot id="pagination" label="Pagination">
           <Pagination currentPageIndex={2} pagesCount={5} onChange={noop} />
         </Heroshot>
 
-        <Heroshot label="PieChart" stretch={true}>
+        <Heroshot id="pie-chart" label="PieChart" stretch={true}>
           <PieChart
             variant="donut"
             size="small"
@@ -534,11 +534,11 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="ProgressBar" stretch={true}>
+        <Heroshot id="progress-bar" label="ProgressBar" stretch={true}>
           <ProgressBar value={68} label="Snapshot progress" description="Copying volume data" />
         </Heroshot>
 
-        <Heroshot label="PromptInput" stretch={true}>
+        <Heroshot id="prompt-input" label="PromptInput" stretch={true}>
           <PromptInput
             value="How do I resize an instance?"
             ariaLabel="Ask a question"
@@ -548,7 +548,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="PropertyFilter" stretch={true}>
+        <Heroshot id="property-filter" label="PropertyFilter" stretch={true}>
           <PropertyFilter
             query={{ operation: 'and', tokens: [{ propertyKey: 'type', operator: '=', value: 't3.medium' }] }}
             filteringAriaLabel="Filter instances"
@@ -559,13 +559,13 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="RadioButton">
+        <Heroshot id="radio-button" label="RadioButton">
           <RadioButton name="purchase-option" value="on-demand" checked={true} onSelect={noop}>
             On-demand
           </RadioButton>
         </Heroshot>
 
-        <Heroshot label="RadioGroup">
+        <Heroshot id="radio-group" label="RadioGroup">
           <RadioGroup
             value="on-demand"
             onChange={noop}
@@ -576,7 +576,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="SegmentedControl">
+        <Heroshot id="segmented-control" label="SegmentedControl">
           <SegmentedControl
             selectedId="table"
             onChange={noop}
@@ -588,13 +588,13 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Select" stretch={true}>
+        <Heroshot id="select" label="Select" stretch={true}>
           <FormField label="Instance type">
             <Select selectedOption={{ label: 't3.medium', value: 't3.medium' }} options={[]} onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="SideNavigation" align="start" stretch={true}>
+        <Heroshot id="side-navigation" label="SideNavigation" align="start" stretch={true}>
           <SideNavigation
             header={{ text: 'Service', href: '#' }}
             activeHref="#instances"
@@ -606,7 +606,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Skeleton" stretch={true}>
+        <Heroshot id="skeleton" label="Skeleton" stretch={true}>
           <SpaceBetween size="s">
             <Skeleton variant="text-heading-m" width="60%" />
             <Skeleton variant="text-body-m" />
@@ -614,24 +614,24 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Slider" stretch={true}>
+        <Heroshot id="slider" label="Slider" stretch={true}>
           <FormField label="Volume size">
             <Slider value={40} min={0} max={100} onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="SpaceBetween" stretch={true}>
+        <Heroshot id="space-between" label="SpaceBetween" stretch={true}>
           <SpaceBetween size="s">
             <Container>First</Container>
             <Container>Second</Container>
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Spinner">
+        <Heroshot id="spinner" label="Spinner">
           <Spinner size="large" />
         </Heroshot>
 
-        <Heroshot label="StatusIndicator">
+        <Heroshot id="status-indicator" label="StatusIndicator">
           <SpaceBetween size="xs">
             <StatusIndicator type="success">Running</StatusIndicator>
             <StatusIndicator type="in-progress">Pending</StatusIndicator>
@@ -639,7 +639,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Steps" stretch={true}>
+        <Heroshot id="steps" label="Steps" stretch={true}>
           <Steps
             steps={[
               { status: 'success', header: 'Validated template' },
@@ -649,7 +649,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Table" align="start" stretch={true}>
+        <Heroshot id="table" label="Table" align="start" stretch={true}>
           <Table
             variant="embedded"
             items={instances}
@@ -660,7 +660,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="Tabs" stretch={true}>
+        <Heroshot id="tabs" label="Tabs" stretch={true}>
           <Tabs
             tabs={[
               { id: 'details', label: 'Details', content: 'Instance details' },
@@ -670,28 +670,28 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="TagEditor" align="start" stretch={true}>
+        <Heroshot id="tag-editor" label="TagEditor" align="start" stretch={true}>
           <TagEditor tags={[{ key: 'Environment', value: 'Production', existing: false }]} onChange={noop} />
         </Heroshot>
 
-        <Heroshot label="TextContent" stretch={true}>
+        <Heroshot id="text-content" label="TextContent" stretch={true}>
           <TextContent>
             <h2>Instances</h2>
             <p>An instance is a virtual server in the cloud.</p>
           </TextContent>
         </Heroshot>
 
-        <Heroshot label="TextFilter" stretch={true}>
+        <Heroshot id="text-filter" label="TextFilter" stretch={true}>
           <TextFilter filteringText="t3" filteringAriaLabel="Filter instances" countText="3 matches" onChange={noop} />
         </Heroshot>
 
-        <Heroshot label="Textarea" stretch={true}>
+        <Heroshot id="textarea" label="Textarea" stretch={true}>
           <FormField label="Description">
             <Textarea value="Hosts the public web tier." onChange={noop} rows={2} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Tiles" stretch={true}>
+        <Heroshot id="tiles" label="Tiles" stretch={true}>
           <Tiles
             value="on-demand"
             onChange={noop}
@@ -703,13 +703,13 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="TimeInput" stretch={true}>
+        <Heroshot id="time-input" label="TimeInput" stretch={true}>
           <FormField label="Start time">
             <TimeInput value="14:30" onChange={noop} />
           </FormField>
         </Heroshot>
 
-        <Heroshot label="Toggle">
+        <Heroshot id="toggle" label="Toggle">
           <SpaceBetween size="xs">
             <Toggle checked={true} onChange={noop}>
               Detailed monitoring
@@ -720,7 +720,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="ToggleButton">
+        <Heroshot id="toggle-button" label="ToggleButton">
           <SpaceBetween size="xs" direction="horizontal">
             <ToggleButton pressed={true} iconName="star-filled" pressedIconName="star-filled" onChange={noop}>
               Favorite
@@ -731,7 +731,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot label="Token">
+        <Heroshot id="token" label="Token">
           <Token
             label="us-east-1"
             description="US East (N. Virginia)"
@@ -740,7 +740,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="TokenGroup">
+        <Heroshot id="token-group" label="TokenGroup">
           <TokenGroup
             onDismiss={noop}
             items={[
@@ -751,7 +751,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="TopNavigation" stretch={true} padding={0}>
+        <Heroshot id="top-navigation" label="TopNavigation" stretch={true} padding={0}>
           <TopNavigation
             identity={{ title: 'Service', href: '#' }}
             utilities={[
@@ -761,7 +761,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot label="TreeView" stretch={true}>
+        <Heroshot id="tree-view" label="TreeView" stretch={true}>
           <TreeView
             ariaLabel="Resources"
             items={treeItems}

@@ -14,6 +14,11 @@ export const HEROSHOT_WIDTH = 346;
 export const HEROSHOT_HEIGHT = 170;
 
 interface HeroshotProps {
+  /**
+   * Identifies the frame for screenshot specs, which select it by `[data-testid="heroshot-<id>"]`.
+   * Required so that specs don't have to rely on the position of a frame in the gallery.
+   */
+  id: string;
   /** Caption rendered above the frame, outside of the captured area. */
   label?: string;
   /**
@@ -43,6 +48,7 @@ interface HeroshotProps {
  * capture the same pixels every time.
  */
 export function Heroshot({
+  id,
   label,
   align = 'center',
   padding = 16,
@@ -81,6 +87,9 @@ export function Heroshot({
         <div style={{ color: colorTextBodySecondary, fontSize: fontSizeBodyS, marginBlockEnd: 4 }}>{label}</div>
       ) : null}
       <div
+        // Sits on the frame rather than the wrapper, so that specs cropping to this element capture
+        // the 346x170 box alone and not the caption above it.
+        data-testid={`heroshot-${id}`}
         style={{
           inlineSize: HEROSHOT_WIDTH,
           blockSize: HEROSHOT_HEIGHT,
