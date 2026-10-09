@@ -246,6 +246,28 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     min-inline-size: 0;
   }
 
+  &-main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: awsui.$space-xs;
+    row-gap: awsui.$space-scaled-xxs;
+    min-inline-size: 0;
+
+    > .header-wrapper {
+      flex: 1 1 auto;
+      min-inline-size: 0;
+    }
+  }
+
+  &-secondary-content {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-inline-end: auto;
+  }
+
   &-button,
   &-container-button {
     @include focus-visible.when-visible {
@@ -325,7 +347,15 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 
   &-text {
     /* used in test-utils */
+
+    &-hidden {
+      @include styles.awsui-util-hide;
+    }
   }
+}
+
+.header-container-button:has(> .header-text-hidden) > .icon-container {
+  margin-inline-end: 0;
 }
 
 // Make sure that actions can wrap for default expandable section headers.
