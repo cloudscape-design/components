@@ -10,7 +10,12 @@ const suite: TestSuite = {
       description: 'Permutations',
       path: 'control-group/permutations',
       screenshotType: 'permutations',
-      pixelDiffTolerance: 2,
+    },
+    {
+      description: 'Vertical permutations',
+      path: 'control-group/permutations',
+      screenshotType: 'permutations',
+      queryParams: { controlGroupDirection: 'vertical' },
     },
   ],
 };
