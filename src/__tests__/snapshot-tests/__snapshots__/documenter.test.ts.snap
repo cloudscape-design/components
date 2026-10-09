@@ -20646,6 +20646,164 @@ need to be direct children of the group:
 }
 `;
 
+exports[`Components definition for option-list matches the snapshot: option-list 1`] = `
+{
+  "dashCaseName": "option-list",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the list loses focus.",
+      "name": "onBlur",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user selects or deselects an option.
+The event \`detail\` contains the new \`selectedIds\`.",
+      "detailInlineType": {
+        "name": "OptionListProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "selectedIds",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "OptionListProps.ChangeDetail",
+      "name": "onChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the list receives focus.",
+      "name": "onFocus",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets focus on the list.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "OptionList",
+  "properties": [
+    {
+      "description": "Adds \`aria-describedby\` to the list.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the list. Use this when there is no visible label.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the list. Use this to reference the visible question or heading.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.
+* \`selectedAriaLabel\` - Announced with the highlighted option when it is selected.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "OptionListProps.I18nStrings",
+        "properties": [
+          {
+            "name": "selectedAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "OptionListProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The items to display. Each item is converted into an option with \`renderItem\`.",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Converts an item into an option. Return an object with the following properties:
+* \`id\` (string) - A unique identifier for the item. It is used for \`selectedIds\`.
+* \`content\` (string | React.ReactNode) - The main content of the option. Use a string when possible:
+   it is also used for the option tooltip and for type-ahead search.
+* \`secondaryContent\` (string) - (Optional) Secondary text, for example a description.
+* \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start of the option.
+* \`labelTag\` (string) - (Optional) A short text displayed at the end of the first line, same as \`labelTag\` in Select options.
+* \`tags\` (ReadonlyArray<string>) - (Optional) Tags displayed under the content, same as \`tags\` in Select options.
+
+Options are the selection target. Do not render interactive elements such as buttons or links inside them.",
+      "inlineType": {
+        "name": "(item: T) => OptionListProps.RenderItemResult",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "T",
+          },
+        ],
+        "returnType": "OptionListProps.RenderItemResult",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": false,
+      "type": "(item: T) => OptionListProps.RenderItemResult",
+    },
+    {
+      "description": "The ids of the selected items.
+
+If you provide this property, you must also provide an \`onChange\` handler that updates it.
+If you don't, the component manages its selection internally.",
+      "name": "selectedIds",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
+    },
+    {
+      "description": "Specifies whether the user can select one option (\`single\`) or several (\`multi\`).
+Multi selection shows a checkbox next to each option.",
+      "inlineType": {
+        "name": "OptionListProps.SelectionType",
+        "type": "union",
+        "values": [
+          "single",
+          "multi",
+        ],
+      },
+      "name": "selectionType",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for pagination matches the snapshot: pagination 1`] = `
 {
   "dashCaseName": "pagination",
@@ -44135,6 +44293,183 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the highlighted option.",
+          "name": "findHighlightedOption",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns the element that has the \`listbox\` role and receives focus.",
+          "name": "findListbox",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns an option for a given item id.",
+          "name": "findOptionById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns an option for a given index.",
+          "name": "findOptionByIndex",
+          "parameters": [
+            {
+              "description": "1-based index of the option to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all options.",
+          "name": "findOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all selected options.",
+          "name": "findSelectedOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "OptionListWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the option label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the option label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the option content (label, description, icon).",
+          "name": "findOption",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "description": "Returns the option secondary content.",
+          "name": "findSecondaryContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the option tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "name": "isHighlighted",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+        {
+          "name": "isSelected",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "OptionListOptionWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the wrapper for the main content element.",
           "name": "findMainContent",
           "parameters": [],
@@ -54792,6 +55127,147 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
       ],
       "name": "NavigableGroupWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the highlighted option.",
+          "name": "findHighlightedOption",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns the element that has the \`listbox\` role and receives focus.",
+          "name": "findListbox",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns an option for a given item id.",
+          "name": "findOptionById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns an option for a given index.",
+          "name": "findOptionByIndex",
+          "parameters": [
+            {
+              "description": "1-based index of the option to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all options.",
+          "name": "findOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns all selected options.",
+          "name": "findSelectedOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "OptionListWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the option label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the option label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the option content (label, description, icon).",
+          "name": "findOption",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionWrapper",
+          },
+        },
+        {
+          "description": "Returns the option secondary content.",
+          "name": "findSecondaryContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the option tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "OptionListOptionWrapper",
     },
     {
       "methods": [

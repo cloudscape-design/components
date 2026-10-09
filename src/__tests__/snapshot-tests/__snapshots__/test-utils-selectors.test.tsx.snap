@@ -507,6 +507,10 @@ exports[`test-utils selectors 1`] = `
   "navigable-group": [
     "awsui_root_efqlv",
   ],
+  "option-list": [
+    "awsui_option_1kbcw",
+    "awsui_root_1kbcw",
+  ],
   "pagination": [
     "awsui_arrow_fvjdu",
     "awsui_button-current_fvjdu",
