@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "Gunakan: \"{value}\"",
     "errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {Gunakan: \"{value}\"} true {Tambahkan \"{value}\"} other {}}",
+    "i18nStrings.tokenDismissLabel": "Hapus {token__label}",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} disisipkan",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {1 item lagi} other {{count} item lagi}}",
     "recoveryText": "Coba lagi",
     "selectedAriaLabel": "Dipilih"
   },

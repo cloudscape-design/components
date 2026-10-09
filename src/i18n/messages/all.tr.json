@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "Şunu kullan: \"{value}\"",
     "errorIconAriaLabel": "Hata",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {Şunu kullan: \"{value}\"} true {\"{value}\" ekle} other {}}",
+    "i18nStrings.tokenDismissLabel": "{token__label} öğesini kaldır",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} eklendi",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {1 öge daha} other {{count} öge daha}}",
     "recoveryText": "Yeniden dene",
     "selectedAriaLabel": "Seçili"
   },

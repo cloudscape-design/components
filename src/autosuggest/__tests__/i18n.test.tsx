@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -133,5 +133,188 @@ describe('i18n provider', () => {
       </TestI18nProvider>
     );
     expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('supports providing enteredTextLabel via i18n provider in tokens mode', () => {
+    const { wrapper } = renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Custom add value' } }}>
+        <Autosuggest {...defaultProps} value="1" tokens={[]} />
+      </TestI18nProvider>
+    );
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom add value');
+  });
+
+  test('should not warn when tokens mode and enteredTextLabel is provided via i18n provider', () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Add' } }}>
+        <Autosuggest {...defaultProps} value="1" tokens={[]} />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test("supports providing enteredTextLabel via i18n provider dotted key 'i18nStrings.enteredTextLabel'", () => {
+    const { wrapper } = renderElement(
+      <TestI18nProvider messages={{ autosuggest: { 'i18nStrings.enteredTextLabel': 'Dotted key value' } }}>
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Dotted key value');
+  });
+
+  test("dotted key 'i18nStrings.enteredTextLabel' wins over flat 'enteredTextLabel' in provider", () => {
+    const { wrapper } = renderElement(
+      <TestI18nProvider
+        messages={{ autosuggest: { enteredTextLabel: 'Flat key', 'i18nStrings.enteredTextLabel': 'Dotted key' } }}
+      >
+        <Autosuggest {...defaultProps} value="1" />
+      </TestI18nProvider>
+    );
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Dotted key');
+  });
+
+  test("should not warn when 'i18nStrings.enteredTextLabel' dotted key is provided via i18n provider", () => {
+    renderElement(
+      <TestI18nProvider messages={{ autosuggest: { 'i18nStrings.enteredTextLabel': 'Add' } }}>
+        <Autosuggest {...defaultProps} value="1" tokens={[]} />
+      </TestI18nProvider>
+    );
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('i18nStrings.enteredTextLabel direct prop is used in tokens mode', () => {
+    function TokensAutosuggest(props: Partial<AutosuggestProps>) {
+      const [value, setValue] = React.useState('1');
+      return (
+        <Autosuggest
+          {...defaultProps}
+          {...props}
+          value={value}
+          onChange={({ detail }) => setValue(detail.value)}
+          tokens={[]}
+          i18nStrings={{ enteredTextLabel: v => `Add tag "${v}"` }}
+        />
+      );
+    }
+    const { container } = render(<TokensAutosuggest />);
+    const wrapper = createWrapper(container).findAutosuggest()!;
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Add tag "S"');
+  });
+
+  test('i18nStrings.enteredTextLabel direct prop is used in default mode', () => {
+    function DefaultAutosuggest() {
+      const [value, setValue] = React.useState('1');
+      return (
+        <Autosuggest
+          {...defaultProps}
+          value={value}
+          onChange={({ detail }) => setValue(detail.value)}
+          i18nStrings={{ enteredTextLabel: v => `Search for "${v}"` }}
+        />
+      );
+    }
+    const { container } = render(<DefaultAutosuggest />);
+    const wrapper = createWrapper(container).findAutosuggest()!;
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Search for "S"');
+  });
+
+  test('deprecated enteredTextLabel prop overrides i18nStrings.enteredTextLabel in tokens mode', () => {
+    function OverrideAutosuggest() {
+      const [value, setValue] = React.useState('1');
+      return (
+        <Autosuggest
+          {...defaultProps}
+          value={value}
+          onChange={({ detail }) => setValue(detail.value)}
+          tokens={[]}
+          enteredTextLabel={v => `Use "${v}"`}
+          i18nStrings={{ enteredTextLabel: v => `Add "${v}"` }}
+        />
+      );
+    }
+    const { container } = render(<OverrideAutosuggest />);
+    const wrapper = createWrapper(container).findAutosuggest()!;
+    wrapper.setInputValue('S');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Use "S"');
+  });
+
+  test('supports providing i18nStrings.tokenInsertedAriaLabel via i18n provider dotted key', () => {
+    jest.useFakeTimers();
+    function TokensAutosuggest() {
+      const [value, setValue] = React.useState('');
+      const [tokens, setTokens] = React.useState<AutosuggestProps.Token[]>([]);
+      return (
+        <TestI18nProvider
+          messages={{ autosuggest: { 'i18nStrings.tokenInsertedAriaLabel': '{token__label} was inserted' } }}
+        >
+          <Autosuggest
+            {...defaultProps}
+            value={value}
+            tokens={tokens}
+            onChange={({ detail }) => {
+              setValue(detail.value);
+              if (detail.tokens !== undefined) {
+                setTokens([...detail.tokens] as AutosuggestProps.Token[]);
+              }
+            }}
+          />
+        </TestI18nProvider>
+      );
+    }
+    const { container } = render(<TokensAutosuggest />);
+    const wrapper = createWrapper(container).findAutosuggest()!;
+
+    wrapper.setInputValue('my-region');
+    act(() => {
+      wrapper.findNativeInput().keydown(KeyCode.enter);
+    });
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+
+    const liveRegion = document.querySelector('[aria-live="assertive"]');
+    expect(liveRegion?.textContent).toContain('my-region was inserted');
+  });
+
+  test('i18nStrings.tokenInsertedAriaLabel direct prop takes effect in tokens mode', () => {
+    jest.useFakeTimers();
+    function TokensAutosuggest() {
+      const [value, setValue] = React.useState('');
+      const [tokens, setTokens] = React.useState<AutosuggestProps.Token[]>([]);
+      return (
+        <Autosuggest
+          {...defaultProps}
+          value={value}
+          tokens={tokens}
+          i18nStrings={{ tokenInsertedAriaLabel: (v: string) => `Added: ${v}` }}
+          onChange={({ detail }) => {
+            setValue(detail.value);
+            if (detail.tokens !== undefined) {
+              setTokens([...detail.tokens] as AutosuggestProps.Token[]);
+            }
+          }}
+        />
+      );
+    }
+    const { container } = render(<TokensAutosuggest />);
+    const wrapper = createWrapper(container).findAutosuggest()!;
+
+    wrapper.setInputValue('us-east-1');
+    act(() => {
+      wrapper.findNativeInput().keydown(KeyCode.enter);
+    });
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+
+    const liveRegion = document.querySelector('[aria-live="assertive"]');
+    expect(liveRegion?.textContent).toContain('Added: us-east-1');
   });
 });

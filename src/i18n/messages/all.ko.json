@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "사용: ‘{value}’",
     "errorIconAriaLabel": "오류",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {'{value}' 사용} true {'{value}' 추가} other {}}",
+    "i18nStrings.tokenDismissLabel": "{token__label} 제거",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 삽입됨",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {1개 항목 더 보기} other {{count}개 항목 더 보기}}",
     "recoveryText": "재시도",
     "selectedAriaLabel": "선택됨"
   },

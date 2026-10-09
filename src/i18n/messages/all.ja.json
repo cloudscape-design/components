@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "使用:「{value}」",
     "errorIconAriaLabel": "エラー",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {「{value}」を使用} true {「{value}」を追加} other {}}",
+    "i18nStrings.tokenDismissLabel": "{token__label} を削除",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} が挿入されました",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {あと 1 件の項目} other {あと {count} 件の項目}}",
     "recoveryText": "再試行",
     "selectedAriaLabel": "選択済み"
   },

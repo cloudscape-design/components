@@ -196,6 +196,19 @@
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
+  &.input-has-no-border {
+    // Unset min-block-size so the input height is driven by the token trigger
+    // container's own min-block-size rather than duplicating it here.
+    min-block-size: unset;
+    &,
+    &:focus,
+    &:hover {
+      border-block-width: 0;
+      border-inline-width: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
 }
 
 .grouped {

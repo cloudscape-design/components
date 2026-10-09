@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "使用：“{value}”",
     "errorIconAriaLabel": "错误",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {使用：“{value}”} true {添加“{value}”} other {}}",
+    "i18nStrings.tokenDismissLabel": "删除 {token__label}",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 已插入",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {另外 1 个项目} other {另外 {count} 个项目}}",
     "recoveryText": "重试",
     "selectedAriaLabel": "已选定"
   },
