@@ -4,9 +4,12 @@ import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
+
+import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 
 interface Instance {
   name: string;
@@ -194,6 +197,65 @@ describe('Expandable rows', () => {
     expect(table.findRows()[5].getElement()).toHaveAttribute('aria-level', '3');
     expect(table.findRows()[5].getElement()).toHaveAttribute('aria-setsize', '2');
     expect(table.findRows()[5].getElement()).toHaveAttribute('aria-posinset', '2');
+  });
+
+  test('cells in the expandable column are indented by level, up to level 9', () => {
+    const deepItems: Instance[] = [{ name: '1' }];
+    let current = deepItems[0];
+    for (let level = 2; level <= 11; level++) {
+      current.children = [{ name: `${level}` }];
+      current = current.children[0];
+    }
+    const { table } = renderTable({
+      items: deepItems,
+      columnDefinitions: [...columnDefinitions, { header: 'other', cell: item => item.name }],
+      expandableRows: {
+        isItemExpandable: item => !!item.children,
+        expandedItems: flatten(deepItems),
+        getItemChildren: item => item.children ?? [],
+        onExpandableItemToggle: () => {},
+      },
+    });
+    const getLevel = (row: number, column: number) =>
+      table.findBodyCell(row, column)!.getElement().style.getPropertyValue(customCssProps.tableExpandableLevel);
+
+    expect(table.findRows().map((_, index) => getLevel(index + 1, 1))).toEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '9',
+      '9',
+    ]);
+    expect(getLevel(1, 2)).toBe('');
+    // Apps select on the level classes, so they are kept even though they carry no styles.
+    expect(table.findBodyCell(2, 1)!.getElement()).toHaveClass(bodyCellStyles['expandable-level-2']);
+    expect(table.findBodyCell(11, 1)!.getElement()).toHaveClass(bodyCellStyles['expandable-level-next']);
+  });
+
+  test('cells in the expandable column are not indented while edited', () => {
+    const { table } = renderTable({
+      items: nestedItems,
+      columnDefinitions: [{ header: 'name', cell: item => item.name, editConfig: { editingCell: () => null } }],
+      expandableRows: {
+        isItemExpandable: item => !!item.children,
+        expandedItems: [nestedItems[0]],
+        getItemChildren: item => item.children ?? [],
+        onExpandableItemToggle: () => {},
+      },
+    });
+    const getLevel = () =>
+      table.findBodyCell(2, 1)!.getElement().style.getPropertyValue(customCssProps.tableExpandableLevel);
+
+    expect(getLevel()).toBe('2');
+    table.findEditCellButton(2, 1)!.click();
+    expect(table.findEditingCell()).not.toBe(null);
+    expect(getLevel()).toBe('');
   });
 
   test('onExpandableItemToggle fires with item and expand state', () => {

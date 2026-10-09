@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Extra padding so content doesn't shift on selection (VR: the selected border is wider than the divider).
@@ -21,8 +22,8 @@ $cell-negative-space-vertical: 2px;
 // A control cell omits the class, so no padding/negative-margin applies — nothing to override, at any
 // specificity, even as new edge/state rules are added.
 @mixin cell-padding-inline-start($padding) {
-  $max-nesting-levels: 9;
   $offset-padding: calc($padding - 1 * awsui.$border-divider-list-width);
+  $level: var(#{custom-props.$tableExpandableLevel});
 
   > .body-cell-content.with-paddings {
     padding-inline-start: $offset-padding;
@@ -31,24 +32,14 @@ $cell-negative-space-vertical: 2px;
     margin-inline-start: $offset-padding;
   }
 
-  @for $i from 0 through $max-nesting-levels {
-    &.expandable-level-#{$i} {
-      > .body-cell-content.with-paddings {
-        padding-inline-start: calc(#{$offset-padding} / 2);
-        margin-inline-start: calc(#{$offset-padding} / 2 + #{$i} * #{$cell-offset});
-      }
-      > .expandable-toggle-wrapper {
-        margin-inline-start: calc($offset-padding + ($i - 1) * $cell-offset);
-      }
-    }
-  }
-  &.expandable-level-next {
+  // The level is set inline on every expandable cell, so it is always defined here.
+  &.body-cell-expandable {
     > .body-cell-content.with-paddings {
       padding-inline-start: calc(#{$offset-padding} / 2);
-      margin-inline-start: calc(#{$offset-padding} / 2 + #{$max-nesting-levels} * #{$cell-offset});
+      margin-inline-start: calc(#{$offset-padding} / 2 + #{$level} * #{$cell-offset});
     }
     > .expandable-toggle-wrapper {
-      margin-inline-start: calc(#{$offset-padding} + (#{$max-nesting-levels} - 1) * #{$cell-offset});
+      margin-inline-start: calc(#{$offset-padding} + (#{$level} - 1) * #{$cell-offset});
     }
   }
 }
