@@ -115,13 +115,15 @@ const AutosuggestInput = React.forwardRef(
     const formFieldContext = useFormFieldContext(restProps);
 
     const inputRef = useRef<HTMLInputElement>(null);
+    // The field box, not the borderless native input, is the visible trigger whose width the dropdown follows.
+    const inputContainerRef = useRef<HTMLDivElement>(null);
     const dropdownContentRef = useRef<HTMLDivElement>(null);
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
-      () => inputRef.current,
+      () => inputContainerRef.current,
       entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
     );
 
@@ -274,7 +276,7 @@ const AutosuggestInput = React.forwardRef(
 
       const clickListener = (event: MouseEvent) => {
         if (
-          !nodeBelongs(inputRef.current, event.target) &&
+          !nodeBelongs(inputContainerRef.current, event.target) &&
           !nodeBelongs(dropdownContentRef.current, event.target) &&
           !nodeBelongs(dropdownFooterRef.current, event.target)
         ) {
@@ -326,6 +328,7 @@ const AutosuggestInput = React.forwardRef(
               ariaRequired={ariaRequired}
               clearAriaLabel={clearAriaLabel}
               ref={inputRef}
+              __internalRootRef={inputContainerRef}
               autoComplete={false}
               nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}

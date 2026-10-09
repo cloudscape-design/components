@@ -40,7 +40,8 @@ describe('Filter component', () => {
     });
 
     test('should have no border class', () => {
-      expect(inputEl).toHaveClass(inputStyles['input-has-no-border-radius']);
+      const fieldEl = wrapper.findByClassName(inputStyles['input-field'])!.getElement();
+      expect(fieldEl).toHaveClass(inputStyles['input-field-no-border-radius']);
     });
 
     test('should have aria-required attribute', () => {
