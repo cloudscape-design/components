@@ -101,38 +101,40 @@ describe('i18n provider', () => {
     ).toHaveTextContent('Custom selected');
   });
 
-  const enteredTextLabelRequiredWarning = 'A value for enteredTextLabel must be provided.';
-
-  test('should warn when enteredTextLabel is undefined and not using the i18n provider', () => {
-    renderElement(<Autosuggest {...defaultProps} value="1" />);
-    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+  test('should not show entered-text option when enteredTextLabel is undefined and not using the i18n provider', () => {
+    const { wrapper } = renderElement(<Autosuggest {...defaultProps} value="1" />);
+    wrapper.setInputValue('test');
+    expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('');
   });
 
-  test('should warn when enteredTextLabel is undefined when using the i18n provider without enteredTextLabel value', () => {
-    renderElement(
+  test('should not show entered-text option when enteredTextLabel is undefined when using the i18n provider without enteredTextLabel value', () => {
+    const { wrapper } = renderElement(
       <TestI18nProvider messages={{ autosuggest: {} }}>
         <Autosuggest {...defaultProps} value="1" />
       </TestI18nProvider>
     );
-    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+    wrapper.setInputValue('test');
+    expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('');
   });
 
-  test('should warn when enteredTextLabel is undefined when using the i18n provider with empty enteredTextLabel value', () => {
-    renderElement(
+  test('should not show entered-text option when enteredTextLabel is undefined when using the i18n provider with empty enteredTextLabel value', () => {
+    const { wrapper } = renderElement(
       <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: '' } }}>
         <Autosuggest {...defaultProps} value="1" />
       </TestI18nProvider>
     );
-    expect(warnOnce).toHaveBeenCalledWith('Autosuggest', enteredTextLabelRequiredWarning);
+    wrapper.setInputValue('test');
+    expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('');
   });
 
-  test('should not warn when enteredTextLabel is undefined when using the i18n provider', () => {
-    renderElement(
+  test('should show entered-text option when enteredTextLabel is provided via i18n provider', () => {
+    const { wrapper } = renderElement(
       <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Use' } }}>
         <Autosuggest {...defaultProps} value="1" />
       </TestI18nProvider>
     );
-    expect(warnOnce).not.toHaveBeenCalled();
+    wrapper.setInputValue('test');
+    expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('Use');
   });
 
   test('supports providing enteredTextLabel via i18n provider in tokens mode', () => {
@@ -223,7 +225,7 @@ describe('i18n provider', () => {
     expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Search for "S"');
   });
 
-  test('deprecated enteredTextLabel prop overrides i18nStrings.enteredTextLabel in tokens mode', () => {
+  test('i18nStrings.enteredTextLabel takes priority over deprecated enteredTextLabel prop in tokens mode', () => {
     function OverrideAutosuggest() {
       const [value, setValue] = React.useState('1');
       return (
@@ -240,7 +242,7 @@ describe('i18n provider', () => {
     const { container } = render(<OverrideAutosuggest />);
     const wrapper = createWrapper(container).findAutosuggest()!;
     wrapper.setInputValue('S');
-    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Use "S"');
+    expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Add "S"');
   });
 
   test('supports providing i18nStrings.tokenInsertedAriaLabel via i18n provider dotted key', () => {

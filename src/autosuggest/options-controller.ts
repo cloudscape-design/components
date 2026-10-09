@@ -3,8 +3,6 @@
 
 import { useMemo, useState } from 'react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import { useInternalI18n } from '../i18n/context';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
 import {
@@ -64,12 +62,8 @@ export const useAutosuggestItems = ({
 
   const enteredItemLabel =
     i18n('i18nStrings.enteredTextLabel', enteredTextLabel?.(filterValue), format =>
-      format({ value: filterValue, isTokenMode: String(isTokenMode) })
+      format({ value: filterValue, isTokenMode: String(isTokenMode ?? false) })
     ) ?? i18n('enteredTextLabel', enteredTextLabel?.(filterValue), format => format({ value: filterValue }));
-
-  if (!enteredItemLabel) {
-    warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
-  }
 
   const filteredItems = useMemo(() => {
     const filteredItems = filteringType === 'auto' && !showAll ? filterOptions(items, filterText) : [...items];

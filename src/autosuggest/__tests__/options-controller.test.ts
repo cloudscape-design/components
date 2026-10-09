@@ -271,5 +271,19 @@ describe('useAutosuggestItems', () => {
         }
       });
     });
+    test('uses isTokenMode=false (Use: text) when isTokenMode is undefined — property-filter path', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          // isTokenMode not passed (undefined) — simulates property-filter calling useAutosuggestItems directly
+        },
+      });
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      // label is undefined when no enteredTextLabel prop and no i18n provider
+      expect(enteredItem.label).toBeUndefined();
+    });
   });
 });

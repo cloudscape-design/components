@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 
 import { Autosuggest, AutosuggestProps, Box, Button, FormField, Icon, IconProvider, SpaceBetween } from '~components';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -99,7 +101,6 @@ function IconScenario() {
         options={ICON_OPTIONS.filter(o => !selected.has(o.value!) && (!value || o.value!.includes(value)))}
         placeholder="Search or add a region"
         empty="No options"
-        i18nStrings={{ tokenDismissLabel: v => `Remove ${v}` }}
       />
     </FormField>
   );
@@ -130,6 +131,7 @@ function InteractiveDemo() {
             }}
             tokens={tokens}
             i18nStrings={{
+              enteredTextLabel: v => `Add "${v}"`,
               tokenOverflowAriaLabel: count => `${count} more regions`,
               tokenDismissLabel: v => `Remove ${v}`,
             }}
@@ -163,7 +165,6 @@ function Scenario({
   disabled,
   readOnly,
   invalid,
-  tokenOverflowAriaLabel,
 }: {
   label: string;
   initTokens: AutosuggestProps.Token[];
@@ -171,7 +172,6 @@ function Scenario({
   disabled?: boolean;
   readOnly?: boolean;
   invalid?: boolean;
-  tokenOverflowAriaLabel?: (hiddenCount: number) => string;
 }) {
   const [value, setValue] = useState('');
   const [tokens, setTokens] = useState(initTokens);
@@ -185,10 +185,6 @@ function Scenario({
           if (detail.tokens !== undefined) {
             setTokens([...detail.tokens]);
           }
-        }}
-        i18nStrings={{
-          tokenDismissLabel: v => `Remove ${v}`,
-          ...(tokenOverflowAriaLabel ? { tokenOverflowAriaLabel } : {}),
         }}
         options={options.filter(o => !value || o.value!.includes(value))}
         placeholder="Search or add a region"
@@ -210,35 +206,36 @@ export default function AutosuggestTokensModePage() {
         <SpaceBetween size="l">
           <Box variant="h2">Scenarios</Box>
           <ScreenshotArea disableAnimations={true}>
-            <SpaceBetween size="l">
-              <Scenario label="No tokens" initTokens={[]} />
-              <Scenario label="No options (empty dropdown)" initTokens={[]} options={[]} />
-              <Scenario
-                label="Email recipients (long token labels)"
-                options={EMAIL_OPTIONS}
-                initTokens={[makeToken('alice@example.com')]}
-              />
-              <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]} />
-              <IconScenario />
-              <IconProvider
-                icons={{
-                  search: <Icon name="settings" variant="subtle" size="inherit" />,
-                }}
-              >
+            <I18nProvider messages={[messages]} locale="en">
+              <SpaceBetween size="l">
+                <Scenario label="No tokens" initTokens={[]} />
+                <Scenario label="No options (empty dropdown)" initTokens={[]} options={[]} />
                 <Scenario
-                  label="Custom search icon via IconProvider (settings icon replaces magnifying glass)"
-                  initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]}
+                  label="Email recipients (long token labels)"
+                  options={EMAIL_OPTIONS}
+                  initTokens={[makeToken('alice@example.com')]}
                 />
-              </IconProvider>
-              <Scenario
-                label="Many tokens — overflow pill with custom aria-label"
-                initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
-                tokenOverflowAriaLabel={count => `${count} more regions`}
-              />
-              <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
-              <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
-              <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
-            </SpaceBetween>
+                <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]} />
+                <IconScenario />
+                <IconProvider
+                  icons={{
+                    search: <Icon name="settings" variant="subtle" size="inherit" />,
+                  }}
+                >
+                  <Scenario
+                    label="Custom search icon via IconProvider (settings icon replaces magnifying glass)"
+                    initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]}
+                  />
+                </IconProvider>
+                <Scenario
+                  label="Many tokens — overflow pill with custom aria-label"
+                  initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
+                />
+                <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
+                <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
+                <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
+              </SpaceBetween>
+            </I18nProvider>
           </ScreenshotArea>
         </SpaceBetween>
       </SpaceBetween>
