@@ -4,12 +4,13 @@ import React from 'react';
 
 import { BaseCheckboxProps } from '../types/base-checkbox';
 import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldCommonValidationControlProps } from '../types/form-field';
 /**
  * @awsuiSystem core
  */
 import { NativeAttributes } from '../types/native-attributes';
 
-export interface CheckboxProps extends BaseCheckboxProps {
+export interface CheckboxProps extends BaseCheckboxProps, FormFieldCommonValidationControlProps {
   /**
    * The control's label that's displayed next to the checkbox. A state change occurs when a user clicks on it.
    * @displayname label

@@ -49,6 +49,56 @@ test('can be marked as required', () => {
   expect(nativeInput.getAttribute('aria-required')).toBe('true');
 });
 
+describe('invalid state', () => {
+  function findStyledBox(wrapper: CheckboxWrapper) {
+    return wrapper.findByClassName(styles['styled-box'])!.getElement();
+  }
+
+  test('is not invalid by default', () => {
+    const { wrapper } = renderCheckbox(<Checkbox checked={false} />);
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-invalid');
+    expect(findStyledBox(wrapper)).not.toHaveClass(styles['styled-box-invalid']);
+  });
+
+  test('marks the native input and the styled box as invalid', () => {
+    const { wrapper } = renderCheckbox(<Checkbox checked={false} invalid={true} />);
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
+    expect(findStyledBox(wrapper)).toHaveClass(styles['styled-box-invalid']);
+  });
+
+  test('inherits the invalid state from the parent form field', () => {
+    const { container } = render(
+      <FormField errorText="Select at least one option.">
+        <Checkbox checked={false}>Checkbox label</Checkbox>
+      </FormField>
+    );
+    const wrapper = createWrapper(container).findCheckbox()!;
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
+    expect(findStyledBox(wrapper)).toHaveClass(styles['styled-box-invalid']);
+  });
+
+  test('own invalid property overrides the parent form field state', () => {
+    const { container } = render(
+      <FormField errorText="Select at least one option.">
+        <Checkbox checked={false} invalid={false}>
+          Checkbox label
+        </Checkbox>
+      </FormField>
+    );
+    const wrapper = createWrapper(container).findCheckbox()!;
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-invalid');
+    expect(findStyledBox(wrapper)).not.toHaveClass(styles['styled-box-invalid']);
+  });
+
+  test('keeps the invalid styling when the checkbox is also disabled or read-only', () => {
+    const { wrapper: disabled } = renderCheckbox(<Checkbox checked={false} invalid={true} disabled={true} />);
+    expect(findStyledBox(disabled)).toHaveClass(styles['styled-box-invalid']);
+
+    const { wrapper: readOnly } = renderCheckbox(<Checkbox checked={false} invalid={true} readOnly={true} />);
+    expect(findStyledBox(readOnly)).toHaveClass(styles['styled-box-invalid']);
+  });
+});
+
 describe('native and styled control synchronization', () => {
   test('unchecked state', () => {
     const { wrapper } = renderCheckbox(<Checkbox checked={false} indeterminate={false} />);
