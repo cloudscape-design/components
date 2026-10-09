@@ -31,8 +31,6 @@ export default function ControlGroup({
 
   const rootClassnames = [baseProps.className, testUtilStyles.root];
 
-  // The `role="group"` element wrapping the control slots. When an inline label is
-  // present it is labelled by the label; otherwise it carries the component root props.
   const controls = (
     <div
       {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
@@ -53,7 +51,6 @@ export default function ControlGroup({
             key={key ? String(key) : index}
             className={clsx(styles.control, styles[`control-${position}-${direction}`])}
           >
-            {/* `hasAction` only squares facing corners; the action is never counted as a control. */}
             <GroupedControlContext.Provider value={{ position, direction, hasAction: !!actionButton }}>
               {child}
             </GroupedControlContext.Provider>
