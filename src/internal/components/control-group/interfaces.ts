@@ -35,8 +35,7 @@ export namespace ControlGroupProps {
     disabledReason?: string;
 
     /**
-     * Adds `aria-label` to the button element. Use this to provide an accessible name for buttons
-     * that don't have visible text, and to distinguish between multiple buttons with identical visible text.
+     * Adds `aria-label` to the button element.
      * The text will also be added to the `title` attribute of the button.
      */
     ariaLabel?: string;
@@ -46,9 +45,7 @@ export namespace ControlGroupProps {
      */
     ariaDescribedby?: string;
 
-    /** Displays an icon in the action (for example `remove` or `close`). */
+    /** Specifies the icon to display (for example `remove` or `close`). */
     iconName?: IconProps.Name;
-    /** Alternate text for a custom icon, recommended for accessibility. */
-    iconAlt?: string;
   }
 }

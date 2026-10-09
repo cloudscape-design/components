@@ -71,7 +71,6 @@ export default function ControlGroup({
           variant="icon"
           __groupedControlProps={{ position: 'last', direction: 'horizontal' }}
           iconName={actionButton.iconName}
-          iconAlt={actionButton.iconAlt}
           ariaLabel={actionButton.ariaLabel}
           disabled={actionButton.disabled}
           disabledReason={actionButton.disabledReason}
