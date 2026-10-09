@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -58,6 +58,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    tokens,
+    i18nStrings,
     __internalRootRef,
     ...restProps
   } = props;
@@ -80,22 +82,48 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
   const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
+  const isTokenMode = tokens !== undefined;
+
   if (restProps.recoveryText && !onLoadItems) {
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
+
+  const resolvedTokenOverflowAriaLabel =
+    i18nStrings?.tokenOverflowAriaLabel ??
+    i18n('i18nStrings.tokenOverflowAriaLabel', undefined, format => (n: number) => format({ count: String(n) }));
+
+  const resolvedTokenInsertedAriaLabel =
+    i18nStrings?.tokenInsertedAriaLabel ??
+    i18n('i18nStrings.tokenInsertedAriaLabel', undefined, format => (v: string) => format({ token__label: v }));
+
+  const resolvedTokenDismissLabel =
+    i18nStrings?.tokenDismissLabel ??
+    i18n('i18nStrings.tokenDismissLabel', undefined, format => (v: string) => format({ token__label: v }));
+
+  const [tokenInsertedAriaLabelState, setTokenInsertedAriaLabelState] = useState<string | undefined>(undefined);
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
-    enteredTextLabel,
+    enteredTextLabel: i18nStrings?.enteredTextLabel ?? enteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
+    isTokenMode: isTokenMode,
     onSelectItem: (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
+      const selectedValue = option.value || '';
+      if (isTokenMode && selectedValue) {
+        const currentTokens = tokens ?? [];
+        const updated = [...currentTokens, { value: selectedValue }];
+        setTokenInsertedAriaLabelState(
+          resolvedTokenInsertedAriaLabel ? resolvedTokenInsertedAriaLabel(selectedValue) : selectedValue
+        );
+        fireNonCancelableEvent(onChange, { value: '', tokens: updated });
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
       fireNonCancelableEvent(onSelect, {
-        value,
+        value: selectedValue,
         selectedOption: option.type !== 'use-entered' ? option.option : undefined,
       });
       autosuggestInputRef.current?.close();
@@ -185,9 +213,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
   const isFiltered = !!value && value.length !== 0 && !(filteringType === 'auto' && autosuggestItemsState.showAll);
-  const filteredText = isFiltered
-    ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
-    : undefined;
+  const filteredText =
+    isFiltered && !isTokenMode
+      ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
+      : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,
     isEmpty,
@@ -231,6 +260,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      tokens={tokens}
+      tokenOverflowAriaLabel={resolvedTokenOverflowAriaLabel}
+      tokenInsertedAriaLabel={tokenInsertedAriaLabelState}
+      tokenDismissLabel={resolvedTokenDismissLabel}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

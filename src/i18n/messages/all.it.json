@@ -49,6 +49,10 @@
   "autosuggest": {
     "enteredTextLabel": "Utilizza: «{value}»",
     "errorIconAriaLabel": "Errore",
+    "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {Usa: “{value}”} true {Aggiungi “{value}”} other {}}",
+    "i18nStrings.tokenDismissLabel": "Rimuovi {token__label}",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserito",
+    "i18nStrings.tokenOverflowAriaLabel": "{count, select, one {1 altro elemento} other {{count} altri elementi}}",
     "recoveryText": "Riprova",
     "selectedAriaLabel": "Selezionato"
   },

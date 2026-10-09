@@ -3088,11 +3088,23 @@ exports[`Components definition for autosuggest matches the snapshot: autosuggest
     },
     {
       "cancelable": false,
-      "description": "Called whenever a user changes the input value (by typing or pasting).
-The event \`detail\` contains the current value of the field.",
+      "description": "Called whenever the input value or token list changes.
+
+In default mode, fires on every keystroke with \`{ value }\`.
+When \`tokens\` is provided, fires in three situations:
+* Keystroke — \`value\` is the new text; \`tokens\` is unchanged.
+* Token added — \`value\` is \`""\`; \`tokens\` contains the updated list.
+* Token dismissed — \`value\` is unchanged; \`tokens\` contains the updated list.
+
+\`tokens\` is \`undefined\` when not in tokens mode.",
       "detailInlineType": {
-        "name": "BaseChangeDetail",
+        "name": "AutosuggestProps.ChangeDetail",
         "properties": [
+          {
+            "name": "tokens",
+            "optional": true,
+            "type": "ReadonlyArray<AutosuggestProps.Token>",
+          },
           {
             "name": "value",
             "optional": false,
@@ -3101,7 +3113,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "BaseChangeDetail",
+      "detailType": "AutosuggestProps.ChangeDetail",
       "name": "onChange",
     },
     {
@@ -3615,6 +3627,7 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.enteredTextLabel\` instead.",
       "description": "Specifies a function that generates the custom value indicator (for example, \`Use "\${value}"\`).",
       "i18nTag": true,
       "inlineType": {
@@ -3725,6 +3738,84 @@ Note: Manual filtering doesn't disable match highlighting.",
       "name": "hideEnteredTextOption",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "An object containing localized strings for the tokens mode UI.
+Applies only when \`tokens\` is provided.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "AutosuggestProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "enteredTextLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenDismissLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenInsertedAriaLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(hiddenCount: number) => string",
+              "parameters": [
+                {
+                  "name": "hiddenCount",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenOverflowAriaLabel",
+            "optional": true,
+            "type": "((hiddenCount: number) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AutosuggestProps.I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -4175,6 +4266,16 @@ Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
         "core",
       ],
       "type": "AutosuggestProps.Style",
+    },
+    {
+      "description": "Specifies the list of tokens to display as inline pills.
+When this prop is provided (including an empty array), the component enters tokens mode:
+accepted values accumulate as inline dismissible token pills before the text input.
+Tokens that overflow the available width collapse into a \`+N\` pill.
+This is a controlled prop — update it in response to \`onChange\`.",
+      "name": "tokens",
+      "optional": true,
+      "type": "ReadonlyArray<AutosuggestProps.Token>",
     },
     {
       "description": "Specifies the text entered into the form element.",
@@ -38156,6 +38257,40 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the inline token at a 1-based index. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns all visible inline token pills. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -38167,6 +38302,36 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
             "typeArguments": [
               {
                 "name": "HTMLInputElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the overflow panel shown when the +N pill is clicked.
+Returns \`null\` when the overflow panel is closed.",
+          "name": "findOverflowPanel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the +N overflow pill shown when tokens overflow the available width.
+Returns \`null\` when all tokens are visible or the component is not in tokens mode.",
+          "name": "findOverflowPill",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
               },
             ],
           },
@@ -38215,6 +38380,22 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
             "name": "InputWrapper.findSuffix",
           },
           "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token trigger row — the container element that holds the overflow pill,
+visible tokens, and text input when the component is in tokens mode.
+Returns \`null\` when the component is not in tokens mode (the \`tokens\` prop is absent).",
+          "name": "findTokenTrigger",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -38509,6 +38690,81 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "AutosuggestDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [],
@@ -43932,81 +44188,6 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "Array",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper<HTMLElement>",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -44686,6 +44867,46 @@ and this method will have no effect.",
           },
         },
         {
+          "description": "Returns the inline token at a 1-based index. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findInlineToken",
+          },
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns all visible inline token pills. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findInlineTokens",
+          },
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
@@ -44697,6 +44918,42 @@ and this method will have no effect.",
             "typeArguments": [
               {
                 "name": "HTMLInputElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the overflow panel shown when the +N pill is clicked.
+Returns \`null\` when the overflow panel is closed.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowPanel",
+          },
+          "name": "findOverflowPanel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the +N overflow pill shown when tokens overflow the available width.
+Returns \`null\` when all tokens are visible or the component is not in tokens mode.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowPill",
+          },
+          "name": "findOverflowPill",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
               },
             ],
           },
@@ -44840,6 +45097,25 @@ and this method will have no effect.",
         {
           "description": "Returns the button that toggles if the tokens above \`tokenLimit\` are visible.",
           "name": "findTokenToggle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token trigger row — the container element that holds the overflow pill,
+visible tokens, and text input when the component is in tokens mode.
+Returns \`null\` when the component is not in tokens mode (the \`tokens\` prop is absent).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findTokenTrigger",
+          },
+          "name": "findTokenTrigger",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -50457,10 +50733,64 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the inline token at a 1-based index. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns all visible inline token pills. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
           "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the overflow panel shown when the +N pill is clicked.
+Returns \`null\` when the overflow panel is closed.",
+          "name": "findOverflowPanel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the +N overflow pill shown when tokens overflow the available width.
+Returns \`null\` when all tokens are visible or the component is not in tokens mode.",
+          "name": "findOverflowPill",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -50503,6 +50833,17 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
             "name": "InputWrapper.findSuffix",
           },
           "name": "findSuffix",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token trigger row — the container element that holds the overflow pill,
+visible tokens, and text input when the component is in tokens mode.
+Returns \`null\` when the component is not in tokens mode (the \`tokens\` prop is absent).",
+          "name": "findTokenTrigger",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -50661,6 +51002,61 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "AutosuggestDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
     },
     {
       "methods": [],
@@ -54618,61 +55014,6 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [
         {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -55132,10 +55473,76 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the inline token at a 1-based index. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findInlineToken",
+          },
+          "name": "findInlineToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token to return.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns all visible inline token pills. Only available when the component is in tokens mode
+(the \`tokens\` prop is provided).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findInlineTokens",
+          },
+          "name": "findInlineTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "BaseInputWrapper.findNativeInput",
           },
           "name": "findNativeInput",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the overflow panel shown when the +N pill is clicked.
+Returns \`null\` when the overflow panel is closed.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowPanel",
+          },
+          "name": "findOverflowPanel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the +N overflow pill shown when tokens overflow the available width.
+Returns \`null\` when all tokens are visible or the component is not in tokens mode.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowPill",
+          },
+          "name": "findOverflowPill",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -55262,6 +55669,20 @@ In this case, use findContentEditableElement() instead.",
         {
           "description": "Returns the button that toggles if the tokens above \`tokenLimit\` are visible.",
           "name": "findTokenToggle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token trigger row — the container element that holds the overflow pill,
+visible tokens, and text input when the component is in tokens mode.
+Returns \`null\` when the component is not in tokens mode (the \`tokens\` prop is absent).",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findTokenTrigger",
+          },
+          "name": "findTokenTrigger",
           "parameters": [],
           "returnType": {
             "isNullable": false,

@@ -8,9 +8,11 @@ import InputWrapper from '../input';
 import DropdownWrapper from '../internal/dropdown';
 import OptionWrapper from '../internal/option';
 import OptionsListWrapper from '../internal/options-list';
+import TokenWrapper from '../token';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import autosuggestInputTestUtilStyles from '../../../internal/components/autosuggest-input/test-classes/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
@@ -176,5 +178,56 @@ export default class AutosuggestWrapper extends InputWrapper {
         ?.findOptionByValue(value)!
         .fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
+  }
+
+  /**
+   * Returns the token trigger row — the container element that holds the overflow pill,
+   * visible tokens, and text input when the component is in tokens mode.
+   * Returns `null` when the component is not in tokens mode (the `tokens` prop is absent).
+   */
+  findTokenTrigger(): ElementWrapper | null {
+    return this.findByClassName(autosuggestInputTestUtilStyles['token-trigger']);
+  }
+
+  /**
+   * Returns all visible inline token pills. Only available when the component is in tokens mode
+   * (the `tokens` prop is provided).
+   */
+  findInlineTokens(): Array<TokenWrapper> {
+    return this.findAllByClassName(autosuggestInputTestUtilStyles['token-list-item']).map(
+      (elementWrapper: ElementWrapper) =>
+        new TokenWrapper(elementWrapper.findComponent(`.${TokenWrapper.rootSelector}`, TokenWrapper)!.getElement())
+    );
+  }
+
+  /**
+   * Returns the inline token at a 1-based index. Only available when the component is in tokens mode
+   * (the `tokens` prop is provided).
+   *
+   * @param index 1-based index of the token to return.
+   */
+  findInlineToken(index: number): TokenWrapper | null {
+    return this.findComponent(
+      `.${autosuggestInputTestUtilStyles['token-list']} > li[data-token-index="${index}"] .${TokenWrapper.rootSelector}`,
+      TokenWrapper
+    );
+  }
+
+  /**
+   * Returns the +N overflow pill shown when tokens overflow the available width.
+   * Returns `null` when all tokens are visible or the component is not in tokens mode.
+   */
+  findOverflowPill(): ElementWrapper | null {
+    return this.find(
+      `.${autosuggestInputTestUtilStyles['token-list']} .${autosuggestInputTestUtilStyles['token-overflow-pill']}:not([data-measure-pill])`
+    );
+  }
+
+  /**
+   * Returns the overflow panel shown when the +N pill is clicked.
+   * Returns `null` when the overflow panel is closed.
+   */
+  findOverflowPanel(): ElementWrapper | null {
+    return this.findByClassName(autosuggestInputTestUtilStyles['overflow-panel']);
   }
 }

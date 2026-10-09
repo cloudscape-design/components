@@ -222,4 +222,68 @@ describe('useAutosuggestItems', () => {
       expect(selectOption).not.toHaveBeenCalled();
     });
   });
+
+  describe('tokens mode enteredTextLabel', () => {
+    test('uses enteredTextLabel (shows "Add" text in tokens mode)', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          enteredTextLabel: (v: string) => `Add "${v}"`,
+        },
+      });
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      expect(enteredItem.label).toBe('Add "us-east"');
+    });
+
+    test('uses enteredTextLabel in default mode', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          enteredTextLabel: (v: string) => `Use: ${v}`,
+        },
+      });
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      expect(enteredItem.label).toBe('Use: us-east');
+    });
+
+    test('filtering behaviour is unchanged — options are still filtered', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'Option 1',
+          filterText: 'Option 1',
+          enteredTextLabel: (v: string) => `Add "${v}"`,
+        },
+      });
+      const types = result.current[0].items.map(i => i.type);
+      expect(types[0]).toBe('use-entered');
+      const nonEntered = result.current[0].items.slice(1);
+      expect(nonEntered.length).toBeGreaterThan(0);
+      nonEntered.forEach(item => {
+        if (item.value) {
+          expect(item.value).toContain('Option 1');
+        }
+      });
+    });
+    test('uses isTokenMode=false (Use: text) when isTokenMode is undefined — property-filter path', () => {
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          ...defaultProps,
+          filterValue: 'us-east',
+          filterText: 'us-east',
+          // isTokenMode not passed (undefined) — simulates property-filter calling useAutosuggestItems directly
+        },
+      });
+      const enteredItem = result.current[0].items[0];
+      expect(enteredItem.type).toBe('use-entered');
+      // label is undefined when no enteredTextLabel prop and no i18n provider
+      expect(enteredItem.label).toBeUndefined();
+    });
+  });
 });

@@ -3,6 +3,11 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/foundation' as foundation;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
 .root {
   // Used in test-utils.
 }
@@ -14,4 +19,173 @@
 
 .dropdown-content {
   display: contents;
+}
+
+.token-trigger {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: visible;
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: awsui.$size-vertical-input;
+  padding-inline-start: styles.$control-padding-horizontal;
+  padding-inline-end: 0;
+  gap: awsui.$space-xxs;
+
+  background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+
+  &:focus-within {
+    @include styles.form-focus-element();
+  }
+
+  &.token-trigger-invalid {
+    @include styles.form-invalid-control();
+    &:focus-within {
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+  }
+
+  &.token-trigger-warning {
+    @include styles.form-warning-control();
+    &:focus-within {
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+  }
+
+  &.token-trigger-disabled {
+    @include styles.form-disabled-element();
+    &:focus-within {
+      box-shadow: none;
+    }
+  }
+
+  &.token-trigger-readonly {
+    @include styles.form-readonly-element();
+  }
+
+  &.grouped {
+    @include styles.grouped-control;
+  }
+}
+
+.token-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: awsui.$space-xxs;
+  flex-shrink: 1;
+  min-inline-size: 0;
+  overflow: visible;
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+
+  > .token-list-item {
+    display: contents;
+  }
+}
+
+.token-input-wrapper {
+  margin-inline-start: calc(-1 * #{awsui.$space-xxs});
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.pill-icon {
+  display: flex;
+  align-items: center;
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}
+
+.pill-icon-open {
+  transform: rotate(-180deg);
+}
+
+.token-trigger-container {
+  position: relative;
+  inline-size: 100%;
+}
+
+.measurement-container {
+  @include styles.measurement-ghost;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: awsui.$space-xxs;
+}
+
+.overflow-panel {
+  position: absolute;
+  inset-block-start: calc(100% - #{awsui.$border-divider-list-width});
+  inset-inline-start: 0;
+  inline-size: max-content;
+  max-inline-size: min(320px, 90vw);
+  z-index: 2000;
+  background-color: awsui.$color-background-dropdown-item-default;
+
+  @include styles.dropdown-shadow();
+}
+
+.overflow-panel-list {
+  list-style: none;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.overflow-panel-item {
+  display: flex;
+  align-items: center;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xs;
+}
+
+.token-overflow-pill {
+  @include styles.styles-reset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-block: 1px;
+  padding-inline: awsui.$space-xs;
+  border-block: awsui.$border-width-field solid awsui.$color-border-control-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-control-default;
+  border-start-start-radius: awsui.$border-radius-token-inline;
+  border-start-end-radius: awsui.$border-radius-token-inline;
+  border-end-start-radius: awsui.$border-radius-token-inline;
+  border-end-end-radius: awsui.$border-radius-token-inline;
+  background-color: awsui.$color-background-control-default;
+  color: awsui.$color-text-body-default;
+  white-space: nowrap;
+  gap: awsui.$space-xxs;
+  @include styles.font-body-s;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  }
+
+  &:disabled {
+    border-color: awsui.$color-border-control-disabled;
+    background-color: awsui.$color-background-control-disabled;
+    color: awsui.$color-text-disabled;
+    cursor: auto;
+  }
 }
