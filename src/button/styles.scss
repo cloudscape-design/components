@@ -199,6 +199,8 @@ $tokens: style-api.resolve($props, carrier);
     inset-inline: 0;
   }
 
+  $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   &:not(.grouped) {
     &.variant-icon,
     &.variant-inline-icon,
@@ -214,7 +216,6 @@ $tokens: style-api.resolve($props, carrier);
     }
     @include focus-visible.when-visible {
       $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
-      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
       $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
       @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
 
@@ -225,7 +226,7 @@ $tokens: style-api.resolve($props, carrier);
           $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
           $radius: $radius,
           $width: $width,
-          $color: $color
+          $color: $focus-ring-color
         );
       }
 
@@ -236,7 +237,7 @@ $tokens: style-api.resolve($props, carrier);
           $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
           $radius: $radius,
           $width: $width,
-          $color: $color
+          $color: $focus-ring-color
         );
       }
     }
@@ -251,7 +252,7 @@ $tokens: style-api.resolve($props, carrier);
     @include styles.grouped-control;
     @include focus-visible.when-visible {
       @include styles.form-focus-element(
-        $border-color: $color,
+        $border-color: $focus-ring-color,
         $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
       );
     }

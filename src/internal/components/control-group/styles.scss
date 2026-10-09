@@ -62,9 +62,6 @@
   }
 }
 
-// Corners facing the action are squared by the grouped-control mixin (`-end-action`) on
-// each control's own painted element, not from here. See internal/styles/forms/mixins.scss.
-
 .control {
   // Let slots shrink below their content so a narrow group compresses, not overflows.
   min-inline-size: 0;
