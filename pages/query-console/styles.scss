@@ -1,0 +1,56 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+/*
+ The panel content stays mounted; PanelLayout hides the whole panel with
+ `display: none` when closed and reveals it when open. A CSS transition cannot
+ animate a `display: none` -> visible change, but a keyframe animation re-runs
+ every time the element becomes visible again, so the reveal uses @keyframes.
+*/
+
+@keyframes panel-reveal-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * #{awsui.$space-static-m}));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes panel-reveal-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(#{awsui.$space-static-m});
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.panel-reveal-from-left,
+.panel-reveal-from-right {
+  @media (prefers-reduced-motion: no-preference) {
+    animation-duration: awsui.$motion-duration-responsive;
+    animation-timing-function: awsui.$motion-easing-responsive;
+    animation-fill-mode: both;
+  }
+}
+
+.panel-reveal-from-left {
+  @media (prefers-reduced-motion: no-preference) {
+    animation-name: panel-reveal-from-left;
+  }
+}
+
+.panel-reveal-from-right {
+  @media (prefers-reduced-motion: no-preference) {
+    animation-name: panel-reveal-from-right;
+  }
+}
