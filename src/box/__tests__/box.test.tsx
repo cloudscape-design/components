@@ -199,8 +199,8 @@ describe('Box', () => {
         'green',
         'orange',
         'purple',
-        'lime',
         'grey',
+        'teal',
       ];
       colors.forEach(color => {
         const boxWrapper = renderBox({ visualAccent: { color } });
