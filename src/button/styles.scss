@@ -33,7 +33,6 @@ $tokens: style-api.resolve($props, carrier);
       var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'))
     );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
   }
 
   &:active {
@@ -43,7 +42,6 @@ $tokens: style-api.resolve($props, carrier);
       var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'))
     );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
   }
 
   &.disabled {
@@ -82,6 +80,7 @@ $tokens: style-api.resolve($props, carrier);
         border-color,
         var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
       );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
     }
     &:active {
       border-color: style-api.value(
@@ -89,6 +88,7 @@ $tokens: style-api.resolve($props, carrier);
         border-color,
         var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
       );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
     }
     &.disabled {
       border-color: style-api.value(
