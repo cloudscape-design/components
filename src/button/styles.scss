@@ -110,10 +110,6 @@ $tokens: style-api.resolve($props, carrier);
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -133,10 +129,19 @@ $tokens: style-api.resolve($props, carrier);
   $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   &:not(.grouped) {
+    border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
     border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
     border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
     padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
     padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
+    &.button-no-text {
+      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    }
 
     &.button-no-wrap {
       white-space: nowrap;
@@ -145,43 +150,6 @@ $tokens: style-api.resolve($props, carrier);
     &.full-width {
       inline-size: 100%;
       text-align: center;
-    }
-
-    > .icon-left {
-      position: relative;
-      // margin-left was breaking layout on firefox
-      inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-      margin-inline-end: awsui.$space-xxs;
-    }
-
-    > .icon-right {
-      position: relative;
-      // margin-right was breaking layout on firefox
-      inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-      margin-inline-start: awsui.$space-xxs;
-    }
-
-    &.variant-inline-link {
-      > .icon-left {
-        inset-inline-start: 0;
-        margin-inline-end: awsui.$space-xs;
-      }
-
-      > .icon-right {
-        inset-inline-end: 0;
-        margin-inline-start: awsui.$space-xs;
-      }
-    }
-
-    &.button-no-text > .icon {
-      margin-inline-start: auto;
-      margin-inline-end: auto;
-      inset-inline: 0;
-    }
-
-    &.button-no-text {
-      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
     }
 
     &.variant-icon,
@@ -214,6 +182,38 @@ $tokens: style-api.resolve($props, carrier);
       padding-block: awsui.$space-xxxs;
       border-block-width: 0;
       border-inline-width: 0;
+    }
+
+    > .icon-left {
+      position: relative;
+      // margin-left was breaking layout on firefox
+      inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-end: awsui.$space-xxs;
+    }
+
+    > .icon-right {
+      position: relative;
+      // margin-right was breaking layout on firefox
+      inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-start: awsui.$space-xxs;
+    }
+
+    &.variant-inline-link {
+      > .icon-left {
+        inset-inline-start: 0;
+        margin-inline-end: awsui.$space-xs;
+      }
+
+      > .icon-right {
+        inset-inline-end: 0;
+        margin-inline-start: awsui.$space-xs;
+      }
+    }
+
+    &.button-no-text > .icon {
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+      inset-inline: 0;
     }
 
     @include focus-visible.when-visible {
