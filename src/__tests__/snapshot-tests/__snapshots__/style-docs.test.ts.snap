@@ -237,6 +237,42 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 }
 `;
 
+exports[`Style API docs definition for token matches the snapshot: token 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background-color",
+        "border-color",
+        "border-width",
+        "border-radius",
+        "padding-block",
+        "padding-inline",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "dismissButton",
+      "properties": [
+        "color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+        "focus-ring-gutter-block",
+        "focus-ring-gutter-inline",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -247,5 +283,6 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "link",
   "radio-button",
   "toggle",
+  "token",
 ]
 `;
