@@ -6,7 +6,7 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SliderProps } from './interfaces';
-import InternalSlider from './internal';
+import InternalSlider, { StyleClassNames } from './internal';
 
 export { SliderProps };
 
@@ -19,6 +19,7 @@ export default function Slider({ tickMarks, hideFillLine, style, ...props }: Sli
       tickMarks={tickMarks}
       hideFillLine={hideFillLine}
       style={style}
+      styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
       {...props}
       {...baseComponentProps}
     />

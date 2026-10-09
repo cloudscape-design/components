@@ -197,6 +197,48 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
 }
 `;
 
+exports[`Style API docs definition for slider matches the snapshot: slider 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "track",
+      "properties": [
+        "background-color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "range",
+      "properties": [
+        "background-color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "handle",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "handle-color",
+        "border-radius",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
 {
   "slots": [
@@ -246,6 +288,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "dropdown",
   "link",
   "radio-button",
+  "slider",
   "toggle",
 ]
 `;
