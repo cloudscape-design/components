@@ -35,8 +35,13 @@ export function useGroupedControlContext() {
 }
 
 /**
- * Resets the grouped-control context for a subtree so nested controls rendered in a
- * control's custom slot don't inherit the surrounding group's position and styling.
+ * Resets the grouped-control context back to "not in a group" for a subtree.
+ *
+ * Controls that render caller-supplied content (for example, custom dropdown
+ * content) should wrap that content with this provider. Otherwise a nested
+ * control rendered inside such a slot would inherit the surrounding group's
+ * `position` and incorrectly pick up the grouped-control styling
+ * where adjacent borders lose their border radii.
  */
 export function ResetGroupedControlContext({ children }: { children: React.ReactNode }) {
   const { direction } = useGroupedControlContext();
