@@ -52,6 +52,11 @@ export class OptionListOptionWrapper extends ComponentWrapper {
   isHighlighted(): boolean {
     return this.element.classList.contains(selectableItemsStyles.highlighted);
   }
+
+  @usesDom
+  isDisabled(): boolean {
+    return this.element.classList.contains(selectableItemsStyles.disabled);
+  }
 }
 
 export default class OptionListWrapper extends ComponentWrapper {

@@ -138,6 +138,70 @@ describe('OptionList', () => {
     });
   });
 
+  describe('disabled options', () => {
+    const renderWithDisabled = (item: Item) => ({
+      ...renderItem(item),
+      disabled: item.id === 'b',
+      disabledReason: item.id === 'b' ? 'Not available in this Region' : undefined,
+    });
+
+    test.each<OptionListProps.SelectionType>(['single', 'multi'])(
+      'marks disabled options and ignores clicks on them (%s)',
+      selectionType => {
+        const onChange = jest.fn();
+        const { wrapper } = renderOptionList(
+          <Stateful selectionType={selectionType} renderItem={renderWithDisabled} onChange={onChange} />
+        );
+        const disabledOption = wrapper.findOptionById('b')!;
+        expect(disabledOption.isDisabled()).toBe(true);
+        expect(disabledOption.getElement()).toHaveAttribute('aria-disabled', 'true');
+        expect(wrapper.findOptionById('a')!.isDisabled()).toBe(false);
+
+        clickOption(wrapper, 2);
+        expect(onChange).not.toHaveBeenCalled();
+        expect(wrapper.findSelectedOptions()).toHaveLength(0);
+      }
+    );
+
+    test('keyboard can reach a disabled option but Enter does not select it', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderOptionList(<Stateful renderItem={renderWithDisabled} onChange={onChange} />);
+      fireEvent.focus(wrapper.findListbox().getElement());
+      pressKey(wrapper, KeyCode.down);
+      expect(wrapper.findHighlightedOption()!.getElement()).toBe(wrapper.findOptionById('b')!.getElement());
+      pressKey(wrapper, KeyCode.enter);
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    test('a selected disabled option stays selected and cannot be deselected in multi mode', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderOptionList(
+        <Stateful
+          selectionType="multi"
+          renderItem={renderWithDisabled}
+          initialSelectedIds={['b']}
+          onChange={onChange}
+        />
+      );
+      clickOption(wrapper, 2);
+      expect(onChange).not.toHaveBeenCalled();
+      expect(selectedLabels(wrapper)).toEqual(['Second']);
+    });
+
+    test('describes the disabled option with its disabled reason', () => {
+      const { wrapper } = renderOptionList(<Stateful renderItem={renderWithDisabled} />);
+      const option = wrapper.findOptionById('b')!.getElement();
+      const describedBy = option.getAttribute('aria-describedby');
+      expect(describedBy).toBeTruthy();
+      expect(document.getElementById(describedBy!)).toHaveTextContent('Not available in this Region');
+    });
+
+    test('is valid for a11y with disabled options', async () => {
+      const { container } = renderOptionList(<Stateful selectionType="multi" renderItem={renderWithDisabled} />);
+      await expect(container).toValidateA11y();
+    });
+  });
+
   describe('single selection', () => {
     test('marks only the selected option with aria-selected and a check mark', () => {
       const { wrapper } = renderOptionList(<Stateful initialSelectedIds={['b']} />);

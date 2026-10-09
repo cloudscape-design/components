@@ -47,6 +47,13 @@ const permutations = createPermutations<OptionListProps<Item> & { width: number 
         labelTag: '128 GB',
         tags: ['CPU-v2', '2 GB RAM'],
       }),
+      item => ({
+        id: item.id,
+        content: item.label,
+        secondaryContent: item.description,
+        disabled: item.id === '2' || item.id === '4',
+        disabledReason: item.id === '4' ? 'Requires an Enterprise support plan' : undefined,
+      }),
     ],
   },
 ]).filter(({ selectionType, selectedIds }) => selectionType === 'multi' || (selectedIds?.length ?? 0) < 2);

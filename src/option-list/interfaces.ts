@@ -30,6 +30,8 @@ export interface OptionListProps<T = any> extends BaseComponentProps {
    * * `icon` (React.ReactNode) - (Optional) An icon, displayed at the start of the option.
    * * `labelTag` (string) - (Optional) A short text displayed at the end of the first line, same as `labelTag` in Select options.
    * * `tags` (ReadonlyArray<string>) - (Optional) Tags displayed under the content, same as `tags` in Select options.
+   * * `disabled` (boolean) - (Optional) Determines whether the option is disabled. Users can't select or deselect a disabled option.
+   * * `disabledReason` (string) - (Optional) Displays a tooltip next to the option when it is disabled and highlighted. Use it to explain why the option isn't available.
    *
    * Options are the selection target. Do not render interactive elements such as buttons or links inside them.
    */
@@ -98,6 +100,8 @@ export namespace OptionListProps {
     icon?: React.ReactNode;
     labelTag?: string;
     tags?: ReadonlyArray<string>;
+    disabled?: boolean;
+    disabledReason?: string;
   }
 
   export interface ChangeDetail {

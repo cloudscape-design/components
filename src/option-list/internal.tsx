@@ -38,6 +38,8 @@ function toDropdownOption({
   icon,
   labelTag,
   tags,
+  disabled,
+  disabledReason,
 }: OptionListProps.RenderItemResult): DropdownOption {
   const isStringContent = typeof content === 'string';
   const option: OptionDefinition & { __customIcon?: React.ReactNode } = {
@@ -49,8 +51,11 @@ function toDropdownOption({
     tags,
     // Wrapped in the option icon slot so a custom icon gets the same spacing as `iconName` in Select options.
     __customIcon: icon ? <span className={optionStyles.icon}>{icon}</span> : undefined,
+    disabled,
+    disabledReason,
   };
-  return { option };
+  // The engine reads `disabled` from the wrapper to block selection, and from the option for styling.
+  return { option, disabled };
 }
 
 function InternalOptionList<T>(

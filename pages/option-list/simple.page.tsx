@@ -33,6 +33,12 @@ const renderGoal = (goal: Goal): OptionListProps.RenderItemResult => ({
 
 const renderGoalLabelOnly = (goal: Goal): OptionListProps.RenderItemResult => ({ id: goal.id, content: goal.label });
 
+const renderGoalWithDisabled = (goal: Goal): OptionListProps.RenderItemResult => ({
+  ...renderGoal(goal),
+  disabled: goal.id === 'reliability',
+  disabledReason: goal.id === 'reliability' ? 'The workload already runs in three Availability Zones.' : undefined,
+});
+
 const renderGoalWithIcon = (goal: Goal): OptionListProps.RenderItemResult => ({
   ...renderGoal(goal),
   icon: <Icon name="settings" />,
@@ -84,6 +90,7 @@ export default function OptionListSimplePage() {
   const [singleSelectedIds, setSingleSelectedIds] = useState<ReadonlyArray<string>>([]);
   const [multiSelectedIds, setMultiSelectedIds] = useState<ReadonlyArray<string>>([]);
   const [iconSelectedIds, setIconSelectedIds] = useState<ReadonlyArray<string>>(['performance']);
+  const [disabledSelectedIds, setDisabledSelectedIds] = useState<ReadonlyArray<string>>([]);
 
   return (
     <SimplePage title="Option list">
@@ -136,6 +143,21 @@ export default function OptionListSimplePage() {
               selectionType="single"
               selectedIds={iconSelectedIds}
               onChange={({ detail }) => setIconSelectedIds(detail.selectedIds)}
+            />
+          </SpaceBetween>
+
+          <SpaceBetween size="xs">
+            <Header variant="h2" id="disabled-heading">
+              With a disabled option
+            </Header>
+            <OptionList
+              data-testid="disabled"
+              ariaLabelledby="disabled-heading"
+              items={goals}
+              renderItem={renderGoalWithDisabled}
+              selectionType="multi"
+              selectedIds={disabledSelectedIds}
+              onChange={({ detail }) => setDisabledSelectedIds(detail.selectedIds)}
             />
           </SpaceBetween>
 
