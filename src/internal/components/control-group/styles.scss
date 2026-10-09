@@ -52,7 +52,8 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .control {
   // Let slots shrink below their content so a narrow group compresses, not overflows.
   min-inline-size: 0;
-  // Contain each control's internal z-indexes within its own slot.
+  // Establish a stacking context per slot so a control's internal z-indexes stay
+  // contained within its own slot and cannot paint over adjacent controls.
   isolation: isolate;
   &-middle,
   &-last {
@@ -68,7 +69,8 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .action-slot,
 .control {
-  // Raise the focused slot so its focus ring paints over the adjacent seam border.
+  // Raise the focused control's slot above its neighbors so its focus ring is
+  // painted over the adjacent control's seam border.
   &:focus-within {
     z-index: 1;
   }
