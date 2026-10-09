@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import OptionsList from '../internal/components/options-list';
 import { useVirtual } from '../internal/hooks/use-virtual';
@@ -28,7 +29,7 @@ const VirtualList = ({
   const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
   useImperativeHandle(strutRef, () => scrollRef.current);
 
-  const rowVirtualizer = useVirtual({
+  const { virtualItems, totalSize, scrollToIndex } = useVirtual({
     items: autosuggestItemsState.items,
     parentRef: scrollRef,
     // estimateSize is a dependency of measurements memo. We update it to force full recalculation
@@ -39,11 +40,21 @@ const VirtualList = ({
     estimateSize: useCallback(() => 31, [width, highlightText]),
   });
 
+  // Scroll when the highlight changes and moveFocus is true. The scrollToIndex identity changes
+  // whenever the number of items changes (e.g. when the next page of options is loaded), which
+  // shouldn't reset the scroll position either.
+  const scrollToHighlightedIndex = useStableCallback(scrollToIndex);
   useEffect(() => {
     if (autosuggestItemsState.highlightType.moveFocus) {
-      rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
+      const index = autosuggestItemsState.highlightedIndex;
+      scrollToHighlightedIndex(index);
+      // Options are rendered with estimated sizes and measured afterwards, which can push the highlighted option out
+      // of view (e.g. when jumping to the last option). With React 18 the measurement happens after react-virtual's own
+      // retry, so retry once more after it.
+      const timeout = setTimeout(() => scrollToHighlightedIndex(index), 0);
+      return () => clearTimeout(timeout);
     }
-  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, scrollToHighlightedIndex]);
 
   let lastGroupIndex = -1;
 
@@ -53,9 +64,9 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
+        style={{ height: totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
-      {rowVirtualizer.virtualItems.map(virtualRow => {
+      {virtualItems.map(virtualRow => {
         const { index, start, measureRef } = virtualRow;
         const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
