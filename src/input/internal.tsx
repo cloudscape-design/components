@@ -270,19 +270,16 @@ function InternalInput(
           } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
         : {})}
     >
-      {/* Internal chrome, not a fused group member: reset so it doesn't inherit grouped styling. */}
-      <ResetGroupedControlContext>
-        <InternalButton
-          // Used for test utils
-          className={styles['input-button-right']}
-          variant="inline-icon-pointer-target"
-          formAction="none"
-          iconName={__endIcon}
-          onClick={__onEndIconClick}
-          ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
-          disabled={disabled}
-        />
-      </ResetGroupedControlContext>
+      <InternalButton
+        // Used for test utils
+        className={styles['input-button-right']}
+        variant="inline-icon-pointer-target"
+        formAction="none"
+        iconName={__endIcon}
+        onClick={__onEndIconClick}
+        ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
+        disabled={disabled}
+      />
     </span>
   ) : null;
 

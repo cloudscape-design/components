@@ -65,7 +65,7 @@ export default function ControlGroup({
       className={clsx(styles['group-layout'], styles[`group-layout-${direction}`], !inlineLabelText && rootClassnames)}
     >
       {controls}
-      <div className={styles['action-slot']}>
+      <div className={clsx(styles['action-slot'], testUtilStyles['action-slot'])}>
         <InternalButton
           className={testUtilStyles['action-button']}
           variant="icon"
