@@ -134,43 +134,6 @@ $tokens: style-api.resolve($props, carrier);
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
-    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-    &:not(.grouped) {
-      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
-      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
-
-      &.variant-icon,
-      &.variant-modal-dismiss,
-      &.variant-flashbar-icon {
-        @include style-api.focus-highlight(
-          $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
-          $radius: $radius,
-          $width: $width,
-          $color: $color
-        );
-      }
-
-      &.variant-inline-icon,
-      &.variant-inline-icon-pointer-target {
-        @include style-api.focus-highlight(
-          $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
-          $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
-          $radius: $radius,
-          $width: $width,
-          $color: $color
-        );
-      }
-    }
-    &.grouped {
-      @include styles.form-focus-element(
-        $border-color: $color,
-        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-      );
-    }
-  }
-
   &.button-no-wrap {
     white-space: nowrap;
   }
@@ -249,6 +212,34 @@ $tokens: style-api.resolve($props, carrier);
       padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
       padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
     }
+    @include focus-visible.when-visible {
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
+      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+
+      &.variant-icon,
+      &.variant-modal-dismiss,
+      &.variant-flashbar-icon {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
+          $radius: $radius,
+          $width: $width,
+          $color: $color
+        );
+      }
+
+      &.variant-inline-icon,
+      &.variant-inline-icon-pointer-target {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $radius: $radius,
+          $width: $width,
+          $color: $color
+        );
+      }
+    }
   }
 
   &.grouped {
@@ -258,6 +249,12 @@ $tokens: style-api.resolve($props, carrier);
     border-inline-width: awsui.$border-width-field;
     padding-inline: awsui.$space-xs;
     @include styles.grouped-control;
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element(
+        $border-color: $color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 }
 
