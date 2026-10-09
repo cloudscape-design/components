@@ -69,6 +69,23 @@
   }
 }
 
+// Inline tokens stay on one line: the label truncates and the label tag keeps its size.
+.label-content.trigger-variant {
+  flex-wrap: nowrap;
+
+  > .label {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+  }
+
+  > .label-tag {
+    flex: 0 0 auto;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+}
+
 .tags,
 .description {
   @include styles.font-body-s;

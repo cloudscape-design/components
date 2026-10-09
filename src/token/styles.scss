@@ -50,6 +50,8 @@
   }
 
   &-inline {
+    // 5px margin + 1px border + half the 12px icon = 12px, so the button's 24px spacing circle clears the label.
+    margin-inline-start: calc(#{awsui.$space-xxs} + 1px);
     padding-inline: 0;
     display: flex;
     align-items: center;
@@ -93,6 +95,11 @@
 
 .token-option-inline {
   max-block-size: constants.$token-max-height-inline;
+  // Keeps the dismiss button outside the 24px target-spacing circle of
+  // small interactive content in the label
+  &-dismissible {
+    min-inline-size: constants.$token-min-label-width-inline;
+  }
 }
 
 .token-box {

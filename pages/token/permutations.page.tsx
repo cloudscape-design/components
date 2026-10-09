@@ -15,6 +15,7 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
+    labelTag: [undefined, 'label-tag'],
     onDismiss: [undefined, () => {}],
     readOnly: [false, true],
     variant: ['inline'],
@@ -22,6 +23,7 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
+    labelTag: [undefined, 'label-tag'],
     onDismiss: [undefined, () => {}],
     disabled: [true],
     variant: ['inline'],

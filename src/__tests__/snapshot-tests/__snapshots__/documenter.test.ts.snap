@@ -33907,7 +33907,7 @@ Only applies to plain text labels.",
     {
       "description": "Specifies the token's visual style and functionality.
 
-For \`inline\` only label, icon and dismiss button are displayed.
+When set to \`inline\`, only label, label tag, icon and dismiss button are displayed. Description and tags are not.
 
 Defaults to \`normal\` if not specified.",
       "inlineType": {
