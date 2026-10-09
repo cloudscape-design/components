@@ -15,8 +15,11 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { TokenProps };
 
-export default function Token(props: TokenProps) {
-  const baseComponentProps = useBaseComponent('Token');
+export default function Token({ variant = 'normal', ...props }: TokenProps) {
+  const baseComponentProps = useBaseComponent('Token', {
+    props: { variant, readOnly: props.readOnly, disabled: props.disabled },
+    metadata: { hasIcon: Boolean(props.icon) },
+  });
 
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenComponent = {
     name: 'awsui.Token',
@@ -26,6 +29,7 @@ export default function Token(props: TokenProps) {
   return (
     <InternalToken
       {...props}
+      variant={variant}
       {...baseComponentProps}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
     />
