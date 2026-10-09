@@ -55,7 +55,6 @@ $tokens: style-api.resolve($props, carrier);
       color,
       var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
     );
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
     cursor: auto;
   }
 
@@ -96,6 +95,7 @@ $tokens: style-api.resolve($props, carrier);
         border-color,
         var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
       );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
     }
   }
 }

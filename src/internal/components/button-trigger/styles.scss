@@ -31,33 +31,6 @@ $icon-offset: awsui.$space-xxxs;
   border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
 
-  &.in-filtering-token-root,
-  &.in-filtering-token-nested {
-    padding-block: $padding-block-inner-filtering-token;
-    padding-inline: $padding-inline-inner-filtering-token;
-    border-block-width: awsui.$border-width-token;
-    border-inline-width: awsui.$border-width-token;
-
-    border-color: token.$token-border-color;
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-    block-size: 100%;
-    min-block-size: unset;
-
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
-    }
-  }
-
-  &.in-filtering-token-nested {
-    border-start-start-radius: calc(#{styles.$control-border-radius} / 2);
-    border-end-start-radius: calc(#{styles.$control-border-radius} / 2);
-  }
-
-  &.has-caret {
-    padding-inline-end: styles.$control-icon-horizontal-padding;
-  }
-
   > .placeholder {
     @include styles.form-placeholder;
   }
@@ -130,6 +103,33 @@ $icon-offset: awsui.$space-xxxs;
     border-end-end-radius: styles.$control-border-radius;
     border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
     border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+
+    &.in-filtering-token-root,
+    &.in-filtering-token-nested {
+      padding-block: $padding-block-inner-filtering-token;
+      padding-inline: $padding-inline-inner-filtering-token;
+      border-block-width: awsui.$border-width-token;
+      border-inline-width: awsui.$border-width-token;
+
+      border-color: token.$token-border-color;
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+      block-size: 100%;
+      min-block-size: unset;
+
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
+      }
+    }
+
+    &.in-filtering-token-nested {
+      border-start-start-radius: calc(#{styles.$control-border-radius} / 2);
+      border-end-start-radius: calc(#{styles.$control-border-radius} / 2);
+    }
+
+    &.has-caret {
+      padding-inline-end: styles.$control-icon-horizontal-padding;
+    }
   }
 
   &.grouped {
