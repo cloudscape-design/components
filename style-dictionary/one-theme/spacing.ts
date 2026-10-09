@@ -14,6 +14,15 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTokenVertical: '1px',
   spaceFieldVertical: { comfortable: '4px', compact: '2px' },
   spaceStatusIndicatorPaddingHorizontal: '2px',
+
+  spaceContainerContentVertical: { comfortable: '20px', compact: '16px' },
+
+  spaceScaledL: { comfortable: '{spaceL}', compact: '{spaceS}' },
+
+  spaceExpandToggleFocusOutlineGutter: { comfortable: '4px', compact: '1px' },
+  spaceTableCellVertical: { comfortable: '8px', compact: '2px' },
+  spaceTableHeaderFocusOutlineGutter: '0px',
+  spaceButtonInlineLinkFocusOutlineGutter: { comfortable: '4px', compact: '1px' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
