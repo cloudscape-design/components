@@ -13,7 +13,7 @@ const noop = () => {};
 
 describe('Multiselect in control group', () => {
   test('resets the context for a custom dropdown footer', () => {
-    const { container, getByTestId } = render(
+    const { container, getAllByTestId } = render(
       <ControlGroup>
         <Multiselect
           selectedOptions={[]}
@@ -25,7 +25,9 @@ describe('Multiselect in control group', () => {
     );
     createWrapper(container).findMultiselect()!.openDropdown();
 
-    expect(getByTestId('probe')).toHaveTextContent('none');
+    // The measurement ghost duplicates the children, so the footer renders twice; the first
+    // match is the real control's.
+    expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
   });
 
   it('renders inline tokens even if `inlineTokens` is not set', () => {

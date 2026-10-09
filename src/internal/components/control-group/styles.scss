@@ -10,6 +10,11 @@
 .root {
   @include styles.styles-reset;
   display: flex;
+  // Keep the group at its natural width in a flex parent so the ancestor-walk can measure
+  // the real available width instead of the group's own shrunk width.
+  flex-shrink: 0;
+  // Anchor the absolutely-positioned ghost.
+  position: relative;
 
   &-horizontal {
     flex-direction: row;
@@ -51,6 +56,19 @@
       margin-block-start: $margin;
     }
   }
+}
+
+// Measurement ghost (see index.tsx): out of flow and `max-content` wide so it reports the
+// controls' natural single-row width. Not `display: none` (that would measure zero).
+.ghost {
+  @include styles.measurement-ghost;
+  // Lay out the controls as a single row sized to their content, so the measured width is the
+  // width they need inline.
+  inline-size: max-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
 }
 
 .inline-label {
