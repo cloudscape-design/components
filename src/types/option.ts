@@ -11,7 +11,7 @@ interface BaseOption {
   lang?: string;
   description?: string;
   disabled?: boolean;
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   labelTag?: string;
   tags?: ReadonlyArray<string>;
   filteringTags?: ReadonlyArray<string>;

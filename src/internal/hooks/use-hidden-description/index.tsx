@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-export default function useHiddenDescription(description?: string) {
+export default function useHiddenDescription(description?: React.ReactNode) {
   const id = useUniqueId();
   return {
     targetProps: {

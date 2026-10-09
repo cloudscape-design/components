@@ -228,7 +228,7 @@ export namespace DrawerProps {
   export interface CloseActionProps {
     ariaLabel?: string;
     disabled?: boolean;
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;

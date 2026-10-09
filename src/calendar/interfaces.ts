@@ -108,7 +108,7 @@ export namespace CalendarProps {
   }
 
   export interface DateDisabledReasonFunction {
-    (date: Date): string;
+    (date: Date): React.ReactNode;
   }
 
   export type Granularity = DateGranularity;

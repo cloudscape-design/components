@@ -292,7 +292,7 @@ export namespace DateRangePickerProps {
   }
 
   export interface DateDisabledReasonFunction {
-    (date: Date): string;
+    (date: Date): React.ReactNode;
   }
 
   export interface GetTimeOffsetFunction {

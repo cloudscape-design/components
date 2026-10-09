@@ -107,10 +107,10 @@ describe('Button Dropdown - Disabled Reason', () => {
   });
 
   describe.each([
-    ['Item Element', items[3], false],
-    ['Expandable Category Element', items[5], false],
-    ['Expandable Category Element - mobile', items[5], true],
-  ])('%s', (_, item, mobile) => {
+    ['Item Element', items[3], 'No cherries in stock.', false],
+    ['Expandable Category Element', items[5], 'Not enough money.', false],
+    ['Expandable Category Element - mobile', items[5], 'Not enough money.', true],
+  ])('%s', (_, item, disabledReason, mobile) => {
     beforeAll(() => {
       (useMobile as jest.Mock).mockReturnValue(mobile);
     });
@@ -122,7 +122,7 @@ describe('Button Dropdown - Disabled Reason', () => {
     it('has hidden element with disabledReason', () => {
       const { wrapper } = renderOpenButtonDropdown(props);
       const span = getItemById(wrapper, item.id!).find('span[hidden]')!;
-      expect(span.getElement()).toContainHTML(item.disabledReason!);
+      expect(span.getElement()).toContainHTML(disabledReason);
     });
 
     it('open tooltip on focus', () => {
@@ -132,7 +132,7 @@ describe('Button Dropdown - Disabled Reason', () => {
         menuItem.focus();
         jest.advanceTimersByTime(1000);
       });
-      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(item.disabledReason!);
+      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(disabledReason);
     });
 
     it('closes tooltip on blur', () => {
@@ -143,7 +143,7 @@ describe('Button Dropdown - Disabled Reason', () => {
         jest.advanceTimersByTime(1000);
       });
 
-      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(item.disabledReason!);
+      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(disabledReason);
 
       act(() => {
         menuItem.blur();
@@ -158,7 +158,7 @@ describe('Button Dropdown - Disabled Reason', () => {
         menuItem.focus();
         jest.advanceTimersByTime(1000);
       });
-      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(item.disabledReason!);
+      expect(wrapper.findDisabledReason()!.getElement()).toContainHTML(disabledReason);
 
       act(() => {
         menuItem.keydown(KeyCode.escape);
