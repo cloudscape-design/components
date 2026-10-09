@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/styling' as styling;
+@use '../style-api/palette' as palette;
+
+.bar-brand {
+  --awsui-style-track-color: #{palette.$subtle};
+  --awsui-style-value-color: #{palette.$accent};
+  --awsui-style-border-radius: 2px;
+  --awsui-style-block-size: 8px;
+}
+
+.bar-genai {
+  --awsui-style-track-color: #{palette.$genai-surface};
+  --awsui-style-value-color: #{palette.$genai};
+  --awsui-style-border-radius: 0;
+  --awsui-style-block-size: 12px;
+}
+
+.percentage-brand {
+  @include styling.override {
+    color: palette.$accent;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
+
+.percentage-genai {
+  @include styling.override {
+    color: palette.$genai-text;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
