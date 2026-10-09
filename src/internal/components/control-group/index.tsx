@@ -18,6 +18,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events'
 import { flattenChildren } from '../../utils/flatten-children';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
@@ -106,6 +107,7 @@ export default function InternalControlGroup({
       <div className={styles['action-slot']}>
         <GroupedControlContext.Provider value={{ position: 'last', direction: 'horizontal' }}>
           <InternalButton
+            className={testUtilStyles['action-button']}
             variant="icon"
             iconName={actionButton.iconName}
             iconAlt={actionButton.iconAlt}
@@ -125,7 +127,7 @@ export default function InternalControlGroup({
   if (inlineLabelText) {
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles['inline-label-wrapper'])}>
-        <label id={labelId} className={clsx(styles['inline-label'])}>
+        <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>
         <div className={styles['inline-label-trigger-wrapper']}>{controlsWithAction}</div>

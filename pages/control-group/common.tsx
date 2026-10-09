@@ -6,6 +6,7 @@ import FormField from '~components/form-field';
 import { InternalControlGroupProps } from '~components/internal/components/control-group';
 import { MultiselectProps } from '~components/multiselect';
 import RadioGroup from '~components/radio-group';
+import { SegmentedControlProps } from '~components/segmented-control';
 import { SelectProps } from '~components/select';
 
 import { useAppContext } from '../app/app-context';
@@ -22,6 +23,11 @@ export const operators: SelectProps.Option[] = [
 export const multiOptions: MultiselectProps.Option[] = [
   { value: '1', label: 'Option 1' },
   { value: '2', label: 'Option 2' },
+];
+
+export const segments: SegmentedControlProps.Option[] = [
+  { id: 'and', text: 'AND' },
+  { id: 'or', text: 'OR' },
 ];
 
 export const enteredTextLabel = (value: string) => `Use: ${value}`;

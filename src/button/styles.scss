@@ -24,20 +24,6 @@ $tokens: style-api.resolve($props, carrier);
     var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'))
   );
   color: style-api.value($tokens, color, var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color')));
-  border-color: style-api.value(
-    $tokens,
-    border-color,
-    var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
-  );
-  box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
-  @if map.get($variant, 'border-width') {
-    border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
-    border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
-  }
-  @if map.get($variant, 'padding') {
-    padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
-    padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
-  }
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
@@ -45,11 +31,6 @@ $tokens: style-api.resolve($props, carrier);
       $tokens,
       background-color,
       var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'))
-    );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
     );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
@@ -61,11 +42,6 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'))
     );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
-    );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
   }
@@ -76,11 +52,6 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'))
     );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
-    );
     color: style-api.value(
       $tokens,
       color,
@@ -88,6 +59,44 @@ $tokens: style-api.resolve($props, carrier);
     );
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
     cursor: auto;
+  }
+
+  &:not(.grouped) {
+    border-color: style-api.value(
+      $tokens,
+      border-color,
+      var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
+    );
+    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
+    @if map.get($variant, 'border-width') {
+      border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
+      border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
+    }
+    @if map.get($variant, 'padding') {
+      padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
+      padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
+    }
+    &:hover {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
+      );
+    }
+    &:active {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
+      );
+    }
+    &.disabled {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
+      );
+    }
   }
 }
 
@@ -120,83 +129,46 @@ $tokens: style-api.resolve($props, carrier);
     }
   }
 
-  // Fuse the button onto a control group as its `action`: it reads the grouped-control
-  // context and applies the shared corner mixin to its own painted root.
-  &.grouped {
-    // Match the field height recipe so the fused action aligns; normal/primary heights
-    // match only while $border-width-button == $border-width-field (true by default).
-    padding-block: awsui.$space-field-vertical;
-    min-block-size: awsui.$size-vertical-input;
-
-    // Keep the fused action on one line.
-    white-space: nowrap;
-
-    @include styles.grouped-control;
-
-    &.variant-icon {
-      // Icon variant is borderless; draw the control border so the fused strip is continuous.
-      border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-      border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
-
-      // 8px per side (requested): stock icon-only padding is too tight beside the fields.
-      padding-inline: awsui.$space-xs;
-    }
-  }
-
   &:focus {
     outline: none;
     text-decoration: none;
   }
 
   @include focus-visible.when-visible {
-    $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
-    $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
     $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-    @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+    &:not(.grouped) {
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
 
-    &.variant-icon,
-    &.variant-modal-dismiss,
-    &.variant-flashbar-icon {
-      @include style-api.focus-highlight(
-        $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
-        $radius: $radius,
-        $width: $width,
-        $color: $color
-      );
-    }
+      &.variant-icon,
+      &.variant-modal-dismiss,
+      &.variant-flashbar-icon {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
+          $radius: $radius,
+          $width: $width,
+          $color: $color
+        );
+      }
 
-    &.variant-inline-icon,
-    &.variant-inline-icon-pointer-target {
-      @include style-api.focus-highlight(
-        $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
-        $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
-        $radius: $radius,
-        $width: $width,
-        $color: $color
-      );
-    }
-
-    // Trace the fused icon action's flat-start / rounded-end border so the ring sits
-    // flush. Scoped to the only shape it fits: the horizontal-last icon action, whose
-    // painted border is $border-width-field with 0/$border-radius-input corners.
-    &.grouped-horizontal-last.variant-icon {
-      outline-offset: calc(-1 * #{awsui.$border-width-field});
-      &::before {
-        inset-inline-start: 0;
-        inset-block-start: 0;
-        inline-size: 100%;
-        block-size: 100%;
-        border-start-start-radius: 0;
-        border-end-start-radius: 0;
-        border-start-end-radius: awsui.$border-radius-input;
-        border-end-end-radius: awsui.$border-radius-input;
+      &.variant-inline-icon,
+      &.variant-inline-icon-pointer-target {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $radius: $radius,
+          $width: $width,
+          $color: $color
+        );
       }
     }
-  }
-
-  &.button-no-text {
-    padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-    padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    &.grouped {
+      @include styles.form-focus-element(
+        $border-color: $color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 
   &.button-no-wrap {
@@ -206,15 +178,6 @@ $tokens: style-api.resolve($props, carrier);
   &.full-width {
     inline-size: 100%;
     text-align: center;
-  }
-
-  &.variant-icon,
-  &.variant-inline-icon,
-  &.variant-inline-icon-pointer-target,
-  &.variant-flashbar-icon {
-    // Icon has vertical padding, but no horizontal, we need to conpensate this
-    // in order to have equal height and width
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
   }
 
   &.variant-modal-dismiss {
@@ -271,6 +234,30 @@ $tokens: style-api.resolve($props, carrier);
     margin-inline-start: auto;
     margin-inline-end: auto;
     inset-inline: 0;
+  }
+
+  &:not(.grouped) {
+    &.variant-icon,
+    &.variant-inline-icon,
+    &.variant-inline-icon-pointer-target,
+    &.variant-flashbar-icon {
+      // Icon has vertical padding, but no horizontal, we need to conpensate this
+      // in order to have equal height and width
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
+    }
+    &.button-no-text {
+      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    }
+  }
+
+  &.grouped {
+    border-block-color: awsui.$color-border-input-default;
+    border-block-width: awsui.$border-width-field;
+    border-inline-color: awsui.$color-border-input-default;
+    border-inline-width: awsui.$border-width-field;
+    padding-inline: awsui.$space-xs;
+    @include styles.grouped-control;
   }
 }
 

@@ -50,20 +50,8 @@ const permutations = createPermutations<InternalControlGroupProps>([
   {
     children: [
       input,
-      autosuggest,
-      segmentedControl,
-      select,
-      multiselect,
       <>
         {input}
-        {select}
-      </>,
-      <>
-        {input}
-        {segmentedControl}
-      </>,
-      <>
-        {autosuggest}
         {select}
       </>,
       <>
@@ -71,14 +59,6 @@ const permutations = createPermutations<InternalControlGroupProps>([
         {segmentedControl}
       </>,
       <>
-        {select}
-        {multiselect}
-      </>,
-      <>
-        {multiselect}
-        {select}
-      </>,
-      <>
         {input}
         {select}
         {input}
@@ -86,28 +66,35 @@ const permutations = createPermutations<InternalControlGroupProps>([
       <>
         {autosuggest}
         {select}
-        {autosuggest}
+        {multiselect}
       </>,
       <>
         {input}
+        {select}
         {multiselect}
         {input}
       </>,
-      <>
-        {autosuggest}
-        {multiselect}
-        {autosuggest}
-      </>,
+    ],
+    actionButton: [
+      { iconName: 'remove', ariaLabel: 'Remove' },
+      { iconName: 'close', ariaLabel: 'Close' },
+      { iconName: 'remove', ariaLabel: 'Remove', disabled: true },
+      {
+        iconName: 'remove',
+        ariaLabel: 'Remove',
+        disabled: true,
+        disabledReason: 'Cannot remove the last clause',
+      },
     ],
   },
 ]);
 
-export default function ControlGroupPermutations() {
+export default function ControlGroupActionPermutations() {
   const { direction, setDirection } = useControlGroupDirection();
 
   return (
     <PermutationsPage
-      title="Control group permutations"
+      title="Control group action button"
       i18n={{}}
       settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
     >

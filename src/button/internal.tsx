@@ -147,10 +147,7 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
-    // Read the grouped-control context so a button used as a control group `action`
-    // fuses onto the controls like the other grouped controls (Input, Select, …):
-    // the shared corner mixin flattens the facing corners on the button's own root,
-    // where its border + radius are actually painted.
+
     const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('button');
 
