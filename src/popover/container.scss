@@ -3,6 +3,8 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as popover-style-api;
 
 $arrow-height: 10px;
 
@@ -12,6 +14,7 @@ $arrow-height: 10px;
   inset-block-start: -9999px;
   inset-inline-start: -9999px;
   z-index: 2000;
+  @include style-api.carriers(popover-style-api.$tokens);
 
   // A little pseudoelement to extend the container to the space between the
   // popover and the trigger to avoid hover-based popovers/tooltips from
@@ -61,15 +64,18 @@ $arrow-height: 10px;
 }
 
 .container-body {
+  $tokens: popover-style-api.$tokens;
   @include styles.styles-reset;
-  border-start-start-radius: awsui.$border-radius-popover;
-  border-start-end-radius: awsui.$border-radius-popover;
-  border-end-start-radius: awsui.$border-radius-popover;
-  border-end-end-radius: awsui.$border-radius-popover;
-  background-color: awsui.$color-background-popover;
+  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-popover);
+  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-popover);
+  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-popover);
+  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-popover);
+  background: style-api.value($tokens, background, awsui.$color-background-popover);
   box-shadow: awsui.$shadow-popover;
-  border-block: awsui.$border-width-popover solid awsui.$color-border-popover;
-  border-inline: awsui.$border-width-popover solid awsui.$color-border-popover;
+  $border: style-api.value($tokens, border-width, awsui.$border-width-popover) solid
+    style-api.value($tokens, border-color, awsui.$color-border-popover);
+  border-block: $border;
+  border-inline: $border;
 }
 
 .container-body-variant-annotation {
