@@ -420,6 +420,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_dgs8z",
     "awsui_highlighted_15o6u",
     "awsui_icon_x6dl3",
+    "awsui_inline-label-wrapper_o08jm",
+    "awsui_inline-label_o08jm",
     "awsui_inner-list-item_10ipo",
     "awsui_key_10ipo",
     "awsui_label-tag_1p2cx",
