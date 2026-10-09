@@ -23,7 +23,7 @@ import {
 } from '../internal/analytics/selectors';
 import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { useButtonContext } from '../internal/context/button-context';
-import { useGroupedControlContext } from '../internal/context/control-group-context';
+import { GroupedControlContextProps, useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -61,6 +61,12 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
+  /**
+   * Grouped-control styling for a button rendered directly by a control group (the
+   * `action`). Overrides the ambient grouped-control context, which a self-constructed
+   * action button has no reason to read.
+   */
+  __groupedControlProps?: GroupedControlContextProps;
   styleClassNames?: StyleClassNames;
 } & InternalBaseComponentProps;
 
@@ -112,6 +118,7 @@ export const InternalButton = React.forwardRef(
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
       __compact = false,
+      __groupedControlProps,
       analyticsAction = 'click',
       styleClassNames,
       ...props
@@ -148,7 +155,10 @@ export const InternalButton = React.forwardRef(
 
     const buttonContext = useButtonContext();
 
-    const groupedControlProps = useGroupedControlContext();
+    // A control-group action button receives its grouping via `__groupedControlProps`;
+    // every other grouped button reads it from the ambient context.
+    const ambientGroupedControlProps = useGroupedControlContext();
+    const groupedControlProps = __groupedControlProps ?? ambientGroupedControlProps;
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');

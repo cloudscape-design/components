@@ -244,6 +244,8 @@ $tokens: style-api.resolve($props, carrier);
   }
 
   &.grouped {
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
     @include styles.grouped-control;

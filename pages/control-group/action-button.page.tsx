@@ -4,7 +4,7 @@ import React from 'react';
 
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Input from '~components/input';
-import ControlGroup, { InternalControlGroupProps } from '~components/internal/components/control-group';
+import ControlGroup, { ControlGroupProps } from '~components/internal/components/control-group';
 import Multiselect from '~components/multiselect';
 import SegmentedControl from '~components/segmented-control';
 import Select from '~components/select';
@@ -46,7 +46,7 @@ const autosuggest = (
   />
 );
 
-const permutations = createPermutations<InternalControlGroupProps>([
+const permutations = createPermutations<ControlGroupProps>([
   {
     children: [
       input,

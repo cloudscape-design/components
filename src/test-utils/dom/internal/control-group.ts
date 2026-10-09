@@ -4,11 +4,10 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button';
 
-import styles from '../../../internal/components/control-group/styles.selectors.js';
 import testUtilStyles from '../../../internal/components/control-group/test-classes/styles.selectors.js';
 
 export default class ControlGroupWrapper extends ComponentWrapper {
-  static rootSelector: string = styles['inline-label-wrapper'];
+  static rootSelector: string = testUtilStyles.root;
 
   /**
    * Returns the visible inline label element, or null if no label is set.

@@ -6,61 +6,30 @@ import clsx from 'clsx';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalButton } from '../../../button/internal';
-import { IconProps } from '../../../icon/interfaces';
-import { BaseComponentProps } from '../../../types/base-component';
 import { getBaseProps } from '../../base-component';
-import {
-  GroupedControlContext,
-  GroupedControlDirection,
-  GroupedControlPosition,
-} from '../../context/control-group-context';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
 import { flattenChildren } from '../../utils/flatten-children';
+import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export interface InternalControlGroupProps extends BaseComponentProps {
-  children?: React.ReactNode;
-  direction?: GroupedControlDirection;
-  inlineLabelText?: string;
-  /**
-   * Specifies an action button rendered next to the grouped controls.
-   */
-  actionButton?: InternalControlGroupProps.ActionButton;
-}
+export { ControlGroupProps };
 
-export namespace InternalControlGroupProps {
-  export interface ActionButton {
-    /** Called when the user clicks the button. */
-    onClick?: NonCancelableEventHandler;
-    /** Accessible name for the action. */
-    ariaLabel?: string;
-    /** Displays an icon in the action (for example `remove` or `close`). */
-    iconName?: IconProps.Name;
-    /** Alternate text for a custom icon, recommended for accessibility. */
-    iconAlt?: string;
-    /** Disables the action and prevents clicks. */
-    disabled?: boolean;
-    /** Reason the action is disabled (keeps it focusable). */
-    disabledReason?: string;
-    /** Adds `aria-describedby` to point the action at extra descriptive text. */
-    ariaDescribedby?: string;
-  }
-}
-
-export default function InternalControlGroup({
+export default function ControlGroup({
   children,
   direction = 'horizontal',
   inlineLabelText,
   actionButton,
   ...props
-}: InternalControlGroupProps) {
+}: ControlGroupProps) {
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
+
+  const rootClassnames = [baseProps.className, testUtilStyles.root];
 
   // The `role="group"` element wrapping the control slots. When an inline label is
   // present it is labelled by the label; otherwise it carries the component root props.
@@ -70,8 +39,9 @@ export default function InternalControlGroup({
       role="group"
       className={clsx(
         inlineLabelText || actionButton ? undefined : baseProps.className,
-        styles.root,
-        styles[`root-${direction}`]
+        styles.controls,
+        styles[`controls-${direction}`],
+        !actionButton && !inlineLabelText && rootClassnames
       )}
     >
       {flattenedChildren.map((child, index) => {
@@ -93,31 +63,25 @@ export default function InternalControlGroup({
     </div>
   );
 
-  // The controls, plus the fused action button when present. The action fuses as the
-  // trailing element and owns its own border/corners. Its direction is always
-  // `horizontal` (in a vertical group it sits beside the column, spanning its height):
-  // flat inline-start corners, rounded inline-end. `hasAction` is omitted so it rounds
-  // its inline-end. Not a control, not in the role="group".
   const controlsWithAction = actionButton ? (
     <div
       {...(inlineLabelText ? {} : baseProps)}
-      className={clsx(inlineLabelText ? undefined : baseProps.className, styles.layout, styles[`layout-${direction}`])}
+      className={clsx(styles['group-layout'], styles[`group-layout-${direction}`], !inlineLabelText && rootClassnames)}
     >
       {controls}
       <div className={styles['action-slot']}>
-        <GroupedControlContext.Provider value={{ position: 'last', direction: 'horizontal' }}>
-          <InternalButton
-            className={testUtilStyles['action-button']}
-            variant="icon"
-            iconName={actionButton.iconName}
-            iconAlt={actionButton.iconAlt}
-            ariaLabel={actionButton.ariaLabel}
-            disabled={actionButton.disabled}
-            disabledReason={actionButton.disabledReason}
-            ariaDescribedby={actionButton.ariaDescribedby}
-            onClick={() => fireNonCancelableEvent(actionButton.onClick)}
-          />
-        </GroupedControlContext.Provider>
+        <InternalButton
+          className={testUtilStyles['action-button']}
+          variant="icon"
+          __groupedControlProps={{ position: 'last', direction: 'horizontal' }}
+          iconName={actionButton.iconName}
+          iconAlt={actionButton.iconAlt}
+          ariaLabel={actionButton.ariaLabel}
+          disabled={actionButton.disabled}
+          disabledReason={actionButton.disabledReason}
+          ariaDescribedby={actionButton.ariaDescribedby}
+          onClick={actionButton.onClick}
+        />
       </div>
     </div>
   ) : (
@@ -126,7 +90,7 @@ export default function InternalControlGroup({
 
   if (inlineLabelText) {
     return (
-      <div {...baseProps} className={clsx(baseProps.className, styles['inline-label-wrapper'])}>
+      <div {...baseProps} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
         <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>

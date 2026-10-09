@@ -7,9 +7,6 @@
 $grouped-control-border-radius: constants.$control-border-radius;
 
 @mixin grouped-control {
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
-
   border-start-start-radius: $grouped-control-border-radius;
   border-start-end-radius: $grouped-control-border-radius;
   border-end-start-radius: $grouped-control-border-radius;

@@ -27,6 +27,8 @@ $icon-offset: awsui.$space-xxxs;
   padding-inline: styles.$control-padding-horizontal;
 
   background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
 
   &.in-filtering-token-root,
