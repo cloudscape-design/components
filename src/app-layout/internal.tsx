@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import ClassicAppLayout from './classic';
+import { ClassicAppLayout } from './implementations';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { useAppLayoutFlagEnabled } from './utils/feature-flags';
 import RefreshedAppLayout from './visual-refresh';
