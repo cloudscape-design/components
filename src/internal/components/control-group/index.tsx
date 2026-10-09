@@ -36,7 +36,6 @@ export default function ControlGroup({
       {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
       role="group"
       className={clsx(
-        inlineLabelText || actionButton ? undefined : baseProps.className,
         styles.controls,
         styles[`controls-${direction}`],
         !actionButton && !inlineLabelText && rootClassnames
