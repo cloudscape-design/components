@@ -11,9 +11,8 @@ export function getGroupedControlClassNames(
     return [];
   }
   const classNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
-  // Square the corners facing a fused action so it owns the only rounded inline-end corners.
   if (hasAction) {
-    classNames.push(styles[`grouped-with-action-${direction}-${position}`]);
+    classNames.push(styles['grouped-with-action']);
   }
   return classNames;
 }

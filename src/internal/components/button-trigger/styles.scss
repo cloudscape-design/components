@@ -27,12 +27,6 @@ $icon-offset: awsui.$space-xxxs;
   padding-inline: styles.$control-padding-horizontal;
 
   background-color: awsui.$color-background-input-default;
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
 
   &.in-filtering-token-root,
@@ -127,6 +121,19 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
+  &:not(.grouped) {
+    border-start-start-radius: styles.$control-border-radius;
+    border-start-end-radius: styles.$control-border-radius;
+    border-end-start-radius: styles.$control-border-radius;
+    border-end-end-radius: styles.$control-border-radius;
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  }
+
+  &.grouped {
+    @include styles.grouped-control;
+  }
+
   &:not(.in-filtering-token) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
@@ -158,9 +165,5 @@ $icon-offset: awsui.$space-xxxs;
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
-  }
-
-  &.grouped {
-    @include styles.grouped-control;
   }
 }

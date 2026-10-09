@@ -217,7 +217,7 @@ $tokens: style-api.resolve($props, carrier);
     @include focus-visible.when-visible {
       $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
       $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $focus-ring-color);
 
       &.variant-icon,
       &.variant-modal-dismiss,
@@ -244,11 +244,8 @@ $tokens: style-api.resolve($props, carrier);
   }
 
   &.grouped {
-    border-block-color: awsui.$color-border-input-default;
-    border-block-width: awsui.$border-width-field;
-    border-inline-color: awsui.$color-border-input-default;
-    border-inline-width: awsui.$border-width-field;
     padding-inline: awsui.$space-xs;
+    min-block-size: awsui.$size-vertical-input;
     @include styles.grouped-control;
     @include focus-visible.when-visible {
       @include styles.form-focus-element(
