@@ -130,71 +130,6 @@ $tokens: style-api.resolve($props, carrier);
     text-decoration: none;
   }
 
-  &.button-no-wrap {
-    white-space: nowrap;
-  }
-
-  &.full-width {
-    inline-size: 100%;
-    text-align: center;
-  }
-
-  &.variant-modal-dismiss {
-    padding-block: style-api.value($tokens, padding-block, awsui.$space-button-modal-dismiss-vertical);
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
-    margin-inline-end: calc(-1 * #{awsui.$space-xxs});
-  }
-
-  &.variant-inline-icon {
-    padding-block: 0;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  &.button-compact {
-    padding-block: 0;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  &.variant-inline-icon-pointer-target {
-    padding-block: awsui.$space-xxxs;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  > .icon-left {
-    position: relative;
-    // margin-left was breaking layout on firefox
-    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-end: awsui.$space-xxs;
-  }
-
-  > .icon-right {
-    position: relative;
-    // margin-right was breaking layout on firefox
-    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-start: awsui.$space-xxs;
-  }
-
-  &.variant-inline-link {
-    > .icon-left {
-      inset-inline-start: 0;
-      margin-inline-end: awsui.$space-xs;
-    }
-
-    > .icon-right {
-      inset-inline-end: 0;
-      margin-inline-start: awsui.$space-xs;
-    }
-  }
-
-  &.button-no-text > .icon {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-    inset-inline: 0;
-  }
-
   $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   &:not(.grouped) {
@@ -202,6 +137,52 @@ $tokens: style-api.resolve($props, carrier);
     border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
     padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
     padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
+    &.button-no-wrap {
+      white-space: nowrap;
+    }
+
+    &.full-width {
+      inline-size: 100%;
+      text-align: center;
+    }
+
+    > .icon-left {
+      position: relative;
+      // margin-left was breaking layout on firefox
+      inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-end: awsui.$space-xxs;
+    }
+
+    > .icon-right {
+      position: relative;
+      // margin-right was breaking layout on firefox
+      inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-start: awsui.$space-xxs;
+    }
+
+    &.variant-inline-link {
+      > .icon-left {
+        inset-inline-start: 0;
+        margin-inline-end: awsui.$space-xs;
+      }
+
+      > .icon-right {
+        inset-inline-end: 0;
+        margin-inline-start: awsui.$space-xs;
+      }
+    }
+
+    &.button-no-text > .icon {
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+      inset-inline: 0;
+    }
+
+    &.button-no-text {
+      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    }
 
     &.variant-icon,
     &.variant-inline-icon,
@@ -211,10 +192,30 @@ $tokens: style-api.resolve($props, carrier);
       // in order to have equal height and width
       padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
     }
-    &.button-no-text {
-      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    &.variant-modal-dismiss {
+      padding-block: style-api.value($tokens, padding-block, awsui.$space-button-modal-dismiss-vertical);
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
+      margin-inline-end: calc(-1 * #{awsui.$space-xxs});
     }
+
+    &.variant-inline-icon {
+      padding-block: 0;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
+
+    &.button-compact {
+      padding-block: 0;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
+
+    &.variant-inline-icon-pointer-target {
+      padding-block: awsui.$space-xxxs;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
+
     @include focus-visible.when-visible {
       $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
       $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
