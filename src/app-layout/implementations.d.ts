@@ -4,5 +4,5 @@
 // this a placeholder for typescript. The real file is generated in `generate-environment` task
 import Classic from './classic';
 
-/** Null when the build is always in visual refresh mode. */
-export const ClassicAppLayout: typeof Classic | null;
+/** Null when the build is always in visual refresh mode, where useVisualRefresh() is always true and it is never rendered. */
+export const ClassicAppLayout: typeof Classic;
