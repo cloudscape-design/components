@@ -149,7 +149,6 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
-
     const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');

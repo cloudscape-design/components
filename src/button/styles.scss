@@ -114,10 +114,6 @@ $tokens: style-api.resolve($props, carrier);
   border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
   border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
   border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
-  padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -202,6 +198,11 @@ $tokens: style-api.resolve($props, carrier);
   $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   &:not(.grouped) {
+    border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
+    border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
+    padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
+    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
     &.variant-icon,
     &.variant-inline-icon,
     &.variant-inline-icon-pointer-target,
