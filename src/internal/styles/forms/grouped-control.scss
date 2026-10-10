@@ -1,0 +1,53 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../tokens' as awsui;
+@use './constants' as constants;
+
+$grouped-control-border-radius: constants.$control-border-radius;
+
+@mixin grouped-control {
+  border-start-start-radius: $grouped-control-border-radius;
+  border-start-end-radius: $grouped-control-border-radius;
+  border-end-start-radius: $grouped-control-border-radius;
+  border-end-end-radius: $grouped-control-border-radius;
+
+  &-horizontal {
+    &-first {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+
+  &-vertical {
+    &-first {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-middle {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    &-last {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+    }
+  }
+
+  &-with-action {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}

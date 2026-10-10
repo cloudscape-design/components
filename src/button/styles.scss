@@ -24,20 +24,6 @@ $tokens: style-api.resolve($props, carrier);
     var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'))
   );
   color: style-api.value($tokens, color, var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color')));
-  border-color: style-api.value(
-    $tokens,
-    border-color,
-    var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
-  );
-  box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
-  @if map.get($variant, 'border-width') {
-    border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
-    border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
-  }
-  @if map.get($variant, 'padding') {
-    padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
-    padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
-  }
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
@@ -46,13 +32,7 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'))
     );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
-    );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
   }
 
   &:active {
@@ -61,13 +41,7 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'))
     );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
-    );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
   }
 
   &.disabled {
@@ -76,18 +50,53 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'))
     );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
-    );
     color: style-api.value(
       $tokens,
       color,
       var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
     );
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
     cursor: auto;
+  }
+
+  &:not(.grouped) {
+    border-color: style-api.value(
+      $tokens,
+      border-color,
+      var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
+    );
+    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
+    @if map.get($variant, 'border-width') {
+      border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
+      border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
+    }
+    @if map.get($variant, 'padding') {
+      padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
+      padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
+    }
+    &:hover {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
+      );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
+    }
+    &:active {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
+      );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
+    }
+    &.disabled {
+      border-color: style-api.value(
+        $tokens,
+        border-color,
+        var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
+      );
+      box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
+    }
   }
 }
 
@@ -101,14 +110,6 @@ $tokens: style-api.resolve($props, carrier);
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
-  padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -125,112 +126,137 @@ $tokens: style-api.resolve($props, carrier);
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
-    $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
-    $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-    @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+  $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
+  &:not(.grouped) {
+    border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
+    border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
+    border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
+    padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
+    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+
+    &.button-no-text {
+      padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+      padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    }
+
+    &.button-no-wrap {
+      white-space: nowrap;
+    }
+
+    &.full-width {
+      inline-size: 100%;
+      text-align: center;
+    }
 
     &.variant-icon,
-    &.variant-modal-dismiss,
-    &.variant-flashbar-icon {
-      @include style-api.focus-highlight(
-        $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
-        $radius: $radius,
-        $width: $width,
-        $color: $color
-      );
-    }
-
     &.variant-inline-icon,
-    &.variant-inline-icon-pointer-target {
-      @include style-api.focus-highlight(
-        $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
-        $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
-        $radius: $radius,
-        $width: $width,
-        $color: $color
-      );
+    &.variant-inline-icon-pointer-target,
+    &.variant-flashbar-icon {
+      // Icon has vertical padding, but no horizontal, we need to conpensate this
+      // in order to have equal height and width
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
     }
-  }
+    &.variant-modal-dismiss {
+      padding-block: style-api.value($tokens, padding-block, awsui.$space-button-modal-dismiss-vertical);
+      padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
+      margin-inline-end: calc(-1 * #{awsui.$space-xxs});
+    }
 
-  &.button-no-text {
-    padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-    padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-  }
+    &.variant-inline-icon {
+      padding-block: 0;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
 
-  &.button-no-wrap {
-    white-space: nowrap;
-  }
+    &.button-compact {
+      padding-block: 0;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
 
-  &.full-width {
-    inline-size: 100%;
-    text-align: center;
-  }
+    &.variant-inline-icon-pointer-target {
+      padding-block: awsui.$space-xxxs;
+      border-block-width: 0;
+      border-inline-width: 0;
+    }
 
-  &.variant-icon,
-  &.variant-inline-icon,
-  &.variant-inline-icon-pointer-target,
-  &.variant-flashbar-icon {
-    // Icon has vertical padding, but no horizontal, we need to conpensate this
-    // in order to have equal height and width
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
-  }
-
-  &.variant-modal-dismiss {
-    padding-block: style-api.value($tokens, padding-block, awsui.$space-button-modal-dismiss-vertical);
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
-    margin-inline-end: calc(-1 * #{awsui.$space-xxs});
-  }
-
-  &.variant-inline-icon {
-    padding-block: 0;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  &.button-compact {
-    padding-block: 0;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  &.variant-inline-icon-pointer-target {
-    padding-block: awsui.$space-xxxs;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  > .icon-left {
-    position: relative;
-    // margin-left was breaking layout on firefox
-    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-end: awsui.$space-xxs;
-  }
-
-  > .icon-right {
-    position: relative;
-    // margin-right was breaking layout on firefox
-    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-start: awsui.$space-xxs;
-  }
-
-  &.variant-inline-link {
     > .icon-left {
-      inset-inline-start: 0;
-      margin-inline-end: awsui.$space-xs;
+      position: relative;
+      // margin-left was breaking layout on firefox
+      inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-end: awsui.$space-xxs;
     }
 
     > .icon-right {
-      inset-inline-end: 0;
-      margin-inline-start: awsui.$space-xs;
+      position: relative;
+      // margin-right was breaking layout on firefox
+      inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+      margin-inline-start: awsui.$space-xxs;
+    }
+
+    &.variant-inline-link {
+      > .icon-left {
+        inset-inline-start: 0;
+        margin-inline-end: awsui.$space-xs;
+      }
+
+      > .icon-right {
+        inset-inline-end: 0;
+        margin-inline-start: awsui.$space-xs;
+      }
+    }
+
+    &.button-no-text > .icon {
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+      inset-inline: 0;
+    }
+
+    @include focus-visible.when-visible {
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $focus-ring-color);
+
+      &.variant-icon,
+      &.variant-modal-dismiss,
+      &.variant-flashbar-icon {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
+          $radius: $radius,
+          $width: $width,
+          $color: $focus-ring-color
+        );
+      }
+
+      &.variant-inline-icon,
+      &.variant-inline-icon-pointer-target {
+        @include style-api.focus-highlight(
+          $gutter-block: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
+          $radius: $radius,
+          $width: $width,
+          $color: $focus-ring-color
+        );
+      }
     }
   }
 
-  &.button-no-text > .icon {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-    inset-inline: 0;
+  &.grouped {
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+    padding-inline: awsui.$space-xs;
+    min-block-size: awsui.$size-vertical-input;
+    @include styles.grouped-control;
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element(
+        $border-color: $focus-ring-color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 }
 

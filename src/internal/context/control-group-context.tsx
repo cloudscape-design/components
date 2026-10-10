@@ -17,11 +17,17 @@ export interface GroupedControlContextProps {
    * controls.
    */
   direction: GroupedControlDirection;
+  /**
+   * Whether an action is fused onto the group's inline-end. Controls square the
+   * inline-end corners facing the action so it owns the only rounded ones.
+   */
+  hasAction?: boolean;
 }
 
 export const GroupedControlContext = createContext<GroupedControlContextProps>({
   position: null,
   direction: 'horizontal',
+  hasAction: false,
 });
 
 export function useGroupedControlContext() {
