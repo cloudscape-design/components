@@ -57,7 +57,8 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   isolation: isolate;
   &-middle,
   &-last {
-    // Overlap onto the predecessor by one border width so adjacent borders fuse into a seam.
+    // Overlap each non-first slot onto its predecessor by one border width,
+    // so the two adjacent borders coincide into a single seam.
     &-horizontal {
       margin-inline-start: $margin-overlap;
     }
