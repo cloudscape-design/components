@@ -126,6 +126,47 @@ $tokens: style-api.resolve($props, carrier);
     text-decoration: none;
   }
 
+  &.button-no-wrap {
+    white-space: nowrap;
+  }
+
+  &.full-width {
+    inline-size: 100%;
+    text-align: center;
+  }
+
+  > .icon-left {
+    position: relative;
+    // margin-left was breaking layout on firefox
+    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-end: awsui.$space-xxs;
+  }
+
+  > .icon-right {
+    position: relative;
+    // margin-right was breaking layout on firefox
+    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-start: awsui.$space-xxs;
+  }
+
+  &.variant-inline-link {
+    > .icon-left {
+      inset-inline-start: 0;
+      margin-inline-end: awsui.$space-xs;
+    }
+
+    > .icon-right {
+      inset-inline-end: 0;
+      margin-inline-start: awsui.$space-xs;
+    }
+  }
+
+  &.button-no-text > .icon {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    inset-inline: 0;
+  }
+
   $focus-ring-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
   &:not(.grouped) {
@@ -141,15 +182,6 @@ $tokens: style-api.resolve($props, carrier);
     &.button-no-text {
       padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
       padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-    }
-
-    &.button-no-wrap {
-      white-space: nowrap;
-    }
-
-    &.full-width {
-      inline-size: 100%;
-      text-align: center;
     }
 
     &.variant-icon,
@@ -182,38 +214,6 @@ $tokens: style-api.resolve($props, carrier);
       padding-block: awsui.$space-xxxs;
       border-block-width: 0;
       border-inline-width: 0;
-    }
-
-    > .icon-left {
-      position: relative;
-      // margin-left was breaking layout on firefox
-      inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-      margin-inline-end: awsui.$space-xxs;
-    }
-
-    > .icon-right {
-      position: relative;
-      // margin-right was breaking layout on firefox
-      inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-      margin-inline-start: awsui.$space-xxs;
-    }
-
-    &.variant-inline-link {
-      > .icon-left {
-        inset-inline-start: 0;
-        margin-inline-end: awsui.$space-xs;
-      }
-
-      > .icon-right {
-        inset-inline-end: 0;
-        margin-inline-start: awsui.$space-xs;
-      }
-    }
-
-    &.button-no-text > .icon {
-      margin-inline-start: auto;
-      margin-inline-end: auto;
-      inset-inline: 0;
     }
 
     @include focus-visible.when-visible {
