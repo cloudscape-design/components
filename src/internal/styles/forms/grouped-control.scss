@@ -37,7 +37,7 @@ $grouped-control-border-radius: constants.$control-border-radius;
 }
 
 @mixin grouped-control {
-  @include mixin-control-base;
+  @include grouped-control-base;
 
   &-horizontal {
     &-first {
