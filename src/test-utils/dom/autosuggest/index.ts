@@ -8,9 +8,11 @@ import InputWrapper from '../input';
 import DropdownWrapper from '../internal/dropdown';
 import OptionWrapper from '../internal/option';
 import OptionsListWrapper from '../internal/options-list';
+import TokenWrapper from '../token';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import autosuggestInputTestUtilStyles from '../../../internal/components/autosuggest-input/test-classes/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
@@ -176,5 +178,69 @@ export default class AutosuggestWrapper extends InputWrapper {
         ?.findOptionByValue(value)!
         .fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
+  }
+
+  /**
+   * Returns the tokens shown inline in the input (tokens collapsed into the overflow dropdown are excluded).
+   * Applies only when the `tokens` property is set.
+   */
+  findVisibleTokens(): Array<TokenWrapper> {
+    return this.findAll(`.${autosuggestInputTestUtilStyles['token-list-item']} > .${TokenWrapper.rootSelector}`).map(
+      (elementWrapper: ElementWrapper) => new TokenWrapper(elementWrapper.getElement())
+    );
+  }
+
+  /**
+   * Returns an inline token. Applies only when the `tokens` property is set.
+   *
+   * @param index 1-based index among the visible tokens.
+   */
+  findVisibleToken(index: number): TokenWrapper | null {
+    return this.findComponent(
+      `.${autosuggestInputTestUtilStyles['token-list']} > li:nth-child(${index}) > .${TokenWrapper.rootSelector}`,
+      TokenWrapper
+    );
+  }
+
+  /**
+   * Returns the `+N` button that opens the overflow dropdown, or `null` when all tokens fit.
+   * Applies only when the `tokens` property is set.
+   */
+  findOverflowTrigger(): ElementWrapper<HTMLButtonElement> | null {
+    return this.findByClassName<HTMLButtonElement>(autosuggestInputTestUtilStyles['token-overflow-trigger']);
+  }
+
+  /**
+   * Returns the open overflow dropdown that lists the tokens collapsed behind the `+N` button.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findOverflowDropdown(options = { expandToViewport: false }): AutosuggestOverflowDropdownWrapper | null {
+    const root = options.expandToViewport ? createWrapper() : this;
+    return root.findComponent(
+      `.${autosuggestInputTestUtilStyles['overflow-dropdown']}`,
+      AutosuggestOverflowDropdownWrapper
+    );
+  }
+}
+
+export class AutosuggestOverflowDropdownWrapper extends ComponentWrapper {
+  /**
+   * Returns the tokens listed in the overflow dropdown.
+   */
+  findTokens(): Array<TokenWrapper> {
+    return this.findAll(`li > .${TokenWrapper.rootSelector}`).map(
+      (elementWrapper: ElementWrapper) => new TokenWrapper(elementWrapper.getElement())
+    );
+  }
+
+  /**
+   * Returns a token from the overflow dropdown.
+   *
+   * @param index 1-based index of the token.
+   */
+  findToken(index: number): TokenWrapper | null {
+    return this.findComponent(`li:nth-child(${index}) > .${TokenWrapper.rootSelector}`, TokenWrapper);
   }
 }

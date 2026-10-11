@@ -692,3 +692,35 @@ describe('native attributes', () => {
     );
   });
 });
+
+describe('tokens mode', () => {
+  const tokenProps: Partial<AutosuggestProps> = {
+    tokens: [],
+  };
+
+  it('does not include tokens in the change detail in default mode', () => {
+    const onChange = jest.fn();
+    const { container } = render(<Autosuggest {...defaultProps} onChange={onChange} />);
+    createWrapper(container).findAutosuggest()!.setInputValue('x');
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: 'x' } }));
+  });
+
+  it('fires onChange with tokens when a dropdown option is selected in tokens mode', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Autosuggest
+        {...defaultProps}
+        {...tokenProps}
+        onChange={onChange}
+        enteredTextLabel={v => `Add "${v}"`}
+        value="1"
+      />
+    );
+    const wrapper = createWrapper(container).findAutosuggest()!;
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '', tokens: [{ value: '1' }] } }));
+  });
+});

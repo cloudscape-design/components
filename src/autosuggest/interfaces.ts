@@ -110,6 +110,7 @@ export interface AutosuggestProps
 
   /**
    * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
+   * @deprecated Use `i18nStrings.enteredTextLabel` instead.
    * @i18n
    */
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
@@ -165,10 +166,51 @@ export interface AutosuggestProps
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
+
+  /**
+   * Specifies the list of tokens to display as inline pills.
+   * When this prop is provided (including an empty array), the component enters tokens mode:
+   * accepted values accumulate as inline dismissible token pills before the text input.
+   * Tokens that overflow the available width collapse into a `+N` pill.
+   * This is a controlled prop — update it in response to `onChange`.
+   */
+  tokens?: ReadonlyArray<AutosuggestProps.Token>;
+
+  /**
+   * Called whenever the input value or token list changes.
+   *
+   * In default mode, fires on every keystroke with `{ value }`.
+   * When `tokens` is provided, fires in three situations:
+   * * Keystroke — `value` is the new text; `tokens` is unchanged.
+   * * Token added — `value` is `""`; `tokens` contains the updated list.
+   * * Token dismissed — `value` is unchanged; `tokens` contains the updated list.
+   *
+   * `tokens` is `undefined` when not in tokens mode.
+   */
+  onChange?: NonCancelableEventHandler<AutosuggestProps.ChangeDetail>;
+
+  /**
+   * An object containing all the localized strings required by the component.
+   *
+   * - `enteredTextLabel` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and tokens mode.
+   * - `tokenOverflowAriaLabel` ((hiddenCount: number) => string) - Aria label for the `+N` overflow pill button. Applies only when `tokens` is provided.
+   * - `tokenInsertedAriaLabel` ((value: string) => string) - Announced via `aria-live` when a token is added. Applies only when `tokens` is provided.
+   * - `tokenDismissLabel` ((value: string) => string) - Aria label for the dismiss button on each token pill. Applies only when `tokens` is provided.
+   * @i18n
+   */
+  i18nStrings?: AutosuggestProps.I18nStrings;
 }
 
 export namespace AutosuggestProps {
-  export type ChangeDetail = InputProps.ChangeDetail;
+  export interface ChangeDetail {
+    /** Current text value in the input field. */
+    value: string;
+    /**
+     * Current token list. Only present when `tokens` prop is provided.
+     * `undefined` in default mode — existing consumers are unaffected.
+     */
+    tokens?: ReadonlyArray<AutosuggestProps.Token>;
+  }
   export type KeyDetail = InputProps.KeyDetail;
   export type FilteringType = OptionsFilteringType;
   export type Option = OptionDefinition;
@@ -225,6 +267,70 @@ export namespace AutosuggestProps {
      * Selects all text in the input control.
      */
     select(): void;
+  }
+
+  export interface Token {
+    /** Specifies the text value displayed in the token pill. */
+    value: string;
+    /**
+     * An icon displayed at the start of the token.
+     *
+     * Use an `<Icon>` element. Icon size should be `small` when `variant="inline"`.
+     */
+    icon?: React.ReactNode;
+  }
+
+  export interface I18nStrings {
+    /**
+     * Label for the "entered text" dropdown item shown when the user types a value.
+     * In default mode the item reads `Use: "{value}"` by default.
+     * In tokens mode it reads `Add: "{value}"` by default.
+     *
+     * Since you control whether `tokens` is provided, you can branch on your
+     * own state to return different text per mode:
+     * `(value) => tokens !== undefined ? \`Add "${value}"\` : \`Use "${value}"\``
+     *
+     * Replaces the deprecated top-level `enteredTextLabel` prop.
+     * @param value The text the user typed
+     * @returns The label string displayed as the first dropdown option
+     * @i18n
+     */
+    enteredTextLabel?: (value: string) => string;
+
+    /**
+     * Provides an aria-label for the `+N` overflow pill button shown when tokens overflow.
+     * The function receives the count of hidden items.
+     *
+     * Use to provide context-specific vocabulary:
+     * `count => \`${count} more regions\``
+     *
+     * Applies only when `tokens` is provided.
+     * @param hiddenCount The number of tokens hidden in the overflow
+     * @returns The aria-label string for the overflow pill
+     * @i18n
+     */
+    tokenOverflowAriaLabel?: (hiddenCount: number) => string;
+
+    /**
+     * Announced via an `aria-live` region when a token is added.
+     * Applies only when `tokens` is provided.
+     * @param value The value of the token that was added
+     * @returns The announcement string
+     * @default `${value} inserted`
+     * @i18n
+     */
+    tokenInsertedAriaLabel?: (value: string) => string;
+
+    /**
+     * Provides an `aria-label` for the dismiss button on each token pill,
+     * describing the action to screen reader users (e.g. `value => \`Remove ${value}\``).
+     * Applies only when `tokens` is provided.
+     * @param value The value of the token being dismissed
+     * @returns The aria-label string for the dismiss button
+     * @default `${value}`
+     * @i18n
+     */
+    tokenDismissLabel?: (value: string) => string;
   }
 
   export interface Style {

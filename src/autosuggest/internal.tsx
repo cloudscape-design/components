@@ -19,6 +19,7 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
+import { useAutosuggestTokenI18n } from './i18n-utils';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { useAutosuggestItems } from './options-controller';
@@ -58,6 +59,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    tokens,
+    i18nStrings,
     __internalRootRef,
     ...restProps
   } = props;
@@ -80,22 +83,31 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
   const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
+  const isTokenMode = tokens !== undefined;
+
   if (restProps.recoveryText && !onLoadItems) {
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
   }
+
+  const tokenI18n = useAutosuggestTokenI18n(i18nStrings);
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
-    enteredTextLabel,
+    enteredTextLabel: i18nStrings?.enteredTextLabel ?? enteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
+    isTokenMode: isTokenMode,
     onSelectItem: (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
+      const selectedValue = option.value || '';
+      if (isTokenMode) {
+        autosuggestInputRef.current?.addToken(selectedValue);
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
       fireNonCancelableEvent(onSelect, {
-        value,
+        value: selectedValue,
         selectedOption: option.type !== 'use-entered' ? option.option : undefined,
       });
       autosuggestInputRef.current?.close();
@@ -185,9 +197,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
   const isFiltered = !!value && value.length !== 0 && !(filteringType === 'auto' && autosuggestItemsState.showAll);
-  const filteredText = isFiltered
-    ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
-    : undefined;
+  const filteredText =
+    isFiltered && !isTokenMode
+      ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
+      : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,
     isEmpty,
@@ -231,6 +244,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      tokens={tokens}
+      tokenOverflowAriaLabel={tokenI18n.tokenOverflowAriaLabel}
+      tokenInsertedAnnouncement={tokenI18n.tokenInsertedAriaLabel}
+      tokenDismissLabel={tokenI18n.tokenDismissLabel}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList
