@@ -24,7 +24,6 @@ $tokens: style-api.resolve($props, carrier);
     var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'))
   );
   color: style-api.value($tokens, color, var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color')));
-  font-weight: map.get($variant, 'font-weight');
   border-color: style-api.value(
     $tokens,
     border-color,
@@ -39,6 +38,7 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
     padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
   }
+  font-weight: map.get($variant, 'font-weight');
 
   &:hover {
     background: style-api.value(
@@ -46,12 +46,12 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'))
     );
-    color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
     border-color: style-api.value(
       $tokens,
       border-color,
       var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
     );
+    color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
   }
 
@@ -61,12 +61,12 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'))
     );
-    color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
     border-color: style-api.value(
       $tokens,
       border-color,
       var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
     );
+    color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
   }
 
@@ -76,18 +76,18 @@ $tokens: style-api.resolve($props, carrier);
       background-color,
       var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'))
     );
-    color: style-api.value(
-      $tokens,
-      color,
-      var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
-    );
-    cursor: auto;
     border-color: style-api.value(
       $tokens,
       border-color,
       var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
     );
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
+    color: style-api.value(
+      $tokens,
+      color,
+      var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
+    );
+    cursor: auto;
   }
 }
 
@@ -125,6 +125,11 @@ $tokens: style-api.resolve($props, carrier);
     text-decoration: none;
   }
 
+  &.button-no-text {
+    padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+  }
+
   &.button-no-wrap {
     white-space: nowrap;
   }
@@ -132,43 +137,6 @@ $tokens: style-api.resolve($props, carrier);
   &.full-width {
     inline-size: 100%;
     text-align: center;
-  }
-
-  > .icon-left {
-    position: relative;
-    // margin-left was breaking layout on firefox
-    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-end: awsui.$space-xxs;
-  }
-
-  > .icon-right {
-    position: relative;
-    // margin-right was breaking layout on firefox
-    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-start: awsui.$space-xxs;
-  }
-
-  &.variant-inline-link {
-    > .icon-left {
-      inset-inline-start: 0;
-      margin-inline-end: awsui.$space-xs;
-    }
-
-    > .icon-right {
-      inset-inline-end: 0;
-      margin-inline-start: awsui.$space-xs;
-    }
-  }
-
-  &.button-no-text > .icon {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-    inset-inline: 0;
-  }
-
-  &.button-no-text {
-    padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-    padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
   }
 
   &.variant-icon,
@@ -210,6 +178,38 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
+  }
+
+  > .icon-left {
+    position: relative;
+    // margin-left was breaking layout on firefox
+    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-end: awsui.$space-xxs;
+  }
+
+  > .icon-right {
+    position: relative;
+    // margin-right was breaking layout on firefox
+    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-start: awsui.$space-xxs;
+  }
+
+  &.variant-inline-link {
+    > .icon-left {
+      inset-inline-start: 0;
+      margin-inline-end: awsui.$space-xs;
+    }
+
+    > .icon-right {
+      inset-inline-end: 0;
+      margin-inline-start: awsui.$space-xs;
+    }
+  }
+
+  &.button-no-text > .icon {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    inset-inline: 0;
   }
 
   @include focus-visible.when-visible {
