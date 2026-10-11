@@ -6,43 +6,58 @@
 
 $grouped-control-border-radius: constants.$control-border-radius;
 
+@mixin grouped-control-horizontal-first {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-horizontal-last {
+  border-start-start-radius: 0;
+  border-start-end-radius: $grouped-control-border-radius;
+  border-end-start-radius: 0;
+  border-end-end-radius: $grouped-control-border-radius;
+}
+@mixin grouped-control-vertical-first {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-vertical-last {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+@mixin grouped-control-middle {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
 @mixin grouped-control {
   border-start-start-radius: $grouped-control-border-radius;
-  border-start-end-radius: $grouped-control-border-radius;
   border-end-start-radius: $grouped-control-border-radius;
+  border-start-end-radius: $grouped-control-border-radius;
   border-end-end-radius: $grouped-control-border-radius;
 
   &-horizontal {
     &-first {
-      border-start-end-radius: 0;
-      border-end-end-radius: 0;
+      @include grouped-control-horizontal-first;
     }
     &-middle {
-      border-start-start-radius: 0;
-      border-start-end-radius: 0;
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
+      @include grouped-control-middle;
     }
     &-last {
-      border-start-start-radius: 0;
-      border-end-start-radius: 0;
+      @include grouped-control-horizontal-last;
     }
   }
 
   &-vertical {
     &-first {
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
+      @include grouped-control-vertical-first;
     }
     &-middle {
-      border-start-start-radius: 0;
-      border-start-end-radius: 0;
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
+      @include grouped-control-middle;
     }
     &-last {
-      border-start-start-radius: 0;
-      border-start-end-radius: 0;
+      @include grouped-control-vertical-last;
     }
   }
 

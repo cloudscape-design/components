@@ -68,8 +68,7 @@ export default function ControlGroup({
       <div className={styles['action-slot']}>
         <InternalButton
           className={testUtilStyles['action-button']}
-          variant="icon"
-          __groupedControlProps={{ position: 'last', direction: 'horizontal' }}
+          variant="control-group-action"
           iconName={actionButton.iconName}
           ariaLabel={actionButton.ariaLabel}
           disabled={actionButton.disabled}

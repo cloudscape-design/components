@@ -21,9 +21,7 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { useButtonContext } from '../internal/context/button-context';
-import { GroupedControlContextProps } from '../internal/context/control-group-context';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -47,6 +45,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?:
     | ButtonProps['variant']
     | 'flashbar-icon'
+    | 'control-group-action'
     | 'breadcrumb-group'
     | 'menu-trigger'
     | 'modal-dismiss'
@@ -61,7 +60,6 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
-  __groupedControlProps?: GroupedControlContextProps;
   styleClassNames?: StyleClassNames;
 } & InternalBaseComponentProps;
 
@@ -113,7 +111,6 @@ export const InternalButton = React.forwardRef(
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
       __compact = false,
-      __groupedControlProps,
       analyticsAction = 'click',
       styleClassNames,
       ...props
@@ -130,6 +127,7 @@ export const InternalButton = React.forwardRef(
       (variant === 'normal' ||
         variant === 'primary' ||
         variant === 'icon' ||
+        variant === 'control-group-action' ||
         variant === 'inline-icon' ||
         variant === 'inline-link' ||
         variant === 'link') &&
@@ -139,7 +137,14 @@ export const InternalButton = React.forwardRef(
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children &&
-      ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss', 'inline-icon-pointer-target'].indexOf(variant) === -1;
+      [
+        'icon',
+        'control-group-action',
+        'inline-icon',
+        'flashbar-icon',
+        'modal-dismiss',
+        'inline-icon-pointer-target',
+      ].indexOf(variant) === -1;
 
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
@@ -203,22 +208,15 @@ export const InternalButton = React.forwardRef(
     };
 
     const stylingClassName = styleClassNames?.root;
-    const buttonClass = clsx(
-      props.className,
-      stylingClassName,
-      styles.button,
-      styles[`variant-${variant}`],
-      ...(__groupedControlProps ? getGroupedControlClassNames(styles, __groupedControlProps) : []),
-      {
-        [styles.disabled]: isNotInteractive,
-        [styles['disabled-with-reason']]: isDisabledWithReason,
-        [styles['button-no-wrap']]: !wrapText,
-        [styles['button-no-text']]: !shouldHaveContent,
-        [styles['full-width']]: shouldHaveContent && fullWidth,
-        [styles['button-compact']]: __compact,
-        [styles.link]: isAnchor,
-      }
-    );
+    const buttonClass = clsx(props.className, stylingClassName, styles.button, styles[`variant-${variant}`], {
+      [styles.disabled]: isNotInteractive,
+      [styles['disabled-with-reason']]: isDisabledWithReason,
+      [styles['button-no-wrap']]: !wrapText,
+      [styles['button-no-text']]: !shouldHaveContent,
+      [styles['full-width']]: shouldHaveContent && fullWidth,
+      [styles['button-compact']]: __compact,
+      [styles.link]: isAnchor,
+    });
 
     const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
