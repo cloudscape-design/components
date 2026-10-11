@@ -214,6 +214,7 @@ $tokens: style-api.resolve($props, carrier);
   &.variant-control-group-action {
     border-block-style: solid;
     border-inline-style: solid;
+    @include styles.grouped-control-base;
     @include styles.grouped-control-horizontal-last;
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
