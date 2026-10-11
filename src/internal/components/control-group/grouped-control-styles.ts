@@ -16,9 +16,6 @@ export function getGroupedControlClassNames(
   if (!position) {
     return [];
   }
-  const classNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
-  if (hasAction) {
-    classNames.push(styles['grouped-with-action']);
-  }
-  return classNames;
+  const baseClassNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
+  return hasAction ? [...baseClassNames, styles['grouped-with-action']] : baseClassNames;
 }
