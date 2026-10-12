@@ -89,6 +89,10 @@ function InternalPopover(
   const focusTrigger = useCallback(() => {
     if (['text', 'text-inline'].includes(triggerType)) {
       triggerRef.current?.focus();
+    } else if (triggerType === 'no-wrapper') {
+      // For no-wrapper, triggerRef points directly to the child element.
+      // The child is itself focusable (e.g. a <button>), so call focus() on it directly.
+      triggerRef.current?.focus();
     } else if (triggerRef.current) {
       getFirstFocusable(triggerRef.current)?.focus();
     }
@@ -199,6 +203,68 @@ function InternalPopover(
 
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
+  /**
+   * Renders the trigger element based on triggerType:
+   * - 'text' / 'text-inline': wraps children in a <button> (accessible, keyboard-navigable).
+   * - 'custom' / 'filtering-token': wraps children in a <span>.
+   * - 'no-wrapper': clones the single child React element and injects trigger props directly,
+   *   avoiding any extra wrapper in the DOM. The child must accept onClick, onKeyDown, and ref.
+   */
+  const renderTrigger = () => {
+    if (['text', 'text-inline'].includes(triggerType)) {
+      return (
+        <button
+          {...triggerProps}
+          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
+          tabIndex={triggerTabIndex}
+          type="button"
+          aria-haspopup="dialog"
+          id={referrerId}
+          aria-label={triggerAriaLabel}
+        >
+          {children}
+        </button>
+      );
+    }
+
+    if (triggerType === 'no-wrapper') {
+      // Inject trigger interaction props directly onto the child element.
+      // The child must be a single React element (not a string, array, etc.).
+      const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>;
+      return React.cloneElement(child, {
+        ref: triggerRef as any,
+        // Merge the trigger class so test-utils findTrigger() can locate the element,
+        // while preserving any className the child already has.
+        className: clsx(
+          styles.trigger,
+          styles[`trigger-type-${triggerType}`],
+          child.props.className as string | undefined
+        ),
+        onClick: (event: React.MouseEvent) => {
+          onTriggerClick();
+          if (typeof child.props.onClick === 'function') {
+            child.props.onClick(event);
+          }
+        },
+        onKeyDown: (event: React.KeyboardEvent) => {
+          onTriggerKeyDown(event);
+          if (typeof child.props.onKeyDown === 'function') {
+            child.props.onKeyDown(event);
+          }
+        },
+        id: (child.props.id as string | undefined) ?? referrerId,
+        'aria-haspopup': 'dialog',
+      });
+    }
+
+    // 'custom' and 'filtering-token': wrap in a span
+    return (
+      <span {...triggerProps} id={referrerId}>
+        {children}
+      </span>
+    );
+  };
+
   return (
     <span
       {...baseProps}
@@ -216,23 +282,7 @@ function InternalPopover(
         });
       }}
     >
-      {['text', 'text-inline'].includes(triggerType) ? (
-        <button
-          {...triggerProps}
-          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
-          tabIndex={triggerTabIndex}
-          type="button"
-          aria-haspopup="dialog"
-          id={referrerId}
-          aria-label={triggerAriaLabel}
-        >
-          {children}
-        </button>
-      ) : (
-        <span {...triggerProps} id={referrerId}>
-          {children}
-        </span>
-      )}
+      {renderTrigger()}
       {visible && (
         <ResetContextsForModal>
           {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}

@@ -26,6 +26,11 @@ export interface PopoverProps extends BaseComponentProps {
    * - `text` - Use for triggers containing inline components, like status indicator.
    * - `text-inline` - Use for triggers containing plain text only.
    * - `custom` - Use for the [button](/components/button/) component.
+   * - `no-wrapper` - Use when you want to pass trigger interaction props (click, keydown, ref)
+   *   directly onto a single child element via `React.cloneElement`. The child must be a single
+   *   React element that accepts `onClick`, `onKeyDown`, and `ref` props. Use this when you need
+   *   an icon, badge, avatar, or other arbitrary element to act as the popover trigger without
+   *   introducing an extra wrapper in the DOM.
    */
   triggerType?: PopoverProps.TriggerType;
 
@@ -100,7 +105,7 @@ export type Rect = BoundingBox & {
 export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
-  export type TriggerType = 'text' | 'text-inline' | 'custom';
+  export type TriggerType = 'text' | 'text-inline' | 'custom' | 'no-wrapper';
 
   export interface Ref {
     /**
