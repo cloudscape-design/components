@@ -126,13 +126,15 @@
 
 .token-overflow {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .token-overflow-trigger {
   @include styles.styles-reset;
   @include styles.font-body-s;
   @include styles.logical-radius(awsui.$border-radius-token-inline);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
