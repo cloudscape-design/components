@@ -15,7 +15,9 @@ export function getRootStyles(style: ContainerProps.Style | undefined) {
     // Set as a custom property, not inline `border-radius`, so stacked containers can still
     // flatten their adjacent corners in CSS.
     ...(style?.root?.borderRadius && { [customCssProps.containerStyleBorderRadius]: style.root.borderRadius }),
-    borderWidth: style?.root?.borderWidth,
+    // Set as a custom property, not inline `border-width`, so stacked containers can still
+    // drop their shared bottom border in CSS.
+    ...(style?.root?.borderWidth && { [customCssProps.containerStyleBorderWidth]: style.root.borderWidth }),
     boxShadow: style?.root?.boxShadow,
     color: style?.root?.color,
   };

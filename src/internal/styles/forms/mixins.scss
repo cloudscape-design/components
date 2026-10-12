@@ -237,6 +237,9 @@
   // Custom radius from the container style API if set, otherwise the token. Stacked
   // containers still flatten adjacent corners because those rules set a literal 0.
   $radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
+  // Custom border width from the container style API if set, otherwise the token. Stacked
+  // containers still drop their shared bottom border because that rule sets a literal 0.
+  $border-width: var(#{custom-props.$containerStyleBorderWidth}, #{awsui.$border-divider-section-width});
   border-start-start-radius: $radius;
   border-start-end-radius: $radius;
   border-end-start-radius: $radius;
@@ -244,8 +247,8 @@
   box-sizing: border-box;
 
   &.refresh {
-    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
-    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid $border-width awsui.$color-border-divider-default;
+    border-inline: solid $border-width awsui.$color-border-divider-default;
   }
 
   &:not(.refresh)::before {

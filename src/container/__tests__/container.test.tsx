@@ -174,7 +174,9 @@ describe('Style API', () => {
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.containerStyleBorderRadius)).toBe(
       '240px'
     );
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('6px');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.containerStyleBorderWidth)).toBe(
+      '6px'
+    );
     expect(
       getComputedStyle(wrapper.findByClassName(styles['content-inner'])!.getElement()).getPropertyValue('padding-block')
     ).toBe('20px');

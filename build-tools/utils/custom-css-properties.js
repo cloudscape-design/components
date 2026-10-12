@@ -204,5 +204,6 @@ const customCssPropertiesList = [
   'inlineLabelBackgroundColor',
   // Container style API
   'containerStyleBorderRadius',
+  'containerStyleBorderWidth',
 ];
 module.exports = customCssPropertiesList;
