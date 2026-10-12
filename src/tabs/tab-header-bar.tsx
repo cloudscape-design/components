@@ -1,14 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
+  getIsRtl,
+  getOffsetInlineStart,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
+  useResizeObserver,
   useSingleTabStopNavigation,
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -39,7 +42,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabIndicatorStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -107,6 +110,12 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
+
+  const activeIndicatorRef = useRef<HTMLElement | null>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({ opacity: 0 });
+
+  const previousIndicatorTabId = usePrevious(activeTabId);
+  const headerContainerRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
@@ -195,6 +204,47 @@ export function TabHeaderBar({
       }
     }
   }, [activeTabId]);
+
+  const getActiveHeaderContainer = useCallback(
+    () => (activeTabId ? (headerContainerRefs.current.get(activeTabId) ?? null) : null),
+    [activeTabId]
+  );
+
+  const updateIndicator = () => {
+    const indicator = activeIndicatorRef.current;
+    const headerContainer = getActiveHeaderContainer();
+    const activeTab = activeTabId ? tabs.find(tab => tab.id === activeTabId) : undefined;
+    if (!indicator || !headerContainer || !activeTab || activeTab.disabled) {
+      setIndicatorStyle(prev => ({ ...prev, opacity: 0 }));
+      return;
+    }
+
+    const isRtl = getIsRtl(indicator);
+    const offset = (isRtl ? -1 : 1) * getOffsetInlineStart(headerContainer);
+    const width = headerContainer.offsetWidth - 1;
+
+    const animate = previousIndicatorTabId !== undefined && previousIndicatorTabId !== activeTabId;
+
+    setIndicatorStyle({
+      transform: `translateX(${offset}px)`,
+      inlineSize: `${width}px`,
+      opacity: 1,
+      ...(animate ? {} : { transition: 'none' }),
+    });
+  };
+
+  useResizeObserver(getActiveHeaderContainer, updateIndicator);
+
+  const activeTab = activeTabId ? tabs.find(tab => tab.id === activeTabId) : undefined;
+  const activeTabVisible = !!activeTab && !activeTab.disabled;
+  useLayoutEffect(() => {
+    updateIndicator();
+    // updateIndicator is recreated every render; the facts that should trigger a
+    // re-measure are already captured by activeTabId and activeTabVisible. Depending on
+    // it (or on tabs/style/width) would re-fire on unrelated changes, which this
+    // component deliberately avoids.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTabId, activeTabVisible]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -330,6 +380,7 @@ export function TabHeaderBar({
   }
 
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
+  const Indicator = hasActionOrDismissible ? 'span' : 'li';
 
   return (
     <div className={classes}>
@@ -359,12 +410,22 @@ export function TabHeaderBar({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
+            style={getTabIndicatorStyles(style)}
             onScroll={onScroll}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
+            <Indicator
+              className={clsx(styles['tabs-active-indicator'], { [styles.refresh]: isVisualRefresh })}
+              style={indicatorStyle}
+              ref={(node: HTMLElement | null) => {
+                activeIndicatorRef.current = node;
+              }}
+              aria-hidden="true"
+              role="presentation"
+            />
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (
@@ -528,6 +589,13 @@ export function TabHeaderBar({
         key={tab.id}
       >
         <div
+          ref={element => {
+            if (element) {
+              headerContainerRefs.current.set(tab.id, element);
+            } else {
+              headerContainerRefs.current.delete(tab.id);
+            }
+          }}
           className={tabHeaderContainerClasses}
           {...tabHeaderContainerAriaProps}
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}

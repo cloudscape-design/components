@@ -1,0 +1,27 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+.tabs-active-indicator {
+  @include theming.one-theme-only {
+    border-start-start-radius: awsui.$border-radius-badge;
+    border-start-end-radius: awsui.$border-radius-badge;
+    border-end-start-radius: awsui.$border-radius-badge;
+    border-end-end-radius: awsui.$border-radius-badge;
+  }
+
+  &,
+  &.refresh {
+    @include theming.expressive-motion-only {
+      @include styles.with-motion {
+        transition:
+          transform awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c,
+          inline-size awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c,
+          opacity awsui.$motion-duration-complex awsui.$motion-easing-refresh-only-c;
+      }
+    }
+  }
+}
