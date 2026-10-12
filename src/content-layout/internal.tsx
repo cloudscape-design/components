@@ -29,6 +29,7 @@ export default function InternalContentLayout({
   header,
   headerVariant = 'default',
   headerBackgroundStyle,
+  fullBleedHeader,
   __internalRootRef,
   maxContentWidth = Number.MAX_VALUE,
   breadcrumbs,
@@ -61,6 +62,7 @@ export default function InternalContentLayout({
         [styles['has-header']]: !!header,
         [styles['default-padding']]: !!defaultPadding,
         [styles['has-notifications']]: !!notifications,
+        [styles['full-bleed-header']]: !!fullBleedHeader,
       })}
       style={{
         [customCssProps.contentLayoutMaxContentWidth]:
