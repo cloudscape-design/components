@@ -400,11 +400,16 @@ export default function HeroshotOverviewPage() {
           <Dropdown
             open={true}
             minWidth="trigger"
+            // The frame clips its overflow, so without this the dropdown would shrink to the
+            // remaining space inside the frame and the list would become scrollable.
+            stretchHeight={true}
             onOutsideClick={noop}
             onMouseDown={noop}
             trigger={<Button>Actions</Button>}
             content={
-              <OptionsList open={true} statusType="finished" role="menu" ariaLabel="Actions">
+              // SelectableItem renders `role="option"`, so the list has to be a listbox: inside a
+              // `role="menu"` the rows would be invalid children without a required parent.
+              <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Actions">
                 <SelectableItem>View details</SelectableItem>
                 <SelectableItem>Delete</SelectableItem>
               </OptionsList>
